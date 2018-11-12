@@ -9,9 +9,8 @@
         <el-input type="password" placeholder="密码" v-model="password"></el-input>
       </p>
       <p class="proving">
-        <el-input type="text" placeholder="验证码"></el-input>
-        <span class="provingImg">图片</span>
-        <el-button>点击刷新</el-button>
+        <el-input type="text" placeholder="验证码" v-model="verification"></el-input>
+        <el-button type="primary" size="small" plain>获取验证码</el-button>
       </p>
       <p>
         <el-button type="primary" round @click="login()">登录</el-button>
@@ -22,42 +21,6 @@
           isshow=!isshow 
           ishide=!ishide
           }">企业注册</span>
-        <span v-on:click="function(){ 
-          adminshow=!adminshow 
-          isshow=!isshow
-          }">
-          管理员登录
-        </span>
-      </p>
-    </div>
-    <div class="adminLogin" v-show="adminshow">
-      <h1>长虹设备云</h1>
-      <p>
-        <el-input placeholder="管理员账号" v-model="userName"></el-input>
-      </p>
-      <p>
-        <el-input type="password" placeholder="管理员密码" v-model="password"></el-input>
-      </p>
-      <p class="proving">
-        <el-input type="text" placeholder="操作员手机号"></el-input>
-        <el-input type="text" placeholder="短信验证码"></el-input>
-        <el-button type="primary" plain>手机验证</el-button>
-      </p>
-      <p>
-        <el-button type="primary" round @click="login()">登录</el-button>
-      </p>
-      <p class="registerSkip">
-        <span>忘记密码</span>
-        <span v-on:click="function(){ 
-          isshow=!isshow 
-          ishide=!ishide
-          }">企业注册</span>
-        <span v-on:click="function(){ 
-          adminshow=!adminshow 
-          isshow=!isshow
-          }">
-          员工登录
-        </span>
       </p>
     </div>
     <div class="register" v-show="ishide">
@@ -151,12 +114,11 @@ export default {
         }
       ],
 
-      input: "",
+      verification: "",
       userName: "",
       password: "",
       isshow: true,
       ishide: false,
-      adminshow: false,
       nextshow: false,
       backshow: true,
       fileList: [
@@ -299,11 +261,11 @@ export default {
     .proving {
       text-align: left;
       .el-input {
-        width: 40%;
+        width: 58%;
       }
       .el-button {
-        width: 20% !important;
-        height: 30px;
+        width: 40%;
+        height: 38px;
       }
       span {
         margin-left: 3%;

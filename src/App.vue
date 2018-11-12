@@ -10,12 +10,12 @@
       </el-container>
       <el-container class='box'>
         <el-aside width="180px" style="background-color: rgb(238, 241, 246)">
-          <el-menu :default-openeds="['1', '3']" :router=true :default-active="$route.name" style="background-color:rgb(238, 241, 246);">
+          <el-menu :default-openeds="['1', '1']" :router=true :default-active="$route.name" style="background-color:rgb(238, 241, 246);">
             <el-submenu index="/Home">
               <template slot="title"><i class="el-icon-message"></i>默认工作台</template>
-              <el-menu-item index="/Home">选项1</el-menu-item>
+              <!-- <el-menu-item index="/Home">选项1</el-menu-item>
               <el-menu-item index="/Home">选项2</el-menu-item>
-              <el-menu-item index="/Home">选项3</el-menu-item>
+              <el-menu-item index="/Home">选项3</el-menu-item> -->
             </el-submenu>
             <el-submenu index="/Information">
               <template slot="title"><i class="el-icon-menu"></i>数据中心</template>
@@ -167,10 +167,10 @@ export default {
   line-height: 40px !important;
 }
 body {
-    scrollbar-arrow-color:#f2f2f3;  /*上下箭头*/
-    scrollbar-track-color:#1589ce;  /*底层背景色*/
-    scrollbar-face-color:#27aeff;   /*滚动条前景色*/
-    scrollbar-Shadow-color:#1589ce; /*滚动条边线色*/
+  scrollbar-arrow-color: #f2f2f3; /*上下箭头*/
+  scrollbar-track-color: #1589ce; /*底层背景色*/
+  scrollbar-face-color: #27aeff; /*滚动条前景色*/
+  scrollbar-shadow-color: #1589ce; /*滚动条边线色*/
 }
 /*chrome滚动条颜色设置*/
 ::-webkit-scrollbar {

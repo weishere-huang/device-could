@@ -1,24 +1,24 @@
 <template>
-    <div class="userManagement">
-        <div class="userCase">
-            <div class="top">
-                <el-button size="small">添加</el-button>
-                <el-button size="small">删除</el-button>
-                <div class="search">
-                    <el-input type="search" placeholder="如员工编号，姓名，手机，部门，岗位" size="small"></el-input>
-                    <el-button size="small">搜索</el-button>
-                </div>
-            </div>
-            <div class="bottom">
-                <div>
-                    <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-                    <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-                        <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
-                    </div>
-                </div>
-            </div>
+  <div class="userManagement">
+    <div class="userCase">
+      <div class="top">
+        <el-button size="small">添加</el-button>
+        <el-button size="small">删除</el-button>
+        <div class="search">
+          <el-input type="search" placeholder="如员工编号，姓名，手机，部门，岗位" size="small"></el-input>
+          <el-button size="small">搜索</el-button>
         </div>
+      </div>
+      <div class="bottom">
+        <div>
+          <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+          <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 <script>
 export default {
@@ -49,8 +49,8 @@ export default {
           width: 90,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true,
-        //   orderBy: ""
+          isResize: true
+          //   orderBy: ""
         },
         {
           field: "address",
