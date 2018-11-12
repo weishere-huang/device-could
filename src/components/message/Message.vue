@@ -2,9 +2,8 @@
     <div class="message">
         <div class="userCase">
             <div class="top">
-                
-                <el-button size="small">删除</el-button>
-               
+
+                <el-button size="small" v-onclick="deleteMessage(ids)">删除</el-button>
             </div>
             <div class="bottom">
                 <div>
@@ -18,6 +17,7 @@
     </div>
 </template>
 <script>
+
 export default {
   data() {
     return {
@@ -114,8 +114,128 @@ export default {
           }
         });
       }
+    },
+    updateMessage(id){
+      //修改消息
+    },
+    addMessage(){
+      //增加消息
+    },
+    RealdeleteMessage(){
+      //删除消息,物理删除
+    },
+    deleteMessage(ids){
+      //逻辑删除
+      let qs = require("qs");
+      let data = qs.stringify({
+        id:"ids"
+      });
+      axios
+        .get("/message/UpdateMsgState/", data)
+        .then(result => {
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    },
+    allMsg(page,userNo){
+      //查询该用户所有消息
+      let qs = require("qs");
+      let data = qs.stringify({
+        pageUtils:{
+          page:page,
+          size:20
+        },
+        userNo:userNo
+        //
+      });
+      axios
+        .get("/message/allMsg/", data)
+        .then(result => {
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    },
+
+    oneMessage(id){
+      //根据消息ID查询单个消息
+      let qs = require("qs");
+      let data = qs.stringify({
+        userNo:userNo
+        //
+      });
+      axios
+        .get("/message/allMsg/", data)
+        .then(result => {
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    },
+    allNotReadMsg(userNo){
+      //查询该用户所有未读消息
+      let qs = require("qs");
+      let data = qs.stringify({
+        userNo:userNo
+        //
+      });
+      axios
+        .get("/message/allMsg/", data)
+        .then(result => {
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    },
+    NotReadMsgCount(userNo){
+      //查询该用户未读消息数目
+      let qs = require("qs");
+      let data = qs.stringify({
+        userNo:userNo
+        //
+      });
+      axios
+        .get("/message/allMsg/", data)
+        .then(result => {
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    },
+    updateMessageRead(ids){
+      //修改消息为已读
+      let qs = require("qs");
+      let data = qs.stringify({
+        userNo:userNo
+        //
+      });
+      axios
+        .get("/message/allMsg/", data)
+        .then(result => {
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
     }
-  }
+
+  },
+  created() {
+      this.allMsg(userNo);
+      this.NotReadMsgCount(userNo);
+    }
 };
 </script>
 <style lang="less" scoped>
