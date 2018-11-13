@@ -101,7 +101,7 @@
             </div>
             <div class="tablelist">
                 <div>
-                    <v-table is-vertical-resize=true is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+                    <v-table is-vertical-resize=true is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange"></v-table>
                     <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
                         <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
                     </div>
@@ -152,14 +152,6 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           type: "selection"
-        },
-        {
-          field: "name",
-          title: "序号",
-          width: 40,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
         },
         {
           field: "tel",
@@ -246,6 +238,15 @@ export default {
     };
   },
   methods: {
+    selectGroupChange(selection) {
+      console.log("select-group-change", selection);
+    },
+    selectALL(selection) {
+      console.log("select-aLL", selection);
+    },
+    selectChange(selection, rowData) {
+      console.log("select-change", selection, rowData);
+    },
     getTableData() {
       this.tableData = this.tableDate.slice(
         (this.pageIndex - 1) * this.pageSize,
