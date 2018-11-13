@@ -35,16 +35,16 @@ export default {
           columnAlign: "center",
           type: "selection"
         },
+        // {
+        //   field: "name",
+        //   title: "序号",
+        //   width: 40,
+        //   titleAlign: "center",
+        //   columnAlign: "center",
+        //   isResize: true
+        // },
         {
-          field: "name",
-          title: "序号",
-          width: 40,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "tel",
+          field: "employeeNo",
           title: "员工编号",
           width: 90,
           titleAlign: "center",
@@ -53,7 +53,7 @@ export default {
           //   orderBy: ""
         },
         {
-          field: "address",
+          field: "name",
           title: "姓名",
           width: 80,
           titleAlign: "center",
@@ -61,7 +61,7 @@ export default {
           isResize: true
         },
         {
-          field: "hobby",
+          field: "gender",
           title: "性别",
           width: 80,
           titleAlign: "center",
@@ -69,7 +69,7 @@ export default {
           isResize: true
         },
         {
-          field: "address",
+          field: "workType",
           title: "工作性质",
           width: 100,
           titleAlign: "center",
@@ -77,7 +77,7 @@ export default {
           isResize: true
         },
         {
-          field: "address",
+          field: "organizationName",
           title: "组织单位及部门",
           width: 250,
           titleAlign: "center",
@@ -85,7 +85,7 @@ export default {
           isResize: true
         },
         {
-          field: "address",
+          field: "position",
           title: "岗位",
           width: 80,
           titleAlign: "center",
@@ -93,16 +93,8 @@ export default {
           isResize: true
         },
         {
-          field: "address",
+          field: "phone",
           title: "手机号",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "address",
-          title: "备注",
           width: 80,
           titleAlign: "center",
           columnAlign: "left",
@@ -141,7 +133,25 @@ export default {
         });
       }
     }
+  },
+  created() {
+    let qs = require("qs");
+    let data = qs.stringify({
+      page : "0",
+      size : "10"
+    });
+    axios
+      .get("/api/employee/selectAll", data)
+      .then(response => {
+        this.tableData = response.data.data.content;
+        // console.log(response.data.data.content)
+        // console.log(this.tableData)
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
+
 };
 </script>
 <style lang="less" scoped>
