@@ -237,8 +237,9 @@ export default {
         overflow: hidden;
         .title {
           display: inline-block;
-          width: 100px;
+          width: 110px;
           position: absolute;
+          text-align: center;
           top: 0%;
           left: 2.5%;
           background-color: white;
@@ -283,7 +284,8 @@ export default {
         padding-left: 20px;
         .title {
           display: inline-block;
-          width: 100px;
+          width: 110px;
+          text-align: center;
           position: absolute;
           top: 48%;
           left: 2.5%;

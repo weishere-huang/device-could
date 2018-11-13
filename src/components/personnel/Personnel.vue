@@ -11,7 +11,7 @@
       </div>
       <div class="bottom">
         <div>
-          <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+          <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
             <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
@@ -35,14 +35,6 @@ export default {
           columnAlign: "center",
           type: "selection"
         },
-        // {
-        //   field: "name",
-        //   title: "序号",
-        //   width: 40,
-        //   titleAlign: "center",
-        //   columnAlign: "center",
-        //   isResize: true
-        // },
         {
           field: "employeeNo",
           title: "员工编号",
@@ -61,24 +53,24 @@ export default {
           isResize: true
         },
         {
+          field: "phone",
+          title: "手机号",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
           field: "gender",
-          title: "性别",
+          title: "用户名",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
         },
         {
-          field: "workType",
-          title: "工作性质",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
           field: "organizationName",
-          title: "组织单位及部门",
+          title: "组织单位/部门",
           width: 250,
           titleAlign: "center",
           columnAlign: "left",
@@ -93,8 +85,24 @@ export default {
           isResize: true
         },
         {
-          field: "phone",
-          title: "手机号",
+          field: "entryTime",
+          title: "入职日期",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "state",
+          title: "状态",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "state",
+          title: "备注",
           width: 80,
           titleAlign: "center",
           columnAlign: "left",
@@ -104,6 +112,15 @@ export default {
     };
   },
   methods: {
+    selectGroupChange(selection) {
+      console.log("select-group-change", selection);
+    },
+    selectALL(selection) {
+      console.log("select-aLL", selection);
+    },
+    selectChange(selection, rowData) {
+      console.log("select-change", selection, rowData);
+    },
     getTableData() {
       this.tableData = this.tableDate.slice(
         (this.pageIndex - 1) * this.pageSize,
@@ -144,7 +161,7 @@ export default {
       .get("/api/employee/selectAll", data)
       .then(response => {
         this.tableData = response.data.data.content;
-        // console.log(response.data.data.content)
+        console.log(response.data.data.content)
         // console.log(this.tableData)
       })
       .catch(function(error) {
