@@ -166,6 +166,21 @@ export default {
           console.log(this.userName);
         });
     },
+    register(){
+      let qs = require("qs");
+      let data = qs.stringify({
+        name : this.company.name,
+        address: this.company.address,
+        enterprisePhone : this.company.phone,
+
+      });
+      axios.post("/api/enterprise/add").then(result =>{
+        console.log("注册成功");
+      }).catch(err =>{
+        console.log(err)
+        console.log("注册失败");
+      });
+    },
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
