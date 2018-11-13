@@ -3,7 +3,8 @@
         <div class="userCase">
             <div class="top">
 
-                <el-button size="small" v-onclick="deleteMessage(ids)">删除</el-button>
+                <el-button size="small" >删除</el-button>
+                <el-button size="small" @cilck="updateMessageRead">修改消息为已读</el-button>
             </div>
             <div class="bottom">
                 <div>
@@ -23,25 +24,8 @@ export default {
     return {
       pageIndex: 1,
       pageSize: 20,
+      userId: 10,
       tableData: [
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        },
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        },
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        },
         {
           name: "111",
           tel: "222",
@@ -58,7 +42,7 @@ export default {
           type: "selection"
         },
         {
-          field: "name",
+          field: "id",
           title: "序号",
           width: 60,
           titleAlign: "center",
@@ -66,7 +50,7 @@ export default {
         //   isResize: true
         },
         {
-          field: "tel",
+          field: "msgTitle",
           title: "信息标题",
           width: 150,
           titleAlign: "center",
@@ -75,9 +59,41 @@ export default {
           //   orderBy: ""
         },
         {
-          field: "address",
+          field: "msgContent",
           title: "信息内容",
           width: 150,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "msgType",
+          title: "消息类型",
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "isRead",
+          title: "是否阅读",
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "msgState",
+          title: "消息状态",
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "gmtCreate",
+          title: "创建时间",
+          width: 50,
           titleAlign: "center",
           columnAlign: "left",
           isResize: true
@@ -115,24 +131,25 @@ export default {
         });
       }
     },
-    updateMessage(id){
-      //修改消息
-    },
-    addMessage(){
-      //增加消息
-    },
-    RealdeleteMessage(){
-      //删除消息,物理删除
-    },
-    deleteMessage(ids){
+    // updateMessage(id){
+    //   //修改消息
+    // },
+    // addMessage(){
+    //   //增加消息
+    // },
+    // RealdeleteMessage(){
+    //   //删除消息,物理删除
+    // },
+    deleteMessage(){
       //逻辑删除
       let qs = require("qs");
       let data = qs.stringify({
-        id:"ids"
+        ids:'test'
       });
       axios
-        .get("/message/UpdateMsgState/", data)
+        .post("api/message/UpdateMsgState/", data)
         .then(result => {
+          alert("逻辑删除执行");
           console.log(result.data);
         })
         .catch(err => {
@@ -140,72 +157,75 @@ export default {
           console.log(this.userName);
         });
     },
-    allMsg(page,userNo){
+    allMsg(){
       //查询该用户所有消息
       let qs = require("qs");
       let data = qs.stringify({
-        pageUtils:{
-          page:page,
-          size:20
-        },
-        userNo:userNo
-        //
+        page:1,
+        size:20
       });
       axios
-        .get("/message/allMsg/", data)
+        .get("api/message/allMsg/"+this.userId , data)
         .then(result => {
-          console.log(result.data);
+          alert("allMSg");
+          console.log(result.data.data);
+          this.tableData=result.data.data;
         })
         .catch(err => {
           console.log(err);
           console.log(this.userName);
         });
     },
-
-    oneMessage(id){
+    oneMessage(){
       //根据消息ID查询单个消息
       let qs = require("qs");
       let data = qs.stringify({
-        userNo:userNo
+        id:1
         //
       });
       axios
-        .get("/message/allMsg/", data)
+        .get("api/message/findOneMsg/1", data)
         .then(result => {
+          alert("按照ID 查询单个消息内容");
+          alert(result.data.data.id + "\n---标题--" + result.data.data.msgTitle  + "\n--内容--"+result.data.data.msgContent);
           console.log(result.data);
+
         })
         .catch(err => {
           console.log(err);
           console.log(this.userName);
         });
     },
-    allNotReadMsg(userNo){
+    allNotReadMsg(){
       //查询该用户所有未读消息
       let qs = require("qs");
       let data = qs.stringify({
-        userNo:userNo
-        //
+        page:0,
+        size:20
       });
       axios
-        .get("/message/allMsg/", data)
+        .get("api/message/allNotReadMsg/"+this.userId, data)
         .then(result => {
+          alert("所有未读消息")
           console.log(result.data);
+          this.tableData=result.data.data;
         })
         .catch(err => {
           console.log(err);
           console.log(this.userName);
         });
     },
-    NotReadMsgCount(userNo){
+    NotReadMsgCount(){
       //查询该用户未读消息数目
       let qs = require("qs");
       let data = qs.stringify({
-        userNo:userNo
-        //
+
       });
       axios
-        .get("/message/allMsg/", data)
+        .get("api/message/NotReadMsgCount/"+this.userId, data)
         .then(result => {
+          alert("count");
+
           console.log(result.data);
         })
         .catch(err => {
@@ -213,16 +233,17 @@ export default {
           console.log(this.userName);
         });
     },
-    updateMessageRead(ids){
+    updateMessageRead(){
       //修改消息为已读
       let qs = require("qs");
       let data = qs.stringify({
-        userNo:userNo
+        id:10
         //
       });
       axios
-        .get("/message/allMsg/", data)
+        .get("api/message/UpdateMsgRead/1", data)
         .then(result => {
+          alert("updateMessageRead 修改消息已阅读")
           console.log(result.data);
         })
         .catch(err => {
@@ -233,9 +254,22 @@ export default {
 
   },
   created() {
-      this.allMsg(userNo);
-      this.NotReadMsgCount(userNo);
-    }
+    //查询当前用户所有消息
+    this.allMsg();
+    //查询当前用用户未读消息数量
+    this.NotReadMsgCount();
+    //修改消息为已读
+    //this.updateMessageRead();
+    //查询所有用户未读消息
+    //this.allNotReadMsg();
+    //按照ID 查询单个消息内容;
+    this.oneMessage();
+    //按照数组删除数据
+    this.deleteMessage();
+  }
+
+
+
 };
 </script>
 <style lang="less" scoped>
