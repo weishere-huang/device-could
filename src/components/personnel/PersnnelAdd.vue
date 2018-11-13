@@ -74,7 +74,7 @@
                         <li>
                             <span>
                                 <label for="">工作年限：</label>
-                                <el-input type="text" size="small" style="width:50px" v-model="persnneladd.workingYears"></el-input>
+                                <el-input type="text" size="small" style="width:80px" v-model="persnneladd.workingYears"></el-input>
                                 年
                             </span>
                             <span style="display:inline-block;float:right;padding-right:100px">
@@ -96,11 +96,11 @@
                         </li>
                         <li>
                             <label for="">电子邮箱：</label>
-                            <el-input type="email" size="small" style="width:200px" v-model="persnneladd.email"></el-input>
+                            <el-input type="email" size="small" style="width:300px" v-model="persnneladd.email"></el-input>
                         </li>
                         <li>
                             <label for="">通讯地址：</label>
-                            <el-input type="email" size="small" style="width:200px" v-model="persnneladd.postalAddress"></el-input>
+                            <el-input type="email" size="small" style="width:300px" v-model="persnneladd.postalAddress"></el-input>
                         </li>
                         <li>
                             <span>

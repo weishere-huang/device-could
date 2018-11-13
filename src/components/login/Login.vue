@@ -33,19 +33,20 @@
             <el-input size="small" v-model="company.name"></el-input>
           </li>
           <li>
-            <label for="">企业地址：</label>
-            <el-input size="small" v-model="company.address"></el-input>
+            <label for="">法人代表：</label>
+            <el-input size="small" v-model="company.corporation"></el-input>
           </li>
           <li>
             <label for="">联系电话：</label>
             <el-input size="small" v-model="company.phone"></el-input>
           </li>
           <li>
-            <label for="">法人代表：</label>
-            <el-input size="small" v-model="company.corporation"></el-input>
+            <label for="">企业地址：</label>
+            <el-input size="small" v-model="company.address"></el-input>
           </li>
+
           <li>
-            <label for="">营业执照注册号：</label>
+            <label for="">统一社会信用代码：</label>
             <el-input size="small" v-model="company.companyID"></el-input>
           </li>
           <li>
@@ -97,6 +98,7 @@
 </template>
 <script>
 import md5 from "js-md5/src/md5.js";
+import CryptoJS from "crypto-js/crypto-js.js";
 export default {
   name: "Login",
   data() {
@@ -145,13 +147,15 @@ export default {
     };
   },
   methods: {
+    // let instance = axios.create({
+    //   headers: { "content-type": "application/x-www-form-urlencoded" }
+    // });
     login() {
       this.password = md5(this.password);
+      let key = "*chang_hong_device_cloud";
+      this.password = encryptByDES(this.password, key);
       console.log(md5(this.password));
       let qs = require("qs");
-      // let instance = axios.create({
-      //   headers: { "content-type": "application/x-www-form-urlencoded" }
-      // });
       let data = qs.stringify({
         phone: this.userName,
         passWord: this.password
@@ -196,14 +200,27 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    encryptByDES(message, key) {
+      const keyHex = CryptoJS.enc.Utf8.parse(key);
+      const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+      });
+      return encrypted.toString();
     }
   },
   components: {},
   created() {
+    let qs = require("qs");
+    let data = qs.stringify({
+      page: "1",
+      size: "5"
+    });
     axios
-      .get("/api/user/all")
+      .get("/api/user/all",data)
       .then(response => {
-        console.log(response.data.data);
+        console.log(response.data);
       })
       .catch(function(error) {
         console.log(error);
@@ -374,7 +391,7 @@ export default {
       margin-bottom: 5px;
       label {
         display: inline-block;
-        width: 30%;
+        width: 31%;
         text-align: right;
       }
       .validate {

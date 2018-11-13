@@ -27,7 +27,7 @@
               <template slot="title"><i class="el-icon-setting"></i>企业管理</template>
               <el-menu-item index="/Company">选项1</el-menu-item>
               <el-menu-item index="/Company">选项2</el-menu-item>
-              <el-menu-item index="/Company">选项3</el-menu-item>
+              <el-menu-item index="/BusinessDetails">企业详情</el-menu-item>
             </el-submenu>
             <el-submenu index="/Equipment">
               <template slot="title"><i class="el-icon-setting"></i>设备管理</template>
