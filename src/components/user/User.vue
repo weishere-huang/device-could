@@ -62,7 +62,7 @@ export default {
           type: "selection"
         },
         {
-          field: "name",
+          field: "id",
           title: "员工编号",
           width: 40,
           titleAlign: "center",
@@ -79,7 +79,7 @@ export default {
         //   orderBy: ""
         },
         {
-          field: "address",
+          field: "phone",
           title: "手机号",
           width: 150,
           titleAlign: "center",
@@ -87,7 +87,7 @@ export default {
           isResize: true
         },
         {
-          field: "hobby",
+          field: "userName",
           title: "姓名",
           width: 80,
           titleAlign: "center",
@@ -103,7 +103,7 @@ export default {
           isResize: true
         },
         {
-          field: "address",
+          field: "gmtCreate",
           title: "创建时间",
           width: 80,
           titleAlign: "center",
@@ -111,7 +111,7 @@ export default {
           isResize: true
         },
         {
-          field: "address",
+          field: "gmtModified",
           title: "最后登录时间",
           width: 80,
           titleAlign: "center",
@@ -119,7 +119,7 @@ export default {
           isResize: true
         },
         {
-          field: "address",
+          field: "state",
           title: "用户状态",
           width: 80,
           titleAlign: "center",
@@ -159,6 +159,24 @@ export default {
         });
       }
     }
+  },
+  created() {
+    let qs = require("qs");
+    let data = qs.stringify({
+      page : "0",
+      size : "10"
+    });
+    axios
+      .get("/api/user/all", data)
+      .then(response => {
+       this.tableData =  response.data.data;
+       this.tableDate=response.data.data
+        console.log(response.data)
+        // console.log(this.tableData)
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 };
 </script>
