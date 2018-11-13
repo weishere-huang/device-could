@@ -4,6 +4,7 @@ import Login from '@/components/login/Login'
 import Home from '@/components/home/Home'
 import Information from '@/components/information/Information'
 import Company from '@/components/company/Company'
+import BusinessDetails from '@/components/company/BusinessDetails'
 import Equipment from '@/components/equipment/Equipment'
 import Operation from '@/components/operation/Operation'
 import TurnaroundPlans from '@/components/operation/TurnaroundPlans'
@@ -43,6 +44,11 @@ export default new Router({
       path: '/Company',
       name: 'Company',
       component: Company
+    },
+    {
+      path: '/BusinessDetails',
+      name: 'BusinessDetails',
+      component: BusinessDetails
     },
     {
       path: '/Equipment',
