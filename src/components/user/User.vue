@@ -110,14 +110,14 @@ export default {
           columnAlign: "left",
           isResize: true
         },
-        {
-          field: "gmtModified",
-          title: "最后登录时间",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
+        // {
+        //   field: "gmtModified",
+        //   title: "最后登录时间",
+        //   width: 80,
+        //   titleAlign: "center",
+        //   columnAlign: "left",
+        //   isResize: true
+        // },
         {
           field: "state",
           title: "用户状态",
