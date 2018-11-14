@@ -27,7 +27,7 @@
                 <ul>
                     <li v-for="(item, index) in name1" :key="index">{{item}}
                         <ul v-if="sss!=''">
-                            <li style="border-top:1px solid #dde2eb;text-align=center;padding:0;"></li>
+                            <li style="border-top:1px solid #dde2eb;text-align:center;padding:0;"></li>
                         </ul>
                     </li>
                 </ul>
@@ -37,7 +37,7 @@
                 <ul>
                     <li v-for="(item, index) in name1" :key="index">{{item}}
                         <ul v-if="sss!=''">
-                            <li style="border-top:1px solid #dde2eb;text-align=center;padding:0;"></li>
+                            <li style="border-top:1px solid #dde2eb;text-align:center;padding:0;"></li>
                         </ul>
                     </li>
                 </ul>

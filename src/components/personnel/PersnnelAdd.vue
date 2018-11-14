@@ -3,7 +3,7 @@
         <div class="add-case">
             <div class="topbtn">
                 <el-button size="small">返回</el-button>
-                <el-button size="small">保存</el-button>
+                <el-button size="small" @click="employeeAdd">保存</el-button>
             </div>
             <div class="botton">
                 <div class="essential">
@@ -128,7 +128,6 @@
             </div>
         </div>
     </div>
-    </div>
 </template>
 <script>
 export default {
@@ -177,6 +176,40 @@ export default {
     };
   },
   methods: {
+    employeeAdd(){
+      let qs = require("qs");
+      let employee = qs.stringify({
+        name:this.persnneladd.name,
+        gender: this.persnneladd.gender,
+        employeeNo: this.persnneladd.employeeNo,
+        phone: this.persnneladd.phone,
+        birthday:this.persnneladd.birthday,
+        organizationName:this.persnneladd.organizationName,
+        position:this.persnneladd.position,
+        entryTime:this.persnneladd.entryTime,
+        email: this.persnneladd.email
+      });
+      let employeeInfo = qs.stringify({
+        idCardNo:this.persnneladd.idCardNo,
+        marital:this.persnneladd.marital,
+        workingYears:this.persnneladd.workingYears,
+        height:this.persnneladd.height,
+        nativePlace:this.persnneladd.nativePlace,
+        nationality:this.persnneladd.nationality,
+        postalAddress:this.persnneladd.postalAddress,
+        graduateSchool:this.persnneladd.graduateSchool,
+        degree:this.persnneladd.degree,
+        img:this.persnneladd.img
+      });
+      axios
+        .post("/api/employee/add", employee,employeeInfo)
+        .then(response => {
+          console.log(response.data.data.content)
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
     open6() {
       let str = `<div>
             <input type="text">文件名
@@ -202,6 +235,9 @@ export default {
           });
         });
     }
+  },
+  created() {
+
   }
 };
 </script>
