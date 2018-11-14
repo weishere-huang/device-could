@@ -12,7 +12,7 @@
                         </span>
                         <ul v-if="sss!=''">
                             <li style="border-top:1px solid #dde2eb;" >
-                                <span style="letter-spacing:2px; height:25px;">
+                                <span style="letter-spacing:5px; height:25px;">
                                     <i class="iconfont icon-jia"></i>
                                     <i class="iconfont icon-xiewrite18"></i>
                                     <i class="iconfont icon-shanchu1"></i>
@@ -51,7 +51,7 @@ export default {
   name: "",
   data() {
     return {
-      sss: "",
+      sss: "1",
       name1: [1, 2, 3, 4, 5, 6, 7, 8],
       type: [1, 2, 3, 4, 5, 6, 7, 8],
       comment: [1, 2, 3, 4, 5, 6, 7, 8]
