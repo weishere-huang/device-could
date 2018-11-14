@@ -8,7 +8,7 @@
             </div>
             <div class="bottom">
                 <div>
-                    <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+                    <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange"></v-table>
                     <div class="mt20 mb20 bold" style="text-align:center;margin-top:20px">
                         <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
                     </div>
@@ -31,6 +31,24 @@ export default {
           tel: "222",
           address: "3333",
           hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
         }
       ],
       tableDate: [],
@@ -42,6 +60,49 @@ export default {
           type: "selection"
         },
         {
+      tableData: [
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        }
+      ],
+      tableDate: [],
+      columns: [
+        {
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          type: "selection"
+        },
+        {
+          field: "name",
+          title: "序号",
+          width: 60,
+          titleAlign: "center",
+          columnAlign: "center",
+        //   isResize: true
+        },
+        {
           field: "id",
           title: "序号",
           width: 60,
@@ -50,7 +111,6 @@ export default {
         //   isResize: true
         },
         {
-          field: "msgTitle",
           title: "信息标题",
           width: 150,
           titleAlign: "center",
@@ -59,6 +119,7 @@ export default {
           //   orderBy: ""
         },
         {
+          field: "address",
           field: "msgContent",
           title: "信息内容",
           width: 150,
@@ -102,6 +163,15 @@ export default {
     };
   },
   methods: {
+    selectGroupChange(selection) {
+      console.log("select-group-change", selection);
+    },
+    selectALL(selection) {
+      console.log("select-aLL", selection);
+    },
+    selectChange(selection, rowData) {
+      console.log("select-change", selection, rowData);
+    },
     getTableData() {
       this.tableData = this.tableDate.slice(
         (this.pageIndex - 1) * this.pageSize,
@@ -270,6 +340,43 @@ export default {
 
 
 
+};
+</script>
+<style lang="less" scoped>
+@blue: #409eff;
+@Success: #67c23a;
+@Warning: #e6a23c;
+@Danger: #f56c6c;
+@Info: #dde2eb;
+.message {
+  padding-left: 180px;
+  .userCase {
+    width: 100%;
+    padding: 10px;
+    .top {
+      height: 60px;
+      line-height: 60px;
+      border: 1px solid @Info;
+      border-radius: 5px;
+      padding-left: 10px;
+      .search {
+        float: right;
+        width: 40%;
+        .el-input {
+          width: 80%;
+        }
+      }
+    }
+    .bottom {
+        padding: 10px;
+      font-size: 12px;
+      border: 1px solid @Info;
+      margin-top: 10px;
+      min-height: 500px;
+      border-radius: 5px;
+    }
+  }
+}
 };
 </script>
 <style lang="less" scoped>

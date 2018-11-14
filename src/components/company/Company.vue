@@ -1,6 +1,6 @@
 <template>
-    <div class="company">
-        <div class="userCase">
+  <div class="company">
+    <div class="userCase">
       <div class="top">
         <el-button size="small">审核</el-button>
         <el-button size="small">启用</el-button>
@@ -13,14 +13,15 @@
       </div>
       <div class="bottom">
         <div>
-          <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-          <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px" >
-            <v-pagination @page-change="pageChange"  @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" :select-all="selectALL" :select-group-change="selectGroupChange" :row-dblclick="aaaa" row-click-color="#edf7ff">
+          </v-table>
+          <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
     </div>
-    </div>
+  </div>
 </template>
 <script>
 export default {
@@ -28,15 +29,17 @@ export default {
     return {
       pageIndex: 1,
       pageSize: 10,
-      tableData: [{
-        name:"11",
-        address:"222",
-        phone:"333",
-        address:"4444",
-        time:"555",
-        time1:"666",
-        stat:"777"
-      }],
+      tableData: [
+        {
+          name: "11",
+          address: "222",
+          phone: "333",
+          address: "4444",
+          time: "555",
+          time1: "666",
+          stat: "777"
+        }
+      ],
       tableDate: [],
       columns: [
         {
@@ -79,14 +82,6 @@ export default {
           isResize: true
         },
         {
-          field: "time1",
-          title: "审核时间",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
           field: "stat",
           title: "状态",
           width: 50,
@@ -98,6 +93,18 @@ export default {
     };
   },
   methods: {
+    aaaa() {
+      console.log("ok");
+    },
+    selectGroupChange(selection) {
+      console.log("select-group-change", selection);
+    },
+    selectALL(selection) {
+      console.log("select-aLL", selection);
+    },
+    selectChange(selection, rowData) {
+      console.log("select-change", selection, rowData);
+    },
     getTableData() {
       this.tableData = this.tableDate.slice(
         (this.pageIndex - 1) * this.pageSize,
@@ -126,8 +133,7 @@ export default {
           }
         });
       }
-    },
-   
+    }
   }
 };
 </script>
