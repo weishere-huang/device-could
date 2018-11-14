@@ -58,8 +58,8 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           type: "selection"
-        },
-        {
+        }],
+        
       tableData: [
         {
           name: "111",
@@ -342,43 +342,7 @@ export default {
 
 };
 </script>
-<style lang="less" scoped>
-@blue: #409eff;
-@Success: #67c23a;
-@Warning: #e6a23c;
-@Danger: #f56c6c;
-@Info: #dde2eb;
-.message {
-  padding-left: 180px;
-  .userCase {
-    width: 100%;
-    padding: 10px;
-    .top {
-      height: 60px;
-      line-height: 60px;
-      border: 1px solid @Info;
-      border-radius: 5px;
-      padding-left: 10px;
-      .search {
-        float: right;
-        width: 40%;
-        .el-input {
-          width: 80%;
-        }
-      }
-    }
-    .bottom {
-        padding: 10px;
-      font-size: 12px;
-      border: 1px solid @Info;
-      margin-top: 10px;
-      min-height: 500px;
-      border-radius: 5px;
-    }
-  }
-}
-};
-</script>
+
 <style lang="less" scoped>
 @blue: #409eff;
 @Success: #67c23a;
