@@ -56,7 +56,7 @@ export default {
   data() {
     return {
       msg: "哈哈哈",
-      img:"",
+      img: "",
       company: {
         name: "",
         address: "",
@@ -85,7 +85,7 @@ export default {
   width: 800px;
   border: 1px solid @Info;
   overflow: hidden;
-  
+
   .title {
     display: inline-block;
     width: 100%;
@@ -111,14 +111,14 @@ export default {
       margin-top: 20px;
     }
   }
-  .right{
+  .right {
     float: right;
     width: 30%;
     border: 1px solid @Info;
     margin-right: 3%;
     margin-top: 20px;
     padding: 20px;
-    img{
+    img {
       width: 100%;
     }
   }
