@@ -3,7 +3,7 @@
         <div class="add-case">
             <div class="topbtn">
                 <el-button size="small">返回</el-button>
-                <el-button size="small">保存</el-button>
+                <el-button size="small" @click="employeeAdd">保存</el-button>
             </div>
             <div class="botton">
                 <div class="essential">
@@ -64,6 +64,13 @@
                                     <el-radio v-model="persnneladd.marital" label="未婚">未婚</el-radio>
                                 </span>
                             </li>
+                          <li>
+                            <label for="">角色权限：</label>
+                            <el-select v-model="persnneladd.roleId" placeholder="请选择" size="small" style="width:70%">
+                              <el-option v-for="item in role" :key="item.value" :label="item.name" :value="item.id">
+                              </el-option>
+                            </el-select>
+                          </li>
                         </ul>
                     </div>
                 </div>
@@ -121,9 +128,9 @@
                             <label for="" style="letter-spacing: 8px;">资质：</label>
                             <el-button size="small" @click="open6()">点击上传</el-button>
                         </li>
+
                     </ul>
                 </div>
-
             </div>
         </div>
     </div>
@@ -144,6 +151,7 @@ export default {
         position: "",
         entryTime: "",
         marital: "",
+        roleId:"",
         workingYears: "",
         height: "",
         nativePlace: "",
@@ -171,10 +179,23 @@ export default {
           value: "长虹电子系统有限公司",
           label: "长虹电子系统有限公司"
         }
-      ]
+      ],
+      role:[]
     };
   },
   methods: {
+    employeeAdd(){
+      let qs = require("qs");
+      let data = qs.stringify(this.persnneladd);
+      axios
+        .post("/api/employee/add", data)
+        .then(response => {
+          console.log(response.data.data.content)
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
     open6() {
       let str = `<div>
             <input type="text">文件名
@@ -200,6 +221,16 @@ export default {
           });
         });
     }
+  },
+  created(){
+    axios
+      .get("/api/role/listAllRole")
+      .then(response => {
+        this.role = response.data.data;
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 };
 </script>

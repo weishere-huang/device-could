@@ -110,14 +110,14 @@ export default {
           columnAlign: "left",
           isResize: true
         },
-        {
-          field: "gmtModified",
-          title: "最后登录时间",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
+        // {
+        //   field: "gmtModified",
+        //   title: "最后登录时间",
+        //   width: 80,
+        //   titleAlign: "center",
+        //   columnAlign: "left",
+        //   isResize: true
+        // },
         {
           field: "state",
           title: "用户状态",
@@ -179,7 +179,7 @@ export default {
       .get("/api/user/all", data)
       .then(response => {
        this.tableData =  response.data.data;
-       this.tableDate=response.data.data
+       this.tableDate=response.data.data;
         console.log(response.data)
         // console.log(this.tableData)
       })
