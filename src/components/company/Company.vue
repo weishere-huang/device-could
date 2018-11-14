@@ -7,8 +7,8 @@
         <el-button size="small">停用</el-button>
         <el-button size="small">刷新</el-button>
         <div class="search">
-          <el-input type="search" placeholder="根据企业名称" size="small"></el-input>
-          <el-button size="small">搜索</el-button>
+          <el-input type="search" placeholder="根据企业名称" size="small" v-model="name"></el-input>
+          <el-button size="small" v-on:click="findByNameOrState">搜索</el-button>
         </div>
       </div>
       <div class="bottom">
@@ -31,12 +31,14 @@
       return {
         pageIndex: 1,
         pageSize: 10,
+        name:"",
+        state:"",
         tableData: [{
           name: "",
           address: "",
           phone: "",
           address: "",
-          time: "",
+          gmtModified: "",
           time1: "",
           state: ""
         }],
@@ -87,7 +89,7 @@
             isResize: true
           },
           {
-            field: "time",
+            field: "gmtModified",
             title: "申请时间",
             width: 80,
             titleAlign: "center",
@@ -103,7 +105,7 @@
             isResize: true
           },
           {
-            field: "stat",
+            field: "state",
             title: "状态",
             width: 50,
             titleAlign: "center",
@@ -143,25 +145,19 @@
           });
         }
       },
-      // findByNameAndState(){
-      //   let qs = require("qs");
-      //   let data = qs.stringify({
-      //
-      //   });
-      //   axios.get("/api/enterprise/findByNameAndState", data)
-      //     .then(response =>{
-      //       console.log(response);
-      //       this.tableData
-      //     })
-      // }
+      findByNameOrState(){
+        console.log(this.name)
+        axios.get("/api/enterprise/findByNameOrState", {params:{enterpriseName:this.name}})
+          .then(response =>{
+            console.log(response);
+            this.tableData=response.data.data.content
+          }).catch(function (error) {
+          console.log(error);
+        })
+      }
     },
     created() {
-      let qs = require("qs");
-      let data = qs.stringify({
-        page: "0",
-        size: "10"
-      });
-      axios.get("/api/enterprise/all", data)
+      axios.get("/api/enterprise/all", {params:{page:0,size:10}})
         .then(response => {
           console.log(response);
           this.tableData = response.data.data.content;
