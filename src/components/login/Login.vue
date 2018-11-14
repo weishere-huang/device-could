@@ -134,11 +134,11 @@ export default {
         address: "",
         phone: "",
         corporation: "",
-        companyID: ""
+        companyID: "",
+        businessLicenseImg: ""
       },
       manager: {
         userName: "",
-        userPassword: "",
         password: "",
         phone: "",
         validate: ""
@@ -153,7 +153,7 @@ export default {
     login() {
       this.password = md5(this.password);
       let key = "*chang_hong_device_cloud";
-      this.password = encryptByDES(this.password, key);
+      this.password = encryptByDES(this.password, key);``
       console.log(md5(this.password));
       let qs = require("qs");
       let data = qs.stringify({
@@ -175,8 +175,13 @@ export default {
       let data = qs.stringify({
         name : this.company.name,
         address: this.company.address,
-        enterprisePhone : this.company.phone,
-
+        enterprisePhone: this.company.phone,
+        corporation: this.company.corporation,
+        creditCode: this.company.companyID,
+        businessLicenseImg: this.company.businessLicenseImg,
+        userName: this.manager.userName,
+        passWord: this.manager.password,
+        phone:  this.manager.phone
       });
       axios.post("/api/enterprise/add").then(result =>{
         console.log("注册成功");

@@ -135,21 +135,21 @@ export default {
     }
   },
   created() {
-    let qs = require("qs");
-    let data = qs.stringify({
-      page : "0",
-      size : "10"
-    });
-    axios
-      .get("/api/employee/selectAll", data)
-      .then(response => {
-        this.tableData = response.data.data.content;
-        // console.log(response.data.data.content)
-        // console.log(this.tableData)
-      })
-      .catch(function(error) {
-        console.log(error);
+      let qs = require("qs");
+      let data = qs.stringify({
+        page : "0",
+        size : "10"
       });
+      axios
+        .get("/api/employee/selectAll", data)
+        .then(response => {
+          this.tableData = response.data.data.content;
+          // console.log(response.data.data.content)
+          // console.log(this.tableData)
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
   }
 
 };
