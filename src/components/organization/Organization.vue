@@ -71,7 +71,8 @@ export default {
         event.stopPropagation();
       };
     }
-  }
+  },
+
 };
 </script>
 <style lang="less" scoped>

@@ -58,109 +58,109 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           type: "selection"
-        },
-        {
-      tableData: [
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        },
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        },
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        },
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
         }
-      ],
-      tableDate: [],
-      columns: [
-        {
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
-        {
-          field: "name",
-          title: "序号",
-          width: 60,
-          titleAlign: "center",
-          columnAlign: "center",
-        //   isResize: true
-        },
-        {
-          field: "id",
-          title: "序号",
-          width: 60,
-          titleAlign: "center",
-          columnAlign: "center",
-        //   isResize: true
-        },
-        {
-          title: "信息标题",
-          width: 150,
-          titleAlign: "center",
-          columnAlign: "left",
-        //   isResize: true
-          //   orderBy: ""
-        },
-        {
-          field: "address",
-          field: "msgContent",
-          title: "信息内容",
-          width: 150,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "msgType",
-          title: "消息类型",
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "isRead",
-          title: "是否阅读",
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "msgState",
-          title: "消息状态",
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "gmtCreate",
-          title: "创建时间",
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
+        ],
+          tableData: [
+            {
+              name: "111",
+              tel: "222",
+              address: "3333",
+              hobby: "4444"
+            },
+            {
+              name: "111",
+              tel: "222",
+              address: "3333",
+              hobby: "4444"
+            },
+            {
+              name: "111",
+              tel: "222",
+              address: "3333",
+              hobby: "4444"
+            },
+            {
+              name: "111",
+              tel: "222",
+              address: "3333",
+              hobby: "4444"
+            }
+          ],
+          tableDate: [],
+          columns: [
+            {
+              width: 50,
+              titleAlign: "center",
+              columnAlign: "center",
+              type: "selection"
+            },
+            {
+              field: "name",
+              title: "序号",
+              width: 60,
+              titleAlign: "center",
+              columnAlign: "center",
+              //   isResize: true
+            },
+            {
+              field: "id",
+              title: "序号",
+              width: 60,
+              titleAlign: "center",
+              columnAlign: "center",
+              //   isResize: true
+            },
+            {
+              title: "信息标题",
+              width: 150,
+              titleAlign: "center",
+              columnAlign: "left",
+              //   isResize: true
+              //   orderBy: ""
+            },
+            {
+              field: "address",
+              field: "msgContent",
+              title: "信息内容",
+              width: 150,
+              titleAlign: "center",
+              columnAlign: "left",
+              isResize: true
+            },
+            {
+              field: "msgType",
+              title: "消息类型",
+              width: 50,
+              titleAlign: "center",
+              columnAlign: "left",
+              isResize: true
+            },
+            {
+              field: "isRead",
+              title: "是否阅读",
+              width: 50,
+              titleAlign: "center",
+              columnAlign: "left",
+              isResize: true
+            },
+            {
+              field: "msgState",
+              title: "消息状态",
+              width: 50,
+              titleAlign: "center",
+              columnAlign: "left",
+              isResize: true
+            },
+            {
+              field: "gmtCreate",
+              title: "创建时间",
+              width: 50,
+              titleAlign: "center",
+              columnAlign: "left",
+              isResize: true
+            }
+          ]
         }
-      ]
-    };
   },
   methods: {
     selectGroupChange(selection) {
@@ -342,43 +342,7 @@ export default {
 
 };
 </script>
-<style lang="less" scoped>
-@blue: #409eff;
-@Success: #67c23a;
-@Warning: #e6a23c;
-@Danger: #f56c6c;
-@Info: #dde2eb;
-.message {
-  padding-left: 180px;
-  .userCase {
-    width: 100%;
-    padding: 10px;
-    .top {
-      height: 60px;
-      line-height: 60px;
-      border: 1px solid @Info;
-      border-radius: 5px;
-      padding-left: 10px;
-      .search {
-        float: right;
-        width: 40%;
-        .el-input {
-          width: 80%;
-        }
-      }
-    }
-    .bottom {
-        padding: 10px;
-      font-size: 12px;
-      border: 1px solid @Info;
-      margin-top: 10px;
-      min-height: 500px;
-      border-radius: 5px;
-    }
-  }
-}
-};
-</script>
+
 <style lang="less" scoped>
 @blue: #409eff;
 @Success: #67c23a;
