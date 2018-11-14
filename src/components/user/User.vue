@@ -179,7 +179,7 @@ export default {
       .get("/api/user/all", data)
       .then(response => {
        this.tableData =  response.data.data;
-       this.tableDate=response.data.data
+       this.tableDate=response.data.data;
         console.log(response.data)
         // console.log(this.tableData)
       })

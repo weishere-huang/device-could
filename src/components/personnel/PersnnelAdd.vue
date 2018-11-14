@@ -63,8 +63,14 @@
                                     <el-radio v-model="persnneladd.marital" label="已婚">已婚</el-radio>
                                     <el-radio v-model="persnneladd.marital" label="未婚">未婚</el-radio>
                                 </span>
-
                             </li>
+                          <li>
+                            <label for="">角色权限：</label>
+                            <el-select v-model="persnneladd.roleId" placeholder="请选择" size="small" style="width:70%">
+                              <el-option v-for="item in role" :key="item.value" :label="item.name" :value="item.id">
+                              </el-option>
+                            </el-select>
+                          </li>
                         </ul>
                     </div>
                 </div>
@@ -122,9 +128,9 @@
                             <label for="" style="letter-spacing: 8px;">资质：</label>
                             <el-button size="small" @click="open6()">点击上传</el-button>
                         </li>
+
                     </ul>
                 </div>
-
             </div>
         </div>
     </div>
@@ -145,6 +151,7 @@ export default {
         position: "",
         entryTime: "",
         marital: "",
+        roleId:"",
         workingYears: "",
         height: "",
         nativePlace: "",
@@ -172,37 +179,16 @@ export default {
           value: "长虹电子系统有限公司",
           label: "长虹电子系统有限公司"
         }
-      ]
+      ],
+      role:[]
     };
   },
   methods: {
     employeeAdd(){
       let qs = require("qs");
-      let employee = qs.stringify({
-        name:this.persnneladd.name,
-        gender: this.persnneladd.gender,
-        employeeNo: this.persnneladd.employeeNo,
-        phone: this.persnneladd.phone,
-        birthday:this.persnneladd.birthday,
-        organizationName:this.persnneladd.organizationName,
-        position:this.persnneladd.position,
-        entryTime:this.persnneladd.entryTime,
-        email: this.persnneladd.email
-      });
-      let employeeInfo = qs.stringify({
-        idCardNo:this.persnneladd.idCardNo,
-        marital:this.persnneladd.marital,
-        workingYears:this.persnneladd.workingYears,
-        height:this.persnneladd.height,
-        nativePlace:this.persnneladd.nativePlace,
-        nationality:this.persnneladd.nationality,
-        postalAddress:this.persnneladd.postalAddress,
-        graduateSchool:this.persnneladd.graduateSchool,
-        degree:this.persnneladd.degree,
-        img:this.persnneladd.img
-      });
+      let data = qs.stringify(this.persnneladd);
       axios
-        .post("/api/employee/add", employee,employeeInfo)
+        .post("/api/employee/add", data)
         .then(response => {
           console.log(response.data.data.content)
         })
@@ -236,8 +222,15 @@ export default {
         });
     }
   },
-  created() {
-
+  created(){
+    axios
+      .get("/api/role/listAllRole")
+      .then(response => {
+        this.role = response.data.data;
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 };
 </script>
