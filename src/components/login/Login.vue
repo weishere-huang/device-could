@@ -70,6 +70,10 @@
             <el-input size="small" v-model="manager.userName"></el-input>
           </li>
           <li>
+            <label for="">密码：</label>
+            <el-input size="small" v-model="manager.userPassword"></el-input>
+          </li>
+          <li>
             <label for="">手机号：</label>
             <el-input size="small" v-model="manager.phone"></el-input>
           </li>
@@ -139,7 +143,7 @@ export default {
       manager: {
         userName: "",
         userPassword: "",
-        password: "",
+        // password: "",
         phone: "",
         validate: ""
       },
@@ -150,11 +154,23 @@ export default {
     // let instance = axios.create({
     //   headers: { "content-type": "application/x-www-form-urlencoded" }
     // });
+
+    encryptByDES(message, key) {
+      const keyHex = CryptoJS.enc.Utf8.parse(key);
+      const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+      });
+      return encrypted.toString();
+    },
+
     login() {
       this.password = md5(this.password);
-      let key = "*chang_hong_device_cloud";
-      this.password = encryptByDES(this.password, key);
       console.log(md5(this.password));
+      let key = "*chang_hong_device_cloud";
+      let a = this.password;
+      this.password = this.encryptByDES(a, key);
+      console.log(this.password);
       let qs = require("qs");
       let data = qs.stringify({
         phone: this.userName,
@@ -170,20 +186,22 @@ export default {
           console.log(this.userName);
         });
     },
-    register(){
+    register() {
       let qs = require("qs");
       let data = qs.stringify({
-        name : this.company.name,
+        name: this.company.name,
         address: this.company.address,
-        enterprisePhone : this.company.phone,
-
+        enterprisePhone: this.company.phone
       });
-      axios.post("/api/enterprise/add").then(result =>{
-        console.log("注册成功");
-      }).catch(err =>{
-        console.log(err)
-        console.log("注册失败");
-      });
+      axios
+        .post("/api/enterprise/add")
+        .then(result => {
+          console.log("注册成功");
+        })
+        .catch(err => {
+          console.log(err);
+          console.log("注册失败");
+        });
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -218,7 +236,7 @@ export default {
       size: "5"
     });
     axios
-      .get("/api/user/all",data)
+      .get("/api/user/all", data)
       .then(response => {
         console.log(response.data);
       })

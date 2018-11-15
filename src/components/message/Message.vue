@@ -3,6 +3,7 @@
     <div class="userCase">
       <div class="top">
 
+
         <el-button size="small" @click="deleteMessage">删除</el-button>
         <el-button size="small" @click="allNotReadMsg">未读消息</el-button>
         <el-button size="small" @click="allMsg">所有消息</el-button>
@@ -18,6 +19,7 @@
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:20px">
             <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize"
                           :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+
           </div>
         </div>
       </div>
@@ -25,6 +27,7 @@
   </div>
 </template>
 <script>
+
 
   export default {
     data() {
@@ -129,6 +132,7 @@
         ]
       }
     },
+
     methods: {
       selectGroupChange(selection) {
         this.ids = "";
@@ -254,6 +258,7 @@
         };
         //执行修改阅读状态函数
 
+
       },
       allNotReadMsg() {
         //查询该用户所有未读消息
@@ -302,6 +307,7 @@
           });
       }
     },
+
     created() {
       //查询当前用户所有消息
       this.allMsg();
@@ -352,6 +358,8 @@
         min-height: 500px;
         border-radius: 5px;
       }
+
+   
     }
   }
 </style>

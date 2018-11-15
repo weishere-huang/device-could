@@ -1,4 +1,5 @@
 <template>
+
     <div class="organization">
         <div class="content">
             <div class="left">
@@ -44,13 +45,20 @@
             </div>
         </div>
 
+
     </div>
+    <add v-show="add"></add>
+    <revise v-show="revise1"></revise>
+  </div>
 </template>
 <script>
+import add from "./Add";
+import revise from "./Revise";
 export default {
   name: "",
   data() {
     return {
+
       sss: "1",
       name: [1, 2, 3, 4, 5, 6, 7, 8],
       organizeType: [1, 2, 3, 4, 5, 6, 7, 8],
@@ -153,12 +161,13 @@ export default {
         });
     }
 
+
   },
   mounted() {
     let li = document.querySelectorAll(".left li");
     for (let i = 0; i < li.length; i++) {
       li[i].onmouseover = function(event) {
-        console.log("ok");
+        // console.log("ok");
         document.querySelectorAll(".content li span")[i].style.opacity = 1;
         event.stopPropagation();
       };
@@ -184,6 +193,11 @@ export default {
 @border: 1px solid #dde2eb;
 .organization {
   padding-left: 180px;
+  add {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
   .content {
     padding: 10px;
     overflow: hidden;
