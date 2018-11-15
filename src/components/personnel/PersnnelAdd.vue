@@ -121,7 +121,7 @@
             </li>
             <li>
               <label for="" style="letter-spacing: 8px;">照片：</label>
-              <el-input type="text" size="small" placeholder="1寸照片电子版" style="width:40%"></el-input>
+              <el-input type="text" size="small" placeholder="1寸照片电子版" style="width:30%"></el-input>
               <el-button size="small">点击上传</el-button>
             </li>
             <li>
