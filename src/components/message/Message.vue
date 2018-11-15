@@ -338,9 +338,6 @@
       //按照数组删除数据
       this.deleteMessage();
     }
-
-
-
   };
 </script>
 
