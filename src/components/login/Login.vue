@@ -70,6 +70,10 @@
             <el-input size="small" v-model="manager.userName"></el-input>
           </li>
           <li>
+            <label for="">密码：</label>
+            <el-input size="small" v-model="manager.userPassword"></el-input>
+          </li>
+          <li>
             <label for="">手机号：</label>
             <el-input size="small" v-model="manager.phone"></el-input>
           </li>
@@ -134,12 +138,12 @@ export default {
         address: "",
         phone: "",
         corporation: "",
-        companyID: "",
-        businessLicenseImg: ""
+        companyID: ""
       },
       manager: {
         userName: "",
-        password: "",
+        userPassword: "",
+        // password: "",
         phone: "",
         validate: ""
       },
@@ -153,7 +157,7 @@ export default {
     login() {
       this.password = md5(this.password);
       let key = "*chang_hong_device_cloud";
-      this.password = encryptByDES(this.password, key);``
+      this.password = encryptByDES(this.password, key);
       console.log(md5(this.password));
       let qs = require("qs");
       let data = qs.stringify({
@@ -163,7 +167,7 @@ export default {
       axios
         .post("/api/user/login", data)
         .then(result => {
-          console.log(result.data);
+          console.log(result);
         })
         .catch(err => {
           console.log(err);
@@ -175,15 +179,10 @@ export default {
       let data = qs.stringify({
         name : this.company.name,
         address: this.company.address,
-        enterprisePhone: this.company.phone,
-        corporation: this.company.corporation,
-        creditCode: this.company.companyID,
-        businessLicenseImg: this.company.businessLicenseImg,
-        userName: this.manager.userName,
-        passWord: this.manager.password,
-        phone:  this.manager.phone
+        enterprisePhone : this.company.phone,
+
       });
-      axios.post("/api/enterprise/add", data).then(result =>{
+      axios.post("/api/enterprise/add").then(result =>{
         console.log("注册成功");
       }).catch(err =>{
         console.log(err)

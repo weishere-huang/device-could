@@ -12,7 +12,7 @@
         <el-aside width="180px" style="background-color: rgb(238, 241, 246)">
           <el-menu :default-openeds="['1', '1']" :router=true :default-active="$route.name" style="background-color:rgb(238, 241, 246);">
             <el-submenu index="/Home">
-              <template slot="title"><i class="el-icon-message"></i>默认工作台</template>
+              <template slot="title"><i class="el-icon-message" index="/Home"></i>默认工作台</template>
               <!-- <el-menu-item index="/Home">选项1</el-menu-item>
               <el-menu-item index="/Home">选项2</el-menu-item>
               <el-menu-item index="/Home">选项3</el-menu-item> -->
@@ -44,7 +44,7 @@
             <el-submenu index="/Organization">
               <template slot="title"><i class="el-icon-setting"></i>组织机构</template>
               <el-menu-item index="/Organization">选项1</el-menu-item>
-              <el-menu-item index="/Organization">选项2</el-menu-item>
+              <el-menu-item index="/Add">添加</el-menu-item>
               <el-menu-item index="/Organization">选项3</el-menu-item>
             </el-submenu>
             <el-submenu index="/Personnel">
@@ -82,6 +82,12 @@
               <el-menu-item index="/Message">选项1</el-menu-item>
               <el-menu-item index="/Message">选项2</el-menu-item>
               <el-menu-item index="/Message">选项3</el-menu-item>
+            </el-submenu>
+            <el-submenu index="/RoleManagement">
+              <template slot="title"><i class="el-icon-setting"></i>角色管理</template>
+              <el-menu-item index="/RoleManagement">选项1</el-menu-item>
+              <el-menu-item index="/RoleManagement">选项2</el-menu-item>
+              <el-menu-item index="/RoleManagement">选项3</el-menu-item>
             </el-submenu>
             <el-submenu index="/System">
               <template slot="title"><i class="el-icon-setting"></i>系统管理</template>

@@ -9,6 +9,7 @@ import Equipment from '@/components/equipment/Equipment'
 import Operation from '@/components/operation/Operation'
 import TurnaroundPlans from '@/components/operation/TurnaroundPlans'
 import Organization from '@/components/organization/Organization'
+import Add from '@/components/organization/Add'
 import Personnel from '@/components/personnel/Personnel'
 import PersnnelAdd from '@/components/personnel/PersnnelAdd'
 import User from '@/components/user/User'
@@ -17,6 +18,7 @@ import WorkOrder from '@/components/workOrder/WorkOrder'
 import KnowledgeBase from '@/components/knowledgeBase/KnowledgeBase'
 import Message from '@/components/message/Message'
 import System from '@/components/system/System'
+import RoleManagement from '@/components/roleManagement/RoleManagement'
 Vue.use(Router)
 
 export default new Router({
@@ -71,6 +73,11 @@ export default new Router({
       component: Organization
     },
     {
+      path: '/Add',
+      name: 'Add',
+      component: Add
+    },
+    {
       path: '/Personnel',
       name: 'Personnel',
       component: Personnel
@@ -104,6 +111,11 @@ export default new Router({
       path: '/Message',
       name: 'Message',
       component: Message
+    },
+    {
+      path: '/RoleManagement',
+      name: 'RoleManagement',
+      component: RoleManagement
     },
     {
       path: '/System',
