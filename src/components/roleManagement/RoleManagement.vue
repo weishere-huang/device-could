@@ -37,8 +37,8 @@
             </span>
           </div>
           <div class="slist">
-            <el-checkbox-group v-model="system.checkedCities" @change="handleCheckedCitiesChange">
-              <el-checkbox v-for="item in system.cities" :label="item" :key="item">{{item}}</el-checkbox>
+            <el-checkbox-group v-model="system.checkedSystem" @change="handleCheckedCitiesChange">
+              <el-checkbox v-for="item in system.systemList" :label="item" :key="item">{{item}}</el-checkbox>
             </el-checkbox-group>
           </div>
         </div>
@@ -54,8 +54,8 @@ export default {
         sShow: true,
         sHide: false,
         checkAll: false,
-        checkedCities: ["系统参数设置", "工作台管理"],
-        cities: [
+        checkedSystem: ["系统参数设置", "工作台管理"],
+        systemList: [
           "系统参数设置",
           "工作台管理",
           "数据备份",
@@ -71,14 +71,14 @@ export default {
   },
   methods: {
     handleCheckAllChange(val) {
-      this.system.checkedCities = val ? this.system.cities : [];
+      this.system.checkedSystem = val ? this.system.systemList : [];
       this.system.isIndeterminate = false;
     },
     handleCheckedCitiesChange(value) {
       let checkedCount = value.length;
-      this.system.checkAll = checkedCount === this.system.cities.length;
+      this.system.checkAll = checkedCount === this.system.systemList.length;
       this.system.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.system.cities.length;
+        checkedCount > 0 && checkedCount < this.system.systemList.length;
     },
     isShow() {
       console.log("ok");
@@ -151,7 +151,7 @@ export default {
       .roleName {
         height: 100px;
         line-height: 100px;
-        padding-left: 80px;
+        padding-left: 10px;
         position: relative;
         h6 {
           position: absolute;
