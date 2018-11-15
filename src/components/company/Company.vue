@@ -126,7 +126,8 @@
         this.pageIndex = pageIndex;
         this.getTableData();
         console.log(pageIndex);
-        this.load()
+        this.load();
+        console.log(response.data.data.content)
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
@@ -161,7 +162,7 @@
           .then(response => {
             console.log(response.data);
             this.tableData = response.data.data.content;
-            this.tableDate = response.data.data.comtent;
+            this.tableDate = response.data.data.content;
 
           }).catch(function (error) {
           console.log(error);

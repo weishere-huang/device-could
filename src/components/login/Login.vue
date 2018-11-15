@@ -88,7 +88,7 @@
           <li>
             <el-button type="primary" size="small" round class="registerBtn" v-on:click="function(){nextshow=!nextshow
            backshow=!backshow}">上一步</el-button>
-            <el-button type="primary" size="small" round class="registerBtn">注册</el-button>
+            <el-button type="primary" size="small" round class="registerBtn" v-on:click="register">注册</el-button>
           </li>
         </ul>
       </div>
@@ -161,6 +161,7 @@ export default {
       console.log(md5(this.password));
       let qs = require("qs");
       let data = qs.stringify({
+
         phone: this.userName,
         passWord: this.password
       });
@@ -175,15 +176,25 @@ export default {
         });
     },
     register(){
+      this.manager.userPassword = md5(this.manager.userPassword);
+      let key = "*chang_hong_device_cloud";
+      this.manager.userPassword = encryptByDES(this.manager.userPassword)
       let qs = require("qs");
       let data = qs.stringify({
-        name : this.company.name,
-        address: this.company.address,
+        enterpriseName : this.company.name,
+        enterpriseAddress: this.company.address,
         enterprisePhone : this.company.phone,
+        legalPerson: this.company.corporation,
+        creditCode:this.company.companyID,
+        businessLicenseImg:"img",
+        userName:this.manager.userName,
+        password:this.manager.userPassword,
+        phone:this.manager.phone,
 
       });
-      axios.post("/api/enterprise/add").then(result =>{
-        console.log("注册成功");
+      axios.post("/api/enterprise/add" , data).then(result =>{
+        console.log(result);
+
       }).catch(err =>{
         console.log(err)
         console.log("注册失败");
