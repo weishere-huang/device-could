@@ -9,7 +9,9 @@
         <div class="search">
           <el-input type="search" placeholder="根据企业名称" size="small"></el-input>
           <el-button size="small">搜索</el-button>
+          <span style="color:#409eff">高级搜索</span>
         </div>
+        
       </div>
       <div class="bottom">
         <div>
@@ -164,9 +166,14 @@ export default {
       padding-left: 10px;
       .search {
         float: right;
+        overflow: hidden;
         width: 40%;
         .el-input {
-          width: 80%;
+          width: 60%;
+        }
+        span{
+          font-size: 12px;
+          cursor: pointer;
         }
       }
     }
