@@ -18,37 +18,184 @@
   </div>
 </template>
 <script>
-
-  export default {
-    data() {
-      return {
-        pageIndex: 1,
-        pageSize: 20,
-        userId: 10,
-        tableData: [
-          {
-            name: "111",
-            tel: "222",
-            address: "3333",
-            hobby: "4444"
-          },
-          {
-            name: "111",
-            tel: "222",
-            address: "3333",
-            hobby: "4444"
-          },
-          {
-            name: "111",
-            tel: "222",
-            address: "3333",
-            hobby: "4444"
-          },
-          {
-            name: "111",
-            tel: "222",
-            address: "3333",
-            hobby: "4444"
+export default {
+  data() {
+    return {
+      pageIndex: 1,
+      pageSize: 20,
+      userId: 10,
+      tableData: [
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        }
+      ],
+      tableDate: [],
+      columns: [
+        {
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          type: "selection"
+        }],
+        
+      tableData: [
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        }
+      ],
+      tableDate: [],
+      columns: [
+        {
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          type: "selection"
+        },
+        {
+          field: "name",
+          title: "序号",
+          width: 60,
+          titleAlign: "center",
+          columnAlign: "center",
+        //   isResize: true
+        },
+        {
+          field: "id",
+          title: "序号",
+          width: 60,
+          titleAlign: "center",
+          columnAlign: "center",
+        //   isResize: true
+        },
+        {
+          title: "信息标题",
+          width: 150,
+          titleAlign: "center",
+          columnAlign: "left",
+        //   isResize: true
+          //   orderBy: ""
+        },
+        {
+          field: "address",
+          field: "msgContent",
+          title: "信息内容",
+          width: 150,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "msgType",
+          title: "消息类型",
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "isRead",
+          title: "是否阅读",
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "msgState",
+          title: "消息状态",
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "gmtCreate",
+          title: "创建时间",
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        }
+      ]
+    };
+  },
+  methods: {
+    selectGroupChange(selection) {
+      console.log("select-group-change", selection);
+    },
+    selectALL(selection) {
+      console.log("select-aLL", selection);
+    },
+    selectChange(selection, rowData) {
+      console.log("select-change", selection, rowData);
+    },
+    getTableData() {
+      this.tableData = this.tableDate.slice(
+        (this.pageIndex - 1) * this.pageSize,
+        this.pageIndex * this.pageSize
+      );
+    },
+    pageChange(pageIndex) {
+      this.pageIndex = pageIndex;
+      this.getTableData();
+      console.log(pageIndex);
+    },
+    pageSizeChange(pageSize) {
+      this.pageIndex = 1;
+      this.pageSize = pageSize;
+      this.getTableData();
+    },
+    sortChange(params) {
+      if (params.height.length > 0) {
+        this.tableConfig.tableData.sort(function(a, b) {
+          if (params.height === "asc") {
+            return a.height - b.height;
+          } else if (params.height === "desc") {
+            return b.height - a.height;
+          } else {
+            return 0;
           }
         ],
         tableDate: [],
@@ -342,37 +489,28 @@
 </script>
 
 <style lang="less" scoped>
-  @blue: #409eff;
-  @Success: #67c23a;
-  @Warning: #e6a23c;
-  @Danger: #f56c6c;
-  @Info: #dde2eb;
-  .message {
-    padding-left: 180px;
-    .userCase {
-      width: 100%;
-      padding: 10px;
-      .top {
-        height: 60px;
-        line-height: 60px;
-        border: 1px solid @Info;
-        border-radius: 5px;
-        padding-left: 10px;
-        .search {
-          float: right;
-          width: 40%;
-          .el-input {
-            width: 80%;
-          }
+@blue: #409eff;
+@Success: #67c23a;
+@Warning: #e6a23c;
+@Danger: #f56c6c;
+@Info: #dde2eb;
+.message {
+  padding-left: 180px;
+  .userCase {
+    width: 100%;
+    padding: 10px;
+    .top {
+      height: 60px;
+      line-height: 60px;
+      border: 1px solid @Info;
+      border-radius: 5px;
+      padding-left: 10px;
+      .search {
+        float: right;
+        width: 40%;
+        .el-input {
+          width: 80%;
         }
-      }
-      .bottom {
-        padding: 10px;
-        font-size: 12px;
-        border: 1px solid @Info;
-        margin-top: 10px;
-        min-height: 500px;
-        border-radius: 5px;
       }
     }
   }
