@@ -70,6 +70,10 @@
             <el-input size="small" v-model="manager.userName"></el-input>
           </li>
           <li>
+            <label for="">密码：</label>
+            <el-input size="small" v-model="manager.userPassword"></el-input>
+          </li>
+          <li>
             <label for="">手机号：</label>
             <el-input size="small" v-model="manager.phone"></el-input>
           </li>
@@ -139,7 +143,7 @@ export default {
       manager: {
         userName: "",
         userPassword: "",
-        password: "",
+        // password: "",
         phone: "",
         validate: ""
       },

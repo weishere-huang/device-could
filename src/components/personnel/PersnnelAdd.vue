@@ -1,139 +1,138 @@
 <template>
-    <div class="persnnel-add">
-        <div class="add-case">
-            <div class="topbtn">
-                <el-button size="small">返回</el-button>
-                <el-button size="small" @click="employeeAdd">保存</el-button>
-            </div>
-            <div class="botton">
-                <div class="essential">
-                    <p class="title">基本信息（必填）</p>
-                    <div class="left">
-                        <ul>
-                            <li>
-                                <label for=""><span style="letter-spacing: 10px;">姓名</span>：</label>
-                                <el-input type="text" size="small" v-model="persnneladd.name"></el-input>
-                            </li>
-                            <li>
-                                <label for=""><span style="letter-spacing: 10px;">性别</span>：</label>
-                                <span style="display: inline-block;width:70%;text-align: left;">
-                                    <el-radio v-model="persnneladd.gender" label="男">男</el-radio>
-                                    <el-radio v-model="persnneladd.gender" label="女">女</el-radio>
-                                </span>
-                            </li>
-                            <li>
-                                <label for="">员工编号：</label>
-                                <el-input type="text" size="small" v-model="persnneladd.employeeNo"></el-input>
-                            </li>
-                            <li>
-                                <label for="">手机号码：</label>
-                                <el-input type="text" size="small" v-model="persnneladd.phone"></el-input>
-                            </li>
-                            <li>
-                                <label for="">组织单位：</label>
-                                <el-select v-model="persnneladd.organizationName" placeholder="请选择" size="small" style="width:70%">
-                                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                                    </el-option>
+  <div class="persnnel-add">
+    <div class="add-case">
+      <div class="topbtn">
+        <el-button size="small">返回</el-button>
+        <el-button size="small" @click="employeeAdd">保存</el-button>
+      </div>
+      <div class="botton">
+        <div class="essential">
+          <p class="title">基本信息（必填）</p>
+          <div class="left">
+            <ul>
+              <li>
+                <label for=""><span style="letter-spacing: 10px;">姓名</span>：</label>
+                <el-input type="text" size="small" v-model="persnneladd.name"></el-input>
+              </li>
+              <li>
+                <label for=""><span style="letter-spacing: 10px;">性别</span>：</label>
+                <span style="display: inline-block;width:70%;text-align: left;">
+                  <el-radio v-model="persnneladd.gender" label="男">男</el-radio>
+                  <el-radio v-model="persnneladd.gender" label="女">女</el-radio>
+                </span>
+              </li>
+              <li>
+                <label for="">员工编号：</label>
+                <el-input type="text" size="small" v-model="persnneladd.employeeNo"></el-input>
+              </li>
+              <li>
+                <label for="">手机号码：</label>
+                <el-input type="text" size="small" v-model="persnneladd.phone"></el-input>
+              </li>
+              <li>
+                <label for="">组织单位：</label>
+                <el-select v-model="persnneladd.organizationName" placeholder="请选择" size="small" style="width:70%">
+                  <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
 
-                                </el-select>
-                            </li>
-                            <li>
-                                <label for="">入职时间：</label>
-                                <el-input type="date" size="small" v-model="persnneladd.entryTime"></el-input>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="right">
-                        <ul>
-                            <li>
-                                <label for="">身份证：</label>
-                                <el-input type="text" size="small" v-model="persnneladd.idCardNo"></el-input>
-                            </li>
-                            <li>
-                                <label for="">出生日期：</label>
-                                <el-input type="date" size="small" v-model="persnneladd.birthday"></el-input>
-                            </li>
-                            <li>
-                                <label for="">岗位：</label>
-                                <el-input type="text" size="small" v-model="persnneladd.position"></el-input>
-                            </li>
-                            <li>
-                                <label for="">婚姻状况：</label>
-                                <span style="display: inline-block;width:70%;text-align: left;">
-                                    <el-radio v-model="persnneladd.marital" label="已婚">已婚</el-radio>
-                                    <el-radio v-model="persnneladd.marital" label="未婚">未婚</el-radio>
-                                </span>
-                            </li>
-                          <li>
-                            <label for="">角色权限：</label>
-                            <el-select v-model="persnneladd.roleId" placeholder="请选择" size="small" style="width:70%">
-                              <el-option v-for="item in role" :key="item.value" :label="item.name" :value="item.id">
-                              </el-option>
-                            </el-select>
-                          </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="more-msg">
-                    <p class="title">更多信息（选填）</p>
-                    <ul>
-                        <li>
-                            <span>
-                                <label for="">工作年限：</label>
-                                <el-input type="text" size="small" style="width:80px" v-model="persnneladd.workingYears"></el-input>
-                                年
-                            </span>
-                            <span style="display:inline-block;float:right;padding-right:100px">
-                                <label for="">身高：</label>
-                                <el-input type="text" size="small" style="width:80px" v-model="persnneladd.height"></el-input>
-                                CM
-                            </span>
-                        </li>
-                        <li>
-                            <span>
-                                <label for="" style="letter-spacing:8px;">籍贯：</label>
-                                <el-input type="text" size="small" style="width:250px" v-model="persnneladd.nativePlace"></el-input>
+                </el-select>
+              </li>
+              <li>
+                <label for="">入职时间：</label>
+                <el-input type="date" size="small" v-model="persnneladd.entryTime"></el-input>
+              </li>
+            </ul>
+          </div>
+          <div class="right">
+            <ul>
+              <li>
+                <label for="">身份证：</label>
+                <el-input type="text" size="small" v-model="persnneladd.idCardNo"></el-input>
+              </li>
+              <li>
+                <label for="">角色权限：</label>
+                <el-select v-model="persnneladd.roleId" placeholder="请选择" size="small" style="width:70%">
+                  <el-option v-for="item in role" :key="item.value" :label="item.name" :value="item.id">
+                  </el-option>
+                </el-select>
+              </li>
+              <li>
+                <label for="">出生日期：</label>
+                <el-input type="date" size="small" v-model="persnneladd.birthday"></el-input>
+              </li>
+              <li>
+                <label for="">岗位：</label>
+                <el-input type="text" size="small" v-model="persnneladd.position"></el-input>
+              </li>
+              <li>
+                <label for="">婚姻状况：</label>
+                <span style="display: inline-block;width:70%;text-align: left;">
+                  <el-radio v-model="persnneladd.marital" label="已婚">已婚</el-radio>
+                  <el-radio v-model="persnneladd.marital" label="未婚">未婚</el-radio>
+                </span>
+              </li>
 
-                            </span>
-                            <span style="display:inline-block;float:right;padding-right:102px">
-                                <label for="">国籍：</label>
-                                <el-input type="text" size="small" style="width:100px" v-model="persnneladd.nationality"></el-input>
-                            </span>
-                        </li>
-                        <li>
-                            <label for="">电子邮箱：</label>
-                            <el-input type="email" size="small" style="width:300px" v-model="persnneladd.email"></el-input>
-                        </li>
-                        <li>
-                            <label for="">通讯地址：</label>
-                            <el-input type="email" size="small" style="width:300px" v-model="persnneladd.postalAddress"></el-input>
-                        </li>
-                        <li>
-                            <span>
-                                <label for="">毕业学校：</label>
-                                <el-input type="text" size="small" style="width:200px" v-model="persnneladd.graduateSchool"></el-input>
-
-                            </span>
-                            <span style="display:inline-block;float:right;padding-right:100px">
-                                <label for="">最高学历：</label>
-                                <el-input type="text" size="small" style="width:80px" v-model="persnneladd.degree"></el-input>
-                            </span>
-                        </li>
-                        <li>
-                            <label for="" style="letter-spacing: 8px;">照片：</label>
-                            <el-input type="text" size="small" placeholder="1寸照片电子版" style="width:50%"></el-input>
-                            <el-button size="small">点击上传</el-button>
-                        </li>
-                        <li>
-                            <label for="" style="letter-spacing: 8px;">资质：</label>
-                            <el-button size="small" @click="open6()">点击上传</el-button>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
+            </ul>
+          </div>
         </div>
+        <div class="more-msg">
+          <p class="title">更多信息（选填）</p>
+          <ul>
+            <li>
+              <span>
+                <label for="">工作年限：</label>
+                <el-input type="text" size="small" style="width:80px" v-model="persnneladd.workingYears"></el-input>
+                年
+              </span>
+              <span style="display:inline-block;float:right;padding-right:100px">
+                <label for="">身高：</label>
+                <el-input type="text" size="small" style="width:80px" v-model="persnneladd.height"></el-input>
+                CM
+              </span>
+            </li>
+            <li>
+              <span>
+                <label for="" style="letter-spacing:8px;">籍贯：</label>
+                <el-input type="text" size="small" style="width:250px" v-model="persnneladd.nativePlace"></el-input>
+
+              </span>
+              <span style="display:inline-block;float:right;padding-right:102px">
+                <label for="">国籍：</label>
+                <el-input type="text" size="small" style="width:100px" v-model="persnneladd.nationality"></el-input>
+              </span>
+            </li>
+            <li>
+              <label for="">电子邮箱：</label>
+              <el-input type="email" size="small" style="width:300px" v-model="persnneladd.email"></el-input>
+            </li>
+            <li>
+              <label for="">通讯地址：</label>
+              <el-input type="email" size="small" style="width:300px" v-model="persnneladd.postalAddress"></el-input>
+            </li>
+            <li>
+              <span>
+                <label for="">毕业学校：</label>
+                <el-input type="text" size="small" style="width:200px" v-model="persnneladd.graduateSchool"></el-input>
+              </span>
+              <span style="display:inline-block;float:right;padding-right:100px">
+                <label for="">最高学历：</label>
+                <el-input type="text" size="small" style="width:80px" v-model="persnneladd.degree"></el-input>
+              </span>
+            </li>
+            <li>
+              <label for="" style="letter-spacing: 8px;">照片：</label>
+              <el-input type="text" size="small" placeholder="1寸照片电子版" style="width:50%"></el-input>
+              <el-button size="small">点击上传</el-button>
+            </li>
+            <li>
+              <label for="" style="letter-spacing: 8px;">资质：</label>
+              <el-button size="small" @click="open6()">点击上传</el-button>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 <script>
 export default {
@@ -151,7 +150,7 @@ export default {
         position: "",
         entryTime: "",
         marital: "",
-        roleId:"",
+        roleId: "",
         workingYears: "",
         height: "",
         nativePlace: "",
@@ -180,17 +179,17 @@ export default {
           label: "长虹电子系统有限公司"
         }
       ],
-      role:[]
+      role: []
     };
   },
   methods: {
-    employeeAdd(){
+    employeeAdd() {
       let qs = require("qs");
       let data = qs.stringify(this.persnneladd);
       axios
         .post("/api/employee/add", data)
         .then(response => {
-          console.log(response.data.data.content)
+          console.log(response.data.data.content);
         })
         .catch(function(error) {
           console.log(error);
@@ -222,7 +221,7 @@ export default {
         });
     }
   },
-  created(){
+  created() {
     axios
       .get("/api/role/listAllRole")
       .then(response => {
@@ -290,7 +289,7 @@ export default {
           width: 45%;
           text-align: right;
           float: left;
-          padding-top: 120px;
+          padding-top: 60px;
           padding-left: 20px;
           //   border: 1px solid red;
 
