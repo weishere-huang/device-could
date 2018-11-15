@@ -17,8 +17,8 @@
               <li>
                 <label for=""><span style="letter-spacing: 10px;">性别</span>：</label>
                 <span style="display: inline-block;width:70%;text-align: left;">
-                  <el-radio v-model="persnneladd.gender" label="男">男</el-radio>
-                  <el-radio v-model="persnneladd.gender" label="女">女</el-radio>
+                  <el-radio v-model="persnneladd.gender" label="1">男</el-radio>
+                  <el-radio v-model="persnneladd.gender" label="0">女</el-radio>
                 </span>
               </li>
               <li>
@@ -67,8 +67,8 @@
               <li>
                 <label for="">婚姻状况：</label>
                 <span style="display: inline-block;width:70%;text-align: left;">
-                  <el-radio v-model="persnneladd.marital" label="已婚">已婚</el-radio>
-                  <el-radio v-model="persnneladd.marital" label="未婚">未婚</el-radio>
+                  <el-radio v-model="persnneladd.marital" label="1">已婚</el-radio>
+                  <el-radio v-model="persnneladd.marital" label="0">未婚</el-radio>
                 </span>
               </li>
 
@@ -121,7 +121,7 @@
             </li>
             <li>
               <label for="" style="letter-spacing: 8px;">照片：</label>
-              <el-input type="text" size="small" placeholder="1寸照片电子版" style="width:40%"></el-input>
+              <el-input type="text" size="small" placeholder="1寸照片电子版" style="width:30%"></el-input>
               <el-button size="small">点击上传</el-button>
             </li>
             <li>
@@ -135,147 +135,199 @@
   </div>
 </template>
 <script>
-export default {
-  name: "",
-  data() {
-    return {
-      persnneladd: {
-        name: "",
-        gender: "",
-        employeeNo: "",
-        idCardNo: "",
-        phone: "",
-        birthday: "",
-        organizationName: "",
-        position: "",
-        entryTime: "",
-        marital: "",
-        roleId: "",
-        workingYears: "",
-        height: "",
-        nativePlace: "",
-        nationality: "",
-        postalAddress: "",
-        email: "",
-        graduateSchool: "",
-        degree: "",
-        img: ""
+  export default {
+    name: "",
+    data() {
+      return {
+        nameAndImg:[{name:"", img:""}],
+        persnneladd: {
+          employeeNo: "",
+          name: "",
+          gender: "",
+          birthday: "",
+          phone: "",
+          position: "",
+          organizeCode:"",
+          organizationName: "",
+          enterpriseId:"",
+          workType:"",
+          entryTime: "",
+          email: "",
+          marital: "",
+          idCardNo: "",
+          workingYears: "",
+          height: "",
+          nativePlace: "",
+          nationality: "",
+          postalAddress: "",
+          graduateSchool: "",
+          degree: "",
+          img: "",
+          qualificationInfo:"",
+          roleId: ""
+        },
+        options: [
+          {
+            value: "四川长虹电器有限公司",
+            label: "四川长虹电器有限公司"
+          },
+          {
+            value: "四川长虹智能制造有限公司",
+            label: "四川长虹智能制造有限公司"
+          },
+          {
+            value: "长虹网络科技有限公司",
+            label: "长虹网络科技有限公司"
+          },
+          {
+            value: "长虹电子系统有限公司",
+            label: "长虹电子系统有限公司"
+          }
+        ],
+        role: []
+      };
+    },
+    methods: {
+      employeeAdd() {
+        this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
+        this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
+        let qs = require("qs");
+        let data = qs.stringify(this.persnneladd);
+        axios
+          .post("/api/employee/add", data)
+          .then(response => {
+            console.log(response.data);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       },
-      options: [
-        {
-          value: "四川长虹电器有限公司",
-          label: "四川长虹电器有限公司"
-        },
-        {
-          value: "四川长虹智能制造有限公司",
-          label: "四川长虹智能制造有限公司"
-        },
-        {
-          value: "长虹网络科技有限公司",
-          label: "长虹网络科技有限公司"
-        },
-        {
-          value: "长虹电子系统有限公司",
-          label: "长虹电子系统有限公司"
-        }
-      ],
-      role: []
-    };
-  },
-  methods: {
-    employeeAdd() {
-      let qs = require("qs");
-      let data = qs.stringify(this.persnneladd);
+      open6() {
+        let str = `<div>
+            <input type="text">文件名
+            <input type="file":v-model="persnneladd.img">
+        </div>`;
+        this.$confirm(str, "确认信息", {
+          distinguishCancelAndClose: true,
+          confirmButtonText: "保存",
+          cancelButtonText: "放弃修改",
+          dangerouslyUseHTMLString: true
+        })
+
+          .then(() => {
+            this.$message({
+              type: "info",
+              message: "保存修改"
+            });
+          })
+          .catch(action => {
+            this.$message({
+              type: "info",
+              message:
+                action === "cancel" ? "放弃保存并离开页面" : "停留在当前页面"
+            });
+          });
+        console.log(this.persnneladd.organizationName);
+      }
+    },
+    created() {
       axios
-        .post("/api/employee/add", data)
+        .get("/api/role/listAllRole")
         .then(response => {
-          console.log(response.data.data.content);
+          this.role = response.data.data;
         })
         .catch(function(error) {
           console.log(error);
         });
-    },
-    open6() {
-      let str = `<div>
-            <input type="text">文件名
-            <input type="file" :v-model="persnneladd.img">
-        </div>`;
-      this.$confirm(str, "确认信息", {
-        distinguishCancelAndClose: true,
-        confirmButtonText: "保存",
-        cancelButtonText: "放弃修改",
-        dangerouslyUseHTMLString: true
-      })
-        .then(() => {
-          this.$message({
-            type: "info",
-            message: "保存修改"
-          });
-        })
-        .catch(action => {
-          this.$message({
-            type: "info",
-            message:
-              action === "cancel" ? "放弃保存并离开页面" : "停留在当前页面"
-          });
-        });
     }
-  },
-  created() {
-    axios
-      .get("/api/role/listAllRole")
-      .then(response => {
-        this.role = response.data.data;
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  }
-};
+  };
 </script>
 
 <style lang="less" scoped>
-@blue: #409eff;
-@Success: #67c23a;
-@Warning: #e6a23c;
-@Danger: #f56c6c;
-@Info: #dde2eb;
-.persnnel-add {
-  padding-left: 180px;
-  .add-case {
-    padding: 10px;
-    .topbtn {
-      padding-left: 10px;
-      height: 60px;
-      line-height: 60px;
-      //   border: 1px solid @Info;
-      border-radius: 5px;
-    }
-    .botton {
-      font-size: 12px;
-      margin-top: 10px;
-      //   border: 1px solid @Info;
-      border-radius: 5px;
-      padding: 10px 0 0 10px;
-      position: relative;
-      .essential {
-        width: 600px;
-        border: 1px solid @Info;
+  @blue: #409eff;
+  @Success: #67c23a;
+  @Warning: #e6a23c;
+  @Danger: #f56c6c;
+  @Info: #dde2eb;
+  .persnnel-add {
+    padding-left: 180px;
+    .add-case {
+      padding: 10px;
+      .topbtn {
+        padding-left: 10px;
+        height: 60px;
+        line-height: 60px;
+        //   border: 1px solid @Info;
         border-radius: 5px;
-        overflow: hidden;
-        .title {
-          display: inline-block;
-          width: 110px;
-          position: absolute;
-          text-align: center;
-          top: 0%;
-          left: 2.5%;
-          background-color: white;
+      }
+      .botton {
+        font-size: 12px;
+        margin-top: 10px;
+        //   border: 1px solid @Info;
+        border-radius: 5px;
+        padding: 10px 0 0 10px;
+        position: relative;
+        .essential {
+          width: 600px;
+          border: 1px solid @Info;
+          border-radius: 5px;
+          overflow: hidden;
+          .title {
+            display: inline-block;
+            width: 110px;
+            position: absolute;
+            text-align: center;
+            top: 0%;
+            left: 2.5%;
+            background-color: white;
+          }
+          .left {
+            width: 45%;
+            text-align: right;
+            float: left;
+            li {
+              list-style-type: none;
+              height: 60px;
+              line-height: 60px;
+              .el-input {
+                width: 70%;
+              }
+            }
+          }
+          .right {
+            width: 45%;
+            text-align: right;
+            float: left;
+            padding-top: 60px;
+            padding-left: 20px;
+            //   border: 1px solid red;
+
+            li {
+              list-style-type: none;
+              height: 60px;
+              line-height: 60px;
+            }
+            .el-input {
+              width: 70%;
+            }
+          }
         }
-        .left {
-          width: 45%;
-          text-align: right;
-          float: left;
+        .more-msg {
+          width: 600px;
+          border: 1px solid @Info;
+          border-radius: 5px;
+          overflow: hidden;
+          margin-top: 30px;
+          padding-left: 20px;
+          .title {
+            display: inline-block;
+            width: 110px;
+            text-align: center;
+            position: absolute;
+            top: 48%;
+            left: 2.5%;
+            background-color: white;
+          }
           li {
             list-style-type: none;
             height: 60px;
@@ -285,50 +337,7 @@ export default {
             }
           }
         }
-        .right {
-          width: 45%;
-          text-align: right;
-          float: left;
-          padding-top: 60px;
-          padding-left: 20px;
-          //   border: 1px solid red;
-
-          li {
-            list-style-type: none;
-            height: 60px;
-            line-height: 60px;
-          }
-          .el-input {
-            width: 70%;
-          }
-        }
-      }
-      .more-msg {
-        width: 600px;
-        border: 1px solid @Info;
-        border-radius: 5px;
-        overflow: hidden;
-        margin-top: 30px;
-        padding-left: 20px;
-        .title {
-          display: inline-block;
-          width: 110px;
-          text-align: center;
-          position: absolute;
-          top: 48%;
-          left: 2.5%;
-          background-color: white;
-        }
-        li {
-          list-style-type: none;
-          height: 60px;
-          line-height: 60px;
-          .el-input {
-            width: 70%;
-          }
-        }
       }
     }
   }
-}
 </style>

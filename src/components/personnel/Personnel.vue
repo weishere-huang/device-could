@@ -6,8 +6,8 @@
         <el-button size="small" @click="disable">启用</el-button>
         <el-button size="small" @click="enable">禁用</el-button>
         <div class="search">
-          <el-input type="search" placeholder="如员工编号，姓名，手机，部门，岗位" size="small"></el-input>
-          <el-button size="small" >搜索</el-button>
+          <el-input type="search" placeholder="如员工编号，姓名，手机，部门，岗位" size="small" v-model="searchs"></el-input>
+          <el-button size="small" @click="search">搜索</el-button>
         </div>
       </div>
       <div class="bottom">
@@ -25,6 +25,7 @@
   export default {
     data() {
       return {
+        searchs:"",
         pageIndex: 1,
         pageSize: 20,
         tableData: [],
@@ -106,7 +107,18 @@
       };
     },
     methods: {
-
+      search(){
+        axios
+          .get("/api/employee/search",{params:{condition:this.searchs}})
+          .then(response => {
+            this.tableData = response.data.data.content;
+            this.tableDate=response.data.data.content;
+            // console.log(response.data);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
       disable(){
         let qs = require("qs");
         let data = qs.stringify({
@@ -198,7 +210,7 @@
           .then(response => {
             this.tableData = response.data.data.content;
             this.tableDate=response.data.data.content;
-            console.log(response.data.data.content);
+            // console.log(response.data.data.content);
           })
           .catch(function(error) {
             console.log(error);
