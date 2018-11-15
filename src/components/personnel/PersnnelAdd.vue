@@ -63,7 +63,6 @@
                                     <el-radio v-model="persnneladd.marital" label="已婚">已婚</el-radio>
                                     <el-radio v-model="persnneladd.marital" label="未婚">未婚</el-radio>
                                 </span>
-
                             </li>
                         </ul>
                     </div>
@@ -127,7 +126,6 @@
 
             </div>
         </div>
-    </div>
     </div>
 </template>
 <script>
