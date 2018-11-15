@@ -136,6 +136,14 @@ export default {
         });
       }
     }
+  },
+  created() {
+    let qs = require("qs");
+    let data = qs.stringiify({
+      page: "0",
+      size: "10"
+    });
+    // axios.get
   }
 };
 </script>
