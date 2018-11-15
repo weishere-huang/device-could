@@ -4,7 +4,7 @@
             <div class="left">
                 <h5>企业名称</h5>
                 <ul>
-                    <li v-for="(item, index) in name1" :key="index">{{item}}
+                    <li v-for="(item, index) in name" :key="index">{{item}}
                         <span style="letter-spacing:2px;">
                             <i class="iconfont icon-jia"></i>
                             <i class="iconfont icon-xiewrite18"></i>
@@ -25,9 +25,9 @@
             <div class="center">
                 <h5>类型</h5>
                 <ul>
-                    <li v-for="(item, index) in name1" :key="index">{{item}}
+                    <li v-for="(item, index) in organizeType" :key="index">{{item}}
                         <ul v-if="sss!=''">
-                            <li style="border-top:1px solid #dde2eb;text-align=center;padding:0;"></li>
+                            <li style="border-top:1px solid #dde2eb;text-align : center;padding:0;"></li>
                         </ul>
                     </li>
                 </ul>
@@ -35,9 +35,9 @@
             <div class="right">
                 <h5>备注</h5>
                 <ul>
-                    <li v-for="(item, index) in name1" :key="index">{{item}}
+                    <li v-for="(item, index) in organizeInfo" :key="index">{{item}}
                         <ul v-if="sss!=''">
-                            <li style="border-top:1px solid #dde2eb;text-align=center;padding:0;"></li>
+                            <li style="border-top:1px solid #dde2eb;text-align : center;padding:0;"></li>
                         </ul>
                     </li>
                 </ul>
@@ -52,12 +52,108 @@ export default {
   data() {
     return {
       sss: "1",
-      name1: [1, 2, 3, 4, 5, 6, 7, 8],
-      type: [1, 2, 3, 4, 5, 6, 7, 8],
-      comment: [1, 2, 3, 4, 5, 6, 7, 8]
+      name: [1, 2, 3, 4, 5, 6, 7, 8],
+      organizeType: [1, 2, 3, 4, 5, 6, 7, 8],
+      organizeInfo: [1, 2, 3, 4, 5, 6, 7, 8]
     };
   },
-  methods: {},
+  methods: {
+    add(){
+      //添加组织机构
+      let qs = require("qs");
+      let data = qs.stringify({
+        ids:"1,2,3"
+      });
+      axios
+        .post("api/organize/add", data)
+        .then(result => {
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    },
+    update(){
+      //修改组织机构
+      let qs = require("qs");
+      let data = qs.stringify({
+        ids:"1,2,3"
+      });
+      axios
+        .post("api/organize/update", data)
+        .then(result => {
+          console.log(result.data);
+
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    },
+    delete(){
+      //修改组织机构
+      let qs = require("qs");
+      let data = qs.stringify({
+        ids:"1,2,3"
+      });
+      axios
+        .get("api/organize/delete"+this.organizeId, data)
+        .then(result => {
+          console.log(result.data);
+
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    },
+    allOrganize(){
+      //查询所有组织机构
+      let qs = require("qs");
+      let data = qs.stringify({
+        token:"321"
+      });
+      axios
+        .get("api/organize/allOrganize",data)
+        .then(result => {
+          alert("查询所有组织机构")
+          console.log(result.data);
+          this.name=result.data.name;
+          this.organizeType=result.data.organizeType;
+          this.organizeInfo=result.data.organizeInfo;
+          // "id": 328,
+          // "code": "1000001",
+          //   "parentCode": "1000",
+          //   "enterpriseId": 313,
+          //   "name": "工程与技术中心",
+          //   "organizeType": 1,
+          //   "organizeInfo": "暂无",
+          //   "gmtCreate": "2018-11-14T05:46:01.000+0000",
+          //   "gmtModified": "2018-11-14T05:46:01.000+0000",
+          //   "state": 1
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    },
+    findOneOrganize(){
+      //查询单个组织机构
+
+      axios
+        .get("api/organize/findOneOrganize"+this.organizeId)
+        .then(result => {
+          console.log(result.data);
+
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    }
+
+  },
   mounted() {
     let li = document.querySelectorAll(".left li");
     for (let i = 0; i < li.length; i++) {
@@ -72,7 +168,10 @@ export default {
       };
     }
   },
+  created(){
+    this.allOrganize();
 
+  }
 };
 </script>
 <style lang="less" scoped>
