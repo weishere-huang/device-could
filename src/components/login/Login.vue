@@ -183,7 +183,7 @@ export default {
         passWord: this.manager.password,
         phone:  this.manager.phone
       });
-      axios.post("/api/enterprise/add").then(result =>{
+      axios.post("/api/enterprise/add", data).then(result =>{
         console.log("注册成功");
       }).catch(err =>{
         console.log(err)

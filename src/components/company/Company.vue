@@ -29,7 +29,7 @@
   export default {
     data() {
       return {
-        pageIndex: 1,
+        pageIndex: 0,
         pageSize: 10,
         name:"",
         state:"",
@@ -126,6 +126,7 @@
         this.pageIndex = pageIndex;
         this.getTableData();
         console.log(pageIndex);
+        this.load()
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
@@ -154,16 +155,21 @@
           }).catch(function (error) {
           console.log(error);
         })
+      },
+      load(){
+        axios.get("/api/enterprise/all", {params:{page:this.pageIndex,size:this.pageSize}})
+          .then(response => {
+            console.log(response.data);
+            this.tableData = response.data.data.content;
+            this.tableDate = response.data.data.comtent;
+
+          }).catch(function (error) {
+          console.log(error);
+        })
       }
     },
     created() {
-      axios.get("/api/enterprise/all", {params:{page:0,size:10}})
-        .then(response => {
-          console.log(response);
-          this.tableData = response.data.data.content;
-        }).catch(function (error) {
-        console.log(error);
-      })
+      this.load()
     }
   }
 </script>
