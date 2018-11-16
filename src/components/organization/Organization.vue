@@ -1,5 +1,5 @@
 <template>
-
+<div>
     <div class="organization">
         <div class="content">
             <div class="left">

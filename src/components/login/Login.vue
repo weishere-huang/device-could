@@ -195,7 +195,7 @@ export default {
       console.log(this.manager.userPassword)
       let key = "*chang_hong_device_cloud";
       this.manager.userPassword = this.encryptByDES(this.manager.userPassword,key);
-      alert(this.encryptByDES(this.manager.userPassword,key))
+      alert(this.manager.userPassword)
       console.log(this.manager.userPassword)
       let qs = require("qs");
       let data = qs.stringify({
