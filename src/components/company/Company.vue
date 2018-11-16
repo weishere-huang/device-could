@@ -2,10 +2,10 @@
   <div class="company">
     <div class="userCase">
       <div class="top">
-        <el-button size="small">审核</el-button>
+        <el-button size="small" @click="auditblock">审核</el-button>
         <el-button size="small">启用</el-button>
         <el-button size="small">停用</el-button>
-        <el-button size="small">刷新</el-button>
+        <el-button size="small" @click="replace">刷新</el-button>
         <div class="search">
           <el-input type="search" placeholder="根据企业名称" size="small"></el-input>
           <el-button size="small">搜索</el-button>
@@ -15,7 +15,7 @@
       </div>
       <div class="bottom">
         <div>
-          <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" :select-all="selectALL" :select-group-change="selectGroupChange" :row-dblclick="aaaa" row-click-color="#edf7ff">
+          <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" :select-all="selectALL" :select-group-change="selectGroupChange" :row-dblclick="details" row-click-color="#edf7ff">
           </v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
             <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
@@ -24,13 +24,21 @@
       </div>
     </div>
     <advancedsearch class="adsearch"></advancedsearch>
+    <audit v-show="auditShow" v-on:auditByValue="auditByValue" :auditValue="auditValue"></audit>
+    <businessDetails v-show="detailsShow" v-on:childByValue="childByValue" :detailsValue="detailsValue"></businessDetails>
   </div>
 </template>
 <script>
 import advancedsearch from "./AdvancedSearch";
+import businessDetails from "./BusinessDetails";
+import audit from "./Audit";
 export default {
   data() {
     return {
+      detailsShow: false,
+      auditShow: false,
+      detailsValue: "",
+      auditValue: "",
       pageIndex: 1,
       pageSize: 10,
       tableData: [
@@ -97,14 +105,37 @@ export default {
     };
   },
   components: {
-    advancedsearch
+    advancedsearch,
+    businessDetails,
+    audit
   },
   methods: {
-    aaaa() {
-      console.log("ok");
+    replace() {
+      location.reload();
+    },
+    auditblock() {
+      if (this.auditValue==="") {
+        alert("请选择一个企业")
+      }else{
+        this.auditShow = true;
+      }
+      
+    },
+    auditByValue: function(params) {
+      this.auditShow = params;
+    },
+    childByValue: function(params) {
+      this.detailsShow = params;
+    },
+    details(rowIndex, rowData, column) {
+      this.detailsShow = true;
+      this.detailsValue = rowData;
+      console.log(rowData);
     },
     selectGroupChange(selection) {
       console.log("select-group-change", selection);
+      this.auditValue = selection[0];
+      console.log(this.auditValue);
     },
     selectALL(selection) {
       console.log("select-aLL", selection);
@@ -143,8 +174,7 @@ export default {
     },
     adsearch() {
       document.querySelectorAll(".adsearch")[0].style.right = 0;
-    },
-    
+    }
   },
   created() {
     // let qs = require("qs");

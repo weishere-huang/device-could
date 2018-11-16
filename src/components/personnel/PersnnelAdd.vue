@@ -2,7 +2,7 @@
   <div class="persnnel-add">
     <div class="add-case">
       <div class="topbtn">
-        <el-button size="small">返回</el-button>
+        <el-button size="small" @click="tback">返回</el-button>
         <el-button size="small" @click="employeeAdd">保存</el-button>
       </div>
       <div class="botton">
@@ -183,6 +183,9 @@ export default {
     };
   },
   methods: {
+    tback(){
+          this.$router.back(-1)
+      },
     employeeAdd() {
       let qs = require("qs");
       let data = qs.stringify(this.persnneladd);
