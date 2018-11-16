@@ -128,7 +128,6 @@
         axios
           .put("/api/employee/enableOrDisable",data)
           .then(response => {
-            console.log(response.data.msg);
             this.load()
           })
           .catch(function(error) {
@@ -210,7 +209,7 @@
           .then(response => {
             this.tableData = response.data.data.content;
             this.tableDate=response.data.data.content;
-            // console.log(response.data.data.content);
+            console.log(response.data.data);
           })
           .catch(function(error) {
             console.log(error);
