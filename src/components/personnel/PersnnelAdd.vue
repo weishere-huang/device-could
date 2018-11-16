@@ -35,6 +35,7 @@
                   <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
 
+
                 </el-select>
               </li>
               <li>
@@ -71,6 +72,7 @@
                   <el-radio v-model="persnneladd.marital" label="0">未婚</el-radio>
                 </span>
               </li>
+
 
             </ul>
           </div>
@@ -132,7 +134,9 @@
         </div>
       </div>
     </div>
+
   </div>
+
 </template>
 <script>
   export default {
