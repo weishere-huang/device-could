@@ -3,7 +3,7 @@
     <div class="userCase">
       <div class="top">
 
-        <el-button size="small">删除</el-button>
+        <el-button size="small" >删除</el-button>
         <el-button size="small" @cilck="updateMessageRead">修改消息为已读</el-button>
       </div>
       <div class="bottom">
@@ -50,6 +50,42 @@ export default {
           hobby: "4444"
         }
       ],
+      tableDate: [],
+      columns: [
+        {
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          type: "selection"
+        }],
+        
+      tableData: [
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        }
+      ],
+      tableDate: [],
       columns: [
         {
           width: 50,
@@ -58,11 +94,27 @@ export default {
           type: "selection"
         },
         {
+          field: "name",
+          title: "序号",
+          width: 60,
+          titleAlign: "center",
+          columnAlign: "center",
+        //   isResize: true
+        },
+        {
+          field: "id",
+          title: "序号",
+          width: 60,
+          titleAlign: "center",
+          columnAlign: "center",
+        //   isResize: true
+        },
+        {
           title: "信息标题",
           width: 150,
           titleAlign: "center",
-          columnAlign: "left"
-          //   isResize: true
+          columnAlign: "left",
+        //   isResize: true
           //   orderBy: ""
         },
         {
@@ -109,7 +161,6 @@ export default {
       ]
     };
   },
-
   methods: {
     selectGroupChange(selection) {
       console.log("select-group-change", selection);
@@ -146,148 +197,295 @@ export default {
           } else {
             return 0;
           }
-        });
+        ],
+        tableDate: [],
+        columns: [
+          {
+            width: 50,
+            titleAlign: "center",
+            columnAlign: "center",
+            type: "selection"
+          }],
+
+        tableData: [
+          {
+            name: "111",
+            tel: "222",
+            address: "3333",
+            hobby: "4444"
+          },
+          {
+            name: "111",
+            tel: "222",
+            address: "3333",
+            hobby: "4444"
+          },
+          {
+            name: "111",
+            tel: "222",
+            address: "3333",
+            hobby: "4444"
+          },
+          {
+            name: "111",
+            tel: "222",
+            address: "3333",
+            hobby: "4444"
+          }
+        ],
+        tableDate: [],
+        columns: [
+          {
+            width: 50,
+            titleAlign: "center",
+            columnAlign: "center",
+            type: "selection"
+          },
+          {
+            field: "name",
+            title: "序号",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "center",
+            //   isResize: true
+          },
+          {
+            field: "id",
+            title: "序号",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "center",
+            //   isResize: true
+          },
+          {
+            title: "信息标题",
+            width: 150,
+            titleAlign: "center",
+            columnAlign: "left",
+            //   isResize: true
+            //   orderBy: ""
+          },
+          {
+            field: "address",
+            field: "msgContent",
+            title: "信息内容",
+            width: 150,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "msgType",
+            title: "消息类型",
+            width: 50,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "isRead",
+            title: "是否阅读",
+            width: 50,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "msgState",
+            title: "消息状态",
+            width: 50,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "gmtCreate",
+            title: "创建时间",
+            width: 50,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          }
+        ]
+
       }
     },
-    // updateMessage(id){
-    //   //修改消息
-    // },
-    // addMessage(){
-    //   //增加消息
-    // },
-    // RealdeleteMessage(){
-    //   //删除消息,物理删除
-    // },
-    deleteMessage() {
-      //逻辑删除
-      let qs = require("qs");
-      let data = qs.stringify({
-        ids: "test"
-      });
-      axios
-        .post("api/message/UpdateMsgState/", data)
-        .then(result => {
-          alert("逻辑删除执行");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(this.userName);
+    methods: {
+      selectGroupChange(selection) {
+        console.log("select-group-change", selection);
+      },
+      selectALL(selection) {
+        console.log("select-aLL", selection);
+      },
+      selectChange(selection, rowData) {
+        console.log("select-change", selection, rowData);
+      },
+      getTableData() {
+        this.tableData = this.tableDate.slice(
+          (this.pageIndex - 1) * this.pageSize,
+          this.pageIndex * this.pageSize
+        );
+      },
+      pageChange(pageIndex) {
+        this.pageIndex = pageIndex;
+        this.getTableData();
+        console.log(pageIndex);
+      },
+      pageSizeChange(pageSize) {
+        this.pageIndex = 1;
+        this.pageSize = pageSize;
+        this.getTableData();
+      },
+      sortChange(params) {
+        if (params.height.length > 0) {
+          this.tableConfig.tableData.sort(function(a, b) {
+            if (params.height === "asc") {
+              return a.height - b.height;
+            } else if (params.height === "desc") {
+              return b.height - a.height;
+            } else {
+              return 0;
+            }
+          });
+        }
+      },
+      // updateMessage(id){
+      //   //修改消息
+      // },
+      // addMessage(){
+      //   //增加消息
+      // },
+      // RealdeleteMessage(){
+      //   //删除消息,物理删除
+      // },
+      deleteMessage(){
+        //逻辑删除
+        let qs = require("qs");
+        let data = qs.stringify({
+          ids:'test'
         });
-    },
-    allMsg() {
-      //查询该用户所有消息
-      let qs = require("qs");
-      let data = qs.stringify({
-        page: 1,
-        size: 20
-      });
-      axios
-        .get("api/message/allMsg/" + this.userId, data)
-        .then(result => {
-          alert("allMSg");
-          console.log(result.data.data);
-          this.tableData = result.data.data;
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(this.userName);
+        axios
+          .post("api/message/UpdateMsgState/", data)
+          .then(result => {
+            alert("逻辑删除执行");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(this.userName);
+          });
+      },
+      allMsg(){
+        //查询该用户所有消息
+        let qs = require("qs");
+        let data = qs.stringify({
+          page:1,
+          size:20
         });
-    },
-    oneMessage() {
-      //根据消息ID查询单个消息
-      let qs = require("qs");
-      let data = qs.stringify({
-        id: 1
-        //
-      });
-      axios
-        .get("api/message/findOneMsg/1", data)
-        .then(result => {
-          alert("按照ID 查询单个消息内容");
-          alert(
-            result.data.data.id +
-              "\n---标题--" +
-              result.data.data.msgTitle +
-              "\n--内容--" +
-              result.data.data.msgContent
-          );
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(this.userName);
+        axios
+          .get("api/message/allMsg/"+this.userId , data)
+          .then(result => {
+            alert("allMSg");
+            console.log(result.data.data);
+            this.tableData=result.data.data;
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(this.userName);
+          });
+      },
+      oneMessage(){
+        //根据消息ID查询单个消息
+        let qs = require("qs");
+        let data = qs.stringify({
+          id:1
+          //
         });
-    },
-    allNotReadMsg() {
-      //查询该用户所有未读消息
-      let qs = require("qs");
-      let data = qs.stringify({
-        page: 0,
-        size: 20
-      });
-      axios
-        .get("api/message/allNotReadMsg/" + this.userId, data)
-        .then(result => {
-          alert("所有未读消息");
-          console.log(result.data);
-          this.tableData = result.data.data;
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(this.userName);
-        });
-    },
-    NotReadMsgCount() {
-      //查询该用户未读消息数目
-      let qs = require("qs");
-      let data = qs.stringify({});
-      axios
-        .get("api/message/NotReadMsgCount/" + this.userId, data)
-        .then(result => {
-          alert("count");
+        axios
+          .get("api/message/findOneMsg/1", data)
+          .then(result => {
+            alert("按照ID 查询单个消息内容");
+            alert(result.data.data.id + "\n---标题--" + result.data.data.msgTitle  + "\n--内容--"+result.data.data.msgContent);
+            console.log(result.data);
 
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(this.userName);
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(this.userName);
+          });
+      },
+      allNotReadMsg(){
+        //查询该用户所有未读消息
+        let qs = require("qs");
+        let data = qs.stringify({
+          page:0,
+          size:20
         });
+        axios
+          .get("api/message/allNotReadMsg/"+this.userId, data)
+          .then(result => {
+            alert("所有未读消息")
+            console.log(result.data);
+            this.tableData=result.data.data;
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(this.userName);
+          });
+      },
+      NotReadMsgCount(){
+        //查询该用户未读消息数目
+        let qs = require("qs");
+        let data = qs.stringify({
+
+        });
+        axios
+          .get("api/message/NotReadMsgCount/"+this.userId, data)
+          .then(result => {
+            alert("count");
+
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(this.userName);
+          });
+      },
+      updateMessageRead(){
+        //修改消息为已读
+        let qs = require("qs");
+        let data = qs.stringify({
+          id:10
+          //
+        });
+        axios
+          .get("api/message/UpdateMsgRead/1", data)
+          .then(result => {
+            alert("updateMessageRead 修改消息已阅读")
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(this.userName);
+          });
+      }
+
     },
-    updateMessageRead() {
+    created() {
+      //查询当前用户所有消息
+      this.allMsg();
+      //查询当前用用户未读消息数量
+      this.NotReadMsgCount();
       //修改消息为已读
-      let qs = require("qs");
-      let data = qs.stringify({
-        id: 10
-        //
-      });
-      axios
-        .get("api/message/UpdateMsgRead/1", data)
-        .then(result => {
-          alert("updateMessageRead 修改消息已阅读");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(this.userName);
-        });
+      //this.updateMessageRead();
+      //查询所有用户未读消息
+      //this.allNotReadMsg();
+      //按照ID 查询单个消息内容;
+      this.oneMessage();
+      //按照数组删除数据
+      this.deleteMessage();
     }
-  },
-  created() {
-    //查询当前用户所有消息
-    this.allMsg();
-    //查询当前用用户未读消息数量
-    this.NotReadMsgCount();
-    //修改消息为已读
-    //this.updateMessageRead();
-    //查询所有用户未读消息
-    //this.allNotReadMsg();
-    //按照ID 查询单个消息内容;
-    this.oneMessage();
-    //按照数组删除数据
-    this.deleteMessage();
-  }
-};
+  };
 </script>
 
 <style lang="less" scoped>
@@ -298,7 +496,6 @@ export default {
 @Info: #dde2eb;
 .message {
   padding-left: 180px;
-  font-size: 12px;
   .userCase {
     width: 100%;
     padding: 10px;
@@ -317,5 +514,4 @@ export default {
       }
     }
   }
-}
 </style>
