@@ -176,7 +176,7 @@ export default {
       let qs = require("qs");
       let data = qs.stringify({
 
-        phone: this.userName,
+        phoneOrName: this.userName,
         passWord: this.password
       });
       axios
@@ -193,11 +193,11 @@ export default {
     },
     register() {
       this.manager.userPassword = md5(this.manager.userPassword);
-      alert(this.manager.userPassword);
+      // alert(this.manager.userPassword);
       console.log(this.manager.userPassword)
       let key = "*chang_hong_device_cloud";
       this.manager.userPassword = this.encryptByDES(this.manager.userPassword,key);
-      alert(this.manager.userPassword)
+      // alert(this.manager.userPassword)
       console.log(this.manager.userPassword)
       let qs = require("qs");
       let data = qs.stringify({
@@ -215,6 +215,7 @@ export default {
       axios.post("/api/enterprise/add" , data).then(result =>{
         console.log(result);
 
+        this.$router.push({path:"/home"})
       }).catch(err =>{
         console.log(err)
         console.log("注册失败");

@@ -5,10 +5,10 @@
         <el-button size="small">审核</el-button>
         <el-button size="small">启用</el-button>
         <el-button size="small">停用</el-button>
-        <el-button size="small">刷新</el-button>
+        <el-button size="small" v-on:click="reload">刷新</el-button>
         <div class="search">
-          <el-input type="search" placeholder="根据企业名称" size="small"></el-input>
-          <el-button size="small">搜索</el-button>
+          <el-input type="search" placeholder="根据企业名称" size="small" v-model="name"></el-input>
+          <el-button size="small" v-on:click="findByNameOrState">搜索</el-button>
           <span style="color:#409eff" @click="adsearch">高级搜索</span>
         </div>
 
@@ -25,17 +25,19 @@
         </div>
       </div>
     </div>
-    <advancedsearch class="adsearch"></advancedsearch>
+    <advancedsearch class="adsearch" v-on:advanceValue="advanceValue"></advancedsearch>
   </div>
 </template>
 <script>
+  import advancedsearch from "./AdvancedSearch"
+
   export default {
     data() {
       return {
         pageIndex: 1,
         pageSize: 3,
-        name:"",
-        state:"",
+        name: "",
+        state: "",
         tableData: [{
           name: "",
           address: "",
@@ -119,6 +121,10 @@
       };
     },
     methods: {
+      advanceValue: function (params) {
+        console.log(params)
+        this.tableData = params;
+      },
       getTableData() {
         this.tableData = this.tableDate.slice(
           (this.pageIndex - 1) * this.pageSize,
@@ -150,35 +156,51 @@
           });
         }
       },
-      findByNameOrState(){
-        console.log(this.name)
-        axios.get("/api/enterprise/findByNameOrState", {params:{enterpriseName:this.name}})
-          .then(response =>{
+      stateReader(state) {
+        var a = [{id: 0, text: '未审核'}, {id: 1, text: '删除'}];
+        for (var i = 0, l = a.length; i < l; i++) {
+          var g = a[i];
+          if (g.id == state.value)
+            return g.text;
+        }
+        return "";
+      },
+      findByNameOrState() {
+        axios.get("/api/enterprise/findByNameOrState", {params: {enterpriseName: this.name}})
+          .then(response => {
             console.log(response);
-            this.tableData=response.data.data.content
+            this.tableData = response.data.data.content
           }).catch(function (error) {
           console.log(error);
         })
       },
-      load(){
-        axios.get("/api/enterprise/all", {params:{page:this.pageIndex,size:this.pageSize}})
+      adsearch() {
+        document.querySelectorAll(".adsearch")[0].style.right = 0;
+      },
+      load() {
+        axios.get("/api/enterprise/all", {params: {page: this.pageIndex, size: this.pageSize}})
           .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             this.tableData = response.data.data.content;
             this.tableDate = response.data.data.content;
 
           }).catch(function (error) {
           console.log(error);
         })
+      },
+      reload() {
+        this.load()
       }
+
     },
     created() {
       this.load()
     },
-    adsearch() {
-      document.querySelectorAll(".adsearch")[0].style.right = 0;
-    },
-    
+    components: {
+      advancedsearch
+    }
+
+
   }
 </script>
 <style lang="less" scoped>
@@ -200,7 +222,7 @@
         padding-left: 10px;
         .search {
           float: right;
-          width: 40%;
+          width: 50%;
           .el-input {
             width: 80%;
           }
@@ -220,11 +242,11 @@
       }
     }
   }
+
   .adsearch {
     position: absolute;
     top: 60px;
     right: -310px;
     transition: all 0.3s ease-in;
   }
-}
 </style>
