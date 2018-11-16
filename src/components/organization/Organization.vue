@@ -45,15 +45,12 @@
             </div>
         </div>
 
-
-    </div>
+<
     <add v-show="add"></add>
     <revise v-show="revise1"></revise>
   </div>
 </template>
 <script>
-import add from "./Add";
-import revise from "./Revise";
 export default {
   name: "",
   data() {
