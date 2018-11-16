@@ -93,21 +93,21 @@
             <li>
               <span>
                 <label for="" style="letter-spacing:8px;">籍贯：</label>
-                <el-input type="text" size="small" style="width:250px" v-model="persnneladd.nativePlace"></el-input>
+                <el-input type="text" size="small" style="width:200px" v-model="persnneladd.nativePlace"></el-input>
 
               </span>
-              <span style="display:inline-block;float:right;padding-right:102px">
+              <span style="display:inline-block;float:right;padding-right:123px">
                 <label for="">国籍：</label>
-                <el-input type="text" size="small" style="width:100px" v-model="persnneladd.nationality"></el-input>
+                <el-input type="text" size="small" style="width:80px" v-model="persnneladd.nationality"></el-input>
               </span>
             </li>
             <li>
               <label for="">电子邮箱：</label>
-              <el-input type="email" size="small" style="width:300px" v-model="persnneladd.email"></el-input>
+              <el-input type="email" size="small" style="width:200px" v-model="persnneladd.email"></el-input>
             </li>
             <li>
               <label for="">通讯地址：</label>
-              <el-input type="email" size="small" style="width:300px" v-model="persnneladd.postalAddress"></el-input>
+              <el-input type="email" size="small" style="width:200px" v-model="persnneladd.postalAddress"></el-input>
             </li>
             <li>
               <span>
@@ -121,7 +121,7 @@
             </li>
             <li>
               <label for="" style="letter-spacing: 8px;">照片：</label>
-              <el-input type="text" size="small" placeholder="1寸照片电子版" style="width:50%"></el-input>
+              <el-input type="text" size="small" placeholder="1寸照片电子版" style="width:30%"></el-input>
               <el-button size="small">点击上传</el-button>
             </li>
             <li>

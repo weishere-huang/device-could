@@ -14,7 +14,7 @@
         <div>
           <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="40" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
@@ -26,11 +26,10 @@
     data() {
       return {
         pageIndex: 1,
-        pageSize: 10,
+        pageSize: 20,
         tableData: [],
         tableDate: [],
         userIds:"",
-        userstate:"",
         columns: [
           {
             width: 50,
@@ -64,7 +63,7 @@
             isResize: true
           },
           {
-            field: "name",
+            field: "userName",
             title: "用户名",
             width: 80,
             titleAlign: "center",
@@ -72,7 +71,7 @@
             isResize: true
           },
           {
-            field: "organizationName",
+            field: "organizeName",
             title: "组织单位/部门",
             width: 250,
             titleAlign: "center",
@@ -102,14 +101,6 @@
             titleAlign: "center",
             columnAlign: "left",
             isResize: true
-          },
-          {
-            field: "state",
-            title: "备注",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
           }
         ]
       };
@@ -119,13 +110,14 @@
       disable(){
         let qs = require("qs");
         let data = qs.stringify({
-          userIds :this.userIds,
+          employeeIds :this.userIds,
           enableOrDisable:1
         });
         axios
           .put("/api/employee/enableOrDisable",data)
           .then(response => {
-            console.log(response.data.msg)
+            console.log(response.data.msg);
+            this.load()
           })
           .catch(function(error) {
             console.log(error);
@@ -134,13 +126,14 @@
       enable(){
         let qs = require("qs");
         let data = qs.stringify({
-            userIds :this.userIds,
+          employeeIds :this.userIds,
             enableOrDisable:0
           });
         axios
           .put("/api/employee/enableOrDisable",data)
           .then(response => {
-            console.log(response.data.msg)
+            console.log(response.data.msg);
+            this.load()
           })
           .catch(function(error) {
             console.log(error);
@@ -150,25 +143,21 @@
         this.userIds="";
         for (let i = 0; i<selection.length;i++){
           if (this.userIds!=""){
-            this.userIds += ","+selection[i].userId;
+            this.userIds += ","+selection[i].id;
           }else{
-            this.userIds += selection[i].userId;
+            this.userIds += selection[i].id;
           }
         }
-        // console.log(this.userIds);
-        // console.log(selection);
       },
       selectALL(selection) {
         this.userIds="";
         for (let i = 0; i<selection.length;i++){
           if (this.userIds!=""){
-            this.userIds += ","+selection[i].userId;
+            this.userIds += ","+selection[i].id;
           }else{
-            this.userIds += selection[i].userId;
+            this.userIds += selection[i].id;
           }
         }
-        // console.log(this.userIds);
-        // console.log("select-aLL", selection);
       },
       selectChange(selection, rowData) {
         console.log("select-change", selection, rowData);
@@ -182,7 +171,8 @@
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
         this.getTableData();
-        console.log(pageIndex);
+        // console.log(pageIndex);
+        this.load();
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
@@ -201,17 +191,23 @@
             }
           });
         }
+      },
+      load(){
+        axios
+          .get("/api/employee/findEmployeeList",{params:{page:this.pageIndex,size:this.pageSize}})
+          .then(response => {
+            this.tableData = response.data.data.content;
+            this.tableDate=response.data.data.content;
+            console.log(response.data.data.content);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       }
+
     },
     created() {
-      axios
-        .get("/api/employee/selectAll",{params:{page:this.pageIndex,size:this.pageSize}})
-        .then(response => {
-          this.tableData = response.data.data.content;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      this.load()
     }
 
   };

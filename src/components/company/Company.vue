@@ -29,8 +29,8 @@
   export default {
     data() {
       return {
-        pageIndex: 0,
-        pageSize: 10,
+        pageIndex: 1,
+        pageSize: 3,
         name:"",
         state:"",
         tableData: [{
@@ -127,7 +127,7 @@
         this.getTableData();
         console.log(pageIndex);
         this.load();
-        console.log(response.data.data.content)
+
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;

@@ -13,7 +13,7 @@
         <el-button type="primary" size="small" plain>获取验证码</el-button>
       </p>
       <p>
-        <el-button type="primary" round @click="login()">登录</el-button>
+        <el-button type="primary" round @click="login">登录</el-button>
       </p>
       <p class="registerSkip">
         <span>忘记密码</span>
@@ -154,11 +154,25 @@ export default {
     // let instance = axios.create({
     //   headers: { "content-type": "application/x-www-form-urlencoded" }
     // });
+
+    encryptByDES(message, key) {
+      // const keyHex = CryptoJS.enc.Utf8.parse(key);
+      const keyHex = CryptoJS.enc.Utf8.parse(key);
+
+      const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+      });
+      return encrypted.toString();
+    },
+
     login() {
       this.password = md5(this.password);
+      console.log(this.password);
       let key = "*chang_hong_device_cloud";
-      this.password = encryptByDES(this.password, key);
-      console.log(md5(this.password));
+      let a = this.password;
+      this.password = this.encryptByDES(a, key);
+      console.log(this.password);
       let qs = require("qs");
       let data = qs.stringify({
 
@@ -175,10 +189,14 @@ export default {
           console.log(this.userName);
         });
     },
-    register(){
+    register() {
       this.manager.userPassword = md5(this.manager.userPassword);
+      alert(this.manager.userPassword);
+      console.log(this.manager.userPassword)
       let key = "*chang_hong_device_cloud";
-      this.manager.userPassword = encryptByDES(this.manager.userPassword)
+      this.manager.userPassword = this.encryptByDES(this.manager.userPassword,key);
+      alert(this.encryptByDES(this.manager.userPassword,key))
+      console.log(this.manager.userPassword)
       let qs = require("qs");
       let data = qs.stringify({
         enterpriseName : this.company.name,
@@ -188,7 +206,7 @@ export default {
         creditCode:this.company.companyID,
         businessLicenseImg:"img",
         userName:this.manager.userName,
-        password:this.manager.userPassword,
+        passWord:this.manager.userPassword,
         phone:this.manager.phone,
 
       });
@@ -233,7 +251,7 @@ export default {
       size: "5"
     });
     axios
-      .get("/api/user/all",data)
+      .get("/api/user/all", data)
       .then(response => {
         console.log(response.data);
       })
