@@ -23,10 +23,10 @@
   </div>
 </template>
 <script>
-
 export default {
   data() {
     return {
+      searchs: "",
       pageIndex: 1,
       pageSize: 10,
       tableData: [
@@ -124,33 +124,33 @@ export default {
     };
   },
   methods: {
-   search(){
-        axios
-          .get("/api/employee/search",{params:{condition:this.searchs}})
-          .then(response => {
-            this.tableData = response.data.data.content;
-            this.tableDate=response.data.data.content;
-            // console.log(response.data);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      },
-      disable(){
-        let qs = require("qs");
-        let data = qs.stringify({
-          employeeIds :this.userIds,
-          enableOrDisable:1
+    search() {
+      axios
+        .get("/api/employee/search", { params: { condition: this.searchs } })
+        .then(response => {
+          this.tableData = response.data.data.content;
+          this.tableDate = response.data.data.content;
+          // console.log(response.data);
+        })
+        .catch(function(error) {
+          console.log(error);
         });
-        axios
-          .put("/api/employee/enableOrDisable",data)
-          .then(response => {
-            this.load()
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      },
+    },
+    disable() {
+      let qs = require("qs");
+      let data = qs.stringify({
+        employeeIds: this.userIds,
+        enableOrDisable: 1
+      });
+      axios
+        .put("/api/employee/enableOrDisable", data)
+        .then(response => {
+          this.load();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
     PersnnelAdd() {
       this.$router.push({
         path: "/PersnnelAdd"
@@ -246,27 +246,26 @@ export default {
             return 0;
           }
         });
-      }，
-      load(){
-        axios
-          .get("/api/employee/findEmployeeList",{params:{page:this.pageIndex,size:this.pageSize}})
-          .then(response => {
-            this.tableData = response.data.data.content;
-            this.tableDate=response.data.data.content;
-            console.log(response.data.data);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
       }
-
-    }
-
-
+    },
+    load() {
+      axios
+        .get("/api/employee/findEmployeeList", {
+          params: { page: this.pageIndex, size: this.pageSize }
+        })
+        .then(response => {
+          this.tableData = response.data.data.content;
+          this.tableDate = response.data.data.content;
+          console.log(response.data.data);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   },
+
   created() {
-  this.load()
+    this.load();
     axios
       .get("/api/employee/selectAll", {
         params: { page: this.pageIndex, size: this.pageSize }
