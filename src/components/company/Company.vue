@@ -9,9 +9,9 @@
         <div class="search">
           <el-input type="search" placeholder="根据企业名称" size="small"></el-input>
           <el-button size="small">搜索</el-button>
-          <span style="color:#409eff">高级搜索</span>
+          <span style="color:#409eff" @click="adsearch">高级搜索</span>
         </div>
-        
+
       </div>
       <div class="bottom">
         <div>
@@ -23,9 +23,11 @@
         </div>
       </div>
     </div>
+    <advancedsearch class="adsearch"></advancedsearch>
   </div>
 </template>
 <script>
+import advancedsearch from "./AdvancedSearch";
 export default {
   data() {
     return {
@@ -94,6 +96,9 @@ export default {
       ]
     };
   },
+  components: {
+    advancedsearch
+  },
   methods: {
     aaaa() {
       console.log("ok");
@@ -135,14 +140,18 @@ export default {
           }
         });
       }
-    }
+    },
+    adsearch() {
+      document.querySelectorAll(".adsearch")[0].style.right = 0;
+    },
+    
   },
   created() {
-    let qs = require("qs");
-    let data = qs.stringiify({
-      page: "0",
-      size: "10"
-    });
+    // let qs = require("qs");
+    // let data = qs.stringiify({
+    //   page: "0",
+    //   size: "10"
+    // });
     // axios.get
   }
 };
@@ -171,7 +180,7 @@ export default {
         .el-input {
           width: 60%;
         }
-        span{
+        span {
           font-size: 12px;
           cursor: pointer;
         }
@@ -185,6 +194,12 @@ export default {
       min-height: 500px;
       border-radius: 5px;
     }
+  }
+  .adsearch {
+    position: absolute;
+    top: 60px;
+    right: -310px;
+    transition: all 0.3s ease-in;
   }
 }
 </style>

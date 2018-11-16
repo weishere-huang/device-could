@@ -180,6 +180,7 @@ export default {
         .post("/api/user/login", data)
         .then(result => {
           console.log(result.data);
+          this.$router.push({path:"/home"})
         })
         .catch(err => {
           console.log(err);
