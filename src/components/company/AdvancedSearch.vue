@@ -7,9 +7,9 @@
                 <label for="">企业状态：</label>
                 <div style="margin-top:10px;">
                     <el-checkbox-group v-model="checkList">
-                        <el-checkbox label=0>待审批</el-checkbox>
-                        <el-checkbox label=1>已禁用</el-checkbox>
-                        <el-checkbox label=2>已禁用</el-checkbox>
+                        <el-checkbox label="0">待审批</el-checkbox>
+                        <el-checkbox label="1">已禁用</el-checkbox>
+                        <el-checkbox label="2">正常</el-checkbox>
                     </el-checkbox-group>
                 </div>
             </div>
@@ -27,7 +27,8 @@ export default {
     return {
       dataName:'',
       companyName: "",
-      checkList: []
+      checkList: [],
+      state:[]
     };
   },
   methods: {
