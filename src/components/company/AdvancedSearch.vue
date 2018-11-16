@@ -1,0 +1,68 @@
+<template>
+    <div class="search">
+        <div class="case">
+            <label for="">企业名称：</label>
+            <el-input type="search" size="small" v-model="companyName"></el-input>
+            <div>
+                <label for="">企业状态：</label>
+                <div style="margin-top:10px;">
+                    <el-checkbox-group v-model="checkList">
+                        <el-checkbox label="待审批"></el-checkbox>
+                        <el-checkbox label="已禁用"></el-checkbox>
+                        <el-checkbox label="正常"></el-checkbox>
+                    </el-checkbox-group>
+                </div>
+            </div>
+            <div style="width:100%;text-align:center;margin-top:20px;">
+                <el-button size="small" @click="isHide">取消</el-button>
+                <el-button size="small">搜索</el-button>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+export default {
+  name: "",
+  data() {
+    return {
+      companyName: "",
+      checkList: []
+    };
+  },
+  methods: {
+    isHide() {
+      document.querySelectorAll(".adsearch")[0].style.right = "-310px";
+    }
+  }
+};
+</script>
+
+<style lang="less" scoped>
+@blue: #409eff;
+@Success: #67c23a;
+@Warning: #e6a23c;
+@Danger: #f56c6c;
+@Info: #dde2eb;
+@border: 1px solid #dde2eb;
+.search {
+  width: 300px;
+  position: absolute;
+  right: 0;
+  padding: 20px;
+  border: @border;
+  border-radius: 5px;
+  box-shadow: -5px 5px 10px #a5a8af;
+  min-height: 500px;
+  background-color: white;
+  .case {
+    .el-input {
+      width: 65%;
+    }
+    .el-checkbox {
+      width: 80%;
+      padding: 5px 10px;
+      margin: 0;
+    }
+  }
+}
+</style>

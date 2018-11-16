@@ -7,9 +7,11 @@
         <el-button size="small">停用</el-button>
         <el-button size="small">刷新</el-button>
         <div class="search">
-          <el-input type="search" placeholder="根据企业名称" size="small" v-model="name"></el-input>
-          <el-button size="small" v-on:click="findByNameOrState">搜索</el-button>
+          <el-input type="search" placeholder="根据企业名称" size="small"></el-input>
+          <el-button size="small">搜索</el-button>
+          <span style="color:#409eff" @click="adsearch">高级搜索</span>
         </div>
+
       </div>
       <div class="bottom">
         <div>
@@ -23,6 +25,7 @@
         </div>
       </div>
     </div>
+    <advancedsearch class="adsearch"></advancedsearch>
   </div>
 </template>
 <script>
@@ -171,7 +174,11 @@
     },
     created() {
       this.load()
-    }
+    },
+    adsearch() {
+      document.querySelectorAll(".adsearch")[0].style.right = 0;
+    },
+    
   }
 </script>
 <style lang="less" scoped>
@@ -198,6 +205,10 @@
             width: 80%;
           }
         }
+        span {
+          font-size: 12px;
+          cursor: pointer;
+        }
       }
       .bottom {
         padding: 10px;
@@ -209,4 +220,11 @@
       }
     }
   }
+  .adsearch {
+    position: absolute;
+    top: 60px;
+    right: -310px;
+    transition: all 0.3s ease-in;
+  }
+}
 </style>

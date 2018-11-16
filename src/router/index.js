@@ -12,6 +12,7 @@ import Organization from '@/components/organization/Organization'
 import Add from '@/components/organization/Add'
 import Personnel from '@/components/personnel/Personnel'
 import PersnnelAdd from '@/components/personnel/PersnnelAdd'
+import Modification from '@/components/personnel/Modification'
 import User from '@/components/user/User'
 import EquipmentArchives from '@/components/equipmentArchives/EquipmentArchives'
 import WorkOrder from '@/components/workOrder/WorkOrder'
@@ -19,6 +20,7 @@ import KnowledgeBase from '@/components/knowledgeBase/KnowledgeBase'
 import Message from '@/components/message/Message'
 import System from '@/components/system/System'
 import RoleManagement from '@/components/roleManagement/RoleManagement'
+import AdvancedSearch from '@/components/company/AdvancedSearch'
 Vue.use(Router)
 
 export default new Router({
@@ -47,6 +49,11 @@ export default new Router({
       name: 'Company',
       component: Company
     },
+     {
+       path: '/AdvancedSearch',
+       name: 'AdvancedSearch',
+       component: AdvancedSearch
+     },
     {
       path: '/BusinessDetails',
       name: 'BusinessDetails',
@@ -86,6 +93,11 @@ export default new Router({
       path: '/PersnnelAdd',
       name: 'PersnnelAdd',
       component: PersnnelAdd
+    },
+    {
+      path: '/Modification',
+      name: 'Modification',
+      component: Modification
     },
     {
       path: '/User',
