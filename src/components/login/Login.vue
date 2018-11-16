@@ -182,12 +182,9 @@ export default {
       axios
         .post("/api/user/login", data)
         .then(result => {
-<<<<<<< HEAD
           console.log(result);
-=======
           console.log(result.data);
           this.$router.push({path:"/home"})
->>>>>>> 96cec2a14484ef449419351b7a6be95830683ddd
         })
         .catch(err => {
           console.log(err);
