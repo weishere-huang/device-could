@@ -95,6 +95,7 @@ export default {
         resize: none;
         border-radius: 5px;
         border-color: #dde2eb;
+        padding: 10px;
       }
       .el-input {
         width: 70%;

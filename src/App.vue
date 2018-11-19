@@ -17,7 +17,6 @@
               <el-menu-item index="/Home">选项2</el-menu-item>
               <el-menu-item index="/Home">选项3</el-menu-item> -->
             </el-submenu>
-            <!-- <router-link to="默认工作台"></router-link> -->
             <el-submenu index="/Information">
               <template slot="title"><i class="el-icon-menu"></i>数据中心</template>
               <el-menu-item index="/Information">选项1</el-menu-item>
@@ -29,6 +28,7 @@
               <el-menu-item index="/Company">选项1</el-menu-item>
               <el-menu-item index="/AdvancedSearch">高级搜索</el-menu-item>
               <el-menu-item index="/BusinessDetails">企业详情</el-menu-item>
+              <el-menu-item index="/Audit">审核</el-menu-item>
             </el-submenu>
             <el-submenu index="/Equipment">
               <template slot="title"><i class="el-icon-setting"></i>设备管理</template>
@@ -81,7 +81,7 @@
             <el-submenu index="/Message">
               <template slot="title"><i class="el-icon-setting"></i>消息管理</template>
               <el-menu-item index="/Message">选项1</el-menu-item>
-              <el-menu-item index="/Message">选项2</el-menu-item>
+              <el-menu-item index="/MsgDetails">消息详情</el-menu-item>
               <el-menu-item index="/Message">选项3</el-menu-item>
             </el-submenu>
             <el-submenu index="/RoleManagement">

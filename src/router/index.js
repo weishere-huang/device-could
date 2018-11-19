@@ -21,6 +21,8 @@ import Message from '@/components/message/Message'
 import System from '@/components/system/System'
 import RoleManagement from '@/components/roleManagement/RoleManagement'
 import AdvancedSearch from '@/components/company/AdvancedSearch'
+import Audit from '@/components/company/Audit'
+import MsgDetails from '@/components/message/MsgDetails'
 Vue.use(Router)
 
 export default new Router({
@@ -48,6 +50,11 @@ export default new Router({
       path: '/Company',
       name: 'Company',
       component: Company
+    },
+    {
+      path: '/Audit',
+      name: 'Audit',
+      component: Audit
     },
      {
        path: '/AdvancedSearch',
@@ -123,6 +130,11 @@ export default new Router({
       path: '/Message',
       name: 'Message',
       component: Message
+    },
+    {
+      path: '/MsgDetails',
+      name: 'MsgDetails',
+      component: MsgDetails
     },
     {
       path: '/RoleManagement',
