@@ -33,8 +33,8 @@
           <textarea type="textarea" style="width:70%;height:60px;" placeholder="请填写驳回原因"></textarea>
           <div style="margin-top:10px;width:100%;text-align:center;">
             <el-button size="small" @click="auditback">返回</el-button>
-            <el-button size="small">驳回</el-button>
-            <el-button size="small">通过</el-button>
+            <el-button size="small" @click="reject">驳回</el-button>
+            <el-button size="small" @click="pass">通过</el-button>
           </div>
         </div>
       </div>
@@ -54,12 +54,14 @@ export default {
       msg: "哈哈哈",
       img: "",
       block:false,
+      enterpriseIds:"",
       company: {
         name: "",
         address: "",
         phone: "",
         corporation: "",
-        companyID: ""
+        companyID: "",
+        enterpriseId: ""
       },
       manager: {
         userName: "",
@@ -70,6 +72,34 @@ export default {
   methods:{
     auditback(){
       this.$emit("auditByValue",this.block)
+    },
+    pass(){
+      let qs = require("qs");
+      let data = qs.stringify({
+        enterpriseIds :this.auditValue.id
+      })
+      console.log(data)
+      axios.put("/api/enterprise/enableEnterprises/",data)
+        .then(response=>{
+          location.reload();
+          console.log(response)
+        }).catch(function (error) {
+          console.log(error)
+      })
+    },
+    reject(){
+      let qs = require("qs");
+      let data = qs.stringify({
+        enterpriseIds: this.auditValue.id
+      })
+      axios.put("/api/enterprise/discontinuationEnterprises",data)
+        .then(response=>{
+          location.reload();
+          console.log(response)
+        }).catch(function (error) {
+          console.log(error)
+
+      })
     }
   }
 };

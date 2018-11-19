@@ -8,8 +8,8 @@
                 <div style="margin-top:10px;">
                     <el-checkbox-group v-model="checkList">
                         <el-checkbox label="0">待审批</el-checkbox>
-                        <el-checkbox label="1">已禁用</el-checkbox>
-                        <el-checkbox label="2">正常</el-checkbox>
+                        <el-checkbox label="2">已禁用</el-checkbox>
+                        <el-checkbox label="3">正常</el-checkbox>
                     </el-checkbox-group>
                 </div>
             </div>
@@ -36,12 +36,15 @@ export default {
       document.querySelectorAll(".adsearch")[0].style.right = "-310px";
     },
     search(){
-      axios.get("/api/enterprise/findByNameOrState", {params:{enterpriseName:this.companyName}})
+      axios.get("/api/enterprise/findByNameOrState", {params:{enterpriseName:this.companyName,state:this.state}})
         .then(response =>{
           console.log(response);
           document.querySelectorAll(".adsearch")[0].style.right = "-310px";
-          this.dataName=response.data.data.content
-          console.log(this.dataName)
+          for (let i = 0; i<response.data.data.content.length;i++) {
+            response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+            this.dataName = response.data.data.content
+            console.log(this.dataName)
+          }
           this.$emit("advanceValue",this.dataName)
 
         }).catch(function (error) {

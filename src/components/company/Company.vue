@@ -3,8 +3,8 @@
     <div class="userCase">
       <div class="top">
         <el-button size="small" @click="auditblock">审核</el-button>
-        <el-button size="small">启用</el-button>
-        <el-button size="small">停用</el-button>
+        <el-button size="small" @click="startUseing">启用</el-button>
+        <el-button size="small" @click="forbidden">停用</el-button>
         <el-button size="small" @click="replace">刷新</el-button>
         <div class="search">
           <el-input type="search" placeholder="根据企业名称" size="small" v-model="name"></el-input>
@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <advancedsearch class="adsearch"></advancedsearch>
+    <advancedsearch class="adsearch" v-on:advanceValue="advanceValue"></advancedsearch>
     <audit v-show="auditShow" v-on:auditByValue="auditByValue" :auditValue="auditValue"></audit>
     <businessDetails v-show="detailsShow" v-on:childByValue="childByValue"
                      :detailsValue="detailsValue"></businessDetails>
@@ -45,17 +45,17 @@
         detailsValue: "",
         auditValue: "",
         pageIndex: 1,
-        pageSize: 5,
-        name:"",
+        pageSize: 10,
+        name: "",
+        enterpriseIds: "",
         tableData: [
           {
             name: "11",
             address: "222",
             phone: "333",
             address: "4444",
-            time: "555",
-            time1: "666",
-            stat: "777"
+            gmtCreate: "666",
+            state: "777"
           }
         ],
         tableDate: [],
@@ -92,7 +92,7 @@
             isResize: true
           },
           {
-            field: "time",
+            field: "gmtCreate",
             title: "申请时间",
             width: 80,
             titleAlign: "center",
@@ -100,7 +100,7 @@
             isResize: true
           },
           {
-            field: "stat",
+            field: "state",
             title: "状态",
             width: 50,
             titleAlign: "center",
@@ -116,6 +116,9 @@
       audit
     },
     methods: {
+      advanceValue: function (params) {
+        this.tableData = params
+      },
       replace() {
         location.reload();
       },
@@ -139,11 +142,30 @@
         console.log(rowData);
       },
       selectGroupChange(selection) {
+        this.auditValue=selection[0]
+        console.log(this.auditValue)
+        this.enterpriseIds = "";
+        for (let i = 0; i < selection.length; i++) {
+          if (this.enterpriseIds == "") {
+            this.enterpriseIds += selection[i].id;
+          } else {
+            this.enterpriseIds += "," + selection[i].id
+          }
+        }
+        console.log(this.enterpriseIds)
         console.log("select-group-change", selection);
-        this.auditValue = selection[0];
-        console.log(this.auditValue);
+        // this.auditValue = selection[0];
+        // console.log(this.auditValue);
       },
       selectALL(selection) {
+        this.enterpriseIds = "";
+        for (let i = 0; i < selection.length; i++) {
+          if (this.enterpriseIds == "") {
+            this.enterpriseIds += selection[i].id;
+          } else {
+            this.enterpriseIds += "," + selection[i].id
+          }
+        }
         console.log("select-aLL", selection);
       },
       selectChange(selection, rowData) {
@@ -165,6 +187,7 @@
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
+        this.load()
       },
       sortChange(params) {
         if (params.height.length > 0) {
@@ -180,24 +203,61 @@
         }
       },
       load() {
+
         axios.get("/api/enterprise/all", {params: {page: this.pageIndex, size: this.pageSize}})
           .then(response => {
-            this.tableData = response.data.data.content
-            this.tableDate = response.data.data.content
+            for (let i = 0; i<response.data.data.content.length;i++){
+              // console.log(response.data.data.content.length)
+              this.tableDate = response.data.data.content;
+              response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+              this.tableData = response.data.data.content
+            }
           }).catch(function (error) {
           console.log(error)
         });
       },
-      findByName(){
-        axios.get("/api/enterprise/findByNameOrState" ,{params:{enterpriseName:this.name}})
-          .then(response=>{
-            this.tableData=response.data.data.content
-            this.tableDate=response.data.data.content
+      findByName() {
+        axios.get("/api/enterprise/findByNameOrState", {params: {enterpriseName: this.name}})
+          .then(response => {
+            for (let i = 0; i<response.data.data.content.length;i++){
+              // console.log(response.data.data.content.length)
+              this.tableDate = response.data.data.content;
+              response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+            }
+            this.tableData = response.data.data.content
+
           }).catch(function (error) {
           console.log(error)
         })
       },
-
+      startUseing() {
+        let qs = require("qs")
+        let data = qs.stringify({
+          enterpriseIds: this.enterpriseIds,
+          // state: 0
+        })
+        axios.put("/api/enterprise/enableEnterprises/", data)
+          .then(response=>{
+            this.load()
+            console.log(data)
+          })
+          .catch(function (error) {
+            console.log(error)
+        })
+      },
+      forbidden(){
+        let qs = require("qs");
+        let data = qs.stringify({
+          enterpriseIds: this.enterpriseIds,
+        });
+        axios.put("/api/enterprise/discontinuationEnterprises", data)
+        .then(response=>{
+          this.load()
+          console.log(data)
+        }).catch(function (error) {
+          console.log(error)
+        })
+      },
 
       adsearch() {
         document.querySelectorAll(".adsearch")[0].style.right = 0;
