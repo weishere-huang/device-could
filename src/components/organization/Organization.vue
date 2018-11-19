@@ -1,5 +1,53 @@
 <template>
 
+
+    <div class="organization">
+        <div class="content">
+            <div class="left">
+                <h5>企业名称</h5>
+                <ul>
+                    <li v-for="(item, index) in name" :key="index">{{item}}
+                        <span style="letter-spacing:2px;">
+                            <i class="iconfont icon-jia"></i>
+                            <i class="iconfont icon-xiewrite18"></i>
+                            <i class="iconfont icon-shanchu1"></i>
+                        </span>
+                        <ul v-if="sss!=''">
+                            <li style="border-top:1px solid #dde2eb;" >
+                                <span style="letter-spacing:5px; height:25px;">
+                                    <i class="iconfont icon-jia"></i>
+                                    <i class="iconfont icon-xiewrite18"></i>
+                                    <i class="iconfont icon-shanchu1"></i>
+                                </span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="center">
+                <h5>类型</h5>
+                <ul>
+                    <li v-for="(item, index) in organizeType" :key="index">{{item}}
+                        <ul v-if="sss!=''">
+                            <li style="border-top:1px solid #dde2eb;text-align : center;padding:0;"></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="right">
+                <h5>备注</h5>
+                <ul>
+                    <li v-for="(item, index) in organizeInfo" :key="index">{{item}}
+                        <ul v-if="sss!=''">
+                            <li style="border-top:1px solid #dde2eb;text-align : center;padding:0;"></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+<
+
   <div class="organization">
     <div class="content">
       <div class="left">
@@ -50,8 +98,6 @@
   </div>
 </template>
 <script>
-import add from "./Add";
-import revise from "./Revise";
 export default {
   name: "",
   data() {
