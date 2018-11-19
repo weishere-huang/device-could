@@ -8,19 +8,23 @@
       </div>
       <div class="bottom">
         <div>
-          <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange"></v-table>
+          <v-table :row-dblclick="details" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:20px">
             <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
     </div>
+    <MsgDetails v-show="detailsShow" :msgDetail="msgDetail" v-on:detailsIsHide="detailsIsHide"></MsgDetails>
   </div>
 </template>
 <script>
+import MsgDetails from './MsgDetails'
 export default {
   data() {
     return {
+      detailsShow:false,
+      msgDetail:"",
       pageIndex: 1,
       pageSize: 20,
       userId: 10,
@@ -59,22 +63,7 @@ export default {
           type: "selection"
         },
         {
-          field: "name",
-          title: "序号",
-          width: 60,
-          titleAlign: "center",
-          columnAlign: "center"
-          //   isResize: true
-        },
-        {
-          field: "id",
-          title: "序号",
-          width: 60,
-          titleAlign: "center",
-          columnAlign: "center"
-          //   isResize: true
-        },
-        {
+          field: "title",
           title: "信息标题",
           width: 150,
           titleAlign: "center",
@@ -83,7 +72,6 @@ export default {
           //   orderBy: ""
         },
         {
-          field: "address",
           field: "msgContent",
           title: "信息内容",
           width: 150,
@@ -127,6 +115,14 @@ export default {
     };
   },
   methods: {
+    detailsIsHide:function (params) {
+      this.detailsShow=params
+    },
+    details(rowIndex, rowData, column){
+      console.log(rowData.name);
+      this.msgDetail=rowData;
+      this.detailsShow=true;
+    },
     selectGroupChange(selection) {
       console.log("select-group-change", selection);
     },
@@ -302,6 +298,9 @@ export default {
     this.oneMessage();
     //按照数组删除数据
     this.deleteMessage();
+  },
+  components:{
+    MsgDetails
   }
 };
 </script>
