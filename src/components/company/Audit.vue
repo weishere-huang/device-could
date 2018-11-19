@@ -1,7 +1,6 @@
 <template>
-  <div class="back">
-    <div class="business-details">
-
+  <div class="auditCase">
+    <div class="audit">
       <span class="title">企业信息</span>
       <div class="left">
 
@@ -9,36 +8,34 @@
           <h4>企业主体信息</h4>
           <li>
             <label for="">企业名称：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.name"> </el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="auditValue.name"> </el-input>
           </li>
           <li>
             <label for="">企业法人：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.corporation"></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="auditValue.corporation"></el-input>
           </li>
           <li>
             <label for="">联系电话：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.phone"></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="auditValue.phone"></el-input>
           </li>
           <li>
             <label for="">联系地址：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.address"></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="auditValue.address"></el-input>
           </li>
           <li>
             <label for="">统一信用社会代码：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.companyID"></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="auditValue.companyID"></el-input>
           </li>
         </ul>
 
         <div class="state">
-          <span>
-            驳回原因：
-          </span>
-          <span style="color:red;display:inline-block">
-            <p>{{msg}}</p>
-          </span>
-        </div>
-        <div style="margin-top:20px;text-align:center;">
-          <el-button size="small" @click="isHide">返回</el-button>
+          <label style="display:inline-block;height:60px;vertical-align:top;">驳回原因：</label>
+          <textarea type="textarea" style="width:70%;height:60px;" placeholder="请填写驳回原因"></textarea>
+          <div style="margin-top:10px;width:100%;text-align:center;">
+            <el-button size="small" @click="auditback">返回</el-button>
+            <el-button size="small">驳回</el-button>
+            <el-button size="small">通过</el-button>
+          </div>
         </div>
       </div>
       <div class="right">
@@ -46,11 +43,12 @@
       </div>
     </div>
   </div>
+
 </template>
 <script>
 export default {
-  name:"",
-  props: ["detailsValue"],
+  name: "",
+  props:["auditValue"],
   data() {
     return {
       msg: "哈哈哈",
@@ -69,13 +67,10 @@ export default {
       }
     };
   },
-  methods: {
-    isHide() {
-      this.$emit("childByValue",this.block)
+  methods:{
+    auditback(){
+      this.$emit("auditByValue",this.block)
     }
-  },
-  created() {
-    
   }
 };
 </script>
@@ -85,7 +80,7 @@ export default {
 @Warning: #e6a23c;
 @Danger: #f56c6c;
 @Info: #dde2eb;
-.back {
+.auditCase {
   width: 100vw;
   height: 100vh;
   position: absolute;
@@ -93,17 +88,14 @@ export default {
   left: 0;
   background-color: #8081812a;
 }
-.business-details {
-  margin: auto;
+.audit {
   padding: 10px;
   width: 800px;
+  margin: auto;
+  margin-top: 100px;
   border: 1px solid @Info;
   overflow: hidden;
   background-color: white;
-  margin-top: 100px;
-  // position: absolute;
-  // top: 0;
-  // left: 0;
   .title {
     display: inline-block;
     width: 100%;
@@ -127,6 +119,12 @@ export default {
     .state {
       padding-left: 30px;
       margin-top: 20px;
+      textarea {
+        resize: none;
+        border-radius: 5px;
+        border-color: #dde2eb;
+        padding: 10px;
+      }
     }
   }
   .right {

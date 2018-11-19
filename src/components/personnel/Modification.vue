@@ -2,7 +2,7 @@
     <div class="persnnel-add">
         <div class="add-case">
             <div class="topbtn">
-                <el-button size="small">返回</el-button>
+                <el-button size="small" @click="tback">返回</el-button>
                 <el-button size="small">停用</el-button>
                 <el-button size="small">保存</el-button>
             </div>
@@ -190,6 +190,9 @@ export default {
     };
   },
   methods: {
+      tback(){
+          this.$router.back(-1)
+      },
     open6() {
       let str = `<div>
             <input type="text">文件名
@@ -217,6 +220,8 @@ export default {
     }
   },
   created() {
+      let aaa=this.$store.state.personnel.imId
+      console.log(aaa);
     axios
       .get("/api/role/listAllRole")
       .then(response => {

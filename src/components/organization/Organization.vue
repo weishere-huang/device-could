@@ -1,24 +1,30 @@
 <template>
 
+
+
   <div class="organization">
     <div class="content">
       <div class="left">
         <h5>企业名称</h5>
         <ul>
+
           <li v-for="(item, index) in name1" :key="index">{{item}}
             <span style="letter-spacing:2px;">
               <i class="iconfont icon-jia" @click="ap"></i>
               <i class="iconfont icon-xiewrite18" @click="revise"></i>
+
               <i class="iconfont icon-shanchu1"></i>
             </span>
             <ul v-if="sss!=''">
               <li style="border-top:1px solid #dde2eb;">
                 <span style="letter-spacing:5px; height:25px;">
+
                   <i class="iconfont icon-jia" @click="ap"></i>
                   <i class="iconfont icon-xiewrite18"></i>
                   <i class="iconfont icon-shanchu1"></i>
                 </span>
                 //如果有三级的话
+
 
               </li>
             </ul>
@@ -28,9 +34,11 @@
       <div class="center">
         <h5>类型</h5>
         <ul>
+
           <li v-for="(item, index) in name1" :key="index">{{item}}
             <ul v-if="sss!=''">
               <li style="border-top:1px solid #dde2eb;text-align:center;padding:0;"></li>
+
             </ul>
           </li>
         </ul>
@@ -38,20 +46,24 @@
       <div class="right">
         <h5>备注</h5>
         <ul>
+
           <li v-for="(item, index) in name1" :key="index">{{item}}
             <ul v-if="sss!=''">
               <li style="border-top:1px solid #dde2eb;text-align:center;padding:0;"></li>
+
             </ul>
           </li>
         </ul>
       </div>
     </div>
+
     <add v-show="add"></add>
     <revise v-show="revise1"></revise>
   </div>
 
 </template>
 <script>
+
   import add from "./Add";
   import revise from "./Revise";
 
@@ -192,6 +204,7 @@
     console.log("tree");
     console.log(tree);
     return tree;
+
   }
 
 

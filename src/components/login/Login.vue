@@ -13,7 +13,7 @@
         <el-button type="primary" size="small" plain>获取验证码</el-button>
       </p>
       <p>
-        <el-button type="primary" round @click="login()">登录</el-button>
+        <el-button type="primary" round @click="login">登录</el-button>
       </p>
       <p class="registerSkip">
         <span>忘记密码</span>
@@ -88,7 +88,7 @@
           <li>
             <el-button type="primary" size="small" round class="registerBtn" v-on:click="function(){nextshow=!nextshow
            backshow=!backshow}">上一步</el-button>
-            <el-button type="primary" size="small" round class="registerBtn">注册</el-button>
+            <el-button type="primary" size="small" round class="registerBtn" v-on:click="register">注册</el-button>
           </li>
         </ul>
       </div>
@@ -156,7 +156,9 @@ export default {
     // });
 
     encryptByDES(message, key) {
+      // const keyHex = CryptoJS.enc.Utf8.parse(key);
       const keyHex = CryptoJS.enc.Utf8.parse(key);
+
       const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
         mode: CryptoJS.mode.ECB,
         padding: CryptoJS.pad.Pkcs7
@@ -166,19 +168,21 @@ export default {
 
     login() {
       this.password = md5(this.password);
-      console.log(md5(this.password));
+      console.log(this.password);
       let key = "*chang_hong_device_cloud";
       let a = this.password;
       this.password = this.encryptByDES(a, key);
       console.log(this.password);
       let qs = require("qs");
       let data = qs.stringify({
-        phone: this.userName,
+
+        phoneOrName: this.userName,
         passWord: this.password
       });
       axios
         .post("/api/user/login", data)
         .then(result => {
+          console.log(result);
           console.log(result.data);
           this.$router.push({path:"/home"})
         })
@@ -188,21 +192,34 @@ export default {
         });
     },
     register() {
+      this.manager.userPassword = md5(this.manager.userPassword);
+      // alert(this.manager.userPassword);
+      console.log(this.manager.userPassword)
+      let key = "*chang_hong_device_cloud";
+      this.manager.userPassword = this.encryptByDES(this.manager.userPassword,key);
+      // alert(this.manager.userPassword)
+      console.log(this.manager.userPassword)
       let qs = require("qs");
       let data = qs.stringify({
-        name: this.company.name,
-        address: this.company.address,
-        enterprisePhone: this.company.phone
+        enterpriseName : this.company.name,
+        enterpriseAddress: this.company.address,
+        enterprisePhone : this.company.phone,
+        legalPerson: this.company.corporation,
+        creditCode:this.company.companyID,
+        businessLicenseImg:"img",
+        userName:this.manager.userName,
+        passWord:this.manager.userPassword,
+        phone:this.manager.phone,
+
       });
-      axios
-        .post("/api/enterprise/add")
-        .then(result => {
-          console.log("注册成功");
-        })
-        .catch(err => {
-          console.log(err);
-          console.log("注册失败");
-        });
+      axios.post("/api/enterprise/add" , data).then(result =>{
+        console.log(result);
+
+        this.$router.push({path:"/home"})
+      }).catch(err =>{
+        console.log(err)
+        console.log("注册失败");
+      });
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
