@@ -27,105 +27,6 @@
   </div>
 </template>
 <script>
-
-  export default {
-    data() {
-      return {
-        pageIndex: 1,
-        pageSize: 20,
-        tableData: [
-          {
-            name: "111",
-            tel: "222",
-            address: "3333",
-            hobby: "4444"
-          },
-          {
-            name: "111",
-            tel: "222",
-            address: "3333",
-            hobby: "4444"
-          },
-          {
-            name: "111",
-            tel: "222",
-            address: "3333",
-            hobby: "4444"
-          },
-          {
-            name: "111",
-            tel: "222",
-            address: "3333",
-            hobby: "4444"
-          }
-        ],
-        tableDate: [],
-        columns: [
-          {
-            width: 50,
-            titleAlign: "center",
-            columnAlign: "center",
-            type: "selection"
-          },
-          {
-            field: "name",
-            title: "序号",
-            width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
-            //   isResize: true
-          },
-          {
-            field: "tel",
-            title: "信息标题",
-            width: 150,
-            titleAlign: "center",
-            columnAlign: "left",
-            //   isResize: true
-            //   orderBy: ""
-          },
-          {
-            field: "address",
-            title: "信息内容",
-            width: 150,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          }
-        ]
-      };
-    },
-    methods: {
-      getTableData() {
-        this.tableData = this.tableDate.slice(
-          (this.pageIndex - 1) * this.pageSize,
-          this.pageIndex * this.pageSize
-        );
-      },
-      pageChange(pageIndex) {
-        this.pageIndex = pageIndex;
-        this.getTableData();
-        console.log(pageIndex);
-      },
-      pageSizeChange(pageSize) {
-        this.pageIndex = 1;
-        this.pageSize = pageSize;
-        this.getTableData();
-      },
-      sortChange(params) {
-        if (params.height.length > 0) {
-          this.tableConfig.tableData.sort(function(a, b) {
-            if (params.height === "asc") {
-              return a.height - b.height;
-            } else if (params.height === "desc") {
-              return b.height - a.height;
-            } else {
-              return 0;
-            }
-          });
-        }
-      }
-
 import MsgDetails from './MsgDetails'
 export default {
   data() {
@@ -447,5 +348,5 @@ export default {
       }
     }
   }
-}
+
 </style>
