@@ -158,7 +158,7 @@ export default {
   }
 };
 </script>
-</script>
+
 <style lang="less" scoped>
 @blue: #409eff;
 @Success: #67c23a;
