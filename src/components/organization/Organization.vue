@@ -18,6 +18,8 @@
                   <i class="iconfont icon-xiewrite18"></i>
                   <i class="iconfont icon-shanchu1"></i>
                 </span>
+                //如果有三级的话
+
               </li>
             </ul>
           </li>
@@ -60,7 +62,9 @@
         sss: "",
         name1: [1, 2, 3, 4, 5, 6, 7, 8],
         organizeType: [1, 2, 3, 4, 5, 6, 7, 8],
-        organizeInfo: [1, 2, 3, 4, 5, 6, 7, 8]
+        organizeInfo: [1, 2, 3, 4, 5, 6, 7, 8],
+        pushtext:[],
+        code:"id"
       };
     },
     methods: {
@@ -68,11 +72,15 @@
         //添加组织机构
         let qs = require("qs");
         let data = qs.stringify({
-
+          parentCode: "1000001",
+          name: "后端组44444444",
+          organizeType: 1,
+          organizeInfo: "2:52",
         });
         axios
           .post("api/organize/add", data)
           .then(result => {
+            alert("add");
             console.log(result.data);
           })
           .catch(err => {
@@ -84,11 +92,15 @@
         //修改组织机构
         let qs = require("qs");
         let data = qs.stringify({
-
+          organizeId:"356",
+          organizeType:"1",
+          organizeInfo:"14:53",
+          organizeName:"工程与技术中心"
         });
         axios
-          .post("api/organize/update", data)
+          .put("api/organize/update", data)
           .then(result => {
+            alert("updata");
             console.log(result.data);
 
           })
@@ -130,6 +142,7 @@
             this.name = result.data.data[0].name;
             this.organizeType = result.data.data[0].organizeType;
             this.organizeInfo = result.data.data[0].organizeInfo;
+            this.filterArray(result,1000);
             // "id": 328,
             // "code": "1000001",
             //   "parentCode": "1000",
@@ -161,7 +174,25 @@
             console.log(err);
             console.log(this.userName);
           });
+      },
+      filterArray(data, parent) {
+          let vm = this;
+          var tree = [];
+          var temp;
+    for (var i = 0; i < data.length; i++) {
+      if (data[i].parent == parent) {
+        var obj = data[i];
+        temp = filterArray(data, data[i].id);
+        if (temp.length > 0) {
+          obj.children = temp;
+        }
+        tree.push(obj);
       }
+    }
+    console.log("tree");
+    console.log(tree);
+    return tree;
+  }
 
 
     },
@@ -181,8 +212,10 @@
     },
     created() {
       this.allOrganize();
-      this.findOneOrganize();
-      this.delete();
+      //this.findOneOrganize();
+      //this.delete();
+      //this.add();
+      //this.update();
     }
   };
 </script>
