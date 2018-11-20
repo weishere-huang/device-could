@@ -81,7 +81,7 @@
           </div>
           <div class="personnel-slist">
             <el-checkbox-group v-model="personnel.checkedSystem" @change="personnelCheckedCitiesChange">
-              <el-checkbox v-for="item in equipment.systemList" :label="item" :key="item">{{item}}</el-checkbox>
+              <el-checkbox v-for="item in personnel.systemList" :label="item" :key="item">{{item}}</el-checkbox>
             </el-checkbox-group>
           </div>
         </div>
@@ -513,12 +513,12 @@
             this.personnel.checkedSystem = arr3;
             this.user.checkedSystem = arr4;
             this.message.checkedSystem = arr5;
-            console.log(arr);
-            console.log(arr1);
-            console.log(arr2);
-            console.log(arr3);
-            console.log(arr4);
-            console.log(arr5);
+            // console.log(arr);
+            // console.log(arr1);
+            // console.log(arr2);
+            // console.log(arr3);
+            // console.log(arr4);
+            // console.log(arr5);
             // console.log(this.system.checkedSystem);
             // console.log(this.information.checkedSystem);
             // console.log(this.equipment.checkedSystem);
@@ -536,39 +536,38 @@
           .then(response =>{
             let arr = new Array();
             let k = new Array();
-
             for (let i in response.data.data) {
               if(response.data.data[i].parentCode === number){
                 arr[arr.length] = response.data.data[i].name;
                 k[k.length]= response.data.data[i].id;
-              }
-              switch(number){
-                case 1:
-                  this.system.systemList = arr;
-                  this.system.systemKey = k;
-                  continue;
-                case 2:
-                  this.information.systemList = arr;
-                  this.information.systemKey = k;
-                  continue;
-                case 3:
-                  this.equipment.systemList = arr;
-                  this.equipment.systemKey = k;
-                  continue;
-                case 4:
-                  this.personnel.systemList = arr;
-                  this.personnel.systemKey = k;
-                  continue;
-                case 5:
-                  this.user.systemList = arr;
-                  this.user.systemKey = k;
-                  continue;
-                case 6:
-                  this.message.systemList = arr;
-                  this.message.systemKey = k;
-                  break;
-                default:
-                  break;
+                switch(number){
+                  case 1:
+                    this.system.systemList = arr;
+                    this.system.systemKey = k;
+                    continue;
+                  case 2:
+                    this.information.systemList = arr;
+                    this.information.systemKey = k;
+                    continue;
+                  case 3:
+                    this.equipment.systemList = arr;
+                    this.equipment.systemKey = k;
+                    continue;
+                  case 4:
+                    this.personnel.systemList = arr;
+                    this.personnel.systemKey = k;
+                    continue;
+                  case 5:
+                    this.user.systemList = arr;
+                    this.user.systemKey = k;
+                    continue;
+                  case 6:
+                    this.message.systemList = arr;
+                    this.message.systemKey = k;
+                    break;
+                  default:
+                    break;
+                }
               }
             }
           })
