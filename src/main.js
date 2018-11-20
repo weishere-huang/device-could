@@ -15,7 +15,9 @@ import {
   VTable,
   VPagination
 } from 'vue-easytable'
+import global from './components/global/Global'
 
+Vue.prototype.global = global
 Vue.use(ElementUI)
 Vue.component(VTable.name, VTable)
 Vue.component(VPagination.name, VPagination)

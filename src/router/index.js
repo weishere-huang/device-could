@@ -7,6 +7,8 @@ import Information from '@/components/information/Information'
 import Company from '@/components/company/Company'
 import BusinessDetails from '@/components/company/BusinessDetails'
 import Equipment from '@/components/equipment/Equipment'
+import EquipmentAdd from '@/components/equipment/EquipmentAdd'
+import Redact from '@/components/equipment/Redact'
 import Operation from '@/components/operation/Operation'
 import TurnaroundPlans from '@/components/operation/TurnaroundPlans'
 import Organization from '@/components/organization/Organization'
@@ -76,6 +78,16 @@ export default new Router({
       path: '/Equipment',
       name: 'Equipment',
       component: Equipment
+    },
+    {
+      path: '/EquipmentAdd',
+      name: 'EquipmentAdd',
+      component: EquipmentAdd
+    },
+    {
+      path: '/Redact',
+      name: 'Redact',
+      component: Redact
     },
     {
       path: '/Operation',

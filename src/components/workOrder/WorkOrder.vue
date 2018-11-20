@@ -52,7 +52,9 @@ export default {
       console.log(this.treeData);
     }
   },
-  mounted() {}
+  mounted() {
+    
+  }
 };
 </script>
  
