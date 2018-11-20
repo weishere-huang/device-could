@@ -1,18 +1,21 @@
 <template>
 
+
   <div class="organization">
     <div class="content">
       <div class="left">
         <h5>企业名称</h5>
         <ul>
-          <li v-for="(item, index) in name1" :key="index">{{item}}
+
+          <li v-for="(item, index) in name1" :key="index">{{item.name}}
             <span style="letter-spacing:2px;">
               <i class="iconfont icon-jia" @click="ap"></i>
               <i class="iconfont icon-xiewrite18" @click="revise"></i>
               <i class="iconfont icon-shanchu1"></i>
             </span>
             <ul v-if="sss!=''">
-              <li style="border-top:1px solid #dde2eb;">
+              <li style="border-top:1px solid #dde2eb;" v-for="(item, index) in sss" :key="index">
+                {{item.menu_name}}
                 <span style="letter-spacing:5px; height:25px;">
                   <i class="iconfont icon-jia" @click="ap"></i>
                   <i class="iconfont icon-xiewrite18"></i>
@@ -20,15 +23,29 @@
                 </span>
               </li>
             </ul>
+            第三层
+            <ul v-if="sss!=''">
+              <li style="border-top:1px solid #dde2eb;" v-for="(item, index) in sss" :key="index">
+                {{item.menu_name}}
+                <span style="letter-spacing:5px; height:25px;">
+                  <i class="iconfont icon-jia" @click="ap"></i>
+                  <i class="iconfont icon-xiewrite18"></i>
+                  <i class="iconfont icon-shanchu1"></i>
+                </span>
+              </li>
+            </ul>
+
           </li>
         </ul>
       </div>
       <div class="center">
         <h5>类型</h5>
         <ul>
+
           <li v-for="(item, index) in name1" :key="index">{{item}}
             <ul v-if="sss!=''">
               <li style="border-top:1px solid #dde2eb;text-align:center;padding:0;"></li>
+
             </ul>
           </li>
         </ul>
@@ -36,33 +53,39 @@
       <div class="right">
         <h5>备注</h5>
         <ul>
+
           <li v-for="(item, index) in name1" :key="index">{{item}}
             <ul v-if="sss!=''">
               <li style="border-top:1px solid #dde2eb;text-align:center;padding:0;"></li>
+
             </ul>
           </li>
         </ul>
       </div>
     </div>
-    <add v-show="add"></add>
+
+    <add v-show="add1"></add>
     <revise v-show="revise1"></revise>
   </div>
 
 </template>
 <script>
+
   import add from "./Add";
   import revise from "./Revise";
 
   export default {
     data() {
       return {
-
+        add1: false,
+        revise1: false,
         sss: "",
+        xxx: "",
         name1: [1, 2, 3, 4, 5, 6, 7, 8],
         organizeType: [1, 2, 3, 4, 5, 6, 7, 8],
         organizeInfo: [1, 2, 3, 4, 5, 6, 7, 8],
-        pushtext:[],
-        code:"id"
+        pushtext: [],
+        code: "id"
       };
     },
     methods: {
@@ -71,9 +94,9 @@
         let qs = require("qs");
         let data = qs.stringify({
           parentCode: "1000001",
-          name: "后端组44444444",
+          name: "后端组55555",
           organizeType: 1,
-          organizeInfo: "2:52",
+          organizeInfo: "1119",
         });
         axios
           .post("api/organize/add", data)
@@ -90,10 +113,10 @@
         //修改组织机构
         let qs = require("qs");
         let data = qs.stringify({
-          organizeId:"356",
-          organizeType:"1",
-          organizeInfo:"14:53",
-          organizeName:"工程与技术中心"
+          organizeId: "356",
+          organizeType: "1",
+          organizeInfo: "14:53",
+          organizeName: "工程与技术中心"
         });
         axios
           .put("api/organize/update", data)
@@ -110,8 +133,7 @@
       delete() {
         //删除组织机构
         let qs = require("qs");
-        let data = qs.stringify({
-        });
+        let data = qs.stringify({});
         axios
           .delete("api/organize/delete/327")
           .then(result => {
@@ -126,21 +148,16 @@
           });
       },
       allOrganize() {
-        //查询所有组织机构
-        let qs = require("qs");
-        let data = qs.stringify({
-
-        });
         axios
-          .get("api/organize/allOrganize/321",data)
+          .get("api/organize/allOrganize/321")
           .then(result => {
             alert("查询所有组织机构")
             console.log(result.data);
             console.log(result.data.data[0].name);
-            this.name = result.data.data[0].name;
-            this.organizeType = result.data.data[0].organizeType;
-            this.organizeInfo = result.data.data[0].organizeInfo;
-            this.filterArray(result,1000);
+            this.name1 = this.filterArray(result.data.data, 1000);
+            console.log(this.name1);
+            console.log("呵呵呵");
+            this.sss = this.name1.children;
             // "id": 328,
             // "code": "1000001",
             //   "parentCode": "1000",
@@ -178,18 +195,22 @@
         var tree = [];
         var temp;
         for (var i = 0; i < data.length; i++) {
-          if (data[i].parent == parent) {
+          if (data[i].parentCode == parent) {
             var obj = data[i];
-            temp = filterArray(data, data[i].id);
+            temp = this.filterArray(data, data[i].id);
             if (temp.length > 0) {
               obj.children = temp;
             }
             tree.push(obj);
           }
         }
-        console.log("tree");
-        console.log(tree);
         return tree;
+      },
+      ap() {
+        this.add1 = !this.add1;
+      },
+      revise() {
+        this.revise1 = !this.revise1;
       }
 
 
@@ -214,6 +235,10 @@
       //this.delete();
       //this.add();
       //this.update();
+    },
+    components: {
+      revise,
+      add
     }
   };
 </script>
