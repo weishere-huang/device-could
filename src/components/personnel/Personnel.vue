@@ -29,14 +29,7 @@ export default {
       searchs: "",
       pageIndex: 1,
       pageSize: 10,
-      tableData: [
-        {
-          employeeNo: "111",
-          name: "222",
-          phone: "3333",
-          organizationName: "4444"
-        }
-      ],
+      tableData: [],
       tableDate: [],
       userIds: "",
       userstate: "",
@@ -111,15 +104,15 @@ export default {
           titleAlign: "center",
           columnAlign: "left",
           isResize: true
-        },
-        {
-          field: "state",
-          title: "备注",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
         }
+        // {
+        //   field: "state",
+        //   title: "备注",
+        //   width: 80,
+        //   titleAlign: "center",
+        //   columnAlign: "left",
+        //   isResize: true
+        // }
       ]
     };
   },
@@ -131,21 +124,6 @@ export default {
           this.tableData = response.data.data.content;
           this.tableDate = response.data.data.content;
           // console.log(response.data);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-    disable() {
-      let qs = require("qs");
-      let data = qs.stringify({
-        employeeIds: this.userIds,
-        enableOrDisable: 1
-      });
-      axios
-        .put("/api/employee/enableOrDisable", data)
-        .then(response => {
-          this.load();
         })
         .catch(function(error) {
           console.log(error);
@@ -165,13 +143,13 @@ export default {
     disable() {
       let qs = require("qs");
       let data = qs.stringify({
-        userIds: this.userIds,
+        employeeIds: this.userIds,
         enableOrDisable: 1
       });
       axios
         .put("/api/employee/enableOrDisable", data)
         .then(response => {
-          console.log(response.data.msg);
+          this.load();
         })
         .catch(function(error) {
           console.log(error);
@@ -180,13 +158,13 @@ export default {
     enable() {
       let qs = require("qs");
       let data = qs.stringify({
-        userIds: this.userIds,
+        employeeIds: this.userIds,
         enableOrDisable: 0
       });
       axios
         .put("/api/employee/enableOrDisable", data)
         .then(response => {
-          console.log(response.data.msg);
+          this.load();
         })
         .catch(function(error) {
           console.log(error);
@@ -195,10 +173,10 @@ export default {
     selectGroupChange(selection) {
       this.userIds = "";
       for (let i = 0; i < selection.length; i++) {
-        if (this.userIds != "") {
-          this.userIds += "," + selection[i].userId;
+        if (this.userIds == "") {
+          this.userIds += selection[i].id;
         } else {
-          this.userIds += selection[i].userId;
+          this.userIds += "," + selection[i].id;
         }
       }
       // console.log(this.userIds);
@@ -207,10 +185,10 @@ export default {
     selectALL(selection) {
       this.userIds = "";
       for (let i = 0; i < selection.length; i++) {
-        if (this.userIds != "") {
-          this.userIds += "," + selection[i].userId;
+        if (this.userIds == "") {
+          this.userIds += selection[i].id;
         } else {
-          this.userIds += selection[i].userId;
+          this.userIds += "," + selection[i].id;
         }
       }
       // console.log(this.userIds);
@@ -256,7 +234,7 @@ export default {
         .then(response => {
           this.tableData = response.data.data.content;
           this.tableDate = response.data.data.content;
-          console.log(response.data.data);
+          // console.log(response.data.data.content);
         })
         .catch(function(error) {
           console.log(error);
@@ -266,16 +244,6 @@ export default {
 
   created() {
     this.load();
-    axios
-      .get("/api/employee/selectAll", {
-        params: { page: this.pageIndex, size: this.pageSize }
-      })
-      .then(response => {
-        this.tableData = response.data.data.content;
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
   }
 };
 </script>

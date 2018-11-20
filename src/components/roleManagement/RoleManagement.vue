@@ -152,7 +152,7 @@
           sShow: true,
           sHide: false,
           checkAll: false,
-          checkedSystem: ["系统参数设置", "工作台管理"],
+          checkedSystem: [],
           systemList: [
             "系统参数设置",
             "工作台管理",
@@ -231,6 +231,12 @@
     },
     methods: {
       systemCheckAllChange(val) {
+        this.systemID = "";
+        for (let i =0;i<this.system.systemKey.length;i++){
+          val ? this.systemID == "" ? this.systemID +=this.system.systemKey[i]:this.systemID +=","+this.system.systemKey[i]:this.systemID = "";
+        }
+        // console.log(val);
+        console.log(this.systemID);
         this.system.checkedSystem = val ? this.system.systemList : [];
         this.system.isIndeterminate = false;
       },
@@ -251,7 +257,12 @@
         this.system.sShow = !this.system.sShow;
         this.system.sHide = !this.system.sHide;
       },
+
       informationCheckAllChange(val) {
+        for (let i =0;i<this.information.systemKey.length;i++){
+          val ? this.systemID == "" ? this.systemID +=this.information.systemKey[i]:this.systemID +=","+this.information.systemKey[i]:this.systemID = "";
+        }
+        console.log(this.systemID);
         this.information.checkedSystem = val ? this.information.systemList : [];
         this.information.isIndeterminate = false;
       },
@@ -273,6 +284,8 @@
         this.information.sShow = !this.information.sShow;
         this.information.sHide = !this.information.sHide;
       },
+
+
       equipmentCheckAllChange(val) {
         this.equipment.checkedSystem = val ? this.equipment.systemList : [];
         this.equipment.isIndeterminate = false;
@@ -295,6 +308,7 @@
         this.equipment.sShow = !this.equipment.sShow;
         this.equipment.sHide = !this.equipment.sHide;
       },
+
       personnelCheckAllChange(val) {
         this.personnel.checkedSystem = val ? this.personnel.systemList : [];
         this.personnel.isIndeterminate = false;
@@ -363,7 +377,7 @@
       },
 
       load(){
-        this.permissionsList(1);
+
         axios
           .get("/api/role/listAllRole")
           .then(response => {
@@ -377,29 +391,8 @@
       clickfun(e){
         this.roleName = e.target.textContent;
         this.roleId = e.target.attributes.label;
-        this.listPermissionByRoleId(this.roleId.value)
-      },
-      permissionsList(){
-        axios
-          .get("/api/permission/listAllPermission")
-          .then(response =>{
-            let arr = new Array();
-            let k = new Array();
-            for (let i in response.data.data) {
-              if(response.data.data[i].parentCode == "1"){
-                arr[i] = response.data.data[i].name;
-                k[i]= response.data.data[i].id;
-              }else {
-                this.system.systemList = arr;
-                this.system.systemKey = k;
-                break;
-              }
-            }
-
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+        this.listPermissionByRoleId(this.roleId.value);
+        console.log( this.roleId);
       },
       list(value,toValue,key){
         this.systemID = "";
@@ -407,7 +400,7 @@
           for(let j = 0;j<toValue.length;j++){
             // console.log(key[i]);
             if(value[i] === toValue[j]){
-              if(this.systemID==""){
+              if(this.systemID ==""){
                 this.systemID += key[j];
                 break;
               }else{
@@ -428,8 +421,8 @@
         axios
           .post("/api/role/add",data,{params: {permissionIds:this.systemID}})
           .then(response =>{
-            this.load()
-            console.log(response)
+            this.load();
+            // console.log(response)
           })
           .catch(function(error) {
             console.log(error);
@@ -456,15 +449,63 @@
         axios
           .get("/api/role/listPermissionByRole",{params: {roleId:val}})
           .then(response =>{
-            console.log(response.data.data)
+            console.log("response:   "+response.data.data);
             let arr = new Array();
             for (let i in response.data.data) {
-              if (response.data.data[i].parentCode == "1") {
+              if (response.data.data[i].parentCode = "1") {
                 arr[i] = response.data.data[i].name;
               }
             }
             this.system.checkedSystem = arr;
             console.log(this.system.checkedSystem )
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      PermissionsList(number){
+        axios
+          .get("/api/permission/listAllPermission")
+          .then(response =>{
+            // console.log(response.data.data);
+            let arr = new Array();
+            let k = new Array();
+            for (let i in response.data.data) {
+              if(response.data.data[i].parentCode == number){
+                arr[arr.length] = response.data.data[i].name;
+                k[k.length]= response.data.data[i].id;
+                // console.log(arr.length);
+              }
+                switch(number){
+                  case 1:
+                    this.system.systemList = arr;
+                    this.system.systemKey = k;
+                    continue;
+                  case 2:
+                    this.information.systemList = arr;
+                    this.information.systemKey = k;
+                    continue;
+                  case 3:
+                    this.equipment.systemList = arr;
+                    this.equipment.systemKey = k;
+                    continue;
+                  case 4:
+                    this.personnel.systemList = arr;
+                    this.personnel.systemKey = k;
+                    continue;
+                  case 5:
+                    this.user.systemList = arr;
+                    this.user.systemKey = k;
+                    continue;
+                  case 6:
+                    this.message.systemList = arr;
+                    this.message.systemKey = k;
+                    break;
+                  default:
+                    break;
+                }
+            }
+            // console.log(this.information.systemList);
           })
           .catch(function(error) {
             console.log(error);
@@ -481,7 +522,12 @@
     },
     created() {
       this.load();
-      this.systemShow()
+      this.PermissionsList(1);
+      this.PermissionsList(2);
+      this.PermissionsList(3);
+      this.PermissionsList(4);
+      this.PermissionsList(5);
+      this.PermissionsList(6);
     }
   };
 </script>
