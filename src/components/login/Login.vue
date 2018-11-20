@@ -224,6 +224,10 @@
           passWord: this.manager.userPassword,
           phone: this.manager.phone,
 
+    returnForget(){
+      this.forgetShow=true;
+      this.isshow=false;
+    },
         });
         axios.post("/api/enterprise/add", data).then(result => {
           console.log(result);

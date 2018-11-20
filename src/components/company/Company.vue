@@ -203,15 +203,16 @@
         }
       },
       load() {
-
         axios.get("/api/enterprise/all", {params: {page: this.pageIndex, size: this.pageSize}})
           .then(response => {
             for (let i = 0; i<response.data.data.content.length;i++){
               // console.log(response.data.data.content.length)
               this.tableDate = response.data.data.content;
               response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
-              this.tableData = response.data.data.content
             }
+
+            console.log(response)
+              this.tableData = response.data.data.content
           }).catch(function (error) {
           console.log(error)
         });
@@ -221,8 +222,9 @@
           .then(response => {
             for (let i = 0; i<response.data.data.content.length;i++){
               // console.log(response.data.data.content.length)
-              this.tableDate = response.data.data.content;
+
               response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+
             }
             this.tableData = response.data.data.content
 

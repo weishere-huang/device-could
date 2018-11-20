@@ -19,7 +19,7 @@
             </el-submenu>
             <el-submenu index="/Information">
               <template slot="title"><i class="el-icon-menu"></i>数据中心</template>
-              <el-menu-item index="/Information">选项1</el-menu-item>
+              <el-menu-item index="/ForgetThePassword">修改密码</el-menu-item>
               <el-menu-item index="/Information">选项2</el-menu-item>
               <el-menu-item index="/Information">选项3</el-menu-item>
             </el-submenu>
@@ -49,13 +49,13 @@
               <el-menu-item index="/Organization">选项3</el-menu-item>
             </el-submenu>
             <el-submenu index="/Personnel">
-              <template slot="title"><i class="el-icon-setting"></i>人员档案</template>
+              <template slot="title"><i class="el-icon-setting"></i>员工管理</template>
               <el-menu-item index="/Personnel">选项1</el-menu-item>
               <el-menu-item index="/PersnnelAdd">添加</el-menu-item>
               <el-menu-item index="/Modification">修改</el-menu-item>
             </el-submenu>
             <el-submenu index="/User">
-              <template slot="title"><i class="el-icon-setting"></i>用户管理</template>
+              <template slot="title"><i class="el-icon-setting"></i>企业用户管理</template>
               <el-menu-item index="/User">选项1</el-menu-item>
               <el-menu-item index="/User">选项2</el-menu-item>
               <el-menu-item index="/User">选项3</el-menu-item>
