@@ -17,7 +17,6 @@
               <el-menu-item index="/Home">选项2</el-menu-item>
               <el-menu-item index="/Home">选项3</el-menu-item> -->
             </el-submenu>
-            <!-- <router-link to="默认工作台"></router-link> -->
             <el-submenu index="/Information">
               <template slot="title"><i class="el-icon-menu"></i>数据中心</template>
               <el-menu-item index="/ForgetThePassword">修改密码</el-menu-item>
