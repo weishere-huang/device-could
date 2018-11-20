@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/login/Login'
+import ForgetThePassword from '@/components/login/ForgetThePassword'
 import Home from '@/components/home/Home'
 import Information from '@/components/information/Information'
 import Company from '@/components/company/Company'
@@ -40,6 +41,11 @@ export default new Router({
       path: '/Home',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/ForgetThePassword',
+      name: 'ForgetThePassword',
+      component: ForgetThePassword
     },
     {
       path: '/Information',

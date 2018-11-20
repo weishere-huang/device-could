@@ -43,17 +43,16 @@
       </div>
     </div>
   </div>
-
 </template>
 <script>
 export default {
   name: "",
-  props:["auditValue"],
+  props: ["auditValue"],
   data() {
     return {
       msg: "哈哈哈",
       img: "",
-      block:false,
+      block: false,
       company: {
         name: "",
         address: "",
@@ -67,9 +66,10 @@ export default {
       }
     };
   },
-  methods:{
-    auditback(){
-      this.$emit("auditByValue",this.block)
+  methods: {
+    auditback() {
+      this.$emit("auditByValue", this.block);
+      location.reload();
     }
   }
 };

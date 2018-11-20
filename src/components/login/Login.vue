@@ -16,7 +16,7 @@
         <el-button type="primary" round @click="login()">登录</el-button>
       </p>
       <p class="registerSkip">
-        <span>忘记密码</span>
+        <span @click="returnForget">忘记密码</span>
         <span v-on:click="function(){ 
           isshow=!isshow 
           ishide=!ishide
@@ -98,11 +98,13 @@
           ishide=!ishide
           }">已有账号，直接登录</div>
     </div>
+    <forgetThePassword v-show="forgetShow"></forgetThePassword>
   </div>
 </template>
 <script>
 import md5 from "js-md5/src/md5.js";
 import CryptoJS from "crypto-js/crypto-js.js";
+import forgetThePassword from './ForgetThePassword'
 export default {
   name: "Login",
   data() {
@@ -119,10 +121,10 @@ export default {
             "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
         }
       ],
-
       verification: "",
       userName: "",
       password: "",
+      forgetShow:false,
       isshow: true,
       ishide: false,
       nextshow: false,
@@ -154,7 +156,10 @@ export default {
     // let instance = axios.create({
     //   headers: { "content-type": "application/x-www-form-urlencoded" }
     // });
-
+    returnForget(){
+      this.forgetShow=true;
+      this.isshow=false;
+    },
     encryptByDES(message, key) {
       const keyHex = CryptoJS.enc.Utf8.parse(key);
       const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
@@ -244,6 +249,9 @@ export default {
       .catch(function(error) {
         console.log(error);
       });
+  },
+  components: {
+    forgetThePassword
   }
 };
 </script>
