@@ -74,7 +74,7 @@ export default {
           isResize: true
         },
         {
-          field: "organizationName",
+          field: "organizeName",
           title: "组织单位/部门",
           width: 250,
           titleAlign: "center",
