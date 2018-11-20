@@ -194,6 +194,11 @@
       };
     },
     methods: {
+      Personnel() {
+        this.$router.push({
+          path: "/Personnel"
+        });
+      },
       tback(){
         this.$router.back(-1)
       },
@@ -275,6 +280,7 @@
         axios
           .put("/api/employee/update",data)
           .then(response => {
+            this.Personnel();
             console.log(response.data.msg);
           })
           .catch(function(error) {
