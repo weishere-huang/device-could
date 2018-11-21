@@ -104,14 +104,6 @@
             isResize: true
           },
           {
-            field: "msgState",
-            title: "消息状态",
-            width: 50,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
             field: "gmtCreate",
             title: "创建时间",
             width: 50,
@@ -216,6 +208,9 @@
           .get("api/message/allMsg/" + this.userId, data)
           .then(result => {
             console.log(result.data.data);
+            // for(let i = 0;i<result.data.data.length;i++){
+            //   if(result.data.data[i].isRead ==)
+            // }
             this.tableData = result.data.data;
             this.NotReadMsgCount();
           })
