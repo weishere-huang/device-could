@@ -74,7 +74,7 @@ export default {
           isResize: true
         },
         {
-          field: "organizationName",
+          field: "organizeName",
           title: "组织单位/部门",
           width: 250,
           titleAlign: "center",
@@ -122,8 +122,11 @@ export default {
         .get("/api/employee/search", { params: { condition: this.searchs } })
         .then(response => {
           this.tableData = response.data.data.content;
-          this.tableDate = response.data.data.content;
-          // console.log(response.data);
+          for(let i in this.tableData){
+            this.tableData[i].state === -1 ? this.tableData[i].state = "禁用" : this.tableData[i].state = "正常";
+            this.tableData[i].entryTime = this.tableData[i].entryTime.split("T")[0];
+          }
+          this.tableDate =this.tableData;
         })
         .catch(function(error) {
           console.log(error);
@@ -233,8 +236,11 @@ export default {
         })
         .then(response => {
           this.tableData = response.data.data.content;
-          this.tableDate = response.data.data.content;
-          // console.log(response.data.data.content);
+          for(let i in this.tableData){
+            this.tableData[i].state === -1 ? this.tableData[i].state = "禁用" : this.tableData[i].state = "正常";
+            this.tableData[i].entryTime = this.tableData[i].entryTime.split("T")[0];
+          }
+          this.tableDate =this.tableData;
         })
         .catch(function(error) {
           console.log(error);

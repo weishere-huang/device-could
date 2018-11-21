@@ -107,7 +107,7 @@
 <script>
   import md5 from "js-md5/src/md5.js";
   import CryptoJS from "crypto-js/crypto-js.js";
-
+  import forgetThePassword from './ForgetThePassword'
   export default {
     name: "Login",
     data() {
@@ -185,7 +185,7 @@
           passWord: this.password
         });
         axios
-          .post("/api/user/login", data)
+          .post(this.global.apiSrc + "/user/login", data)
           .then(result => {
             if (this.userName == "") {
               console.log("请输入用户名")
@@ -224,12 +224,12 @@
           passWord: this.manager.userPassword,
           phone: this.manager.phone,
 
-    returnForget(){
-      this.forgetShow=true;
-      this.isshow=false;
-    },
+          returnForget() {
+            this.forgetShow = true;
+            this.isshow = false;
+          },
         });
-        axios.post("/api/enterprise/add", data).then(result => {
+        axios.post(this.global.apiSrc + "/enterprise/add", data).then(result => {
           console.log(result);
           if (this.company.name == "") {
             console.log("企业名不能为空")
@@ -288,22 +288,27 @@
         return encrypted.toString();
       }
     },
-    components: {},
+    components: {
+      forgetThePassword,
+    },
+
     created() {
+      console.log(this.global.apiSrc);
       let qs = require("qs");
       let data = qs.stringify({
         page: "1",
         size: "5"
       });
       axios
-        .get("/api/user/all", data)
+        .get(this.global.apiSrc + "/message/", data)
         .then(response => {
           console.log(response.data);
         })
         .catch(function (error) {
           console.log(error);
         });
-    }
+    },
+
   };
 </script>
 <style lang="less" scoped>

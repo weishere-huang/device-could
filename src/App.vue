@@ -10,87 +10,88 @@
       </el-container>
       <el-container class='box'>
         <el-aside width="180px" style="background-color: rgb(238, 241, 246)">
-          <el-menu :default-openeds="['1', '1']" :router=true :default-active="$route.name" style="background-color:rgb(238, 241, 246);">
+          <el-menu :router=true :default-active="$route.name" style="background-color:rgb(238, 241, 246);">
             <el-submenu index="/Home">
               <template slot="title"><i class="el-icon-message" index="/Home"></i>默认工作台</template>
               <!-- <el-menu-item index="/Home">选项1</el-menu-item>
               <el-menu-item index="/Home">选项2</el-menu-item>
               <el-menu-item index="/Home">选项3</el-menu-item> -->
             </el-submenu>
-            <el-submenu index="/Information">
+            <!-- <router-link to="默认工作台"></router-link> -->
+            <el-submenu index="1">
               <template slot="title"><i class="el-icon-menu"></i>数据中心</template>
               <el-menu-item index="/ForgetThePassword">修改密码</el-menu-item>
               <el-menu-item index="/Information">选项2</el-menu-item>
               <el-menu-item index="/Information">选项3</el-menu-item>
             </el-submenu>
-            <el-submenu index="/Company">
+            <el-submenu index="2">
               <template slot="title"><i class="el-icon-setting"></i>企业管理</template>
               <el-menu-item index="/Company">选项1</el-menu-item>
               <el-menu-item index="/AdvancedSearch">高级搜索</el-menu-item>
               <el-menu-item index="/BusinessDetails">企业详情</el-menu-item>
               <el-menu-item index="/Audit">审核</el-menu-item>
             </el-submenu>
-            <el-submenu index="/Equipment">
+            <el-submenu index="3">
               <template slot="title"><i class="el-icon-setting"></i>设备管理</template>
               <el-menu-item index="/Equipment">选项1</el-menu-item>
-              <el-menu-item index="/Equipment">选项2</el-menu-item>
-              <el-menu-item index="/Equipment">选项3</el-menu-item>
+              <el-menu-item index="/EquipmentAdd">设备添加</el-menu-item>
+              <el-menu-item index="/Redact">编辑</el-menu-item>
             </el-submenu>
-            <el-submenu index="/Operation">
+            <el-submenu index="4">
               <template slot="title"><i class="el-icon-setting"></i>运维管理</template>
               <el-menu-item index="/Operation">选项1</el-menu-item>
               <el-menu-item index="/TurnaroundPlans">检修计划</el-menu-item>
               <el-menu-item index="/Operation">选项3</el-menu-item>
             </el-submenu>
-            <el-submenu index="/Organization">
+            <el-submenu index="5">
               <template slot="title"><i class="el-icon-setting"></i>组织机构</template>
               <el-menu-item index="/Organization">选项1</el-menu-item>
               <el-menu-item index="/Add">添加</el-menu-item>
               <el-menu-item index="/Organization">选项3</el-menu-item>
             </el-submenu>
-            <el-submenu index="/Personnel">
+            <el-submenu index="6">
               <template slot="title"><i class="el-icon-setting"></i>员工管理</template>
               <el-menu-item index="/Personnel">选项1</el-menu-item>
               <el-menu-item index="/PersnnelAdd">添加</el-menu-item>
               <el-menu-item index="/Modification">修改</el-menu-item>
             </el-submenu>
-            <el-submenu index="/User">
+            <el-submenu index="7">
               <template slot="title"><i class="el-icon-setting"></i>企业用户管理</template>
               <el-menu-item index="/User">选项1</el-menu-item>
               <el-menu-item index="/User">选项2</el-menu-item>
               <el-menu-item index="/User">选项3</el-menu-item>
             </el-submenu>
-            <el-submenu index="/EquipmentArchives">
+            <el-submenu index="8">
               <template slot="title"><i class="el-icon-setting"></i>设备档案</template>
               <el-menu-item index="/EquipmentArchives">选项1</el-menu-item>
               <el-menu-item index="/EquipmentArchives">选项2</el-menu-item>
               <el-menu-item index="/EquipmentArchives">选项3</el-menu-item>
             </el-submenu>
-            <el-submenu index="/WorkOrder">
+            <el-submenu index="9">
               <template slot="title"><i class="el-icon-setting"></i>工单</template>
               <el-menu-item index="/WorkOrder">选项1</el-menu-item>
               <el-menu-item index="/WorkOrder">选项2</el-menu-item>
               <el-menu-item index="/WorkOrder">选项3</el-menu-item>
             </el-submenu>
-            <el-submenu index="/KnowledgeBase">
+            <el-submenu index="10">
               <template slot="title"><i class="el-icon-setting"></i>知识库</template>
               <el-menu-item index="/KnowledgeBase">选项1</el-menu-item>
               <el-menu-item index="/KnowledgeBase">选项2</el-menu-item>
               <el-menu-item index="/KnowledgeBase">选项3</el-menu-item>
             </el-submenu>
-            <el-submenu index="/Message">
+            <el-submenu index="11">
               <template slot="title"><i class="el-icon-setting"></i>消息管理</template>
               <el-menu-item index="/Message">选项1</el-menu-item>
               <el-menu-item index="/MsgDetails">消息详情</el-menu-item>
               <el-menu-item index="/Message">选项3</el-menu-item>
             </el-submenu>
-            <el-submenu index="/RoleManagement">
+            <el-submenu index="12">
               <template slot="title"><i class="el-icon-setting"></i>角色管理</template>
               <el-menu-item index="/RoleManagement">选项1</el-menu-item>
               <el-menu-item index="/RoleManagement">选项2</el-menu-item>
               <el-menu-item index="/RoleManagement">选项3</el-menu-item>
             </el-submenu>
-            <el-submenu index="/System">
+            <el-submenu index="13">
               <template slot="title"><i class="el-icon-setting"></i>系统管理</template>
               <el-menu-item index="/System">选项1</el-menu-item>
               <el-menu-item index="/System">选项2</el-menu-item>
@@ -142,6 +143,9 @@ export default {
 * {
   margin: 0;
   padding: 0;
+}
+.el-input__inner{
+  padding:0 5px !important;
 }
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;

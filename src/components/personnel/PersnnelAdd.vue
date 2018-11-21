@@ -193,8 +193,8 @@
 
     },
     methods: {
-    tback(){
-          this.$router.back(-1)
+      tback(){
+        this.$router.back(-1)
       },
       employeeAdd() {
         this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
