@@ -7,8 +7,8 @@
         <el-button size="small">停用</el-button>
         <el-button size="small" @click="replace">刷新</el-button>
         <div class="search">
-          <el-input type="search" placeholder="根据企业名称" size="small"></el-input>
-          <el-button size="small">搜索</el-button>
+          <el-input type="search" placeholder="根据企业名称" size="small" v-model="name"></el-input>
+          <el-button size="small" @click="findByName">搜索</el-button>
           <span style="color:#409eff" @click="adsearch">高级搜索</span>
         </div>
 
@@ -32,6 +32,7 @@
 import advancedsearch from "./AdvancedSearch";
 import businessDetails from "./BusinessDetails";
 import audit from "./Audit";
+
 export default {
   data() {
     return {
@@ -40,7 +41,8 @@ export default {
       detailsValue: "",
       auditValue: "",
       pageIndex: 1,
-      pageSize: 10,
+      pageSize: 5,
+      name: "",
       tableData: [
         {
           name: "11",
@@ -114,12 +116,11 @@ export default {
       location.reload();
     },
     auditblock() {
-      if (this.auditValue==="") {
-        alert("请选择一个企业")
-      }else{
+      if (this.auditValue === "") {
+        alert("请选择一个企业");
+      } else {
         this.auditShow = true;
       }
-      
     },
     auditByValue: function(params) {
       this.auditShow = params;
@@ -153,6 +154,7 @@ export default {
       this.pageIndex = pageIndex;
       this.getTableData();
       console.log(pageIndex);
+      this.load();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
@@ -172,17 +174,39 @@ export default {
         });
       }
     },
+    load() {
+      axios
+        .get("/api/enterprise/all", {
+          params: { page: this.pageIndex, size: this.pageSize }
+        })
+        .then(response => {
+          this.tableData = response.data.data.content;
+          this.tableDate = response.data.data.content;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    findByName() {
+      axios
+        .get("/api/enterprise/findByNameOrState", {
+          params: { enterpriseName: this.name }
+        })
+        .then(response => {
+          this.tableData = response.data.data.content;
+          this.tableDate = response.data.data.content;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+
     adsearch() {
       document.querySelectorAll(".adsearch")[0].style.right = 0;
     }
   },
   created() {
-    // let qs = require("qs");
-    // let data = qs.stringiify({
-    //   page: "0",
-    //   size: "10"
-    // });
-    // axios.get
+    this.load();
   }
 };
 </script>

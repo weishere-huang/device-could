@@ -3,6 +3,7 @@
     <el-tree :data="treeData" :props="defaultProps" accordion @node-click="handleNodeClick">
     </el-tree>
 </template>
+
  
 <script>
 export default {
@@ -60,3 +61,4 @@ export default {
  
 <style scoped>
 </style>
+
