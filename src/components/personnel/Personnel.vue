@@ -32,7 +32,6 @@ export default {
       tableData: [],
       tableDate: [],
       userIds: "",
-      userstate: "",
       columns: [
         {
           width: 50,
@@ -105,14 +104,6 @@ export default {
           columnAlign: "left",
           isResize: true
         }
-        // {
-        //   field: "state",
-        //   title: "备注",
-        //   width: 80,
-        //   titleAlign: "center",
-        //   columnAlign: "left",
-        //   isResize: true
-        // }
       ]
     };
   },
@@ -182,8 +173,6 @@ export default {
           this.userIds += "," + selection[i].id;
         }
       }
-      // console.log(this.userIds);
-      // console.log(selection);
     },
     selectALL(selection) {
       this.userIds = "";
@@ -236,12 +225,14 @@ export default {
         })
         .then(response => {
           this.tableData = response.data.data.content;
-          for(let i in this.tableData){
+          console.log(this.tableData.length);
+          for(let i = 0;i<this.tableData.length;i++){
+            console.log(i);
             this.tableData[i].state === -1 ? this.tableData[i].state = "禁用" : this.tableData[i].state = "正常";
             this.tableData[i].entryTime = this.tableData[i].entryTime.split("T")[0];
           }
           this.tableDate =this.tableData;
-
+          console.log(this.tableData);
         })
         .catch(function(error) {
           console.log(error);

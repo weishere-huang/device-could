@@ -131,7 +131,7 @@
         roleName: "",
         roleId:0,
         systemID:"",
-        systemKeyInfo:[6],
+        systemKeyInfo:[],
         system: {
           sShow: true,
           sHide: false,
@@ -428,7 +428,7 @@
         console.log(this.systemKeyInfo);
       },
       add(){
-        console.log(this.systemKeyInfo);
+        // console.log(this.systemKeyInfo);
         this.systemID = "";
         for(let i = 0;i< this.systemKeyInfo.length;i++){
           if(this.systemID === ""){
@@ -437,7 +437,7 @@
             this.systemID += ","+this.systemKeyInfo[i];
           }
         }
-        console.log(this.systemID);
+        // console.log(this.systemID);
         let qs = require("qs");
         let data = qs.stringify({
           id:this.roleId.value,
@@ -532,7 +532,7 @@
       },
       PermissionsList(number){
         axios
-          .get(this.global.apiSrc+"/permission/listAllPermission")
+          .get("/api/permission/listAllPermission")
           .then(response =>{
             let arr = new Array();
             let k = new Array();
