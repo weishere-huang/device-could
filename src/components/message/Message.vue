@@ -186,8 +186,8 @@
         let data = qs.stringify({
           ids:this.ids
         });
-        axios
-          .put("api/message/UpdateMsgState/",data)
+        this.axios
+          .put(this.global.apiSrc+"/message/UpdateMsgState/",data)
           .then(result => {
             this.allMsg();
             console.log(result.data);
@@ -204,8 +204,8 @@
           page: this.pageIndex,
           size: this.pageSize
         });
-        axios
-          .get("api/message/allMsg/" + this.userId, data)
+        this.axios
+          .get(this.global.apiSrc+"/message/allMsg/" + this.userId, data)
           .then(result => {
             console.log(result.data.data);
             // for(let i = 0;i<result.data.data.length;i++){
@@ -224,8 +224,8 @@
         if (this.ids.length > 1) {
           alert("请选择单个消息")
         } else {
-          axios
-            .get("api/message/findOneMsg/" + this.ids, )
+          this.axios
+            .get(this.global.apiSrc+"/message/findOneMsg/" + this.ids, )
             .then(result => {
               alert(result.data.data.id + "\n---标题--" + result.data.data.msgTitle + "\n--内容--" + result.data.data.msgContent);
               console.log(result.data);
@@ -251,8 +251,8 @@
           page: 1,
           size: 20
         });
-        axios
-          .get("api/message/allNotReadMsg/" + this.userId, data)
+        this.axios
+          .get(this.global.apiSrc+"/message/allNotReadMsg/" + this.userId, data)
           .then(result => {
             console.log(result.data);
             this.tableData = result.data.data;
@@ -266,8 +266,8 @@
         //查询该用户未读消息数目
         let qs = require("qs");
         let data = qs.stringify({});
-        axios
-          .get("api/message/NotReadMsgCount/" + this.userId, data)
+        this.axios
+          .get(this.global.apiSrc+"/message/NotReadMsgCount/" + this.userId, data)
           .then(result => {
             this.msgcount = result.data.data;
             console.log(result.data);
@@ -279,8 +279,8 @@
       },
       updateMessageRead() {
         //修改消息为已读
-        axios
-          .get("api/message/UpdateMsgRead/" + this.ids)
+        this.axios
+          .get(this.global.apiSrc+"/message/UpdateMsgRead/" + this.ids)
           .then(result => {
             console.log(result.data);
           })
@@ -294,8 +294,8 @@
         this.msgDetail=rowData;
         this.detailsShow=true;
         this.ids=rowData.id;
-        axios
-          .get("api/message/findOneMsg/" + this.ids)
+        this/axios
+          .get(this.global.apiSrc+"/message/findOneMsg/" + this.ids)
           .then(result => {
             console.log(result.data);
            this.msgDetail=result.data.data;

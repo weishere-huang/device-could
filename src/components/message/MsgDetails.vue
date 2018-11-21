@@ -88,10 +88,9 @@
       }
     },
     created() {
-      axios
-        .get("api/message/findOneMsg/" + this.msgDetail)
+      this.axios
+        .get(this.global.apiSrc+"/message/findOneMsg/" + this.msgDetail)
         .then(result => {
-          alert("????");
           console.log(result.data);
           this.message=result.data.data;
           // if (this.message.isRead === 0) {

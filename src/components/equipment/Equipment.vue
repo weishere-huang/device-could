@@ -94,8 +94,8 @@
         <el-button size="small">删除</el-button>
         <div class="searchright">
           <span>关键字：</span>
-          <el-input type="search" size="small" placeholder="根据设备编号，名称，位号"></el-input>
-          <el-button size="small">搜索</el-button>
+          <el-input type="search" size="small" placeholder="根据设备编号，名称，位号" v-model="keyWord"></el-input>
+          <el-button size="small" @click="findByKeyWord">搜索</el-button>
           <span style="color:#409eff;font-size:12px;cursor: pointer;">高级搜索</span>
         </div>
       </div>
@@ -121,6 +121,8 @@
     name: "equipment",
     data() {
       return {
+        keyWord:"",
+        deviceId:"",
         pageIndex: 1,
         pageSize: 10,
         tableData: [
@@ -207,7 +209,7 @@
             isResize: true
           },
           {
-            field: "deviceCategory",
+            field: "deviceCategoryName",
             title: "设备类别",
             width: 80,
             titleAlign: "center",
@@ -242,7 +244,7 @@
         this.$store.commit("equipmentRedact", rowData)
       },
       selectGroupChange(selection) {
-        console.log("select-group-change", selection);
+        console.log("select-group-change", selection)
       },
       selectALL(selection) {
         console.log("select-aLL", selection);
@@ -288,11 +290,10 @@
           page: this.pageIndex,
           size: this.pageSize
         });
-        axios
-          .get("api/device/all", data)
+        this.axios
+          .get(this.global.apiSrc+"/device/all", data)
           .then(result => {
             this.tableData = result.data.data.content;
-            console.log("findall");
             console.log(result.data);
           })
           .catch(err => {
@@ -319,9 +320,9 @@
           page: this.pageIndex,
           size: this.pageSize
         });
-        alert("select");
-        axios
-          .get("api/device/select", data)
+        this.axios
+        //  .get("api/device/select", data)
+          .get(this.global.apiSrc+"/device/select", data)
           .then(result => {
             alert("selectquery");
             console.log(result.data);
@@ -333,15 +334,10 @@
       //通过
       findDeviceState() {
         //获取设备状况接口
-        let qs = require("qs");
-        let data = qs.stringify({
-          id: 195
-        });
-        alert("findDeviceState");
-        axios
-          .get("api/device/findDeviceState")
+        this.axios
+          //.get("api/device/findDeviceState")
+          .get(this.global.apiSrc+"/device/findDeviceState")
           .then(result => {
-            alert("findDeviceState");
             console.log(result.data);
           })
           .catch(err => {
@@ -349,68 +345,16 @@
           });
       },
       //通过
-      add1() {
-        //添加设备信息接口
-        let qs = require("qs");
-        let data = qs.stringify({
-          deviceNo: "Xy001",
-          deviceName: "IBM存储",
-          deviceClassify: 1,
-          deviceClassifyName: "存储",
-          deviceCategory: 2,
-          deviceCategoryName: "IBM-8000",
-          deviceSpec: "大型100T存储",
-          organizeCode: "XY001",
-          organizeName: "联想",
-          token: ""
-        });
-        alert("add");
-        axios
-          .post("api/device/add", data)
-          .then(result => {
-            alert("add");
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
+
       //通过
-      update() {
-        //编辑设备信息接口
-        let qs = require("qs");
-        let data = qs.stringify({
-          deviceNo: "Xy001",
-          deviceName: "IBM存储",
-          deviceClassify: 1,
-          deviceClassifyName: "存储",
-          deviceCategory: 2,
-          deviceCategoryName: "IBM-8000",
-          deviceSpec: "大型100T存储",
-          organizeCode: "XY001",
-          organizeName: "联想",
-          token: "",
-          id: 195
-        });
-        alert("update");
-        axios
-          .put("api/device/update", data)
-          .then(result => {
-            alert("update");
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
+
       //通过
-      detail() {
+      detail(id) {
         //获取设备详情接口
         let qs = require("qs");
         let data = qs.stringify({});
-        alert("detail");
-        axios
-          .get("api/device/detail", {params: {deviceId: 1}})
+        this.axios
+          .get(this.global.apiSrc+"/device/detail", {params: {deviceId: id }})
           .then(result => {
             alert("detail");
             console.log(result.data);
@@ -440,17 +384,11 @@
       //通过
       findByKeyWord() {
         //根据设备编号、位号、名称查询
-        let qs = require("qs");
-        let data = qs.stringify({
-          page: this.pageIndex,
-          size: this.pageSize,
-          keyWord: "Xy001"
-        });
-        axios
-          .get("api/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: "冲压机3"}})
+        this.axios
+          .get(this.global.apiSrc+"/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: this.keyWord}})
           .then(result => {
-            alert("findByKeyWord");
-            console.log(result.data);
+            this.tableData = result.data.data.content;
+            console.log(result.data.data.content);
           })
           .catch(err => {
             console.log(err);
@@ -464,8 +402,8 @@
 
           organizeCode: ""
         });
-        axios
-          .get("api/employee/findByOrganizeCode", {
+        this.axios
+          .get(this.global.apiSrc+"/employee/findByOrganizeCode", {
             params: {
               page: this.pageIndex,
               size: this.pageSize,
@@ -489,8 +427,9 @@
           size: this.pageSize,
           employeeId: 147
         });
-        axios
-          .get("api/employee/getDeviceById", data)
+        this.axios
+          // .get("api/employee/getDeviceById", data)
+          .get(this.global.apiSrc +"/employee/getDeviceById", data)
           .then(result => {
             alert("getDeviceById");
             console.log(result.data);

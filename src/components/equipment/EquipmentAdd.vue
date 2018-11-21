@@ -4,33 +4,33 @@
             <div class="top">
                 <el-row>
                     <el-button plain size="small" @click="tback">返回</el-button>
-                    <el-button plain size="small">保存</el-button>
+                    <el-button plain size="small" @click="add1">保存</el-button>
                 </el-row>
             </div>
             <div class="center">
                 <h5>基础信息</h5>
                 <el-form ref="form" :model="sizeForm" label-width="80px" size="small">
                     <el-form-item label="设备编号">
-                        <el-input v-model="sizeForm.name" style="width:200px"></el-input>
+                        <el-input v-model="sizeForm.deviceNo" style="width:200px"></el-input>
                     </el-form-item>
                     <el-form-item label="设备名称">
-                        <el-input v-model="sizeForm.name" style="width:512px"></el-input>
+                        <el-input v-model="sizeForm.deviceName" style="width:512px"></el-input>
                     </el-form-item>
                     <el-form-item label="所属部门">
-                        <el-select v-model="sizeForm.region" placeholder="点击选择" style="width:512px">
+                        <el-select v-model="sizeForm.organizeName" placeholder="点击选择" style="width:512px">
                             <el-option label="区域一" value="shanghai"></el-option>
                             <el-option label="区域二" value="beijing"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form :inline="true" style="padding-left:12px" size="small">
                         <el-form-item label="设备分类">
-                            <el-select v-model="sizeForm.region" placeholder="点击选择" style="width:215px">
+                            <el-select v-model="sizeForm.deviceClassify" placeholder="点击选择" style="width:215px">
                                 <el-option label="区域一" value="shanghai"></el-option>
                                 <el-option label="区域二" value="beijing"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="设备类别">
-                            <el-select v-model="sizeForm.region" placeholder="点击选择" style="width:215px">
+                            <el-select v-model="sizeForm.deviceCategoryName" placeholder="点击选择" style="width:215px">
                                 <el-option label="区域一" value="shanghai"></el-option>
                                 <el-option label="区域二" value="beijing"></el-option>
                             </el-select>
@@ -38,10 +38,10 @@
                     </el-form>
                     <el-form :inline="true" style="padding-left:12px" size="small">
                         <el-form-item label="设备型号">
-                            <el-input v-model="sizeForm.name" style="width:215px"></el-input>
+                            <el-input v-model="sizeForm.deviceModel" style="width:215px"></el-input>
                         </el-form-item>
                         <el-form-item label="设备状况">
-                            <el-select v-model="sizeForm.region" placeholder="点击选择" style="width:215px">
+                            <el-select v-model="sizeForm.deviceState" placeholder="点击选择" style="width:215px">
                                 <el-option label="区域一" value="shanghai"></el-option>
                                 <el-option label="区域二" value="beijing"></el-option>
                             </el-select>
@@ -49,17 +49,17 @@
                     </el-form>
                     <el-form :inline="true" style="padding-left:12px" size="small">
                         <el-form-item label="设备规格">
-                            <el-input v-model="sizeForm.name" style="width:215px"></el-input>
+                            <el-input v-model="sizeForm.deviceSpec" style="width:215px"></el-input>
                         </el-form-item>
                         <el-form-item label="出厂日期">
                             <el-col :span="11">
-                                <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.date1" style="width: 215px;"></el-date-picker>
+                                <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.outputDate" style="width: 215px;"></el-date-picker>
                             </el-col>
                         </el-form-item>
                     </el-form>
 
                     <el-form-item label="设备厂家">
-                        <el-input v-model="sizeForm.name" style="width:512px"></el-input>
+                        <el-input v-model="sizeForm.manufacturer" style="width:512px"></el-input>
                     </el-form-item>
                 </el-form>
 
@@ -115,24 +115,24 @@
                 </ul>
                 <el-form :inline="true" style="padding-left:12px" size="small">
                     <el-form-item label="安装位置">
-                        <el-input v-model="sizeForm.name" style="width:215px"></el-input>
+                        <el-input v-model="sizeForm.location" style="width:215px"></el-input>
                     </el-form-item>
                     <el-form-item label="设备位号">
-                        <el-input v-model="sizeForm.name" style="width:215px"></el-input>
+                        <el-input v-model="sizeForm.locationNo" style="width:215px"></el-input>
                     </el-form-item>
                 </el-form>
                 <el-form :inline="true" style="padding-left:12px" size="small">
                     <el-form-item label="购买价格">
-                        <el-input v-model="sizeForm.name" style="width:215px"></el-input>
+                        <el-input v-model="sizeForm.buyPrice" style="width:215px"></el-input>
                     </el-form-item>
                     <el-form-item label="购买日期">
                         <el-col :span="11">
-                            <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.date1" style="width: 215px;"></el-date-picker>
+                            <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.buyDate" style="width: 215px;"></el-date-picker>
                         </el-col>
                     </el-form-item>
                     <el-form-item label="入厂日期">
                         <el-col :span="11">
-                            <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.date1" style="width: 215px;"></el-date-picker>
+                            <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.enterFactoryDate" style="width: 215px;"></el-date-picker>
                         </el-col>
                     </el-form-item>
                 </el-form>
@@ -154,14 +154,25 @@ export default {
     return {
       addShow: false,
       sizeForm: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: ""
+        deviceNo: "",
+        deviceName: "",
+        organizeName: "",
+        deviceClassify: "",
+        deviceClassifyName:"",
+        deviceSpec:"",
+        outputDate:"",
+        manufacturer:"",
+        location:"",
+        locationNo:"",
+        buyPrice:"",
+        buyDate:"",
+        dataInfo:"",
+        deviceCategory:"",
+        deviceCategoryName:"",
+        deviceModel:"",
+        deviceState:"",
+        gmtModified:"",
+        organizeCode:"",
       }
     };
   },
@@ -174,7 +185,24 @@ export default {
     },
     isHide:function (params) {
         this.addShow=params;
-    }
+    },
+    add1() {
+      //添加设备信息接口
+      let qs = require("qs");
+      let data = qs.stringify({
+        sizeForm:this.sizeForm
+      });
+      this.axios
+       // .post("api/device/add", data)
+        .post(this.global.apiSrc + "api/device/add", data)
+        .then(result => {
+          console.log("add");
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
   },
   components: {
     addPerson
