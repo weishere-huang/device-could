@@ -208,9 +208,9 @@
           .get("api/message/allMsg/" + this.userId, data)
           .then(result => {
             console.log(result.data.data);
-            for(let i = 0;i<result.data.data.length;i++){
-              if(result.data.data[i].isRead ==)
-            }
+            // for(let i = 0;i<result.data.data.length;i++){
+            //   if(result.data.data[i].isRead ==)
+            // }
             this.tableData = result.data.data;
             this.NotReadMsgCount();
           })

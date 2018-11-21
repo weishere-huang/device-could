@@ -81,7 +81,7 @@
           </div>
           <div class="personnel-slist">
             <el-checkbox-group v-model="personnel.checkedSystem" @change="personnelCheckedCitiesChange">
-              <el-checkbox v-for="item in equipment.systemList" :label="item" :key="item">{{item}}</el-checkbox>
+              <el-checkbox v-for="item in personnel.systemList" :label="item" :key="item">{{item}}</el-checkbox>
             </el-checkbox-group>
           </div>
         </div>
@@ -131,6 +131,7 @@
         roleName: "",
         roleId:0,
         systemID:"",
+        systemKeyInfo:[6],
         system: {
           sShow: true,
           sHide: false,
@@ -152,7 +153,7 @@
           sShow: true,
           sHide: false,
           checkAll: false,
-          checkedSystem: ["系统参数设置", "工作台管理"],
+          checkedSystem: [],
           systemList: [
             "系统参数设置",
             "工作台管理",
@@ -231,11 +232,12 @@
     },
     methods: {
       systemCheckAllChange(val) {
+        this.list(this.system.systemList,this.system.systemList,this.system.systemKey,1);
         this.system.checkedSystem = val ? this.system.systemList : [];
         this.system.isIndeterminate = false;
       },
       systemCheckedCitiesChange(value) {
-        this.list(value,this.system.systemList,this.system.systemKey);
+        this.list(value,this.system.systemList,this.system.systemKey,1);
         let checkedCount = value.length;
         this.system.checkAll = checkedCount === this.system.systemList.length;
         this.system.isIndeterminate =
@@ -252,10 +254,12 @@
         this.system.sHide = !this.system.sHide;
       },
       informationCheckAllChange(val) {
+        this.list(this.information.systemList,this.information.systemList,this.information.systemKey,2);
         this.information.checkedSystem = val ? this.information.systemList : [];
         this.information.isIndeterminate = false;
       },
       informationCheckedCitiesChange(value) {
+        this.list(value,this.information.systemList,this.information.systemKey,2);
         let checkedCount = value.length;
         this.information.checkAll =
           checkedCount === this.information.systemList.length;
@@ -263,7 +267,6 @@
           checkedCount > 0 && checkedCount < this.information.systemList.length;
       },
       informationShow() {
-        console.log("ok");
         document.querySelectorAll(".information-slist")[0].style.height = "auto";
         this.information.sShow = !this.information.sShow;
         this.information.sHide = !this.information.sHide;
@@ -274,10 +277,12 @@
         this.information.sHide = !this.information.sHide;
       },
       equipmentCheckAllChange(val) {
+        this.list(this.equipment.systemList,this.equipment.systemList,this.equipment.systemKey,3);
         this.equipment.checkedSystem = val ? this.equipment.systemList : [];
         this.equipment.isIndeterminate = false;
       },
       equipmentCheckedCitiesChange(value) {
+        this.list(value,this.equipment.systemList,this.equipment.systemKey,3);
         let checkedCount = value.length;
         this.equipment.checkAll =
           checkedCount === this.equipment.systemList.length;
@@ -295,11 +300,14 @@
         this.equipment.sShow = !this.equipment.sShow;
         this.equipment.sHide = !this.equipment.sHide;
       },
+
       personnelCheckAllChange(val) {
+        this.list(this.personnel.systemList,this.personnel.systemList,this.personnel.systemKey,4);
         this.personnel.checkedSystem = val ? this.personnel.systemList : [];
         this.personnel.isIndeterminate = false;
       },
       personnelCheckedCitiesChange(value) {
+        this.list(value,this.personnel.systemList,this.personnel.systemKey,4);
         let checkedCount = value.length;
         this.personnel.checkAll = personnel === this.personnel.systemList.length;
         this.personnel.isIndeterminate =
@@ -317,10 +325,12 @@
         this.personnel.sHide = !this.personnel.sHide;
       },
       userCheckAllChange(val) {
+        this.list(this.user.systemList,this.user.systemList,this.user.systemKey,5);
         this.user.checkedSystem = val ? this.user.systemList : [];
         this.user.isIndeterminate = false;
       },
       userCheckedCitiesChange(value) {
+        this.list(value,this.user.systemList,this.user.systemKey,5);
         let checkedCount = value.length;
         this.personnel.checkAll = user === this.user.systemList.length;
         this.user.isIndeterminate =
@@ -338,10 +348,12 @@
         this.user.sHide = !this.user.sHide;
       },
       messageCheckAllChange(val) {
+        this.list(this.message.systemList,this.message.systemList,this.message.systemKey,6);
         this.message.checkedSystem = val ? this.message.systemList : [];
         this.message.isIndeterminate = false;
       },
       messageCheckedCitiesChange(value) {
+        this.list(value,this.message.systemList,this.message.systemKey,6);
         let checkedCount = value.length;
         this.message.checkAll = message === this.message.systemList.length;
         this.message.isIndeterminate =
@@ -363,7 +375,6 @@
       },
 
       load(){
-        this.permissionsList(1);
         axios
           .get("/api/role/listAllRole")
           .then(response => {
@@ -377,49 +388,56 @@
       clickfun(e){
         this.roleName = e.target.textContent;
         this.roleId = e.target.attributes.label;
-        this.listPermissionByRoleId(this.roleId.value)
+        this.listPermissionByRoleId(this.roleId.value);
       },
-      permissionsList(){
-        axios
-          .get("/api/permission/listAllPermission")
-          .then(response =>{
-            let arr = new Array();
-            let k = new Array();
-            for (let i in response.data.data) {
-              if(response.data.data[i].parentCode == "1"){
-                arr[i] = response.data.data[i].name;
-                k[i]= response.data.data[i].id;
-              }else {
-                this.system.systemList = arr;
-                this.system.systemKey = k;
-                break;
-              }
-            }
-
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      },
-      list(value,toValue,key){
+      list(value,toValues,key,number){
         this.systemID = "";
-        for(let i = 0;i<value.length;i++){
-          for(let j = 0;j<toValue.length;j++){
-            // console.log(key[i]);
-            if(value[i] === toValue[j]){
-              if(this.systemID==""){
+        for(let i in value){
+          for (let j in toValues){
+            if(value[i] === toValues[j]) {
+              if (this.systemID === "") {
                 this.systemID += key[j];
-                break;
-              }else{
-                this.systemID += ","+key[j];
-                break;
+              } else {
+                this.systemID += "," + key[j];
               }
             }
           }
         }
-        console.log(this.systemID)
+        switch(number){
+          case 1:
+            this.systemKeyInfo[0] = this.systemID;
+            break;
+          case 2:
+            this.systemKeyInfo[1] = this.systemID;
+            break;
+          case 3:
+            this.systemKeyInfo[2] = this.systemID;
+            break;
+          case 4:
+            this.systemKeyInfo[3]= this.systemID;
+            break;
+          case 5:
+            this.systemKeyInfo[4] = this.systemID;
+            break;
+          case 6:
+            this.systemKeyInfo[5] = this.systemID;
+            break;
+          default:
+            break;
+        }
+        console.log(this.systemKeyInfo);
       },
       add(){
+        console.log(this.systemKeyInfo);
+        this.systemID = "";
+        for(let i = 0;i< this.systemKeyInfo.length;i++){
+          if(this.systemID === ""){
+            this.systemID = this.systemKeyInfo[i];
+          }else{
+            this.systemID += ","+this.systemKeyInfo[i];
+          }
+        }
+        console.log(this.systemID);
         let qs = require("qs");
         let data = qs.stringify({
           id:this.roleId.value,
@@ -428,7 +446,7 @@
         axios
           .post("/api/role/add",data,{params: {permissionIds:this.systemID}})
           .then(response =>{
-            this.load()
+            this.load();
             console.log(response)
           })
           .catch(function(error) {
@@ -436,6 +454,14 @@
           });
       },
       update(){
+        this.systemID = "";
+        for(let i = 0;i< this.systemKeyInfo.length;i++){
+          if(this.systemID === ""){
+            this.systemID = this.systemKeyInfo[i];
+          }else{
+            this.systemID += ","+this.systemKeyInfo[i];
+          }
+        }
         let qs = require("qs");
         let data = qs.stringify({
           id:this.roleId.value,
@@ -452,19 +478,98 @@
           });
       },
       listPermissionByRoleId(val){
-        console.log(val);
         axios
           .get("/api/role/listPermissionByRole",{params: {roleId:val}})
           .then(response =>{
-            console.log(response.data.data)
             let arr = new Array();
+            let arr1 = new Array();
+            let arr2 = new Array();
+            let arr3 = new Array();
+            let arr4 = new Array();
+            let arr5 = new Array();
             for (let i in response.data.data) {
-              if (response.data.data[i].parentCode == "1") {
-                arr[i] = response.data.data[i].name;
+              if (response.data.data[i].parentCode === 1) {
+                arr[arr.length] = response.data.data[i].name;
+              }
+              if (response.data.data[i].parentCode === 2) {
+                arr1[arr1.length] = response.data.data[i].name;
+              }
+              if (response.data.data[i].parentCode === 3) {
+                arr2[arr2.length] = response.data.data[i].name;
+              }
+              if (response.data.data[i].parentCode === 4) {
+                arr3[arr3.length] = response.data.data[i].name;
+              }
+              if (response.data.data[i].parentCode === 5) {
+                arr4[arr4.length] = response.data.data[i].name;
+              }
+              if (response.data.data[i].parentCode === 6) {
+                arr5[arr5.length] = response.data.data[i].name;
               }
             }
             this.system.checkedSystem = arr;
-            console.log(this.system.checkedSystem )
+            this.information.checkedSystem = arr1;
+            this.equipment.checkedSystem = arr2;
+            this.personnel.checkedSystem = arr3;
+            this.user.checkedSystem = arr4;
+            this.message.checkedSystem = arr5;
+            // console.log(arr);
+            // console.log(arr1);
+            // console.log(arr2);
+            // console.log(arr3);
+            // console.log(arr4);
+            // console.log(arr5);
+            // console.log(this.system.checkedSystem);
+            // console.log(this.information.checkedSystem);
+            // console.log(this.equipment.checkedSystem);
+            // console.log(this.personnel.checkedSystem);
+            // console.log(this.user.checkedSystem);
+            // console.log(this.message.checkedSystem);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      PermissionsList(number){
+        axios
+          .get("/api/permission/listAllPermission")
+          .then(response =>{
+            let arr = new Array();
+            let k = new Array();
+            for (let i in response.data.data) {
+              if(response.data.data[i].parentCode === number){
+                arr[arr.length] = response.data.data[i].name;
+                k[k.length]= response.data.data[i].id;
+                switch(number){
+                  case 1:
+                    this.system.systemList = arr;
+                    this.system.systemKey = k;
+                    continue;
+                  case 2:
+                    this.information.systemList = arr;
+                    this.information.systemKey = k;
+                    continue;
+                  case 3:
+                    this.equipment.systemList = arr;
+                    this.equipment.systemKey = k;
+                    continue;
+                  case 4:
+                    this.personnel.systemList = arr;
+                    this.personnel.systemKey = k;
+                    continue;
+                  case 5:
+                    this.user.systemList = arr;
+                    this.user.systemKey = k;
+                    continue;
+                  case 6:
+                    this.message.systemList = arr;
+                    this.message.systemKey = k;
+                    break;
+                  default:
+                    break;
+                }
+              }
+            }
           })
           .catch(function(error) {
             console.log(error);
@@ -481,7 +586,12 @@
     },
     created() {
       this.load();
-      this.systemShow()
+      this.PermissionsList(1);
+      this.PermissionsList(2);
+      this.PermissionsList(3);
+      this.PermissionsList(4);
+      this.PermissionsList(5);
+      this.PermissionsList(6);
     }
   };
 </script>
