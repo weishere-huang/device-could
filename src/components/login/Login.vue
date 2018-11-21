@@ -253,13 +253,14 @@ export default {
   },
   components: {},
   created() {
+    console.log(this.global.apiSrc);
     let qs = require("qs");
     let data = qs.stringify({
       page: "1",
       size: "5"
     });
     axios
-      .get("/api/user/all", data)
+      .get(this.global.apiSrc+"/message/", data)
       .then(response => {
         console.log(response.data);
       })
