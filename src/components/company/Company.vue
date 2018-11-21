@@ -3,8 +3,8 @@
     <div class="userCase">
       <div class="top">
         <el-button size="small" @click="auditblock">审核</el-button>
-        <el-button size="small">启用</el-button>
-        <el-button size="small">停用</el-button>
+        <el-button size="small" @click="startUseing">启用</el-button>
+        <el-button size="small" @click="forbidden">停用</el-button>
         <el-button size="small" @click="replace">刷新</el-button>
         <div class="search">
           <el-input type="search" placeholder="根据企业名称" size="small" v-model="name"></el-input>
@@ -23,7 +23,7 @@
         </div>
       </div>
     </div>
-    <advancedsearch class="adsearch"></advancedsearch>
+    <advancedsearch class="adsearch" v-on:advanceValue="advanceValue"></advancedsearch>
     <audit v-show="auditShow" v-on:auditByValue="auditByValue" :auditValue="auditValue"></audit>
     <businessDetails v-show="detailsShow" v-on:childByValue="childByValue" :detailsValue="detailsValue"></businessDetails>
   </div>
@@ -176,7 +176,7 @@ export default {
     },
     load() {
       axios
-        .get("/api/enterprise/all", {
+        .get(this.global.apiSrc+"/enterprise/all", {
           params: { page: this.pageIndex, size: this.pageSize }
         })
         .then(response => {
@@ -189,7 +189,7 @@ export default {
     },
     findByName() {
       axios
-        .get("/api/enterprise/findByNameOrState", {
+        .get(this.global.apiSrc+"/enterprise/findByNameOrState", {
           params: { enterpriseName: this.name }
         })
         .then(response => {
@@ -199,12 +199,68 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+      },
+      findByName() {
+        axios.get(this.global.apiSrc+"/enterprise/findByNameOrState", {params: {enterpriseName: this.name}})
+          .then(response => {
+            for (let i = 0; i < response.data.data.content.length; i++) {
+              // console.log(response.data.data.content.length)
+
+              response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+
+              if (response.data.data.content[i].state === 0) {
+                response.data.data.content[i].state = "待审核"
+              }
+              if (response.data.data.content[i].state === 1) {
+                response.data.data.content[i].state = "未通过"
+              }
+              if (response.data.data.content[i].state === 2) {
+                response.data.data.content[i].state = "禁用"
+              }
+              if (response.data.data.content[i].state === 3) {
+                response.data.data.content[i].state = "正常"
+              }
+            }
+            this.tableData = response.data.data.content;
+
+          }).catch(function (error) {
+          console.log(error)
+        })
+      },
+      startUseing() {
+        let qs = require("qs")
+        let data = qs.stringify({
+          enterpriseIds: this.enterpriseIds,
+          // state: 0
+        })
+        axios.put(this.global.apiSrc+"/enterprise/enableEnterprises/", data)
+          .then(response => {
+            this.load()
+            console.log(data)
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+      },
+      forbidden() {
+        let qs = require("qs");
+        let data = qs.stringify({
+          enterpriseIds: this.enterpriseIds,
+        });
+        axios.put(this.global.apiSrc+"/enterprise/discontinuationEnterprises", data)
+          .then(response => {
+            this.load()
+            console.log(data)
+          }).catch(function (error) {
+          console.log(error)
+        })
+      },
+
+      adsearch() {
+        document.querySelectorAll(".adsearch")[0].style.right = 0;
+      }
     },
 
-    adsearch() {
-      document.querySelectorAll(".adsearch")[0].style.right = 0;
-    }
-  },
   created() {
     this.load();
   }
