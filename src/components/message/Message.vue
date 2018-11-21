@@ -2,17 +2,15 @@
   <div class="message">
     <div class="userCase">
       <div class="top">
-
-        <el-button size="small" @click="deleteMessage">删除</el-button>
-        <el-button size="small" @click="allNotReadMsg">未读消息</el-button>
         <el-button size="small" @click="allMsg">所有消息</el-button>
-        <el-button size="small" @click="oneMessage">查看消息内容</el-button>
-        您有 {{msgcount}}条未读消息 !
+        <el-button size="small" @click="allNotReadMsg">未读消息</el-button>
+        <el-button size="small" @click="deleteMessage">删除</el-button>
+        您有  <font color="#dc143c">{{msgcount}}</font>  条未读消息 !
 
       </div>
       <div class="bottom">
         <div>
-          <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;"
+          <v-table :row-dblclick="details" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;"
                    :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"
                    :select-all="selectALL" :select-group-change="selectGroupChange"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:20px">
@@ -22,13 +20,16 @@
         </div>
       </div>
     </div>
+    <MsgDetails v-show="detailsShow" :msgDetail="msgDetail" v-on:detailsIsHide="detailsIsHide"></MsgDetails>
   </div>
 </template>
 <script>
-
+  import MsgDetails from './MsgDetails'
   export default {
     data() {
       return {
+        detailsShow:false,
+        msgDetail:"",
         pageIndex: 1,
         pageSize: 20,
         userId: 10,
@@ -70,14 +71,6 @@
             type: "selection"
           },
           {
-            field: "id",
-            title: "序号",
-            width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
-            //   isResize: true
-          },
-          {
             field: "msgTitle",
             title: "信息标题",
             width: 150,
@@ -105,14 +98,6 @@
           {
             field: "isRead",
             title: "是否阅读",
-            width: 50,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "msgState",
-            title: "消息状态",
             width: 50,
             titleAlign: "center",
             columnAlign: "left",
@@ -220,9 +205,12 @@
           size: this.pageSize
         });
         axios
-          .get("api.hyazi.com/message/allMsg/" + this.userId, data)
+          .get("api/message/allMsg/" + this.userId, data)
           .then(result => {
             console.log(result.data.data);
+            for(let i = 0;i<result.data.data.length;i++){
+              if(result.data.data[i].isRead ==)
+            }
             this.tableData = result.data.data;
             this.NotReadMsgCount();
           })
@@ -258,7 +246,6 @@
       },
       allNotReadMsg() {
         //查询该用户所有未读消息
-        console.log("ok")
         let qs = require("qs");
         let data = qs.stringify({
           page: 1,
@@ -301,11 +288,38 @@
             console.log(err);
             console.log(this.userName);
           });
+      },
+      details(rowIndex, rowData, column){
+        console.log(rowData.id);
+        this.msgDetail=rowData;
+        this.detailsShow=true;
+        this.ids=rowData.id;
+        axios
+          .get("api/message/findOneMsg/" + this.ids)
+          .then(result => {
+            console.log(result.data);
+           this.msgDetail=result.data.data;
+            if (this.msgDetail.isRead === 0) {
+              this.updateMessageRead();
+              this.allMsg();
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(this.userName);
+          });
+
+      },
+      detailsIsHide:function (params) {
+        this.detailsShow=params
       }
     },
     created() {
       //查询当前用户所有消息
       this.allMsg();
+    },
+    components:{
+      MsgDetails
     }
   };
 </script>
