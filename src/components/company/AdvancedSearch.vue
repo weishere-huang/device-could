@@ -37,7 +37,7 @@
         document.querySelectorAll(".adsearch")[0].style.right = "-310px";
       },
       search() {
-        axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {
+        this.axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {
         // axios.get("/api/enterprise/findByNameOrState", {
           params: {
             enterpriseName: this.companyName,
