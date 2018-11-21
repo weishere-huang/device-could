@@ -37,15 +37,12 @@
         document.querySelectorAll(".adsearch")[0].style.right = "-310px";
       },
       search() {
-        console.log(this.checkList)
         axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {
+        // axios.get("/api/enterprise/findByNameOrState", {
           params: {
             enterpriseName: this.companyName,
             state: this.checkList
           }
-        })
-        axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {
-          params: {enterpriseName: this.companyName, state: this.checkList}
         })
           .then(response => {
             console.log(response);
@@ -67,6 +64,7 @@
               }
             }
             this.dataName = response.data.data.content
+            console.log(this.dataName)
 
             this.$emit("advanceValue", this.dataName)
 

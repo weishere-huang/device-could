@@ -80,6 +80,7 @@
         })
         console.log(data)
         axios.put(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
+        // axios.put("/api/enterprise/enableEnterprises/", data)
           .then(response => {
             location.reload();
             console.log(response)
@@ -93,6 +94,7 @@
           enterpriseIds: this.auditValue.id
         })
         axios.put(this.global.apiSrc + "/enterprise/turnDown/", data)
+        // axios.put("/api/enterprise/turnDown/", data)
           .then(response => {
             location.reload();
             console.log(response)

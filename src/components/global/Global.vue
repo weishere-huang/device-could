@@ -1,5 +1,5 @@
 <script>
-const apiSrc = "www.hyazi.com:9881";
+const apiSrc = "http://www.hyazi.com:9881";
 export default {
   apiSrc
 };
