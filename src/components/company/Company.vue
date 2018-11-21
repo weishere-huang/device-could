@@ -116,6 +116,22 @@
       audit
     },
     methods: {
+      show(res) {
+        for (let i = 0; i < res.data.data.content.length; i++) {
+          if (res.data.data.content[i].state === 0) {
+            res.data.data.content[i].state = "待审核"
+          }
+          if (res.data.data.content[i].state === 1) {
+            res.data.data.content[i].state = "未通过"
+          }
+          if (res.data.data.content[i].state = 2) {
+            res.data.data.content[i].state = "禁用"
+          }
+          if (res.data.data.content[i].state === 3) {
+            res.data.data.content[i].state = "正常"
+          }
+        }
+      },
       advanceValue: function (params) {
         this.tableData = params
       },
@@ -142,7 +158,7 @@
         console.log(rowData);
       },
       selectGroupChange(selection) {
-        this.auditValue=selection[0]
+        this.auditValue = selection[0]
         console.log(this.auditValue)
         this.enterpriseIds = "";
         for (let i = 0; i < selection.length; i++) {
@@ -205,14 +221,24 @@
       load() {
         axios.get("/api/enterprise/all", {params: {page: this.pageIndex, size: this.pageSize}})
           .then(response => {
-            for (let i = 0; i<response.data.data.content.length;i++){
-              // console.log(response.data.data.content.length)
-              this.tableDate = response.data.data.content;
+            for (let i = 0; i < response.data.data.content.length; i++) {
               response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+              if (response.data.data.content[i].state === 0) {
+                response.data.data.content[i].state = "待审核"
+              }
+              if (response.data.data.content[i].state === 1) {
+                response.data.data.content[i].state = "未通过"
+              }
+              if (response.data.data.content[i].state === 2) {
+                response.data.data.content[i].state = "禁用"
+              }
+              if (response.data.data.content[i].state === 3) {
+                response.data.data.content[i].state = "正常"
+              }
             }
-
-            console.log(response)
-              this.tableData = response.data.data.content
+            // console.log(response)
+            // this.show(response),
+            this.tableData = response.data.data.content
           }).catch(function (error) {
           console.log(error)
         });
@@ -220,13 +246,25 @@
       findByName() {
         axios.get("/api/enterprise/findByNameOrState", {params: {enterpriseName: this.name}})
           .then(response => {
-            for (let i = 0; i<response.data.data.content.length;i++){
+            for (let i = 0; i < response.data.data.content.length; i++) {
               // console.log(response.data.data.content.length)
 
               response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
 
+              if (response.data.data.content[i].state === 0) {
+                response.data.data.content[i].state = "待审核"
+              }
+              if (response.data.data.content[i].state === 1) {
+                response.data.data.content[i].state = "未通过"
+              }
+              if (response.data.data.content[i].state === 2) {
+                response.data.data.content[i].state = "禁用"
+              }
+              if (response.data.data.content[i].state === 3) {
+                response.data.data.content[i].state = "正常"
+              }
             }
-            this.tableData = response.data.data.content
+            this.tableData = response.data.data.content;
 
           }).catch(function (error) {
           console.log(error)
@@ -239,24 +277,24 @@
           // state: 0
         })
         axios.put("/api/enterprise/enableEnterprises/", data)
-          .then(response=>{
+          .then(response => {
             this.load()
             console.log(data)
           })
           .catch(function (error) {
             console.log(error)
-        })
+          })
       },
-      forbidden(){
+      forbidden() {
         let qs = require("qs");
         let data = qs.stringify({
           enterpriseIds: this.enterpriseIds,
         });
         axios.put("/api/enterprise/discontinuationEnterprises", data)
-        .then(response=>{
-          this.load()
-          console.log(data)
-        }).catch(function (error) {
+          .then(response => {
+            this.load()
+            console.log(data)
+          }).catch(function (error) {
           console.log(error)
         })
       },

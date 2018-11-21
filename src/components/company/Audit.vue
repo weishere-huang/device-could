@@ -92,7 +92,7 @@ export default {
       let data = qs.stringify({
         enterpriseIds: this.auditValue.id
       })
-      axios.put("/api/enterprise/discontinuationEnterprises",data)
+      axios.put("/api/enterprise/turnDown/",data)
         .then(response=>{
           location.reload();
           console.log(response)
