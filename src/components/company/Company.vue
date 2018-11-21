@@ -182,7 +182,7 @@
         }
       },
       load() {
-        axios
+        this.axios
           .get(this.global.apiSrc + "/enterprise/all", {
             // .get("/api/enterprise/all", {
             params: {page: this.pageIndex, size: this.pageSize}
@@ -216,7 +216,7 @@
       },
 
       findByName() {
-        axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {params: {enterpriseName: this.name}})
+        this.axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {params: {enterpriseName: this.name}})
         // axios.get("/api/enterprise/findByNameOrState", {params: {enterpriseName: this.name}})
           .then(response => {
             for (let i = 0; i < response.data.data.content.length; i++) {
@@ -249,7 +249,7 @@
           enterpriseIds: this.auditValue.id
           // state: 0
         })
-        axios.put(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
+        this.axios.put(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
         // axios.put("/api/enterprise/enableEnterprises/", data)
           .then(response => {
             this.load()
@@ -264,7 +264,7 @@
         let data = qs.stringify({
           enterpriseIds: this.auditValue.id
         });
-        axios.put(this.global.apiSrc + "/enterprise/discontinuationEnterprises", data)
+        this.axios.put(this.global.apiSrc + "/enterprise/discontinuationEnterprises", data)
         // axios.put("/api/enterprise/discontinuationEnterprises", data)
           .then(response => {
             console.log("请求参数：" + data)

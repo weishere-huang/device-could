@@ -18,7 +18,7 @@ import {
 import global from './components/global/Global'
 
 Vue.prototype.global = global;
-
+Vue.prototype.axios = axios
 Vue.use(ElementUI)
 Vue.component(VTable.name, VTable)
 Vue.component(VPagination.name, VPagination)
