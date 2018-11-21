@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <advancedsearch class="adsearch" v-on:advanceValue="advanceValue"  ></advancedsearch>
+    <advancedsearch class="adsearch" v-on:advanceValue="advanceValue"></advancedsearch>
     <audit v-show="auditShow" v-on:auditByValue="auditByValue" :auditValue="auditValue"></audit>
     <businessDetails v-show="detailsShow" v-on:childByValue="childByValue"
                      :detailsValue="detailsValue"></businessDetails>
@@ -116,8 +116,8 @@
       audit
     },
     methods: {
-      advanceValue:function(params){
-        this.tableData=params;
+      advanceValue: function (params) {
+        this.tableData = params;
       },
       replace() {
         location.reload();
@@ -183,15 +183,16 @@
       },
       load() {
         axios
-        // .get(this.global.apiSrc+"/enterprise/all", {
-          .get("/api/enterprise/all", {
+          .get(this.global.apiSrc + "/enterprise/all", {
+            // .get("/api/enterprise/all", {
             params: {page: this.pageIndex, size: this.pageSize}
           })
           .then(response => {
+            console.log(response.data.data.content)
             for (let i = 0; i < response.data.data.content.length; i++) {
               // console.log(response.data.data.content.length)
 
-              response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+              // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
 
               if (response.data.data.content[i].state === 0) {
                 response.data.data.content[i].state = "待审核"
@@ -215,13 +216,13 @@
       },
 
       findByName() {
-        axios.get(this.global.apiSrc+"/enterprise/findByNameOrState", {params: {enterpriseName: this.name}})
+        axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {params: {enterpriseName: this.name}})
         // axios.get("/api/enterprise/findByNameOrState", {params: {enterpriseName: this.name}})
           .then(response => {
             for (let i = 0; i < response.data.data.content.length; i++) {
               // console.log(response.data.data.content.length)
 
-              response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+              // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
 
               if (response.data.data.content[i].state === 0) {
                 response.data.data.content[i].state = "待审核"
@@ -245,14 +246,14 @@
       startUseing() {
         let qs = require("qs")
         let data = qs.stringify({
-
+          enterpriseIds: this.auditValue.id
           // state: 0
         })
-        axios.put(this.global.apiSrc+"/enterprise/enableEnterprises/", data)
+        axios.put(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
         // axios.put("/api/enterprise/enableEnterprises/", data)
           .then(response => {
             this.load()
-            console.log("请求参数："+data)
+            console.log("请求参数：" + data)
           })
           .catch(function (error) {
             console.log(error)
@@ -263,13 +264,13 @@
         let data = qs.stringify({
           enterpriseIds: this.auditValue.id
         });
-        axios.put(this.global.apiSrc+"/enterprise/discontinuationEnterprises", data)
+        axios.put(this.global.apiSrc + "/enterprise/discontinuationEnterprises", data)
         // axios.put("/api/enterprise/discontinuationEnterprises", data)
           .then(response => {
-
-            this.load()
-            console.log("请求参数："+this.data)
+            console.log("请求参数：" + data)
             console.log(response)
+            this.load()
+
           }).catch(function (error) {
           console.log(error)
         })

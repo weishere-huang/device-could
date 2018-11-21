@@ -48,7 +48,7 @@
             console.log(response);
             document.querySelectorAll(".adsearch")[0].style.right = "-310px";
             for (let i = 0; i < response.data.data.content.length; i++) {
-              response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+              // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
               console.log(this.dataName)
               if (response.data.data.content[i].state === 0) {
                 response.data.data.content[i].state = "待审核"
