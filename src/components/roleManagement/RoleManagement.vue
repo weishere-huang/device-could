@@ -376,7 +376,7 @@
 
       load(){
         axios
-          .get("/api/role/listAllRole")
+          .get(this.global.apiSrc+"/role/listAllRole")
           .then(response => {
             this.role = response.data.data;
             // console.log(response.data.data)
@@ -444,7 +444,7 @@
           name:this.roleName
         });
         axios
-          .post("/api/role/add",data,{params: {permissionIds:this.systemID}})
+          .post(this.global.apiSrc+"/role/add",data,{params: {permissionIds:this.systemID}})
           .then(response =>{
             this.load();
             console.log(response)
@@ -468,7 +468,7 @@
           name:this.roleName
         });
         axios
-          .put("/api/role/update",data,{params: {permissionIds:this.systemID}})
+          .put(this.global.apiSrc+"/role/update",data,{params: {permissionIds:this.systemID}})
           .then(response =>{
             this.load();
             console.log(response)
@@ -479,7 +479,7 @@
       },
       listPermissionByRoleId(val){
         axios
-          .get("/api/role/listPermissionByRole",{params: {roleId:val}})
+          .get(this.global.apiSrc+"/role/listPermissionByRole",{params: {roleId:val}})
           .then(response =>{
             let arr = new Array();
             let arr1 = new Array();
@@ -532,7 +532,7 @@
       },
       PermissionsList(number){
         axios
-          .get("/api/permission/listAllPermission")
+          .get(this.global.apiSrc+"/permission/listAllPermission")
           .then(response =>{
             let arr = new Array();
             let k = new Array();

@@ -119,7 +119,7 @@ export default {
   methods: {
     search() {
       axios
-        .get("/api/employee/search", { params: { condition: this.searchs } })
+        .get(this.global.apiSrc+"/employee/search", { params: { condition: this.searchs } })
         .then(response => {
           this.tableData = response.data.data.content;
           for(let i in this.tableData){
@@ -150,7 +150,7 @@ export default {
         enableOrDisable: 1
       });
       axios
-        .put("/api/employee/enableOrDisable", data)
+        .put(this.global.apiSrc+"/employee/enableOrDisable", data)
         .then(response => {
           this.load();
         })
@@ -165,7 +165,7 @@ export default {
         enableOrDisable: 0
       });
       axios
-        .put("/api/employee/enableOrDisable", data)
+        .put(this.global.apiSrc+"/employee/enableOrDisable", data)
         .then(response => {
           this.load();
         })
@@ -209,7 +209,7 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
+      // console.log(pageIndex);
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
@@ -231,7 +231,7 @@ export default {
     },
     load() {
       axios
-        .get("/api/employee/findEmployeeList", {
+        .get(this.global.apiSrc+"/employee/findEmployeeList", {
           params: { page: this.pageIndex, size: this.pageSize }
         })
         .then(response => {
@@ -241,6 +241,7 @@ export default {
             this.tableData[i].entryTime = this.tableData[i].entryTime.split("T")[0];
           }
           this.tableDate =this.tableData;
+
         })
         .catch(function(error) {
           console.log(error);
