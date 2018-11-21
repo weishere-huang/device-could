@@ -108,6 +108,7 @@
   import md5 from "js-md5/src/md5.js";
   import CryptoJS from "crypto-js/crypto-js.js";
   import forgetThePassword from './ForgetThePassword'
+
   export default {
     name: "Login",
     data() {
@@ -186,6 +187,7 @@
         });
         axios
           .post(this.global.apiSrc + "/user/login", data)
+          // .post("/api/user/login", data)
           .then(result => {
             if (this.userName == "") {
               console.log("请输入用户名")
@@ -230,6 +232,7 @@
           },
         });
         axios.post(this.global.apiSrc + "/enterprise/add", data).then(result => {
+            // axios.post("/api/enterprise/add", data).then(result => {
           console.log(result);
           if (this.company.name == "") {
             console.log("企业名不能为空")
@@ -301,6 +304,7 @@
       });
       axios
         .get(this.global.apiSrc + "/message/", data)
+        // .get("/api/message/", data)
         .then(response => {
           console.log(response.data);
         })
