@@ -131,7 +131,7 @@
         roleName: "",
         roleId:0,
         systemID:"",
-        systemKeyInfo:[6],
+        systemKeyInfo:[],
         system: {
           sShow: true,
           sHide: false,
@@ -376,7 +376,7 @@
 
       load(){
         axios
-          .get("/api/role/listAllRole")
+          .get(this.global.apiSrc+"/role/listAllRole")
           .then(response => {
             this.role = response.data.data;
             // console.log(response.data.data)
@@ -428,7 +428,7 @@
         console.log(this.systemKeyInfo);
       },
       add(){
-        console.log(this.systemKeyInfo);
+        // console.log(this.systemKeyInfo);
         this.systemID = "";
         for(let i = 0;i< this.systemKeyInfo.length;i++){
           if(this.systemID === ""){
@@ -437,14 +437,14 @@
             this.systemID += ","+this.systemKeyInfo[i];
           }
         }
-        console.log(this.systemID);
+        // console.log(this.systemID);
         let qs = require("qs");
         let data = qs.stringify({
           id:this.roleId.value,
           name:this.roleName
         });
         axios
-          .post("/api/role/add",data,{params: {permissionIds:this.systemID}})
+          .post(this.global.apiSrc+"/role/add",data,{params: {permissionIds:this.systemID}})
           .then(response =>{
             this.load();
             console.log(response)
@@ -468,7 +468,7 @@
           name:this.roleName
         });
         axios
-          .put("/api/role/update",data,{params: {permissionIds:this.systemID}})
+          .put(this.global.apiSrc+"/role/update",data,{params: {permissionIds:this.systemID}})
           .then(response =>{
             this.load();
             console.log(response)
@@ -479,7 +479,7 @@
       },
       listPermissionByRoleId(val){
         axios
-          .get("/api/role/listPermissionByRole",{params: {roleId:val}})
+          .get(this.global.apiSrc+"/role/listPermissionByRole",{params: {roleId:val}})
           .then(response =>{
             let arr = new Array();
             let arr1 = new Array();
