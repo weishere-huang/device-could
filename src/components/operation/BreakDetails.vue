@@ -65,6 +65,7 @@
                 <div class="right">
                     <div>
                         <h5>故障信息</h5>
+                      
                     </div>
                 </div>
             </div>
