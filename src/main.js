@@ -17,6 +17,8 @@ import {
 } from 'vue-easytable'
 import global from './components/global/Global'
 
+
+
 Vue.prototype.global = global;
 Vue.prototype.axios = axios
 Vue.use(ElementUI)
