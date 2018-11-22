@@ -201,7 +201,7 @@
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
         let qs = require("qs");
         let data = qs.stringify(this.persnneladd);
-        axios
+        this.axios
           .post(this.global.apiSrc+"/employee/add", data)
           .then(response => {
             console.log(response.data);
@@ -245,7 +245,7 @@
       }
     },
     created() {
-      axios
+      this.axios
         .get(this.global.apiSrc+"/role/listAllRole")
         .then(response => {
           this.role = response.data.data;
