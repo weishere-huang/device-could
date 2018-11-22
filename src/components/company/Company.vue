@@ -249,7 +249,7 @@
           enterpriseIds: this.auditValue.id
           // state: 0
         })
-        this.axios.put(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
+        this.axios.put(this.global.apiSrc + "/enterprise/enableEnterprises/", data,{params:{enterpriseIds:this.auditValue.id}})
         // axios.put("/api/enterprise/enableEnterprises/", data)
           .then(response => {
             this.load()
@@ -264,10 +264,12 @@
         let data = qs.stringify({
           enterpriseIds: this.auditValue.id
         });
-        this.axios.put(this.global.apiSrc + "/enterprise/discontinuationEnterprises", data)
+        console.log("请求参数：" + data)
+
+        this.axios.put(this.global.apiSrc + "/enterprise/discontinuationEnterprises",data,{params:{enterpriseIds:this.auditValue.id}})
         // axios.put("/api/enterprise/discontinuationEnterprises", data)
           .then(response => {
-            console.log("请求参数：" + data)
+            console.log("1111请求参数：" + data)
             console.log(response)
             this.load()
 
