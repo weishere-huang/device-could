@@ -1,21 +1,21 @@
 <template>
-  <div class="turnaround-plans">
-    <div class="userCase">
-      <div class="top">
-        <el-button size="small" @click="toPansAdd">添加</el-button>
-        <el-button size="small">停止</el-button>
-        <el-button size="small">删除</el-button>
-      </div>
-      <div class="bottom">
-        <div>
-          <v-table :row-dblclick="toAmend" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-          <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
-          </div>
+    <div class="turnaround-plans">
+        <div class="userCase">
+            <div class="top">
+                <el-button size="small" @click="toUpkeepAdd">添加</el-button>
+                <el-button size="small">停止</el-button>
+                <el-button size="small">删除</el-button>
+            </div>
+            <div class="bottom">
+                <div>
+                    <v-table :row-dblclick="toAmend" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+                    <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
+                        <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </template>
 <script>
 export default {
@@ -63,7 +63,7 @@ export default {
         },
         {
           field: "hobby",
-          title: "检修分类",
+          title: "保养分类",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
@@ -71,7 +71,7 @@ export default {
         },
         {
           field: "startTime",
-          title: "检修级别",
+          title: "保养级别",
           width: 100,
           titleAlign: "center",
           columnAlign: "center",
@@ -111,7 +111,7 @@ export default {
         },
         {
           field: "maintenanceCc",
-          title: "检修内容",
+          title: "保养内容",
           width: 200,
           titleAlign: "center",
           columnAlign: "left",
@@ -130,15 +130,15 @@ export default {
   },
   methods: {
     toAmend(rowIndex, rowData, column) {
-      // 传值给修改
-      this.$store.commit("turnaroundPlans", rowData);
+      
+      this.$store.commit("upkeepAmend",rowData)
       this.$router.push({
-        path: "/TurnaroundPlansAmend"
+        path: "/UpkeepAmend"
       });
     },
-    toPansAdd() {
+    toUpkeepAdd() {
       this.$router.push({
-        path: "/TurnaroundPlansAdd"
+        path: "/UpkeepAdd"
       });
     },
     selectGroupChange(selection) {

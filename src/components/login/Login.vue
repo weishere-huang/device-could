@@ -73,7 +73,7 @@
           </li>
           <li>
             <label for="">密码：</label>
-            <el-input size="small" v-model="manager.userPassword"></el-input>
+            <el-input size="small" type="password" v-model="manager.userPassword"></el-input>
           </li>
           <li>
             <label for="">手机号：</label>

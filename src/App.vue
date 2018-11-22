@@ -43,6 +43,7 @@
               <el-menu-item index="/Operation">选项3</el-menu-item>
               <el-menu-item index="/TurnaroundPlansAdd">检修计划添加/修改</el-menu-item>
               <el-menu-item index="/BreakDetails">故障详情</el-menu-item>
+              <el-menu-item index="/Upkeep">保养计划</el-menu-item>
             </el-submenu>
             <el-submenu index="5">
               <template slot="title"><i class="el-icon-setting"></i>组织机构</template>
@@ -155,6 +156,7 @@ export default {
   // text-align: center;
   width: 100%;
   margin: auto;
+  min-width: 1200px;
   overflow: hidden;
   .logo {
     width: 200px;
