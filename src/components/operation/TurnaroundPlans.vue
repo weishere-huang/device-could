@@ -1,25 +1,25 @@
 <template>
-    <div class="turnaround-plans">
-        <div class="userCase">
-            <div class="top">
-                <el-button size="small">添加</el-button>
-                <el-button size="small">停止</el-button>
-                <el-button size="small">删除</el-button>
-                <div class="search">
-                    <el-input type="search" placeholder="如员设备名称，编号，型号" size="small"></el-input>
-                    <el-button size="small">搜索</el-button>
-                </div>
-            </div>
-            <div class="bottom">
-                <div>
-                    <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-                    <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-                        <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
-                    </div>
-                </div>
-            </div>
+  <div class="turnaround-plans">
+    <div class="userCase">
+      <div class="top">
+        <el-button size="small">添加</el-button>
+        <el-button size="small">停止</el-button>
+        <el-button size="small">删除</el-button>
+        <div class="search">
+          <el-input type="search" placeholder="如员设备名称，编号，型号" size="small"></el-input>
+          <el-button size="small">搜索</el-button>
         </div>
+      </div>
+      <div class="bottom">
+        <div>
+          <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+          <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 <script>
 export default {
@@ -28,16 +28,16 @@ export default {
       pageIndex: 1,
       pageSize: 10,
       tableData: [
-         {
-          id:"111",
-          name:"222",
-          num:"3333",
-          hobby:"4444",
-          startTime:"555",
-          endTime:"6666",
-          frequency:"7777",
-          maintenanceCc:"888",
-          state:"999"
+        {
+          id: "111",
+          name: "222",
+          num: "3333",
+          hobby: "4444",
+          startTime: "555",
+          endTime: "6666",
+          frequency: "7777",
+          maintenanceCc: "888",
+          state: "999"
         }
       ],
       tableDate: [],
@@ -50,16 +50,16 @@ export default {
         },
         {
           field: "name",
-          title: "设备名称",
+          title: "计划名称",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true,
-        //   orderBy: ""
+          isResize: true
+          //   orderBy: ""
         },
         {
           field: "num",
-          title: "设备编号",
+          title: "当前状态",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
@@ -67,7 +67,7 @@ export default {
         },
         {
           field: "hobby",
-          title: "设备型号",
+          title: "检修分类",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
@@ -75,6 +75,14 @@ export default {
         },
         {
           field: "startTime",
+          title: "检修级别",
+          width: 100,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "starTime",
           title: "开始日期",
           width: 100,
           titleAlign: "center",
@@ -91,8 +99,16 @@ export default {
         },
         {
           field: "frequency",
-          title: "计划周期",
+          title: "首次执行时间",
           width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "endTime",
+          title: "计划频次",
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -107,7 +123,7 @@ export default {
         },
         {
           field: "state",
-          title: "当前状态",
+          title: "计划制定人",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
@@ -185,7 +201,7 @@ export default {
       }
     }
     .bottom {
-        padding: 10px;
+      padding: 10px;
       font-size: 12px;
       border: 1px solid @Info;
       margin-top: 10px;

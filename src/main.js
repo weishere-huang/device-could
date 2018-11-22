@@ -26,6 +26,7 @@ Vue.component(VTable.name, VTable)
 Vue.component(VPagination.name, VPagination)
 Vue.use(vuex);
 Vue.config.productionTip = false
+Vue.prototype.axios = axios
 axios.defaults.withCredentials = true;
 /* eslint-disable no-new */
 new Vue({

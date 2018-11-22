@@ -7,10 +7,14 @@ import Information from '@/components/information/Information'
 import Company from '@/components/company/Company'
 import BusinessDetails from '@/components/company/BusinessDetails'
 import Equipment from '@/components/equipment/Equipment'
+import Category from '@/components/equipment/Category'
 import EquipmentAdd from '@/components/equipment/EquipmentAdd'
 import Redact from '@/components/equipment/Redact'
 import Operation from '@/components/operation/Operation'
+import TurnaroundPlansAdd from '@/components/operation/turnaroundPlans/TurnaroundPlansAdd'
+import Breakdown from '@/components/operation/Breakdown'
 import TurnaroundPlans from '@/components/operation/TurnaroundPlans'
+import BreakDetails from '@/components/operation/BreakDetails'
 import Organization from '@/components/organization/Organization'
 import Add from '@/components/organization/Add'
 import Personnel from '@/components/personnel/Personnel'
@@ -68,7 +72,12 @@ export default new Router({
        path: '/AdvancedSearch',
        name: 'AdvancedSearch',
        component: AdvancedSearch
-     },
+    },
+    {
+      path: '/Category',
+      name: 'Category',
+      component: Category
+    },
     {
       path: '/BusinessDetails',
       name: 'BusinessDetails',
@@ -93,6 +102,21 @@ export default new Router({
       path: '/Operation',
       name: 'Operation',
       component: Operation
+    },
+    {
+      path: '/TurnaroundPlansAdd',
+      name: 'TurnaroundPlansAdd',
+      component: TurnaroundPlansAdd
+    },
+    {
+      path: '/BreakDetails',
+      name: 'BreakDetails',
+      component: BreakDetails
+    },
+    {
+      path: '/Breakdown',
+      name: 'Breakdown',
+      component: Breakdown
     },
     {
       path: '/TurnaroundPlans',

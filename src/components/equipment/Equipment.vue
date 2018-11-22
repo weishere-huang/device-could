@@ -96,7 +96,7 @@
           <span>关键字：</span>
           <el-input type="search" size="small" placeholder="根据设备编号，名称，位号"></el-input>
           <el-button size="small">搜索</el-button>
-          <span style="color:#409eff;font-size:12px;cursor: pointer;">高级搜索</span>
+          <span style="color:#409eff;font-size:12px;cursor: pointer;" @click="adShow">高级搜索</span>
         </div>
       </div>
       <div class="tablelist">
@@ -112,123 +112,175 @@
         </div>
       </div>
     </div>
-
+    <advanced class="adsearch" v-on:isHide="isHide"></advanced>
   </div>
 </template>
 <script>
-  // import tableDate from '../login/test'
-  export default {
-    name: "equipment",
-    data() {
-      return {
-        pageIndex: 1,
-        pageSize: 10,
-        tableData: [
-          {
-            name: "111",
-            tel: "222",
-            address: "3333",
-            hobby: "4444"
-          },
-          {
-            name: "111",
-            tel: "222",
-            address: "3333",
-            hobby: "4444"
-          },
-          // {
-          //   name:"111",
-          //   tel:"222",
-          //   address:"3333",
-          //   hobby:"4444"
-          // },
-          // {
-          //   name:"111",
-          //   tel:"222",
-          //   address:"3333",
-          //   hobby:"4444"
-          // }
-        ],
-        tableDate: [],
-        columns: [
-          {
-            width: 40,
-            titleAlign: "center",
-            columnAlign: "center",
-            type: "selection"
-          },
-          {
-            field: "deviceNo",
-            title: "设备编号",
-            width: 90,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
-            // orderBy: ""
-          },
-          {
-            field: "deviceName",
-            title: "设备名称",
-            width: 100,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "deviceState",
-            title: "设备状况",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
-          },
-          {
-            field: "organizeName",
-            title: "所属部门",
-            width: 90,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "location",
-            title: "安装位置",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "locationNo",
-            title: "设备位号",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "deviceCategory",
-            title: "设备类别",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "deviceModel",
-            title: "设备型号",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "workerNames",
-            title: "设备负责人",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
+import advanced from "./Advanced";
+export default {
+  name: "equipment",
+  data() {
+    return {
+      pageIndex: 1,
+      pageSize: 10,
+      tableData: [
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        }
+      ],
+      tableDate: [],
+      columns: [
+        {
+          width: 40,
+          titleAlign: "center",
+          columnAlign: "center",
+          type: "selection"
+        },
+        {
+          field: "tel",
+          title: "设备编号",
+          width: 90,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+          // orderBy: ""
+        },
+        {
+          field: "address",
+          title: "设备名称",
+          width: 100,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "hobby",
+          title: "设备状况",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "address",
+          title: "所属部门",
+          width: 90,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "address",
+          title: "安装位置",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "address",
+          title: "设备位号",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "address",
+          title: "设备类别",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "address",
+          title: "设备型号",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "address",
+          title: "设备负责人",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        }
+      ]
+    };
+  },
+  methods: {
+    adShow(){
+      document.querySelectorAll('.adsearch')[0].style.right=0;
+    },
+    isHide:function (params) {
+      document.querySelectorAll('.adsearch')[0].style.right=params;
+    },
+    toAdd() {
+      this.$router.push("/EquipmentAdd");
+    },
+    redactShow(rowIndex, rowData, column) {
+      this.$router.push("/Redact");
+      this.$store.commit("equipmentRedact", rowData);
+    },
+    selectGroupChange(selection) {
+      console.log("select-group-change", selection);
+    },
+    selectALL(selection) {
+      console.log("select-aLL", selection);
+    },
+    selectChange(selection, rowData) {
+      console.log("select-change", selection, rowData);
+    },
+    getTableData() {
+      this.tableData = this.tableDate.slice(
+        (this.pageIndex - 1) * this.pageSize,
+        this.pageIndex * this.pageSize
+      );
+    },
+    pageChange(pageIndex) {
+      this.pageIndex = pageIndex;
+      this.getTableData();
+      console.log(pageIndex);
+    },
+    pageSizeChange(pageSize) {
+      this.pageIndex = 1;
+      this.pageSize = pageSize;
+      this.getTableData();
+    },
+    sortChange(params) {
+      if (params.height.length > 0) {
+        this.tableConfig.tableData.sort(function(a, b) {
+          if (params.height === "asc") {
+            return a.height - b.height;
+          } else if (params.height === "desc") {
+            return b.height - a.height;
+          } else {
+            return 0;
           }
         ]
       };
@@ -514,7 +566,11 @@
       //this.findByKeyWord();
       //this.findByOrganizeCode();
     }
-  };
+  },
+  components: {
+    advanced
+  }
+};
 </script>
 <style lang="less" scoped>
   @import url("../../assets/font/font.css");
@@ -592,14 +648,20 @@
       }
     }
   }
+}
+.el-input__inner {
+  //   width: 150px !important;
+  display: inline !important;
+}
+.el-input {
+  width: auto !important;
+  padding: 0 !important;
+}
+.adsearch {
+    position: absolute;
+    top: 60px;
+    right: -310px;
+    transition: all 0.3s ease-in;
 
-  .el-input__inner {
-    //   width: 150px !important;
-    display: inline !important;
-  }
-
-  .el-input {
-    width: auto !important;
-    padding: 0 !important;
   }
 </style>

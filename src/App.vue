@@ -27,7 +27,6 @@
             <el-submenu index="2">
               <template slot="title"><i class="el-icon-setting"></i>企业管理</template>
               <el-menu-item index="/Company">选项1</el-menu-item>
-              <el-menu-item index="/AdvancedSearch">高级搜索</el-menu-item>
               <el-menu-item index="/BusinessDetails">企业详情</el-menu-item>
               <el-menu-item index="/Audit">审核</el-menu-item>
             </el-submenu>
@@ -35,13 +34,15 @@
               <template slot="title"><i class="el-icon-setting"></i>设备管理</template>
               <el-menu-item index="/Equipment">选项1</el-menu-item>
               <el-menu-item index="/EquipmentAdd">设备添加</el-menu-item>
-              <el-menu-item index="/Redact">编辑</el-menu-item>
+              <el-menu-item index="/Category">类别管理</el-menu-item>
             </el-submenu>
             <el-submenu index="4">
               <template slot="title"><i class="el-icon-setting"></i>运维管理</template>
-              <el-menu-item index="/Operation">选项1</el-menu-item>
+              <el-menu-item index="/Breakdown">设备故障</el-menu-item>
               <el-menu-item index="/TurnaroundPlans">检修计划</el-menu-item>
               <el-menu-item index="/Operation">选项3</el-menu-item>
+              <el-menu-item index="/TurnaroundPlansAdd">检修计划添加/修改</el-menu-item>
+              <el-menu-item index="/BreakDetails">故障详情</el-menu-item>
             </el-submenu>
             <el-submenu index="5">
               <template slot="title"><i class="el-icon-setting"></i>组织机构</template>
@@ -144,8 +145,8 @@ export default {
   margin: 0;
   padding: 0;
 }
-.el-input__inner{
-  padding:0 5px !important;
+.el-input__inner {
+  padding: 0 5px;
 }
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
