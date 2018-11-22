@@ -278,7 +278,7 @@
         });
         // console.log(data);
         this.axios
-          .put(this.global.apiSrc+"/employee/update",data)
+          .post(this.global.apiSrc+"/employee/update",data)
           .then(response => {
             this.Personnel();
             console.log(response.data.msg);
@@ -295,7 +295,7 @@
         });
         // console.log(data);
         this.axios
-          .put(this.global.apiSrc+"/employee/enableOrDisable", data)
+          .post(this.global.apiSrc+"/employee/enableOrDisable", data)
           .then(response => {
             this.Personnel();
             console.log(response.data.msg)
