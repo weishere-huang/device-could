@@ -101,9 +101,13 @@
       </div>
       <div class="tablelist">
         <div>
-          <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange" :row-dblclick="redactShow"></v-table>
+          <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag
+                   :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns"
+                   :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL"
+                   :select-group-change="selectGroupChange" :row-dblclick="redactShow"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize"
+                          :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
@@ -278,8 +282,289 @@ export default {
           } else {
             return 0;
           }
+        ]
+      };
+    },
+    methods: {
+      toAdd() {
+        this.$router.push('/EquipmentAdd')
+      },
+      redactShow(rowIndex, rowData, column) {
+        this.$router.push("/Redact")
+        this.$store.commit("equipmentRedact", rowData)
+      },
+      selectGroupChange(selection) {
+        console.log("select-group-change", selection);
+      },
+      selectALL(selection) {
+        console.log("select-aLL", selection);
+      },
+      selectChange(selection, rowData) {
+        console.log("select-change", selection, rowData);
+      },
+      getTableData() {
+        this.tableData = this.tableDate.slice(
+          (this.pageIndex - 1) * this.pageSize,
+          this.pageIndex * this.pageSize
+        );
+      },
+      pageChange(pageIndex) {
+        this.pageIndex = pageIndex;
+        this.getTableData();
+        console.log(pageIndex);
+      },
+      pageSizeChange(pageSize) {
+        this.pageIndex = 1;
+        this.pageSize = pageSize;
+        this.getTableData();
+      },
+      sortChange(params) {
+        if (params.height.length > 0) {
+          this.tableConfig.tableData.sort(function (a, b) {
+            if (params.height === "asc") {
+              return a.height - b.height;
+            } else if (params.height === "desc") {
+              return b.height - a.height;
+            } else {
+              return 0;
+            }
+          });
+        }
+      },
+
+      //通过
+      findall() {
+        //根据用户token查询所属组织机构下设备类别
+        let qs = require("qs");
+        let data = qs.stringify({
+          page: this.pageIndex,
+          size: this.pageSize
         });
+        axios
+          .get("api/device/all", data)
+          .then(result => {
+            this.tableData = result.data.data.content;
+            console.log("findall");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      //通过
+      selectquery() {
+        //高级搜索
+        let qs = require("qs");
+        let data = qs.stringify({
+          // String deviceName,
+          deviceName: "IBM存储",
+          // Integer locationNo,
+          locationNo: '',
+          // String workerName,
+          workerName: "",
+          // String manufacturer,
+          manufacturer: "",
+          // String deviceSates,
+          deviceSates: "",
+          // Integer deviceCategory
+          deviceCategory: '',
+          page: this.pageIndex,
+          size: this.pageSize
+        });
+        alert("select");
+        axios
+          .get("api/device/select", data)
+          .then(result => {
+            alert("selectquery");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      //通过
+      findDeviceState() {
+        //获取设备状况接口
+        let qs = require("qs");
+        let data = qs.stringify({
+          id: 195
+        });
+        alert("findDeviceState");
+        axios
+          .get("api/device/findDeviceState")
+          .then(result => {
+            alert("findDeviceState");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      //通过
+      add1() {
+        //添加设备信息接口
+        let qs = require("qs");
+        let data = qs.stringify({
+          deviceNo: "Xy001",
+          deviceName: "IBM存储",
+          deviceClassify: 1,
+          deviceClassifyName: "存储",
+          deviceCategory: 2,
+          deviceCategoryName: "IBM-8000",
+          deviceSpec: "大型100T存储",
+          organizeCode: "XY001",
+          organizeName: "联想",
+          token: ""
+        });
+        alert("add");
+        axios
+          .post("api/device/add", data)
+          .then(result => {
+            alert("add");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      //通过
+      update() {
+        //编辑设备信息接口
+        let qs = require("qs");
+        let data = qs.stringify({
+          deviceNo: "Xy001",
+          deviceName: "IBM存储",
+          deviceClassify: 1,
+          deviceClassifyName: "存储",
+          deviceCategory: 2,
+          deviceCategoryName: "IBM-8000",
+          deviceSpec: "大型100T存储",
+          organizeCode: "XY001",
+          organizeName: "联想",
+          token: "",
+          id: 195
+        });
+        alert("update");
+        axios
+          .put("api/device/update", data)
+          .then(result => {
+            alert("update");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      //通过
+      detail() {
+        //获取设备详情接口
+        let qs = require("qs");
+        let data = qs.stringify({});
+        alert("detail");
+        axios
+          .get("api/device/detail", {params: {deviceId: 1}})
+          .then(result => {
+            alert("detail");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      //通过
+      // all() {
+      //   //设备列表
+      //   let qs = require("qs");
+      //   let data = qs.stringify({
+      //     token: ""
+      //   });
+      //   alert("all");
+      //   axios
+      //     .get("api/device/all", data)
+      //     .then(result => {
+      //       alert("all");
+      //       console.log(result.data);
+      //     })
+      //     .catch(err => {
+      //       console.log(err);
+      //     });
+      // },
+      //通过
+      findByKeyWord() {
+        //根据设备编号、位号、名称查询
+        let qs = require("qs");
+        let data = qs.stringify({
+          page: this.pageIndex,
+          size: this.pageSize,
+          keyWord: "Xy001"
+        });
+        axios
+          .get("api/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: "冲压机3"}})
+          .then(result => {
+            alert("findByKeyWord");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      //通过
+      findByOrganizeCode() {
+        //根据组织代码查询所有员工数据，支持分页（用于设备模块）
+        let qs = require("qs");
+        let data = qs.stringify({
+
+          organizeCode: ""
+        });
+        axios
+          .get("api/employee/findByOrganizeCode", {
+            params: {
+              page: this.pageIndex,
+              size: this.pageSize,
+              organizeCode: "1000"
+            }
+          })
+          .then(result => {
+            alert("findByKeyWord");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      //
+      getDeviceById() {
+        //根据员工id查询相关设备信息接口，支持分页（用于设备模块）
+        let qs = require("qs");
+        let data = qs.stringify({
+          page: this.pageIndex,
+          size: this.pageSize,
+          employeeId: 147
+        });
+        axios
+          .get("api/employee/getDeviceById", data)
+          .then(result => {
+            alert("getDeviceById");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      edelete() {
       }
+    },
+    created() {
+      //this.detail();
+      //this.findDeviceState();
+      //this.selectquery();
+      this.findall();
+      this.findDeviceState();
+      //this.all();
+      //this.add1();
+      //this.update();
+      //this.findByKeyWord();
+      //this.findByOrganizeCode();
     }
   },
   components: {
@@ -288,77 +573,79 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url("../../assets/font/font.css");
-@blue: #409eff;
-@Success: #67c23a;
-@Warning: #e6a23c;
-@Danger: #f56c6c;
-@Info: #dde2eb;
-.equipment {
-  overflow: hidden;
-  .equipmentContent {
-    font-size: 12px;
-    color: #666666;
-    width: 200px;
+  @import url("../../assets/font/font.css");
+
+  @blue: #409eff;
+  @Success: #67c23a;
+  @Warning: #e6a23c;
+  @Danger: #f56c6c;
+  @Info: #dde2eb;
+  .equipment {
     overflow: hidden;
-    float: left;
-    font-size: 12px;
-    .classifylist {
-      width: 170px;
+    .equipmentContent {
+      font-size: 12px;
+      color: #666666;
+      width: 200px;
       overflow: hidden;
-      margin: 10px;
       float: left;
-      border: 1px solid @Info;
-      padding: 10px;
-      border-radius: 5px;
-      h5 {
-        width: 100%;
-        text-align: left;
-        display: inline-block;
-        padding: 5px 14px 0 0;
-      }
-      li {
-        list-style-type: none;
-        text-align: left;
-        padding: 4px 0 4px 20px;
-        letter-spacing: 1px;
-        cursor: pointer;
-        &:hover {
-          background-color: @Info;
+      font-size: 12px;
+      .classifylist {
+        width: 170px;
+        overflow: hidden;
+        margin: 10px;
+        float: left;
+        border: 1px solid @Info;
+        padding: 10px;
+        border-radius: 5px;
+        h5 {
+          width: 100%;
+          text-align: left;
+          display: inline-block;
+          padding: 5px 14px 0 0;
+        }
+        li {
+          list-style-type: none;
+          text-align: left;
+          padding: 4px 0 4px 20px;
+          letter-spacing: 1px;
+          cursor: pointer;
+          &:hover {
+            background-color: @Info;
+          }
+        }
+        .transitlist {
+          padding-left: 20px;
         }
       }
-      .transitlist {
-        padding-left: 20px;
-      }
     }
-  }
-  .content {
-    width: 80%;
-    min-width: 700px;
-    float: left;
-    margin: 10px 0 0 0;
-    // border: 1px solid @Info;
-    // border-radius:5px;
-    .search {
-      border: 1px solid @Info;
-      border-radius: 5px;
-      height: 60px;
-      line-height: 60px;
-      padding: 0 10px;
-      // overflow: hidden;
-      .searchright {
+    .content {
+      width: 80%;
+      min-width: 700px;
+      float: left;
+      margin: 10px 0 0 0;
+      // border: 1px solid @Info;
+      // border-radius:5px;
+      .search {
+        border: 1px solid @Info;
+        border-radius: 5px;
+        height: 60px;
+        line-height: 60px;
+        padding: 0 10px;
+        // overflow: hidden;
+        .searchright {
+          font-size: 12px;
+          float: right;
+          // display: inline-block;
+        }
+      }
+      .tablelist {
         font-size: 12px;
-        float: right;
-        // display: inline-block;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid @Info;
+        border-radius: 5px;
+        min-height: 500px;
       }
-    }
-    .tablelist {
-      font-size: 12px;
-      margin-top: 10px;
-      padding: 10px;
-      border: 1px solid @Info;
-      border-radius: 5px;
-      min-height: 500px;
     }
   }
 }
@@ -375,5 +662,6 @@ export default {
     top: 60px;
     right: -310px;
     transition: all 0.3s ease-in;
+
   }
 </style>

@@ -109,7 +109,7 @@
             </li>
             <li>
               <label for="">通讯地址：</label>
-              <el-input type="email" size="small" style="width:200px" v-model="persnneladd.postalAddress"></el-input>
+              <el-input type="text" size="small" style="width:200px" v-model="persnneladd.postalAddress"></el-input>
             </li>
             <li>
               <span>
@@ -201,14 +201,20 @@
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
         let qs = require("qs");
         let data = qs.stringify(this.persnneladd);
-        axios
-          .post("/api/employee/add", data)
+        this.axios
+          .post(this.global.apiSrc+"/employee/add", data)
           .then(response => {
             console.log(response.data);
+            this.Personnel();
           })
           .catch(function(error) {
             console.log(error);
           });
+      },
+      Personnel() {
+        this.$router.push({
+          path: "/Personnel"
+        });
       },
       open6() {
         let str = `<div>
@@ -239,8 +245,8 @@
       }
     },
     created() {
-      axios
-        .get("/api/role/listAllRole")
+      this.axios
+        .get(this.global.apiSrc+"/role/listAllRole")
         .then(response => {
           this.role = response.data.data;
         })

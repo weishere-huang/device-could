@@ -110,7 +110,7 @@
             </li>
             <li>
               <label for="">通讯地址：</label>
-              <el-input type="email" size="small" style="width:200px" v-model="persnneladd.postalAddress"></el-input>
+              <el-input type="text" size="small" style="width:200px" v-model="persnneladd.postalAddress"></el-input>
             </li>
             <li>
               <span>
@@ -228,8 +228,8 @@
           });
       },
       selectOne(employeeId,userName){
-        axios
-          .get("/api/employee/selectOne",{params:{employeeId:employeeId}})
+        this.axios
+          .get(this.global.apiSrc+"/employee/selectOne",{params:{employeeId:employeeId}})
           .then(response => {
             this.persnneladd = response.data.data;
             this.persnneladd.birthday=response.data.data.birthday.split("T")[0];
@@ -276,9 +276,9 @@
           qualificationInfo: this.persnneladd.qualificationInfo,
           roleId: this.persnneladd.roleId
         });
-        console.log(data);
-        axios
-          .put("/api/employee/update",data)
+        // console.log(data);
+        this.axios
+          .put(this.global.apiSrc+"/employee/update",data)
           .then(response => {
             this.Personnel();
             console.log(response.data.msg);
@@ -293,10 +293,11 @@
           employeeIds: this.persnneladd.id,
           enableOrDisable: 0
         });
-        console.log(data);
-        axios
-          .put("/api/employee/enableOrDisable", data)
+        // console.log(data);
+        this.axios
+          .put(this.global.apiSrc+"/employee/enableOrDisable", data)
           .then(response => {
+            this.Personnel();
             console.log(response.data.msg)
           })
           .catch(function(error) {
@@ -309,8 +310,8 @@
       console.log(aaa);
       // console.log(aaa.employeeNo);
       this.selectOne(aaa.id,aaa.userName);
-      axios
-        .get("/api/role/listAllRole")
+      this.axios
+        .get(this.global.apiSrc+"/role/listAllRole")
         .then(response => {
           this.role = response.data.data;
         })

@@ -131,7 +131,18 @@
         roleName: "",
         roleId:0,
         systemID:"",
-        systemKeyInfo:[6],
+        systemKeyInfo:[],
+        roleDTO:{
+          id:0,
+          roleCode:"",
+          name:"",
+          description:"",
+          organizeCode:"",
+          organizeName:"",
+          gmtCreate:"",
+          gmtModified:"",
+          state:""
+        },
         system: {
           sShow: true,
           sHide: false,
@@ -375,8 +386,8 @@
       },
 
       load(){
-        axios
-          .get("/api/role/listAllRole")
+        this.axios
+          .get(this.global.apiSrc+"/role/listAllRole")
           .then(response => {
             this.role = response.data.data;
             // console.log(response.data.data)
@@ -428,7 +439,6 @@
         console.log(this.systemKeyInfo);
       },
       add(){
-        console.log(this.systemKeyInfo);
         this.systemID = "";
         for(let i = 0;i< this.systemKeyInfo.length;i++){
           if(this.systemID === ""){
@@ -437,14 +447,14 @@
             this.systemID += ","+this.systemKeyInfo[i];
           }
         }
-        console.log(this.systemID);
+        // console.log(this.systemID);
         let qs = require("qs");
         let data = qs.stringify({
           id:this.roleId.value,
           name:this.roleName
         });
-        axios
-          .post("/api/role/add",data,{params: {permissionIds:this.systemID}})
+        this.axios
+          .post(this.global.apiSrc+"/role/add",data,{params: {permissionIds:this.systemID}})
           .then(response =>{
             this.load();
             console.log(response)
@@ -462,13 +472,21 @@
             this.systemID += ","+this.systemKeyInfo[i];
           }
         }
+        this.roleDTO.id=this.roleId.value;
+        this.roleDTO.name=this.roleName;
         let qs = require("qs");
         let data = qs.stringify({
           id:this.roleId.value,
           name:this.roleName
         });
-        axios
-          .put("/api/role/update",data,{params: {permissionIds:this.systemID}})
+        console.log(this.roleId.value);
+        console.log(this.roleName);
+        this.axios
+          .put(this.global.apiSrc+"/role/update",data,{params:{
+              permissionIds:this.systemID,
+              id:this.roleId.value,
+              name:this.roleName
+            }})
           .then(response =>{
             this.load();
             console.log(response)
@@ -478,8 +496,8 @@
           });
       },
       listPermissionByRoleId(val){
-        axios
-          .get("/api/role/listPermissionByRole",{params: {roleId:val}})
+        this.axios
+          .get(this.global.apiSrc+"/role/listPermissionByRole",{params: {roleId:val}})
           .then(response =>{
             let arr = new Array();
             let arr1 = new Array();
@@ -513,26 +531,14 @@
             this.personnel.checkedSystem = arr3;
             this.user.checkedSystem = arr4;
             this.message.checkedSystem = arr5;
-            // console.log(arr);
-            // console.log(arr1);
-            // console.log(arr2);
-            // console.log(arr3);
-            // console.log(arr4);
-            // console.log(arr5);
-            // console.log(this.system.checkedSystem);
-            // console.log(this.information.checkedSystem);
-            // console.log(this.equipment.checkedSystem);
-            // console.log(this.personnel.checkedSystem);
-            // console.log(this.user.checkedSystem);
-            // console.log(this.message.checkedSystem);
           })
           .catch(function(error) {
             console.log(error);
           });
       },
       PermissionsList(number){
-        axios
-          .get("/api/permission/listAllPermission")
+        this.axios
+          .get(this.global.apiSrc+"/permission/listAllPermission")
           .then(response =>{
             let arr = new Array();
             let k = new Array();
