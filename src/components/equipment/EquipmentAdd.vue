@@ -18,21 +18,24 @@
                     </el-form-item>
                     <el-form-item label="所属部门">
                         <el-select v-model="sizeForm.organizeName" placeholder="点击选择" style="width:512px">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
+
+                          <el-option v-for="item in options1" :key="" :label="item.label" :value="item.value"></el-option>
+
                         </el-select>
                     </el-form-item>
                     <el-form :inline="true" style="padding-left:12px" size="small">
                         <el-form-item label="设备分类">
                             <el-select v-model="sizeForm.deviceClassify" placeholder="点击选择" style="width:215px">
-                                <el-option label="区域一" value="shanghai"></el-option>
-                                <el-option label="区域二" value="beijing"></el-option>
+
+                              <el-option v-for="item in options2" :key="" :label="item.label" :value="item.value"></el-option>
+
                             </el-select>
                         </el-form-item>
                         <el-form-item label="设备类别">
                             <el-select v-model="sizeForm.deviceCategoryName" placeholder="点击选择" style="width:215px">
-                                <el-option label="区域一" value="shanghai"></el-option>
-                                <el-option label="区域二" value="beijing"></el-option>
+
+                              <el-option v-for="item in options3" :key="" :label="item.label" :value="item.value"></el-option>
+
                             </el-select>
                         </el-form-item>
                     </el-form>
@@ -42,8 +45,9 @@
                         </el-form-item>
                         <el-form-item label="设备状况">
                             <el-select v-model="sizeForm.deviceState" placeholder="点击选择" style="width:215px">
-                                <el-option label="区域一" value="shanghai"></el-option>
-                                <el-option label="区域二" value="beijing"></el-option>
+
+                              <el-option v-for="item in options4" :key="" :label="item.label" :value="item.value"></el-option>
+
                             </el-select>
                         </el-form-item>
                     </el-form>
@@ -160,19 +164,19 @@ export default {
         deviceClassify: "",
         deviceClassifyName:"",
         deviceSpec:"",
-        outputDate:"",
-        manufacturer:"",
-        location:"",
-        locationNo:"",
-        buyPrice:"",
-        buyDate:"",
+         outputDate:"",
+         manufacturer:"",
+         location:"",
+         locationNo:"",
+         buyPrice:"",
+         buyDate:"",
         dataInfo:"",
-        deviceCategory:"",
-        deviceCategoryName:"",
-        deviceModel:"",
-        deviceState:"",
-        gmtModified:"",
-        organizeCode:"",
+         deviceCategory:"",
+         deviceCategoryName:"",
+         deviceModel:"",
+         deviceState:"",
+         gmtModified:"",
+         organizeCode:"",
       }
     };
   },
@@ -192,9 +196,10 @@ export default {
       let data = qs.stringify({
         sizeForm:this.sizeForm
       });
+      alert('');
       this.axios
        // .post("api/device/add", data)
-        .post(this.global.apiSrc + "api/device/add", data)
+        .post(this.global.apiSrc + "/device/add", data)
         .then(result => {
           console.log("add");
           console.log(result.data);

@@ -26,14 +26,14 @@
                         <el-form-item label="设备分类">
                             <el-select v-model="sizeForm.deviceClassify" placeholder="点击选择" style="width:215px">
 
-                              <el-option v-for="item in options1" :key="" :label="item.label" :value="item.sizeForm.deviceClassify"></el-option>
+                              <el-option v-for="item in options1" :key="" :label="item.label" :value="item.value"></el-option>
 
                             </el-select>
                         </el-form-item>
                         <el-form-item label="设备类别">
                             <el-select v-model="sizeForm.deviceCategoryName" placeholder="点击选择" style="width:215px">
 
-                              <el-option v-for="item in options1" :key="item.sizeForm.deviceClassify" :label="item.label" :value="item.sizeForm.deviceClassify"></el-option>
+                              <el-option v-for="item in options1" :key="item.sizeForm.deviceClassify" :label="item.value" :value="item.sizeForm.deviceClassify"></el-option>
 
                             </el-select>
                         </el-form-item>
