@@ -96,7 +96,7 @@
           <span>关键字：</span>
           <el-input type="search" size="small" placeholder="根据设备编号，名称，位号"></el-input>
           <el-button size="small">搜索</el-button>
-          <span style="color:#409eff;font-size:12px;cursor: pointer;">高级搜索</span>
+          <span style="color:#409eff;font-size:12px;cursor: pointer;" @click="adShow">高级搜索</span>
         </div>
       </div>
       <div class="tablelist">
@@ -108,11 +108,11 @@
         </div>
       </div>
     </div>
-
+    <advanced class="adsearch" v-on:isHide="isHide"></advanced>
   </div>
 </template>
 <script>
-// import tableDate from '../login/test'
+import advanced from "./Advanced";
 export default {
   name: "equipment",
   data() {
@@ -121,29 +121,29 @@ export default {
       pageSize: 10,
       tableData: [
         {
-          name:"111",
-          tel:"222",
-          address:"3333",
-          hobby:"4444"
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
         },
         {
-          name:"111",
-          tel:"222",
-          address:"3333",
-          hobby:"4444"
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
         },
-        // {
-        //   name:"111",
-        //   tel:"222",
-        //   address:"3333",
-        //   hobby:"4444"
-        // },
-        // {
-        //   name:"111",
-        //   tel:"222",
-        //   address:"3333",
-        //   hobby:"4444"
-        // }
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        }
       ],
       tableDate: [],
       columns: [
@@ -230,12 +230,18 @@ export default {
     };
   },
   methods: {
-    toAdd(){
-      this.$router.push('/EquipmentAdd')
+    adShow(){
+      document.querySelectorAll('.adsearch')[0].style.right=0;
     },
-    redactShow(rowIndex, rowData, column){
-      this.$router.push("/Redact")
-      this.$store.commit("equipmentRedact",rowData)
+    isHide:function (params) {
+      document.querySelectorAll('.adsearch')[0].style.right=params;
+    },
+    toAdd() {
+      this.$router.push("/EquipmentAdd");
+    },
+    redactShow(rowIndex, rowData, column) {
+      this.$router.push("/Redact");
+      this.$store.commit("equipmentRedact", rowData);
     },
     selectGroupChange(selection) {
       console.log("select-group-change", selection);
@@ -275,6 +281,9 @@ export default {
         });
       }
     }
+  },
+  components: {
+    advanced
   }
 };
 </script>
@@ -361,4 +370,10 @@ export default {
   width: auto !important;
   padding: 0 !important;
 }
+.adsearch {
+    position: absolute;
+    top: 60px;
+    right: -310px;
+    transition: all 0.3s ease-in;
+  }
 </style>

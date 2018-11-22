@@ -1,54 +1,56 @@
 <template>
-    <div class="search">
-        <div class="case">
-            <label for="" v-model="companyName">企业名称：</label>
-            <el-input type="search" size="small" v-model="companyName"></el-input>
-            <div>
-                <label for="">企业状态：</label>
-                <div style="margin-top:10px;">
-                    <el-checkbox-group v-model="checkList">
-                        <el-checkbox label="0">待审批</el-checkbox>
-                        <el-checkbox label="1">已禁用</el-checkbox>
-                        <el-checkbox label="2">正常</el-checkbox>
-                    </el-checkbox-group>
-                </div>
-            </div>
-            <div style="width:100%;text-align:center;margin-top:20px;">
-                <el-button size="small" @click="isHide">取消</el-button>
-                <el-button size="small" v-on:click="search">搜索</el-button>
-            </div>
+  <div class="search">
+    <div class="case">
+      <label for="">企业名称：</label>
+      <el-input type="search" size="small" v-model="companyName"></el-input>
+      <div>
+        <label for="">企业状态：</label>
+        <div style="margin-top:10px;">
+          <el-checkbox-group v-model="checkList">
+            <el-checkbox label="0">待审批</el-checkbox>
+            <el-checkbox label="1">已禁用</el-checkbox>
+            <el-checkbox label="2">正常</el-checkbox>
+          </el-checkbox-group>
         </div>
+      </div>
+      <div style="width:100%;text-align:center;margin-top:20px;">
+        <el-button size="small" @click="isHide">取消</el-button>
+        <el-button size="small" v-on:click="search">搜索</el-button>
+      </div>
     </div>
+  </div>
 </template>
 <script>
 export default {
   name: "",
   data() {
     return {
-      dataName:'',
+      dataName: "",
       companyName: "",
       checkList: [],
-      state:[]
+      state: []
     };
   },
   methods: {
     isHide() {
       document.querySelectorAll(".adsearch")[0].style.right = "-310px";
     },
-    search(){
-      axios.get("/api/enterprise/findByNameOrState", {params:{enterpriseName:this.companyName}})
-        .then(response =>{
+    search() {
+      axios
+        .get("/api/enterprise/findByNameOrState", {
+          params: { enterpriseName: this.companyName }
+        })
+        .then(response => {
           console.log(response);
           document.querySelectorAll(".adsearch")[0].style.right = "-310px";
-          this.dataName=response.data.data.content
-          console.log(this.dataName)
-          this.$emit("advanceValue",this.dataName)
-
-        }).catch(function (error) {
-        console.log(error);
-      })
+          this.dataName = response.data.data.content;
+          console.log(this.dataName);
+          this.$emit("advanceValue", this.dataName);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
-
   }
 };
 </script>

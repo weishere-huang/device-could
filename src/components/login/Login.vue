@@ -259,7 +259,7 @@ export default {
       page: "1",
       size: "5"
     });
-    axios
+    this.axios
       .get(this.global.apiSrc+"/message/", data)
       .then(response => {
         console.log(response.data);
