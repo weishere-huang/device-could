@@ -37,21 +37,18 @@
         document.querySelectorAll(".adsearch")[0].style.right = "-310px";
       },
       search() {
-        console.log(this.checkList)
-        axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {
+        this.axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {
+        // axios.get("/api/enterprise/findByNameOrState", {
           params: {
             enterpriseName: this.companyName,
             state: this.checkList
           }
         })
-        axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {
-          params: {enterpriseName: this.companyName, state: this.checkList}
-        })
           .then(response => {
             console.log(response);
             document.querySelectorAll(".adsearch")[0].style.right = "-310px";
             for (let i = 0; i < response.data.data.content.length; i++) {
-              response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+              // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
               console.log(this.dataName)
               if (response.data.data.content[i].state === 0) {
                 response.data.data.content[i].state = "待审核"
@@ -67,6 +64,7 @@
               }
             }
             this.dataName = response.data.data.content
+            console.log(this.dataName)
 
             this.$emit("advanceValue", this.dataName)
 
