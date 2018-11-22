@@ -295,57 +295,7 @@
       forgetThePassword,
     },
 
-        this.$router.push({path:"/home"})
-      }).catch(err =>{
-        console.log(err)
-        console.log("注册失败");
-      });
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${
-          files.length
-        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
-      );
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`);
-    },
-    encryptByDES(message, key) {
-      const keyHex = CryptoJS.enc.Utf8.parse(key);
-      const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
-        mode: CryptoJS.mode.ECB,
-        padding: CryptoJS.pad.Pkcs7
-      });
-      return encrypted.toString();
-    }
-  },
-  components: {},
-  created() {
-    console.log(this.global.apiSrc);
-    let qs = require("qs");
-    let data = qs.stringify({
-      page: "1",
-      size: "5"
-    });
-    this.axios
-      .get(this.global.apiSrc+"/message/", data)
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  },
-  components: {
-    forgetThePassword
-  }
+       
 };
 
 </script>
