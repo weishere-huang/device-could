@@ -94,28 +94,27 @@
         <el-button size="small" @click="edelete">删除</el-button>
         <div class="searchright">
           <span>关键字：</span>
+
           <el-input type="search" size="small" placeholder="根据设备编号，名称，位号" v-model="keyWord"></el-input>
           <el-button size="small" @click="findByKeyWord">搜索</el-button>
           <span style="color:#409eff;font-size:12px;cursor: pointer;">高级搜索</span>
+
         </div>
       </div>
       <div class="tablelist">
         <div>
-          <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag
-                   :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns"
-                   :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL"
-                   :select-group-change="selectGroupChange" :row-dblclick="redactShow"></v-table>
+          <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange" :row-dblclick="redactShow"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize"
-                          :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
     </div>
-
+    <advanced class="adsearch" v-on:isHide="isHide"></advanced>
   </div>
 </template>
 <script>
+
   // import tableDate from '../login/test'
   export default {
     name: "equipment",
@@ -232,10 +231,12 @@
             titleAlign: "center",
             columnAlign: "left",
             isResize: true
+
           }
-        ]
-      };
+        });
+      }
     },
+
     methods: {
       toAdd() {
         this.$router.push('/EquipmentAdd')
@@ -286,14 +287,26 @@
         }
       },
 
-      //通过
-      findall() {
-        //根据用户token查询所属组织机构下设备类别
-        let qs = require("qs");
-        let data = qs.stringify({
-          page: this.pageIndex,
-          size: this.pageSize
+
+    //通过
+    findall() {
+      //根据用户token查询所属组织机构下设备类别
+      let qs = require("qs");
+      let data = qs.stringify({
+        page: this.pageIndex,
+        size: this.pageSize
+      });
+      axios
+        .get("api/device/all", data)
+        .then(result => {
+          this.tableData = result.data.data.content;
+          console.log("findall");
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
         });
+
         this.axios
         //axios
           .get(this.global.apiSrc+"/device/all", data)
@@ -440,91 +453,97 @@
       //this.findByOrganizeCode();
     }
   };
+
 </script>
 <style lang="less" scoped>
-  @import url("../../assets/font/font.css");
+@import url("../../assets/font/font.css");
 
-  @blue: #409eff;
-  @Success: #67c23a;
-  @Warning: #e6a23c;
-  @Danger: #f56c6c;
-  @Info: #dde2eb;
-  .equipment {
+@blue: #409eff;
+@Success: #67c23a;
+@Warning: #e6a23c;
+@Danger: #f56c6c;
+@Info: #dde2eb;
+.equipment {
+  overflow: hidden;
+  .equipmentContent {
+    font-size: 12px;
+    color: #666666;
+    width: 200px;
     overflow: hidden;
-    .equipmentContent {
-      font-size: 12px;
-      color: #666666;
-      width: 200px;
+    float: left;
+    font-size: 12px;
+    .classifylist {
+      width: 170px;
       overflow: hidden;
+      margin: 10px;
       float: left;
-      font-size: 12px;
-      .classifylist {
-        width: 170px;
-        overflow: hidden;
-        margin: 10px;
-        float: left;
-        border: 1px solid @Info;
-        padding: 10px;
-        border-radius: 5px;
-        h5 {
-          width: 100%;
-          text-align: left;
-          display: inline-block;
-          padding: 5px 14px 0 0;
+      border: 1px solid @Info;
+      padding: 10px;
+      border-radius: 5px;
+      h5 {
+        width: 100%;
+        text-align: left;
+        display: inline-block;
+        padding: 5px 14px 0 0;
+      }
+      li {
+        list-style-type: none;
+        text-align: left;
+        padding: 4px 0 4px 20px;
+        letter-spacing: 1px;
+        cursor: pointer;
+        &:hover {
+          background-color: @Info;
         }
-        li {
-          list-style-type: none;
-          text-align: left;
-          padding: 4px 0 4px 20px;
-          letter-spacing: 1px;
-          cursor: pointer;
-          &:hover {
-            background-color: @Info;
-          }
-        }
-        .transitlist {
-          padding-left: 20px;
-        }
+      }
+      .transitlist {
+        padding-left: 20px;
       }
     }
-    .content {
-      width: 80%;
-      min-width: 700px;
-      float: left;
-      margin: 10px 0 0 0;
-      // border: 1px solid @Info;
-      // border-radius:5px;
-      .search {
-        border: 1px solid @Info;
-        border-radius: 5px;
-        height: 60px;
-        line-height: 60px;
-        padding: 0 10px;
-        // overflow: hidden;
-        .searchright {
-          font-size: 12px;
-          float: right;
-          // display: inline-block;
-        }
-      }
-      .tablelist {
+  }
+  .content {
+    width: 80%;
+    min-width: 700px;
+    float: left;
+    margin: 10px 0 0 0;
+    // border: 1px solid @Info;
+    // border-radius:5px;
+    .search {
+      border: 1px solid @Info;
+      border-radius: 5px;
+      height: 60px;
+      line-height: 60px;
+      padding: 0 10px;
+      // overflow: hidden;
+      .searchright {
         font-size: 12px;
-        margin-top: 10px;
-        padding: 10px;
-        border: 1px solid @Info;
-        border-radius: 5px;
-        min-height: 500px;
+        float: right;
+        // display: inline-block;
       }
     }
+    .tablelist {
+      font-size: 12px;
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid @Info;
+      border-radius: 5px;
+      min-height: 500px;
+    }
   }
+}
 
-  .el-input__inner {
-    //   width: 150px !important;
-    display: inline !important;
-  }
-
-  .el-input {
-    width: auto !important;
-    padding: 0 !important;
-  }
+.el-input__inner {
+  //   width: 150px !important;
+  display: inline !important;
+}
+.el-input {
+  width: auto !important;
+  padding: 0 !important;
+}
+.adsearch {
+  position: absolute;
+  top: 60px;
+  right: -310px;
+  transition: all 0.3s ease-in;
+}
 </style>

@@ -228,7 +228,7 @@
           });
       },
       selectOne(employeeId,userName){
-        axios
+        this.axios
           .get(this.global.apiSrc+"/employee/selectOne",{params:{employeeId:employeeId}})
           .then(response => {
             this.persnneladd = response.data.data;
@@ -277,8 +277,8 @@
           roleId: this.persnneladd.roleId
         });
         // console.log(data);
-        axios
-          .put(this.global.apiSrc+"/employee/update",data)
+        this.axios
+          .post(this.global.apiSrc+"/employee/update",data)
           .then(response => {
             this.Personnel();
             console.log(response.data.msg);
@@ -294,8 +294,8 @@
           enableOrDisable: 0
         });
         // console.log(data);
-        axios
-          .put(this.global.apiSrc+"/employee/enableOrDisable", data)
+        this.axios
+          .post(this.global.apiSrc+"/employee/enableOrDisable", data)
           .then(response => {
             this.Personnel();
             console.log(response.data.msg)
@@ -310,7 +310,7 @@
       console.log(aaa);
       // console.log(aaa.employeeNo);
       this.selectOne(aaa.id,aaa.userName);
-      axios
+      this.axios
         .get(this.global.apiSrc+"/role/listAllRole")
         .then(response => {
           this.role = response.data.data;

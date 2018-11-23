@@ -7,7 +7,7 @@
         <label for="">企业状态：</label>
         <div style="margin-top:10px;">
           <el-checkbox-group v-model="checkList">
-            <el-checkbox label=0>待审核</el-checkbox>
+            <el-checkbox label="0">待审核</el-checkbox>
             <el-checkbox label="1">未通过</el-checkbox>
             <el-checkbox label="2">已禁用</el-checkbox>
             <el-checkbox label="3">正常</el-checkbox>

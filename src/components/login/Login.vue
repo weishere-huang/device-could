@@ -73,7 +73,7 @@
           </li>
           <li>
             <label for="">密码：</label>
-            <el-input size="small" v-model="manager.userPassword"></el-input>
+            <el-input size="small" type="password" v-model="manager.userPassword"></el-input>
           </li>
           <li>
             <label for="">手机号：</label>
@@ -192,12 +192,15 @@
             if (this.userName == "") {
               console.log("请输入用户名")
               alert("请输入用户名")
+
             }
             if (this.password == "") {
               alert("请输入密码")
             } else {
-              // console.log(result);
+              console.log(result);
               // console.log(result.data);
+              this.$store.commit("tokenSrc",result.data.data)
+              console.log("这是token:"+result.data.data)
               this.$router.push({path: "/home"});
             }
           })
@@ -295,8 +298,9 @@
       forgetThePassword,
     },
 
+       
+};
 
-  };
 </script>
 <style lang="less" scoped>
   @blue: #409eff;
