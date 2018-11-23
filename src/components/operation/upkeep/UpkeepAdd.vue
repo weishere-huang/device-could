@@ -100,7 +100,7 @@
             <div class="right">
                 <div>
                     <el-button size="small">清空已选</el-button>
-                    <el-button size="small">设备添加</el-button>
+                    <el-button size="small" @click="addPlanIsShow">设备添加</el-button>
                 </div>
                 <h5>设备列表</h5>
                 <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
@@ -109,13 +109,16 @@
                 </div>
             </div>
         </div>
+        <add-plan v-show="addPlanShow" v-on:isHide="isHide"></add-plan>
     </div>
 </template>
 <script>
+import AddPlan from "./AddPlan";
 export default {
   name: "",
   data() {
     return {
+      addPlanShow: false,
       time: new Date().toLocaleString(),
       companyName: {
         region: "",
@@ -199,6 +202,12 @@ export default {
   },
   created() {},
   methods: {
+    isHide(params) {
+      this.addPlanShow = params;
+    },
+    addPlanIsShow() {
+      this.addPlanShow = true;
+    },
     toBack() {
       this.$router.back(-1);
     },
@@ -227,6 +236,9 @@ export default {
       this.pageSize = pageSize;
       this.getTableData();
     }
+  },
+  components: {
+    addPlan: AddPlan
   }
 };
 </script>
