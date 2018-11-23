@@ -259,7 +259,26 @@ export default {
       this.pageSize = pageSize;
       this.getTableData();
     }
-  }
+  },
+  created(){
+
+      axios
+      //.get(this.global.apiSrc+"/organize/allOrganize/321")
+        .get("api/organize/allOrganize/321")
+        .then(result => {
+          console.log("查询所有组织机构");
+          console.log(result.data);
+
+          console.log(result.data.data);
+          //this.data2 = this.filterArray(result.data.data,1000);
+          this.data2 = result.data.data;
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    }
+
 };
 </script>
 
@@ -323,7 +342,7 @@ export default {
           font-size: 14px;
         }
         .treeCase{
-          margin-top:20px; 
+          margin-top:20px;
         }
       }
       .center {

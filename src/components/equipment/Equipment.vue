@@ -91,7 +91,7 @@
       <div class="search">
         <el-button size="small" @click="toAdd">添加</el-button>
         <el-button size="small" @click="sort()"> 复制</el-button>
-        <el-button size="small">删除</el-button>
+        <el-button size="small" @click="edelete">删除</el-button>
         <div class="searchright">
           <span>关键字：</span>
           <el-input type="search" size="small" placeholder="根据设备编号，名称，位号" v-model="keyWord"></el-input>
@@ -125,6 +125,7 @@
         deviceId:"",
         pageIndex: 1,
         pageSize: 10,
+        ids:"",
         tableData: [
           {
             name: "111",
@@ -242,9 +243,12 @@
       redactShow(rowIndex, rowData, column) {
         this.$router.push("/Redact")
         this.$store.commit("equipmentRedact", rowData)
+        console.log("1111");
+        console.log(rowData);
       },
       selectGroupChange(selection) {
         console.log("select-group-change", selection)
+        this.ids=selection[0].id;
       },
       selectALL(selection) {
         console.log("select-aLL", selection);
@@ -290,8 +294,10 @@
           page: this.pageIndex,
           size: this.pageSize
         });
-        this.axios
-          .get(this.global.apiSrc+"/device/all", data)
+        //this.axios
+        axios
+          //.get(this.global.apiSrc+"/device/all", data)
+          .get("api/device/all", data)
           .then(result => {
             this.tableData = result.data.data.content;
             console.log(result.data);
@@ -320,9 +326,10 @@
           page: this.pageIndex,
           size: this.pageSize
         });
-        this.axios
-        //  .get("api/device/select", data)
-          .get(this.global.apiSrc+"/device/select", data)
+        //this.axios
+        axios
+          .get("api/device/select", data)
+          //.get(this.global.apiSrc+"/device/select", data)
           .then(result => {
             alert("selectquery");
             console.log(result.data);
@@ -332,11 +339,13 @@
           });
       },
       //通过
-      findDeviceState() {
+      findDeviceState(id) {
         //获取设备状况接口
-        this.axios
-          //.get("api/device/findDeviceState")
-          .get(this.global.apiSrc+"/device/findDeviceState")
+        let ids = id;
+        //this.axios
+        axios
+          .get("api/device/findDeviceState",{params:{deviceId:ids}})
+          //.get(this.global.apiSrc+"/device/findDeviceState")
           .then(result => {
             console.log(result.data);
           })
@@ -344,48 +353,14 @@
             console.log(err);
           });
       },
-      //通过
 
-      //通过
 
-      //通过
-      detail(id) {
-        //获取设备详情接口
-        let qs = require("qs");
-        let data = qs.stringify({});
-        this.axios
-          .get(this.global.apiSrc+"/device/detail", {params: {deviceId: id }})
-          .then(result => {
-            alert("detail");
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
-      //通过
-      // all() {
-      //   //设备列表
-      //   let qs = require("qs");
-      //   let data = qs.stringify({
-      //     token: ""
-      //   });
-      //   alert("all");
-      //   axios
-      //     .get("api/device/all", data)
-      //     .then(result => {
-      //       alert("all");
-      //       console.log(result.data);
-      //     })
-      //     .catch(err => {
-      //       console.log(err);
-      //     });
-      // },
-      //通过
       findByKeyWord() {
         //根据设备编号、位号、名称查询
-        this.axios
-          .get(this.global.apiSrc+"/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: this.keyWord}})
+        //this.axios
+        axios
+          //.get(this.global.apiSrc+"/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: this.keyWord}})
+          .get("api/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: this.keyWord}})
           .then(result => {
             this.tableData = result.data.data.content;
             console.log(result.data.data.content);
@@ -394,7 +369,6 @@
             console.log(err);
           });
       },
-      //通过
       findByOrganizeCode() {
         //根据组织代码查询所有员工数据，支持分页（用于设备模块）
         let qs = require("qs");
@@ -418,7 +392,6 @@
             console.log(err);
           });
       },
-      //
       getDeviceById() {
         //根据员工id查询相关设备信息接口，支持分页（用于设备模块）
         let qs = require("qs");
@@ -427,9 +400,10 @@
           size: this.pageSize,
           employeeId: 147
         });
-        this.axios
-          // .get("api/employee/getDeviceById", data)
-          .get(this.global.apiSrc +"/employee/getDeviceById", data)
+        //this.axios
+        axios
+           .get("api/employee/getDeviceById", data)
+          //.get(this.global.apiSrc +"/employee/getDeviceById", data)
           .then(result => {
             alert("getDeviceById");
             console.log(result.data);
@@ -439,10 +413,22 @@
           });
       },
       edelete() {
+        //this.axios
+        axios
+          .get("api/device/delete", {params:{deviceId:this.ids}})
+          //.get(this.global.apiSrc +"/employee/getDeviceById", data)
+          .then(result => {
+            this.findall();
+            console.log("delete");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     },
     created() {
-      //this.detail();
+      //this.detail(1);
       //this.findDeviceState();
       //this.selectquery();
       this.findall();
