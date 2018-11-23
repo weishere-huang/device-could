@@ -3,6 +3,7 @@
     <div class="userCase">
       <div class="top">
         <el-button size="small" @click="toPansAdd">添加</el-button>
+        <el-button size="small">审核</el-button>
         <el-button size="small">停止</el-button>
         <el-button size="small">删除</el-button>
       </div>

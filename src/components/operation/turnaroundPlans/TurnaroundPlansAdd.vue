@@ -2,7 +2,7 @@
   <div class="turnaroundPlansAdd">
     <div class="top">
       <el-button size="small" @click="toback">返回</el-button>
-      <el-button size="small" @click="test">保存</el-button>
+      <el-button size="small">保存</el-button>
     </div>
     <div class="bottom">
       <div class="left">
@@ -113,15 +113,15 @@
   </div>
 </template>
 <script>
-import addPlan from './AddPlan'
+import addPlan from "./AddPlan";
 export default {
   name: "",
   data() {
     return {
-      addPlanShow:false,
+      addPlanShow: false,
       time: new Date().toLocaleString(),
       companyName: {
-        qqqq:"",
+        qqqq: "",
         region: "",
         resource: "",
         next: "单次"
@@ -201,17 +201,13 @@ export default {
       tableDate: []
     };
   },
-  created() {
-  },
+  created() {},
   methods: {
     isHide(params) {
       this.addPlanShow = params;
     },
-    addPlanIsShow(){
-      this.addPlanShow=true;
-    },
-    test(){
-      console.log(this.companyName.qqqq);
+    addPlanIsShow() {
+      this.addPlanShow = true;
     },
     toback() {
       this.$router.back(-1);
