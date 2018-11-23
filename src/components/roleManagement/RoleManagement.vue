@@ -390,7 +390,7 @@
           .get(this.global.apiSrc+"/role/listAllRole")
           .then(response => {
             this.role = response.data.data;
-            // console.log(response.data.data)
+            console.log(response.data.data)
           })
           .catch(function(error) {
             console.log(error);
@@ -478,15 +478,13 @@
         let data = qs.stringify({
           id:this.roleId.value,
           name:this.roleName
-        });
+        },
+        this.systemID
+        );
         console.log(this.roleId.value);
         console.log(this.roleName);
         this.axios
-          .put(this.global.apiSrc+"/role/update",data,{params:{
-              permissionIds:this.systemID,
-              id:this.roleId.value,
-              name:this.roleName
-            }})
+          .post(this.global.apiSrc+"/role/update",data)
           .then(response =>{
             this.load();
             console.log(response)

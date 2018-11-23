@@ -29,7 +29,7 @@
         pageNumber:0,
         searchs: "",
         pageIndex: 1,
-        pageSize: 2,
+        pageSize: 10,
         tableData: [],
         tableDate: [],
         userIds: "",
@@ -142,7 +142,7 @@
           enableOrDisable: 1
         });
         this.axios
-          .put(this.global.apiSrc+"/employee/enableOrDisable", data)
+          .post(this.global.apiSrc+"/employee/enableOrDisable", data)
           .then(response => {
             this.load();
           })
@@ -157,7 +157,7 @@
           enableOrDisable: 0
         });
         this.axios
-          .put(this.global.apiSrc+"/employee/enableOrDisable", data)
+          .post(this.global.apiSrc+"/employee/enableOrDisable", data)
           .then(response => {
             this.load();
           })
@@ -227,7 +227,7 @@
           .then(response => {
             this.tableData = response.data.data.content;
             this.pageNumber = this.tableData.length;
-            console.log(this.tableData);
+            // console.log(this.tableData);
             for(let i in this.tableData){
               // console.log(i);
               this.tableData[i].state === -1 ? this.tableData[i].state = "禁用" : this.tableData[i].state = "正常";
