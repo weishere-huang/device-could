@@ -148,8 +148,8 @@
           });
       },
       allOrganize() {
-        axios
-          .get("api/organize/allOrganize/321")
+        this.axios
+          .get(this.global.apiSrc+"/organize/allOrganize/321")
           .then(result => {
             alert("查询所有组织机构")
             console.log(result.data);
@@ -177,8 +177,8 @@
       findOneOrganize() {
         //查询单个组织机构
 
-        axios
-          .get("api/organize/findOneOrganize/1")
+        this.axios
+          .get(this.global.apiSrc+"/organize/findOneOrganize/1")
           .then(result => {
             alert("findone");
             console.log("findone");

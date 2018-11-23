@@ -92,13 +92,10 @@ export default {
       }
     ];
     return {
-      data5: JSON.parse(JSON.stringify(data)),
-      form: [
-        {
-          name: "",
-          desc: ""
-        }
-      ]
+
+      data5: JSON.parse(JSON.stringify(data))
+
+    
     };
   },
   methods: {
@@ -115,7 +112,41 @@ export default {
       const children = parent.data.children || parent.data;
       const index = children.findIndex(d => d.id === data.id);
       children.splice(index, 1);
-    }
+    },
+    allOrganize() {
+      this.axios
+      //axios
+        .get(this.global.apiSrc+"/organize/allOrganize/321")
+       // .get("api/organize/allOrganize/321")
+        .then(result => {
+          console.log("查询所有组织机构");
+          console.log(result.data.data);
+          this.data = this.filterArray(result.data.data,1000);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    },
+    filterArray(data, parent) {
+      let vm = this;
+      var tree = [];
+      var temp;
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].parentCode == parent) {
+          var obj = data[i];
+          temp = this.filterArray(data, data[i].id);
+          if (temp.length > 0) {
+            obj.children = temp;
+          }
+          tree.push(obj);
+        }
+      }
+      return tree;
+    },
+  },
+  created(){
+    this.allOrganize()
   }
 };
 </script>
