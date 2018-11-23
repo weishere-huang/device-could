@@ -2,7 +2,7 @@
   <div class="turnaroundPlansAdd">
     <div class="top">
       <el-button size="small" @click="toback">返回</el-button>
-      <el-button size="small">保存</el-button>
+      <el-button size="small" @click="test">保存</el-button>
     </div>
     <div class="bottom">
       <div class="left">
@@ -21,10 +21,9 @@
           </el-form-item>
           <el-form-item label="检修级别：">
             <el-select v-model="companyName.region" placeholder="请选择" size="mini">
-              <el-option label="大" value="3"></el-option>
+              <el-option label="大" value="1"></el-option>
               <el-option label="中" value="2"></el-option>
-              <el-option label="小" value="1"></el-option>
-              <el-option label="中" value="4"></el-option>
+              <el-option label="小" value="3"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="计划类型：">
@@ -85,7 +84,7 @@
             </el-col>
             <el-col class="line" :span="2">-</el-col>
             <el-col :span="11">
-              <el-time-picker type="fixed-time" placeholder="选择时间" v-model="companyName.date2" style="width: 100%;padding-right:5px;" size="mini"></el-time-picker>
+              <el-time-picker type="fixed-time" placeholder="选择时间" value-format="HH:mm:ss" v-model="companyName.qqqq" style="width: 100%;padding-right:5px;" size="mini"></el-time-picker>
             </el-col>
           </el-form-item>
           <el-form-item label="检修内容：" style="height:auto;">
@@ -101,25 +100,28 @@
       <div class="right">
         <div>
           <el-button size="small">清空已选</el-button>
-          <el-button size="small">设备添加</el-button>
+          <el-button size="small" @click="addPlanIsShow">设备添加</el-button>
         </div>
         <h5>设备列表</h5>
         <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
         <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-          <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
         </div>
       </div>
     </div>
+    <add-plan v-show="addPlanShow" v-on:isHide="isHide"></add-plan>
   </div>
 </template>
 <script>
+import addPlan from './AddPlan'
 export default {
   name: "",
   data() {
     return {
-      pageNumber:0,
+      addPlanShow:false,
       time: new Date().toLocaleString(),
       companyName: {
+        qqqq:"",
         region: "",
         resource: "",
         next: "单次"
@@ -132,7 +134,7 @@ export default {
           type: "selection"
         },
         {
-          field: "deviceNo",
+          field: "name",
           title: "设备编号",
           width: 80,
           titleAlign: "center",
@@ -141,15 +143,15 @@ export default {
           //   orderBy: ""
         },
         {
-          field: "deviceName",
+          field: "num",
           title: "设备名称",
-          width: 80,
+          width: 150,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
         },
         {
-          field: "deviceModel",
+          field: "hobby",
           title: "型号/规格",
           width: 80,
           titleAlign: "center",
@@ -157,17 +159,17 @@ export default {
           isResize: true
         },
         {
-          field: "location",
+          field: "startTime",
           title: "设备位置",
-          width: 100,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
         },
         {
-          field: "workerNames",
+          field: "starTime",
           title: "人员",
-          width: 100,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -175,7 +177,7 @@ export default {
         {
           field: "starTime",
           title: "操作",
-          width: 100,
+          width: 50,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -185,25 +187,34 @@ export default {
       pageSize: 10,
       tableData: [
         {
-          deviceCategoryName:"",
-          manufacturer:"",
-          deviceName:"",
-          deviceModel:"",
-          deviceNo:"",
-          deviceState:"",
-          location:"",
-          locationNo:"",
-          workerNames:"",
-          id:""
+          id: "111",
+          name: "222",
+          num: "3333",
+          hobby: "4444",
+          startTime: "555",
+          endTime: "6666",
+          frequency: "7777",
+          maintenanceCc: "888",
+          state: "999"
         }
       ],
       tableDate: []
     };
   },
-  created() {},
+  created() {
+  },
   methods: {
-    toback(){
-      this.$router.back(-1)
+    isHide(params) {
+      this.addPlanShow = params;
+    },
+    addPlanIsShow(){
+      this.addPlanShow=true;
+    },
+    test(){
+      console.log(this.companyName.qqqq);
+    },
+    toback() {
+      this.$router.back(-1);
     },
     selectGroupChange(selection) {
       console.log("select-group-change", selection);
@@ -212,8 +223,6 @@ export default {
       console.log("select-aLL", selection);
     },
     selectChange(selection, rowData) {
-      console.log(selection);
-      console.log(rowData);
       console.log("select-change", selection, rowData);
     },
     getTableData() {
@@ -231,24 +240,10 @@ export default {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
-    },
-    load(){
-      this.axios
-        .get(this.global.apiSrc+"/device/all",{params:{
-            page:this.pageIndex,
-            size:this.pageSize
-          }})
-        .then(response =>{
-          this.tableData = response.data.data.content;
-          this.pageNumber = response.data.data.content.length;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
     }
   },
-  created(){
-    this.load()
+  components: {
+    addPlan
   }
 };
 </script>

@@ -180,26 +180,26 @@ export default {
   height: 40px !important;
   line-height: 40px !important;
 }
-body {
-  scrollbar-arrow-color: #f2f2f3; /*上下箭头*/
-  scrollbar-track-color: #1589ce; /*底层背景色*/
-  scrollbar-face-color: #27aeff; /*滚动条前景色*/
-  scrollbar-shadow-color: #1589ce; /*滚动条边线色*/
-}
+// body {
+//   scrollbar-arrow-color: #f2f2f3; /*上下箭头*/
+//   scrollbar-track-color: #1589ce; /*底层背景色*/
+//   scrollbar-face-color: #27aeff; /*滚动条前景色*/
+//   scrollbar-shadow-color: #1589ce; /*滚动条边线色*/
+// }
 /*chrome滚动条颜色设置*/
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-  background-color: #b9abab;
+  width: 10px;
+  height: 10px;
+  background-color: #eeeeee;
 } /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
 ::-webkit-scrollbar-track {
-  background-color: rgba(252, 250, 250, 0.699);
+  background-color: rgba(250, 245, 245, 0.699);
   border-radius: 5px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 } /*定义滚动条轨道 内阴影+圆角*/
 ::-webkit-scrollbar-thumb {
-  background-color: @Info;
+  background-color: #999;
   border-radius: 5px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(7, 7, 7, 0.3);
 } /*定义滑块 内阴影+圆角*/
 </style>
