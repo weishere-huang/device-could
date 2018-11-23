@@ -136,19 +136,19 @@ export default {
   mounted() {
     let i = 0;
     $(".leftButton").click(function() {
-      i -= 150;
-      if ($(".slideshow>ul")[0].style.left < "-900px") {
-        $(".slideshow>ul")[0].style.left = "0px";
-        
+      i += 150;
+      if ($(".slideshow>ul")[0].style.left >= "0px") {
+        $(".slideshow>ul")[0].style.left = "-900px";
+        i = -900;
       } else {
         $(".slideshow>ul")[0].style.left = i + "px";
       }
     });
     $(".rightButton").click(function() {
-      i += 150;
-      if ($(".slideshow>ul")[0].style.left > "0px") {
-        $(".slideshow>ul")[0].style.left = "-900px";
-        i = -900;
+      i -= 150;
+      if ($(".slideshow>ul")[0].style.left <= "-900px") {
+        $(".slideshow>ul")[0].style.left = "0px";
+        i = 0;
       } else {
         $(".slideshow>ul")[0].style.left = i + "px";
       }
