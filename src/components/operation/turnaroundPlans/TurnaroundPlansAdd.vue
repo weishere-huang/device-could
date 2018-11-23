@@ -2,7 +2,7 @@
   <div class="turnaroundPlansAdd">
     <div class="top">
       <el-button size="small" @click="toback">返回</el-button>
-      <el-button size="small">保存</el-button>
+      <el-button size="small" @click="test">保存</el-button>
     </div>
     <div class="bottom">
       <div class="left">
@@ -84,7 +84,7 @@
             </el-col>
             <el-col class="line" :span="2">-</el-col>
             <el-col :span="11">
-              <el-time-picker type="fixed-time" placeholder="选择时间" v-model="companyName.date2" style="width: 100%;padding-right:5px;" size="mini"></el-time-picker>
+              <el-time-picker type="fixed-time" placeholder="选择时间" value-format="HH:mm:ss" v-model="companyName.qqqq" style="width: 100%;padding-right:5px;" size="mini"></el-time-picker>
             </el-col>
           </el-form-item>
           <el-form-item label="检修内容：" style="height:auto;">
@@ -100,7 +100,7 @@
       <div class="right">
         <div>
           <el-button size="small">清空已选</el-button>
-          <el-button size="small">设备添加</el-button>
+          <el-button size="small" @click="addPlanIsShow">设备添加</el-button>
         </div>
         <h5>设备列表</h5>
         <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
@@ -109,15 +109,19 @@
         </div>
       </div>
     </div>
+    <add-plan v-show="addPlanShow" v-on:isHide="isHide"></add-plan>
   </div>
 </template>
 <script>
+import addPlan from './AddPlan'
 export default {
   name: "",
   data() {
     return {
+      addPlanShow:false,
       time: new Date().toLocaleString(),
       companyName: {
+        qqqq:"",
         region: "",
         resource: "",
         next: "单次"
@@ -141,7 +145,7 @@ export default {
         {
           field: "num",
           title: "设备名称",
-          width: 80,
+          width: 150,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -157,7 +161,7 @@ export default {
         {
           field: "startTime",
           title: "设备位置",
-          width: 100,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -165,7 +169,7 @@ export default {
         {
           field: "starTime",
           title: "人员",
-          width: 100,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -173,7 +177,7 @@ export default {
         {
           field: "starTime",
           title: "操作",
-          width: 100,
+          width: 50,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -197,10 +201,20 @@ export default {
       tableDate: []
     };
   },
-  created() {},
+  created() {
+  },
   methods: {
-    toback(){
-      this.$router.back(-1)
+    isHide(params) {
+      this.addPlanShow = params;
+    },
+    addPlanIsShow(){
+      this.addPlanShow=true;
+    },
+    test(){
+      console.log(this.companyName.qqqq);
+    },
+    toback() {
+      this.$router.back(-1);
     },
     selectGroupChange(selection) {
       console.log("select-group-change", selection);
@@ -227,6 +241,9 @@ export default {
       this.pageSize = pageSize;
       this.getTableData();
     }
+  },
+  components: {
+    addPlan
   }
 };
 </script>

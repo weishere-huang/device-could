@@ -2,7 +2,7 @@
     <div class="addPerson">
         <div class="addCase">
             <div class="top">
-                <span>添加人员</span>
+                <span>添加设备</span>
                 <label>
                     <button @click="isHide">×</button>
                 </label>

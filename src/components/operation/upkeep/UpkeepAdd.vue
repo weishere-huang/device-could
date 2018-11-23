@@ -144,7 +144,7 @@ export default {
         {
           field: "num",
           title: "设备名称",
-          width: 80,
+          width: 150,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -160,7 +160,7 @@ export default {
         {
           field: "startTime",
           title: "设备位置",
-          width: 100,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -168,7 +168,7 @@ export default {
         {
           field: "starTime",
           title: "人员",
-          width: 100,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -176,7 +176,7 @@ export default {
         {
           field: "starTime",
           title: "操作",
-          width: 100,
+          width: 50,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
