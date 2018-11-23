@@ -294,10 +294,10 @@
           page: this.pageIndex,
           size: this.pageSize
         });
-        //this.axios
-        axios
-          //.get(this.global.apiSrc+"/device/all", data)
-          .get("api/device/all", data)
+        this.axios
+        //axios
+          .get(this.global.apiSrc+"/device/all", data)
+         // .get("api/device/all", data)
           .then(result => {
             this.tableData = result.data.data.content;
             console.log(result.data);
@@ -326,10 +326,10 @@
           page: this.pageIndex,
           size: this.pageSize
         });
-        //this.axios
-        axios
-          .get("api/device/select", data)
-          //.get(this.global.apiSrc+"/device/select", data)
+        this.axios
+        //axios
+          //.get("api/device/select", data)
+          .get(this.global.apiSrc+"/device/select", data)
           .then(result => {
             alert("selectquery");
             console.log(result.data);
@@ -342,10 +342,10 @@
       findDeviceState(id) {
         //获取设备状况接口
         let ids = id;
-        //this.axios
-        axios
-          .get("api/device/findDeviceState",{params:{deviceId:ids}})
-          //.get(this.global.apiSrc+"/device/findDeviceState")
+        this.axios
+        //axios
+          //.get("api/device/findDeviceState",{params:{deviceId:ids}})
+          .get(this.global.apiSrc+"/device/findDeviceState")
           .then(result => {
             console.log(result.data);
           })
@@ -357,10 +357,10 @@
 
       findByKeyWord() {
         //根据设备编号、位号、名称查询
-        //this.axios
-        axios
-          //.get(this.global.apiSrc+"/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: this.keyWord}})
-          .get("api/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: this.keyWord}})
+        this.axios
+        //axios
+          .get(this.global.apiSrc+"/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: this.keyWord}})
+          //.get("api/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: this.keyWord}})
           .then(result => {
             this.tableData = result.data.data.content;
             console.log(result.data.data.content);
@@ -400,10 +400,10 @@
           size: this.pageSize,
           employeeId: 147
         });
-        //this.axios
-        axios
-           .get("api/employee/getDeviceById", data)
-          //.get(this.global.apiSrc +"/employee/getDeviceById", data)
+        this.axios
+        //axios
+          // .get("api/employee/getDeviceById", data)
+          .get(this.global.apiSrc +"/employee/getDeviceById", data)
           .then(result => {
             alert("getDeviceById");
             console.log(result.data);
@@ -413,10 +413,10 @@
           });
       },
       edelete() {
-        //this.axios
-        axios
-          .get("api/device/delete", {params:{deviceId:this.ids}})
-          //.get(this.global.apiSrc +"/employee/getDeviceById", data)
+        this.axios
+        //axios
+         // .get("api/device/delete", {params:{deviceId:this.ids}})
+          .get(this.global.apiSrc +"/employee/getDeviceById", data)
           .then(result => {
             this.findall();
             console.log("delete");

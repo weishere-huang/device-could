@@ -272,31 +272,32 @@
           organizeCode: "IIIBBBMMM",
           deviceCategory: this.sizeForm.deviceCategory,
           deviceCategoryName: "存储器",
-          devicePersonnelInfo: [{
+          devicePersonnelInfo: JSON.stringify([{
               workerType:1,
               workerName:"赵六",
-              employeeId:188,
+              workerId:188,
               workerTypeName:"负责人员"
             },
             {
               workerType:2,
               workerTypeName:"维修人员",
-              employeeId:192,
+              workerId:192,
               workerName:"王五"
             },
             {
               workerType:1,
               workerTypeName:"负责人员",
-              employeeId:147,
+              workerId:147,
               workerName:"李四"
             }
-          ]
+          ])
         });
-        //this.axios
+
         console.log(data);
-        axios
-          .post("api/device/add", data)
-          //.post(this.global.apiSrc + "/device/add", data)
+        this.axios
+        //axios
+          //.post("api/device/add", data)
+          .post(this.global.apiSrc + "/device/add", data)
           .then(result => {
 
             console.log("add");

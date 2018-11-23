@@ -258,7 +258,8 @@
         //编辑设备信息接口
         let qs = require("qs");
         let data = qs.stringify({
-          //sizeForm: this.sizeForm
+          sizeForm: JSON.stringify(this.sizeForm),
+          id:this.c.id
           //deviceNo: this.sizeForm.deviceNo,
           //deviceName: this.sizeForm.deviceName,
           //
@@ -284,12 +285,13 @@
           // organizeCode:this.sizeForm.organizeCode,
           // enterFactoryDate:this.sizeForm.enterFactoryDate,
           // deviceDataInfo:this.sizeForm.workerInfo
-          
+
         });
 
-        axios
-        //.put(this.global.apiSrc+"/device/update", data)
-          .post("api/device/update", data)
+        this.axios
+        //axios
+        .post(this.global.apiSrc+"/device/update", data)
+        //.post("api/device/update", data)
           .then(result => {
             console.log(data);
             console.log("update");
@@ -300,10 +302,10 @@
           });
       },
       allOrganize() {
-        //this.axios
-        axios
-        //.get(this.global.apiSrc+"/organize/allOrganize/321")
-          .get("api/organize/allOrganize/321")
+        this.axios
+        //axios
+        .get(this.global.apiSrc+"/organize/allOrganize/321")
+          //.get("api/organize/allOrganize/321")
           .then(result => {
             alert("查询所有组织机构")
             console.log(result.data);
@@ -318,11 +320,12 @@
         //获取设备详情接口
         let qs = require("qs");
         let data = qs.stringify({});
-        //this.axios
+
         this.id = id
-        axios
-        //.get(this.global.apiSrc+"/device/detail", {params: {deviceId: id }})
-          .get("api/device/detail", {params: {deviceId: id}})
+        //axios
+        this.axios
+        .get(this.global.apiSrc+"/device/detail", {params: {deviceId: id }})
+         // .get("api/device/detail", {params: {deviceId: id}})
           .then(result => {
             console.log("detail");
             console.log(result.data);

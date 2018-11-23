@@ -4,6 +4,7 @@
       <div class="top">
         <el-button size="small" @click="allMsg">所有消息</el-button>
         <el-button size="small" @click="allNotReadMsg">未读消息</el-button>
+        <el-button size="small" @click="updateAllMessageRead">全部已阅</el-button>
         <el-button size="small" @click="deleteMessage">删除</el-button>
         您有  <font color="#dc143c">{{msgcount}}</font>  条未读消息 !
 
@@ -14,7 +15,7 @@
                    :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"
                    :select-all="selectALL" :select-group-change="selectGroupChange"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:20px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize"
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total=this.tableData.length :page-size="pageSize"
                           :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
@@ -171,15 +172,7 @@
           });
         }
       },
-      // updateMessage(id){
-      //   //修改消息
-      // },
-      // addMessage(){
-      //   //增加消息
-      // },
-      // RealdeleteMessage(){
-      //   //删除消息,物理删除
-      // },
+
       deleteMessage() {
         //逻辑删除
         let qs = require("qs");
@@ -190,6 +183,7 @@
           .put(this.global.apiSrc+"/message/UpdateMsgState/",data)
           .then(result => {
             this.allMsg();
+            alert("成功删除!!!");
             console.log(result.data);
           })
           .catch(err => {
@@ -281,6 +275,17 @@
         //修改消息为已读
         this.axios
           .get(this.global.apiSrc+"/message/UpdateMsgRead/" + this.ids)
+          .then(result => {
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(this.userName);
+          });
+      },
+      updateAllMessageRead(){
+        this.axios
+          .get(this.global.apiSrc+"/message/UpdateAllMsgRead/" + {params:{userId:this.ids}})
           .then(result => {
             console.log(result.data);
           })

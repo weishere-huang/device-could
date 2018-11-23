@@ -262,9 +262,10 @@ export default {
   },
   created(){
 
-      axios
-      //.get(this.global.apiSrc+"/organize/allOrganize/321")
-        .get("api/organize/allOrganize/321")
+      //axios
+      this.axios
+      .get(this.global.apiSrc+"/organize/allOrganize/321")
+        //.get("api/organize/allOrganize/321")
         .then(result => {
           console.log("查询所有组织机构");
           console.log(result.data);
