@@ -192,12 +192,15 @@
             if (this.userName == "") {
               console.log("请输入用户名")
               alert("请输入用户名")
+
             }
             if (this.password == "") {
               alert("请输入密码")
             } else {
-              // console.log(result);
+              console.log(result);
               // console.log(result.data);
+              this.$store.commit("tokenSrc",result.data.data)
+              console.log("这是token:"+result.data.data)
               this.$router.push({path: "/home"});
             }
           })
