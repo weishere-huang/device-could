@@ -7,10 +7,18 @@ import Information from '@/components/information/Information'
 import Company from '@/components/company/Company'
 import BusinessDetails from '@/components/company/BusinessDetails'
 import Equipment from '@/components/equipment/Equipment'
+import Category from '@/components/equipment/Category'
 import EquipmentAdd from '@/components/equipment/EquipmentAdd'
 import Redact from '@/components/equipment/Redact'
 import Operation from '@/components/operation/Operation'
+import Upkeep from '@/components/operation/upkeep/Upkeep'
+import UpkeepAdd from '@/components/operation/upkeep/UpkeepAdd'
+import UpkeepAmend from '@/components/operation/upkeep/UpkeepAmend'
+import TurnaroundPlansAdd from '@/components/operation/turnaroundPlans/TurnaroundPlansAdd'
+import TurnaroundPlansAmend from '@/components/operation/turnaroundPlans/TurnaroundPlansAmend'
+import Breakdown from '@/components/operation/Breakdown'
 import TurnaroundPlans from '@/components/operation/TurnaroundPlans'
+import BreakDetails from '@/components/operation/BreakDetails'
 import Organization from '@/components/organization/Organization'
 import Add from '@/components/organization/Add'
 import Personnel from '@/components/personnel/Personnel'
@@ -68,7 +76,12 @@ export default new Router({
        path: '/AdvancedSearch',
        name: 'AdvancedSearch',
        component: AdvancedSearch
-     },
+    },
+    {
+      path: '/Category',
+      name: 'Category',
+      component: Category
+    },
     {
       path: '/BusinessDetails',
       name: 'BusinessDetails',
@@ -85,6 +98,11 @@ export default new Router({
       component: EquipmentAdd
     },
     {
+      path: '/UpkeepAmend',
+      name: 'UpkeepAmend',
+      component: UpkeepAmend
+    },
+    {
       path: '/Redact',
       name: 'Redact',
       component: Redact
@@ -93,6 +111,36 @@ export default new Router({
       path: '/Operation',
       name: 'Operation',
       component: Operation
+    },
+    {
+      path: '/Upkeep',
+      name: 'Upkeep',
+      component: Upkeep
+    },
+    {
+      path: '/UpkeepAdd',
+      name: 'UpkeepAdd',
+      component: UpkeepAdd
+    },
+    {
+      path: '/TurnaroundPlansAdd',
+      name: 'TurnaroundPlansAdd',
+      component: TurnaroundPlansAdd
+    },
+    {
+      path: '/TurnaroundPlansAmend',
+      name: 'TurnaroundPlansAmend',
+      component: TurnaroundPlansAmend
+    },
+    {
+      path: '/BreakDetails',
+      name: 'BreakDetails',
+      component: BreakDetails
+    },
+    {
+      path: '/Breakdown',
+      name: 'Breakdown',
+      component: Breakdown
     },
     {
       path: '/TurnaroundPlans',
