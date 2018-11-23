@@ -9,5 +9,6 @@ export default new vuex.Store({
         personnel: personnel_state,
         equipment: equipment_statr,
         operation: operation_state
+
     }
 })

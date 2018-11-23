@@ -79,8 +79,8 @@
           enterpriseIds: this.auditValue.id
         })
         console.log(data)
-        this.axios.put(this.global.apiSrc + "/enterprise/enableEnterprises/", data,{params:{enterpriseIds:this.auditValue.id}})
-        // axios.put("/api/enterprise/enableEnterprises/", data)
+        this.axios.post(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
+        // axios.post("/api/enterprise/enableEnterprises/", data)
           .then(response => {
             location.reload();
             console.log(data)
@@ -94,8 +94,8 @@
         let data = qs.stringify({
           enterpriseIds: this.auditValue.id
         })
-        this.axios.put(this.global.apiSrc + "/enterprise/turnDown/", data,{params:{enterpriseIds:this.auditValue.id}})
-        // axios.put("/api/enterprise/turnDown/", data)
+        this.axios.post(this.global.apiSrc + "/enterprise/turnDown/", data)
+        // axios.post("/api/enterprise/turnDown/", data)
           .then(response => {
             location.reload();
             console.log(response)
