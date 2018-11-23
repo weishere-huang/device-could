@@ -21,9 +21,10 @@
           </el-form-item>
           <el-form-item label="检修级别：">
             <el-select v-model="companyName.region" placeholder="请选择" size="mini">
-              <el-option label="大" value="1"></el-option>
+              <el-option label="大" value="3"></el-option>
               <el-option label="中" value="2"></el-option>
-              <el-option label="小" value="3"></el-option>
+              <el-option label="小" value="1"></el-option>
+              <el-option label="中" value="4"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="计划类型：">
@@ -105,7 +106,7 @@
         <h5>设备列表</h5>
         <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
         <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-          <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
         </div>
       </div>
     </div>
@@ -116,6 +117,7 @@ export default {
   name: "",
   data() {
     return {
+      pageNumber:0,
       time: new Date().toLocaleString(),
       companyName: {
         region: "",
@@ -130,7 +132,7 @@ export default {
           type: "selection"
         },
         {
-          field: "name",
+          field: "deviceNo",
           title: "设备编号",
           width: 80,
           titleAlign: "center",
@@ -139,7 +141,7 @@ export default {
           //   orderBy: ""
         },
         {
-          field: "num",
+          field: "deviceName",
           title: "设备名称",
           width: 80,
           titleAlign: "center",
@@ -147,7 +149,7 @@ export default {
           isResize: true
         },
         {
-          field: "hobby",
+          field: "deviceModel",
           title: "型号/规格",
           width: 80,
           titleAlign: "center",
@@ -155,7 +157,7 @@ export default {
           isResize: true
         },
         {
-          field: "startTime",
+          field: "location",
           title: "设备位置",
           width: 100,
           titleAlign: "center",
@@ -163,7 +165,7 @@ export default {
           isResize: true
         },
         {
-          field: "starTime",
+          field: "workerNames",
           title: "人员",
           width: 100,
           titleAlign: "center",
@@ -183,15 +185,16 @@ export default {
       pageSize: 10,
       tableData: [
         {
-          id: "111",
-          name: "222",
-          num: "3333",
-          hobby: "4444",
-          startTime: "555",
-          endTime: "6666",
-          frequency: "7777",
-          maintenanceCc: "888",
-          state: "999"
+          deviceCategoryName:"",
+          manufacturer:"",
+          deviceName:"",
+          deviceModel:"",
+          deviceNo:"",
+          deviceState:"",
+          location:"",
+          locationNo:"",
+          workerNames:"",
+          id:""
         }
       ],
       tableDate: []
@@ -209,6 +212,8 @@ export default {
       console.log("select-aLL", selection);
     },
     selectChange(selection, rowData) {
+      console.log(selection);
+      console.log(rowData);
       console.log("select-change", selection, rowData);
     },
     getTableData() {
@@ -226,7 +231,24 @@ export default {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+    },
+    load(){
+      this.axios
+        .get(this.global.apiSrc+"/device/all",{params:{
+            page:this.pageIndex,
+            size:this.pageSize
+          }})
+        .then(response =>{
+          this.tableData = response.data.data.content;
+          this.pageNumber = response.data.data.content.length;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
+  },
+  created(){
+    this.load()
   }
 };
 </script>
