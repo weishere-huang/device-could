@@ -320,7 +320,10 @@
           .then(response => {
             console.log(response.data.msg);
             if(response.data.msg ==="成功"){
+              alert("成功");
               this.TurnaroundPlans()
+            }else{
+              alert("失败");
             }
           })
           .catch(function(error) {

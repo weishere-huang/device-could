@@ -204,8 +204,12 @@
         this.axios
           .post(this.global.apiSrc+"/employee/add", data)
           .then(response => {
-            console.log(response.data);
-            this.Personnel();
+            if (response.data.msg ==="成功"){
+              alert("成功");
+              this.Personnel();
+            }else{
+              alert("失败");
+            }
           })
           .catch(function(error) {
             console.log(error);
