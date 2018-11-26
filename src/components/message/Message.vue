@@ -300,7 +300,7 @@
         this.msgDetail=rowData;
         this.detailsShow=true;
         this.ids=rowData.id;
-        this/axios
+        this.axios
           .get(this.global.apiSrc+"/message/message/findOneMsg/" + this.ids)
           .then(result => {
             console.log(result.data);
