@@ -106,7 +106,7 @@
                    :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL"
                    :select-group-change="selectGroupChange" :row-dblclick="redactShow"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize"
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="this.tableData.length" :page-size="pageSize"
                           :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
@@ -122,7 +122,6 @@
     data() {
       return {
         keyWord:"",
-        deviceId:"",
         pageIndex: 1,
         pageSize: 10,
         ids:"",
@@ -265,12 +264,15 @@
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
         this.getTableData();
+
+        this.findall();
         console.log(pageIndex);
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
+        this.findall();
       },
       sortChange(params) {
         if (params.height.length > 0) {
@@ -295,9 +297,7 @@
           size: this.pageSize
         });
         this.axios
-        //axios
           .get(this.global.apiSrc+"/device/all", data)
-         // .get("api/device/all", data)
           .then(result => {
             this.tableData = result.data.data.content;
             console.log(result.data);
@@ -327,8 +327,6 @@
           size: this.pageSize
         });
         this.axios
-        //axios
-          //.get("api/device/select", data)
           .get(this.global.apiSrc+"/device/select", data)
           .then(result => {
             alert("selectquery");
@@ -343,9 +341,7 @@
         //获取设备状况接口
         let ids = id;
         this.axios
-        //axios
-          //.get("api/device/findDeviceState",{params:{deviceId:ids}})
-          .get(this.global.apiSrc+"/device/findDeviceState")
+          .get(this.global.apiSrc+"/device/findDeviceState",{params:{deviceId:ids}})
           .then(result => {
             console.log(result.data);
           })
@@ -358,9 +354,7 @@
       findByKeyWord() {
         //根据设备编号、位号、名称查询
         this.axios
-        //axios
           .get(this.global.apiSrc+"/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: this.keyWord}})
-          //.get("api/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: this.keyWord}})
           .then(result => {
             this.tableData = result.data.data.content;
             console.log(result.data.data.content);
@@ -401,9 +395,7 @@
           employeeId: 147
         });
         this.axios
-        //axios
-          // .get("api/employee/getDeviceById", data)
-          .get(this.global.apiSrc +"/employee/getDeviceById", data)
+           .get(this.global.apiSrc +"/employee/getDeviceById", data)
           .then(result => {
             alert("getDeviceById");
             console.log(result.data);
@@ -414,9 +406,7 @@
       },
       edelete() {
         this.axios
-        //axios
-         // .get("api/device/delete", {params:{deviceId:this.ids}})
-          .get(this.global.apiSrc +"/employee/getDeviceById", data)
+         .get(this.global.apiSrc +"/device/delete", {params:{deviceId:this.ids}})
           .then(result => {
             this.findall();
             console.log("delete");

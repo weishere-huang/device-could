@@ -295,8 +295,6 @@
 
         console.log(data);
         this.axios
-        //axios
-          //.post("api/device/add", data)
           .post(this.global.apiSrc + "/device/add", data)
           .then(result => {
 
