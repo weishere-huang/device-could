@@ -265,7 +265,7 @@ export default {
           if (this.manager.phone == "") {
             console.log("请输入管理员联系电话");
           } else {
-            this.$router.push({ path: "/Login" });
+            location.reload();
           }
         })
         .catch(err => {
