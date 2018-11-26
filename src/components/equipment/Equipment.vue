@@ -152,7 +152,7 @@
           // }
         ],
         tableDate: [],
-        columns: [
+        columns:[
           {
             width: 40,
             titleAlign: "center",
@@ -231,10 +231,9 @@
             titleAlign: "center",
             columnAlign: "left",
             isResize: true
-
           }
-        });
-      }
+        ]};
+
     },
 
     methods: {
@@ -266,7 +265,6 @@
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
         this.getTableData();
-
         this.findall();
         console.log(pageIndex);
       },
