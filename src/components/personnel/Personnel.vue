@@ -143,7 +143,12 @@
         this.axios
           .post(this.global.apiSrc+"/employee/enableOrDisable", data)
           .then(response => {
-            this.load();
+            if (response.data.msg ==="成功"){
+              alert("成功");
+              this.load();
+            }else{
+              alert("失败");
+            }
           })
           .catch(function(error) {
             console.log(error);
@@ -158,7 +163,12 @@
         this.axios
           .post(this.global.apiSrc+"/employee/enableOrDisable", data)
           .then(response => {
-            this.load();
+            if (response.data.msg ==="成功"){
+              alert("成功");
+              this.load();
+            }else{
+              alert("失败");
+            }
           })
           .catch(function(error) {
             console.log(error);
