@@ -3,7 +3,7 @@
     <div class="case">
       <div style="float:left">
         <h5>类别名称</h5>
-        <el-tree :data="data5" node-key="id" default-expand-all :expand-on-click-node="false">
+        <el-tree :data="data5"  node-key="id" default-expand-all :expand-on-click-node="false">
           <span class="custom-tree-node" slot-scope="{ node, data }">
             <span>{{ node.label }}</span>
             <span class="addCase">

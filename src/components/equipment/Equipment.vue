@@ -536,6 +536,7 @@ export default {
 @Danger: #f56c6c;
 @Info: #dde2eb;
 .equipment {
+  position: relative;
   overflow: hidden;
   .equipmentContent {
     font-size: 12px;
@@ -614,7 +615,7 @@ export default {
 }
 .adsearch {
   position: absolute;
-  top: 60px;
+  // top: 60px;
   right: -310px;
   transition: all 0.3s ease-in;
 }
