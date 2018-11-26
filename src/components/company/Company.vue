@@ -217,6 +217,9 @@
               if (response.data.data.content[i].state === 4) {
                 response.data.data.content[i].state = "审核中"
               }
+              if (response.data.data.content[i].state === 10) {
+                response.data.data.content[i].state = "驳回"
+              }
             }
             this.tableData = response.data.data.content;
             this.tableDate = response.data.data.content;
@@ -239,13 +242,16 @@
                 response.data.data.content[i].state = "待审核"
               }
               if (response.data.data.content[i].state === 1) {
-                response.data.data.content[i].state = "未通过"
+                response.data.data.content[i].state = "正常"
               }
               if (response.data.data.content[i].state === 2) {
                 response.data.data.content[i].state = "禁用"
               }
-              if (response.data.data.content[i].state === 3) {
-                response.data.data.content[i].state = "正常"
+              if (response.data.data.content[i].state === 4) {
+                response.data.data.content[i].state = "审核中"
+              }
+              if (response.data.data.content[i].state === 10) {
+                response.data.data.content[i].state = "驳回"
               }
             }
             this.tableData = response.data.data.content;

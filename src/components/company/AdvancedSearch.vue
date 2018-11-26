@@ -8,9 +8,10 @@
         <div style="margin-top:10px;">
           <el-checkbox-group v-model="checkList">
             <el-checkbox label="0">待审核</el-checkbox>
-            <el-checkbox label="1">未通过</el-checkbox>
+            <el-checkbox label="1">正常</el-checkbox>
             <el-checkbox label="2">已禁用</el-checkbox>
-            <el-checkbox label="3">正常</el-checkbox>
+            <el-checkbox label="4">审核中</el-checkbox>
+            <el-checkbox label="10">未通过</el-checkbox>
           </el-checkbox-group>
         </div>
       </div>
@@ -29,39 +30,52 @@ export default {
       dataName: "",
       companyName: "",
       checkList: [],
-      state: []
+      chioce:"",
     };
   },
   methods: {
     isHide() {
       document.querySelectorAll(".adsearch")[0].style.right = "-310px";
     },
+
     search() {
+      this.choice = "";
+      for(let i= 0 ;i<this.checkList.length; i++){
+        if(this.choice ==""){
+          this.choice = this.checkList[i];
+        }else{
+          this.choice += ","+this.checkList[i];
+        }
+      }
       this.axios
         .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
           // axios.get("/api/enterprise/findByNameOrState", {
           params: {
             enterpriseName: this.companyName,
-            state: this.checkList
+
+            state: this.choice
           }
         })
         .then(response => {
           console.log(response);
           document.querySelectorAll(".adsearch")[0].style.right = "-310px";
           for (let i = 0; i < response.data.data.content.length; i++) {
-            // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
             console.log(this.dataName);
+            console.log(this.checkList)
             if (response.data.data.content[i].state === 0) {
               response.data.data.content[i].state = "待审核";
             }
             if (response.data.data.content[i].state === 1) {
-              response.data.data.content[i].state = "未通过";
+              response.data.data.content[i].state = "正常";
             }
             if (response.data.data.content[i].state === 2) {
               response.data.data.content[i].state = "禁用";
             }
-            if (response.data.data.content[i].state === 3) {
-              response.data.data.content[i].state = "正常";
+            if (response.data.data.content[i].state === 4) {
+              response.data.data.content[i].state = "审核中";
+            }
+            if (response.data.data.content[i].state === 10) {
+              response.data.data.content[i].state = "驳回"
             }
           }
           this.dataName = response.data.data.content;
