@@ -9,23 +9,23 @@
           <h4>企业主体信息</h4>
           <li>
             <label for="">企业名称：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.name"> </el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.name" readonly> </el-input>
           </li>
           <li>
             <label for="">企业法人：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.corporation"></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.corporation" readonly></el-input>
           </li>
           <li>
             <label for="">联系电话：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.phone"></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.phone" readonly></el-input>
           </li>
           <li>
             <label for="">联系地址：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.address"></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.address" readonly></el-input>
           </li>
           <li>
             <label for="">统一信用社会代码：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.companyID"></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.companyID" readonly></el-input>
           </li>
         </ul>
 

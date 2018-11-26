@@ -231,10 +231,9 @@
             titleAlign: "center",
             columnAlign: "left",
             isResize: true
-
           }
-        });
-      }
+          ]
+        };
     },
 
     methods: {
