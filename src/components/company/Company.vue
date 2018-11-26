@@ -20,7 +20,7 @@
                    :select-group-change="selectGroupChange" :row-dblclick="details" row-click-color="#edf7ff">
           </v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize"
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableDate.length" :page-size="pageSize"
                           :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
