@@ -56,11 +56,11 @@
       </div>
       <div class="center">
         <h5>类型</h5>
-        <el-tree :data="data" default-expand-all :props="defaultProps1" @node-click="handleNodeClick" style="width:400px;text-align: center;"></el-tree>
+        <el-tree :data="data" default-expand-all :props="defaultProps1" @node-click="handleNodeClick" style="width:100%;text-align: center;"></el-tree>
       </div>
       <div class="right" >
         <h5>备注</h5>
-        <el-tree :data="data" default-expand-all :props="defaultProps2" @node-click="handleNodeClick" style="width:400px;text-align: center;" ></el-tree>
+        <el-tree :data="data" default-expand-all :props="defaultProps2" @node-click="handleNodeClick" style="width:100%;text-align: center;" ></el-tree>
       </div>
     </div>
 
@@ -177,7 +177,7 @@ export default {
     allOrganize() {
       let arr = new Array();
       axios
-        .get("http://192.168.1.102:8080/organize/allOrganize/321")
+        .get(this.global.apiSrc+"/organize/allOrganize/321")
         .then(result => {
           console.log(result);
           this.data = this.filterArray(result.data.data, 0);
@@ -203,7 +203,7 @@ export default {
     findOneOrganize() {
       //查询单个组织机构
         axios
-          .put("api/organize/update", data)
+          .put(this.global.apiSrc+"/organize/update", data)
           .then(result => {
             alert("updata");
             console.log(result.data);
@@ -373,7 +373,10 @@ export default {
 .center{
   .custom-tree-node {
     width: 100%;
-    text-align: center !important;
+    text-align: center;
+    .el-tree-node__content{
+      width: 100%
+    }
   }
 }
 .right{
