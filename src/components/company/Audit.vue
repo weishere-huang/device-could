@@ -8,23 +8,23 @@
           <h4>企业主体信息</h4>
           <li>
             <label for="">企业名称：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="auditValue.name"></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="auditValue.name" readonly></el-input>
           </li>
           <li>
             <label for="">企业法人：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="auditValue.corporation"></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="auditValue.corporation" readonly></el-input>
           </li>
           <li>
             <label for="">联系电话：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="auditValue.phone"></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="auditValue.phone" readonly></el-input>
           </li>
           <li>
             <label for="">联系地址：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="auditValue.address"></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="auditValue.address" readonly></el-input>
           </li>
           <li>
             <label for="">统一信用社会代码：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="auditValue.companyID"></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="auditValue.companyID" readonly></el-input>
           </li>
         </ul>
 
@@ -71,7 +71,7 @@
     methods: {
       auditback() {
         this.$emit("auditByValue", this.block);
-        location.reload();
+        // location.reload();
       },
       pass() {
         let qs = require("qs");
@@ -79,8 +79,8 @@
           enterpriseIds: this.auditValue.id
         })
         console.log(data)
-        this.axios.put(this.global.apiSrc + "/enterprise/enableEnterprises/", data,{params:{enterpriseIds:this.auditValue.id}})
-        // axios.put("/api/enterprise/enableEnterprises/", data)
+        this.axios.post(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
+        // axios.post("/api/enterprise/enableEnterprises/", data)
           .then(response => {
             location.reload();
             console.log(data)
@@ -94,8 +94,8 @@
         let data = qs.stringify({
           enterpriseIds: this.auditValue.id
         })
-        this.axios.put(this.global.apiSrc + "/enterprise/turnDown/", data,{params:{enterpriseIds:this.auditValue.id}})
-        // axios.put("/api/enterprise/turnDown/", data)
+        this.axios.post(this.global.apiSrc + "/enterprise/turnDown/", data)
+        // axios.post("/api/enterprise/turnDown/", data)
           .then(response => {
             location.reload();
             console.log(response)

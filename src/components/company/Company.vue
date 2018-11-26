@@ -20,7 +20,7 @@
                    :select-group-change="selectGroupChange" :row-dblclick="details" row-click-color="#edf7ff">
           </v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize"
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize"
                           :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
@@ -40,11 +40,13 @@
   export default {
     data() {
       return {
+
         detailsShow: false,
         auditShow: false,
         detailsValue: "",
         auditValue: "",
         // advanceValue: "",
+        choice:"",
         pageIndex: 1,
         pageSize: 10,
         name: "",
@@ -143,6 +145,15 @@
       selectGroupChange(selection) {
         console.log("select-group-change", selection);
         this.auditValue = selection[0];
+        this.choice = "";
+        for(let i= 0 ;i<selection.length; i++){
+          if(this.choice ==""){
+            this.choice = selection[i].id;
+          }else{
+            this.choice += ","+selection[i].id;
+          }
+        }
+        console.log(this.choice);
         console.log(this.auditValue);
       },
       selectALL(selection) {
@@ -198,13 +209,13 @@
                 response.data.data.content[i].state = "待审核"
               }
               if (response.data.data.content[i].state === 1) {
-                response.data.data.content[i].state = "未通过"
+                response.data.data.content[i].state = "正常"
               }
               if (response.data.data.content[i].state === 2) {
                 response.data.data.content[i].state = "禁用"
               }
-              if (response.data.data.content[i].state === 3) {
-                response.data.data.content[i].state = "正常"
+              if (response.data.data.content[i].state === 4) {
+                response.data.data.content[i].state = "审核中"
               }
             }
             this.tableData = response.data.data.content;
@@ -246,11 +257,11 @@
       startUseing() {
         let qs = require("qs")
         let data = qs.stringify({
-          enterpriseIds: this.auditValue.id
+          enterpriseIds: this.choice
           // state: 0
         })
-        this.axios.put(this.global.apiSrc + "/enterprise/enableEnterprises/", data,{params:{enterpriseIds:this.auditValue.id}})
-        // axios.put("/api/enterprise/enableEnterprises/", data)
+        this.axios.post(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
+        // axios.post("/api/enterprise/enableEnterprises/", data)
           .then(response => {
             this.load()
             console.log("请求参数：" + data)
@@ -262,12 +273,12 @@
       forbidden() {
         let qs = require("qs");
         let data = qs.stringify({
-          enterpriseIds: this.auditValue.id
+          enterpriseIds: this.choice
         });
         console.log("请求参数：" + data)
 
-        this.axios.put(this.global.apiSrc + "/enterprise/discontinuationEnterprises",data,{params:{enterpriseIds:this.auditValue.id}})
-        // axios.put("/api/enterprise/discontinuationEnterprises", data)
+        this.axios.post(this.global.apiSrc + "/enterprise/discontinuationEnterprises",data)
+        // axios.post("/api/enterprise/discontinuationEnterprises", data)
           .then(response => {
             console.log("1111请求参数：" + data)
             console.log(response)
@@ -295,7 +306,9 @@
   @Danger: #f56c6c;
   @Info: #dde2eb;
   .company {
-    padding-left: 220px;
+    // padding-left: 180px;
+    position: relative;
+    overflow: hidden;
     .userCase {
       width: 100%;
       padding: 10px;
@@ -329,7 +342,7 @@
     }
     .adsearch {
       position: absolute;
-      top: 60px;
+      top:0;
       right: -310px;
       transition: all 0.3s ease-in;
     }
