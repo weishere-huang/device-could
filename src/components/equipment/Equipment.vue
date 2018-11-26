@@ -231,9 +231,8 @@
             titleAlign: "center",
             columnAlign: "left",
             isResize: true
-        }
-        ],
-      }
+          }
+        ]};
     },
     methods: {
       toAdd() {
@@ -456,12 +455,19 @@
 <style lang="less" scoped>
   @import url("../../assets/font/font.css");
 
-  @blue: #409eff;
-  @Success: #67c23a;
-  @Warning: #e6a23c;
-  @Danger: #f56c6c;
-  @Info: #dde2eb;
-  .equipment {
+
+@blue: #409eff;
+@Success: #67c23a;
+@Warning: #e6a23c;
+@Danger: #f56c6c;
+@Info: #dde2eb;
+.equipment {
+  position: relative;
+  overflow: hidden;
+  .equipmentContent {
+    font-size: 12px;
+    color: #666666;
+    width: 200px;
     overflow: hidden;
     .equipmentContent {
       font-size: 12px;
@@ -530,18 +536,20 @@
     }
   }
 
-  .el-input__inner {
-    //   width: 150px !important;
-    display: inline !important;
-  }
-  .el-input {
-    width: auto !important;
-    padding: 0 !important;
-  }
-  .adsearch {
-    position: absolute;
-    top: 60px;
-    right: -310px;
-    transition: all 0.3s ease-in;
-  }
+
+.el-input__inner {
+  //   width: 150px !important;
+  display: inline !important;
+}
+.el-input {
+  width: auto !important;
+  padding: 0 !important;
+}
+.adsearch {
+  position: absolute;
+  // top: 60px;
+  right: -310px;
+  transition: all 0.3s ease-in;
+}
+
 </style>
