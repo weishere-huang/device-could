@@ -105,11 +105,11 @@
         <h5>设备列表</h5>
         <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
         <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-          <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
         </div>
       </div>
     </div>
-    <amend-plan v-show="amendPlanShow" v-on:isHide="isHide"></amend-plan>
+    <amend-plan v-show="amendPlanShow" v-on:isHide="isHide" v-on:toAdd="toAdd"></amend-plan>
   </div>
 </template>
 <script>
@@ -199,10 +199,10 @@
         pageSize: 10,
         tableData: [
           {
-            deviceCategoryName:"",
-            manufacturer:"",
-            deviceName:"",
-            deviceModel:"",
+            deviceCategoryName:"1",
+            manufacturer:"2",
+            deviceName:"3",
+            deviceModel:"4",
             deviceNo:"",
             deviceState:"",
             location:"",
@@ -217,11 +217,15 @@
     created() {
       //   检修计划穿过来的值
       this.loadValue();
-      this.loadSelect()
+      this.loadSelect();
     },
     methods: {
       isHide(params) {
         this.amendPlanShow = params;
+      },
+      toAdd(params){
+        this.tableData = params.values;
+        this.amendPlanShow = params.isOk;
       },
       amendPlanIsShow() {
         this.amendPlanShow = true;
@@ -261,8 +265,20 @@
       },
       loadSelect(){
         //通过设备计划id查询有哪些设备使用该计划
+        let arr=new Array()
+        this.axios
+          .get(this.global.apiSrc+"/mplan/listDevice", {params:{maintenanceId:this.companyName.id}})
+          .then(response => {
+            arr = response.data.data;
+            this.tableData = arr;
+            this.tableDate = this.tableData;
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       },
       updatePlan(){
+        console.log(this.times);
         this.companyName.executeTime = this.date +" "+ this.times;
         this.companyName.executeTime = this.companyName.executeTime.split(".")[0].replace(/-/g,"/");
         this.companyName.startTime = this.companyName.startTime.split(" ")[0].replace(/-/g,"/");
@@ -323,7 +339,6 @@
             this.deviceIds += ","+selection[i].id;
           }
         }
-        console.log("select-group-change", selection);
       },
       selectALL(selection) {
         this.deviceIds = "";
@@ -334,7 +349,6 @@
             this.deviceIds += ","+selection[i].id;
           }
         }
-        console.log("select-aLL", selection);
       },
       selectChange(selection, rowData) {
         console.log("select-change", selection, rowData);

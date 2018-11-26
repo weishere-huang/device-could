@@ -2,7 +2,7 @@
   <div class="turnaroundPlansAdd">
     <div class="top">
       <el-button size="small" @click="toback">返回</el-button>
-      <el-button size="small">保存</el-button>
+      <el-button size="small" @click="addPlan">保存</el-button>
     </div>
     <div class="bottom">
       <div class="left">
@@ -105,11 +105,11 @@
         <h5>设备列表</h5>
         <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
         <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-          <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
         </div>
       </div>
     </div>
-    <add-plan v-show="addPlanShow" v-on:isHide="isHide"></add-plan>
+    <add-plan v-show="addPlanShow" v-on:isHide="isHide" v-on:toAdd="toAdd"></add-plan>
   </div>
 </template>
 <script>
@@ -214,13 +214,74 @@ export default {
   },
   created() {},
   methods: {
+    TurnaroundPlans() {
+      this.$router.push({
+        path: "/TurnaroundPlans"
+      });
+    },
+    addPlan(){
+      console.log(this.times);
+      this.companyName.executeTime = this.date +" "+ this.times;
+      this.companyName.executeTime = this.companyName.executeTime.split(".")[0].replace(/-/g,"/");
+      this.companyName.startTime = this.companyName.startTime.split(" ")[0].replace(/-/g,"/");
+      this.companyName.endTime = this.companyName.endTime.split(" ")[0].replace(/-/g,"/");
+      this.companyName.maintenanceType = 0;
+      if(this.companyName.planType === "单次"){
+        this.companyName.planType = 0
+      }
+      if(this.companyName.planType === "周期"){
+        this.companyName.planType = 1
+      }
+      if(this.companyName.frequencyType ==="天" ){
+        this.companyName.frequencyType = 0
+      }
+      if(this.companyName.frequencyType ==="周" ){
+        this.companyName.frequencyType = 1
+      }
+      if(this.companyName.frequencyType ==="月" ){
+        this.companyName.frequencyType = 2
+      }
+      let qs = require("qs");
+      let data = qs.stringify({
+        userId: this.userId,
+        id:this.companyName.id,
+        planName:this.companyName.planName,
+        maintenanceClassify:this.companyName.maintenanceClassify,
+        maintenanceLevel:this.companyName.maintenanceLevel,
+        maintenanceType:this.companyName.maintenanceType,
+        planType:this.companyName.planType,
+        startTime:this.companyName.startTime,
+        endTime:this.companyName.endTime,
+        executeTime:this.companyName.executeTime,
+        frequency:this.companyName.frequency,
+        frequencyType:this.companyName.frequencyType,
+        maintenanceCc:this.companyName.maintenanceCc,
+        deviceIds : this.deviceIds,
+      });
+      this.axios
+        .post(this.global.apiSrc+"/mplan/add", data)
+        .then(response => {
+          console.log(response.data);
+          if(response.data.msg ==="成功"){
+            alert("成功");
+            this.TurnaroundPlans()
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+
     isHide(params) {
       this.addPlanShow = params;
+    },
+    toAdd(params){
+      this.tableData = params.values;
+      this.addPlanShow = params.isOk;
     },
     addPlanIsShow() {
       this.addPlanShow = true;
     },
-
     toback() {
       this.$router.back(-1);
     },
