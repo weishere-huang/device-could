@@ -124,7 +124,7 @@
         keyWord:"",
         pageIndex: 1,
         pageSize: 10,
-        ids:"",
+        ids: "",
         tableData: [
           {
             name: "111",
@@ -235,7 +235,6 @@
         ]};
 
     },
-
     methods: {
       toAdd() {
         this.$router.push('/EquipmentAdd')
@@ -289,24 +288,24 @@
       },
 
 
-    //通过
-    findall() {
-      //根据用户token查询所属组织机构下设备类别
-      let qs = require("qs");
-      let data = qs.stringify({
-        page: this.pageIndex,
-        size: this.pageSize
-      });
-      axios
-        .get("api/device/all", data)
-        .then(result => {
-          this.tableData = result.data.data.content;
-          console.log("findall");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
+      //通过
+      findall() {
+        //根据用户token查询所属组织机构下设备类别
+        let qs = require("qs");
+        let data = qs.stringify({
+          page: this.pageIndex,
+          size: this.pageSize
         });
+        axios
+          .get("api/device/all", data)
+          .then(result => {
+            this.tableData = result.data.data.content;
+            console.log("findall");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
 
         this.axios
           .get(this.global.apiSrc+"/device/all", data)
@@ -445,78 +444,84 @@
 
 </script>
 <style lang="less" scoped>
-@import url("../../assets/font/font.css");
-
+  @import url("../../assets/font/font.css");
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
 @Danger: #f56c6c;
 @Info: #dde2eb;
 .equipment {
+  position: relative;
   overflow: hidden;
   .equipmentContent {
     font-size: 12px;
     color: #666666;
     width: 200px;
     overflow: hidden;
-    float: left;
-    font-size: 12px;
-    .classifylist {
-      width: 170px;
+    .equipmentContent {
+      font-size: 12px;
+      color: #666666;
+      width: 200px;
       overflow: hidden;
-      margin: 10px;
       float: left;
-      border: 1px solid @Info;
-      padding: 10px;
-      border-radius: 5px;
-      h5 {
-        width: 100%;
-        text-align: left;
-        display: inline-block;
-        padding: 5px 14px 0 0;
-      }
-      li {
-        list-style-type: none;
-        text-align: left;
-        padding: 4px 0 4px 20px;
-        letter-spacing: 1px;
-        cursor: pointer;
-        &:hover {
-          background-color: @Info;
+      font-size: 12px;
+      .classifylist {
+        width: 170px;
+        overflow: hidden;
+        margin: 10px;
+        float: left;
+        border: 1px solid @Info;
+        padding: 10px;
+        border-radius: 5px;
+        h5 {
+          width: 100%;
+          text-align: left;
+          display: inline-block;
+          padding: 5px 14px 0 0;
+        }
+        li {
+          list-style-type: none;
+          text-align: left;
+          padding: 4px 0 4px 20px;
+          letter-spacing: 1px;
+          cursor: pointer;
+          &:hover {
+            background-color: @Info;
+          }
+        }
+        .transitlist {
+          padding-left: 20px;
         }
       }
-      .transitlist {
-        padding-left: 20px;
-      }
     }
-  }
-  .content {
-    width: 80%;
-    min-width: 700px;
-    float: left;
-    margin: 10px 0 0 0;
-    // border: 1px solid @Info;
-    // border-radius:5px;
-    .search {
-      border: 1px solid @Info;
-      border-radius: 5px;
-      height: 60px;
-      line-height: 60px;
-      padding: 0 10px;
-      // overflow: hidden;
-      .searchright {
+    .content {
+      width: 80%;
+      min-width: 700px;
+      float: left;
+      margin: 10px 0 0 0;
+      // border: 1px solid @Info;
+      // border-radius:5px;
+      .search {
+        border: 1px solid @Info;
+        border-radius: 5px;
+        height: 60px;
+        line-height: 60px;
+        padding: 0 10px;
+        // overflow: hidden;
+        .searchright {
+          font-size: 12px;
+          float: right;
+          // display: inline-block;
+        }
+      }
+      .tablelist {
         font-size: 12px;
-        float: right;
-        // display: inline-block;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid @Info;
+        border-radius: 5px;
+        min-height: 500px;
       }
-    }
-    .tablelist {
-      font-size: 12px;
-      margin-top: 10px;
-      padding: 10px;
-      border: 1px solid @Info;
-      border-radius: 5px;
-      min-height: 500px;
     }
   }
 }
@@ -531,8 +536,9 @@
 }
 .adsearch {
   position: absolute;
-  top: 60px;
+  // top: 60px;
   right: -310px;
   transition: all 0.3s ease-in;
 }
+
 </style>

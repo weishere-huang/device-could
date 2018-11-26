@@ -13,55 +13,54 @@
           <el-menu :router=true :default-active="$route.name" style="background-color:rgb(238, 241, 246);">
             <el-submenu index="/Home">
               <template slot="title"><i class="el-icon-message" index="/Home"></i>默认工作台</template>
-              <!-- <el-menu-item index="/Home">选项1</el-menu-item>
-              <el-menu-item index="/Home">选项2</el-menu-item>
+              <el-menu-item index="/Home">默认工作台</el-menu-item>
+              <!-- <el-menu-item index="/Home">选项2</el-menu-item>
               <el-menu-item index="/Home">选项3</el-menu-item> -->
             </el-submenu>
             <!-- <router-link to="默认工作台"></router-link> -->
             <el-submenu index="1">
               <template slot="title"><i class="el-icon-menu"></i>数据中心</template>
-              <el-menu-item index="/ForgetThePassword">修改密码</el-menu-item>
+              <el-menu-item index="/Information">数据中心</el-menu-item>
               <el-menu-item index="/Information">选项2</el-menu-item>
               <el-menu-item index="/Information">选项3</el-menu-item>
             </el-submenu>
             <el-submenu index="2">
               <template slot="title"><i class="el-icon-setting"></i>企业管理</template>
-              <el-menu-item index="/Company">选项1</el-menu-item>
-              <el-menu-item index="/BusinessDetails">企业详情</el-menu-item>
-              <el-menu-item index="/Audit">审核</el-menu-item>
+              <el-menu-item index="/Company">企业管理</el-menu-item>
+              <!-- <el-menu-item index="/BusinessDetails">企业详情</el-menu-item> -->
+              <!-- <el-menu-item index="/Audit">审核</el-menu-item> -->
             </el-submenu>
             <el-submenu index="3">
               <template slot="title"><i class="el-icon-setting"></i>设备管理</template>
-              <el-menu-item index="/Equipment">选项1</el-menu-item>
-              <el-menu-item index="/EquipmentAdd">设备添加</el-menu-item>
+              <el-menu-item index="/Equipment">设备列表</el-menu-item>
               <el-menu-item index="/Category">类别管理</el-menu-item>
             </el-submenu>
             <el-submenu index="4">
               <template slot="title"><i class="el-icon-setting"></i>运维管理</template>
               <el-menu-item index="/Breakdown">设备故障</el-menu-item>
               <el-menu-item index="/TurnaroundPlans">检修计划</el-menu-item>
-              <el-menu-item index="/Operation">选项3</el-menu-item>
-              <el-menu-item index="/TurnaroundPlansAdd">检修计划添加/修改</el-menu-item>
-              <el-menu-item index="/BreakDetails">故障详情</el-menu-item>
+              <!-- <el-menu-item index="/Operation">选项3</el-menu-item> -->
+              <!-- <el-menu-item index="/TurnaroundPlansAdd">检修计划添加/修改</el-menu-item> -->
+              <!-- <el-menu-item index="/BreakDetails">故障详情</el-menu-item> -->
               <el-menu-item index="/Upkeep">保养计划</el-menu-item>
             </el-submenu>
             <el-submenu index="5">
               <template slot="title"><i class="el-icon-setting"></i>组织机构</template>
-              <el-menu-item index="/Organization">选项1</el-menu-item>
-              <el-menu-item index="/Add">添加</el-menu-item>
-              <el-menu-item index="/Organization">选项3</el-menu-item>
+              <el-menu-item index="/Organization">组织机构管理</el-menu-item>
+              <!-- <el-menu-item index="/Add">添加</el-menu-item> -->
+              <!-- <el-menu-item index="/Organization">选项3</el-menu-item> -->
             </el-submenu>
             <el-submenu index="6">
               <template slot="title"><i class="el-icon-setting"></i>员工管理</template>
-              <el-menu-item index="/Personnel">选项1</el-menu-item>
-              <el-menu-item index="/PersnnelAdd">添加</el-menu-item>
-              <el-menu-item index="/Modification">修改</el-menu-item>
+              <el-menu-item index="/Personnel">员工管理</el-menu-item>
+              <!-- <el-menu-item index="/PersnnelAdd">添加</el-menu-item> -->
+              <!-- <el-menu-item index="/Modification">修改</el-menu-item> -->
             </el-submenu>
             <el-submenu index="7">
               <template slot="title"><i class="el-icon-setting"></i>企业用户管理</template>
-              <el-menu-item index="/User">选项1</el-menu-item>
-              <el-menu-item index="/User">选项2</el-menu-item>
-              <el-menu-item index="/User">选项3</el-menu-item>
+              <el-menu-item index="/User">企业用户管理</el-menu-item>
+              <!-- <el-menu-item index="/User">选项2</el-menu-item> -->
+              <!-- <el-menu-item index="/User">选项3</el-menu-item> -->
             </el-submenu>
             <el-submenu index="8">
               <template slot="title"><i class="el-icon-setting"></i>设备档案</template>
@@ -83,9 +82,9 @@
             </el-submenu>
             <el-submenu index="11">
               <template slot="title"><i class="el-icon-setting"></i>消息管理</template>
-              <el-menu-item index="/Message">选项1</el-menu-item>
-              <el-menu-item index="/MsgDetails">消息详情</el-menu-item>
-              <el-menu-item index="/Message">选项3</el-menu-item>
+              <el-menu-item index="/Message">消息管理</el-menu-item>
+              <!-- <el-menu-item index="/MsgDetails">消息详情</el-menu-item> -->
+              <!-- <el-menu-item index="/Message">选项3</el-menu-item> -->
             </el-submenu>
             <el-submenu index="12">
               <template slot="title"><i class="el-icon-setting"></i>角色管理</template>

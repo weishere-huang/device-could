@@ -20,7 +20,7 @@
                    :select-group-change="selectGroupChange" :row-dblclick="details" row-click-color="#edf7ff">
           </v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize"
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize"
                           :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
@@ -306,7 +306,9 @@
   @Danger: #f56c6c;
   @Info: #dde2eb;
   .company {
-    padding-left: 220px;
+    // padding-left: 180px;
+    position: relative;
+    overflow: hidden;
     .userCase {
       width: 100%;
       padding: 10px;
@@ -340,7 +342,7 @@
     }
     .adsearch {
       position: absolute;
-      top: 60px;
+      top:0;
       right: -310px;
       transition: all 0.3s ease-in;
     }

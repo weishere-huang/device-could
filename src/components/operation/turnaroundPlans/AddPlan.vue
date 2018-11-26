@@ -23,7 +23,7 @@
                         <span style="text-decoration: underline;"></span>
                     </div>
                     <div class="tableList">
-                        <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;min-height:250px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange"></v-table>
+                        <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange"></v-table>
                         <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
                             <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
                         </div>

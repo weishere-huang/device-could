@@ -1,4 +1,4 @@
-<script src="../../../config/index.js"></script>
+
 <template>
   <div class="redact">
     <div class="addCase">
@@ -317,10 +317,10 @@
             console.log("detail");
             console.log(result.data);
             this.sizeForm = result.data.data;
-            // this.sizeForm = this.sizeForm.buyDate.split("T").replace(/-/g, "/");
-            // this.sizeForm = this.sizeForm.enterFactoryDate.split("T").replace(/-/g, "/");
-            // this.sizeForm = this.sizeForm.gmtModified.split("T").replace(/-/g, "/");
-            // this.sizeForm = this.sizeForm.outputDate.split("T").replace(/-/g, "/");
+            // this.sizeForm.buyDate = this.sizeForm.buyDate.split("T").replace(/-/g, "/");
+            // this.sizeForm.enterFactoryDate = this.sizeForm.enterFactoryDate.split("T").replace(/-/g, "/");
+            // this.sizeForm.gmtModified = this.sizeForm.gmtModified.split("T").replace(/-/g, "/");
+            // this.sizeForm.outputDate = this.sizeForm.outputDate.split("T").replace(/-/g, "/");
           })
           .catch(err => {
             console.log(err);
