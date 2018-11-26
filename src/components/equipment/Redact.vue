@@ -1,3 +1,4 @@
+
 <template>
   <div class="redact">
     <div class="addCase">
@@ -165,7 +166,7 @@
       return {
         addp: false,
         sizeForm: {},
-        c:"",
+        c: "",
         options1: [
           {
             value: "1",
@@ -246,7 +247,7 @@
     },
     methods: {
       tback() {
-        this.$router.back(-1)
+        this.$router.back(-1);
       },
       isHide: function (params) {
         this.addp = params;
@@ -258,42 +259,36 @@
         //编辑设备信息接口
         let qs = require("qs");
         let data = qs.stringify({
-          sizeForm: JSON.stringify(this.sizeForm),
-          id:this.c.id
-          //deviceNo: this.sizeForm.deviceNo,
-          //deviceName: this.sizeForm.deviceName,
-          //
-          // id:this.sizeForm.id,
-          // deviceNo: this.sizeForm.deviceNo,
-          // deviceName: this.sizeForm.deviceName,
-          // organizeName: this.sizeForm.organizeName,
-          // deviceClassify: this.sizeForm.deviceClassify,
-          // deviceClassifyName:this.sizeForm.deviceClassifyName,
-          // deviceSpec:this.sizeForm.deviceSpec,
-          // outputDate:this.sizeForm.outputDate,
-          // manufacturer:this.sizeForm.manufacturer,
-          // location:this.sizeForm.location,
-          // locationNo:this.sizeForm.locationNo,
-          // buyPrice:this.sizeForm.buyPrice,
-          // buyDate:this.sizeForm.buyDate,
-          // dataInfo:this.sizeForm.dataInfo,
-          // deviceCategory:this.sizeForm.deviceCategory,
-          // deviceCategoryName:this.sizeForm.deviceCategoryName,
-          // deviceModel:this.sizeForm.deviceModel,
-          // deviceState:this.sizeForm.deviceState,
-          // gmtModified:this.sizeForm.gmtModified,
-          // organizeCode:this.sizeForm.organizeCode,
-          // enterFactoryDate:this.sizeForm.enterFactoryDate,
-          // deviceDataInfo:this.sizeForm.workerInfo
+          //sizeForm: JSON.stringify(this.sizeForm),21
+          id: this.c.id,
+          deviceNo: this.sizeForm.deviceNo,
+          deviceName: this.sizeForm.deviceName,
+          organizeName: this.sizeForm.organizeName,
+          deviceClassify: this.sizeForm.deviceClassify,
+          deviceClassifyName: this.sizeForm.deviceClassifyName,
+          deviceSpec: this.sizeForm.deviceSpec,
+          // outputDate: this.sizeForm.outputDate,
+          manufacturer: this.sizeForm.manufacturer,
+          location: this.sizeForm.location,
+          locationNo: this.sizeForm.locationNo,
+          buyPrice: this.sizeForm.buyPrice,
+          // buyDate: this.sizeForm.buyDate,
+          deviceCategory: this.sizeForm.deviceCategory,
+          deviceCategoryName: this.sizeForm.deviceCategoryName,
+          deviceModel: this.sizeForm.deviceModel,
+          deviceState: this.sizeForm.deviceState,
+          // gmtModified: this.sizeForm.gmtModified,
+          organizeCode: this.sizeForm.organizeCode,
+          // enterFactoryDate: this.sizeForm.enterFactoryDate,
+          deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
+          devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo),
 
         });
 
         this.axios
-        //axios
         .post(this.global.apiSrc+"/device/update", data)
-        //.post("api/device/update", data)
           .then(result => {
-            console.log(data);
+            console.log(result);
             console.log("update");
             console.log(result.data);
           })
@@ -303,9 +298,7 @@
       },
       allOrganize() {
         this.axios
-        //axios
-        .get(this.global.apiSrc+"/organize/allOrganize/321")
-          //.get("api/organize/allOrganize/321")
+         .get(this.global.apiSrc+"/organize/allOrganize/321")
           .then(result => {
             alert("查询所有组织机构")
             console.log(result.data);
@@ -318,27 +311,59 @@
       },
       detail(id) {
         //获取设备详情接口
-        let qs = require("qs");
-        let data = qs.stringify({});
-
-        this.id = id
-        //axios
         this.axios
         .get(this.global.apiSrc+"/device/detail", {params: {deviceId: id }})
-         // .get("api/device/detail", {params: {deviceId: id}})
           .then(result => {
             console.log("detail");
             console.log(result.data);
             this.sizeForm = result.data.data;
+            // this.sizeForm.buyDate = this.sizeForm.buyDate.split("T").replace(/-/g, "/");
+            // this.sizeForm.enterFactoryDate = this.sizeForm.enterFactoryDate.split("T").replace(/-/g, "/");
+            // this.sizeForm.gmtModified = this.sizeForm.gmtModified.split("T").replace(/-/g, "/");
+            // this.sizeForm.outputDate = this.sizeForm.outputDate.split("T").replace(/-/g, "/");
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      //分类  类别接口
+      findDeviceClassify() {
+        //获取设备分类接口
+        let qs = require("qs");
+        let data = qs.stringify({});
+        this.id = id
+        this.axios
+        .get(this.global.apiSrc+"/device/detail", {params: {deviceId: id}})
+          .then(result => {
+            console.log("findDeviceClassify");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+
+      findDeviceState() {
+        //获取设备状况接口
+        let qs = require("qs");
+        let data = qs.stringify({});
+        this.id = id
+
+        this.axios
+        .get(this.global.apiSrc+"/device/detail",{params: {deviceId: id}})
+          .then(result => {
+            console.log("findDeviceState");
+            console.log(result.data);
           })
           .catch(err => {
             console.log(err);
           });
       }
+
     },
     created() {
       this.c = this.$store.state.equipment.person;
-      console.log(this.c.id);
+      console.log("当前设备ID" + this.c.id);
       this.detail(this.c.id);
     }
   };

@@ -158,6 +158,7 @@
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
+        this.allMsg();
       },
       sortChange(params) {
         if (params.height.length > 0) {
@@ -180,7 +181,7 @@
           ids:this.ids
         });
         this.axios
-          .put(this.global.apiSrc+"/message/UpdateMsgState/",data)
+          .put(this.global.apiSrc+"/message/message/UpdateMsgState/",data)
           .then(result => {
             this.allMsg();
             alert("成功删除!!!");
@@ -199,7 +200,7 @@
           size: this.pageSize
         });
         this.axios
-          .get(this.global.apiSrc+"/message/allMsg/" + this.userId, data)
+          .get(this.global.apiSrc+"/message/message/allMsg/" + this.userId, data)
           .then(result => {
             console.log(result.data.data);
             // for(let i = 0;i<result.data.data.length;i++){
@@ -219,7 +220,7 @@
           alert("请选择单个消息")
         } else {
           this.axios
-            .get(this.global.apiSrc+"/message/findOneMsg/" + this.ids, )
+            .get(this.global.apiSrc+"/message/message/findOneMsg/" + this.ids, )
             .then(result => {
               alert(result.data.data.id + "\n---标题--" + result.data.data.msgTitle + "\n--内容--" + result.data.data.msgContent);
               console.log(result.data);
@@ -246,7 +247,7 @@
           size: 20
         });
         this.axios
-          .get(this.global.apiSrc+"/message/allNotReadMsg/" + this.userId, data)
+          .get(this.global.apiSrc+"/message/message/allNotReadMsg/" + this.userId, data)
           .then(result => {
             console.log(result.data);
             this.tableData = result.data.data;
@@ -261,7 +262,7 @@
         let qs = require("qs");
         let data = qs.stringify({});
         this.axios
-          .get(this.global.apiSrc+"/message/NotReadMsgCount/" + this.userId, data)
+          .get(this.global.apiSrc+"/message/message/NotReadMsgCount/" + this.userId, data)
           .then(result => {
             this.msgcount = result.data.data;
             console.log(result.data);
@@ -274,7 +275,7 @@
       updateMessageRead() {
         //修改消息为已读
         this.axios
-          .get(this.global.apiSrc+"/message/UpdateMsgRead/" + this.ids)
+          .get(this.global.apiSrc+"/message/message/UpdateMsgRead/" + this.ids)
           .then(result => {
             console.log(result.data);
           })
@@ -285,7 +286,7 @@
       },
       updateAllMessageRead(){
         this.axios
-          .get(this.global.apiSrc+"/message/UpdateAllMsgRead/" + {params:{userId:this.ids}})
+          .get(this.global.apiSrc+"/message/message/UpdateAllMsgRead/" + {params:{userId:this.ids}})
           .then(result => {
             console.log(result.data);
           })
@@ -300,7 +301,7 @@
         this.detailsShow=true;
         this.ids=rowData.id;
         this/axios
-          .get(this.global.apiSrc+"/message/findOneMsg/" + this.ids)
+          .get(this.global.apiSrc+"/message/message/findOneMsg/" + this.ids)
           .then(result => {
             console.log(result.data);
            this.msgDetail=result.data.data;
