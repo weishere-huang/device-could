@@ -2,18 +2,14 @@
   <div class="turnaround-plans">
     <div class="userCase">
       <div class="top">
+        <el-button size="small" @click="toUpkeepAdd">添加</el-button>
         <el-button size="small">审核</el-button>
         <el-button size="small">停止</el-button>
         <el-button size="small">删除</el-button>
-        <div class="search">
-          <el-input type="search" placeholder="如故障编码，设备名称，位号，描述" size="small"></el-input>
-          <el-button size="small">搜索</el-button>
-          <span style="padding-left:10px;">高级搜索</span>
-        </div>
       </div>
       <div class="bottom">
         <div>
-          <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+          <v-table :row-dblclick="toAmend" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
             <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
@@ -51,7 +47,7 @@ export default {
         },
         {
           field: "name",
-          title: "故障编码",
+          title: "计划名称",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
@@ -60,7 +56,7 @@ export default {
         },
         {
           field: "num",
-          title: "设备名称",
+          title: "当前状态",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
@@ -68,7 +64,7 @@ export default {
         },
         {
           field: "hobby",
-          title: "设备位号",
+          title: "保养分类",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
@@ -76,7 +72,7 @@ export default {
         },
         {
           field: "startTime",
-          title: "状态",
+          title: "保养级别",
           width: 100,
           titleAlign: "center",
           columnAlign: "center",
@@ -84,7 +80,7 @@ export default {
         },
         {
           field: "starTime",
-          title: "故障来源",
+          title: "开始日期",
           width: 100,
           titleAlign: "center",
           columnAlign: "center",
@@ -92,7 +88,7 @@ export default {
         },
         {
           field: "endTime",
-          title: "故障描述",
+          title: "结束日期",
           width: 100,
           titleAlign: "center",
           columnAlign: "center",
@@ -100,7 +96,7 @@ export default {
         },
         {
           field: "frequency",
-          title: "上报时间",
+          title: "首次执行时间",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
@@ -108,8 +104,24 @@ export default {
         },
         {
           field: "endTime",
-          title: "消除时间",
+          title: "计划频次",
           width: 100,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "maintenanceCc",
+          title: "保养内容",
+          width: 200,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "state",
+          title: "计划制定人",
+          width: 80,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -118,6 +130,17 @@ export default {
     };
   },
   methods: {
+    toAmend(rowIndex, rowData, column) {
+      this.$store.commit("upkeepAmend", rowData);
+      this.$router.push({
+        path: "/UpkeepAmend"
+      });
+    },
+    toUpkeepAdd() {
+      this.$router.push({
+        path: "/UpkeepAdd"
+      });
+    },
     selectGroupChange(selection) {
       console.log("select-group-change", selection);
     },
@@ -166,7 +189,6 @@ export default {
 @Warning: #e6a23c;
 @Danger: #f56c6c;
 @Info: #dde2eb;
-@border: 1px solid #dde2eb;
 .turnaround-plans {
   padding-left: 220px;
   .userCase {
@@ -181,15 +203,8 @@ export default {
       .search {
         float: right;
         width: 40%;
-        font-size: 12px;
         .el-input {
-          width: 60%;
-        }
-        span {
-          cursor: pointer;
-          &:hover {
-            color: @blue;
-          }
+          width: 80%;
         }
       }
     }

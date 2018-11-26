@@ -1,48 +1,48 @@
 <template>
-  <div class="addPerson">
-    <div class="addCase">
-      <div class="top">
-        <span>添加人员</span>
-        <label>
-          <button @click="isHide">×</button>
-        </label>
-      </div>
-      <div class="bottom">
-        <div class="left">
-          <h5>组织机构</h5>
-          <div class="treeCase">
-            <el-tree :data="data2" node-key="id" :default-expanded-keys="[2, 3]" :default-checked-keys="[5]" :props="defaultProps">
-            </el-tree>
-          </div>
-        </div>
-        <div class="center">
-          <div class="search">
-            <el-input type="search" size="mini" style="width:30%;"></el-input>
-            <el-button size="mini">搜索</el-button>
-            <span style="padding:0 10px;">最近搜索：</span>
-            <span style="text-decoration: underline;"></span>
-          </div>
-          <div class="tableList">
-            <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;min-height:250px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange"></v-table>
-            <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-              <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+    <div class="addPerson">
+        <div class="addCase">
+            <div class="top">
+                <span>添加设备</span>
+                <label>
+                    <button @click="isHide">×</button>
+                </label>
             </div>
-          </div>
+            <div class="bottom">
+                <div class="left">
+                    <h5>组织机构</h5>
+                    <div class="treeCase">
+                        <el-tree :data="data2" node-key="id" :default-expanded-keys="[2, 3]" :default-checked-keys="[5]" :props="defaultProps">
+                        </el-tree>
+                    </div>
+                </div>
+                <div class="center">
+                    <div class="search">
+                        <el-input type="search" size="mini" style="width:30%;"></el-input>
+                        <el-button size="mini">搜索</el-button>
+                        <span style="padding:0 10px;">最近搜索：</span>
+                        <span style="text-decoration: underline;"></span>
+                    </div>
+                    <div class="tableList">
+                        <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange"></v-table>
+                        <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
+                            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+                        </div>
+                    </div>
+                </div>
+                <div class="right">
+                    <el-button size="mini">清空</el-button>
+                    <el-button size="mini">保存</el-button>
+                    <div class="personList">
+                        <ul>
+                            <li v-for="(item, index) in personListValue" :key="index">{{item}}
+                                <span>x</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="right">
-          <el-button size="mini">清空</el-button>
-          <el-button size="mini">保存</el-button>
-          <div class="personList">
-            <ul>
-              <li v-for="(item, index) in personListValue" :key="index">{{item}}
-                <span>x</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 </template>
 <script>
 export default {
@@ -52,69 +52,69 @@ export default {
       pageIndex: 1,
       pageSize: 10,
       tableData: [
-        // {
-        //   name: "111",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "2222",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "3333",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "4444",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "5555",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "6666",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "7777",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "8888",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "9999",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // }
+        {
+          name: "111",
+          gender: "1111",
+          position: "1111",
+          phone: "111",
+          details: "111"
+        },
+        {
+          name: "2222",
+          gender: "1111",
+          position: "1111",
+          phone: "111",
+          details: "111"
+        },
+        {
+          name: "3333",
+          gender: "1111",
+          position: "1111",
+          phone: "111",
+          details: "111"
+        },
+        {
+          name: "4444",
+          gender: "1111",
+          position: "1111",
+          phone: "111",
+          details: "111"
+        },
+        {
+          name: "5555",
+          gender: "1111",
+          position: "1111",
+          phone: "111",
+          details: "111"
+        },
+        {
+          name: "6666",
+          gender: "1111",
+          position: "1111",
+          phone: "111",
+          details: "111"
+        },
+        {
+          name: "7777",
+          gender: "1111",
+          position: "1111",
+          phone: "111",
+          details: "111"
+        },
+        {
+          name: "8888",
+          gender: "1111",
+          position: "1111",
+          phone: "111",
+          details: "111"
+        },
+        {
+          name: "9999",
+          gender: "1111",
+          position: "1111",
+          phone: "111",
+          details: "111"
+        }
       ],
       tableDate: [],
       columns: [
@@ -258,27 +258,7 @@ export default {
       this.pageSize = pageSize;
       this.getTableData();
     }
-  },
-  created(){
-
-      //axios
-      this.axios
-      .get(this.global.apiSrc+"/organize/allOrganize/321")
-        //.get("api/organize/allOrganize/321")
-        .then(result => {
-          console.log("查询所有组织机构");
-          console.log(result.data);
-
-          console.log(result.data.data);
-          //this.data2 = this.filterArray(result.data.data,1000);
-          this.data2 = result.data.data;
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(this.userName);
-        });
-    }
-
+  }
 };
 </script>
 
@@ -308,7 +288,7 @@ export default {
       padding: 10px;
       border-bottom: @border;
       label {
-        display: inline-block;
+        // display: inline-block;
         float: right;
         font-size: 20px;
         button {
@@ -341,8 +321,8 @@ export default {
           left: 10px;
           font-size: 14px;
         }
-        .treeCase{
-          margin-top:20px;
+        .treeCase {
+          margin-top: 20px;
         }
       }
       .center {
@@ -356,11 +336,15 @@ export default {
           padding: 0 10px;
         }
         .tableList {
+          overflow: hidden;
           margin-top: 10px;
           padding: 10px;
           border: @border;
           border-radius: 5px;
           max-height: 500px;
+          .v-table-views {
+            overflow: hidden;
+          }
         }
       }
       .right {
