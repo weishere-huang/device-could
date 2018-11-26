@@ -1,24 +1,26 @@
 <template>
-    <div class="turnaround-plans">
-        <div class="userCase">
-            <div class="top">
-                <el-button size="small">删除</el-button>
-                <div class="search">
-                    <el-input type="search" placeholder="如故障编码，设备名称，位号，描述" size="small"></el-input>
-                    <el-button size="small">搜索</el-button>
-                    <span style="padding-left:10px;">高级搜索</span>
-                </div>
-            </div>
-            <div class="bottom">
-                <div>
-                    <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-                    <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-                        <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
-                    </div>
-                </div>
-            </div>
+  <div class="turnaround-plans">
+    <div class="userCase">
+      <div class="top">
+        <el-button size="small">审核</el-button>
+        <el-button size="small">停止</el-button>
+        <el-button size="small">删除</el-button>
+        <div class="search">
+          <el-input type="search" placeholder="如故障编码，设备名称，位号，描述" size="small"></el-input>
+          <el-button size="small">搜索</el-button>
+          <span style="padding-left:10px;">高级搜索</span>
         </div>
+      </div>
+      <div class="bottom">
+        <div>
+          <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+          <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 <script>
 export default {
@@ -183,11 +185,11 @@ export default {
         .el-input {
           width: 60%;
         }
-        span{
-            cursor: pointer;
-            &:hover{
-                color: @blue;
-            }
+        span {
+          cursor: pointer;
+          &:hover {
+            color: @blue;
+          }
         }
       }
     }
