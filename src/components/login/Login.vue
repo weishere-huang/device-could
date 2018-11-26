@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="loginBox" v-show="isshow">
-      <h1>长虹设备云</h1>
+      <h1>长虹智能终端设备生产管理云平台</h1>
       <p>
         <el-input placeholder="用户名/手机号" v-model="userName"></el-input>
       </p>
@@ -317,7 +317,9 @@
     text-align: center;
     width: 100%;
     height: 100vh;
-    background-color: @blue;
+    //background-color: @blue;
+    background:#686868 url(../../assets/image/login-bg2.png) bottom no-repeat;
+    background-size: 100% auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -328,9 +330,10 @@
     .loginBox {
       width: 40%;
       height: auto;
-      background-color: white;
+      //background-color: white;
+      background: rgba(255,255,255,0.8);
       border-radius: 10px;
-      box-shadow: 10px 10px 10px @Info;
+      box-shadow: 3px 3px 5px #333;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -341,9 +344,10 @@
         width: 100%;
         padding: 20px 0;
         letter-spacing: 2px;
-        font-family: "和畅惠风 Hiragino Sans GB";
+        //font-family: "和畅惠风 Hiragino Sans GB";
         font-weight: 500;
         color: @blue;
+        font-size: 120%;
       }
       p {
         width: 60%;

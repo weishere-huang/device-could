@@ -113,7 +113,7 @@
   </div>
 </template>
 <script>
-import addPlan from './AddPlan'
+//import addPlan from './AddPlan'
 export default {
   name: "",
   data() {
@@ -242,9 +242,9 @@ export default {
       this.getTableData();
     }
   },
-  components: {
-    addPlan
-  }
+  // components: {
+  //   addPlan
+  // }
 };
 </script>
 
