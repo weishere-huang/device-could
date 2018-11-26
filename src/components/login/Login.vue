@@ -235,8 +235,7 @@ export default {
         }
       });
       this.axios
-        .post(this.global.apiSrc + "/enterprise/add", data)
-        .then(result => {
+        .post(this.global.apiSrc + "/enterprise/add", data).then(result => {
           // axios.post("/api/enterprise/add", data).then(result => {
           console.log(result);
           if (this.company.name == "") {
