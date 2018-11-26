@@ -8,8 +8,8 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import vuex from 'vuex'
-import 'vue-easytable/libs/themes-base/index.css'
-import md5 from "js-md5/src/md5.js"
+import 'vue-easytable/libs/themes-base/index.css';
+import md5 from 'js-md5/src/md5.js'
 import CryptoJS from 'crypto-js'
 import {
   VTable,

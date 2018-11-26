@@ -9,10 +9,10 @@
         <h5>检修计划</h5>
         <el-form label-width="100px">
           <el-form-item label="计划名称：">
-            <el-input v-model="companyName.name" size="mini"></el-input>
+            <el-input v-model="companyName.planName" size="mini"></el-input>
           </el-form-item>
           <el-form-item label="检修分类：">
-            <el-select v-model="companyName.region" placeholder="请选择" size="mini">
+            <el-select v-model="companyName.maintenanceClassify" placeholder="请选择" size="mini">
               <el-option label="日常检修（DM）" value="1"></el-option>
               <el-option label="定期检修（TBM）" value="2"></el-option>
               <el-option label="改进性检修（PAM）" value="3"></el-option>
@@ -20,49 +20,49 @@
             </el-select>
           </el-form-item>
           <el-form-item label="检修级别：">
-            <el-select v-model="companyName.region" placeholder="请选择" size="mini">
-              <el-option label="大" value="1"></el-option>
+            <el-select v-model="companyName.maintenanceLevel" placeholder="请选择" size="mini">
+              <el-option label="大" value="3"></el-option>
               <el-option label="中" value="2"></el-option>
-              <el-option label="小" value="3"></el-option>
+              <el-option label="小" value="1"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="计划类型：">
-            <el-radio-group v-model="companyName.next">
+            <el-radio-group v-model="companyName.planType">
               <el-radio label="单次"></el-radio>
               <el-radio label="周期"></el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
 
-        <el-form label-width="110px" v-if="companyName.next==='周期'">
+        <el-form label-width="110px" v-if="companyName.planType==='周期'" v-model="companyName.planType">
           <el-form-item label="计划日期：">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.date1" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.startTime"  format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
             </el-col>
             <el-col class="line" :span="2">~</el-col>
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.date2" style="width: 100%;" size="mini"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.endTime" format="yyyy/MM/dd"  value-format="yyyy/MM/dd" style="width: 100%;" size="mini"></el-date-picker>
             </el-col>
           </el-form-item>
           <el-form-item label="首次执行时间：">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.date1" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" v-model="date"  format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
             </el-col>
             <el-col class="line" :span="2">-</el-col>
             <el-col :span="11">
-              <el-time-picker type="fixed-time" placeholder="选择时间" v-model="companyName.date2" style="width: 100%;padding-right:5px;" size="mini"></el-time-picker>
+              <el-time-picker type="fixed-time" placeholder="选择时间" v-model="times" format="HH:mm:ss" value-format="HH:mm:ss" style="width: 100%;padding-right:5px;" size="mini"></el-time-picker>
             </el-col>
           </el-form-item>
           <el-form-item label="计划频次：">
-            <el-input v-model="companyName.name" size="mini" style="width:150px"></el-input>
-            <el-select v-model="companyName.region" placeholder="请选择" size="mini" style="width:150px">
+            <el-input v-model="companyName.frequency" size="mini" style="width:150px"></el-input>
+            <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:150px">
               <el-option label="天" value="1"></el-option>
               <el-option label="周" value="2"></el-option>
               <el-option label="月" value="3"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="检修内容：" style="height:auto;">
-            <el-input type="textarea" v-model="companyName.desc" style="width:100%;"></el-input>
+            <el-input type="textarea" v-model="companyName.maintenanceCc" style="width:100%;"></el-input>
           </el-form-item>
           <el-form-item label="分布详情：" style="height:auto;margin:5px 0;">
             <tr class="tableTime">
@@ -72,23 +72,23 @@
           </el-form-item>
         </el-form>
         <!-- 单次执行 -->
-        <el-form label-width="110px" v-if="companyName.next==='单次'">
+        <el-form label-width="110px" v-if="companyName.planType==='单次'" v-model="companyName.planType">
           <el-form-item label="计划日期：">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.date1" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期"  format="yyyy/MM/dd" v-model="companyName.startTime" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
             </el-col>
           </el-form-item>
           <el-form-item label="首次执行时间：">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.date1" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" format="yyyy/MM/dd" v-model="date" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
             </el-col>
             <el-col class="line" :span="2">-</el-col>
             <el-col :span="11">
-              <el-time-picker type="fixed-time" placeholder="选择时间" value-format="HH:mm:ss" v-model="companyName.qqqq" style="width: 100%;padding-right:5px;" size="mini"></el-time-picker>
+              <el-time-picker type="fixed-time" placeholder="选择时间" v-model="times" format="HH:mm:ss" value-format="HH:mm:ss" style="width: 100%;padding-right:5px;" size="mini"></el-time-picker>
             </el-col>
           </el-form-item>
           <el-form-item label="检修内容：" style="height:auto;">
-            <el-input type="textarea" v-model="companyName.desc" style="width:100%;"></el-input>
+            <el-input type="textarea" v-model="companyName.maintenanceCc" style="width:100%;"></el-input>
           </el-form-item>
         </el-form>
         <el-form>
@@ -100,7 +100,7 @@
       <div class="right">
         <div>
           <el-button size="small">清空已选</el-button>
-          <el-button size="small" @click="addPlanIsShow">设备添加</el-button>
+          <el-button size="small"@click="addPlanIsShow">设备添加</el-button>
         </div>
         <h5>设备列表</h5>
         <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
@@ -118,13 +118,25 @@ export default {
   name: "",
   data() {
     return {
+      userId:3,
+      deviceIds:1,
+      date:"",
+      times:"",
       addPlanShow: false,
       time: new Date().toLocaleString(),
       companyName: {
-        qqqq: "",
-        region: "",
-        resource: "",
-        next: "单次"
+        id:"",
+        planName:"",
+        maintenanceClassify:"",
+        maintenanceLevel:"",
+        maintenanceType:"",
+        planType:"",
+        startTime:"",
+        endTime:"",
+        executeTime:"",
+        frequency:"",
+        frequencyType:"",
+        maintenanceCc:""
       },
       columns: [
         {
@@ -134,7 +146,7 @@ export default {
           type: "selection"
         },
         {
-          field: "name",
+          field: "deviceNo",
           title: "设备编号",
           width: 80,
           titleAlign: "center",
@@ -143,15 +155,15 @@ export default {
           //   orderBy: ""
         },
         {
-          field: "num",
+          field: "deviceName",
           title: "设备名称",
-          width: 150,
+          width: 80,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
         },
         {
-          field: "hobby",
+          field: "deviceModel",
           title: "型号/规格",
           width: 80,
           titleAlign: "center",
@@ -159,17 +171,17 @@ export default {
           isResize: true
         },
         {
-          field: "startTime",
+          field: "location",
           title: "设备位置",
-          width: 60,
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
         },
         {
-          field: "starTime",
+          field: "workerNames",
           title: "人员",
-          width: 60,
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -177,7 +189,7 @@ export default {
         {
           field: "starTime",
           title: "操作",
-          width: 50,
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -185,19 +197,18 @@ export default {
       ],
       pageIndex: 1,
       pageSize: 10,
-      tableData: [
-        {
-          id: "111",
-          name: "222",
-          num: "3333",
-          hobby: "4444",
-          startTime: "555",
-          endTime: "6666",
-          frequency: "7777",
-          maintenanceCc: "888",
-          state: "999"
-        }
-      ],
+      tableData: [{
+          deviceCategoryName:"",
+          manufacturer:"",
+          deviceName:"",
+          deviceModel:"",
+          deviceNo:"",
+          deviceState:"",
+          location:"",
+          locationNo:"",
+          workerNames:"",
+          id:""
+        }],
       tableDate: []
     };
   },
@@ -209,13 +220,30 @@ export default {
     addPlanIsShow() {
       this.addPlanShow = true;
     },
+
     toback() {
       this.$router.back(-1);
     },
     selectGroupChange(selection) {
+      this.deviceIds = "";
+      for(let i in selection){
+        if(this.deviceIds === ""){
+          this.deviceIds = selection[i].id;
+        }else{
+          this.deviceIds += ","+selection[i].id;
+        }
+      }
       console.log("select-group-change", selection);
     },
     selectALL(selection) {
+      this.deviceIds = "";
+      for(let i in selection){
+        if(this.deviceIds === ""){
+          this.deviceIds = selection[i].id;
+        }else{
+          this.deviceIds += ","+selection[i].id;
+        }
+      }
       console.log("select-aLL", selection);
     },
     selectChange(selection, rowData) {
@@ -236,6 +264,20 @@ export default {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+    },
+    load(){
+      this.axios
+        .get(this.global.apiSrc+"/device/all",{params:{
+            page:this.pageIndex,
+            size:this.pageSize
+          }})
+        .then(response =>{
+          this.tableData = response.data.data.content;
+          console.log(response.data.data.content);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   },
   components: {

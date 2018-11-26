@@ -301,7 +301,6 @@
           checkedCount > 0 && checkedCount < this.equipment.systemList.length;
       },
       equipmentShow() {
-        console.log("ok");
         document.querySelectorAll(".equipment-slist")[0].style.height = "auto";
         this.equipment.sShow = !this.equipment.sShow;
         this.equipment.sHide = !this.equipment.sHide;
@@ -390,7 +389,6 @@
           .get(this.global.apiSrc+"/role/listAllRole")
           .then(response => {
             this.role = response.data.data;
-            console.log(response.data.data)
           })
           .catch(function(error) {
             console.log(error);
@@ -436,7 +434,6 @@
           default:
             break;
         }
-        console.log(this.systemKeyInfo);
       },
       add(){
         this.systemID = "";
@@ -468,26 +465,21 @@
         for(let i = 0;i< this.systemKeyInfo.length;i++){
           if(this.systemID === ""){
             this.systemID = this.systemKeyInfo[i];
-          }else{
+          }else if(this.systemKeyInfo[i]!==""){
             this.systemID += ","+this.systemKeyInfo[i];
           }
         }
-        this.roleDTO.id=this.roleId.value;
-        this.roleDTO.name=this.roleName;
         let qs = require("qs");
         let data = qs.stringify({
-          id:this.roleId.value,
-          name:this.roleName
-        },
-        this.systemID
-        );
-        console.log(this.roleId.value);
-        console.log(this.roleName);
+            id:this.roleId.value,
+            name:this.roleName,
+            permissionIds:this.systemID
+          });
         this.axios
           .post(this.global.apiSrc+"/role/update",data)
           .then(response =>{
             this.load();
-            console.log(response)
+            console.log(response.data.msg)
           })
           .catch(function(error) {
             console.log(error);
