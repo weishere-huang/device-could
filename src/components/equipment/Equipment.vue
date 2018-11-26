@@ -91,12 +91,14 @@
       <div class="search">
         <el-button size="small" @click="toAdd">添加</el-button>
         <el-button size="small" @click="sort()"> 复制</el-button>
-        <el-button size="small">删除</el-button>
+        <el-button size="small" @click="edelete">删除</el-button>
         <div class="searchright">
           <span>关键字：</span>
-          <el-input type="search" size="small" placeholder="根据设备编号，名称，位号"></el-input>
-          <el-button size="small">搜索</el-button>
-          <span style="color:#409eff;font-size:12px;cursor: pointer;" @click="adShow">高级搜索</span>
+
+          <el-input type="search" size="small" placeholder="根据设备编号，名称，位号" v-model="keyWord"></el-input>
+          <el-button size="small" @click="findByKeyWord">搜索</el-button>
+          <span style="color:#409eff;font-size:12px;cursor: pointer;">高级搜索</span>
+
         </div>
       </div>
       <div class="tablelist">
@@ -112,176 +114,179 @@
   </div>
 </template>
 <script>
-import advanced from "./Advanced";
-export default {
-  name: "equipment",
-  data() {
-    return {
-      pageIndex: 1,
-      pageSize: 10,
-      tableData: [
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        },
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        },
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        },
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        }
-      ],
-      tableDate: [],
-      columns: [
-        {
-          width: 40,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
-        {
-          field: "tel",
-          title: "设备编号",
-          width: 90,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-          // orderBy: ""
-        },
-        {
-          field: "address",
-          title: "设备名称",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "hobby",
-          title: "设备状况",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "address",
-          title: "所属部门",
-          width: 90,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "address",
-          title: "安装位置",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "address",
-          title: "设备位号",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "address",
-          title: "设备类别",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "address",
-          title: "设备型号",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "address",
-          title: "设备负责人",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        }
-      ]
-    };
-  },
 
-  methods: {
-    adShow() {
-      document.querySelectorAll(".adsearch")[0].style.right = 0;
-    },
-    isHide: function(params) {
-      document.querySelectorAll(".adsearch")[0].style.right = params;
-    },
-    toAdd() {
-      this.$router.push("/EquipmentAdd");
-    },
-    redactShow(rowIndex, rowData, column) {
-      this.$router.push("/Redact");
-      this.$store.commit("equipmentRedact", rowData);
-    },
-    selectGroupChange(selection) {
-      console.log("select-group-change", selection);
-    },
-    selectALL(selection) {
-      console.log("select-aLL", selection);
-    },
-    selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
-    },
-    getTableData() {
-      this.tableData = this.tableDate.slice(
-        (this.pageIndex - 1) * this.pageSize,
-        this.pageIndex * this.pageSize
-      );
-    },
-    pageChange(pageIndex) {
-      this.pageIndex = pageIndex;
-      this.getTableData();
-      console.log(pageIndex);
-    },
-    pageSizeChange(pageSize) {
-      this.pageIndex = 1;
-      this.pageSize = pageSize;
-      this.getTableData();
-    },
-    sortChange(params) {
-      if (params.height.length > 0) {
-        this.tableConfig.tableData.sort(function(a, b) {
-          if (params.height === "asc") {
-            return a.height - b.height;
-          } else if (params.height === "desc") {
-            return b.height - a.height;
-          } else {
-            return 0;
+  // import tableDate from '../login/test'
+  export default {
+    name: "equipment",
+    data() {
+      return {
+        keyWord:"",
+        deviceId:"",
+        pageIndex: 1,
+        pageSize: 10,
+        ids:"",
+        tableData: [
+          {
+            name: "111",
+            tel: "222",
+            address: "3333",
+            hobby: "4444"
+          },
+          {
+            name: "111",
+            tel: "222",
+            address: "3333",
+            hobby: "4444"
+          },
+          // {
+          //   name:"111",
+          //   tel:"222",
+          //   address:"3333",
+          //   hobby:"4444"
+          // },
+          // {
+          //   name:"111",
+          //   tel:"222",
+          //   address:"3333",
+          //   hobby:"4444"
+          // }
+        ],
+        tableDate: [],
+        columns: [
+          {
+            width: 40,
+            titleAlign: "center",
+            columnAlign: "center",
+            type: "selection"
+          },
+          {
+            field: "deviceNo",
+            title: "设备编号",
+            width: 90,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+            // orderBy: ""
+          },
+          {
+            field: "deviceName",
+            title: "设备名称",
+            width: 100,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "deviceState",
+            title: "设备状况",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "organizeName",
+            title: "所属部门",
+            width: 90,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "location",
+            title: "安装位置",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "locationNo",
+            title: "设备位号",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "deviceCategoryName",
+            title: "设备类别",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "deviceModel",
+            title: "设备型号",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "workerNames",
+            title: "设备负责人",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+
           }
         });
       }
     },
+
+    methods: {
+      toAdd() {
+        this.$router.push('/EquipmentAdd')
+      },
+      redactShow(rowIndex, rowData, column) {
+        this.$router.push("/Redact")
+        this.$store.commit("equipmentRedact", rowData)
+        console.log("1111");
+        console.log(rowData);
+      },
+      selectGroupChange(selection) {
+        console.log("select-group-change", selection)
+        this.ids=selection[0].id;
+      },
+      selectALL(selection) {
+        console.log("select-aLL", selection);
+      },
+      selectChange(selection, rowData) {
+        console.log("select-change", selection, rowData);
+      },
+      getTableData() {
+        this.tableData = this.tableDate.slice(
+          (this.pageIndex - 1) * this.pageSize,
+          this.pageIndex * this.pageSize
+        );
+      },
+      pageChange(pageIndex) {
+        this.pageIndex = pageIndex;
+        this.getTableData();
+        console.log(pageIndex);
+      },
+      pageSizeChange(pageSize) {
+        this.pageIndex = 1;
+        this.pageSize = pageSize;
+        this.getTableData();
+      },
+      sortChange(params) {
+        if (params.height.length > 0) {
+          this.tableConfig.tableData.sort(function (a, b) {
+            if (params.height === "asc") {
+              return a.height - b.height;
+            } else if (params.height === "desc") {
+              return b.height - a.height;
+            } else {
+              return 0;
+            }
+          });
+        }
+      },
+
 
     //通过
     findall() {
@@ -301,231 +306,154 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    },
-    //通过
-    selectquery() {
-      //高级搜索
-      let qs = require("qs");
-      let data = qs.stringify({
-        // String deviceName,
-        deviceName: "IBM存储",
-        // Integer locationNo,
-        locationNo: "",
-        // String workerName,
-        workerName: "",
-        // String manufacturer,
-        manufacturer: "",
-        // String deviceSates,
-        deviceSates: "",
-        // Integer deviceCategory
-        deviceCategory: "",
-        page: this.pageIndex,
-        size: this.pageSize
-      });
-      alert("select");
-      axios
-        .get("api/device/select", data)
-        .then(result => {
-          alert("selectquery");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    //通过
-    findDeviceState() {
-      //获取设备状况接口
-      let qs = require("qs");
-      let data = qs.stringify({
-        id: 195
-      });
-      alert("findDeviceState");
-      axios
-        .get("api/device/findDeviceState")
-        .then(result => {
-          alert("findDeviceState");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    //通过
-    add1() {
-      //添加设备信息接口
-      let qs = require("qs");
-      let data = qs.stringify({
-        deviceNo: "Xy001",
-        deviceName: "IBM存储",
-        deviceClassify: 1,
-        deviceClassifyName: "存储",
-        deviceCategory: 2,
-        deviceCategoryName: "IBM-8000",
-        deviceSpec: "大型100T存储",
-        organizeCode: "XY001",
-        organizeName: "联想",
-        token: ""
-      });
-      alert("add");
-      axios
-        .post("api/device/add", data)
-        .then(result => {
-          alert("add");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    //通过
-    update() {
-      //编辑设备信息接口
-      let qs = require("qs");
-      let data = qs.stringify({
-        deviceNo: "Xy001",
-        deviceName: "IBM存储",
-        deviceClassify: 1,
-        deviceClassifyName: "存储",
-        deviceCategory: 2,
-        deviceCategoryName: "IBM-8000",
-        deviceSpec: "大型100T存储",
-        organizeCode: "XY001",
-        organizeName: "联想",
-        token: "",
-        id: 195
-      });
-      alert("update");
-      axios
-        .put("api/device/update", data)
-        .then(result => {
-          alert("update");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    //通过
-    detail() {
-      //获取设备详情接口
-      let qs = require("qs");
-      let data = qs.stringify({});
-      alert("detail");
-      axios
-        .get("api/device/detail", { params: { deviceId: 1 } })
-        .then(result => {
-          alert("detail");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    //通过
-    // all() {
-    //   //设备列表
-    //   let qs = require("qs");
-    //   let data = qs.stringify({
-    //     token: ""
-    //   });
-    //   alert("all");
-    //   axios
-    //     .get("api/device/all", data)
-    //     .then(result => {
-    //       alert("all");
-    //       console.log(result.data);
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //     });
-    // },
-    //通过
-    findByKeyWord() {
-      //根据设备编号、位号、名称查询
-      let qs = require("qs");
-      let data = qs.stringify({
-        page: this.pageIndex,
-        size: this.pageSize,
-        keyWord: "Xy001"
-      });
-      axios
-        .get("api/device/findByKeyWord", {
-          params: {
-            page: this.pageIndex,
-            size: this.pageSize,
-            keyWord: "冲压机3"
-          }
-        })
-        .then(result => {
-          alert("findByKeyWord");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    //通过
-    findByOrganizeCode() {
-      //根据组织代码查询所有员工数据，支持分页（用于设备模块）
-      let qs = require("qs");
-      let data = qs.stringify({
-        organizeCode: ""
-      });
-      axios
-        .get("api/employee/findByOrganizeCode", {
-          params: {
-            page: this.pageIndex,
-            size: this.pageSize,
-            organizeCode: "1000"
-          }
-        })
-        .then(result => {
-          alert("findByKeyWord");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    //
-    getDeviceById() {
-      //根据员工id查询相关设备信息接口，支持分页（用于设备模块）
-      let qs = require("qs");
-      let data = qs.stringify({
-        page: this.pageIndex,
-        size: this.pageSize,
-        employeeId: 147
-      });
-      axios
-        .get("api/employee/getDeviceById", data)
-        .then(result => {
-          alert("getDeviceById");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    edelete() {}
-  },
-  created() {
-    //this.detail();
-    //this.findDeviceState();
-    //this.selectquery();
-    this.findall();
-    this.findDeviceState();
-    //this.all();
-    //this.add1();
-    //this.update();
-    //this.findByKeyWord();
-    //this.findByOrganizeCode();
-  },
 
-  components: {
-    advanced
-  }
-};
+        this.axios
+        //axios
+          .get(this.global.apiSrc+"/device/all", data)
+         // .get("api/device/all", data)
+          .then(result => {
+            this.tableData = result.data.data.content;
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      //通过
+      selectquery() {
+        //高级搜索
+        let qs = require("qs");
+        let data = qs.stringify({
+          // String deviceName,
+          deviceName: "IBM存储",
+          // Integer locationNo,
+          locationNo: '',
+          // String workerName,
+          workerName: "",
+          // String manufacturer,
+          manufacturer: "",
+          // String deviceSates,
+          deviceSates: "",
+          // Integer deviceCategory
+          deviceCategory: '',
+          page: this.pageIndex,
+          size: this.pageSize
+        });
+        this.axios
+        //axios
+          //.get("api/device/select", data)
+          .get(this.global.apiSrc+"/device/select", data)
+          .then(result => {
+            alert("selectquery");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      //通过
+      findDeviceState(id) {
+        //获取设备状况接口
+        let ids = id;
+        this.axios
+        //axios
+          //.get("api/device/findDeviceState",{params:{deviceId:ids}})
+          .get(this.global.apiSrc+"/device/findDeviceState")
+          .then(result => {
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+
+
+      findByKeyWord() {
+        //根据设备编号、位号、名称查询
+        this.axios
+        //axios
+          .get(this.global.apiSrc+"/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: this.keyWord}})
+          //.get("api/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: this.keyWord}})
+          .then(result => {
+            this.tableData = result.data.data.content;
+            console.log(result.data.data.content);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      findByOrganizeCode() {
+        //根据组织代码查询所有员工数据，支持分页（用于设备模块）
+        let qs = require("qs");
+        let data = qs.stringify({
+
+          organizeCode: ""
+        });
+        this.axios
+          .get(this.global.apiSrc+"/employee/findByOrganizeCode", {
+            params: {
+              page: this.pageIndex,
+              size: this.pageSize,
+              organizeCode: "1000"
+            }
+          })
+          .then(result => {
+            alert("findByKeyWord");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      getDeviceById() {
+        //根据员工id查询相关设备信息接口，支持分页（用于设备模块）
+        let qs = require("qs");
+        let data = qs.stringify({
+          page: this.pageIndex,
+          size: this.pageSize,
+          employeeId: 147
+        });
+        this.axios
+        //axios
+          // .get("api/employee/getDeviceById", data)
+          .get(this.global.apiSrc +"/employee/getDeviceById", data)
+          .then(result => {
+            alert("getDeviceById");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      edelete() {
+        this.axios
+        //axios
+         // .get("api/device/delete", {params:{deviceId:this.ids}})
+          .get(this.global.apiSrc +"/employee/getDeviceById", data)
+          .then(result => {
+            this.findall();
+            console.log("delete");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    },
+    created() {
+      //this.detail(1);
+      //this.findDeviceState();
+      //this.selectquery();
+      this.findall();
+      this.findDeviceState();
+      //this.all();
+      //this.add1();
+      //this.update();
+      //this.findByKeyWord();
+      //this.findByOrganizeCode();
+    }
+  };
+
 </script>
 <style lang="less" scoped>
 @import url("../../assets/font/font.css");
