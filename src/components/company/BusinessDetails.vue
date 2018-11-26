@@ -13,7 +13,7 @@
           </li>
           <li>
             <label for="">企业法人：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.corporation" readonly></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.legalPerson" readonly></el-input>
           </li>
           <li>
             <label for="">联系电话：</label>
@@ -25,7 +25,7 @@
           </li>
           <li>
             <label for="">统一信用社会代码：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.companyID" readonly></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="detailsValue.creditCode" readonly></el-input>
           </li>
         </ul>
 
@@ -44,7 +44,7 @@
       <div class="right">
         <img src="../../assets/image/chlogo.png" alt="">
       </div>
-    </div>
+    </div>  
   </div>
 </template>
 <script>

@@ -12,7 +12,7 @@
           </li>
           <li>
             <label for="">企业法人：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="auditValue.corporation" readonly></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="auditValue.legalPerson" readonly></el-input>
           </li>
           <li>
             <label for="">联系电话：</label>
@@ -24,7 +24,7 @@
           </li>
           <li>
             <label for="">统一信用社会代码：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="auditValue.companyID" readonly></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="auditValue.creditCode" readonly></el-input>
           </li>
         </ul>
 
