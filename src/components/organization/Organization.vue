@@ -202,19 +202,18 @@ export default {
     },
     findOneOrganize() {
       //查询单个组织机构
+        axios
+          .put("api/organize/update", data)
+          .then(result => {
+            alert("updata");
+            console.log(result.data);
 
-      axios
-        .get("api/organize/findOneOrganize/1")
-        .then(result => {
-          alert("findone");
-          console.log("findone");
-          console.log(+result.data);
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(this.userName);
-        });
-    },
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(this.userName);
+          });
+      },
     filterArray(data, parent) {
       let vm = this;
       var tree = [];
