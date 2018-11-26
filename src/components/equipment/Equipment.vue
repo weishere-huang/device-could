@@ -97,7 +97,7 @@
 
           <el-input type="search" size="small" placeholder="根据设备编号，名称，位号" v-model="keyWord"></el-input>
           <el-button size="small" @click="findByKeyWord">搜索</el-button>
-          <span style="color:#409eff;font-size:12px;cursor: pointer;">高级搜索</span>
+          <span style="color:#409eff;font-size:12px;cursor: pointer;" @click="adsearch">高级搜索</span>
 
         </div>
       </div>
@@ -105,7 +105,7 @@
         <div>
           <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange" :row-dblclick="redactShow"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="this.tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
@@ -114,435 +114,433 @@
   </div>
 </template>
 <script>
-
-  // import tableDate from '../login/test'
-  export default {
-    name: "equipment",
-    data() {
-      return {
-        keyWord: "",
-        deviceId: "",
-        pageIndex: 1,
-        pageSize: 10,
-        ids: "",
-        tableData: [
-          {
-            name: "111",
-            tel: "222",
-            address: "3333",
-            hobby: "4444"
-          },
-          {
-            name: "111",
-            tel: "222",
-            address: "3333",
-            hobby: "4444"
-          },
-          // {
-          //   name:"111",
-          //   tel:"222",
-          //   address:"3333",
-          //   hobby:"4444"
-          // },
-          // {
-          //   name:"111",
-          //   tel:"222",
-          //   address:"3333",
-          //   hobby:"4444"
-          // }
-        ],
-        tableDate: [],
-        columns: [
-          {
-            width: 40,
-            titleAlign: "center",
-            columnAlign: "center",
-            type: "selection"
-          },
-          {
-            field: "deviceNo",
-            title: "设备编号",
-            width: 90,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
-            // orderBy: ""
-          },
-          {
-            field: "deviceName",
-            title: "设备名称",
-            width: 100,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "deviceState",
-            title: "设备状况",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
-          },
-          {
-            field: "organizeName",
-            title: "所属部门",
-            width: 90,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "location",
-            title: "安装位置",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "locationNo",
-            title: "设备位号",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "deviceCategoryName",
-            title: "设备类别",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "deviceModel",
-            title: "设备型号",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "workerNames",
-            title: "设备负责人",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-
+import advanced from './Advanced'
+export default {
+  name: "equipment",
+  data() {
+    return {
+      keyWord: "",
+      deviceId: "",
+      pageIndex: 1,
+      pageSize: 9,
+      ids: "",
+      tableData: [
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        },
+        {
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
+        }
+        // {
+        //   name:"111",
+        //   tel:"222",
+        //   address:"3333",
+        //   hobby:"4444"
+        // },
+        // {
+        //   name:"111",
+        //   tel:"222",
+        //   address:"3333",
+        //   hobby:"4444"
+        // }
+      ],
+      tableDate: [],
+      columns: [
+        {
+          width: 40,
+          titleAlign: "center",
+          columnAlign: "center",
+          type: "selection"
+        },
+        {
+          field: "deviceNo",
+          title: "设备编号",
+          width: 90,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+          // orderBy: ""
+        },
+        {
+          field: "deviceName",
+          title: "设备名称",
+          width: 100,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "deviceState",
+          title: "设备状况",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "organizeName",
+          title: "所属部门",
+          width: 90,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "location",
+          title: "安装位置",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "locationNo",
+          title: "设备位号",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "deviceCategoryName",
+          title: "设备类别",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "deviceModel",
+          title: "设备型号",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "workerNames",
+          title: "设备负责人",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        }
+      ]
+    };
+  },
+  methods: {
+    adsearch() {
+      $(".adsearch")[0].style.right = 0;
+    },
+    isHide(params) {
+      $(".adsearch")[0].style.right = params;
+    },
+    toAdd() {
+      this.$router.push("/EquipmentAdd");
+    },
+    redactShow(rowIndex, rowData, column) {
+      this.$router.push("/Redact");
+      this.$store.commit("equipmentRedact", rowData);
+      console.log("1111");
+      console.log(rowData);
+    },
+    selectGroupChange(selection) {
+      console.log("select-group-change", selection);
+      this.ids = selection[0].id;
+      console.log(this.ids);
+    },
+    selectALL(selection) {
+      console.log("select-aLL", selection);
+    },
+    selectChange(selection, rowData) {
+      console.log("select-change", selection, rowData);
+    },
+    getTableData() {
+      this.tableData = this.tableDate.slice(
+        (this.pageIndex - 1) * this.pageSize,
+        this.pageIndex * this.pageSize
+      );
+    },
+    pageChange(pageIndex) {
+      this.pageIndex = pageIndex;
+      this.getTableData();
+      console.log(pageIndex);
+      this.findall();
+    },
+    pageSizeChange(pageSize) {
+      this.pageIndex = 1;
+      this.pageSize = pageSize;
+      this.getTableData();
+      this.findall();
+    },
+    sortChange(params) {
+      if (params.height.length > 0) {
+        this.tableConfig.tableData.sort(function(a, b) {
+          if (params.height === "asc") {
+            return a.height - b.height;
+          } else if (params.height === "desc") {
+            return b.height - a.height;
+          } else {
+            return 0;
           }
-        ],
+        });
       }
     },
-    methods: {
-      toAdd() {
-        this.$router.push('/EquipmentAdd')
-      },
-      redactShow(rowIndex, rowData, column) {
-        this.$router.push("/Redact")
-        this.$store.commit("equipmentRedact", rowData)
-        console.log("1111");
-        console.log(rowData);
-      },
-      selectGroupChange(selection) {
-        console.log("select-group-change", selection)
-        this.ids=selection[0].id;
-      },
-      selectALL(selection) {
-        console.log("select-aLL", selection);
-      },
-      selectChange(selection, rowData) {
-        console.log("select-change", selection, rowData);
-      },
-      getTableData() {
-        this.tableData = this.tableDate.slice(
-          (this.pageIndex - 1) * this.pageSize,
-          this.pageIndex * this.pageSize
-        );
-      },
-      pageChange(pageIndex) {
-        this.pageIndex = pageIndex;
-        this.getTableData();
-        console.log(pageIndex);
-      },
-      pageSizeChange(pageSize) {
-        this.pageIndex = 1;
-        this.pageSize = pageSize;
-        this.getTableData();
-      },
-      sortChange(params) {
-        if (params.height.length > 0) {
-          this.tableConfig.tableData.sort(function (a, b) {
-            if (params.height === "asc") {
-              return a.height - b.height;
-            } else if (params.height === "desc") {
-              return b.height - a.height;
-            } else {
-              return 0;
-            }
-          });
-        }
-      },
 
-
-      //通过
-      findall() {
-        //根据用户token查询所属组织机构下设备类别
-        let qs = require("qs");
-        let data = qs.stringify({
-          page: this.pageIndex,
-          size: this.pageSize
-        });
-        axios
-          .get("api/device/all", data)
-          .then(result => {
-            this.tableData = result.data.data.content;
-            console.log("findall");
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-
-        this.axios
+    //通过
+    findall() {
+      //根据用户token查询所属组织机构下设备类别
+      let qs = require("qs");
+      let data = qs.stringify({
+        page: this.pageIndex,
+        size: this.pageSize
+      });
+      this.axios
         //axios
-          .get(this.global.apiSrc+"/device/all", data)
-          // .get("api/device/all", data)
-          .then(result => {
-            this.tableData = result.data.data.content;
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
-      //通过
-      selectquery() {
-        //高级搜索
-        let qs = require("qs");
-        let data = qs.stringify({
-          // String deviceName,
-          deviceName: "IBM存储",
-          // Integer locationNo,
-          locationNo: '',
-          // String workerName,
-          workerName: "",
-          // String manufacturer,
-          manufacturer: "",
-          // String deviceSates,
-          deviceSates: "",
-          // Integer deviceCategory
-          deviceCategory: '',
-          page: this.pageIndex,
-          size: this.pageSize
+        .get(this.global.apiSrc + "/device/all", data)
+        // .get("api/device/all", data)
+        .then(result => {
+          this.tableData = result.data.data.content;
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
         });
-        this.axios
+    },
+    //通过
+    selectquery() {
+      //高级搜索
+      let qs = require("qs");
+      let data = qs.stringify({
+        // String deviceName,
+        deviceName: "IBM存储",
+        // Integer locationNo,
+        locationNo: "",
+        // String workerName,
+        workerName: "",
+        // String manufacturer,
+        manufacturer: "",
+        // String deviceSates,
+        deviceSates: "",
+        // Integer deviceCategory
+        deviceCategory: "",
+        page: this.pageIndex,
+        size: this.pageSize
+      });
+      this.axios
         //axios
         //.get("api/device/select", data)
-          .get(this.global.apiSrc+"/device/select", data)
-          .then(result => {
-            alert("selectquery");
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
-      //通过
-      findDeviceState(id) {
-        //获取设备状况接口
-        let ids = id;
-        this.axios
+        .get(this.global.apiSrc + "/device/select", data)
+        .then(result => {
+          alert("selectquery");
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    //通过
+    findDeviceState(id) {
+      //获取设备状况接口
+      let ids = id;
+      this.axios
         //axios
         //.get("api/device/findDeviceState",{params:{deviceId:ids}})
-          .get(this.global.apiSrc+"/device/findDeviceState")
-          .then(result => {
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
-
-
-      findByKeyWord() {
-        //根据设备编号、位号、名称查询
-        this.axios
+        .get(this.global.apiSrc + "/device/findDeviceState")
+        .then(result => {
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    findByKeyWord() {
+      //根据设备编号、位号、名称查询
+      this.axios
         //axios
-          .get(this.global.apiSrc+"/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: this.keyWord}})
-          //.get("api/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: this.keyWord}})
-          .then(result => {
-            this.tableData = result.data.data.content;
-            console.log(result.data.data.content);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
-      findByOrganizeCode() {
-        //根据组织代码查询所有员工数据，支持分页（用于设备模块）
-        let qs = require("qs");
-        let data = qs.stringify({
-
-          organizeCode: ""
+        .get(this.global.apiSrc + "/device/findByKeyWord", {
+          params: {
+            page: this.pageIndex,
+            size: this.pageSize,
+            keyWord: this.keyWord
+          }
+        })
+        .then(result => {
+          this.tableData = result.data.data.content;
+          console.log(result.data.data.content);
+        })
+        .catch(err => {
+          console.log(err);
         });
-        this.axios
-          .get(this.global.apiSrc+"/employee/findByOrganizeCode", {
-            params: {
-              page: this.pageIndex,
-              size: this.pageSize,
-              organizeCode: "1000"
-            }
-          })
-          .then(result => {
-            alert("findByKeyWord");
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
-      getDeviceById() {
-        //根据员工id查询相关设备信息接口，支持分页（用于设备模块）
-        let qs = require("qs");
-        let data = qs.stringify({
-          page: this.pageIndex,
-          size: this.pageSize,
-          employeeId: 147
+    },
+    findByOrganizeCode() {
+      //根据组织代码查询所有员工数据，支持分页（用于设备模块）
+      let qs = require("qs");
+      let data = qs.stringify({
+        organizeCode: ""
+      });
+      this.axios
+        .get(this.global.apiSrc + "/employee/findByOrganizeCode", {
+          params: {
+            page: this.pageIndex,
+            size: this.pageSize,
+            organizeCode: "1000"
+          }
+        })
+        .then(result => {
+          alert("findByKeyWord");
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
         });
-        this.axios
+    },
+    getDeviceById() {
+      //根据员工id查询相关设备信息接口，支持分页（用于设备模块）
+      let qs = require("qs");
+      let data = qs.stringify({
+        page: this.pageIndex,
+        size: this.pageSize,
+        employeeId: 147
+      });
+      this.axios
         //axios
         // .get("api/employee/getDeviceById", data)
-          .get(this.global.apiSrc +"/employee/getDeviceById", data)
-          .then(result => {
-            alert("getDeviceById");
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
-      edelete() {
-        this.axios
-        //axios
-        // .get("api/device/delete", {params:{deviceId:this.ids}})
-          .get(this.global.apiSrc +"/employee/getDeviceById", data)
-          .then(result => {
-            this.findall();
-            console.log("delete");
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      }
+        .get(this.global.apiSrc + "/employee/getDeviceById", data)
+        .then(result => {
+          alert("getDeviceById");
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
-    created() {
-      //this.detail(1);
-      //this.findDeviceState();
-      //this.selectquery();
-      this.findall();
-      this.findDeviceState();
-      //this.all();
-      //this.add1();
-      //this.update();
-      //this.findByKeyWord();
-      //this.findByOrganizeCode();
+    edelete() {
+      this.axios
+        .post(this.global.apiSrc + "/device/delete", {params:{deviceId:this.ids}})
+        .then(result => {
+          //this.findall();
+          console.log("delete");
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
-  };
-
+  },
+  created() {
+    //this.detail(1);
+    //this.findDeviceState();
+    //this.selectquery();
+    this.findall();
+    this.findDeviceState();
+    //this.all();
+    //this.add1();
+    //this.update();
+    //this.findByKeyWord();
+    //this.findByOrganizeCode();
+  },
+  components: {
+    advanced,
+  }
+};
 </script>
 <style lang="less" scoped>
-  @import url("../../assets/font/font.css");
+@import url("../../assets/font/font.css");
 
-  @blue: #409eff;
-  @Success: #67c23a;
-  @Warning: #e6a23c;
-  @Danger: #f56c6c;
-  @Info: #dde2eb;
-  .equipment {
+@blue: #409eff;
+@Success: #67c23a;
+@Warning: #e6a23c;
+@Danger: #f56c6c;
+@Info: #dde2eb;
+.equipment {
+  position: relative;
+  overflow: hidden;
+
+  .equipmentContent {
+    font-size: 12px;
+    color: #666666;
+    width: 200px;
     overflow: hidden;
-    .equipmentContent {
-      font-size: 12px;
-      color: #666666;
-      width: 200px;
+    float: left;
+    font-size: 12px;
+    .classifylist {
+      width: 170px;
       overflow: hidden;
+      margin: 10px;
       float: left;
-      font-size: 12px;
-      .classifylist {
-        width: 170px;
-        overflow: hidden;
-        margin: 10px;
-        float: left;
-        border: 1px solid @Info;
-        padding: 10px;
-        border-radius: 5px;
-        h5 {
-          width: 100%;
-          text-align: left;
-          display: inline-block;
-          padding: 5px 14px 0 0;
+      border: 1px solid @Info;
+      padding: 10px;
+      border-radius: 5px;
+      h5 {
+        width: 100%;
+        text-align: left;
+        display: inline-block;
+        padding: 5px 14px 0 0;
+      }
+      li {
+        list-style-type: none;
+        text-align: left;
+        padding: 4px 0 4px 20px;
+        letter-spacing: 1px;
+        cursor: pointer;
+        &:hover {
+          background-color: @Info;
         }
-        li {
-          list-style-type: none;
-          text-align: left;
-          padding: 4px 0 4px 20px;
-          letter-spacing: 1px;
-          cursor: pointer;
-          &:hover {
-            background-color: @Info;
-          }
-        }
-        .transitlist {
-          padding-left: 20px;
-        }
+      }
+      .transitlist {
+        padding-left: 20px;
       }
     }
-    .content {
-      width: 80%;
-      min-width: 700px;
-      float: left;
-      margin: 10px 0 0 0;
-      // border: 1px solid @Info;
-      // border-radius:5px;
-      .search {
-        border: 1px solid @Info;
-        border-radius: 5px;
-        height: 60px;
-        line-height: 60px;
-        padding: 0 10px;
-        // overflow: hidden;
-        .searchright {
-          font-size: 12px;
-          float: right;
-          // display: inline-block;
-        }
-      }
-      .tablelist {
+  }
+  .content {
+    width: 80%;
+    min-width: 700px;
+    float: left;
+    margin: 10px 0 0 0;
+    // border: 1px solid @Info;
+    // border-radius:5px;
+    .search {
+      border: 1px solid @Info;
+      border-radius: 5px;
+      height: 60px;
+      line-height: 60px;
+      padding: 0 10px;
+      // overflow: hidden;
+      .searchright {
         font-size: 12px;
-        margin-top: 10px;
-        padding: 10px;
-        border: 1px solid @Info;
-        border-radius: 5px;
-        min-height: 500px;
+        float: right;
+        // display: inline-block;
       }
     }
+    .tablelist {
+      font-size: 12px;
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid @Info;
+      border-radius: 5px;
+      min-height: 500px;
+    }
   }
+}
 
-  .el-input__inner {
-    //   width: 150px !important;
-    display: inline !important;
-  }
-  .el-input {
-    width: auto !important;
-    padding: 0 !important;
-  }
-  .adsearch {
-    position: absolute;
-    top: 60px;
-    right: -310px;
-    transition: all 0.3s ease-in;
-  }
+.el-input__inner {
+  //   width: 150px !important;
+  display: inline !important;
+}
+.el-input {
+  width: auto !important;
+  padding: 0 !important;
+}
+.adsearch {
+  position: absolute;
+  right: -310px;
+  transition: all 0.3s ease-in;
+}
 </style>

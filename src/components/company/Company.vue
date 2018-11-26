@@ -20,7 +20,7 @@
                    :select-group-change="selectGroupChange" :row-dblclick="details" row-click-color="#edf7ff">
           </v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize"
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="this.totalNub" :page-size="pageSize"
                           :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
@@ -50,6 +50,7 @@
         pageIndex: 1,
         pageSize: 10,
         name: "",
+        totalNub:"",
         tableData: [
           {
             name: "11",
@@ -199,8 +200,10 @@
             params: {page: this.pageIndex, size: this.pageSize}
           })
           .then(response => {
-            console.log(response.data.data.content)
+            console.log(response)
+            this.totalNub=response.data.data.totalElements
             for (let i = 0; i < response.data.data.content.length; i++) {
+
               // console.log(response.data.data.content.length)
 
               // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
@@ -216,6 +219,9 @@
               }
               if (response.data.data.content[i].state === 4) {
                 response.data.data.content[i].state = "审核中"
+              }
+              if (response.data.data.content[i].state === 10) {
+                response.data.data.content[i].state = "驳回"
               }
             }
             this.tableData = response.data.data.content;
@@ -239,13 +245,16 @@
                 response.data.data.content[i].state = "待审核"
               }
               if (response.data.data.content[i].state === 1) {
-                response.data.data.content[i].state = "未通过"
+                response.data.data.content[i].state = "正常"
               }
               if (response.data.data.content[i].state === 2) {
                 response.data.data.content[i].state = "禁用"
               }
-              if (response.data.data.content[i].state === 3) {
-                response.data.data.content[i].state = "正常"
+              if (response.data.data.content[i].state === 4) {
+                response.data.data.content[i].state = "审核中"
+              }
+              if (response.data.data.content[i].state === 10) {
+                response.data.data.content[i].state = "驳回"
               }
             }
             this.tableData = response.data.data.content;

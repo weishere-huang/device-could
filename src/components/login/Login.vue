@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="loginBox" v-show="isshow">
-      <h1>长虹设备云</h1>
+      <h1>长虹智能终端设备生产管理云平台</h1>
       <p>
         <el-input placeholder="用户名/手机号" v-model="userName"></el-input>
       </p>
@@ -235,8 +235,7 @@ export default {
         }
       });
       this.axios
-        .post(this.global.apiSrc + "/enterprise/add", data)
-        .then(result => {
+        .post(this.global.apiSrc + "/enterprise/add", data).then(result => {
           // axios.post("/api/enterprise/add", data).then(result => {
           console.log(result);
           if (this.company.name == "") {
@@ -266,7 +265,7 @@ export default {
           if (this.manager.phone == "") {
             console.log("请输入管理员联系电话");
           } else {
-            this.$router.push({ path: "/home" });
+            location.reload();
           }
         })
         .catch(err => {

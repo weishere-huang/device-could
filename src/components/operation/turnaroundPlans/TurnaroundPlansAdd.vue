@@ -113,30 +113,30 @@
   </div>
 </template>
 <script>
-import addPlan from "./AddPlan";
+//import addPlan from './AddPlan'
 export default {
   name: "",
   data() {
     return {
-      userId:3,
-      deviceIds:1,
-      date:"",
-      times:"",
+      userId: 3,
+      deviceIds: 1,
+      date: "",
+      times: "",
       addPlanShow: false,
       time: new Date().toLocaleString(),
       companyName: {
-        id:"",
-        planName:"",
-        maintenanceClassify:"",
-        maintenanceLevel:"",
-        maintenanceType:"",
-        planType:"",
-        startTime:"",
-        endTime:"",
-        executeTime:"",
-        frequency:"",
-        frequencyType:"",
-        maintenanceCc:""
+        id: "",
+        planName: "",
+        maintenanceClassify: "",
+        maintenanceLevel: "",
+        maintenanceType: "",
+        planType: "",
+        startTime: "",
+        endTime: "",
+        executeTime: "",
+        frequency: "",
+        frequencyType: "",
+        maintenanceCc: ""
       },
       columns: [
         {
@@ -197,18 +197,20 @@ export default {
       ],
       pageIndex: 1,
       pageSize: 10,
-      tableData: [{
-          deviceCategoryName:"",
-          manufacturer:"",
-          deviceName:"",
-          deviceModel:"",
-          deviceNo:"",
-          deviceState:"",
-          location:"",
-          locationNo:"",
-          workerNames:"",
-          id:""
-        }],
+      tableData: [
+        {
+          deviceCategoryName: "",
+          manufacturer: "",
+          deviceName: "",
+          deviceModel: "",
+          deviceNo: "",
+          deviceState: "",
+          location: "",
+          locationNo: "",
+          workerNames: "",
+          id: ""
+        }
+      ],
       tableDate: []
     };
   },
@@ -287,22 +289,22 @@ export default {
     },
     selectGroupChange(selection) {
       this.deviceIds = "";
-      for(let i in selection){
-        if(this.deviceIds === ""){
+      for (let i in selection) {
+        if (this.deviceIds === "") {
           this.deviceIds = selection[i].id;
-        }else{
-          this.deviceIds += ","+selection[i].id;
+        } else {
+          this.deviceIds += "," + selection[i].id;
         }
       }
       console.log("select-group-change", selection);
     },
     selectALL(selection) {
       this.deviceIds = "";
-      for(let i in selection){
-        if(this.deviceIds === ""){
+      for (let i in selection) {
+        if (this.deviceIds === "") {
           this.deviceIds = selection[i].id;
-        }else{
-          this.deviceIds += ","+selection[i].id;
+        } else {
+          this.deviceIds += "," + selection[i].id;
         }
       }
       console.log("select-aLL", selection);
@@ -326,13 +328,15 @@ export default {
       this.pageSize = pageSize;
       this.getTableData();
     },
-    load(){
+    load() {
       this.axios
-        .get(this.global.apiSrc+"/device/all",{params:{
-            page:this.pageIndex,
-            size:this.pageSize
-          }})
-        .then(response =>{
+        .get(this.global.apiSrc + "/device/all", {
+          params: {
+            page: this.pageIndex,
+            size: this.pageSize
+          }
+        })
+        .then(response => {
           this.tableData = response.data.data.content;
           console.log(response.data.data.content);
         })
@@ -340,10 +344,10 @@ export default {
           console.log(error);
         });
     }
-  },
-  components: {
-    addPlan
   }
+  // components: {
+  //   addPlan
+  // }
 };
 </script>
 
