@@ -15,7 +15,7 @@
         <div>
           <v-table :row-dblclick="modefication" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
@@ -26,7 +26,6 @@
   export default {
     data() {
       return {
-        pageNumber:0,
         searchs: "",
         pageIndex: 1,
         pageSize: 10,
@@ -226,13 +225,9 @@
           })
           .then(response => {
             this.tableData = response.data.data.content;
-            this.pageNumber = this.tableData.length;
             // console.log(this.tableData);
             for(let i in this.tableData){
-              // console.log(i);
               this.tableData[i].state === -1 ? this.tableData[i].state = "禁用" : this.tableData[i].state = "正常";
-              // this.tableData[i].entryTime = this.tableData[i].entryTime.split("T")[0];
-              // console.log(this.tableData[i].entryTime)
             }
             this.tableDate =this.tableData;
             // console.log(this.tableData);
