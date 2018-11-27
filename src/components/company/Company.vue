@@ -53,12 +53,12 @@
         totalNub:"",
         tableData: [
           {
-            name: "11",
-            address: "222",
-            phone: "333",
-            address: "4444",
-            gmtCreate: "555",
-            state: "777",
+            name: "",
+            address: "",
+            phone: "",
+            address: "",
+            gmtCreate: "",
+            state: "",
           }
         ],
         tableDate: [],
@@ -196,18 +196,14 @@
       load() {
         this.axios
           .get(this.global.apiSrc + "/enterprise/all", {
-            // .get("/api/enterprise/all", {
             params: {page: this.pageIndex, size: this.pageSize}
           })
           .then(response => {
             console.log(response)
             this.totalNub=response.data.data.totalElements
             for (let i = 0; i < response.data.data.content.length; i++) {
-
               // console.log(response.data.data.content.length)
-
               // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
-
               if (response.data.data.content[i].state === 0) {
                 response.data.data.content[i].state = "待审核"
               }
@@ -221,7 +217,7 @@
                 response.data.data.content[i].state = "审核中"
               }
               if (response.data.data.content[i].state === 10) {
-                response.data.data.content[i].state = "驳回"
+                response.data.data.content[i].state = "未通过"
               }
             }
             this.tableData = response.data.data.content;
@@ -234,13 +230,10 @@
 
       findByName() {
         this.axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {params: {enterpriseName: this.name}})
-        // axios.get("/api/enterprise/findByNameOrState", {params: {enterpriseName: this.name}})
           .then(response => {
             for (let i = 0; i < response.data.data.content.length; i++) {
               // console.log(response.data.data.content.length)
-
               // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
-
               if (response.data.data.content[i].state === 0) {
                 response.data.data.content[i].state = "待审核"
               }
@@ -254,7 +247,7 @@
                 response.data.data.content[i].state = "审核中"
               }
               if (response.data.data.content[i].state === 10) {
-                response.data.data.content[i].state = "驳回"
+                response.data.data.content[i].state = "未通过"
               }
             }
             this.tableData = response.data.data.content;
@@ -270,7 +263,6 @@
           // state: 0
         })
         this.axios.post(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
-        // axios.post("/api/enterprise/enableEnterprises/", data)
           .then(response => {
             alert("启用成功")
             // this.message("启用成功")
@@ -289,7 +281,6 @@
         console.log("请求参数：" + data)
 
         this.axios.post(this.global.apiSrc + "/enterprise/discontinuationEnterprises",data)
-        // axios.post("/api/enterprise/discontinuationEnterprises", data)
           .then(response => {
             console.log("1111请求参数：" + data)
             console.log(response)

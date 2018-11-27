@@ -49,7 +49,6 @@ export default {
       }
       this.axios
         .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
-          // axios.get("/api/enterprise/findByNameOrState", {
           params: {
             enterpriseName: this.companyName,
 
@@ -75,7 +74,7 @@ export default {
               response.data.data.content[i].state = "审核中";
             }
             if (response.data.data.content[i].state === 10) {
-              response.data.data.content[i].state = "驳回"
+              response.data.data.content[i].state = "未通过"
             }
           }
           this.dataName = response.data.data.content;
