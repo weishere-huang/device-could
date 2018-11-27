@@ -96,7 +96,7 @@ export default {
             }
           }
           console.log(response.data);
-          document.querySelectorAll(".adsearch")[0].style.right = "-310px";
+          document.querySelectorAll(".adsearch")[0].style.right ="-310px";
           this.dataName = response.data.data.content;
           console.log(this.dataName);
           this.$emit("advanceValue", this.dataName);

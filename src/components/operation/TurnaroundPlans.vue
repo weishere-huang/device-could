@@ -225,6 +225,7 @@
               size:this.pageSize
             }})
           .then(response =>{
+            console.log(response);
             this.tableData = response.data.data.content;
             this.pageNumber = response.data.data.content.length;
             for(let i in this.tableData){

@@ -110,7 +110,7 @@
         </div>
       </div>
     </div>
-    <advanced class="adsearch" v-on:isHide="isHide"></advanced>
+    <advanced class="adsearch" v-on:isHide="isHide" v-on:advanceValue="advanceValue"></advanced>
   </div>
 </template>
 <script>
@@ -235,6 +235,9 @@ export default {
     };
   },
   methods: {
+    advanceValue(params){
+      this.tableData=params;
+    },
     adsearch() {
       $(".adsearch")[0].style.right = 0;
     },
@@ -314,6 +317,23 @@ export default {
         // .get("api/device/all", data)
         .then(result => {
           this.tableData = result.data.data.content;
+          for(let i = 0 ;i<this.tableData.length;i++){
+            if(this.tableData.deviceState === 1){
+              this.tableData.deviceState = "在用"
+            };
+            if(this.tableData.deviceState === 2){
+              this.tableData.deviceState = "出租"
+            };
+            if(this.tableData.deviceState === 3){
+              this.tableData.deviceState = "停用"
+            };
+            if(this.tableData.deviceState === 4){
+              this.tableData.deviceState = "封存"
+            };
+            if(this.tableData.deviceState === 5){
+              this.tableData.deviceState = "报废"
+            };
+          }
           console.log(result.data);
         })
         .catch(err => {
