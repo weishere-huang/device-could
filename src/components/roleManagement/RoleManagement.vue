@@ -199,7 +199,14 @@
           sHide: false,
           checkAll: false,
           checkedSystem: [],
-          systemList: [],
+          systemList: [
+             "新增设备信息",
+            "修改设备信息",
+            "删除设备信息",
+            "设备分类管理",
+            "设备类别管理",
+            "设备绑定人员信息管理"
+          ],
           systemKey :[],
           isIndeterminate: true
         },

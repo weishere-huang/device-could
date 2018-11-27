@@ -1,5 +1,4 @@
 <template>
-
   <div class="organization">
     <div class="content">
       <div class="left">
@@ -8,18 +7,37 @@
           <h5>备注</h5>
           <h5>状态</h5>
         </div>
-
-        <el-tree :data="data" default-expand-all :props="defaultProps" @node-click="handleNodeClick" :expand-on-click-node="false">
-          <span class="custom-tree-node" slot-scope="{ node, data }">
+        <el-tree
+          :data="data"
+          default-expand-all
+          :props="defaultProps"
+          @node-click="handleNodeClick"
+          :expand-on-click-node="false"
+        >
+          <span
+            class="custom-tree-node"
+            slot-scope="{ node, data }"
+          >
             <span class="listcontent">{{ data.name }}
               <span class="addCase">
-                <el-button type="text" size="mini" @click="() => append(data)">
+                <el-button
+                  type="text"
+                  size="mini"
+                  @click="() => append(data)"
+                >
                   添加
                 </el-button>
-                <el-button type="text" size="mini">
+                <el-button
+                  type="text"
+                  size="mini"
+                >
                   修改
                 </el-button>
-                <el-button type="text" size="mini" @click="() => remove(node, data)">
+                <el-button
+                  type="text"
+                  size="mini"
+                  @click="() => remove(node, data)"
+                >
                   删除
                 </el-button>
               </span>
@@ -46,8 +64,6 @@ export default {
     return {
       add1: false,
       revise1: false,
-      sss: "",
-      xxx: "",
       name1: [1, 2, 3, 4, 5, 6, 7, 8],
       organizeType: [1, 2, 3, 4, 5, 6, 7, 8],
       organizeInfo: [1, 2, 3, 4, 5, 6, 7, 8],
@@ -57,14 +73,6 @@ export default {
       defaultProps: {
         children: "children",
         label: "name"
-      },
-      defaultProps1: {
-        children: "children",
-        label: "state"
-      },
-      defaultProps2: {
-        children: "children",
-        label: "organizeInfo"
       }
     };
   },
@@ -250,8 +258,11 @@ export default {
   .content {
     padding: 10px;
     overflow: hidden;
+    // border: @border;
     .left {
       width: 900px;
+      padding: 10px;
+      overflow: hidden;
       float: left;
       // text-align: center;
       border: @border;

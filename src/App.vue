@@ -9,10 +9,20 @@
         </el-header>
       </el-container>
       <el-container class='box'>
-        <el-aside width="180px" style="background-color: rgb(238, 241, 246)">
-          <el-menu :router=true :default-active="$route.name" style="background-color:rgb(238, 241, 246);">
+        <el-aside
+          width="180px"
+          style="background-color: rgb(238, 241, 246)"
+        >
+          <el-menu
+            :router=true
+            :default-active="$route.name"
+            style="background-color:rgb(238, 241, 246);"
+          >
             <el-submenu index="/Home">
-              <template slot="title"><i class="el-icon-message" index="/Home"></i>默认工作台</template>
+              <template slot="title"><i
+                  class="el-icon-message"
+                  index="/Home"
+                ></i>默认工作台</template>
               <el-menu-item index="/Home">默认工作台</el-menu-item>
               <!-- <el-menu-item index="/Home">选项2</el-menu-item>
               <el-menu-item index="/Home">选项3</el-menu-item> -->
@@ -170,6 +180,11 @@ export default {
   float: left;
   // width: 90%;
   height: 100%;
+  .el-menu-item {
+    height: 40px;
+    line-height: 40px;
+    min-width: 178px;
+  }
 }
 .el-menu-item {
   height: 40px;

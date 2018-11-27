@@ -2,34 +2,85 @@
   <div class="company">
     <div class="userCase">
       <div class="top">
-        <el-button size="small" @click="auditblock">审核</el-button>
-        <el-button size="small" @click="startUseing">启用</el-button>
-        <el-button size="small" @click="forbidden">停用</el-button>
-        <el-button size="small" @click="replace">刷新</el-button>
+        <el-button
+          size="small"
+          @click="auditblock"
+        >审核</el-button>
+        <el-button
+          size="small"
+          @click="startUseing"
+        >启用</el-button>
+        <el-button
+          size="small"
+          @click="forbidden"
+        >停用</el-button>
+        <el-button
+          size="small"
+          @click="replace"
+        >刷新</el-button>
         <div class="search">
-          <el-input type="search" placeholder="根据企业名称" size="small" v-model="name"></el-input>
-          <el-button size="small" @click="findByName">搜索</el-button>
-          <span style="color:#409eff" @click="adsearch">高级搜索</span>
+          <el-input
+            type="search"
+            placeholder="根据企业名称"
+            size="small"
+            v-model="name"
+          ></el-input>
+          <el-button
+            size="small"
+            @click="findByName"
+          >搜索</el-button>
+          <span
+            style="color:#409eff"
+            @click="adsearch"
+          >高级搜索</span>
         </div>
 
       </div>
       <div class="bottom">
         <div>
-          <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;"
-                   :columns="columns" :table-data="tableData" row-hover-color="#eee" :select-all="selectALL"
-                   :select-group-change="selectGroupChange" :row-dblclick="details" row-click-color="#edf7ff">
+          <v-table
+            is-horizontal-resize
+            column-width-drag
+            :multiple-sort="false"
+            style="width:100%;min-height:400px;"
+            :columns="columns"
+            :table-data="tableData"
+            row-hover-color="#eee"
+            :select-all="selectALL"
+            :select-group-change="selectGroupChange"
+            :row-dblclick="details"
+            row-click-color="#edf7ff"
+          >
           </v-table>
-          <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize"
-                          :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          <div
+            class="mt20 mb20 bold"
+            style="text-align:center;margin-top:30px"
+          >
+            <v-pagination
+              @page-change="pageChange"
+              @page-size-change="pageSizeChange"
+              :total="tableData.length"
+              :page-size="pageSize"
+              :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
+            ></v-pagination>
           </div>
         </div>
       </div>
     </div>
-    <advancedsearch class="adsearch" v-on:advanceValue="advanceValue"></advancedsearch>
-    <audit v-show="auditShow" v-on:auditByValue="auditByValue" :auditValue="auditValue"></audit>
-    <businessDetails v-show="detailsShow" v-on:childByValue="childByValue"
-                     :detailsValue="detailsValue"></businessDetails>
+    <advancedsearch
+      class="adsearch"
+      v-on:advanceValue="advanceValue"
+    ></advancedsearch>
+    <audit
+      v-show="auditShow"
+      v-on:auditByValue="auditByValue"
+      :auditValue="auditValue"
+    ></audit>
+    <businessDetails
+      v-show="detailsShow"
+      v-on:childByValue="childByValue"
+      :detailsValue="detailsValue"
+    ></businessDetails>
   </div>
 </template>
 <script>
@@ -261,6 +312,7 @@
         })
       },
       startUseing() {
+        
         let qs = require("qs")
         let data = qs.stringify({
           enterpriseIds: this.choice
@@ -271,6 +323,7 @@
           .then(response => {
             // this.message("启用成功")
             this.load()
+            this.$message("您已启用该公司");
             console.log("请求参数：" + data)
           })
           .catch(function (error) {

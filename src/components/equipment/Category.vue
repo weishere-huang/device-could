@@ -132,14 +132,14 @@ export default {
     allOrganize() {
       this.axios
         //axios
-        .get(this.global.apiSrc+"/organize/allOrganize/321")
+        .get(this.global.apiSrc+"/organize/allOrganize")
         // .get("api/organize/allOrganize/321")
         .then(result => {
           this.organize = this.filterArray(result.data.data, 0);
         })
         .catch(err => {
           console.log(err);
-          console.log(this.userName);
+          // console.log(this.userName);
         });
     },
     filterArray(data, parent) {

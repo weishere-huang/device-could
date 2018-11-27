@@ -18,23 +18,21 @@
           </el-form-item>
           <el-form-item label="所属部门">
             <el-select v-model="sizeForm.organizeName" placeholder="点击选择" style="width:512px">
-
-              <el-option v-for="item in options1" :key="" :label="item.label" :value="item.value"></el-option>
-
+              <el-option v-for="(item,index) in options1" :key="index" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
           <el-form :inline="true" style="padding-left:12px" size="small">
             <el-form-item label="设备分类">
               <el-select v-model="sizeForm.deviceClassify" placeholder="点击选择" style="width:215px">
 
-                <el-option v-for="item in options2" :key="" :label="item.label" :value="item.value"></el-option>
+                <el-option v-for="(item,index) in options2" :key="index" :label="item.label" :value="item.value"></el-option>
 
               </el-select>
             </el-form-item>
             <el-form-item label="设备类别">
               <el-select v-model="sizeForm.deviceCategory" placeholder="点击选择" style="width:215px">
 
-                <el-option v-for="item in options3" :key="" :label="item.label" :value="item.value"></el-option>
+                <el-option v-for="(item,index) in options3" :key="index" :label="item.label" :value="item.value"></el-option>
 
               </el-select>
             </el-form-item>
@@ -46,7 +44,7 @@
             <el-form-item label="设备状况">
               <el-select v-model="sizeForm.deviceState" placeholder="点击选择" style="width:215px">
 
-                <el-option v-for="item in options4" :key="" :label="item.label" :value="item.value"></el-option>
+                <el-option v-for="(item,index) in options4" :key="index" :label="item.label" :value="item.value"></el-option>
 
               </el-select>
             </el-form-item>
