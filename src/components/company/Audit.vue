@@ -29,9 +29,10 @@
         </ul>
 
         <div class="state">
-          <div >
+          <div>
             <label style="display:inline-block;height:60px;vertical-align:top;">驳回原因：</label>
-            <textarea type="textarea" style="width:70%;height:60px;" placeholder="请填写驳回原因" v-model="auditValue.auditOpinion"></textarea>
+            <textarea type="textarea" style="width:70%;height:60px;" placeholder="请填写驳回原因"
+                      v-model="auditValue.auditOpinion"></textarea>
           </div>
 
           <div style="margin-top:10px;width:100%;text-align:center;">
@@ -99,13 +100,13 @@
         let data = qs.stringify({
           enterpriseId: this.auditValue.id,
           // userId:2,
-          auditOpinion:this.auditValue.auditOpinion,
+          auditOpinion: this.auditValue.auditOpinion,
         })
         console.log(data.auditOpinion)
         this.axios.post(this.global.apiSrc + "/enterprise/turnAudit/", data)
           .then(response => {
-            if(response.data.data)
-            alert("审核被驳回")
+            if (response.data.data)
+              alert("审核被驳回")
 
             location.reload();
             console.log(response)
