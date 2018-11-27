@@ -57,7 +57,7 @@
             </el-form-item>
             <el-form-item label="出厂日期">
               <el-col :span="11">
-                <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.outputDate"
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="sizeForm.outputDate"
                                 style="width: 215px;"></el-date-picker>
               </el-col>
             </el-form-item>

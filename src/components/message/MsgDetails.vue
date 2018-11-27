@@ -26,19 +26,19 @@
           <li>
             <span>接收对象：</span>
             <span>
-                            <table>
-                                <thead>
-                                    <th>姓名</th>
-                                    <th>状态</th>
-                                    <th>阅读时间</th>
-                                </thead>
-                                <tr v-for="(item, index) in tableData" :key="index">
-                                    <td>{{item.name}}</td>
-                                    <td>{{item.address}}</td>
-                                    <td>{{item.date}}</td>
-                                </tr>
-                            </table>
-                        </span>
+              <table>
+                <thead>
+                  <th>姓名</th>
+                  <th>状态</th>
+                  <th>阅读时间</th>
+                </thead>
+                <tr v-for="(item, index) in tableData" :key="index">
+                  <td>{{item.name}}</td>
+                  <td>{{item.address}}</td>
+                  <td>{{item.date}}</td>
+                </tr>
+              </table>
+            </span>
           </li>
         </ul>
       </div>
@@ -46,131 +46,131 @@
   </div>
 </template>
 <script>
-  export default {
-    name: "",
-    props: ["msgDetail"],
-    data() {
-      return {
-        ishide: false,
-        message: {
-          title: "1111",
-          centent: "222",
-          type: "333",
-          date: "4444"
+let apiMsg = "http://192.168.1.104:9882";
+export default {
+  name: "",
+  props: ["msgDetail"],
+  data() {
+    return {
+      ishide: false,
+      message: {
+        title: "1111",
+        centent: "222",
+        type: "333",
+        date: "4444"
+      },
+      tableData: [
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: ""
         },
-        tableData: [
-          {
-            date: "2016-05-02",
-            name: "王小虎",
-            address: ""
-          },
-          {
-            date: "2016-05-04",
-            name: "王小虎",
-            address: ""
-          },
-          {
-            date: "2016-05-01",
-            name: "王小虎",
-            address: ""
-          },
-          {
-            date: "2016-05-03",
-            name: "王小虎",
-            address: ""
-          }
-        ]
-      };
-    },
-    methods: {
-      back() {
-        this.$emit("detailsIsHide", this.ishide);
-      }
-    },
-    created() {
-      this.axios
-        .get(this.global.apiSrc+"/message/findOneMsg/" + this.msgDetail)
-        .then(result => {
-          console.log(result.data);
-          this.message=result.data.data;
-          // if (this.message.isRead === 0) {
-          //   this.updateMessageRead();
-          //   this.allMsg();
-          // }
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(this.userName);
-        });
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: ""
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          address: ""
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: ""
+        }
+      ]
+    };
+  },
+  methods: {
+    back() {
+      this.$emit("detailsIsHide", this.ishide);
     }
-
-  };
+  },
+  created() {
+    this.axios
+      .get(apiMsg + "/message/findOneMsg/" + this.msgDetail)
+      .then(result => {
+        console.log(result.data);
+        this.message = result.data.data;
+        // if (this.message.isRead === 0) {
+        //   this.updateMessageRead();
+        //   this.allMsg();
+        // }
+      })
+      .catch(err => {
+        console.log(err);
+        console.log(this.userName);
+      });
+  }
+};
 </script>
 <style lang="less" scoped>
-  @blue: #409eff;
-  @Success: #67c23a;
-  @Warning: #e6a23c;
-  @Danger: #f56c6c;
-  @Info: #dde2eb;
-  @border: 1px solid #dde2eb;
-  .msgDetails {
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #55565738;
-    .case {
-      width: 700px;
-      font-size: 14px;
-      margin: auto;
-      padding: 20px;
-      background-color: white;
-      margin-top: 100px;
+@blue: #409eff;
+@Success: #67c23a;
+@Warning: #e6a23c;
+@Danger: #f56c6c;
+@Info: #dde2eb;
+@border: 1px solid #dde2eb;
+.msgDetails {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #55565738;
+  .case {
+    width: 700px;
+    font-size: 14px;
+    margin: auto;
+    padding: 20px;
+    background-color: white;
+    margin-top: 100px;
+    border-radius: 5px;
+    box-shadow: 4px 4px 10px #a9cef3;
+    .top {
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+    }
+    .bottom {
+      margin-top: 10px;
+      border: @border;
       border-radius: 5px;
-      box-shadow: 4px 4px 10px #a9cef3;
-      .top {
-        width: 100%;
-        height: 40px;
-        line-height: 40px;
+      padding-left: 30px;
+      h4 {
+        position: relative;
+        top: -10px;
+        background-color: white;
+        width: 70px;
+        text-align: center;
       }
-      .bottom {
-        margin-top: 10px;
-        border: @border;
-        border-radius: 5px;
-        padding-left: 30px;
-        h4 {
-          position: relative;
-          top: -10px;
-          background-color: white;
-          width: 70px;
-          text-align: center;
+      li {
+        list-style-type: none;
+        span:nth-child(1) {
+          vertical-align: top;
         }
-        li {
-          list-style-type: none;
-          span:nth-child(1) {
-            vertical-align: top;
-          }
-          span:nth-child(2) {
-            display: inline-block;
-            min-height: 40px;
-            width: 70%;
-            table {
-              width: 100%;
-              text-align: center;
+        span:nth-child(2) {
+          display: inline-block;
+          min-height: 40px;
+          width: 70%;
+          table {
+            width: 100%;
+            text-align: center;
+            border: @border;
+            border-radius: 5px;
+            padding: 0;
+            margin: 0;
+            border-collapse: collapse;
+            td,
+            th {
               border: @border;
-              border-radius: 5px;
-              padding: 0;
-              margin: 0;
-              border-collapse: collapse;
-              td,
-              th {
-                border: @border;
-              }
             }
           }
         }
       }
     }
   }
+}
 </style>

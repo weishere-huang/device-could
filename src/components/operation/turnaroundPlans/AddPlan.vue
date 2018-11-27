@@ -17,6 +17,7 @@
         </div>
         <div class="center">
           <div class="search">
+
             <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
             <el-button size="mini" @click="search">搜索</el-button>
             <span style="padding:0 10px;">最近搜索：{{searchs}}</span>
