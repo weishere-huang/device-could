@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="loginBox" v-show="isshow">
-      <h1>长虹设备云</h1>
+      <h1>长虹智能终端设备生产管理云平台</h1>
       <p>
         <el-input placeholder="用户名/手机号" v-model="userName"></el-input>
       </p>

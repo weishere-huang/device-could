@@ -154,39 +154,48 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-    },
-    enable() {
-      let qs = require("qs");
-      let data = qs.stringify({
-        employeeIds: this.userIds,
-        enableOrDisable: 0
-      });
-      this.axios
-        .post(this.global.apiSrc + "/employee/enableOrDisable", data)
-        .then(response => {
-          this.load();
-        })
-        .catch(function(error) {
-          console.log(error);
+        this.axios
+          .post(this.global.apiSrc+"/employee/enableOrDisable", data)
+          .then(response => {
+            if (response.data.msg ==="成功"){
+              alert("成功");
+              this.load();
+            }else{
+              alert("失败");
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      enable() {
+        let qs = require("qs");
+        let data = qs.stringify({
+          employeeIds: this.userIds,
+          enableOrDisable: 0
         });
-    },
-    selectGroupChange(selection) {
-      this.userIds = "";
-      for (let i = 0; i < selection.length; i++) {
-        if (this.userIds == "") {
-          this.userIds += selection[i].id;
-        } else {
-          this.userIds += "," + selection[i].id;
-        }
-      }
-    },
-    selectALL(selection) {
-      this.userIds = "";
-      for (let i = 0; i < selection.length; i++) {
-        if (this.userIds == "") {
-          this.userIds += selection[i].id;
-        } else {
-          this.userIds += "," + selection[i].id;
+        this.axios
+          .post(this.global.apiSrc+"/employee/enableOrDisable", data)
+          .then(response => {
+            if (response.data.msg ==="成功"){
+              alert("成功");
+              this.load();
+            }else{
+              alert("失败");
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      selectGroupChange(selection) {
+        this.userIds = "";
+        for (let i = 0; i < selection.length; i++) {
+          if (this.userIds == "") {
+            this.userIds += selection[i].id;
+          } else {
+            this.userIds += "," + selection[i].id;
+          }
         }
       }
       // console.log(this.userIds);
