@@ -99,7 +99,7 @@
       </div>
       <div class="right">
         <div>
-          <el-button size="small">清空已选</el-button>
+          <el-button size="small" @click="eliminateAll">清空已选</el-button>
           <el-button size="small"@click="addPlanIsShow">设备添加</el-button>
         </div>
         <h5>设备列表</h5>
@@ -272,6 +272,10 @@
           .catch(function(error) {
             console.log(error);
           });
+      },
+      eliminateAll(){
+        this.tableData = "";
+        this.deviceIds = "";
       },
 
       isHide(params) {
