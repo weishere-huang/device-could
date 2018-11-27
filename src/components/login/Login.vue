@@ -241,30 +241,38 @@ export default {
           console.log(result);
           if (this.company.name == "") {
             console.log("企业名不能为空");
+            alert("企业名不能为空")
           }
           if (this.company.corporation == "") {
             console.log("法人代表不能为空");
+            alert("法人代表不能为空")
           }
           if (this.company.phone == "") {
             console.log("企业电话不能为空");
+            alert("企业电话不能为空")
           }
           if (this.company.address == "") {
             console.log("地址不能为空");
+            alert("地址不能为空")
           }
           if (
             this.company.companyID == "" ||
             this.company.companyID.length != 18
           ) {
             console.log("统一社会信用编码不能为空且必须为十八位");
+            alert("统一社会信用编码不能为空，必须与营业执照上的编码相同")
           }
           if (this.manager.userName == "") {
             console.log("请输入企业管理员信息");
+            alert("请输入企业管理员信息")
           }
           if (this.manager.userPassword == "") {
             console.log("请设置密码");
+            alert("请设置密码")
           }
           if (this.manager.phone == "") {
             console.log("请输入管理员联系电话");
+            alert("请输入管理员联系电话")
           } else {
             location.reload()
           }
