@@ -369,9 +369,14 @@
         this.axios
           .post(this.global.apiSrc + "/device/add", data)
           .then(result => {
-            alert("添加成功");
-            console.log("add");
-            console.log(result.data);
+            if(result.data.code == 410 ){
+              alert("该设备号已存在,请重新编辑!!!")
+            }else if(result.data.code == 200){
+              alert("添加成功");
+              console.log("add");
+              console.log(result.data);
+              this.$router.push("/Equipment");
+            }
           })
           .catch(err => {
             console.log(err);
