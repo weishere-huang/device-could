@@ -32,10 +32,8 @@
         pageIndex: 1,
         pageSize: 10,
         userIds: "",
-        tableData: [{
-          companyName: "",
-          
-        }],
+        choice:"",
+        tableData: [],
         totalNub: "",
         tableDate: [],
         columns: [
@@ -46,7 +44,7 @@
             type: "selection"
           },
           {
-            field: "id",
+            field: "enterpriseName",
             title: "企业名称",
             width: 40,
             titleAlign: "center",
@@ -80,7 +78,7 @@
           },
 
           {
-            field: "gmtCreate",
+            field: "createTime",
             title: "创建时间",
             width: 80,
             titleAlign: "center",
@@ -111,7 +109,7 @@
           userIds: this.userIds
         });
         this.axios
-          .post(this.global.apiSrc + "/user/deleteUsers", data)
+          .post(this.global.apiSrc + "/user/deleteUsers/", data)
           .then(response => {
             console.log(response.data.msg);
           })
@@ -120,15 +118,23 @@
           });
       },
       selectGroupChange(selection) {
+        this.choice = "";
+        for (let i = 0; i < selection.length; i++) {
+          if (this.choice == "") {
+            this.choice = selection[i].id;
+          } else {
+            this.choice += "," + selection[i].id;
+          }
+        }
         console.log("select-group-change", selection);
       },
       selectALL(selection) {
-        this.userIds = "";
+        this.choice = "";
         for (let i = 0; i < selection.length; i++) {
-          if (this.userIds === "") {
-            this.userIds += selection[i].id;
+          if (this.choice === "") {
+            this.choice += selection[i].id;
           } else {
-            this.userIds += "," + selection[i].id;
+            this.choice += "," + selection[i].id;
           }
         }
         console.log("select-aLL", selection);
@@ -160,6 +166,7 @@
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
+        this.load()
       },
       sortChange(params) {
         if (params.height.length > 0) {
@@ -182,7 +189,7 @@
             this.totalNub = response.data.data.totalElements
             this.tableData = response.data.data.content;
             for (let i = 0; i < this.tableData.length; i++) {
-              this.tableData[i].gmtCreate = this.tableData[i].gmtCreate.split("T")[0];
+              // this.tableData[i].gmtCreate = this.tableData[i].gmtCreate.split("T")[0];
               if (this.tableData[i].state === 0) {
                 this.tableData[i].state = "正常"
               } else {
@@ -197,6 +204,7 @@
           });
       }
     },
+
     created() {
       this.load();
     }
