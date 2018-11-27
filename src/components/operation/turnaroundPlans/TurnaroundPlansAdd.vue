@@ -197,18 +197,7 @@
         ],
         pageIndex: 1,
         pageSize: 10,
-        tableData: [{
-          deviceCategoryName:"",
-          manufacturer:"",
-          deviceName:"",
-          deviceModel:"",
-          deviceNo:"",
-          deviceState:"",
-          location:"",
-          locationNo:"",
-          workerNames:"",
-          id:""
-        }],
+        tableData: [],
         tableDate: []
       };
     },
@@ -300,7 +289,6 @@
             this.deviceIds += ","+selection[i].id;
           }
         }
-        console.log("select-group-change", selection);
       },
       selectALL(selection) {
         this.deviceIds = "";

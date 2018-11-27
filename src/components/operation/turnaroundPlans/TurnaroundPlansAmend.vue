@@ -197,20 +197,7 @@
         ],
         pageIndex: 1,
         pageSize: 10,
-        tableData: [
-          {
-            deviceCategoryName:"1",
-            manufacturer:"2",
-            deviceName:"3",
-            deviceModel:"4",
-            deviceNo:"",
-            deviceState:"",
-            location:"",
-            locationNo:"",
-            workerNames:"",
-            id:""
-          }
-        ],
+        tableData: [],
         tableDate: []
       };
     },
@@ -230,6 +217,7 @@
       amendPlanIsShow() {
         this.amendPlanShow = true;
       },
+
       TurnaroundPlans() {
         this.$router.push({
           path: "/TurnaroundPlans"
