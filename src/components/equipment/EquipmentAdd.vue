@@ -57,7 +57,7 @@
             </el-form-item>
             <el-form-item label="出厂日期">
               <el-col :span="11">
-                <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.outputDate"
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="sizeForm.outputDate"
                                 style="width: 215px;"></el-date-picker>
               </el-col>
             </el-form-item>
@@ -132,13 +132,13 @@
           </el-form-item>
           <el-form-item label="购买日期">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.buyDate"
+              <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="sizeForm.buyDate"
                               style="width: 215px;"></el-date-picker>
             </el-col>
           </el-form-item>
           <el-form-item label="入厂日期">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.enterFactoryDate"
+              <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="sizeForm.enterFactoryDate"
                               style="width: 215px;"></el-date-picker>
             </el-col>
           </el-form-item>
@@ -189,19 +189,19 @@
           deviceClassify: "1",
           deviceClassifyName: "超级存储",
           deviceSpec: "GC222",
-          outputDate: "2018-11-26",
+          outputDate: "2018/11/26",
           manufacturer: "222",
           location: "金牛市民中心",
           locationNo: "333",
           buyPrice: "200000",
-          buyDate: "2018-11-26",
+          buyDate: "2018/11/26",
           dataInfo: "555",
           deviceCategory: "1",
           deviceCategoryName: "机械类",
           deviceModel: "ZA100-315315",
           deviceState: "1",
           organizeCode: "IBM",
-          enterFactoryDate: "2018-11-26"
+          enterFactoryDate: "2018/11/26"
         },
         options1: [
           {
@@ -361,6 +361,40 @@
             console.log(err);
           });
       },
+      findDeviceClassify(){
+        let qs = require("qs");
+        let data = qs.stringify({
+
+        });
+        this.axios
+          .get(this.global.apiSrc + "/device/findDeviceClassify", data)
+          .then(result => {
+            console.log("findDeviceClassify");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      findDeviceState(){
+        let qs = require("qs");
+        let data = qs.stringify({
+        });
+        this.axios
+          .get(this.global.apiSrc + "/device/findDeviceState", data)
+          .then(result => {
+            console.log("findDeviceState");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+
+    },
+    created(){
+        this.findDeviceClassify();
+        this.findDeviceState();
     },
     components: {
       addPerson

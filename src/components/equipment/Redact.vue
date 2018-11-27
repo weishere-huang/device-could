@@ -58,7 +58,7 @@
             </el-form-item>
             <el-form-item label="出厂日期">
               <el-col :span="11">
-                <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.outputDate"
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="sizeForm.outputDate"
                                 style="width: 215px;"></el-date-picker>
               </el-col>
             </el-form-item>
@@ -133,13 +133,13 @@
           </el-form-item>
           <el-form-item label="购买日期">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.buyDate"
+              <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="sizeForm.buyDate"
                               style="width: 215px;"></el-date-picker>
             </el-col>
           </el-form-item>
           <el-form-item label="入厂日期">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.enterFactoryDate"
+              <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="sizeForm.enterFactoryDate"
                               style="width: 215px;"></el-date-picker>
             </el-col>
           </el-form-item>
