@@ -156,6 +156,7 @@
             this.maintenanceIds += ","+selection[i].id;
           }
         }
+
       },
       selectChange(selection, rowData) {
 
@@ -199,9 +200,14 @@
               size:this.pageSize
             }})
           .then(response =>{
-            console.log(response);
-            this.tableData = response.data.data.content;
-            this.pageNumber = response.data.data.content.length;
+            let arr = new Array();
+            for (let i = 0;i<response.data.data.content.length;i++){
+              if (response.data.data.content[i].maintenanceType === 0){
+                arr[arr.length] = response.data.data.content[i]
+              }
+            }
+            this.tableData = arr;
+            this.pageNumber = this.tableData.length;
             for(let i in this.tableData){
               if(this.tableData[i].state === 0 ){
                 this.tableData[i].state ="待审核";
