@@ -29,9 +29,10 @@
         </ul>
 
         <div class="state">
-          <div >
+          <div>
             <label style="display:inline-block;height:60px;vertical-align:top;">驳回原因：</label>
-            <textarea type="textarea" style="width:70%;height:60px;" placeholder="请填写驳回原因" v-model="auditValue.auditOpinion"></textarea>
+            <textarea type="textarea" style="width:70%;height:60px;" placeholder="请填写驳回原因"
+                      v-model="auditValue.auditOpinion"></textarea>
           </div>
 
           <div style="margin-top:10px;width:100%;text-align:center;">
@@ -65,7 +66,6 @@
           corporation: "",
           companyID: "",
           enterpriseId: ""
-
         },
         manager: {
           userName: "",
@@ -82,11 +82,10 @@
         let qs = require("qs");
         let data = qs.stringify({
           enterpriseId: this.auditValue.id,
-          userId:2
+          // userId:2
         })
         console.log(data)
         this.axios.post(this.global.apiSrc + "/enterprise/passAudit/", data)
-        // axios.post("/api/enterprise/enableEnterprises/", data)
           .then(response => {
             location.reload();
             alert("通过审核")
@@ -100,15 +99,16 @@
         let qs = require("qs");
         let data = qs.stringify({
           enterpriseId: this.auditValue.id,
-          userId:2,
-          auditOpinion:this.auditValue.auditOpinion
+          // userId:2,
+          auditOpinion: this.auditValue.auditOpinion,
         })
         console.log(data.auditOpinion)
         this.axios.post(this.global.apiSrc + "/enterprise/turnAudit/", data)
-        // axios.post("/api/enterprise/turnDown/", data)
           .then(response => {
+            if (response.data.data)
+              alert("审核被驳回")
+
             location.reload();
-            alert("审核被驳回")
             console.log(response)
           }).catch(function (error) {
           console.log(error)
