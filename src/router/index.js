@@ -103,7 +103,7 @@ export default new Router({
       component: UpkeepAmend
     },
     {
-      path: '/Redact',
+      path: '/Redact/:id/',
       name: 'Redact',
       component: Redact
     },
