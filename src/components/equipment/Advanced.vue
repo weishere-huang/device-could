@@ -68,7 +68,7 @@ export default {
         }
       }
       this.axios
-        .get(this.global.apiSrc+"device/select", {
+        .get(this.global.apiSrc+"/device/select", {
           params: {
             deviceName:this.deviceName,
             locationNo:this.locationNo,
