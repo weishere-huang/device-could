@@ -105,7 +105,7 @@
         <div>
           <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange" :row-dblclick="redactShow"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="this.tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
@@ -122,7 +122,7 @@ export default {
       keyWord: "",
       deviceId: "",
       pageIndex: 1,
-      pageSize: 10,
+      pageSize: 9,
       ids: "",
       tableData: [
         {
@@ -253,6 +253,7 @@ export default {
     selectGroupChange(selection) {
       console.log("select-group-change", selection);
       this.ids = selection[0].id;
+      console.log(this.ids);
     },
     selectALL(selection) {
       console.log("select-aLL", selection);
@@ -270,11 +271,13 @@ export default {
       this.pageIndex = pageIndex;
       this.getTableData();
       console.log(pageIndex);
+      this.findall();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+      this.findall();
     },
     sortChange(params) {
       if (params.height.length > 0) {
@@ -298,17 +301,6 @@ export default {
         page: this.pageIndex,
         size: this.pageSize
       });
-      axios
-        .get("api/device/all", data)
-        .then(result => {
-          this.tableData = result.data.data.content;
-          console.log("findall");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-
       this.axios
         //axios
         .get(this.global.apiSrc + "/device/all", data)
@@ -379,7 +371,6 @@ export default {
             keyWord: this.keyWord
           }
         })
-        //.get("api/device/findByKeyWord", {params: {page: this.pageIndex, size: this.pageSize, keyWord: this.keyWord}})
         .then(result => {
           this.tableData = result.data.data.content;
           console.log(result.data.data.content);
@@ -432,11 +423,9 @@ export default {
     },
     edelete() {
       this.axios
-        //axios
-        // .get("api/device/delete", {params:{deviceId:this.ids}})
-        .get(this.global.apiSrc + "/employee/getDeviceById", data)
+        .post(this.global.apiSrc + "/device/delete", {params:{deviceId:this.ids}})
         .then(result => {
-          this.findall();
+          //this.findall();
           console.log("delete");
           console.log(result.data);
         })

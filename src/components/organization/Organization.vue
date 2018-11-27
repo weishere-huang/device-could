@@ -4,63 +4,30 @@
     <div class="content">
       <div class="left">
         <h5>企业名称</h5>
-        <!-- <ul>
+        <div style="float:right;">
+          <h5>备注</h5>
+          <h5>状态</h5>
+        </div>
 
-          <li v-for="(item, index) in name1" :key="index">{{item.name}}
-            <span style="letter-spacing:2px;">
-              <i class="iconfont icon-jia" @click="ap"></i>
-              <i class="iconfont icon-xiewrite18" @click="revise"></i>
-              <i class="iconfont icon-shanchu1"></i>
-            </span>
-            <ul v-if="sss!=''">
-              <li style="border-top:1px solid #dde2eb;" v-for="(item, index) in sss" :key="index">
-                {{item.name}}
-                <span style="letter-spacing:5px; height:25px;">
-                  <i class="iconfont icon-jia" @click="ap"></i>
-                  <i class="iconfont icon-xiewrite18"></i>
-                  <i class="iconfont icon-shanchu1"></i>
-                </span>
-              </li>
-            </ul>
-
-            <ul v-if="sss!=''">
-              <li style="border-top:1px solid #dde2eb;" v-for="(item, index) in sss" :key="index">
-                {{item.menu_name}}
-                <span style="letter-spacing:5px; height:25px;">
-                  <i class="iconfont icon-jia" @click="ap"></i>
-                  <i class="iconfont icon-xiewrite18"></i>
-                  <i class="iconfont icon-shanchu1"></i>
-                </span>
-              </li>
-            </ul>
-
-          </li>
-        </ul> -->
-        <el-tree :data="data" default-expand-all :props="defaultProps" @node-click="handleNodeClick" style="width:400px">
+        <el-tree :data="data" default-expand-all :props="defaultProps" @node-click="handleNodeClick" :expand-on-click-node="false">
           <span class="custom-tree-node" slot-scope="{ node, data }">
-            <span>{{ node.label }}</span>
-            <!-- <span>{{ node }}</span> -->
-            <span class="addCase">
-              <el-button type="text" size="mini" @click="() => append(data)">
-                添加
-              </el-button>
-              <el-button type="text" size="mini">
-                修改
-              </el-button>
-              <el-button type="text" size="mini" @click="() => remove(node, data)">
-                删除
-              </el-button>
+            <span class="listcontent">{{ data.name }}
+              <span class="addCase">
+                <el-button type="text" size="mini" @click="() => append(data)">
+                  添加
+                </el-button>
+                <el-button type="text" size="mini">
+                  修改
+                </el-button>
+                <el-button type="text" size="mini" @click="() => remove(node, data)">
+                  删除
+                </el-button>
+              </span>
             </span>
+            <span class="state">{{ data.state }}</span>
+            <span class="organizeInfo">{{ data.organizeInfo }}</span>
           </span>
         </el-tree>
-      </div>
-      <div class="center">
-        <h5>类型</h5>
-        <el-tree :data="data" default-expand-all :props="defaultProps1" @node-click="handleNodeClick" style="width:100%;text-align: center;"></el-tree>
-      </div>
-      <div class="right" >
-        <h5>备注</h5>
-        <el-tree :data="data" default-expand-all :props="defaultProps2" @node-click="handleNodeClick" style="width:100%;text-align: center;" ></el-tree>
       </div>
     </div>
 
@@ -128,7 +95,7 @@ export default {
         organizeInfo: "1119"
       });
       axios
-        .post("api/organize/add", data)
+        .post(this.global.apiSrc + "/organize/add", data)
         .then(result => {
           alert("add");
           console.log(result.data);
@@ -177,7 +144,7 @@ export default {
     allOrganize() {
       let arr = new Array();
       axios
-        .get(this.global.apiSrc+"/organize/allOrganize/321")
+        .get(this.global.apiSrc + "/organize/allOrganize")
         .then(result => {
           console.log(result);
           this.data = this.filterArray(result.data.data, 0);
@@ -202,18 +169,17 @@ export default {
     },
     findOneOrganize() {
       //查询单个组织机构
-        axios
-          .put(this.global.apiSrc+"/organize/update", data)
-          .then(result => {
-            alert("updata");
-            console.log(result.data);
-
-          })
-          .catch(err => {
-            console.log(err);
-            console.log(this.userName);
-          });
-      },
+      axios
+        .put(this.global.apiSrc + "/organize/update", data)
+        .then(result => {
+          alert("updata");
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    },
     filterArray(data, parent) {
       let vm = this;
       var tree = [];
@@ -284,105 +250,75 @@ export default {
   .content {
     padding: 10px;
     overflow: hidden;
-    h5 {
-      font-size: 14px;
-      height: 30px;
-      line-height: 30px;
-      border-bottom: @border;
-    }
-    div:nth-child(1) {
-      width: 40%;
-    }
-    div:nth-child(2) {
-      width: 10%;
-      border-left: none;
-      border-right: none;
-    }
-    div:nth-child(3) {
-      width: 50%;
-    }
-    div {
+    .left {
+      width: 900px;
       float: left;
-      text-align: center;
+      // text-align: center;
       border: @border;
-      li {
-        list-style-type: none;
-        border-bottom: 1px solid @Info;
-        // height: 30px;
-        line-height: 29px;
-        overflow: hidden;
-        // pointer-events: none;
-        ul {
-          // pointer-events: none;
-          li {
-            list-style-type: none;
-            line-height: 30px;
-            height: 30px;
-            padding-left: 40px;
-            // pointer-events: none;
-          }
-        }
-
-        span {
-          display: none;
-          padding-left: 10px;
-          transition: All 0.4s ease-in-out;
-          i {
-            cursor: pointer;
-            display: inline-block;
-            height: 29px;
-
-            &:hover {
-              transform: scale(1.4);
-              color: #67c23a;
-            }
-          }
-        }
-        // &:hover {
-        //   span {
-        //     opacity: 1;
-        //     // display: inline-block;
-        //     height: 25px;
-        //   }
-        // }
+      h5 {
+        font-size: 14px;
+        height: 30px;
+        line-height: 30px;
+        // border-bottom: @border;
+        display: inline-block;
+        width: 300px;
+        text-align: center;
       }
-      li:last-child {
-        border-bottom: none;
+      h5:nth-child(2) {
+        width: 100px;
+        float: left;
       }
+      h5:nth-child(3) {
+        padding-right:10px; 
+        width: 300px;
+        // float: right;
+      }
+      // .el-tree {
+      //   width: 100%;
+      // }
     }
   }
 }
 .el-tree {
-  width: 300px;
+  width: 900px;
   padding: 10px;
   overflow: hidden;
-  .addCase {
-    float: right;
-    display: none;
-  }
+
   .custom-tree-node {
-    width: 100%;
-    text-align: left;
-    &:hover {
+    width: 900px;
+    text-align: right;
+    // height: 40px;
+    .listcontent {
+      // display: inline-block;
+      float: left;
+      text-align: left;
+      width: 400px;
+      // border: @border;
       .addCase {
-        display: block;
+        float: right;
+        display: none;
+      }
+      &:hover {
+        .addCase {
+          display: block;
+        }
       }
     }
-  }
-}
-.center{
-  .custom-tree-node {
-    width: 100%;
-    text-align: center;
-    .el-tree-node__content{
-      width: 100%
+    .state {
+      display: inline-block;
+      width: 80px;
+      text-align: center;
+      // border: @border;
     }
-  }
-}
-.right{
-  .custom-tree-node {
-    width: 100%;
-    text-align: center !important;
+    .organizeInfo {
+      display: inline-block;
+      text-align: center;
+      width: 300px;
+      // border: @border;
+    }
+
+    .state {
+    }
   }
 }
 </style>

@@ -57,7 +57,7 @@
             </el-form-item>
             <el-form-item label="出厂日期">
               <el-col :span="11">
-                <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.outputDate"
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="sizeForm.outputDate"
                                 style="width: 215px;"></el-date-picker>
               </el-col>
             </el-form-item>
@@ -263,40 +263,63 @@
         //添加设备信息接口
         let qs = require("qs");
         let data = qs.stringify({
+          // deviceNo: this.sizeForm.deviceNo,
+          // deviceName: this.sizeForm.deviceName,
+          // deviceClassify: this.sizeForm.deviceClassify,
+          // deviceClassifyName: "超级存储",
+          // deviceSpec: this.sizeForm.deviceSpec,
+          // organizeName: "IBM公司",
+          // organizeCode: "IIIBBBMMM",
+          // deviceCategory: this.sizeForm.deviceCategory,
+          // deviceCategoryName: "存储器",
+          // devicePersonnelInfo: JSON.stringify([{
+          //     workerType:1,
+          //     workerName:"赵六",
+          //     workerId:188,
+          //     workerTypeName:"负责人员"
+          //   },
+          //   {
+          //     workerType:2,
+          //     workerTypeName:"维修人员",
+          //     workerId:192,
+          //     workerName:"王五"
+          //   },
+          //   {
+          //     workerType:1,
+          //     workerTypeName:"负责人员",
+          //     workerId:147,
+          //     workerName:"李四"
+          //   }
+          // ])
+
+
           deviceNo: this.sizeForm.deviceNo,
           deviceName: this.sizeForm.deviceName,
+          organizeName: this.sizeForm.organizeName,
           deviceClassify: this.sizeForm.deviceClassify,
-          deviceClassifyName: "超级存储",
+          deviceClassifyName: this.sizeForm.deviceClassifyName,
           deviceSpec: this.sizeForm.deviceSpec,
-          organizeName: "IBM公司",
-          organizeCode: "IIIBBBMMM",
+          // outputDate: this.sizeForm.outputDate,
+          manufacturer: this.sizeForm.manufacturer,
+          location: this.sizeForm.location,
+          locationNo: this.sizeForm.locationNo,
+          buyPrice: this.sizeForm.buyPrice,
+          // buyDate: this.sizeForm.buyDate,
           deviceCategory: this.sizeForm.deviceCategory,
-          deviceCategoryName: "存储器",
-          devicePersonnelInfo: JSON.stringify([{
-              workerType:1,
-              workerName:"赵六",
-              workerId:188,
-              workerTypeName:"负责人员"
-            },
-            {
-              workerType:2,
-              workerTypeName:"维修人员",
-              workerId:192,
-              workerName:"王五"
-            },
-            {
-              workerType:1,
-              workerTypeName:"负责人员",
-              workerId:147,
-              workerName:"李四"
-            }
-          ])
+          deviceCategoryName: this.sizeForm.deviceCategoryName,
+          deviceModel: this.sizeForm.deviceModel,
+          deviceState: this.sizeForm.deviceState,
+          // gmtModified: this.sizeForm.gmtModified,
+          organizeCode: this.sizeForm.organizeCode,
+          // enterFactoryDate: this.sizeForm.enterFactoryDate,
+          deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
+          devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo),
+
+
         });
 
         console.log(data);
         this.axios
-        //axios
-          //.post("api/device/add", data)
           .post(this.global.apiSrc + "/device/add", data)
           .then(result => {
 

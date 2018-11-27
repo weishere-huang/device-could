@@ -16,9 +16,15 @@ import {
   VPagination
 } from 'vue-easytable'
 import global from './components/global/Global'
-
+// import {
+//   Message,
+//   MessageBox
+// } from 'element-ui'
 Vue.prototype.global = global;
 Vue.prototype.axios = axios
+// Vue.pototyype.message = function (msg) {
+//   this.$message('这是一条消息提示')
+// }
 Vue.use(ElementUI)
 Vue.component(VTable.name, VTable)
 Vue.component(VPagination.name, VPagination)
@@ -31,15 +37,16 @@ let AUTH_TOKEN = (function () {
   return sessionStorage.getItem("token");
 })();
 var instance = axios.create({});
-instance.defaults.headers.common["Authorization"] = AUTH_TOKEN;
+instance.defaults.headers.common["token"] = AUTH_TOKEN;
 instance.interceptors.request.use(function (config) {
+  console.log(config)
   let url = config.url;
   if (url.indexOf("login") > -1) {
     sessionStorage.setItem('token', "");
-    config.headers.Authorization = "";
+    config.headers.token = "";
   }
   if (url.indexOf("user") > -1 && url.indexOf("login") < 0) {
-    config.headers.Authorization = sessionStorage.getItem("token");
+    config.headers.token = sessionStorage.getItem("token");
   }
   return config;
 }, function (err) {

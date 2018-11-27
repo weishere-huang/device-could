@@ -4,16 +4,16 @@
             <div>
                 <el-form label-width="100px">
                     <el-form-item label="设备名称：">
-                        <el-input v-model="companyName.name" size="mini"></el-input>
+                        <el-input v-model="deviceName" size="mini"></el-input>
                     </el-form-item>
                     <el-form-item label="设备位号：">
-                        <el-input v-model="companyName.region" size="mini"></el-input>
+                        <el-input v-model="locationNo" size="mini"></el-input>
                     </el-form-item>
                     <el-form-item label="负责人：">
-                        <el-input v-model="companyName.type" size="mini"></el-input>
+                        <el-input v-model="workerName" size="mini"></el-input>
                     </el-form-item>
                     <el-form-item label="设备厂家：">
-                        <el-input v-model="companyName.type" size="mini"></el-input>
+                        <el-input v-model="manufacturer" size="mini"></el-input>
                     </el-form-item>
                 </el-form>
             </div>
@@ -43,6 +43,13 @@ export default {
     return {
       dataName: "",
       companyName: "",
+
+      deviceName:"",
+      locationNo:"",
+      workerName:"",
+      manufacturer:"",
+      deviceCategory:"",
+
       checkList: [],
       state: []
     };
@@ -53,11 +60,17 @@ export default {
     },
     search() {
       axios
-        .get("/api/enterprise/findByNameOrState", {
-          params: { enterpriseName: this.companyName }
+        .get("device/select", {
+          params: {
+            deviceName:this.deviceName,
+            locationNo:this.locationNo,
+            workerName:this.workerName,
+            manufacturer:this.manufacturer,
+            deviceCategory:this.checkList
+          }
         })
         .then(response => {
-          console.log(response);
+          console.log(response.data);
           document.querySelectorAll(".adsearch")[0].style.right = "-310px";
           this.dataName = response.data.data.content;
           console.log(this.dataName);
