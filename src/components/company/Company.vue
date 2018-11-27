@@ -120,7 +120,8 @@
     },
     methods: {
       advanceValue: function (params) {
-        this.tableData = params;
+        this.tableData = params.content;
+        this.totalNub= params.totalElements;
       },
       replace() {
         location.reload();
@@ -158,6 +159,14 @@
         console.log(this.auditValue);
       },
       selectALL(selection) {
+        this.choice = "";
+        for(let i= 0 ;i<selection.length; i++){
+          if(this.choice ==""){
+            this.choice = selection[i].id;
+          }else{
+            this.choice += ","+selection[i].id;
+          }
+        }
         console.log("select-aLL", selection);
       },
       selectChange(selection, rowData) {
@@ -179,6 +188,7 @@
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
+        this.load()
       },
       sortChange(params) {
         if (params.height.length > 0) {
@@ -219,6 +229,9 @@
               if (response.data.data.content[i].state === 10) {
                 response.data.data.content[i].state = "未通过"
               }
+              if (response.data.data.content[i].state === 11) {
+                response.data.data.content[i].state = "待办审核"
+              }
             }
             this.tableData = response.data.data.content;
             this.tableDate = response.data.data.content;
@@ -229,8 +242,12 @@
       },
 
       findByName() {
-        this.axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {params: {enterpriseName: this.name}})
+        this.axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {params: {enterpriseName: this.name,
+            page: this.pageIndex,
+            size: this.pageSize}})
           .then(response => {
+            this.totalNub=response.data.data.totalElements
+            console.log(response)
             for (let i = 0; i < response.data.data.content.length; i++) {
               // console.log(response.data.data.content.length)
               // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
@@ -248,6 +265,9 @@
               }
               if (response.data.data.content[i].state === 10) {
                 response.data.data.content[i].state = "未通过"
+              }
+              if (response.data.data.content[i].state === 11) {
+                response.data.data.content[i].state = "待办审核"
               }
             }
             this.tableData = response.data.data.content;

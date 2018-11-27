@@ -295,10 +295,16 @@
         this.axios
         .post(this.global.apiSrc+"/device/update", data)
           .then(result => {
-            alert("修改成功");
-            console.log(result);
-            console.log("update");
-            console.log(result.data);
+            if(result.data.code == 200){
+              alert("修改成功");
+              console.log(result);
+              console.log("update");
+              console.log(result.data);
+              this.$router.push("/Equipment");
+            }else if(result.data.code == 410){
+              alert("该设备编号以存在,请修改!!!")
+            }
+
           })
           .catch(err => {
             console.log(err);
