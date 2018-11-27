@@ -29,8 +29,11 @@
         </ul>
 
         <div class="state">
-          <label style="display:inline-block;height:60px;vertical-align:top;">驳回原因：</label>
-          <textarea type="textarea" style="width:70%;height:60px;" placeholder="请填写驳回原因"></textarea>
+          <div >
+            <label style="display:inline-block;height:60px;vertical-align:top;">驳回原因：</label>
+            <textarea type="textarea" style="width:70%;height:60px;" placeholder="请填写驳回原因" v-model="auditValue.auditOpinion"></textarea>
+          </div>
+
           <div style="margin-top:10px;width:100%;text-align:center;">
             <el-button size="small" @click="auditback">返回</el-button>
             <el-button size="small" @click="reject">驳回</el-button>
@@ -54,6 +57,7 @@
         img: "",
         block: false,
         enterpriseIds: "",
+
         company: {
           name: "",
           address: "",
@@ -61,6 +65,7 @@
           corporation: "",
           companyID: "",
           enterpriseId: ""
+
         },
         manager: {
           userName: "",
@@ -76,13 +81,15 @@
       pass() {
         let qs = require("qs");
         let data = qs.stringify({
-          enterpriseIds: this.auditValue.id
+          enterpriseId: this.auditValue.id,
+          userId:2
         })
         console.log(data)
-        this.axios.post(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
+        this.axios.post(this.global.apiSrc + "/enterprise/passAudit/", data)
         // axios.post("/api/enterprise/enableEnterprises/", data)
           .then(response => {
             location.reload();
+            alert("通过审核")
             console.log(data)
             console.log(response)
           }).catch(function (error) {
@@ -92,12 +99,16 @@
       reject() {
         let qs = require("qs");
         let data = qs.stringify({
-          enterpriseIds: this.auditValue.id
+          enterpriseId: this.auditValue.id,
+          userId:2,
+          auditOpinion:this.auditValue.auditOpinion
         })
-        this.axios.post(this.global.apiSrc + "/enterprise/turnDown/", data)
+        console.log(data.auditOpinion)
+        this.axios.post(this.global.apiSrc + "/enterprise/turnAudit/", data)
         // axios.post("/api/enterprise/turnDown/", data)
           .then(response => {
             location.reload();
+            alert("审核被驳回")
             console.log(response)
           }).catch(function (error) {
           console.log(error)

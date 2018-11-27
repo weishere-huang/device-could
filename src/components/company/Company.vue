@@ -272,6 +272,7 @@
         this.axios.post(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
         // axios.post("/api/enterprise/enableEnterprises/", data)
           .then(response => {
+            alert("启用成功")
             // this.message("启用成功")
             this.load()
             console.log("请求参数：" + data)
@@ -292,6 +293,7 @@
           .then(response => {
             console.log("1111请求参数：" + data)
             console.log(response)
+            alert("禁用成功")
             this.load()
 
           }).catch(function (error) {
