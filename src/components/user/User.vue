@@ -1,25 +1,25 @@
 <template>
-    <div class="userManagement">
-        <div class="userCase">
-            <div class="top">
-                <el-button size="small">启用</el-button>
-                <el-button size="small">停用</el-button>
-                <el-button size="small">删除</el-button>
-                <div class="search">
-                    <el-input type="search" placeholder="如员工编号，姓名，手机" size="small"></el-input>
-                    <el-button size="small">搜索</el-button>
-                </div>
-            </div>
-            <div class="bottom">
-                <div>
-                    <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-                    <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-                        <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
-                    </div>
-                </div>
-            </div>
+  <div class="userManagement">
+    <div class="userCase">
+      <div class="top">
+        <el-button size="small">启用</el-button>
+        <el-button size="small">停用</el-button>
+        <el-button size="small" @click="deleteUser">删除</el-button>
+        <div class="search">
+          <el-input type="search" placeholder="如员工编号，姓名，手机" size="small"></el-input>
+          <el-button size="small">搜索</el-button>
         </div>
+      </div>
+      <div class="bottom">
+        <div>
+          <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+          <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="totalNub" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 <script>
 export default {
@@ -27,30 +27,32 @@ export default {
     return {
       pageIndex: 1,
       pageSize: 10,
+      userIds: "",
+      totalNub:"",
       tableData: [
-         {
-          name:"111",
-          tel:"222",
-          address:"3333",
-          hobby:"4444"
+        {
+          name: "111",
+          phone: "222",
+          address: "3333",
+          hobby: "4444"
         },
         {
-          name:"111",
-          tel:"222",
-          address:"3333",
-          hobby:"4444"
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
         },
         {
-          name:"111",
-          tel:"222",
-          address:"3333",
-          hobby:"4444"
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
         },
         {
-          name:"111",
-          tel:"222",
-          address:"3333",
-          hobby:"4444"
+          name: "111",
+          tel: "222",
+          address: "3333",
+          hobby: "4444"
         }
       ],
       tableDate: [],
@@ -62,8 +64,8 @@ export default {
           type: "selection"
         },
         {
-          field: "name",
-          title: "员工编号",
+          field: "id",
+          title: "企业名称",
           width: 40,
           titleAlign: "center",
           columnAlign: "center",
@@ -71,15 +73,15 @@ export default {
         },
         {
           field: "tel",
-          title: "员工账号",
+          title: "用户名",
           width: 90,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true,
-        //   orderBy: ""
+          isResize: true
+          //   orderBy: ""
         },
         {
-          field: "address",
+          field: "phone",
           title: "手机号",
           width: 150,
           titleAlign: "center",
@@ -87,23 +89,16 @@ export default {
           isResize: true
         },
         {
-          field: "hobby",
-          title: "姓名",
+          field: "userName",
+          title: "邮箱",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
         },
+
         {
-          field: "address",
-          title: "角色分组",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "address",
+          field: "gmtCreate",
           title: "创建时间",
           width: 80,
           titleAlign: "center",
@@ -112,14 +107,22 @@ export default {
         },
         {
           field: "address",
-          title: "最后登录时间",
-          width: 80,
+          title: "用户状态",
+          width: 100,
           titleAlign: "center",
           columnAlign: "left",
           isResize: true
         },
+        // {
+        //   field: "gmtModified",
+        //   title: "最后登录时间",
+        //   width: 80,
+        //   titleAlign: "center",
+        //   columnAlign: "left",
+        //   isResize: true
+        // },
         {
-          field: "address",
+          field: "state",
           title: "用户状态",
           width: 80,
           titleAlign: "center",
@@ -130,6 +133,45 @@ export default {
     };
   },
   methods: {
+    deleteUser() {
+      let qs = require("qs");
+      let data = qs.stringify({
+        userIds: this.userIds
+      });
+      axios
+        .put("/api/employee/enableOrDisable", data)
+        .then(response => {
+          console.log(response.data.msg);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    selectGroupChange(selection) {
+      console.log("select-group-change", selection);
+    },
+    selectALL(selection) {
+      this.userIds = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.userIds != "") {
+          this.userIds += "," + selection[i].userId;
+        } else {
+          this.userIds += selection[i].userId;
+        }
+      }
+      console.log("select-aLL", selection);
+    },
+    selectChange(selection, rowData) {
+      this.userIds = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.userIds != "") {
+          this.userIds += "," + selection[i].userId;
+        } else {
+          this.userIds += selection[i].userId;
+        }
+      }
+      console.log("select-change", selection, rowData);
+    },
     getTableData() {
       this.tableData = this.tableDate.slice(
         (this.pageIndex - 1) * this.pageSize,
@@ -140,6 +182,7 @@ export default {
       this.pageIndex = pageIndex;
       this.getTableData();
       console.log(pageIndex);
+      this.load();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
@@ -158,7 +201,28 @@ export default {
           }
         });
       }
+    },
+    load() {
+      let qs = require("qs");
+      let data = qs.stringify({
+        page: this.pageIndex,
+        size: this.pageSize
+      });
+      axios
+        .get(this.global.apiSrc+"/user/all", data)
+        .then(response => {
+          this.tableData = response.data.data;
+          this.tableDate = response.data.data;
+          // console.log(response.data)
+          // console.log(this.tableData)
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
+  },
+  created() {
+    this.load();
   }
 };
 </script>

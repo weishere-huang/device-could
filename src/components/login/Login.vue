@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="loginBox" v-show="isshow">
-      <h1>长虹设备云</h1>
+      <h1>长虹智能终端设备生产管理云平台</h1>
       <p>
         <el-input placeholder="用户名/手机号" v-model="userName"></el-input>
       </p>
@@ -9,12 +9,11 @@
         <el-input type="password" placeholder="密码" v-model="password"></el-input>
       </p>
       <p class="proving">
-        <el-input type="text" placeholder="验证码"></el-input>
-        <span class="provingImg">图片</span>
-        <el-button>点击刷新</el-button>
+        <el-input type="text" placeholder="验证码" v-model="verification"></el-input>
+        <el-button type="primary" size="small" plain>获取验证码</el-button>
       </p>
       <p>
-        <el-button type="primary" round @click="login()">登录</el-button>
+        <el-button type="primary" round @click="login">登录</el-button>
       </p>
       <p class="registerSkip">
         <span>忘记密码</span>
@@ -22,42 +21,6 @@
           isshow=!isshow 
           ishide=!ishide
           }">企业注册</span>
-        <span v-on:click="function(){ 
-          adminshow=!adminshow 
-          isshow=!isshow
-          }">
-          管理员登录
-        </span>
-      </p>
-    </div>
-    <div class="adminLogin" v-show="adminshow">
-      <h1>长虹设备云</h1>
-      <p>
-        <el-input placeholder="管理员账号" v-model="userName"></el-input>
-      </p>
-      <p>
-        <el-input type="password" placeholder="管理员密码" v-model="password"></el-input>
-      </p>
-      <p class="proving">
-        <el-input type="text" placeholder="操作员手机号"></el-input>
-        <el-input type="text" placeholder="短信验证码"></el-input>
-        <el-button type="primary" plain>手机验证</el-button>
-      </p>
-      <p>
-        <el-button type="primary" round @click="login()">登录</el-button>
-      </p>
-      <p class="registerSkip">
-        <span>忘记密码</span>
-        <span v-on:click="function(){ 
-          isshow=!isshow 
-          ishide=!ishide
-          }">企业注册</span>
-        <span v-on:click="function(){ 
-          adminshow=!adminshow 
-          isshow=!isshow
-          }">
-          员工登录
-        </span>
       </p>
     </div>
     <div class="register" v-show="ishide">
@@ -70,19 +33,20 @@
             <el-input size="small" v-model="company.name"></el-input>
           </li>
           <li>
-            <label for="">企业地址：</label>
-            <el-input size="small" v-model="company.address"></el-input>
+            <label for="">法人代表：</label>
+            <el-input size="small" v-model="company.corporation"></el-input>
           </li>
           <li>
             <label for="">联系电话：</label>
             <el-input size="small" v-model="company.phone"></el-input>
           </li>
           <li>
-            <label for="">法人代表：</label>
-            <el-input size="small" v-model="company.corporation"></el-input>
+            <label for="">企业地址：</label>
+            <el-input size="small" v-model="company.address"></el-input>
           </li>
+
           <li>
-            <label for="">营业执照注册号：</label>
+            <label for="">统一社会信用代码：</label>
             <el-input size="small" v-model="company.companyID"></el-input>
           </li>
           <li>
@@ -95,7 +59,8 @@
         </ul>
         <div class="next">
           <el-button type="primary" size="small" round class="registerBtn" v-on:click="function(){nextshow=!nextshow
-           backshow=!backshow}">下一步</el-button>
+           backshow=!backshow}">下一步
+          </el-button>
         </div>
       </div>
       <div v-show="nextshow" style="margin-top:20px">
@@ -104,6 +69,10 @@
           <li>
             <label for="">用户名：</label>
             <el-input size="small" v-model="manager.userName"></el-input>
+          </li>
+          <li>
+            <label for="">密码：</label>
+            <el-input size="small" type="password" v-model="manager.userPassword"></el-input>
           </li>
           <li>
             <label for="">手机号：</label>
@@ -119,8 +88,9 @@
           </li>
           <li>
             <el-button type="primary" size="small" round class="registerBtn" v-on:click="function(){nextshow=!nextshow
-           backshow=!backshow}">上一步</el-button>
-            <el-button type="primary" size="small" round class="registerBtn">注册</el-button>
+           backshow=!backshow}">上一步
+            </el-button>
+            <el-button type="primary" size="small" round class="registerBtn" v-on:click="register">注册</el-button>
           </li>
         </ul>
       </div>
@@ -128,12 +98,15 @@
       <div class="loginSkip" v-on:click="function(){
           isshow=!isshow 
           ishide=!ishide
-          }">已有账号，直接登录</div>
+          }">已有账号，直接登录
+      </div>
     </div>
   </div>
 </template>
 <script>
 import md5 from "js-md5/src/md5.js";
+import CryptoJS from "crypto-js/crypto-js.js";
+import forgetThePassword from "./ForgetThePassword";
 export default {
   name: "Login",
   data() {
@@ -151,12 +124,11 @@ export default {
         }
       ],
 
-      input: "",
+      verification: "",
       userName: "",
       password: "",
       isshow: true,
       ishide: false,
-      adminshow: false,
       nextshow: false,
       backshow: true,
       fileList: [
@@ -175,7 +147,7 @@ export default {
       manager: {
         userName: "",
         userPassword: "",
-        password: "",
+        // password: "",
         phone: "",
         validate: ""
       },
@@ -183,25 +155,123 @@ export default {
     };
   },
   methods: {
-    login() {
-      this.password = md5(this.password);
-      console.log(md5(this.password));
-      let qs = require("qs");
-      // let instance = axios.create({
-      //   headers: { "content-type": "application/x-www-form-urlencoded" }
-      // });
-      let data = qs.stringify({
-        phone: this.userName,
-        passWord: this.password
+    // let instance = axios.create({
+    //   headers: { "content-type": "application/x-www-form-urlencoded" }
+    // });
+
+    encryptByDES(message, key) {
+      // const keyHex = CryptoJS.enc.Utf8.parse(key);
+      const keyHex = CryptoJS.enc.Utf8.parse(key);
+      const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
       });
-      axios
-        .post("/api/user/login", data)
+      return encrypted.toString();
+    },
+
+    login() {
+      let pass = this.password;
+      pass = md5(this.password);
+      console.log(this.password);
+      let key = "*chang_hong_device_cloud";
+      let a = pass;
+      pass = this.encryptByDES(a, key);
+      // console.log(this.password);
+      let qs = require("qs");
+      let data = qs.stringify({
+        phoneOrName: this.userName,
+        passWord: pass
+      });
+      this.axios
+        .post(this.global.apiSrc + "/user/login", data)
+        // .post("/api/user/login", data)
         .then(result => {
-          console.log(result.data);
+          sessionStorage.token = result.data.data;
+          if (this.userName == "") {
+            console.log("请输入用户名");
+            alert("请输入用户名");
+          } else if (this.password == "") {
+            alert("请输入密码");
+          } else if ((result.data.data = "")) {
+            alert("请输入正确的账号或密码");
+          } else {
+            console.log(result);
+            this.$store.commit("tokenSrc", sessionStorage.getItem("token"));
+            console.log("这是token:" + result.data.data);
+            this.$router.push({ path: "/Home" });
+          }
         })
         .catch(err => {
           console.log(err);
           console.log(this.userName);
+        });
+    },
+    register() {
+      let pass=this.manager.userPassword
+       pass= md5(pass);
+      // alert(this.manager.userPassword);
+      console.log(this.manager.userPassword);
+      let key = "*chang_hong_device_cloud";
+      pass = this.encryptByDES(
+        pass,
+        key
+      );
+      // alert(this.manager.userPassword)
+      console.log(this.manager.userPassword);
+      let qs = require("qs");
+      let data = qs.stringify({
+        enterpriseName: this.company.name,
+        enterpriseAddress: this.company.address,
+        enterprisePhone: this.company.phone,
+        legalPerson: this.company.corporation,
+        creditCode: this.company.companyID,
+        businessLicenseImg: "img",
+        userName: this.manager.userName,
+        passWord: pass,
+        phone: this.manager.phone,
+
+        returnForget() {
+          this.forgetShow = true;
+          this.isshow = false;
+        }
+      });
+      this.axios
+        .post(this.global.apiSrc + "/enterprise/add", data).then(result => {
+          // axios.post("/api/enterprise/add", data).then(result => {
+          console.log(result);
+          if (this.company.name == "") {
+            console.log("企业名不能为空");
+          }
+          if (this.company.corporation == "") {
+            console.log("法人代表不能为空");
+          }
+          if (this.company.phone == "") {
+            console.log("企业电话不能为空");
+          }
+          if (this.company.address == "") {
+            console.log("地址不能为空");
+          }
+          if (
+            this.company.companyID == "" ||
+            this.company.companyID.length != 18
+          ) {
+            console.log("统一社会信用编码不能为空且必须为十八位");
+          }
+          if (this.manager.userName == "") {
+            console.log("请输入企业管理员信息");
+          }
+          if (this.manager.userPassword == "") {
+            console.log("请设置密码");
+          }
+          if (this.manager.phone == "") {
+            console.log("请输入管理员联系电话");
+          } else {
+            location.reload()
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          console.log("注册失败");
         });
     },
     handleRemove(file, fileList) {
@@ -219,18 +289,18 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    encryptByDES(message, key) {
+      const keyHex = CryptoJS.enc.Utf8.parse(key);
+      const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+      });
+      return encrypted.toString();
     }
   },
-  components: {},
-  created() {
-    axios
-      .get("/api/user/all")
-      .then(response => {
-        console.log(response.data.data);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+  components: {
+    forgetThePassword
   }
 };
 </script>
@@ -244,6 +314,7 @@ export default {
   margin: 0;
   padding: 0;
 }
+
 .login {
   text-align: center;
   width: 100%;
@@ -299,11 +370,11 @@ export default {
     .proving {
       text-align: left;
       .el-input {
-        width: 40%;
+        width: 58%;
       }
       .el-button {
-        width: 20% !important;
-        height: 30px;
+        width: 40%;
+        height: 38px;
       }
       span {
         margin-left: 3%;
@@ -314,6 +385,7 @@ export default {
     }
   }
 }
+
 .adminLogin {
   width: 40%;
   height: auto;
@@ -375,6 +447,7 @@ export default {
     }
   }
 }
+
 .register {
   position: absolute;
   right: 10%;
@@ -397,7 +470,7 @@ export default {
       margin-bottom: 5px;
       label {
         display: inline-block;
-        width: 30%;
+        width: 31%;
         text-align: right;
       }
       .validate {

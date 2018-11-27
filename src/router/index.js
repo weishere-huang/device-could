@@ -1,21 +1,39 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/login/Login'
+import ForgetThePassword from '@/components/login/ForgetThePassword'
 import Home from '@/components/home/Home'
 import Information from '@/components/information/Information'
 import Company from '@/components/company/Company'
+import BusinessDetails from '@/components/company/BusinessDetails'
 import Equipment from '@/components/equipment/Equipment'
+import Category from '@/components/equipment/Category'
+import EquipmentAdd from '@/components/equipment/EquipmentAdd'
+import Redact from '@/components/equipment/Redact'
 import Operation from '@/components/operation/Operation'
+import Upkeep from '@/components/operation/upkeep/Upkeep'
+import UpkeepAdd from '@/components/operation/upkeep/UpkeepAdd'
+import UpkeepAmend from '@/components/operation/upkeep/UpkeepAmend'
+import TurnaroundPlansAdd from '@/components/operation/turnaroundPlans/TurnaroundPlansAdd'
+import TurnaroundPlansAmend from '@/components/operation/turnaroundPlans/TurnaroundPlansAmend'
+import Breakdown from '@/components/operation/Breakdown'
 import TurnaroundPlans from '@/components/operation/TurnaroundPlans'
+import BreakDetails from '@/components/operation/BreakDetails'
 import Organization from '@/components/organization/Organization'
+import Add from '@/components/organization/Add'
 import Personnel from '@/components/personnel/Personnel'
 import PersnnelAdd from '@/components/personnel/PersnnelAdd'
+import Modification from '@/components/personnel/Modification'
 import User from '@/components/user/User'
 import EquipmentArchives from '@/components/equipmentArchives/EquipmentArchives'
 import WorkOrder from '@/components/workOrder/WorkOrder'
 import KnowledgeBase from '@/components/knowledgeBase/KnowledgeBase'
 import Message from '@/components/message/Message'
 import System from '@/components/system/System'
+import RoleManagement from '@/components/roleManagement/RoleManagement'
+import AdvancedSearch from '@/components/company/AdvancedSearch'
+import Audit from '@/components/company/Audit'
+import MsgDetails from '@/components/message/MsgDetails'
 Vue.use(Router)
 
 export default new Router({
@@ -35,6 +53,11 @@ export default new Router({
       component: Home
     },
     {
+      path: '/ForgetThePassword',
+      name: 'ForgetThePassword',
+      component: ForgetThePassword
+    },
+    {
       path: '/Information',
       name: 'Information',
       component: Information
@@ -45,14 +68,79 @@ export default new Router({
       component: Company
     },
     {
+      path: '/Audit',
+      name: 'Audit',
+      component: Audit
+    },
+     {
+       path: '/AdvancedSearch',
+       name: 'AdvancedSearch',
+       component: AdvancedSearch
+    },
+    {
+      path: '/Category',
+      name: 'Category',
+      component: Category
+    },
+    {
+      path: '/BusinessDetails',
+      name: 'BusinessDetails',
+      component: BusinessDetails
+    },
+    {
       path: '/Equipment',
       name: 'Equipment',
       component: Equipment
     },
     {
+      path: '/EquipmentAdd',
+      name: 'EquipmentAdd',
+      component: EquipmentAdd
+    },
+    {
+      path: '/UpkeepAmend',
+      name: 'UpkeepAmend',
+      component: UpkeepAmend
+    },
+    {
+      path: '/Redact',
+      name: 'Redact',
+      component: Redact
+    },
+    {
       path: '/Operation',
       name: 'Operation',
       component: Operation
+    },
+    {
+      path: '/Upkeep',
+      name: 'Upkeep',
+      component: Upkeep
+    },
+    {
+      path: '/UpkeepAdd',
+      name: 'UpkeepAdd',
+      component: UpkeepAdd
+    },
+    {
+      path: '/TurnaroundPlansAdd',
+      name: 'TurnaroundPlansAdd',
+      component: TurnaroundPlansAdd
+    },
+    {
+      path: '/TurnaroundPlansAmend',
+      name: 'TurnaroundPlansAmend',
+      component: TurnaroundPlansAmend
+    },
+    {
+      path: '/BreakDetails',
+      name: 'BreakDetails',
+      component: BreakDetails
+    },
+    {
+      path: '/Breakdown',
+      name: 'Breakdown',
+      component: Breakdown
     },
     {
       path: '/TurnaroundPlans',
@@ -65,6 +153,11 @@ export default new Router({
       component: Organization
     },
     {
+      path: '/Add',
+      name: 'Add',
+      component: Add
+    },
+    {
       path: '/Personnel',
       name: 'Personnel',
       component: Personnel
@@ -73,6 +166,11 @@ export default new Router({
       path: '/PersnnelAdd',
       name: 'PersnnelAdd',
       component: PersnnelAdd
+    },
+    {
+      path: '/Modification',
+      name: 'Modification',
+      component: Modification
     },
     {
       path: '/User',
@@ -98,6 +196,16 @@ export default new Router({
       path: '/Message',
       name: 'Message',
       component: Message
+    },
+    {
+      path: '/MsgDetails',
+      name: 'MsgDetails',
+      component: MsgDetails
+    },
+    {
+      path: '/RoleManagement',
+      name: 'RoleManagement',
+      component: RoleManagement
     },
     {
       path: '/System',

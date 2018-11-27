@@ -3,7 +3,8 @@
     <div class="add-case">
       <div class="topbtn">
         <el-button size="small" @click="tback">返回</el-button>
-        <el-button size="small" @click="employeeAdd">保存</el-button>
+        <el-button size="small" @click="stopEmployee">停用</el-button>
+        <el-button size="small" @click="updateEmployee">保存</el-button>
       </div>
       <div class="botton">
         <div class="essential">
@@ -34,8 +35,6 @@
                 <el-select v-model="persnneladd.organizationName" placeholder="请选择" size="small" style="width:70%">
                   <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
-
-
                 </el-select>
               </li>
               <li>
@@ -46,6 +45,11 @@
           </div>
           <div class="right">
             <ul>
+              <li style="text-align:left;padding-left:12px;">
+                <label for="">员工账号：</label>
+                <span>{{persnneladd.userName}}</span>
+                <!-- <el-input type="text" size="small" v-model="persnneladd.idCardNo"></el-input> -->
+              </li>
               <li>
                 <label for="">身份证：</label>
                 <el-input type="text" size="small" v-model="persnneladd.idCardNo"></el-input>
@@ -72,8 +76,6 @@
                   <el-radio v-model="persnneladd.marital" label="0">未婚</el-radio>
                 </span>
               </li>
-
-
             </ul>
           </div>
         </div>
@@ -96,7 +98,6 @@
               <span>
                 <label for="" style="letter-spacing:8px;">籍贯：</label>
                 <el-input type="text" size="small" style="width:200px" v-model="persnneladd.nativePlace"></el-input>
-
               </span>
               <span style="display:inline-block;float:right;padding-right:123px">
                 <label for="">国籍：</label>
@@ -134,17 +135,16 @@
         </div>
       </div>
     </div>
-
   </div>
-
 </template>
 <script>
   export default {
     name: "",
     data() {
       return {
-        nameAndImg:[{name:"", img:""}],
+        role:[],
         persnneladd: {
+          id:"",
           employeeNo: "",
           name: "",
           gender: "",
@@ -168,7 +168,9 @@
           degree: "",
           img: "",
           qualificationInfo:"",
-          roleId: ""
+          roleId: "",
+          gmtCreate:"",
+          gmtModified:""
         },
         options: [
           {
@@ -190,40 +192,20 @@
         ],
         role: []
       };
-
     },
     methods: {
-      tback(){
-        this.$router.back(-1)
-      },
-      employeeAdd() {
-        this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
-        this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
-        let qs = require("qs");
-        let data = qs.stringify(this.persnneladd);
-        this.axios
-          .post(this.global.apiSrc+"/employee/add", data)
-          .then(response => {
-            if (response.data.msg ==="成功"){
-              alert("成功");
-              this.Personnel();
-            }else{
-              alert("失败");
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      },
       Personnel() {
         this.$router.push({
           path: "/Personnel"
         });
       },
+      tback(){
+        this.$router.back(-1)
+      },
       open6() {
         let str = `<div>
             <input type="text">文件名
-            <input type="file":v-model="persnneladd.img">
+            <input type="file" :v-model="persnneladd.img">
         </div>`;
         this.$confirm(str, "确认信息", {
           distinguishCancelAndClose: true,
@@ -231,7 +213,6 @@
           cancelButtonText: "放弃修改",
           dangerouslyUseHTMLString: true
         })
-
           .then(() => {
             this.$message({
               type: "info",
@@ -245,10 +226,94 @@
                 action === "cancel" ? "放弃保存并离开页面" : "停留在当前页面"
             });
           });
-        console.log(this.persnneladd.organizationName);
+      },
+      selectOne(employeeId,userName){
+        this.axios
+          .get(this.global.apiSrc+"/employee/selectOne",{params:{employeeId:employeeId}})
+          .then(response => {
+            this.persnneladd = response.data.data;
+            this.persnneladd.birthday=response.data.data.birthday.split("T")[0];
+            this.persnneladd.entryTime=response.data.data.entryTime.split("T")[0];
+            this.persnneladd.gender = response.data.data.gender.toString();
+            this.persnneladd.userName= userName;
+            if (this.persnneladd.marital!=null){
+              this.persnneladd.marital = response.data.data.marital.toString();
+            }
+            console.log(response.data.data);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      updateEmployee(){
+        this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
+        this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
+        let qs = require("qs");
+        let data = qs.stringify({
+          id:this.persnneladd.id,
+          employeeNo: this.persnneladd.employeeNo,
+          name: this.persnneladd.name,
+          gender:this.persnneladd.gender,
+          birthday: this.persnneladd.birthday,
+          phone: this.persnneladd.phone,
+          position: this.persnneladd.position,
+          organizeCode: this.persnneladd.organizeCode,
+          organizeName: this.persnneladd.organizationName,
+          enterpriseId: this.persnneladd.enterpriseId,
+          workType: this.persnneladd.workType,
+          entryTime: this.persnneladd.entryTime,
+          email: this.persnneladd.email,
+          marital: this.persnneladd.marital,
+          idCardNo: this.persnneladd.idCardNo,
+          workingYears: this.persnneladd.workingYears,
+          height: this.persnneladd.height,
+          nativePlace: this.persnneladd.nativePlace,
+          nationality: this.persnneladd.nationality,
+          postalAddress: this.persnneladd.postalAddress,
+          graduateSchool: this.persnneladd.graduateSchool,
+          degree: this.persnneladd.degree,
+          img: this.persnneladd.img,
+          qualificationInfo: this.persnneladd.qualificationInfo,
+          roleId: this.persnneladd.roleId
+        });
+        // console.log(data);
+        this.axios
+          .post(this.global.apiSrc+"/employee/update",data)
+          .then(response => {
+            if (response.data.msg ==="成功"){
+              alert("成功");
+              this.Personnel();
+            }else{
+              alert("失败");
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      stopEmployee(){
+        let qs = require("qs");
+        let data = qs.stringify({
+          employeeIds: this.persnneladd.id,
+          enableOrDisable: 0
+        });
+        // console.log(data);
+        this.axios
+          .post(this.global.apiSrc+"/employee/enableOrDisable", data)
+          .then(response => {
+            this.Personnel();
+            console.log(response.data.msg)
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       }
     },
     created() {
+      let aaa=this.$store.state.personnel.imId;
+      console.log(aaa);
+      // console.log(aaa.employeeNo);
+      this.selectOne(aaa.id,aaa.userName);
       this.axios
         .get(this.global.apiSrc+"/role/listAllRole")
         .then(response => {
@@ -316,7 +381,7 @@
             width: 45%;
             text-align: right;
             float: left;
-            padding-top: 60px;
+            //   padding-top: 20px;
             padding-left: 20px;
             //   border: 1px solid red;
 
