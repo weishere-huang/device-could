@@ -120,7 +120,8 @@
     },
     methods: {
       advanceValue: function (params) {
-        this.tableData = params;
+        this.tableData = params.content;
+        this.totalNub= params.totalElements;
       },
       replace() {
         location.reload();
@@ -219,6 +220,9 @@
               if (response.data.data.content[i].state === 10) {
                 response.data.data.content[i].state = "未通过"
               }
+              if (response.data.data.content[i].state === 11) {
+                response.data.data.content[i].state = "待办审核"
+              }
             }
             this.tableData = response.data.data.content;
             this.tableDate = response.data.data.content;
@@ -229,8 +233,12 @@
       },
 
       findByName() {
-        this.axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {params: {enterpriseName: this.name}})
+        this.axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {params: {enterpriseName: this.name,
+            page: this.pageIndex,
+            size: this.pageSize}})
           .then(response => {
+            this.totalNub=response.data.data.totalElements
+            console.log(response)
             for (let i = 0; i < response.data.data.content.length; i++) {
               // console.log(response.data.data.content.length)
               // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
@@ -248,6 +256,9 @@
               }
               if (response.data.data.content[i].state === 10) {
                 response.data.data.content[i].state = "未通过"
+              }
+              if (response.data.data.content[i].state === 11) {
+                response.data.data.content[i].state = "待办审核"
               }
             }
             this.tableData = response.data.data.content;
