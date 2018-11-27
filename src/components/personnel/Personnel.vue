@@ -23,127 +23,146 @@
   </div>
 </template>
 <script>
-  export default {
-    data() {
-      return {
-        searchs: "",
-        pageIndex: 1,
-        pageSize: 10,
-        tableData: [],
-        tableDate: [],
-        userIds: "",
-        columns: [
-          {
-            width: 50,
-            titleAlign: "center",
-            columnAlign: "center",
-            type: "selection"
-          },
-          {
-            field: "employeeNo",
-            title: "员工编号",
-            width: 90,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
-            //   orderBy: ""
-          },
-          {
-            field: "name",
-            title: "姓名",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "phone",
-            title: "手机号",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "name",
-            title: "用户名",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
-          },
-          {
-            field: "organizeName",
-            title: "组织单位/部门",
-            width: 250,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "position",
-            title: "岗位",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "entryTime",
-            title: "入职日期",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "state",
-            title: "状态",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
+export default {
+  data() {
+    return {
+      searchs: "",
+      pageIndex: 1,
+      pageSize: 10,
+      tableData: [],
+      tableDate: [],
+      userIds: "",
+      columns: [
+        {
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          type: "selection"
+        },
+        {
+          field: "employeeNo",
+          title: "员工编号",
+          width: 90,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+          //   orderBy: ""
+        },
+        {
+          field: "name",
+          title: "姓名",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "phone",
+          title: "手机号",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "name",
+          title: "用户名",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "organizeName",
+          title: "组织单位/部门",
+          width: 250,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "position",
+          title: "岗位",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "entryTime",
+          title: "入职日期",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "state",
+          title: "状态",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        }
+      ]
+    };
+  },
+  methods: {
+    search() {
+      this.axios
+        .get(this.global.apiSrc + "/employee/search", {
+          params: { condition: this.searchs }
+        })
+        .then(response => {
+          this.tableData = response.data.data.content;
+          for (let i in this.tableData) {
+            this.tableData[i].state === -1
+              ? (this.tableData[i].state = "禁用")
+              : (this.tableData[i].state = "正常");
+            this.tableData[i].entryTime = this.tableData[i].entryTime.split(
+              "T"
+            )[0];
           }
-        ]
-      };
+          this.tableDate = this.tableData;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
-    methods: {
-      search() {
-        this.axios
-          .get(this.global.apiSrc+"/employee/search", { params: { condition: this.searchs } })
-          .then(response => {
-            this.tableData = response.data.data.content;
-            for(let i in this.tableData){
-              this.tableData[i].state === -1 ? this.tableData[i].state = "禁用" : this.tableData[i].state = "正常";
-              this.tableData[i].entryTime = this.tableData[i].entryTime.split("T")[0];
-            }
-            this.tableDate =this.tableData;
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      },
-      PersnnelAdd() {
-        this.$router.push({
-          path: "/PersnnelAdd"
-        });
-      },
-      modefication(rowIndex, rowData, column) {
-        this.$router.push({
-          path: "/Modification"
-        });
-        this.$store.commit("personnel", rowData);
-      },
-      disable() {
-        let qs = require("qs");
-        let data = qs.stringify({
-          employeeIds: this.userIds,
-          enableOrDisable: 1
+    PersnnelAdd() {
+      this.$router.push({
+        path: "/PersnnelAdd"
+      });
+    },
+    modefication(rowIndex, rowData, column) {
+      this.$router.push({
+        path: "/Modification"
+      });
+      this.$store.commit("personnel", rowData);
+    },
+    disable() {
+      let qs = require("qs");
+      let data = qs.stringify({
+        employeeIds: this.userIds,
+        enableOrDisable: 1
+      });
+      this.axios
+        .post(this.global.apiSrc + "/employee/enableOrDisable", data)
+        .then(response => {
+          this.load();
+        })
+        .catch(function(error) {
+          console.log(error);
         });
         this.axios
           .post(this.global.apiSrc+"/employee/enableOrDisable", data)
           .then(response => {
-            this.load();
+            if (response.data.msg ==="成功"){
+              alert("成功");
+              this.load();
+            }else{
+              alert("失败");
+            }
           })
           .catch(function(error) {
             console.log(error);
@@ -158,7 +177,12 @@
         this.axios
           .post(this.global.apiSrc+"/employee/enableOrDisable", data)
           .then(response => {
-            this.load();
+            if (response.data.msg ==="成功"){
+              alert("成功");
+              this.load();
+            }else{
+              alert("失败");
+            }
           })
           .catch(function(error) {
             console.log(error);
@@ -174,108 +198,101 @@
           }
         }
       },
-      selectALL(selection) {
-        this.userIds = "";
-        for (let i = 0; i < selection.length; i++) {
-          if (this.userIds == "") {
-            this.userIds += selection[i].id;
+      // console.log(this.userIds);
+      // console.log("select-aLL", selection);
+
+    selectChange(selection, rowData) {
+      console.log("select-change", selection, rowData);
+    },
+    getTableData() {
+      this.tableData = this.tableDate.slice(
+        (this.pageIndex - 1) * this.pageSize,
+        this.pageIndex * this.pageSize
+      );
+    },
+    pageChange(pageIndex) {
+      this.pageIndex = pageIndex;
+      this.getTableData();
+      // console.log(pageIndex);
+    },
+    pageSizeChange(pageSize) {
+      this.pageIndex = 1;
+      this.pageSize = pageSize;
+      this.getTableData();
+    },
+    sortChange(params) {
+      if (params.height.length > 0) {
+        this.tableConfig.tableData.sort(function(a, b) {
+          if (params.height === "asc") {
+            return a.height - b.height;
+          } else if (params.height === "desc") {
+            return b.height - a.height;
           } else {
-            this.userIds += "," + selection[i].id;
+            return 0;
           }
-        }
-        // console.log(this.userIds);
-        // console.log("select-aLL", selection);
-      },
-      selectChange(selection, rowData) {
-        console.log("select-change", selection, rowData);
-      },
-      getTableData() {
-        this.tableData = this.tableDate.slice(
-          (this.pageIndex - 1) * this.pageSize,
-          this.pageIndex * this.pageSize
-        );
-      },
-      pageChange(pageIndex) {
-        this.pageIndex = pageIndex;
-        this.getTableData();
-        // console.log(pageIndex);
-      },
-      pageSizeChange(pageSize) {
-        this.pageIndex = 1;
-        this.pageSize = pageSize;
-        this.getTableData();
-      },
-      sortChange(params) {
-        if (params.height.length > 0) {
-          this.tableConfig.tableData.sort(function(a, b) {
-            if (params.height === "asc") {
-              return a.height - b.height;
-            } else if (params.height === "desc") {
-              return b.height - a.height;
-            } else {
-              return 0;
-            }
-          });
-        }
-      },
-      load() {
-        this.axios
-          .get(this.global.apiSrc+"/employee/findEmployeeList", {
-            params: { page: this.pageIndex, size: 10 }
-          })
-          .then(response => {
-            this.tableData = response.data.data.content;
-            // console.log(this.tableData);
-            for(let i in this.tableData){
-              this.tableData[i].state === -1 ? this.tableData[i].state = "禁用" : this.tableData[i].state = "正常";
-            }
-            this.tableDate =this.tableData;
-            // console.log(this.tableData);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+        });
       }
     },
-
-    created() {
-      this.load();
+    load() {
+      this.axios
+        .get(this.global.apiSrc + "/employee/findEmployeeList", {
+          params: { page: this.pageIndex, size: 10 }
+        })
+        .then(response => {
+          this.tableData = response.data.data.content;
+          // console.log(this.tableData);
+          for (let i in this.tableData) {
+            this.tableData[i].state === -1
+              ? (this.tableData[i].state = "禁用")
+              : (this.tableData[i].state = "正常");
+          }
+          this.tableDate = this.tableData;
+          // console.log(this.tableData);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
-  };
+  },
+
+  created() {
+    this.load();
+  }
+};
 </script>
 <style lang="less" scoped>
-  @blue: #409eff;
-  @Success: #67c23a;
-  @Warning: #e6a23c;
-  @Danger: #f56c6c;
-  @Info: #dde2eb;
-  .userManagement {
-    padding-left: 220px;
-    .userCase {
-      width: 100%;
-      padding: 10px;
-      .top {
-        height: 60px;
-        line-height: 60px;
-        border: 1px solid @Info;
-        border-radius: 5px;
-        padding-left: 10px;
-        .search {
-          float: right;
-          width: 40%;
-          .el-input {
-            width: 80%;
-          }
+@blue: #409eff;
+@Success: #67c23a;
+@Warning: #e6a23c;
+@Danger: #f56c6c;
+@Info: #dde2eb;
+.userManagement {
+  padding-left: 220px;
+  .userCase {
+    width: 100%;
+    padding: 10px;
+    .top {
+      height: 60px;
+      line-height: 60px;
+      border: 1px solid @Info;
+      border-radius: 5px;
+      padding-left: 10px;
+      .search {
+        float: right;
+        width: 40%;
+        .el-input {
+          width: 80%;
         }
       }
-      .bottom {
-        padding: 10px;
-        font-size: 12px;
-        border: 1px solid @Info;
-        margin-top: 10px;
-        min-height: 500px;
-        border-radius: 5px;
-      }
+    }
+    .bottom {
+      padding: 10px;
+      font-size: 12px;
+      border: 1px solid @Info;
+      margin-top: 10px;
+      min-height: 500px;
+      border-radius: 5px;
     }
   }
+}
 </style>

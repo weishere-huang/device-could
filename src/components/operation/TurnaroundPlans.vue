@@ -228,8 +228,6 @@
             this.tableData = response.data.data.content;
             this.pageNumber = response.data.data.content.length;
             for(let i in this.tableData){
-              // console.log(response.data.data.content[i].id);
-              // console.log(this.tableData[i].state);
               if(this.tableData[i].state === 0 ){
                 this.tableData[i].state ="待审核";
               }
@@ -272,6 +270,7 @@
                 }
               }
             }
+            console.log(response.data.data);
             this.pageNumber = this.tableData.length;
           })
           .catch(function(error) {
@@ -294,7 +293,12 @@
         this.axios
           .post(this.global.apiSrc+"/mplan/delete", data)
           .then(response => {
-            this.load()
+            if(response.data.msg ==="成功") {
+              alert("成功");
+              this.load()
+            }else{
+              alert("失败");
+            }
           })
           .catch(function(error) {
             console.log(error);
@@ -306,7 +310,12 @@
         this.axios
           .post(this.global.apiSrc+"/mplan/discontinuation", data)
           .then(response => {
-            this.load()
+            if(response.data.msg ==="成功") {
+              alert("成功");
+              this.load()
+            }else{
+              alert("失败");
+            }
           })
           .catch(function(error) {
             console.log(error);

@@ -56,12 +56,12 @@
               <!-- <el-menu-item index="/PersnnelAdd">添加</el-menu-item> -->
               <!-- <el-menu-item index="/Modification">修改</el-menu-item> -->
             </el-submenu>
-            <el-submenu index="7">
+            <!-- <el-submenu index="7">
               <template slot="title"><i class="el-icon-setting"></i>企业用户管理</template>
               <el-menu-item index="/User">企业用户管理</el-menu-item>
-              <!-- <el-menu-item index="/User">选项2</el-menu-item> -->
-              <!-- <el-menu-item index="/User">选项3</el-menu-item> -->
-            </el-submenu>
+              <el-menu-item index="/User">选项2</el-menu-item>
+              <el-menu-item index="/User">选项3</el-menu-item>
+            </el-submenu> -->
             <el-submenu index="8">
               <template slot="title"><i class="el-icon-setting"></i>设备档案</template>
               <el-menu-item index="/EquipmentArchives">选项1</el-menu-item>
@@ -88,14 +88,14 @@
             </el-submenu>
             <el-submenu index="12">
               <template slot="title"><i class="el-icon-setting"></i>角色管理</template>
-              <el-menu-item index="/RoleManagement">选项1</el-menu-item>
+              <el-menu-item index="/RoleManagement">角色管理</el-menu-item>
               <el-menu-item index="/RoleManagement">选项2</el-menu-item>
               <el-menu-item index="/RoleManagement">选项3</el-menu-item>
             </el-submenu>
             <el-submenu index="13">
               <template slot="title"><i class="el-icon-setting"></i>系统管理</template>
               <el-menu-item index="/System">选项1</el-menu-item>
-              <el-menu-item index="/System">选项2</el-menu-item>
+              <el-menu-item index="/User">用户管理</el-menu-item>
               <el-menu-item index="/System">选项3</el-menu-item>
             </el-submenu>
           </el-menu>

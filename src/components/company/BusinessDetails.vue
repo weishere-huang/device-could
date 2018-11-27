@@ -34,7 +34,7 @@
             驳回原因：
           </span>
           <span style="color:red;display:inline-block">
-            <p>{{msg}}</p>
+            <p>{{detailsValue.auditOpinion}}</p>
           </span>
         </div>
         <div style="margin-top:20px;text-align:center;">
@@ -44,7 +44,7 @@
       <div class="right">
         <img src="../../assets/image/chlogo.png" alt="">
       </div>
-    </div>  
+    </div>
   </div>
 </template>
 <script>

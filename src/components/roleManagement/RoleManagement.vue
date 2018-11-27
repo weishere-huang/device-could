@@ -453,8 +453,12 @@
         this.axios
           .post(this.global.apiSrc+"/role/add",data,{params: {permissionIds:this.systemID}})
           .then(response =>{
-            this.load();
-            console.log(response)
+            if (response.data.msg ==="成功") {
+              alert("成功");
+              this.load();
+            }else{
+              alert("失败");
+            }
           })
           .catch(function(error) {
             console.log(error);
@@ -478,8 +482,12 @@
         this.axios
           .post(this.global.apiSrc+"/role/update",data)
           .then(response =>{
-            this.load();
-            console.log(response.data.msg)
+            if (response.data.msg ==="成功") {
+              alert("成功");
+              this.load();
+            }else{
+              alert("失败");
+            }
           })
           .catch(function(error) {
             console.log(error);

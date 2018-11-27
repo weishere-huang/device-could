@@ -224,19 +224,23 @@
         options2: [
           {
             value: "1",
-            label: "1"
+            label: "生产设备"
           },
           {
             value: "2",
-            label: "2"
+            label: "非生产设备"
           },
           {
             value: "3",
-            label: "3"
+            label: "辅助生产设备"
           },
           {
             value: "4",
-            label: "4"
+            label: "检验检测设备"
+          },
+          {
+            value: "5",
+            label: "其他设备"
           },
         ],
         options3: [
@@ -259,13 +263,25 @@
         ],
         options4: [
           {
-            value: "0",
-            label: "0"
+            value: "1",
+            label: "在用"
           },
           {
-            value: "-1",
-            label: "-1"
+            value: "2",
+            label: "出租"
           },
+          {
+            value: "3",
+            label: "停用"
+          },
+          {
+            value: "4",
+            label: "封存"
+          },
+          {
+            value: "5",
+            label: "报废"
+          }
         ],
       };
     },
@@ -390,11 +406,25 @@
             console.log(err);
           });
       },
-
+      findAlldeviceClassify(){
+        let qs = require("qs");
+        let data = qs.stringify({
+        });
+        this.axios
+          .get(this.global.apiSrc + "/deviceCategory/all", data)
+          .then(result => {
+            console.log("findAlldeviceClassify");
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     },
     created(){
         this.findDeviceClassify();
         this.findDeviceState();
+        this.findAlldeviceClassify();
     },
     components: {
       addPerson
