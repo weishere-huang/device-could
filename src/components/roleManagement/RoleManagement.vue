@@ -262,12 +262,12 @@
           checkedCount > 0 && checkedCount < this.system.systemList.length;
       },
       systemShow() {
-        $(".system-slist")[0].style.height = "auto";
+        document.querySelectorAll(".system-slist")[0].style.height = "auto";
         this.system.sShow = !this.system.sShow;
         this.system.sHide = !this.system.sHide;
       },
       systemHide() {
-        $(".system-slist")[0].style.height = 0;
+        document.querySelectorAll(".system-slist")[0].style.height = 0;
         this.system.sShow = !this.system.sShow;
         this.system.sHide = !this.system.sHide;
       },
@@ -337,6 +337,7 @@
         this.personnel.sHide = !this.personnel.sHide;
       },
       personnelHide() {
+        console.log("no");
         document.querySelectorAll(".personnel-slist")[0].style.height = 0;
         this.personnel.sShow = !this.personnel.sShow;
         this.personnel.sHide = !this.personnel.sHide;
@@ -460,8 +461,12 @@
         this.axios
           .post(this.global.apiSrc+"/role/add",data,{params: {permissionIds:this.systemID}})
           .then(response =>{
-            this.load();
-            console.log(response)
+            if (response.data.msg ==="成功") {
+              alert("成功");
+              this.load();
+            }else{
+              alert("失败");
+            }
           })
           .catch(function(error) {
             console.log(error);
@@ -485,8 +490,12 @@
         this.axios
           .post(this.global.apiSrc+"/role/update",data)
           .then(response =>{
-            this.load();
-            console.log(response.data.msg)
+            if (response.data.msg ==="成功") {
+              alert("成功");
+              this.load();
+            }else{
+              alert("失败");
+            }
           })
           .catch(function(error) {
             console.log(error);

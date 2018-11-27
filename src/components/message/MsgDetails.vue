@@ -46,7 +46,7 @@
   </div>
 </template>
 <script>
-let apiMsg = "http://192.168.1.104:9882";
+let apiMsg = "http://192.168.1.104:9880/m";
 export default {
   name: "",
   props: ["msgDetail"],

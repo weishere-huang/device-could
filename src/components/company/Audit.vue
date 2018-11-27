@@ -12,7 +12,7 @@
           </li>
           <li>
             <label for="">企业法人：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="auditValue.corporation" readonly></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="auditValue.legalPerson" readonly></el-input>
           </li>
           <li>
             <label for="">联系电话：</label>
@@ -24,13 +24,16 @@
           </li>
           <li>
             <label for="">统一信用社会代码：</label>
-            <el-input type="text" size="small" style="width:300px" v-model="auditValue.companyID" readonly></el-input>
+            <el-input type="text" size="small" style="width:300px" v-model="auditValue.creditCode" readonly></el-input>
           </li>
         </ul>
 
         <div class="state">
-          <label style="display:inline-block;height:60px;vertical-align:top;">驳回原因：</label>
-          <textarea type="textarea" style="width:70%;height:60px;" placeholder="请填写驳回原因"></textarea>
+          <div >
+            <label style="display:inline-block;height:60px;vertical-align:top;">驳回原因：</label>
+            <textarea type="textarea" style="width:70%;height:60px;" placeholder="请填写驳回原因" v-model="auditValue.auditOpinion"></textarea>
+          </div>
+
           <div style="margin-top:10px;width:100%;text-align:center;">
             <el-button size="small" @click="auditback">返回</el-button>
             <el-button size="small" @click="reject">驳回</el-button>
@@ -54,6 +57,7 @@
         img: "",
         block: false,
         enterpriseIds: "",
+
         company: {
           name: "",
           address: "",
@@ -76,13 +80,14 @@
       pass() {
         let qs = require("qs");
         let data = qs.stringify({
-          enterpriseIds: this.auditValue.id
+          enterpriseId: this.auditValue.id,
+          // userId:2
         })
         console.log(data)
-        this.axios.post(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
-        // axios.post("/api/enterprise/enableEnterprises/", data)
+        this.axios.post(this.global.apiSrc + "/enterprise/passAudit/", data)
           .then(response => {
             location.reload();
+            alert("通过审核")
             console.log(data)
             console.log(response)
           }).catch(function (error) {
@@ -92,11 +97,16 @@
       reject() {
         let qs = require("qs");
         let data = qs.stringify({
-          enterpriseIds: this.auditValue.id
+          enterpriseId: this.auditValue.id,
+          // userId:2,
+          auditOpinion:this.auditValue.auditOpinion,
         })
-        this.axios.post(this.global.apiSrc + "/enterprise/turnDown/", data)
-        // axios.post("/api/enterprise/turnDown/", data)
+        console.log(data.auditOpinion)
+        this.axios.post(this.global.apiSrc + "/enterprise/turnAudit/", data)
           .then(response => {
+            if(response.data.data)
+            alert("审核被驳回")
+
             location.reload();
             console.log(response)
           }).catch(function (error) {

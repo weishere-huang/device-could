@@ -58,7 +58,7 @@
             </el-form-item>
             <el-form-item label="出厂日期">
               <el-col :span="11">
-                <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.outputDate"
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="sizeForm.outputDate"
                                 style="width: 215px;"></el-date-picker>
               </el-col>
             </el-form-item>
@@ -133,13 +133,13 @@
           </el-form-item>
           <el-form-item label="购买日期">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.buyDate"
+              <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="sizeForm.buyDate"
                               style="width: 215px;"></el-date-picker>
             </el-col>
           </el-form-item>
           <el-form-item label="入厂日期">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.enterFactoryDate"
+              <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="sizeForm.enterFactoryDate"
                               style="width: 215px;"></el-date-picker>
             </el-col>
           </el-form-item>
@@ -188,19 +188,23 @@
         options2: [
           {
             value: "1",
-            label: "1"
+            label: "生产设备"
           },
           {
             value: "2",
-            label: "2"
+            label: "非生产设备"
           },
           {
             value: "3",
-            label: "3"
+            label: "辅助生产设备"
           },
           {
             value: "4",
-            label: "4"
+            label: "检验检测设备"
+          },
+          {
+            value: "5",
+            label: "其他设备"
           },
         ],
         options3: [
@@ -224,20 +228,24 @@
         options4: [
           {
             value: "1",
-            label: "1"
+            label: "在用"
           },
           {
             value: "2",
-            label: "2"
+            label: "出租"
           },
           {
             value: "3",
-            label: "3"
+            label: "停用"
           },
           {
             value: "4",
-            label: "4"
+            label: "封存"
           },
+          {
+            value: "5",
+            label: "报废"
+          }
         ],
 
       };
@@ -267,27 +275,27 @@
           deviceClassify: this.sizeForm.deviceClassify,
           deviceClassifyName: this.sizeForm.deviceClassifyName,
           deviceSpec: this.sizeForm.deviceSpec,
-          // outputDate: this.sizeForm.outputDate,
+        //  outputDate: this.sizeForm.outputDate,
           manufacturer: this.sizeForm.manufacturer,
           location: this.sizeForm.location,
           locationNo: this.sizeForm.locationNo,
           buyPrice: this.sizeForm.buyPrice,
-          // buyDate: this.sizeForm.buyDate,
+         // buyDate: this.sizeForm.buyDate,
           deviceCategory: this.sizeForm.deviceCategory,
           deviceCategoryName: this.sizeForm.deviceCategoryName,
           deviceModel: this.sizeForm.deviceModel,
           deviceState: this.sizeForm.deviceState,
-          // gmtModified: this.sizeForm.gmtModified,
           organizeCode: this.sizeForm.organizeCode,
-          // enterFactoryDate: this.sizeForm.enterFactoryDate,
+          //enterFactoryDate: this.sizeForm.enterFactoryDate,
           deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
-          devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo),
+          devicePersonnelInfo: this.sizeForm.devicePersonnelInfo,
 
         });
 
         this.axios
         .post(this.global.apiSrc+"/device/update", data)
           .then(result => {
+            alert("修改成功");
             console.log(result);
             console.log("update");
             console.log(result.data);
@@ -317,10 +325,18 @@
             console.log("detail");
             console.log(result.data);
             this.sizeForm = result.data.data;
-            // this.sizeForm.buyDate = this.sizeForm.buyDate.split("T").replace(/-/g, "/");
-            // this.sizeForm.enterFactoryDate = this.sizeForm.enterFactoryDate.split("T").replace(/-/g, "/");
-            // this.sizeForm.gmtModified = this.sizeForm.gmtModified.split("T").replace(/-/g, "/");
-            // this.sizeForm.outputDate = this.sizeForm.outputDate.split("T").replace(/-/g, "/");
+            if(this.sizeForm.buyDate != null){
+
+              this.sizeForm.buyDate = this.sizeForm.buyDate.split("T")[0].replace(/-/g, "/");
+              console.log("buyDAte"+this.sizeForm.buyDate);
+            }
+            if(this.sizeForm.buyDate != null){
+              this.sizeForm.enterFactoryDate = this.sizeForm.enterFactoryDate.split("T")[0].replace(/-/g, "/");
+            }
+            if(this.sizeForm.buyDate != null){
+              this.sizeForm.outputDate = this.sizeForm.outputDate.split("T")[0].replace(/-/g, "/");
+            }
+
           })
           .catch(err => {
             console.log(err);

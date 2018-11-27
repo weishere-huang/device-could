@@ -192,6 +192,19 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+      this.axios
+        .post(this.global.apiSrc + "/employee/enableOrDisable", data)
+        .then(response => {
+          if (response.data.msg === "成功") {
+            alert("成功");
+            this.load();
+          } else {
+            alert("失败");
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     enable() {
       let qs = require("qs");
@@ -202,12 +215,20 @@ export default {
       this.axios
         .post(this.global.apiSrc + "/employee/enableOrDisable", data)
         .then(response => {
-          this.load();
+          if (response.data.msg === "成功") {
+            alert("成功");
+            this.load();
+          } else {
+            alert("失败");
+          }
         })
         .catch(function(error) {
           console.log(error);
         });
     },
+    selectALL(selection) {
+        console.log(selection);
+      },
     selectGroupChange(selection) {
       this.userIds = "";
       for (let i = 0; i < selection.length; i++) {
@@ -218,18 +239,9 @@ export default {
         }
       }
     },
-    selectALL(selection) {
-      this.userIds = "";
-      for (let i = 0; i < selection.length; i++) {
-        if (this.userIds == "") {
-          this.userIds += selection[i].id;
-        } else {
-          this.userIds += "," + selection[i].id;
-        }
-      }
-      // console.log(this.userIds);
-      // console.log("select-aLL", selection);
-    },
+    // console.log(this.userIds);
+    // console.log("select-aLL", selection);
+
     selectChange(selection, rowData) {
       console.log("select-change", selection, rowData);
     },
@@ -283,7 +295,6 @@ export default {
         });
     }
   },
-
   created() {
     this.load();
   }
@@ -297,6 +308,7 @@ export default {
 @Info: #dde2eb;
 .userManagement {
   padding-left: 180px;
+  font-size: 12px;
   .userCase {
     width: 100%;
     padding: 10px;
@@ -313,14 +325,14 @@ export default {
           width: 80%;
         }
       }
-    }
-    .bottom {
-      padding: 10px;
-      font-size: 12px;
-      border: 1px solid @Info;
-      margin-top: 10px;
-      min-height: 500px;
-      border-radius: 5px;
+      .bottom {
+        padding: 10px;
+        font-size: 12px;
+        border: 1px solid @Info;
+        margin-top: 10px;
+        min-height: 500px;
+        border-radius: 5px;
+      }
     }
   }
 }

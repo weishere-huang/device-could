@@ -110,7 +110,7 @@
         </div>
       </div>
     </div>
-    <advanced class="adsearch" v-on:isHide="isHide"></advanced>
+    <advanced class="adsearch" v-on:isHide="isHide" v-on:advanceValue="advanceValue"></advanced>
   </div>
 </template>
 <script>
@@ -235,6 +235,9 @@ export default {
     };
   },
   methods: {
+    advanceValue(params){
+      this.tableData=params;
+    },
     adsearch() {
       $(".adsearch")[0].style.right = 0;
     },
@@ -252,7 +255,14 @@ export default {
     },
     selectGroupChange(selection) {
       console.log("select-group-change", selection);
-      this.ids = selection[0].id;
+      this.ids = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.ids != "") {
+          this.ids += "," + selection[i].id;
+        } else {
+          this.ids += selection[i].id
+        }
+      }
       console.log(this.ids);
     },
     selectALL(selection) {
@@ -307,6 +317,23 @@ export default {
         // .get("api/device/all", data)
         .then(result => {
           this.tableData = result.data.data.content;
+          for(let i = 0 ;i<this.tableData.length;i++){
+            if(this.tableData.deviceState === 1){
+              this.tableData.deviceState = "在用"
+            };
+            if(this.tableData.deviceState === 2){
+              this.tableData.deviceState = "出租"
+            };
+            if(this.tableData.deviceState === 3){
+              this.tableData.deviceState = "停用"
+            };
+            if(this.tableData.deviceState === 4){
+              this.tableData.deviceState = "封存"
+            };
+            if(this.tableData.deviceState === 5){
+              this.tableData.deviceState = "报废"
+            };
+          }
           console.log(result.data);
         })
         .catch(err => {
@@ -354,6 +381,9 @@ export default {
         //.get("api/device/findDeviceState",{params:{deviceId:ids}})
         .get(this.global.apiSrc + "/device/findDeviceState")
         .then(result => {
+          let arr = new Array();
+          arr= result.data.data;
+          console.log(arr);
           console.log(result.data);
         })
         .catch(err => {
@@ -422,10 +452,15 @@ export default {
         });
     },
     edelete() {
+      let qs = require("qs");
+      let data = qs.stringify({
+        deviceIds:this.ids
+      });
       this.axios
-        .post(this.global.apiSrc + "/device/delete", {params:{deviceId:this.ids}})
+        .post(this.global.apiSrc + "/device/delete", data)
         .then(result => {
-          //this.findall();
+          this.findall();
+          alert("删除成功");
           console.log("delete");
           console.log(result.data);
         })

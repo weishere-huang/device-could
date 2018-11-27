@@ -310,7 +310,7 @@ export default {
       .left {
         width: 18%;
         border: @border;
-        min-height: 400px;
+        // min-height: 400px;
         position: relative;
         float: left;
         margin-right: 1%;

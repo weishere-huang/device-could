@@ -51,7 +51,7 @@
               <el-menu-item index="/TurnaroundPlans">检修计划</el-menu-item>
               <!-- <el-menu-item index="/Operation">选项3</el-menu-item> -->
               <!-- <el-menu-item index="/TurnaroundPlansAdd">检修计划添加/修改</el-menu-item> -->
-              <!-- <el-menu-item index="/BreakDetails">故障详情</el-menu-item> -->
+              <!-- <el-menu-item index="/AmendPlan">故障详情</el-menu-item> -->
               <el-menu-item index="/Upkeep">保养计划</el-menu-item>
             </el-submenu>
             <el-submenu index="5">
@@ -186,10 +186,7 @@ export default {
     min-width: 178px;
   }
 }
-.el-menu-item {
-  height: 40px;
-  line-height: 40px;
-}
+
 .el-submenu__title {
   height: 40px !important;
   line-height: 40px !important;

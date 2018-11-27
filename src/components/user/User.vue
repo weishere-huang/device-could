@@ -2,8 +2,8 @@
   <div class="userManagement">
     <div class="userCase">
       <div class="top">
-        <el-button size="small">启用</el-button>
-        <el-button size="small">停用</el-button>
+        <el-button size="small" @click="enable">启用</el-button>
+        <el-button size="small" @click="prohibit">停用</el-button>
         <el-button size="small" @click="deleteUser">删除</el-button>
         <div class="search">
           <el-input type="search" placeholder="如员工编号，姓名，手机" size="small"></el-input>
@@ -14,7 +14,7 @@
         <div>
           <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
@@ -28,32 +28,8 @@ export default {
       pageIndex: 1,
       pageSize: 10,
       userIds: "",
-      tableData: [
-        {
-          name: "111",
-          phone: "222",
-          address: "3333",
-          hobby: "4444"
-        },
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        },
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        },
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        }
-      ],
+      tableData: [],
+      totalNub:"",
       tableDate: [],
       columns: [
         {
@@ -64,14 +40,14 @@ export default {
         },
         {
           field: "id",
-          title: "企业名臣",
+          title: "企业名称",
           width: 40,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
         },
         {
-          field: "tel",
+          field: "userName",
           title: "用户名",
           width: 90,
           titleAlign: "center",
@@ -88,7 +64,7 @@ export default {
           isResize: true
         },
         {
-          field: "userName",
+          field: "email",
           title: "邮箱",
           width: 80,
           titleAlign: "center",
@@ -105,22 +81,6 @@ export default {
           isResize: true
         },
         {
-          field: "address",
-          title: "用户状态",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        // {
-        //   field: "gmtModified",
-        //   title: "最后登录时间",
-        //   width: 80,
-        //   titleAlign: "center",
-        //   columnAlign: "left",
-        //   isResize: true
-        // },
-        {
           field: "state",
           title: "用户状态",
           width: 80,
@@ -132,13 +92,19 @@ export default {
     };
   },
   methods: {
+    enable(){
+
+    },
+    prohibit(){
+
+    },
     deleteUser() {
       let qs = require("qs");
       let data = qs.stringify({
         userIds: this.userIds
       });
-      axios
-        .put("/api/employee/enableOrDisable", data)
+      this.axios
+        .post(this.global.apiSrc+"/user/deleteUsers", data)
         .then(response => {
           console.log(response.data.msg);
         })
@@ -152,10 +118,10 @@ export default {
     selectALL(selection) {
       this.userIds = "";
       for (let i = 0; i < selection.length; i++) {
-        if (this.userIds != "") {
-          this.userIds += "," + selection[i].userId;
+        if (this.userIds === "") {
+          this.userIds += selection[i].id;
         } else {
-          this.userIds += selection[i].userId;
+          this.userIds += "," + selection[i].id;
         }
       }
       console.log("select-aLL", selection);
@@ -163,10 +129,10 @@ export default {
     selectChange(selection, rowData) {
       this.userIds = "";
       for (let i = 0; i < selection.length; i++) {
-        if (this.userIds != "") {
-          this.userIds += "," + selection[i].userId;
+        if (this.userIds === "") {
+          this.userIds += selection[i].id;
         } else {
-          this.userIds += selection[i].userId;
+          this.userIds += "," + selection[i].id;
         }
       }
       console.log("select-change", selection, rowData);
@@ -202,18 +168,23 @@ export default {
       }
     },
     load() {
-      let qs = require("qs");
-      let data = qs.stringify({
-        page: this.pageIndex,
-        size: this.pageSize
-      });
-      axios
-        .get(this.global.apiSrc+"/user/all", data)
+
+
+      this.axios
+        .get(this.global.apiSrc+"/user/all",{params:{page:this.pageIndex,size:this.pageSize}})
         .then(response => {
+          console.log(response.data.data);
           this.tableData = response.data.data;
-          this.tableDate = response.data.data;
-          // console.log(response.data)
-          // console.log(this.tableData)
+          for (let i = 0;i<this.tableData.length;i++){
+            this.tableData[i].gmtCreate = this.tableData[i].gmtCreate.split("T")[0];
+            if (this.tableData[i].state === 0){
+              this.tableData[i].state="正常"
+            }else{
+              this.tableData[i].state="停用"
+            }
+          }
+          this.tableDate = this.tableData;
+          // console.log(this.tableDate)
         })
         .catch(function(error) {
           console.log(error);

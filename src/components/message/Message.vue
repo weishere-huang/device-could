@@ -25,7 +25,7 @@
   </div>
 </template>
 <script>
-  let apiMsg="http://192.168.1.104:9882"
+  let apiMsg="http://192.168.1.104:9880/m"
   import MsgDetails from './MsgDetails'
   export default {
     data() {
@@ -304,7 +304,7 @@
         this/axios
           .get(apiMsg+"/message/findOneMsg/" + this.ids)
           .then(result => {
-            console.log(result.data);
+            console.log(result);
            this.msgDetail=result.data.data;
             if (this.msgDetail.isRead === 0) {
               this.updateMessageRead();

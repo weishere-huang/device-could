@@ -278,7 +278,7 @@ export default {
   background-color: #42424227;
   .addCase {
     width: 80%;
-    min-height: 500px;
+    // min-height: 500px;
     background-color: white;
     margin: auto;
     border-radius: 5px;
