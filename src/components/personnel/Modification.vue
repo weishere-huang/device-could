@@ -311,8 +311,6 @@
     },
     created() {
       let aaa=this.$store.state.personnel.imId;
-      console.log(aaa);
-      // console.log(aaa.employeeNo);
       this.selectOne(aaa.id,aaa.userName);
       this.axios
         .get(this.global.apiSrc+"/role/listAllRole")

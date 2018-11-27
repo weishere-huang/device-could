@@ -20,7 +20,8 @@
                    :select-group-change="selectGroupChange" :row-dblclick="details" row-click-color="#edf7ff">
           </v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="this.totalNub" :page-size="pageSize"
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="this.totalNub"
+                          :page-size="pageSize"
                           :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
@@ -46,11 +47,11 @@
         detailsValue: "",
         auditValue: "",
         // advanceValue: "",
-        choice:"",
+        choice: "",
         pageIndex: 1,
         pageSize: 10,
         name: "",
-        totalNub:"",
+        totalNub: "",
         tableData: [
           {
             name: "",
@@ -121,7 +122,7 @@
     methods: {
       advanceValue: function (params) {
         this.tableData = params.content;
-        this.totalNub= params.totalElements;
+        this.totalNub = params.totalElements;
       },
       replace() {
         location.reload();
@@ -148,17 +149,25 @@
         console.log("select-group-change", selection);
         this.auditValue = selection[0];
         this.choice = "";
-        for(let i= 0 ;i<selection.length; i++){
-          if(this.choice ==""){
+        for (let i = 0; i < selection.length; i++) {
+          if (this.choice == "") {
             this.choice = selection[i].id;
-          }else{
-            this.choice += ","+selection[i].id;
+          } else {
+            this.choice += "," + selection[i].id;
           }
         }
         console.log(this.choice);
         console.log(this.auditValue);
       },
       selectALL(selection) {
+        this.choice = "";
+        for (let i = 0; i < selection.length; i++) {
+          if (this.choice == "") {
+            this.choice = selection[i].id;
+          } else {
+            this.choice += "," + selection[i].id;
+          }
+        }
         console.log("select-aLL", selection);
       },
       selectChange(selection, rowData) {
@@ -180,6 +189,7 @@
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
+        this.load()
       },
       sortChange(params) {
         if (params.height.length > 0) {
@@ -201,7 +211,7 @@
           })
           .then(response => {
             console.log(response)
-            this.totalNub=response.data.data.totalElements
+            this.totalNub = response.data.data.totalElements
             for (let i = 0; i < response.data.data.content.length; i++) {
               // console.log(response.data.data.content.length)
               // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
@@ -233,11 +243,15 @@
       },
 
       findByName() {
-        this.axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {params: {enterpriseName: this.name,
+        this.axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {
+          params: {
+            enterpriseName: this.name,
             page: this.pageIndex,
-            size: this.pageSize}})
+            size: this.pageSize
+          }
+        })
           .then(response => {
-            this.totalNub=response.data.data.totalElements
+            this.totalNub = response.data.data.totalElements
             console.log(response)
             for (let i = 0; i < response.data.data.content.length; i++) {
               // console.log(response.data.data.content.length)
@@ -291,7 +305,7 @@
         });
         console.log("请求参数：" + data)
 
-        this.axios.post(this.global.apiSrc + "/enterprise/discontinuationEnterprises",data)
+        this.axios.post(this.global.apiSrc + "/enterprise/discontinuationEnterprises", data)
           .then(response => {
             console.log("1111请求参数：" + data)
             console.log(response)
@@ -356,7 +370,7 @@
     }
     .adsearch {
       position: absolute;
-      top:0;
+      top: 0;
       right: -310px;
       transition: all 0.3s ease-in;
     }

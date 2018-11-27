@@ -200,7 +200,32 @@
         this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
         let qs = require("qs");
-        let data = qs.stringify(this.persnneladd);
+        let data = qs.stringify({
+          employeeNo: this.persnneladd.employeeNo,
+          name:this.persnneladd.name,
+          gender:this.persnneladd.gender,
+          birthday:this.persnneladd.birthday,
+          phone:this.persnneladd.phone,
+          position:this.persnneladd.position,
+          organizeCode:this.persnneladd.organizeCode,
+          organizationName :this.persnneladd.organizationName,
+          enterpriseId  :this.persnneladd.enterpriseId,
+          workType:this.persnneladd.workType,
+          entryTime:this.persnneladd.entryTime,
+          email:this.persnneladd.email,
+          marital:this.persnneladd.marital,
+          idCardNo:this.persnneladd.idCardNo,
+          workingYears:this.persnneladd.workingYears,
+          height:this.persnneladd.height,
+          nativePlace:this.persnneladd.nativePlace,
+          nationality:this.persnneladd.nationality,
+          postalAddress:this.persnneladd. postalAddress,
+          graduateSchool:this.persnneladd. graduateSchool,
+          degree:this.persnneladd.degree,
+          img:this.persnneladd.img,
+          qualificationInfo:this.persnneladd.qualificationInfo,
+          roleId:this.persnneladd.roleId
+        });
         this.axios
           .post(this.global.apiSrc+"/employee/add", data)
           .then(response => {
