@@ -154,107 +154,105 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-        this.axios
-          .post(this.global.apiSrc+"/employee/enableOrDisable", data)
-          .then(response => {
-            if (response.data.msg ==="成功"){
-              alert("成功");
-              this.load();
-            }else{
-              alert("失败");
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      },
-      enable() {
-        let qs = require("qs");
-        let data = qs.stringify({
-          employeeIds: this.userIds,
-          enableOrDisable: 0
-        });
-        this.axios
-          .post(this.global.apiSrc+"/employee/enableOrDisable", data)
-          .then(response => {
-            if (response.data.msg ==="成功"){
-              alert("成功");
-              this.load();
-            }else{
-              alert("失败");
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      },
-      selectGroupChange(selection) {
-        this.userIds = "";
-        for (let i = 0; i < selection.length; i++) {
-          if (this.userIds == "") {
-            this.userIds += selection[i].id;
-          } else {
-            this.userIds += "," + selection[i].id;
-          }
-        }
-      }
-      // console.log(this.userIds);
-      // console.log("select-aLL", selection);
-    },
-    selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
-    },
-    getTableData() {
-      this.tableData = this.tableDate.slice(
-        (this.pageIndex - 1) * this.pageSize,
-        this.pageIndex * this.pageSize
-      );
-    },
-    pageChange(pageIndex) {
-      this.pageIndex = pageIndex;
-      this.getTableData();
-      // console.log(pageIndex);
-    },
-    pageSizeChange(pageSize) {
-      this.pageIndex = 1;
-      this.pageSize = pageSize;
-      this.getTableData();
-    },
-    sortChange(params) {
-      if (params.height.length > 0) {
-        this.tableConfig.tableData.sort(function(a, b) {
-          if (params.height === "asc") {
-            return a.height - b.height;
-          } else if (params.height === "desc") {
-            return b.height - a.height;
-          } else {
-            return 0;
-          }
-        });
-      }
-    },
-    load() {
       this.axios
-        .get(this.global.apiSrc + "/employee/findEmployeeList", {
-          params: { page: this.pageIndex, size: 10 }
-        })
+        .post(this.global.apiSrc + "/employee/enableOrDisable", data)
         .then(response => {
-          this.tableData = response.data.data.content;
-          // console.log(this.tableData);
-          for (let i in this.tableData) {
-            this.tableData[i].state === -1
-              ? (this.tableData[i].state = "禁用")
-              : (this.tableData[i].state = "正常");
+          if (response.data.msg === "成功") {
+            alert("成功");
+            this.load();
+          } else {
+            alert("失败");
           }
-          this.tableDate = this.tableData;
-          // console.log(this.tableData);
         })
         .catch(function(error) {
           console.log(error);
         });
+    },
+    enable() {
+      let qs = require("qs");
+      let data = qs.stringify({
+        employeeIds: this.userIds,
+        enableOrDisable: 0
+      });
+      this.axios
+        .post(this.global.apiSrc + "/employee/enableOrDisable", data)
+        .then(response => {
+          if (response.data.msg === "成功") {
+            alert("成功");
+            this.load();
+          } else {
+            alert("失败");
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    selectGroupChange(selection) {
+      this.userIds = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.userIds == "") {
+          this.userIds += selection[i].id;
+        } else {
+          this.userIds += "," + selection[i].id;
+        }
+      }
+    }
+    // console.log(this.userIds);
+    // console.log("select-aLL", selection);
+  },
+  selectChange(selection, rowData) {
+    console.log("select-change", selection, rowData);
+  },
+  getTableData() {
+    this.tableData = this.tableDate.slice(
+      (this.pageIndex - 1) * this.pageSize,
+      this.pageIndex * this.pageSize
+    );
+  },
+  pageChange(pageIndex) {
+    this.pageIndex = pageIndex;
+    this.getTableData();
+    // console.log(pageIndex);
+  },
+  pageSizeChange(pageSize) {
+    this.pageIndex = 1;
+    this.pageSize = pageSize;
+    this.getTableData();
+  },
+  sortChange(params) {
+    if (params.height.length > 0) {
+      this.tableConfig.tableData.sort(function(a, b) {
+        if (params.height === "asc") {
+          return a.height - b.height;
+        } else if (params.height === "desc") {
+          return b.height - a.height;
+        } else {
+          return 0;
+        }
+      });
     }
   },
-
+  load() {
+    this.axios
+      .get(this.global.apiSrc + "/employee/findEmployeeList", {
+        params: { page: this.pageIndex, size: 10 }
+      })
+      .then(response => {
+        this.tableData = response.data.data.content;
+        // console.log(this.tableData);
+        for (let i in this.tableData) {
+          this.tableData[i].state === -1
+            ? (this.tableData[i].state = "禁用")
+            : (this.tableData[i].state = "正常");
+        }
+        this.tableDate = this.tableData;
+        // console.log(this.tableData);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
   created() {
     this.load();
   }
