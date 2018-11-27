@@ -275,18 +275,18 @@
           deviceClassify: this.sizeForm.deviceClassify,
           deviceClassifyName: this.sizeForm.deviceClassifyName,
           deviceSpec: this.sizeForm.deviceSpec,
-        //  outputDate: this.sizeForm.outputDate,
+          outputDate: this.sizeForm.outputDate,
           manufacturer: this.sizeForm.manufacturer,
           location: this.sizeForm.location,
           locationNo: this.sizeForm.locationNo,
           buyPrice: this.sizeForm.buyPrice,
-         // buyDate: this.sizeForm.buyDate,
+          buyDate: this.sizeForm.buyDate,
           deviceCategory: this.sizeForm.deviceCategory,
           deviceCategoryName: this.sizeForm.deviceCategoryName,
           deviceModel: this.sizeForm.deviceModel,
           deviceState: this.sizeForm.deviceState,
           organizeCode: this.sizeForm.organizeCode,
-          //enterFactoryDate: this.sizeForm.enterFactoryDate,
+          enterFactoryDate: this.sizeForm.enterFactoryDate,
           deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
           devicePersonnelInfo: this.sizeForm.devicePersonnelInfo,
 
@@ -332,7 +332,6 @@
             console.log(result.data);
             this.sizeForm = result.data.data;
             if(this.sizeForm.buyDate != null){
-
               this.sizeForm.buyDate = this.sizeForm.buyDate.split("T")[0].replace(/-/g, "/");
               console.log("buyDAte"+this.sizeForm.buyDate);
             }
@@ -387,6 +386,8 @@
       this.c = this.$store.state.equipment.person;
       console.log("当前设备ID" + this.c.id);
       this.detail(this.c.id);
+      let id = this.$route.params.id;
+      console.log("letid:"+id);
     }
   };
 </script>
