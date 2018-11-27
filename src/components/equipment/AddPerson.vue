@@ -11,21 +11,60 @@
         <div class="left">
           <h5>组织机构</h5>
           <div class="treeCase">
-            <el-tree :data="data2" node-key="id" :default-expanded-keys="[2, 3]" :default-checked-keys="[5]" :props="defaultProps">
+            <el-tree
+              :data="data2"
+              node-key="id"
+              default-expand-all
+              @node-click="handleNodeClick"
+              :expand-on-click-node="false"
+              :props="defaultProps"
+            >
+              <span
+                class="custom-tree-node"
+                slot-scope="{ node, data }"
+              >
+                <span class="listcontent">{{ data.name }}</span>
+              </span>
             </el-tree>
           </div>
         </div>
         <div class="center">
           <div class="search">
-            <el-input type="search" size="mini" style="width:30%;"></el-input>
+            <el-input
+              type="search"
+              size="mini"
+              style="width:30%;"
+            ></el-input>
             <el-button size="mini">搜索</el-button>
             <span style="padding:0 10px;">最近搜索：</span>
             <span style="text-decoration: underline;"></span>
           </div>
           <div class="tableList">
-            <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;min-height:250px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange"></v-table>
-            <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-              <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="50" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-table
+              is-vertical-resize
+              is-horizontal-resize
+              :vertical-resize-offset='100'
+              column-width-drag
+              :multiple-sort="false"
+              style="width:100%;min-height:250px;"
+              :columns="columns"
+              :table-data="tableData"
+              row-hover-color="#eee"
+              row-click-color="#edf7ff"
+              :select-all="selectALL"
+              :select-group-change="selectGroupChange"
+            ></v-table>
+            <div
+              class="mt20 mb20 bold"
+              style="text-align:center;margin-top:30px"
+            >
+              <v-pagination
+                @page-change="pageChange"
+                @page-size-change="pageSizeChange"
+                :total="50"
+                :page-size="pageSize"
+                :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
+              ></v-pagination>
             </div>
           </div>
         </div>
@@ -34,7 +73,10 @@
           <el-button size="mini">保存</el-button>
           <div class="personList">
             <ul>
-              <li v-for="(item, index) in personListValue" :key="index">{{item}}
+              <li
+                v-for="(item, index) in personListValue"
+                :key="index"
+              >{{item}}
                 <span>x</span>
               </li>
             </ul>
@@ -224,6 +266,9 @@ export default {
     };
   },
   methods: {
+    handleNodeClick(data) {
+      console.log(data);
+    },
     isHide() {
       this.$emit("isHide", false);
     },
@@ -257,28 +302,43 @@ export default {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+    },
+    filterArray(data, parent) {
+      let vm = this;
+      var tree = [];
+      var temp;
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].parentCode == parent) {
+          var obj = data[i];
+          temp = this.filterArray(data, data[i].code);
+          if (temp.length > 0) {
+            obj.children = temp;
+          }
+          tree.push(obj);
+        }
+      }
+      return tree;
     }
   },
-  created(){
-
-      //axios
-      this.axios
-      .get(this.global.apiSrc+"/organize/allOrganize/321")
-        //.get("api/organize/allOrganize/321")
-        .then(result => {
-          console.log("查询所有组织机构");
-          console.log(result.data);
-
-          console.log(result.data.data);
-          //this.data2 = this.filterArray(result.data.data,1000);
-          this.data2 = result.data.data;
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(this.userName);
-        });
-    }
-
+  created() {
+    //axios
+    this.axios
+      .get(this.global.apiSrc + "/organize/allOrganize")
+      //.get("api/organize/allOrganize/321")
+      .then(result => {
+        console.log("查询所有组织机构");
+        console.log(result.data);
+        console.log(result.data.data);
+        let arr = this.filterArray(result.data.data, 0);
+        console.log(arr);
+        //this.data2 = this.filterArray(result.data.data,1000);
+        this.data2 = arr;
+      })
+      .catch(err => {
+        console.log(err);
+        console.log(this.userName);
+      });
+  }
 };
 </script>
 
@@ -341,8 +401,8 @@ export default {
           left: 10px;
           font-size: 14px;
         }
-        .treeCase{
-          margin-top:20px;
+        .treeCase {
+          margin-top: 20px;
         }
       }
       .center {

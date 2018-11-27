@@ -90,7 +90,8 @@
     <div class="content">
       <div class="search">
         <el-button size="small" @click="toAdd">添加</el-button>
-        <el-button size="small" @click="sort()"> 复制</el-button>
+        <el-button size="small" @click="redactShow">修改</el-button>
+        <el-button size="small" > 复制</el-button>
         <el-button size="small" @click="edelete">删除</el-button>
         <div class="searchright">
           <span>关键字：</span>
@@ -172,7 +173,7 @@ export default {
           title: "设备名称",
           width: 100,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true
         },
         {
@@ -188,7 +189,7 @@ export default {
           title: "所属部门",
           width: 90,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true
         },
         {
@@ -196,7 +197,7 @@ export default {
           title: "安装位置",
           width: 80,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true
         },
         {
@@ -204,7 +205,7 @@ export default {
           title: "设备位号",
           width: 80,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true
         },
         {
@@ -212,7 +213,7 @@ export default {
           title: "设备类别",
           width: 80,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true
         },
         {
@@ -220,7 +221,7 @@ export default {
           title: "设备型号",
           width: 80,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true
         },
         {
@@ -228,7 +229,7 @@ export default {
           title: "设备负责人",
           width: 80,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true
         }
       ]
@@ -318,20 +319,20 @@ export default {
         .then(result => {
           this.tableData = result.data.data.content;
           for(let i = 0 ;i<this.tableData.length;i++){
-            if(this.tableData.deviceState === 1){
-              this.tableData.deviceState = "在用"
+            if(this.tableData[i].deviceState === 1){
+              this.tableData[i].deviceState = "在用"
             };
-            if(this.tableData.deviceState === 2){
-              this.tableData.deviceState = "出租"
+            if(this.tableData[i].deviceState === 2){
+              this.tableData[i].deviceState = "出租"
             };
-            if(this.tableData.deviceState === 3){
-              this.tableData.deviceState = "停用"
+            if(this.tableData[i].deviceState === 3){
+              this.tableData[i].deviceState = "停用"
             };
-            if(this.tableData.deviceState === 4){
-              this.tableData.deviceState = "封存"
+            if(this.tableData[i].deviceState === 4){
+              this.tableData[i].deviceState = "封存"
             };
-            if(this.tableData.deviceState === 5){
-              this.tableData.deviceState = "报废"
+            if(this.tableData[i].deviceState === 5){
+              this.tableData[i].deviceState = "报废"
             };
           }
           console.log(result.data);

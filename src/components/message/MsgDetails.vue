@@ -15,30 +15,30 @@
             <span>消息内容：</span>
             <span>{{msgDetail.msgContent}}</span>
           </li>
-          <li>
-            <span>消息类型：</span>
-            <span>{{msgDetail.msgType}}</span>
-          </li>
+          <!--<li>-->
+            <!--<span>消息类型：</span>-->
+            <!--<span>{{msgDetail.msgType}}</span>-->
+          <!--</li>-->
           <li>
             <span>发送时间：</span>
             <span>{{msgDetail.gmtCreate}}</span>
           </li>
           <li>
-            <span>接收对象：</span>
-            <span>
-              <table>
-                <thead>
-                  <th>姓名</th>
-                  <th>状态</th>
-                  <th>阅读时间</th>
-                </thead>
-                <tr v-for="(item, index) in tableData" :key="index">
-                  <td>{{item.name}}</td>
-                  <td>{{item.address}}</td>
-                  <td>{{item.date}}</td>
-                </tr>
-              </table>
-            </span>
+            <!--<span>接收对象：</span>-->
+            <!--<span>-->
+              <!--<table>-->
+                <!--<thead>-->
+                  <!--<th>姓名</th>-->
+                  <!--<th>状态</th>-->
+                  <!--<th>阅读时间</th>-->
+                <!--</thead>-->
+                <!--<tr v-for="(item, index) in tableData" :key="index">-->
+                  <!--<td>{{item.name}}</td>-->
+                  <!--<td>{{item.address}}</td>-->
+                  <!--<td>{{item.date}}</td>-->
+                <!--</tr>-->
+              <!--</table>-->
+            <!--</span>-->
           </li>
         </ul>
       </div>

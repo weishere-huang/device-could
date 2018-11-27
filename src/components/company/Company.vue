@@ -100,7 +100,7 @@ export default {
       pageIndex: 1,
       pageSize: 10,
       name: "",
-      totalNub: "",
+      totalNub: 1,
       tableData: [
         {
           name: "",
@@ -168,9 +168,17 @@ export default {
     businessDetails,
     audit
   },
+
   methods: {
+    auditByValue: function(params) {
+      this.auditShow = params;
+    },
+    childByValue: function(params) {
+      this.detailsShow = params;
+    },
     advanceValue: function(params) {
-      this.tableData = params;
+      this.tableData = params.content;
+      this.totalNub = params.totalElements;
     },
     replace() {
       location.reload();
@@ -179,14 +187,14 @@ export default {
       if (this.auditValue === "") {
         alert("请选择一个企业");
       } else {
-        this.auditShow = true;
+        this.choice += "," + selection[i].id;
       }
     },
-    auditByValue: function(params) {
-      this.auditShow = params;
+    selectALL(selection) {
+      console.log("select-aLL", selection);
     },
-    childByValue: function(params) {
-      this.detailsShow = params;
+    selectChange(selection, rowData) {
+      console.log("select-change", selection, rowData);
     },
     details(rowIndex, rowData, column) {
       this.detailsShow = true;
@@ -206,12 +214,6 @@ export default {
       }
       console.log(this.choice);
       console.log(this.auditValue);
-    },
-    selectALL(selection) {
-      console.log("select-aLL", selection);
-    },
-    selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
     },
     getTableData() {
       this.tableData = this.tableDate.slice(
@@ -269,6 +271,9 @@ export default {
             if (response.data.data.content[i].state === 10) {
               response.data.data.content[i].state = "未通过";
             }
+            if (response.data.data.content[i].state === 11) {
+              response.data.data.content[i].state = "待办审核";
+            }
           }
           this.tableData = response.data.data.content;
           this.tableDate = response.data.data.content;
@@ -277,7 +282,6 @@ export default {
           console.log(error);
         });
     },
-
     findByName() {
       this.axios
         .get(this.global.apiSrc + "/enterprise/findByNameOrState", {

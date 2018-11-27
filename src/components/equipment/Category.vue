@@ -105,16 +105,16 @@ export default {
     };
   },
   methods: {
-    renderContent(h, { node, data, store }) {
-        return (
-          <span class="custom-tree-node">
-            <span>{node.label}</span>
-            <span>
-              <el-button size="mini" type="text" on-click={ () => this.append(data) }>Append</el-button>
-              <el-button size="mini" type="text" on-click={ () => this.remove(node, data) }>Delete</el-button>
-            </span>
-          </span>);
-      },
+    // renderContent(h, { node, data, store }) {
+    //     return (
+    //       <span class="custom-tree-node">
+    //         <span>{node.label}</span>
+    //         <span>
+    //           <el-button size="mini" type="text" on-click={ () => this.append(data) }>Append</el-button>
+    //           <el-button size="mini" type="text" on-click={ () => this.remove(node, data) }>Delete</el-button>
+    //         </span>
+    //       </span>);
+    //   },
     append(data) {
       const newChild = { id: id++, label: "testtest", children: [] };
       if (!data.children) {
@@ -157,10 +157,24 @@ export default {
         }
       }
       return tree;
-    }
+    },
+    findAlldeviceClassify(){
+      let qs = require("qs");
+      let data = qs.stringify({
+      });
+      this.axios
+        .get(this.global.apiSrc + "/deviceCategory/all", data)
+        .then(result => {
+          console.log("findAlldeviceClassify");
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
   },
   created() {
-    this.allOrganize();
+    this.findAlldeviceClassify();
   }
 };
 </script>

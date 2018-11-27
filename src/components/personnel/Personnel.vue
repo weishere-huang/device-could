@@ -145,6 +145,7 @@ export default {
       ]
     };
   },
+
   methods: {
     search() {
       this.axios
@@ -172,6 +173,11 @@ export default {
         path: "/PersnnelAdd"
       });
     },
+    PersnnelAdd() {
+      this.$router.push({
+        path: "/PersnnelAdd"
+      });
+    },
     modefication(rowIndex, rowData, column) {
       this.$router.push({
         path: "/Modification"
@@ -184,14 +190,6 @@ export default {
         employeeIds: this.userIds,
         enableOrDisable: 1
       });
-      this.axios
-        .post(this.global.apiSrc + "/employee/enableOrDisable", data)
-        .then(response => {
-          this.load();
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
       this.axios
         .post(this.global.apiSrc + "/employee/enableOrDisable", data)
         .then(response => {
@@ -227,8 +225,15 @@ export default {
         });
     },
     selectALL(selection) {
-        console.log(selection);
-      },
+      this.userIds = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.userIds === "") {
+          this.userIds += selection[i].id;
+        } else {
+          this.userIds += "," + selection[i].id;
+        }
+      }
+    },
     selectGroupChange(selection) {
       this.userIds = "";
       for (let i = 0; i < selection.length; i++) {
@@ -239,8 +244,25 @@ export default {
         }
       }
     },
-    // console.log(this.userIds);
-    // console.log("select-aLL", selection);
+    load() {
+      this.axios
+        .get(this.global.apiSrc + "/employee/findEmployeeList", {
+          params: { page: this.pageIndex, size: 10 }
+        })
+        .then(response => {
+          this.tableData = response.data.data.content;
+          // console.log(this.tableData);
+          for (let i in this.tableData) {
+            this.tableData[i].state === -1
+              ? (this.tableData[i].state = "禁用")
+              : (this.tableData[i].state = "正常");
+          }
+          this.tableDate = this.tableData;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
 
     selectChange(selection, rowData) {
       console.log("select-change", selection, rowData);
@@ -295,6 +317,7 @@ export default {
         });
     }
   },
+
   created() {
     this.load();
   }
