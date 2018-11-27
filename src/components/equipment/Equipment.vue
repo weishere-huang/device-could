@@ -252,7 +252,14 @@ export default {
     },
     selectGroupChange(selection) {
       console.log("select-group-change", selection);
-      this.ids = selection[0].id;
+      this.ids = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.ids != "") {
+          this.ids += "," + selection[i].id;
+        } else {
+          this.ids += selection[i].id
+        }
+      }
       console.log(this.ids);
     },
     selectALL(selection) {
@@ -354,6 +361,9 @@ export default {
         //.get("api/device/findDeviceState",{params:{deviceId:ids}})
         .get(this.global.apiSrc + "/device/findDeviceState")
         .then(result => {
+          let arr = new Array();
+          arr= result.data.data;
+          console.log(arr);
           console.log(result.data);
         })
         .catch(err => {
@@ -422,10 +432,15 @@ export default {
         });
     },
     edelete() {
+      let qs = require("qs");
+      let data = qs.stringify({
+        deviceIds:this.ids
+      });
       this.axios
-        .post(this.global.apiSrc + "/device/delete", {params:{deviceId:this.ids}})
+        .post(this.global.apiSrc + "/device/delete", data)
         .then(result => {
-          //this.findall();
+          this.findall();
+          alert("删除成功");
           console.log("delete");
           console.log(result.data);
         })

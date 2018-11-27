@@ -37,16 +37,16 @@
         <el-form label-width="110px" v-if="companyName.planType==='周期'" v-model="companyName.planType">
           <el-form-item label="计划日期：">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.startTime"  format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.startTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
             </el-col>
             <el-col class="line" :span="2">~</el-col>
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.endTime" format="yyyy/MM/dd"  value-format="yyyy/MM/dd" style="width: 100%;" size="mini"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.endTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;" size="mini"></el-date-picker>
             </el-col>
           </el-form-item>
           <el-form-item label="首次执行时间：">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="date"  format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" v-model="date" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
             </el-col>
             <el-col class="line" :span="2">-</el-col>
             <el-col :span="11">
@@ -75,7 +75,7 @@
         <el-form label-width="110px" v-if="companyName.planType==='单次'" v-model="companyName.planType">
           <el-form-item label="计划日期：">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期"  format="yyyy/MM/dd" v-model="companyName.startTime" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" format="yyyy/MM/dd" v-model="companyName.startTime" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
             </el-col>
           </el-form-item>
           <el-form-item label="首次执行时间：">

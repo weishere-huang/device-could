@@ -29,6 +29,7 @@ export default {
       pageSize: 10,
       userIds: "",
       tableData: [],
+      totalNub:"",
       tableDate: [],
       columns: [
         {
@@ -39,7 +40,7 @@ export default {
         },
         {
           field: "id",
-          title: "企业名臣",
+          title: "企业名称",
           width: 40,
           titleAlign: "center",
           columnAlign: "center",
@@ -167,6 +168,7 @@ export default {
       }
     },
     load() {
+
 
       this.axios
         .get(this.global.apiSrc+"/user/all",{params:{page:this.pageIndex,size:this.pageSize}})

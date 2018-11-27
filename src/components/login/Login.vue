@@ -207,12 +207,13 @@ export default {
         });
     },
     register() {
-      this.manager.userPassword = md5(this.manager.userPassword);
+      let pass=this.manager.userPassword
+       pass= md5(pass);
       // alert(this.manager.userPassword);
       console.log(this.manager.userPassword);
       let key = "*chang_hong_device_cloud";
-      this.manager.userPassword = this.encryptByDES(
-        this.manager.userPassword,
+      pass = this.encryptByDES(
+        pass,
         key
       );
       // alert(this.manager.userPassword)
@@ -226,7 +227,7 @@ export default {
         creditCode: this.company.companyID,
         businessLicenseImg: "img",
         userName: this.manager.userName,
-        passWord: this.manager.userPassword,
+        passWord: pass,
         phone: this.manager.phone,
 
         returnForget() {
@@ -265,7 +266,7 @@ export default {
           if (this.manager.phone == "") {
             console.log("请输入管理员联系电话");
           } else {
-            location.reload();
+            location.reload()
           }
         })
         .catch(err => {

@@ -3,7 +3,7 @@
     <div class="case">
       <div style="float:left">
         <h5>类别名称</h5>
-        <el-tree :data="data5"  node-key="id" default-expand-all :expand-on-click-node="false">
+        <el-tree :data="organize" :props="defaultProps" node-key="id" default-expand-all :expand-on-click-node="false">
           <span class="custom-tree-node" slot-scope="{ node, data }">
             <span>{{ node.label }}</span>
             <span class="addCase">
@@ -30,7 +30,7 @@
             <el-input type="textarea" v-model="form.desc"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button  size="mini">保存</el-button>
+            <el-button size="mini">保存</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -92,13 +92,29 @@ export default {
       }
     ];
     return {
-
-      data5: JSON.parse(JSON.stringify(data))
-
-    
+      organize: "",
+      // data5: this.organize,
+      form: {
+        name: "",
+        desc: ""
+      },
+      defaultProps: {
+        children: "children",
+        label: "name"
+      }
     };
   },
   methods: {
+    renderContent(h, { node, data, store }) {
+        return (
+          <span class="custom-tree-node">
+            <span>{node.label}</span>
+            <span>
+              <el-button size="mini" type="text" on-click={ () => this.append(data) }>Append</el-button>
+              <el-button size="mini" type="text" on-click={ () => this.remove(node, data) }>Delete</el-button>
+            </span>
+          </span>);
+      },
     append(data) {
       const newChild = { id: id++, label: "testtest", children: [] };
       if (!data.children) {
@@ -115,13 +131,11 @@ export default {
     },
     allOrganize() {
       this.axios
-      //axios
+        //axios
         .get(this.global.apiSrc+"/organize/allOrganize/321")
-       // .get("api/organize/allOrganize/321")
+        // .get("api/organize/allOrganize/321")
         .then(result => {
-          console.log("查询所有组织机构");
-          console.log(result.data.data);
-          this.data = this.filterArray(result.data.data,1000);
+          this.organize = this.filterArray(result.data.data, 0);
         })
         .catch(err => {
           console.log(err);
@@ -135,7 +149,7 @@ export default {
       for (var i = 0; i < data.length; i++) {
         if (data[i].parentCode == parent) {
           var obj = data[i];
-          temp = this.filterArray(data, data[i].id);
+          temp = this.filterArray(data, data[i].code);
           if (temp.length > 0) {
             obj.children = temp;
           }
@@ -143,10 +157,10 @@ export default {
         }
       }
       return tree;
-    },
+    }
   },
-  created(){
-    this.allOrganize()
+  created() {
+    this.allOrganize();
   }
 };
 </script>
@@ -196,7 +210,6 @@ export default {
         .el-form-item__content {
           width: 100%;
         }
-        
       }
     }
   }
