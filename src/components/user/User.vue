@@ -32,7 +32,10 @@
         pageIndex: 1,
         pageSize: 10,
         userIds: "",
-        tableData: [],
+        tableData: [{
+          companyName: "",
+          
+        }],
         totalNub: "",
         tableDate: [],
         columns: [
@@ -172,13 +175,12 @@
         }
       },
       load() {
-
         this.axios
           .get(this.global.apiSrc + "/user/enterpriseUserAll", {params: {page: this.pageIndex, size: this.pageSize}})
           .then(response => {
             console.log(response);
             this.totalNub = response.data.data.totalElements
-            this.tableData = response.data.data;
+            this.tableData = response.data.data.content;
             for (let i = 0; i < this.tableData.length; i++) {
               this.tableData[i].gmtCreate = this.tableData[i].gmtCreate.split("T")[0];
               if (this.tableData[i].state === 0) {

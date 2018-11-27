@@ -159,6 +159,14 @@
         console.log(this.auditValue);
       },
       selectALL(selection) {
+        this.choice = "";
+        for(let i= 0 ;i<selection.length; i++){
+          if(this.choice ==""){
+            this.choice = selection[i].id;
+          }else{
+            this.choice += ","+selection[i].id;
+          }
+        }
         console.log("select-aLL", selection);
       },
       selectChange(selection, rowData) {
@@ -180,6 +188,7 @@
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
+        this.load()
       },
       sortChange(params) {
         if (params.height.length > 0) {
