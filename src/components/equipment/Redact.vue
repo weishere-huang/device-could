@@ -267,27 +267,27 @@
           deviceClassify: this.sizeForm.deviceClassify,
           deviceClassifyName: this.sizeForm.deviceClassifyName,
           deviceSpec: this.sizeForm.deviceSpec,
-          // outputDate: this.sizeForm.outputDate,
+        //  outputDate: this.sizeForm.outputDate,
           manufacturer: this.sizeForm.manufacturer,
           location: this.sizeForm.location,
           locationNo: this.sizeForm.locationNo,
           buyPrice: this.sizeForm.buyPrice,
-          // buyDate: this.sizeForm.buyDate,
+         // buyDate: this.sizeForm.buyDate,
           deviceCategory: this.sizeForm.deviceCategory,
           deviceCategoryName: this.sizeForm.deviceCategoryName,
           deviceModel: this.sizeForm.deviceModel,
           deviceState: this.sizeForm.deviceState,
-          // gmtModified: this.sizeForm.gmtModified,
           organizeCode: this.sizeForm.organizeCode,
-          // enterFactoryDate: this.sizeForm.enterFactoryDate,
+          //enterFactoryDate: this.sizeForm.enterFactoryDate,
           deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
-          devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo),
+          devicePersonnelInfo: this.sizeForm.devicePersonnelInfo,
 
         });
 
         this.axios
         .post(this.global.apiSrc+"/device/update", data)
           .then(result => {
+            alert("修改成功");
             console.log(result);
             console.log("update");
             console.log(result.data);
@@ -317,10 +317,18 @@
             console.log("detail");
             console.log(result.data);
             this.sizeForm = result.data.data;
-            // this.sizeForm.buyDate = this.sizeForm.buyDate.split("T").replace(/-/g, "/");
-            // this.sizeForm.enterFactoryDate = this.sizeForm.enterFactoryDate.split("T").replace(/-/g, "/");
-            // this.sizeForm.gmtModified = this.sizeForm.gmtModified.split("T").replace(/-/g, "/");
-            // this.sizeForm.outputDate = this.sizeForm.outputDate.split("T").replace(/-/g, "/");
+            if(this.sizeForm.buyDate != null){
+
+              this.sizeForm.buyDate = this.sizeForm.buyDate.split("T")[0].replace(/-/g, "/");
+              console.log("buyDAte"+this.sizeForm.buyDate);
+            }
+            if(this.sizeForm.buyDate != null){
+              this.sizeForm.enterFactoryDate = this.sizeForm.enterFactoryDate.split("T")[0].replace(/-/g, "/");
+            }
+            if(this.sizeForm.buyDate != null){
+              this.sizeForm.outputDate = this.sizeForm.outputDate.split("T")[0].replace(/-/g, "/");
+            }
+
           })
           .catch(err => {
             console.log(err);

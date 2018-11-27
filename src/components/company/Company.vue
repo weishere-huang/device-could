@@ -273,6 +273,7 @@
         // axios.post("/api/enterprise/enableEnterprises/", data)
           .then(response => {
             alert("启用成功")
+            // this.message("启用成功")
             this.load()
             console.log("请求参数：" + data)
           })

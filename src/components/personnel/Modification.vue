@@ -280,8 +280,12 @@
         this.axios
           .post(this.global.apiSrc+"/employee/update",data)
           .then(response => {
-            this.Personnel();
-            console.log(response.data.msg);
+            if (response.data.msg ==="成功"){
+              alert("成功");
+              this.Personnel();
+            }else{
+              alert("失败");
+            }
           })
           .catch(function(error) {
             console.log(error);

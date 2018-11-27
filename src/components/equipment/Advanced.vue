@@ -18,7 +18,7 @@
                 </el-form>
             </div>
             <div style="padding-left:9px;">
-                <label for="">设备状态：</label>
+                <label for="">设备状况：</label>
                 <div style="margin-top:10px;">
                     <el-checkbox-group v-model="checkList">
                         <el-checkbox label="0">在用</el-checkbox>
@@ -49,7 +49,7 @@ export default {
       workerName:"",
       manufacturer:"",
       deviceCategory:"",
-
+      choice:[],
       checkList: [],
       state: []
     };
@@ -59,17 +59,42 @@ export default {
       this.$emit("isHide", "-310px");
     },
     search() {
-      axios
-        .get("device/select", {
+      this.choice = "";
+      for(let i= 0 ;i<this.checkList.length; i++){
+        if(this.choice ==""){
+          this.choice = this.checkList[i];
+        }else{
+          this.choice += ","+this.checkList[i];
+        }
+      }
+      this.axios
+        .get(this.global.apiSrc+"device/select", {
           params: {
             deviceName:this.deviceName,
             locationNo:this.locationNo,
             workerName:this.workerName,
             manufacturer:this.manufacturer,
-            deviceCategory:this.checkList
+            deviceCategory:this.choice
           }
         })
         .then(response => {
+          for (let i = 0; i < response.data.data.content.length; i++) {
+            if (response.data.data.content[i].deviceState === 0) {
+              response.data.data.content[i].deviceState = "在用";
+            }
+            if (response.data.data.content[i].deviceState === 1) {
+              response.data.data.content[i].deviceState = "停运";
+            }
+            if (response.data.data.content[i].deviceState === 2) {
+              response.data.data.content[i].deviceState = "出租";
+            }
+            if (response.data.data.content[i].deviceState === 3) {
+              response.data.data.content[i].deviceState = "封存";
+            }
+            if (response.data.data.content[i].deviceState === 4) {
+              response.data.data.content[i].deviceState = "报废";
+            }
+          }
           console.log(response.data);
           document.querySelectorAll(".adsearch")[0].style.right = "-310px";
           this.dataName = response.data.data.content;

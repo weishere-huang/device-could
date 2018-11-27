@@ -209,7 +209,7 @@ export default {
         size: this.pageSize
       });
       axios
-        .get("/api/user/all", data)
+        .get(this.global.apiSrc+"/user/all", data)
         .then(response => {
           this.tableData = response.data.data;
           this.tableDate = response.data.data;
