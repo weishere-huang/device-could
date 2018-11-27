@@ -58,7 +58,7 @@
             </el-form-item>
             <el-form-item label="出厂日期">
               <el-col :span="11">
-                <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.outputDate"
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="sizeForm.outputDate"
                                 style="width: 215px;"></el-date-picker>
               </el-col>
             </el-form-item>
@@ -133,13 +133,13 @@
           </el-form-item>
           <el-form-item label="购买日期">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.buyDate"
+              <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="sizeForm.buyDate"
                               style="width: 215px;"></el-date-picker>
             </el-col>
           </el-form-item>
           <el-form-item label="入厂日期">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.enterFactoryDate"
+              <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="sizeForm.enterFactoryDate"
                               style="width: 215px;"></el-date-picker>
             </el-col>
           </el-form-item>
@@ -188,19 +188,23 @@
         options2: [
           {
             value: "1",
-            label: "1"
+            label: "生产设备"
           },
           {
             value: "2",
-            label: "2"
+            label: "非生产设备"
           },
           {
             value: "3",
-            label: "3"
+            label: "辅助生产设备"
           },
           {
             value: "4",
-            label: "4"
+            label: "检验检测设备"
+          },
+          {
+            value: "5",
+            label: "其他设备"
           },
         ],
         options3: [
@@ -224,20 +228,24 @@
         options4: [
           {
             value: "1",
-            label: "1"
+            label: "在用"
           },
           {
             value: "2",
-            label: "2"
+            label: "出租"
           },
           {
             value: "3",
-            label: "3"
+            label: "停用"
           },
           {
             value: "4",
-            label: "4"
+            label: "封存"
           },
+          {
+            value: "5",
+            label: "报废"
+          }
         ],
 
       };

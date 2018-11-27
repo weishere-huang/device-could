@@ -206,6 +206,7 @@
       // console.log(this.userIds);
       // console.log("select-aLL", selection);
 
+
       selectChange(selection, rowData) {
         console.log("select-change", selection, rowData);
       },
@@ -259,8 +260,6 @@
           });
       }
     },
-
-
     created() {
       this.load();
     }
