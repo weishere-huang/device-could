@@ -197,10 +197,10 @@ export default {
             this.userIds += "," + selection[i].id;
           }
         }
-      }
+      },
       // console.log(this.userIds);
       // console.log("select-aLL", selection);
-    },
+
     selectChange(selection, rowData) {
       console.log("select-change", selection, rowData);
     },
