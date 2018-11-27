@@ -3,7 +3,6 @@
         <div class="top">
             <el-button size="small" @click="toBack">返回</el-button>
           <el-button size="small" @click="addPlan">保存</el-button>
-          <el-button size="small" @click="test">测试</el-button>
         </div>
         <div class="bottom">
             <div class="left">
@@ -76,12 +75,12 @@
                 <el-form label-width="110px" v-if="companyName.planType==='单次'" v-model="companyName.planType">
                     <el-form-item label="计划日期：">
                         <el-col :span="11">
-                            <el-date-picker type="date" placeholder="选择日期" format="yyyy/MM/dd" v-model="companyName.startTime" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+                            <el-date-picker type="date" placeholder="选择日期" format="yyyy/MM/dd" value-format="yyyy/MM/dd" v-model="companyName.startTime" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
                         </el-col>
                     </el-form-item>
                     <el-form-item label="首次执行时间：">
                         <el-col :span="11">
-                            <el-date-picker type="date" placeholder="选择日期" format="yyyy/MM/dd" v-model="date" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+                            <el-date-picker type="date" placeholder="选择日期" format="yyyy/MM/dd" value-format="yyyy/MM/dd"  v-model="date" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
                         </el-col>
                         <el-col class="line" :span="2">-</el-col>
                         <el-col :span="11">
@@ -119,14 +118,12 @@ export default {
   name: "",
   data() {
     return {
-      userId:3,
       deviceIds:1,
       date:"",
       times:"",
       addPlanShow: false,
       time: new Date().toLocaleString(),
       companyName: {
-        id:"",
         planName:"",
         maintenanceClassify:"",
         maintenanceLevel:"",
@@ -204,17 +201,6 @@ export default {
   },
   created() {},
   methods: {
-    test(){
-      console.log(this.companyName.startTime);
-      console.log("executeTime:"+this.companyName.executeTime);
-      console.log("endTime:"+this.companyName.endTime);
-      this.companyName.executeTime = this.date +" "+ this.times;
-      this.companyName.executeTime = this.companyName.executeTime.split(".")[0].replace(/-/g,"/");
-      this.companyName.startTime = this.companyName.startTime.split("T")[0].replace(/-/g,"/");
-      console.log(this.companyName.startTime);
-      // console.log(this.companyName.executeTime);
-      // console.log(this.companyName.endTime);
-    },
     load(){
       this.axios
         .get(this.global.apiSrc+"/device/all",{params:{
@@ -231,14 +217,10 @@ export default {
     },
     addPlan(){
       this.companyName.executeTime = this.date +" "+ this.times;
-      this.companyName.executeTime = this.companyName.executeTime.split(".")[0].replace(/-/g,"/");
-      // this.companyName.startTime = this.companyName.startTime.split("T")[0].replace(/-/g,"/");
-      // if(this.companyName.endTime !== ""){
-      //   this.companyName.endTime = this.companyName.endTime.split("T")[0].replace(/-/g,"/");
-      //
-      // }
+      this.companyName.executeTime = this.companyName.executeTime.split(".")[0];
       this.companyName.maintenanceType = 0;
       if(this.companyName.planType === "单次"){
+        this.companyName.endTime =this.companyName.startTime;
         this.companyName.planType = 0
       }
       if(this.companyName.planType === "周期"){
@@ -255,7 +237,6 @@ export default {
       }
       let qs = require("qs");
       let data = qs.stringify({
-        userId: this.userId,
         id:this.companyName.id,
         planName:this.companyName.planName,
         maintenanceClassify:this.companyName.maintenanceClassify,
