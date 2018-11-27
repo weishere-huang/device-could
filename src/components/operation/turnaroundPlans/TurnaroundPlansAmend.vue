@@ -99,7 +99,7 @@
       </div>
       <div class="right">
         <div>
-          <el-button size="small">清空已选</el-button>
+          <el-button size="small" @click="eliminateAll">清空已选</el-button>
           <el-button size="small" @click="amendPlanIsShow">设备添加</el-button>
         </div>
         <h5>设备列表</h5>
@@ -353,6 +353,10 @@
           }
         }
       },
+      eliminateAll(){
+        this.loadSelect();
+        this.deviceIds = "";
+      },
       selectChange(selection, rowData) {
         console.log("select-change", selection, rowData);
       },
@@ -375,7 +379,6 @@
     },
     components: {
       amendPlan
-
     }
   };
 
