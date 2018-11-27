@@ -152,12 +152,7 @@
         this.axios
           .post(this.global.apiSrc + "/employee/enableOrDisable", data)
           .then(response => {
-            if (response.data.msg === "成功") {
-              alert("成功");
-              this.load();
-            } else {
-              alert("失败");
-            }
+            this.load()
           })
           .catch(function (error) {
             console.log(error);

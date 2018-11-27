@@ -31,33 +31,7 @@
         planType:[],
         //检修级别
         planLevel:[],
-        tableData: [
-          {
-            id:"",
-            organizeCode:"",
-            organizeName:"",
-            planName:"",
-            planCode:"",
-            maintenanceClassify:"",
-            maintenanceLevel:"",
-            maintenanceType:"",
-            planType:"",
-            startTime:"",
-            endTime:"",
-            executeTime:"",
-            frequency:"",
-            frequencyType:"",
-            maintenanceCc:"",
-            reminding:"",
-            remindNum:"",
-            isReceipt:"",
-            createTime:"",
-            editorTime:"",
-            creatorId:"",
-            creator:"",
-            stat:""
-          }
-        ],
+        tableData: [],
         tableDate: [],
         columns: [
           {
