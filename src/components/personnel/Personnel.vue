@@ -124,9 +124,7 @@
               this.tableData[i].state === -1
                 ? (this.tableData[i].state = "禁用")
                 : (this.tableData[i].state = "正常");
-              this.tableData[i].entryTime = this.tableData[i].entryTime.split(
-                "T"
-              )[0];
+              this.tableData[i].entryTime = this.tableData[i].entryTime.split("T")[0];
             }
             this.tableDate = this.tableData;
           })
@@ -154,7 +152,12 @@
         this.axios
           .post(this.global.apiSrc + "/employee/enableOrDisable", data)
           .then(response => {
-            this.load();
+            if (response.data.msg === "成功") {
+              alert("成功");
+              this.load();
+            } else {
+              alert("失败");
+            }
           })
           .catch(function (error) {
             console.log(error);
@@ -196,17 +199,24 @@
       selectGroupChange(selection) {
         this.userIds = "";
         for (let i = 0; i < selection.length; i++) {
-          if (this.userIds == "") {
+          if (this.userIds === "") {
+            this.userIds += selection[i].id;
+          } else {
+            this.userIds += "," + selection[i].id;
+          }
+        }
+
+      },
+      selectALL(selection){
+        this.userIds = "";
+        for (let i = 0; i < selection.length; i++) {
+          if (this.userIds === "") {
             this.userIds += selection[i].id;
           } else {
             this.userIds += "," + selection[i].id;
           }
         }
       },
-      // console.log(this.userIds);
-      // console.log("select-aLL", selection);
-
-
       selectChange(selection, rowData) {
         console.log("select-change", selection, rowData);
       },
@@ -253,7 +263,6 @@
                 : (this.tableData[i].state = "正常");
             }
             this.tableDate = this.tableData;
-            // console.log(this.tableData);
           })
           .catch(function (error) {
             console.log(error);
