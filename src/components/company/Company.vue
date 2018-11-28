@@ -123,6 +123,8 @@
       advanceValue: function (params) {
         this.tableData = params.content;
         this.totalNub = params.totalElements;
+        this.tableDate=params.content
+
       },
       replace() {
         location.reload();

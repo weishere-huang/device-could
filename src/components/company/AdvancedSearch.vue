@@ -48,12 +48,13 @@
             this.choice += "," + this.checkList[i];
           }
         }
+
         this.axios
           .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
             params: {
               enterpriseName: this.companyName,
               state: this.choice,
-              page: this.pageIndex, size: this.pageSize
+              // page: this.pageIndex, size: this.pageSize
             }
           })
           .then(response => {
