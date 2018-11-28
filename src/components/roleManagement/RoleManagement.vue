@@ -2,7 +2,7 @@
   <div class="roleManagement">
     <div class="case">
       <div class="top">
-        <el-button size="small" @click="add">添加角色</el-button>
+        <el-button size="small" @click="add">添加</el-button>
         <el-button size="small" @click="update">保存</el-button>
       </div>
       <div class="left">
@@ -805,3 +805,4 @@
     color: #409eff;
   }
 </style>
+

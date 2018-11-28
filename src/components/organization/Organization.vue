@@ -166,7 +166,7 @@ export default {
     },
     allOrganize() {
       let arr = new Array();
-      axios
+      this.axios
         .get(this.global.apiSrc + "/organize/allOrganize")
         // .get("http://192.168.1.103:8080/organize/allOrganize")
         .then(result => {
@@ -265,7 +265,7 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .organization {
-  padding-left: 180px;
+  // padding-left: 180px;
   add {
     position: absolute;
     top: 50%;

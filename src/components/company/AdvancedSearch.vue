@@ -12,7 +12,6 @@
             <el-checkbox label="2">已禁用</el-checkbox>
             <el-checkbox label="4">审核中</el-checkbox>
             <el-checkbox label="10">未通过</el-checkbox>
-            <el-checkbox label="11">待办审核</el-checkbox>
           </el-checkbox-group>
         </div>
       </div>
@@ -48,12 +47,13 @@
             this.choice += "," + this.checkList[i];
           }
         }
+
         this.axios
           .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
             params: {
               enterpriseName: this.companyName,
               state: this.choice,
-              page: this.pageIndex, size: this.pageSize
+              // page: this.pageIndex, size: this.pageSize
             }
           })
           .then(response => {
@@ -62,6 +62,8 @@
             for (let i = 0; i < response.data.data.content.length; i++) {
               console.log(this.dataName);
               console.log(this.checkList)
+              response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+
               if (response.data.data.content[i].state === 0) {
                 response.data.data.content[i].state = "待审核";
               }
@@ -76,9 +78,6 @@
               }
               if (response.data.data.content[i].state === 10) {
                 response.data.data.content[i].state = "未通过"
-              }
-              if (response.data.data.content[i].state === 11) {
-                response.data.data.content[i].state = "待办审核"
               }
             }
             console.log(this.choice)

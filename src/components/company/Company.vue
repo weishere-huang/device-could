@@ -34,7 +34,6 @@
             @click="adsearch"
           >高级搜索</span>
         </div>
-
       </div>
       <div class="bottom">
         <div>
@@ -59,7 +58,7 @@
             <v-pagination
               @page-change="pageChange"
               @page-size-change="pageSizeChange"
-              :total="totalNub"
+              :total="this.totalNub"
               :page-size="pageSize"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
@@ -100,7 +99,7 @@ export default {
       pageIndex: 1,
       pageSize: 10,
       name: "",
-      totalNub: 1,
+      totalNub: "",
       tableData: [
         {
           name: "",
@@ -168,14 +167,7 @@ export default {
     businessDetails,
     audit
   },
-
   methods: {
-    auditByValue: function(params) {
-      this.auditShow = params;
-    },
-    childByValue: function(params) {
-      this.detailsShow = params;
-    },
     advanceValue: function(params) {
       this.tableData = params.content;
       this.totalNub = params.totalElements;
@@ -187,14 +179,14 @@ export default {
       if (this.auditValue === "") {
         alert("请选择一个企业");
       } else {
-        this.choice += "," + selection[i].id;
+        this.auditShow = true;
       }
     },
-    selectALL(selection) {
-      console.log("select-aLL", selection);
+    auditByValue: function(params) {
+      this.auditShow = params;
     },
-    selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
+    childByValue: function(params) {
+      this.detailsShow = params;
     },
     details(rowIndex, rowData, column) {
       this.detailsShow = true;
@@ -214,6 +206,12 @@ export default {
       }
       console.log(this.choice);
       console.log(this.auditValue);
+    },
+    selectALL(selection) {
+      console.log("select-aLL", selection);
+    },
+    selectChange(selection, rowData) {
+      console.log("select-change", selection, rowData);
     },
     getTableData() {
       this.tableData = this.tableDate.slice(
@@ -247,7 +245,7 @@ export default {
     },
     load() {
       this.axios
-        .get(this.global.apiSrc + "/enterprise/all", {
+        .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
           params: { page: this.pageIndex, size: this.pageSize }
         })
         .then(response => {
@@ -255,7 +253,9 @@ export default {
           this.totalNub = response.data.data.totalElements;
           for (let i = 0; i < response.data.data.content.length; i++) {
             // console.log(response.data.data.content.length)
-            // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+            response.data.data.content[
+              i
+            ].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
             if (response.data.data.content[i].state === 0) {
               response.data.data.content[i].state = "待审核";
             }
@@ -271,9 +271,6 @@ export default {
             if (response.data.data.content[i].state === 10) {
               response.data.data.content[i].state = "未通过";
             }
-            if (response.data.data.content[i].state === 11) {
-              response.data.data.content[i].state = "待办审核";
-            }
           }
           this.tableData = response.data.data.content;
           this.tableDate = response.data.data.content;
@@ -285,12 +282,21 @@ export default {
     findByName() {
       this.axios
         .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
-          params: { enterpriseName: this.name }
+          params: {
+            enterpriseName: this.name,
+            state: "",
+            page: this.pageIndex,
+            size: this.pageSize
+          }
         })
         .then(response => {
+          this.totalNub = response.data.data.totalElements;
+          console.log(response);
           for (let i = 0; i < response.data.data.content.length; i++) {
             // console.log(response.data.data.content.length)
-            // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+            response.data.data.content[
+              i
+            ].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
             if (response.data.data.content[i].state === 0) {
               response.data.data.content[i].state = "待审核";
             }
@@ -325,7 +331,6 @@ export default {
           alert("启用成功");
           // this.message("启用成功")
           this.load();
-          this.$message("您已启用该公司");
           console.log("请求参数：" + data);
         })
         .catch(function(error) {
@@ -338,7 +343,6 @@ export default {
         enterpriseIds: this.choice
       });
       console.log("请求参数：" + data);
-
       this.axios
         .post(
           this.global.apiSrc + "/enterprise/discontinuationEnterprises",
@@ -354,12 +358,10 @@ export default {
           console.log(error);
         });
     },
-
     adsearch() {
       document.querySelectorAll(".adsearch")[0].style.right = 0;
     }
   },
-
   created() {
     this.load();
   }

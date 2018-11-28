@@ -2,9 +2,8 @@
   <div class="breakDetails">
     <div class="case">
       <div class="top">
-        <el-button size="small">返回</el-button>
+        <el-button size="small" @click="toback">返回</el-button>
         <el-button size="small">提交审核</el-button>
-        <el-button size="small">审核进度</el-button>
         <el-button size="small">故障消除</el-button>
       </div>
       <div class="bottom">
@@ -240,6 +239,11 @@ export default {
         $(".slideshow>ul")[0].style.left = i + "px";
       }
     });
+  },
+  methods:{
+    toback(){
+      this.$router.back(-1)
+    }
   }
 };
 </script>
