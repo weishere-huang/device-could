@@ -201,7 +201,7 @@
           size: this.pageSize
         });
         this.axios
-          .get(apiMsg+"/message/allMsg/" + this.userId, data)
+          .get(apiMsg+"/message/allMsg/",data)
           .then(result => {
             console.log(result.data.data);
             for(let i = 0;i<result.data.data.length;i++){
@@ -248,11 +248,11 @@
         //查询该用户所有未读消息
         let qs = require("qs");
         let data = qs.stringify({
-          page: 1,
-          size: 20
+          page: this.pageIndex,
+          size: this.pageSize
         });
         this.axios
-          .get(apiMsg+"/message/allNotReadMsg/" + this.userId, data)
+          .get(apiMsg+"/message/allNotReadMsg/",data)
           .then(result => {
             console.log(result.data);
             for(let i = 0;i<result.data.data.length;i++){
@@ -272,10 +272,8 @@
       },
       NotReadMsgCount() {
         //查询该用户未读消息数目
-        let qs = require("qs");
-        let data = qs.stringify({});
         this.axios
-          .get(apiMsg+"/message/NotReadMsgCount/" + this.userId, data)
+          .get(apiMsg+"/message/NotReadMsgCount/")
           .then(result => {
             this.msgcount = result.data.data;
             console.log(result.data);
@@ -298,8 +296,9 @@
           });
       },
       updateAllMessageRead(){
+        //全部已阅
         this.axios
-          .get(apiMsg+"/message/UpdateAllMsgRead/" + {params:{userId:this.ids}})
+          .get(apiMsg+"/message/UpdateAllMsgRead/")
           .then(result => {
             console.log(result.data);
           })
@@ -313,7 +312,7 @@
         this.msgDetail=rowData;
         this.detailsShow=true;
         this.ids=rowData.id;
-        this/axios
+        this.axios
           .get(apiMsg+"/message/findOneMsg/" + this.ids)
           .then(result => {
             console.log(result.data);
