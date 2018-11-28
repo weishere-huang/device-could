@@ -1,19 +1,41 @@
 <template>
   <div class="login">
-    <div class="loginBox" v-show="isshow">
+    <div
+      class="loginBox"
+      v-show="isshow"
+    >
       <h1>长虹智能终端设备生产管理云平台</h1>
       <p>
-        <el-input placeholder="用户名/手机号" v-model="userName"></el-input>
+        <el-input
+          placeholder="用户名/手机号"
+          v-model="userName"
+        ></el-input>
       </p>
       <p>
-        <el-input type="password" placeholder="密码" v-model="password"></el-input>
+        <el-input
+          type="password"
+          placeholder="密码"
+          v-model="password"
+        ></el-input>
       </p>
       <p class="proving">
-        <el-input type="text" placeholder="验证码" v-model="verification"></el-input>
-        <el-button type="primary" size="small" plain>获取验证码</el-button>
+        <el-input
+          type="text"
+          placeholder="验证码"
+          v-model="verification"
+        ></el-input>
+        <el-button
+          type="primary"
+          size="small"
+          plain
+        >获取验证码</el-button>
       </p>
       <p>
-        <el-button type="primary" round @click="login">登录</el-button>
+        <el-button
+          type="primary"
+          round
+          @click="login"
+        >登录</el-button>
       </p>
       <p class="registerSkip">
         <span>忘记密码</span>
@@ -23,82 +45,155 @@
           }">企业注册</span>
       </p>
     </div>
-    <div class="register" v-show="ishide">
+    <div
+      class="register"
+      v-show="ishide"
+    >
       <div v-show="backshow">
         <h2>企业注册</h2>
         <div class="titleText">（企业注册信息填写）</div>
         <ul>
           <li>
             <label for="">企业名称：</label>
-            <el-input size="small" v-model="company.name"></el-input>
+            <el-input
+              size="small"
+              v-model="company.name"
+            ></el-input>
           </li>
           <li>
             <label for="">法人代表：</label>
-            <el-input size="small" v-model="company.corporation"></el-input>
+            <el-input
+              size="small"
+              v-model="company.corporation"
+            ></el-input>
           </li>
           <li>
             <label for="">联系电话：</label>
-            <el-input size="small" v-model="company.phone"></el-input>
+            <el-input
+              size="small"
+              v-model="company.phone"
+            ></el-input>
           </li>
           <li>
             <label for="">企业地址：</label>
-            <el-input size="small" v-model="company.address"></el-input>
+            <el-input
+              size="small"
+              v-model="company.address"
+            ></el-input>
           </li>
 
           <li>
             <label for="">统一社会信用代码：</label>
-            <el-input size="small" v-model="company.companyID"></el-input>
+            <el-input
+              size="small"
+              v-model="company.companyID"
+            ></el-input>
           </li>
           <li>
             <label for="">营业执照：</label>
-            <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList2" list-type="picture">
-              <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            <el-upload
+              class="upload-demo"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :file-list="fileList2"
+              list-type="picture"
+            >
+              <el-button
+                size="small"
+                type="primary"
+              >点击上传</el-button>
+              <div
+                slot="tip"
+                class="el-upload__tip"
+              >只能上传jpg/png文件，且不超过500kb</div>
             </el-upload>
           </li>
         </ul>
         <div class="next">
-          <el-button type="primary" size="small" round class="registerBtn" v-on:click="function(){nextshow=!nextshow
-           backshow=!backshow}">下一步
+          <el-button
+            type="primary"
+            size="small"
+            round
+            class="registerBtn"
+            v-on:click="function(){nextshow=!nextshow
+           backshow=!backshow}"
+          >下一步
           </el-button>
         </div>
       </div>
-      <div v-show="nextshow" style="margin-top:20px">
+      <div
+        v-show="nextshow"
+        style="margin-top:20px"
+      >
         <div class="titleText">（管理员信息登记）</div>
         <ul>
           <li>
             <label for="">用户名：</label>
-            <el-input size="small" v-model="manager.userName"></el-input>
+            <el-input
+              size="small"
+              v-model="manager.userName"
+            ></el-input>
           </li>
           <li>
             <label for="">密码：</label>
-            <el-input size="small" type="password" v-model="manager.userPassword"></el-input>
+            <el-input
+              size="small"
+              type="password"
+              v-model="manager.userPassword"
+            ></el-input>
           </li>
           <li>
             <label for="">手机号：</label>
-            <el-input size="small" v-model="manager.phone"></el-input>
+            <el-input
+              size="small"
+              v-model="manager.phone"
+            ></el-input>
           </li>
           <li>
             <label for="">验证码：</label>
-            <el-input class="validate" size="small" v-model="manager.validate"></el-input>
-            <el-button type="primary" round size="small">获取验证码</el-button>
+            <el-input
+              class="validate"
+              size="small"
+              v-model="manager.validate"
+            ></el-input>
+            <el-button
+              type="primary"
+              round
+              size="small"
+            >获取验证码</el-button>
           </li>
           <li>
             <el-checkbox v-model="checked">您已阅读<a href="">《长虹设备云用户注册协议》</a></el-checkbox>
           </li>
           <li>
-            <el-button type="primary" size="small" round class="registerBtn" v-on:click="function(){nextshow=!nextshow
-           backshow=!backshow}">上一步
+            <el-button
+              type="primary"
+              size="small"
+              round
+              class="registerBtn"
+              v-on:click="function(){nextshow=!nextshow
+           backshow=!backshow}"
+            >上一步
             </el-button>
-            <el-button type="primary" size="small" round class="registerBtn" v-on:click="register">注册</el-button>
+            <el-button
+              type="primary"
+              size="small"
+              round
+              class="registerBtn"
+              v-on:click="register"
+            >注册</el-button>
           </li>
         </ul>
       </div>
 
-      <div class="loginSkip" v-on:click="function(){
+      <div
+        class="loginSkip"
+        v-on:click="function(){
           isshow=!isshow 
           ishide=!ishide
-          }">已有账号，直接登录
+          }"
+      >已有账号，直接登录
       </div>
     </div>
   </div>
@@ -187,18 +282,22 @@ export default {
         // .post("/api/user/login", data)
         .then(result => {
           sessionStorage.token = result.data.data;
-          if (this.userName == "") {
+          if (this.userName === "") {
             console.log("请输入用户名");
             alert("请输入用户名");
-          } else if (this.password == "") {
+          } else if (this.password === "") {
             alert("请输入密码");
-          } else if ((result.data.data = "")) {
-            alert("请输入正确的账号或密码");
           } else {
-            console.log(result);
-            this.$store.commit("tokenSrc", sessionStorage.getItem("token"));
-            console.log("这是token:" + result.data.data);
-            this.$router.push({ path: "/Home" });
+            if (result.data.code === 200) {
+              this.$store.commit("tokenSrc", sessionStorage.getItem("token"));
+              this.$router.push({
+                path: "/Home",
+                redirect: "/Home"
+              });
+            } else {
+              alert("账号或密码错误");
+              this.$router.push({ path: "/Login" });
+            }
           }
         })
         .catch(err => {
@@ -207,15 +306,12 @@ export default {
         });
     },
     register() {
-      let pass=this.manager.userPassword
-       pass= md5(pass);
+      let pass = this.manager.userPassword;
+      pass = md5(pass);
       // alert(this.manager.userPassword);
       console.log(this.manager.userPassword);
       let key = "*chang_hong_device_cloud";
-      pass = this.encryptByDES(
-        pass,
-        key
-      );
+      pass = this.encryptByDES(pass, key);
       // alert(this.manager.userPassword)
       console.log(this.manager.userPassword);
       let qs = require("qs");
@@ -236,46 +332,49 @@ export default {
         }
       });
       this.axios
-        .post(this.global.apiSrc + "/enterprise/add", data).then(result => {
+        .post(this.global.apiSrc + "/enterprise/add", data)
+        .then(result => {
           // axios.post("/api/enterprise/add", data).then(result => {
           console.log(result);
           if (this.company.name == "") {
             console.log("企业名不能为空");
-            alert("企业名不能为空")
+            alert("企业名不能为空");
           }
           if (this.company.corporation == "") {
             console.log("法人代表不能为空");
-            alert("法人代表不能为空")
+            alert("法人代表不能为空");
           }
           if (this.company.phone == "") {
             console.log("企业电话不能为空");
-            alert("企业电话不能为空")
+            alert("企业电话不能为空");
           }
           if (this.company.address == "") {
             console.log("地址不能为空");
-            alert("地址不能为空")
+            alert("地址不能为空");
           }
           if (
             this.company.companyID == "" ||
             this.company.companyID.length != 18
           ) {
             console.log("统一社会信用编码不能为空且必须为十八位");
-            alert("统一社会信用编码不能为空，必须与营业执照上的编码相同")
+            alert("统一社会信用编码不能为空，必须与营业执照上的编码相同");
           }
           if (this.manager.userName == "") {
             console.log("请输入企业管理员信息");
-            alert("请输入企业管理员信息")
+            alert("请输入企业管理员信息");
           }
           if (this.manager.userPassword == "") {
             console.log("请设置密码");
-            alert("请设置密码")
+            alert("请设置密码");
           }
           if (this.manager.phone == "") {
             console.log("请输入管理员联系电话");
-            alert("请输入管理员联系电话")
+            alert("请输入管理员联系电话");
           } else {
-            location.reload()
+            location.reload();
+            console.log(result)
           }
+
         })
         .catch(err => {
           console.log(err);
@@ -518,3 +617,4 @@ export default {
     }
   }
 </style>
+

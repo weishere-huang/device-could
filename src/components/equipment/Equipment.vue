@@ -90,8 +90,8 @@
     <div class="content">
       <div class="search">
         <el-button size="small" @click="toAdd">添加</el-button>
-        <!--<el-button size="small" @click="sort()"> 复制</el-button>-->
-        <el-button size="small" @click="redactShow">编辑</el-button>
+        <el-button size="small" @click="redactShow">修改</el-button>
+        <el-button size="small" > 复制</el-button>
         <el-button size="small" @click="edelete">删除</el-button>
         <div class="searchright">
           <span>关键字：</span>
@@ -125,6 +125,7 @@ export default {
       pageIndex: 1,
       pageSize: 9,
       ids: "",
+      edbt:"",
       tableData: [
         {
           name: "111",
@@ -248,10 +249,18 @@ export default {
     toAdd() {
       this.$router.push("/EquipmentAdd");
     },
+    editShow(){
+      if(this.ids.length == 1){
+        this.$router.push("/Redact/"+this.edbt.id);
+        this.$store.commit("equipmentRedact", this.edbt);
+      }else{
+        alert("只能选择选择一行数据!!!")
+      }
+
+    },
     redactShow(rowIndex, rowData, column) {
-      this.$router.push("/Redact");
+      this.$router.push("/Redact/"+rowData.id);
       this.$store.commit("equipmentRedact", rowData);
-      console.log("1111");
       console.log(rowData);
     },
     selectGroupChange(selection) {
@@ -264,6 +273,7 @@ export default {
           this.ids += selection[i].id
         }
       }
+      this.edbt= selection;
       console.log(this.ids);
     },
     selectALL(selection) {

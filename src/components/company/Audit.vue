@@ -32,7 +32,7 @@
           <div>
             <label style="display:inline-block;height:60px;vertical-align:top;">驳回原因：</label>
             <textarea type="textarea" style="width:70%;height:60px;" placeholder="请填写驳回原因"
-                      v-model="auditValue.auditOpinion"></textarea>
+                      v-model="auditValue.opinion"></textarea>
           </div>
 
           <div style="margin-top:10px;width:100%;text-align:center;">
@@ -82,10 +82,11 @@
         let qs = require("qs");
         let data = qs.stringify({
           enterpriseId: this.auditValue.id,
+          passOrTurn:1
           // userId:2
         })
         console.log(data)
-        this.axios.post(this.global.apiSrc + "/enterprise/passAudit/", data)
+        this.axios.post(this.global.apiSrc + "/enterprise/auditEnterprise/", data)
           .then(response => {
             location.reload();
             alert("通过审核")
@@ -99,11 +100,12 @@
         let qs = require("qs");
         let data = qs.stringify({
           enterpriseId: this.auditValue.id,
+          passOrTurn:0,
           // userId:2,
-          auditOpinion: this.auditValue.auditOpinion,
+          opinion: this.auditValue.opinion,
         })
         console.log(data.auditOpinion)
-        this.axios.post(this.global.apiSrc + "/enterprise/turnAudit/", data)
+        this.axios.post(this.global.apiSrc + "/enterprise/auditEnterprise/", data)
           .then(response => {
             if (response.data.data)
               alert("审核被驳回")

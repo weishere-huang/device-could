@@ -73,12 +73,12 @@
         <el-form label-width="110px" v-if="companyName.planType==='单次'" v-model="companyName.planType">
           <el-form-item label="计划日期：">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.startTime" format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.startTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
             </el-col>
           </el-form-item>
           <el-form-item label="首次执行时间：">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="date" format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" v-model="date" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
             </el-col>
             <el-col class="line" :span="2">-</el-col>
             <el-col :span="11">
@@ -246,9 +246,7 @@ export default {
     updatePlan(){
       console.log(this.times);
       this.companyName.executeTime = this.date +" "+ this.times;
-      this.companyName.executeTime = this.companyName.executeTime.split(".")[0].replace(/-/g,"/");
-      this.companyName.startTime = this.companyName.startTime.split(" ")[0].replace(/-/g,"/");
-      this.companyName.endTime = this.companyName.endTime.split(" ")[0].replace(/-/g,"/");
+      this.companyName.executeTime = this.companyName.executeTime.split(".")[0];
       if(this.companyName.planType === "单次"){
         this.companyName.planType = 0
       }
@@ -427,3 +425,4 @@ export default {
   }
 }
 </style>
+

@@ -11,7 +11,6 @@
           <el-button size="small" @click="findByName">搜索</el-button>
           <span style="color:#409eff" @click="adsearch">高级搜索</span>
         </div>
-
       </div>
       <div class="bottom">
         <div>
@@ -41,7 +40,6 @@
   export default {
     data() {
       return {
-
         detailsShow: false,
         auditShow: false,
         detailsValue: "",
@@ -160,14 +158,6 @@
         console.log(this.auditValue);
       },
       selectALL(selection) {
-        this.choice = "";
-        for (let i = 0; i < selection.length; i++) {
-          if (this.choice == "") {
-            this.choice = selection[i].id;
-          } else {
-            this.choice += "," + selection[i].id;
-          }
-        }
         console.log("select-aLL", selection);
       },
       selectChange(selection, rowData) {
@@ -189,7 +179,6 @@
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
-        this.load()
       },
       sortChange(params) {
         if (params.height.length > 0) {
@@ -206,7 +195,7 @@
       },
       load() {
         this.axios
-          .get(this.global.apiSrc + "/enterprise/all", {
+          .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
             params: {page: this.pageIndex, size: this.pageSize}
           })
           .then(response => {
@@ -214,7 +203,7 @@
             this.totalNub = response.data.data.totalElements
             for (let i = 0; i < response.data.data.content.length; i++) {
               // console.log(response.data.data.content.length)
-              // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+              response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
               if (response.data.data.content[i].state === 0) {
                 response.data.data.content[i].state = "待审核"
               }
@@ -229,9 +218,6 @@
               }
               if (response.data.data.content[i].state === 10) {
                 response.data.data.content[i].state = "未通过"
-              }
-              if (response.data.data.content[i].state === 11) {
-                response.data.data.content[i].state = "待办审核"
               }
             }
             this.tableData = response.data.data.content;
@@ -241,11 +227,11 @@
             console.log(error);
           });
       },
-
       findByName() {
         this.axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {
           params: {
             enterpriseName: this.name,
+            state: "",
             page: this.pageIndex,
             size: this.pageSize
           }
@@ -255,7 +241,7 @@
             console.log(response)
             for (let i = 0; i < response.data.data.content.length; i++) {
               // console.log(response.data.data.content.length)
-              // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+              response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
               if (response.data.data.content[i].state === 0) {
                 response.data.data.content[i].state = "待审核"
               }
@@ -271,12 +257,8 @@
               if (response.data.data.content[i].state === 10) {
                 response.data.data.content[i].state = "未通过"
               }
-              if (response.data.data.content[i].state === 11) {
-                response.data.data.content[i].state = "待办审核"
-              }
             }
             this.tableData = response.data.data.content;
-
           }).catch(function (error) {
           console.log(error)
         })
@@ -304,28 +286,25 @@
           enterpriseIds: this.choice
         });
         console.log("请求参数：" + data)
-
         this.axios.post(this.global.apiSrc + "/enterprise/discontinuationEnterprises", data)
           .then(response => {
             console.log("1111请求参数：" + data)
             console.log(response)
             alert("禁用成功")
             this.load()
-
           }).catch(function (error) {
           console.log(error)
         })
       },
-
       adsearch() {
         document.querySelectorAll(".adsearch")[0].style.right = 0;
       }
     },
-
     created() {
       this.load();
     }
   };
+
 </script>
 <style lang="less" scoped>
   @blue: #409eff;

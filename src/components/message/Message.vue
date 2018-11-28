@@ -25,7 +25,7 @@
   </div>
 </template>
 <script>
-  let apiMsg="http://192.168.1.104:9882"
+  let apiMsg="http://192.168.1.104:9880/m"
   import MsgDetails from './MsgDetails'
   export default {
     data() {
@@ -77,7 +77,7 @@
             title: "信息标题",
             width: 150,
             titleAlign: "center",
-            columnAlign: "left",
+            columnAlign: "center",
             //   isResize: true
             //   orderBy: ""
           },
@@ -86,7 +86,7 @@
             title: "信息内容",
             width: 150,
             titleAlign: "center",
-            columnAlign: "left",
+            columnAlign: "center",
             isResize: true
           },
           {
@@ -94,7 +94,7 @@
             title: "消息类型",
             width: 50,
             titleAlign: "center",
-            columnAlign: "left",
+            columnAlign: "center",
             isResize: true
           },
           {
@@ -102,7 +102,7 @@
             title: "是否阅读",
             width: 50,
             titleAlign: "center",
-            columnAlign: "left",
+            columnAlign: "center",
             isResize: true
           },
           {
@@ -110,7 +110,7 @@
             title: "创建时间",
             width: 50,
             titleAlign: "center",
-            columnAlign: "left",
+            columnAlign: "center",
             isResize: true
           }
         ]
@@ -201,12 +201,16 @@
           size: this.pageSize
         });
         this.axios
-          .get(apiMsg+"/message/allMsg/" + this.userId, data)
+          .get(apiMsg+"/message/allMsg/",data)
           .then(result => {
             console.log(result.data.data);
-            // for(let i = 0;i<result.data.data.length;i++){
-            //   if(result.data.data[i].isRead ==)
-            // }
+            for(let i = 0;i<result.data.data.length;i++){
+              if(result.data.data[i].isRead == 0 ){
+                result.data.data[i].isRead = "未读";
+              }else{
+                result.data.data[i].isRead = "已读";
+              }
+            }
             this.tableData = result.data.data;
             this.NotReadMsgCount();
           })
@@ -244,14 +248,22 @@
         //查询该用户所有未读消息
         let qs = require("qs");
         let data = qs.stringify({
-          page: 1,
-          size: 20
+          page: this.pageIndex,
+          size: this.pageSize
         });
         this.axios
-          .get(apiMsg+"/message/allNotReadMsg/" + this.userId, data)
+          .get(apiMsg+"/message/allNotReadMsg/",data)
           .then(result => {
             console.log(result.data);
+            for(let i = 0;i<result.data.data.length;i++){
+              if(result.data.data[i].isRead == 0 ){
+                result.data.data[i].isRead = "未读";
+              }else{
+                result.data.data[i].isRead = "已读";
+              }
+            }
             this.tableData = result.data.data;
+
           })
           .catch(err => {
             console.log(err);
@@ -260,10 +272,8 @@
       },
       NotReadMsgCount() {
         //查询该用户未读消息数目
-        let qs = require("qs");
-        let data = qs.stringify({});
         this.axios
-          .get(apiMsg+"/message/NotReadMsgCount/" + this.userId, data)
+          .get(apiMsg+"/message/NotReadMsgCount/")
           .then(result => {
             this.msgcount = result.data.data;
             console.log(result.data);
@@ -286,8 +296,9 @@
           });
       },
       updateAllMessageRead(){
+        //全部已阅
         this.axios
-          .get(apiMsg+"/message/UpdateAllMsgRead/" + {params:{userId:this.ids}})
+          .get(apiMsg+"/message/UpdateAllMsgRead/")
           .then(result => {
             console.log(result.data);
           })
@@ -301,10 +312,10 @@
         this.msgDetail=rowData;
         this.detailsShow=true;
         this.ids=rowData.id;
-        this/axios
+        this.axios
           .get(apiMsg+"/message/findOneMsg/" + this.ids)
           .then(result => {
-            console.log(result.data);
+            console.log(result);
            this.msgDetail=result.data.data;
             if (this.msgDetail.isRead === 0) {
               this.updateMessageRead();
