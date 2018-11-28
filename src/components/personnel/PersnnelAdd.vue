@@ -31,11 +31,9 @@
               </li>
               <li>
                 <label for="">组织单位：</label>
-                <el-select v-model="persnneladd.organizationName" placeholder="请选择" size="small" style="width:70%">
-                  <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                <el-select v-model="persnneladd.organizeCode" placeholder="请选择" size="small" style="width:70%">
+                  <el-option v-for="item in options" :key="item.code" :label="item.name" :value="item.code">
                   </el-option>
-
-
                 </el-select>
               </li>
               <li>
@@ -157,7 +155,7 @@
           workType:"",
           entryTime: "",
           email: "",
-          marital: "",
+          marital: "0",
           idCardNo: "",
           workingYears: "",
           height: "",
@@ -170,24 +168,7 @@
           qualificationInfo:"",
           roleId: ""
         },
-        options: [
-          {
-            value: "四川长虹电器有限公司",
-            label: "四川长虹电器有限公司"
-          },
-          {
-            value: "四川长虹智能制造有限公司",
-            label: "四川长虹智能制造有限公司"
-          },
-          {
-            value: "长虹网络科技有限公司",
-            label: "长虹网络科技有限公司"
-          },
-          {
-            value: "长虹电子系统有限公司",
-            label: "长虹电子系统有限公司"
-          }
-        ],
+        options: [],
         role: []
       };
 
@@ -196,8 +177,26 @@
       tback(){
         this.$router.back(-1)
       },
+      organize(){
+        this.axios
+          .get(this.global.apiSrc+"/organize/allOrganize")
+          .then(response => {
+            this.options = response.data.data;
+           console.log(response.data.data)
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      codeToName(organizeCode){
+        for (let i =0;i<this.options.length;i++){
+          if(this.options[i].code === organizeCode){
+            this.persnneladd.organizationName = this.options[i].name;
+          }
+        }
+      },
       employeeAdd() {
-        console.log(this.persnneladd);
+        this.codeToName(this.persnneladd.organizeCode);
         this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
         let qs = require("qs");
@@ -275,6 +274,7 @@
       }
     },
     created() {
+      this.organize();
       this.axios
         .get(this.global.apiSrc+"/role/listAllRole")
         .then(response => {
