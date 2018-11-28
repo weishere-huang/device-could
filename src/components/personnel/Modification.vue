@@ -3,7 +3,6 @@
     <div class="add-case">
       <div class="topbtn">
         <el-button size="small" @click="tback">返回</el-button>
-        <el-button size="small" @click="stopEmployee">停用</el-button>
         <el-button size="small" @click="updateEmployee">保存</el-button>
       </div>
       <div class="botton">
@@ -228,18 +227,17 @@
           });
       },
       selectOne(employeeId,userName){
+        // console.log(employeeId);
         this.axios
           .get(this.global.apiSrc+"/employee/selectOne",{params:{employeeId:employeeId}})
           .then(response => {
             this.persnneladd = response.data.data;
-            this.persnneladd.birthday=response.data.data.birthday.split("T")[0];
-            this.persnneladd.entryTime=response.data.data.entryTime.split("T")[0];
             this.persnneladd.gender = response.data.data.gender.toString();
             this.persnneladd.userName= userName;
             if (this.persnneladd.marital!=null){
               this.persnneladd.marital = response.data.data.marital.toString();
             }
-            console.log(response.data.data);
+            // console.log(response.data.data.entryTime);
           })
           .catch(function(error) {
             console.log(error);
@@ -258,7 +256,7 @@
           phone: this.persnneladd.phone,
           position: this.persnneladd.position,
           organizeCode: this.persnneladd.organizeCode,
-          organizeName: this.persnneladd.organizationName,
+          organizationName: this.persnneladd.organizationName,
           enterpriseId: this.persnneladd.enterpriseId,
           workType: this.persnneladd.workType,
           entryTime: this.persnneladd.entryTime,
@@ -276,7 +274,6 @@
           qualificationInfo: this.persnneladd.qualificationInfo,
           roleId: this.persnneladd.roleId
         });
-        // console.log(data);
         this.axios
           .post(this.global.apiSrc+"/employee/update",data)
           .then(response => {

@@ -192,26 +192,7 @@
           // deviceState: "",
           // organizeCode: "",
           // enterFactoryDate: ""
-
-          // deviceNo: "CH000001",
-          // deviceName: "液压机",
-          // organizeName: [],
-          // deviceClassify: "1",
-          // deviceClassifyName: "超级存储",
-          // deviceSpec: "",
-          // outputDate: "",
-          // manufacturer: "",
-          // location: "",
-          // locationNo: "",
-          // buyPrice: "",
-          // buyDate: "",
-          // dataInfo: "",
-          // deviceCategory: "",
-          // deviceCategoryName: "",
-          // deviceModel: "",
-          // deviceState: "",
-          // organizeCode: "",
-          // enterFactoryDate: ""
+          
 
           deviceNo: "CH000001",
           deviceName: "液压机",
@@ -597,6 +578,7 @@
         //添加设备信息接口
         let qs = require("qs");
         let data = qs.stringify({
+
           deviceNo: this.sizeForm.deviceNo,
           deviceName: this.sizeForm.deviceName,
           deviceClassify: this.sizeForm.deviceClassify,
@@ -636,8 +618,6 @@
               workerName: "李四"
             }
           ])
-
-
           // deviceNo: this.sizeForm.deviceNo,
           // deviceName: this.sizeForm.deviceName,
           // organizeName: this.sizeForm.organizeName,

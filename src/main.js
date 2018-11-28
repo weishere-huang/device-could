@@ -8,14 +8,19 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import vuex from 'vuex'
+import $ from 'jquery'
 import 'vue-easytable/libs/themes-base/index.css';
 import md5 from 'js-md5/src/md5.js'
 import CryptoJS from 'crypto-js'
+import 'normalize.css'
+import './assets/less/layout.less'
 import {
   VTable,
   VPagination
 } from 'vue-easytable'
 import global from './components/global/Global'
+import base from "./base.js";
+Vue.use(base)
 // import {
 //   Message,
 //   MessageBox

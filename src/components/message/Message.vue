@@ -317,7 +317,7 @@
   @Danger: #f56c6c;
   @Info: #dde2eb;
   .message {
-    padding-left: 180px;
+    // padding-left: 180px;
     .userCase {
       width: 100%;
       padding: 10px;

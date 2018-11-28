@@ -2,7 +2,10 @@
   <div class="turnaround-plans">
     <div class="userCase">
       <div class="top">
-        <el-button size="small">审核</el-button>
+        <el-button
+          size="small"
+          @click="toAudit"
+        >审核</el-button>
         <el-button
           size="small"
           @click="revoke"
@@ -35,6 +38,7 @@
             :table-data="tableData"
             row-hover-color="#eee"
             row-click-color="#edf7ff"
+            :row-dblclick="toDetails"
           ></v-table>
           <div
             class="mt20 mb20 bold"
@@ -51,18 +55,26 @@
         </div>
       </div>
     </div>
+    <audit v-show="auditShow" :auditdetails="auditdetails" v-on:auditHide="auditHide"></audit>
   </div>
 </template>
 <script>
+import audit from "./breakdown/Audit";
 export default {
   data() {
     return {
       faultId: "",
       faultKey: "",
-
+      auditShow: false,
+      auditdetails:"",
       pageIndex: 1,
       pageSize: 10,
-      tableData: [],
+      tableData: [
+        {
+          faultNo:"2222",
+          state:"2222"
+        }
+      ],
       tableDate: [],
       columns: [
         {
@@ -140,28 +152,20 @@ export default {
     };
   },
   methods: {
+    toDetails(rowIndex, rowData, column){
+      this.$router.push({path:"/BreakDetails"})
+    },
+    auditHide(params){
+      this.auditShow=params;
+    },
+    toAudit() {
+      this.auditShow = true;
+    },
     selectGroupChange(selection) {
-      this.faultId = "";
-      for (let i = 0; i < selection.length; i++) {
-        if (this.faultId === "") {
-          this.faultId = selection[i].id;
-        } else {
-          this.faultId += "," + selection[i].id;
-        }
-      }
-      console.log(this.faultId);
       console.log("select-group-change", selection);
+      this.auditdetails=selection
     },
     selectALL(selection) {
-      this.faultId = "";
-      for (let i = 0; i < selection.length; i++) {
-        if (this.faultId === "") {
-          this.faultId = selection[i].id;
-        } else {
-          this.faultId += "," + selection[i].id;
-        }
-      }
-      console.log(this.faultId);
       console.log("select-aLL", selection);
     },
     selectChange(selection, rowData) {
@@ -287,6 +291,9 @@ export default {
   },
   created() {
     this.load();
+  },
+  components: {
+    audit
   }
 };
 </script>
@@ -299,7 +306,7 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .turnaround-plans {
-  padding-left: 220px;
+  // padding-left: 220px;
   .userCase {
     width: 100%;
     padding: 10px;
