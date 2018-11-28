@@ -71,19 +71,7 @@ export default {
       const index = children.findIndex(d => d.id === data.id);
       children.splice(index, 1);
     },
-    allOrganize() {
-      this.axios
-        //axios
-        .get(this.global.apiSrc+"/organize/allOrganize")
-        // .get("api/organize/allOrganize/321")
-        .then(result => {
-          this.organize = this.filterArray(result.data.data, 0);
-        })
-        .catch(err => {
-          console.log(err);
-          // console.log(this.userName);
-        });
-    },
+
     filterArray(data, parent) {
       let vm = this;
       var tree = [];
@@ -114,9 +102,28 @@ export default {
           console.log(err);
         });
     },
+    addCategory(){
+      //添加设备
+      let qs = require("qs");
+      let data = qs.stringify({
+        categoryNo:"123456",
+        categoryMsg:"测试用例",
+        categoryName:"测试类别"
+      });
+      this.axios
+        .get(this.global.apiSrc + "/deviceCategory/add", data)
+        .then(result => {
+          console.log("addCategory");
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
   },
   created() {
     this.findAlldeviceClassify();
+    this.addCategory();
   }
 };
 </script>

@@ -31,20 +31,21 @@
             <el-form-item label="设备分类">
               <el-select v-model="sizeForm.deviceClassify" placeholder="点击选择" style="width:215px">
 
-                <el-option v-for="(item,index) in options2" :key="index" :label="item.label" :value="item.value"></el-option>
+                <el-option v-for="(item,index) in options2" :key="index" :label="item.label"
+                           :value="item.value"></el-option>
 
               </el-select>
             </el-form-item>
             <el-form-item label="设备类别">
               <el-cascader
-              placeholder="搜索"
-              :options="options"
-              filterable
-              change-on-select
-              :show-all-levels="false"
-              v-model="sizeForm.organizeName"
-              style="width:215px;"
-            ></el-cascader>
+                placeholder="搜索"
+                :options="options"
+                filterable
+                change-on-select
+                :show-all-levels="false"
+                v-model="sizeForm.organizeName"
+                style="width:215px;"
+              ></el-cascader>
             </el-form-item>
           </el-form>
           <el-form :inline="true" style="padding-left:12px" size="small">
@@ -54,7 +55,8 @@
             <el-form-item label="设备状况">
               <el-select v-model="sizeForm.deviceState" placeholder="点击选择" style="width:215px">
 
-                <el-option v-for="(item,index) in options4" :key="index" :label="item.label" :value="item.value"></el-option>
+                <el-option v-for="(item,index) in options4" :key="index" :label="item.label"
+                           :value="item.value"></el-option>
 
               </el-select>
             </el-form-item>
@@ -146,7 +148,8 @@
           </el-form-item>
           <el-form-item label="入厂日期">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="sizeForm.enterFactoryDate"
+              <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd"
+                              v-model="sizeForm.enterFactoryDate"
                               style="width: 215px;"></el-date-picker>
             </el-col>
           </el-form-item>
@@ -187,30 +190,9 @@
           // deviceCategoryName: "",
           // deviceModel: "",
           // deviceState: "",
-          // gmtModified: "",
           // organizeCode: "",
           // enterFactoryDate: ""
-
-          // deviceNo: "CH000001",
-          // deviceName: "液压机",
-          // organizeName: [],
-          // deviceClassify: "1",
-          // deviceClassifyName: "超级存储",
-          // deviceSpec: "",
-          // outputDate: "",
-          // manufacturer: "",
-          // location: "",
-          // locationNo: "",
-          // buyPrice: "",
-          // buyDate: "",
-          // dataInfo: "",
-          // deviceCategory: "",
-          // deviceCategoryName: "",
-          // deviceModel: "",
-          // deviceState: "",
-          // gmtModified: "",
-          // organizeCode: "",
-          // enterFactoryDate: ""
+          
 
           deviceNo: "CH000001",
           deviceName: "液压机",
@@ -312,201 +294,274 @@
             label: "报废"
           }
         ],
-        options: [{
-          value: 'zhinan',
-          label: '指南',
-          children: [{
-            value: 'shejiyuanze',
-            label: '设计原则',
-            children: [{
-              value: 'yizhi',
-              label: '一致'
-            }, {
-              value: 'fankui',
-              label: '反馈'
-            }, {
-              value: 'xiaolv',
-              label: '效率'
-            }, {
-              value: 'kekong',
-              label: '可控'
-            }]
-          }, {
-            value: 'daohang',
-            label: '导航',
-            children: [{
-              value: 'cexiangdaohang',
-              label: '侧向导航'
-            }, {
-              value: 'dingbudaohang',
-              label: '顶部导航'
-            }]
-          }]
-        }, {
-          value: 'zujian',
-          label: '组件',
-          children: [{
-            value: 'basic',
-            label: 'Basic',
-            children: [{
-              value: 'layout',
-              label: 'Layout 布局'
-            }, {
-              value: 'color',
-              label: 'Color 色彩'
-            }, {
-              value: 'typography',
-              label: 'Typography 字体'
-            }, {
-              value: 'icon',
-              label: 'Icon 图标'
-            }, {
-              value: 'button',
-              label: 'Button 按钮'
-            }]
-          }, {
-            value: 'form',
-            label: 'Form',
-            children: [{
-              value: 'radio',
-              label: 'Radio 单选框'
-            }, {
-              value: 'checkbox',
-              label: 'Checkbox 多选框'
-            }, {
-              value: 'input',
-              label: 'Input 输入框'
-            }, {
-              value: 'input-number',
-              label: 'InputNumber 计数器'
-            }, {
-              value: 'select',
-              label: 'Select 选择器'
-            }, {
-              value: 'cascader',
-              label: 'Cascader 级联选择器'
-            }, {
-              value: 'switch',
-              label: 'Switch 开关'
-            }, {
-              value: 'slider',
-              label: 'Slider 滑块'
-            }, {
-              value: 'time-picker',
-              label: 'TimePicker 时间选择器'
-            }, {
-              value: 'date-picker',
-              label: 'DatePicker 日期选择器'
-            }, {
-              value: 'datetime-picker',
-              label: 'DateTimePicker 日期时间选择器'
-            }, {
-              value: 'upload',
-              label: 'Upload 上传'
-            }, {
-              value: 'rate',
-              label: 'Rate 评分'
-            }, {
-              value: 'form',
-              label: 'Form 表单'
-            }]
-          }, {
-            value: 'data',
-            label: 'Data',
-            children: [{
-              value: 'table',
-              label: 'Table 表格'
-            }, {
-              value: 'tag',
-              label: 'Tag 标签'
-            }, {
-              value: 'progress',
-              label: 'Progress 进度条'
-            }, {
-              value: 'tree',
-              label: 'Tree 树形控件'
-            }, {
-              value: 'pagination',
-              label: 'Pagination 分页'
-            }, {
-              value: 'badge',
-              label: 'Badge 标记'
-            }]
-          }, {
-            value: 'notice',
-            label: 'Notice',
-            children: [{
-              value: 'alert',
-              label: 'Alert 警告'
-            }, {
-              value: 'loading',
-              label: 'Loading 加载'
-            }, {
-              value: 'message',
-              label: 'Message 消息提示'
-            }, {
-              value: 'message-box',
-              label: 'MessageBox 弹框'
-            }, {
-              value: 'notification',
-              label: 'Notification 通知'
-            }]
-          }, {
-            value: 'navigation',
-            label: 'Navigation',
-            children: [{
-              value: 'menu',
-              label: 'NavMenu 导航菜单'
-            }, {
-              value: 'tabs',
-              label: 'Tabs 标签页'
-            }, {
-              value: 'breadcrumb',
-              label: 'Breadcrumb 面包屑'
-            }, {
-              value: 'dropdown',
-              label: 'Dropdown 下拉菜单'
-            }, {
-              value: 'steps',
-              label: 'Steps 步骤条'
-            }]
-          }, {
-            value: 'others',
-            label: 'Others',
-            children: [{
-              value: 'dialog',
-              label: 'Dialog 对话框'
-            }, {
-              value: 'tooltip',
-              label: 'Tooltip 文字提示'
-            }, {
-              value: 'popover',
-              label: 'Popover 弹出框'
-            }, {
-              value: 'card',
-              label: 'Card 卡片'
-            }, {
-              value: 'carousel',
-              label: 'Carousel 走马灯'
-            }, {
-              value: 'collapse',
-              label: 'Collapse 折叠面板'
-            }]
-          }]
-        }, {
-          value: 'ziyuan',
-          label: '资源',
-          children: [{
-            value: 'axure',
-            label: 'Axure Components'
-          }, {
-            value: 'sketch',
-            label: 'Sketch Templates'
-          }, {
-            value: 'jiaohu',
-            label: '组件交互文档'
-          }]
-        }]
+        options: [
+          {
+            value: "zhinan",
+            label: "指南",
+            children: [
+              {
+                value: "shejiyuanze",
+                label: "设计原则",
+                children: [
+                  {
+                    value: "yizhi",
+                    label: "一致"
+                  },
+                  {
+                    value: "fankui",
+                    label: "反馈"
+                  },
+                  {
+                    value: "xiaolv",
+                    label: "效率"
+                  },
+                  {
+                    value: "kekong",
+                    label: "可控"
+                  }
+                ]
+              },
+              {
+                value: "daohang",
+                label: "导航",
+                children: [
+                  {
+                    value: "cexiangdaohang",
+                    label: "侧向导航"
+                  },
+                  {
+                    value: "dingbudaohang",
+                    label: "顶部导航"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            value: "zujian",
+            label: "组件",
+            children: [
+              {
+                value: "basic",
+                label: "Basic",
+                children: [
+                  {
+                    value: "layout",
+                    label: "Layout 布局"
+                  },
+                  {
+                    value: "color",
+                    label: "Color 色彩"
+                  },
+                  {
+                    value: "typography",
+                    label: "Typography 字体"
+                  },
+                  {
+                    value: "icon",
+                    label: "Icon 图标"
+                  },
+                  {
+                    value: "button",
+                    label: "Button 按钮"
+                  }
+                ]
+              },
+              {
+                value: "form",
+                label: "Form",
+                children: [
+                  {
+                    value: "radio",
+                    label: "Radio 单选框"
+                  },
+                  {
+                    value: "checkbox",
+                    label: "Checkbox 多选框"
+                  },
+                  {
+                    value: "input",
+                    label: "Input 输入框"
+                  },
+                  {
+                    value: "input-number",
+                    label: "InputNumber 计数器"
+                  },
+                  {
+                    value: "select",
+                    label: "Select 选择器"
+                  },
+                  {
+                    value: "cascader",
+                    label: "Cascader 级联选择器"
+                  },
+                  {
+                    value: "switch",
+                    label: "Switch 开关"
+                  },
+                  {
+                    value: "slider",
+                    label: "Slider 滑块"
+                  },
+                  {
+                    value: "time-picker",
+                    label: "TimePicker 时间选择器"
+                  },
+                  {
+                    value: "date-picker",
+                    label: "DatePicker 日期选择器"
+                  },
+                  {
+                    value: "datetime-picker",
+                    label: "DateTimePicker 日期时间选择器"
+                  },
+                  {
+                    value: "upload",
+                    label: "Upload 上传"
+                  },
+                  {
+                    value: "rate",
+                    label: "Rate 评分"
+                  },
+                  {
+                    value: "form",
+                    label: "Form 表单"
+                  }
+                ]
+              },
+              {
+                value: "data",
+                label: "Data",
+                children: [
+                  {
+                    value: "table",
+                    label: "Table 表格"
+                  },
+                  {
+                    value: "tag",
+                    label: "Tag 标签"
+                  },
+                  {
+                    value: "progress",
+                    label: "Progress 进度条"
+                  },
+                  {
+                    value: "tree",
+                    label: "Tree 树形控件"
+                  },
+                  {
+                    value: "pagination",
+                    label: "Pagination 分页"
+                  },
+                  {
+                    value: "badge",
+                    label: "Badge 标记"
+                  }
+                ]
+              },
+              {
+                value: "notice",
+                label: "Notice",
+                children: [
+                  {
+                    value: "alert",
+                    label: "Alert 警告"
+                  },
+                  {
+                    value: "loading",
+                    label: "Loading 加载"
+                  },
+                  {
+                    value: "message",
+                    label: "Message 消息提示"
+                  },
+                  {
+                    value: "message-box",
+                    label: "MessageBox 弹框"
+                  },
+                  {
+                    value: "notification",
+                    label: "Notification 通知"
+                  }
+                ]
+              },
+              {
+                value: "navigation",
+                label: "Navigation",
+                children: [
+                  {
+                    value: "menu",
+                    label: "NavMenu 导航菜单"
+                  },
+                  {
+                    value: "tabs",
+                    label: "Tabs 标签页"
+                  },
+                  {
+                    value: "breadcrumb",
+                    label: "Breadcrumb 面包屑"
+                  },
+                  {
+                    value: "dropdown",
+                    label: "Dropdown 下拉菜单"
+                  },
+                  {
+                    value: "steps",
+                    label: "Steps 步骤条"
+                  }
+                ]
+              },
+              {
+                value: "others",
+                label: "Others",
+                children: [
+                  {
+                    value: "dialog",
+                    label: "Dialog 对话框"
+                  },
+                  {
+                    value: "tooltip",
+                    label: "Tooltip 文字提示"
+                  },
+                  {
+                    value: "popover",
+                    label: "Popover 弹出框"
+                  },
+                  {
+                    value: "card",
+                    label: "Card 卡片"
+                  },
+                  {
+                    value: "carousel",
+                    label: "Carousel 走马灯"
+                  },
+                  {
+                    value: "collapse",
+                    label: "Collapse 折叠面板"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            value: "ziyuan",
+            label: "资源",
+            children: [
+              {
+                value: "axure",
+                label: "Axure Components"
+              },
+              {
+                value: "sketch",
+                label: "Sketch Templates"
+              },
+              {
+                value: "jiaohu",
+                label: "组件交互文档"
+              }
+            ]
+          }
+        ]
       };
     },
     methods: {
@@ -523,66 +578,46 @@
         //添加设备信息接口
         let qs = require("qs");
         let data = qs.stringify({
-          deviceNo: "CH000001",
-          deviceName: "液压机",
-          organizeName: "武器事业部制造",
-          deviceClassify: "1",
-          deviceClassifyName: "超级存储",
-          deviceSpec: "GC222",
-          outputDate: "2018/11/26",
-          manufacturer: "222",
-          location: "金牛市民中心",
-          locationNo: "333",
-          buyPrice: "200000",
-          buyDate: "2018/11/26",
-          dataInfo: "555",
-          deviceCategory: "1",
-          deviceCategoryName: "机械类",
-          deviceModel: "ZA100-315315",
-          deviceState: "1",
-          organizeCode: "IBM",
-          enterFactoryDate: "2018/11/26",
-          // deviceNo: this.sizeForm.deviceNo,
-          // deviceName: this.sizeForm.deviceName,
-          // deviceClassify: this.sizeForm.deviceClassify,
-          // deviceClassifyName: this.sizeForm.deviceClassifyName,
-          // deviceSpec: this.sizeForm.deviceSpec,
-          // organizeName: this.sizeForm.organizeName,
-          // organizeCode: this.sizeForm.organizeCode,
-          // deviceCategory: this.sizeForm.deviceCategory,
-          // deviceCategoryName: this.sizeForm.deviceCategoryName,
-          // outputDate: this.sizeForm.outputDate,
-          // manufacturer: this.sizeForm.manufacturer,
-          // location: this.sizeForm.location,
-          // locationNo: this.sizeForm.locationNo,
-          // buyPrice: this.sizeForm.buyPrice,
-          // buyDate: this.sizeForm.buyDate,
-          // dataInfo: this.sizeForm.dataInfo,
-          // deviceModel: this.sizeForm.deviceModel,
-          // deviceState: this.sizeForm.deviceState,
-          // enterFactoryDate: this.sizeForm.enterFactoryDate,
+
+          deviceNo: this.sizeForm.deviceNo,
+          deviceName: this.sizeForm.deviceName,
+          deviceClassify: this.sizeForm.deviceClassify,
+          deviceClassifyName: this.sizeForm.deviceClassifyName,
+          deviceSpec: this.sizeForm.deviceSpec,
+          organizeName: this.sizeForm.organizeName,
+          organizeCode: this.sizeForm.organizeCode,
+          deviceCategory: this.sizeForm.deviceCategory,
+          deviceCategoryName: this.sizeForm.deviceCategoryName,
+          outputDate: this.sizeForm.outputDate,
+          manufacturer: this.sizeForm.manufacturer,
+          location: this.sizeForm.location,
+          locationNo: this.sizeForm.locationNo,
+          buyPrice: this.sizeForm.buyPrice,
+          buyDate: this.sizeForm.buyDate,
+          dataInfo: this.sizeForm.dataInfo,
+          deviceModel: this.sizeForm.deviceModel,
+          deviceState: this.sizeForm.deviceState,
+          enterFactoryDate: this.sizeForm.enterFactoryDate,
           // deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
           devicePersonnelInfo: JSON.stringify([{
-              workerType:1,
-              workerName:"赵六",
-              workerId:188,
-              workerTypeName:"负责人员"
+            workerType: 1,
+            workerName: "赵六",
+            workerId: 188,
+            workerTypeName: "负责人员"
+          },
+            {
+              workerType: 2,
+              workerTypeName: "维修人员",
+              workerId: 192,
+              workerName: "王五"
             },
             {
-              workerType:2,
-              workerTypeName:"维修人员",
-              workerId:192,
-              workerName:"王五"
-            },
-            {
-              workerType:1,
-              workerTypeName:"负责人员",
-              workerId:147,
-              workerName:"李四"
+              workerType: 1,
+              workerTypeName: "负责人员",
+              workerId: 147,
+              workerName: "李四"
             }
           ])
-
-
           // deviceNo: this.sizeForm.deviceNo,
           // deviceName: this.sizeForm.deviceName,
           // organizeName: this.sizeForm.organizeName,
@@ -604,17 +639,17 @@
           // // enterFactoryDate: this.sizeForm.enterFactoryDate,
           // deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
           // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo),
-
-
         });
 
         console.log(data);
         this.axios
           .post(this.global.apiSrc + "/device/add", data)
           .then(result => {
-            if(result.data.code == 410 ){
+            console.log(result.data);
+            alert("执行添加");
+            if (result.data.code == 410) {
               alert("该设备号已存在,请重新编辑!!!")
-            }else if(result.data.code == 200){
+            } else if (result.data.code == 200) {
               alert("添加成功");
               console.log("add");
               console.log(result.data);
@@ -625,11 +660,9 @@
             console.log(err);
           });
       },
-      findDeviceClassify(){
+      findDeviceClassify() {
         let qs = require("qs");
-        let data = qs.stringify({
-
-        });
+        let data = qs.stringify({});
         this.axios
           .get(this.global.apiSrc + "/device/findDeviceClassify", data)
           .then(result => {
@@ -640,10 +673,9 @@
             console.log(err);
           });
       },
-      findDeviceState(){
+      findDeviceState() {
         let qs = require("qs");
-        let data = qs.stringify({
-        });
+        let data = qs.stringify({});
         this.axios
           .get(this.global.apiSrc + "/device/findDeviceState", data)
           .then(result => {
@@ -654,10 +686,9 @@
             console.log(err);
           });
       },
-      findAlldeviceClassify(){
+      findAlldeviceClassify() {
         let qs = require("qs");
-        let data = qs.stringify({
-        });
+        let data = qs.stringify({});
         this.axios
           .get(this.global.apiSrc + "/deviceCategory/all", data)
           .then(result => {
@@ -667,12 +698,29 @@
           .catch(err => {
             console.log(err);
           });
-      }
+      },
+      filterArray(data, parent) {
+        let vm = this;
+        var tree = [];
+        var temp;
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].parentCode == parent) {
+            var obj = data[i];
+            temp = this.filterArray(data, data[i].code);
+            if (temp.length > 0) {
+              obj.children = temp;
+            }
+            tree.push(obj);
+          }
+        }
+        return tree;
+      },
     },
-    created(){
-        this.findDeviceClassify();
-        this.findDeviceState();
-        this.findAlldeviceClassify();
+
+    created() {
+      this.findDeviceClassify();
+      this.findDeviceState();
+      this.findAlldeviceClassify();
     },
     components: {
       addPerson
