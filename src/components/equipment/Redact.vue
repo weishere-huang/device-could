@@ -264,7 +264,7 @@
 </template>
 <script>
 import addperson from "./AddPerson";
- 
+
 export default {
   data() {
     return {
@@ -762,7 +762,6 @@ export default {
           console.log(err);
         });
     },
-
     findDeviceState() {
       //获取设备状况接口
       let qs = require("qs");
