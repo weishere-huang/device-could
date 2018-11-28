@@ -1,5 +1,4 @@
 <template>
-
   <div class="organization">
     <div class="content">
       <div class="left">
@@ -8,18 +7,38 @@
           <h5>备注</h5>
           <h5>状态</h5>
         </div>
-
-        <el-tree :data="data" default-expand-all :props="defaultProps" @node-click="handleNodeClick" :expand-on-click-node="false">
-          <span class="custom-tree-node" slot-scope="{ node, data }">
+        <el-tree
+          :data="data"
+          default-expand-all
+          :props="defaultProps"
+          @node-click="handleNodeClick"
+          :expand-on-click-node="false"
+        >
+          <span
+            class="custom-tree-node"
+            slot-scope="{ node, data }"
+          >
             <span class="listcontent">{{ data.name }}
               <span class="addCase">
-                <el-button type="text" size="mini" @click="() => append(data)">
+                <el-button
+                  type="text"
+                  size="mini"
+                  @click="toAdd"
+                >
                   添加
                 </el-button>
-                <el-button type="text" size="mini">
+                <el-button
+                  type="text"
+                  size="mini"
+                  @click="toRevise"
+                >
                   修改
                 </el-button>
-                <el-button type="text" size="mini" @click="() => remove(node, data)">
+                <el-button
+                  type="text"
+                  size="mini"
+                  @click="() => remove(node, data)"
+                >
                   删除
                 </el-button>
               </span>
@@ -31,8 +50,8 @@
       </div>
     </div>
 
-    <add v-show="add1"></add>
-    <revise v-show="revise1"></revise>
+    <add v-show="addShow" v-on:addHide="addHide"></add>
+    <revise v-show="reviseShow" v-on:reviseHide="reviseHide"></revise>
   </div>
 
 </template>
@@ -44,41 +63,45 @@ import { eq } from "semver";
 export default {
   data() {
     return {
-      add1: false,
-      revise1: false,
-      sss: "",
-      xxx: "",
+      addShow: false,
+      reviseShow: false,
       name1: [1, 2, 3, 4, 5, 6, 7, 8],
       organizeType: [1, 2, 3, 4, 5, 6, 7, 8],
       organizeInfo: [1, 2, 3, 4, 5, 6, 7, 8],
       pushtext: [],
       code: "id",
-      data: this.name1,
+      data: "",
       defaultProps: {
         children: "children",
         label: "name"
-      },
-      defaultProps1: {
-        children: "children",
-        label: "state"
-      },
-      defaultProps2: {
-        children: "children",
-        label: "organizeInfo"
       }
     };
   },
   methods: {
+    reviseHide(params){
+      this.reviseShow=params
+    },
+    toRevise(){
+      this.reviseShow=true;
+    },
+    addHide(params){
+      this.addShow=params;
+    },
+    toAdd(){
+      this.addShow=true
+    },
     handleNodeClick(data) {
       console.log(data);
     },
+    //添加组织结构
     append(data) {
-      const newChild = { id: this.data.id++, label: "你好", children: [] };
+      const newChild = { id: id++, label: "text", children: [] };
       if (!data.children) {
         this.$set(data, "children", []);
       }
       data.children.push(newChild);
     },
+    //删除组织机构
     remove(node, data) {
       const parent = node.parent;
       const children = parent.data.children || parent.data;
@@ -145,6 +168,7 @@ export default {
       let arr = new Array();
       axios
         .get(this.global.apiSrc + "/organize/allOrganize")
+        // .get("http://192.168.1.103:8080/organize/allOrganize")
         .then(result => {
           console.log(result);
           this.data = this.filterArray(result.data.data, 0);
@@ -250,8 +274,11 @@ export default {
   .content {
     padding: 10px;
     overflow: hidden;
+    // border: @border;
     .left {
       width: 900px;
+      padding: 10px;
+      overflow: hidden;
       float: left;
       // text-align: center;
       border: @border;
@@ -296,6 +323,7 @@ export default {
       // border: @border;
       .addCase {
         float: right;
+        // display: inline-block;
         display: none;
       }
       &:hover {

@@ -12,6 +12,7 @@ import EquipmentAdd from '@/components/equipment/EquipmentAdd'
 import Redact from '@/components/equipment/Redact'
 import Operation from '@/components/operation/Operation'
 import Upkeep from '@/components/operation/upkeep/Upkeep'
+import AmendPlan from '@/components/operation/upkeep/AmendPlan'
 import UpkeepAdd from '@/components/operation/upkeep/UpkeepAdd'
 import UpkeepAmend from '@/components/operation/upkeep/UpkeepAmend'
 import TurnaroundPlansAdd from '@/components/operation/turnaroundPlans/TurnaroundPlansAdd'
@@ -36,7 +37,7 @@ import Audit from '@/components/company/Audit'
 import MsgDetails from '@/components/message/MsgDetails'
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [{
       path: '/',
@@ -50,167 +51,292 @@ export default new Router({
     {
       path: '/Home',
       name: 'Home',
-      component: Home
+      component: Home,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/ForgetThePassword',
       name: 'ForgetThePassword',
-      component: ForgetThePassword
+      component: ForgetThePassword,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/Information',
       name: 'Information',
-      component: Information
+      component: Information,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/Company',
       name: 'Company',
-      component: Company
+      component: Company,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/Audit',
       name: 'Audit',
-      component: Audit
+      component: Audit,
+      meta: {
+        requireAuth: true
+      },
     },
-     {
-       path: '/AdvancedSearch',
-       name: 'AdvancedSearch',
-       component: AdvancedSearch
+    {
+      path: '/AdvancedSearch',
+      name: 'AdvancedSearch',
+      component: AdvancedSearch,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/Category',
       name: 'Category',
-      component: Category
+      component: Category,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/BusinessDetails',
       name: 'BusinessDetails',
-      component: BusinessDetails
+      component: BusinessDetails,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/Equipment',
       name: 'Equipment',
-      component: Equipment
+      component: Equipment,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/EquipmentAdd',
       name: 'EquipmentAdd',
-      component: EquipmentAdd
+      component: EquipmentAdd,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/UpkeepAmend',
       name: 'UpkeepAmend',
-      component: UpkeepAmend
+      component: UpkeepAmend,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/AmendPlan',
+      name: 'AmendPlan',
+      component: AmendPlan,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/Redact/:id/',
       name: 'Redact',
-      component: Redact
+      component: Redact,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/Operation',
       name: 'Operation',
-      component: Operation
+      component: Operation,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/Upkeep',
       name: 'Upkeep',
-      component: Upkeep
+      component: Upkeep,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/UpkeepAdd',
       name: 'UpkeepAdd',
-      component: UpkeepAdd
+      component: UpkeepAdd,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/TurnaroundPlansAdd',
       name: 'TurnaroundPlansAdd',
-      component: TurnaroundPlansAdd
+      component: TurnaroundPlansAdd,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/TurnaroundPlansAmend',
       name: 'TurnaroundPlansAmend',
-      component: TurnaroundPlansAmend
+      component: TurnaroundPlansAmend,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/BreakDetails',
       name: 'BreakDetails',
-      component: BreakDetails
+      component: BreakDetails,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/Breakdown',
       name: 'Breakdown',
-      component: Breakdown
+      component: Breakdown,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/TurnaroundPlans',
       name: 'TurnaroundPlans',
-      component: TurnaroundPlans
+      component: TurnaroundPlans,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/Organization',
       name: 'Organization',
-      component: Organization
+      component: Organization,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/Add',
       name: 'Add',
-      component: Add
+      component: Add,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/Personnel',
       name: 'Personnel',
-      component: Personnel
+      component: Personnel,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/PersnnelAdd',
       name: 'PersnnelAdd',
-      component: PersnnelAdd
+      component: PersnnelAdd,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/Modification',
       name: 'Modification',
-      component: Modification
+      component: Modification,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/User',
       name: 'User',
-      component: User
+      component: User,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/EquipmentArchives',
       name: 'EquipmentArchives',
-      component: EquipmentArchives
+      component: EquipmentArchives,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/WorkOrder',
       name: 'WorkOrder',
-      component: WorkOrder
+      component: WorkOrder,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/KnowledgeBase',
       name: 'KnowledgeBase',
-      component: KnowledgeBase
+      component: KnowledgeBase,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/Message',
       name: 'Message',
-      component: Message
+      component: Message,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/MsgDetails',
       name: 'MsgDetails',
-      component: MsgDetails
+      component: MsgDetails,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/RoleManagement',
       name: 'RoleManagement',
-      component: RoleManagement
+      component: RoleManagement,
+      meta: {
+        requireAuth: true
+      },
     },
     {
       path: '/System',
       name: 'System',
-      component: System
+      component: System,
+      meta: {
+        requireAuth: true
+      },
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(res => res.meta.requireAuth)) { // 判断是否需要登录权限
+    if (sessionStorage.getItem('token')) { // 判断是否登录
+      next()
+    } else if (sessionStorage.getItem('token') === "") { // 没登录则跳转到登录界面
+      next({
+        path: '/Login',
+        query: {
+          redirect: to.fullPath
+        }
+      })
+    }
+  } else {
+    next()
+  }
+})
+export default router

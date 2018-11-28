@@ -4,15 +4,32 @@
       <el-container>
         <el-header style="background-color:rgb(238, 241, 246);">
           <div class="logo">
-
+          </div>
+          <div class="stateList">
+            <ul>
+              <li>设备状态</li>
+              <li>消息</li>
+              <li>任务</li>
+              <li><el-button plain size="mini">退出</el-button></li>
+            </ul>
           </div>
         </el-header>
       </el-container>
       <el-container class='box'>
-        <el-aside width="180px" style="background-color: rgb(238, 241, 246)">
-          <el-menu :router=true :default-active="$route.name" style="background-color:rgb(238, 241, 246);">
+        <el-aside
+          width="180px"
+          style="background-color: rgb(238, 241, 246)"
+        >
+          <el-menu
+            :router=true
+            :default-active="$route.name"
+            style="background-color:rgb(238, 241, 246);"
+          >
             <el-submenu index="/Home">
-              <template slot="title"><i class="el-icon-message" index="/Home"></i>默认工作台</template>
+              <template slot="title"><i
+                  class="el-icon-message"
+                  index="/Home"
+                ></i>默认工作台</template>
               <el-menu-item index="/Home">默认工作台</el-menu-item>
               <!-- <el-menu-item index="/Home">选项2</el-menu-item>
               <el-menu-item index="/Home">选项3</el-menu-item> -->
@@ -20,9 +37,9 @@
             <!-- <router-link to="默认工作台"></router-link> -->
             <el-submenu index="1">
               <template slot="title"><i class="el-icon-menu"></i>数据中心</template>
-              <el-menu-item index="/Information">数据中心</el-menu-item>
+              <!-- <el-menu-item index="/Information">数据中心</el-menu-item>
               <el-menu-item index="/Information">选项2</el-menu-item>
-              <el-menu-item index="/Information">选项3</el-menu-item>
+              <el-menu-item index="/Information">选项3</el-menu-item> -->
             </el-submenu>
             <el-submenu index="2">
               <template slot="title"><i class="el-icon-setting"></i>企业管理</template>
@@ -41,7 +58,7 @@
               <el-menu-item index="/TurnaroundPlans">检修计划</el-menu-item>
               <!-- <el-menu-item index="/Operation">选项3</el-menu-item> -->
               <!-- <el-menu-item index="/TurnaroundPlansAdd">检修计划添加/修改</el-menu-item> -->
-              <!-- <el-menu-item index="/BreakDetails">故障详情</el-menu-item> -->
+              <!-- <el-menu-item index="/AmendPlan">故障详情</el-menu-item> -->
               <el-menu-item index="/Upkeep">保养计划</el-menu-item>
             </el-submenu>
             <el-submenu index="5">
@@ -64,21 +81,21 @@
             </el-submenu> -->
             <el-submenu index="8">
               <template slot="title"><i class="el-icon-setting"></i>设备档案</template>
-              <el-menu-item index="/EquipmentArchives">选项1</el-menu-item>
+              <!-- <el-menu-item index="/EquipmentArchives">选项1</el-menu-item>
               <el-menu-item index="/EquipmentArchives">选项2</el-menu-item>
-              <el-menu-item index="/EquipmentArchives">选项3</el-menu-item>
+              <el-menu-item index="/EquipmentArchives">选项3</el-menu-item> -->
             </el-submenu>
             <el-submenu index="9">
               <template slot="title"><i class="el-icon-setting"></i>工单</template>
-              <el-menu-item index="/WorkOrder">选项1</el-menu-item>
+              <!-- <el-menu-item index="/WorkOrder">选项1</el-menu-item>
               <el-menu-item index="/WorkOrder">选项2</el-menu-item>
-              <el-menu-item index="/WorkOrder">选项3</el-menu-item>
+              <el-menu-item index="/WorkOrder">选项3</el-menu-item> -->
             </el-submenu>
             <el-submenu index="10">
               <template slot="title"><i class="el-icon-setting"></i>知识库</template>
-              <el-menu-item index="/KnowledgeBase">选项1</el-menu-item>
+              <!-- <el-menu-item index="/KnowledgeBase">选项1</el-menu-item>
               <el-menu-item index="/KnowledgeBase">选项2</el-menu-item>
-              <el-menu-item index="/KnowledgeBase">选项3</el-menu-item>
+              <el-menu-item index="/KnowledgeBase">选项3</el-menu-item> -->
             </el-submenu>
             <el-submenu index="11">
               <template slot="title"><i class="el-icon-setting"></i>消息管理</template>
@@ -89,14 +106,14 @@
             <el-submenu index="12">
               <template slot="title"><i class="el-icon-setting"></i>角色管理</template>
               <el-menu-item index="/RoleManagement">角色管理</el-menu-item>
-              <el-menu-item index="/RoleManagement">选项2</el-menu-item>
-              <el-menu-item index="/RoleManagement">选项3</el-menu-item>
+              <!-- <el-menu-item index="/RoleManagement">选项2</el-menu-item> -->
+              <!-- <el-menu-item index="/RoleManagement">选项3</el-menu-item> -->
             </el-submenu>
             <el-submenu index="13">
               <template slot="title"><i class="el-icon-setting"></i>系统管理</template>
-              <el-menu-item index="/System">选项1</el-menu-item>
-              <el-menu-item index="/User">用户管理</el-menu-item>
-              <el-menu-item index="/System">选项3</el-menu-item>
+              <!-- <el-menu-item index="/System">选项1</el-menu-item> -->
+              <!-- <el-menu-item index="/User">用户管理</el-menu-item> -->
+              <!-- <el-menu-item index="/System">选项3</el-menu-item> -->
             </el-submenu>
           </el-menu>
         </el-aside>
@@ -145,6 +162,34 @@ export default {
   margin: 0;
   padding: 0;
 }
+.el-header{
+  overflow: hidden;
+  position: relative;
+  font-size: 12px;
+}
+.stateList{
+  position: absolute;
+  right: 20px;
+  bottom: 0%;
+  // border: 1px solid @Info;
+  ul{
+    li{
+      list-style-type: none;
+      float: left;
+      height: 24px;
+      line-height: 24px;
+      padding: 0 7px;
+      border-right: 1px solid rgb(182, 179, 179);
+      cursor: pointer;
+      .el-button--mini{
+        padding: 5px 5px
+      }
+    }
+    li:last-child{
+      border-right:none;
+    }
+  }
+}
 .el-input__inner {
   padding: 0 5px;
 }
@@ -161,6 +206,7 @@ export default {
     width: 200px;
     height: 37px;
     margin-top: 10px;
+    display: inline-block;
     background-image: url("./assets/image/chlogo.png");
     background-size: cover;
   }
@@ -170,11 +216,13 @@ export default {
   float: left;
   // width: 90%;
   height: 100%;
+  .el-menu-item {
+    height: 40px;
+    line-height: 40px;
+    min-width: 178px;
+  }
 }
-.el-menu-item {
-  height: 40px;
-  line-height: 40px;
-}
+
 .el-submenu__title {
   height: 40px !important;
   line-height: 40px !important;

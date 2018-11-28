@@ -3,19 +3,50 @@
     <div class="userCase">
       <div class="top">
         <el-button size="small">审核</el-button>
-        <el-button size="small">停止</el-button>
+        <el-button
+          size="small"
+          @click="revoke"
+        >故障消除</el-button>
         <el-button size="small">删除</el-button>
         <div class="search">
-          <el-input type="search" placeholder="如故障编码，设备名称，位号，描述" size="small"></el-input>
-          <el-button size="small">搜索</el-button>
+          <el-input
+            type="search"
+            placeholder="如故障编码，设备名称，位号，描述"
+            size="small"
+            v-model="faultKey"
+          ></el-input>
+          <el-button
+            size="small"
+            @click="search"
+          >搜索</el-button>
           <span style="padding-left:10px;">高级搜索</span>
         </div>
       </div>
       <div class="bottom">
         <div>
-          <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-          <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          <v-table
+            :select-all="selectALL"
+            :select-group-change="selectGroupChange"
+            is-horizontal-resize
+            column-width-drag
+            :multiple-sort="false"
+            style="width:100%;min-height:400px;"
+            :columns="columns"
+            :table-data="tableData"
+            row-hover-color="#eee"
+            row-click-color="#edf7ff"
+          ></v-table>
+          <div
+            class="mt20 mb20 bold"
+            style="text-align:center;margin-top:30px;"
+          >
+            <v-pagination
+              @page-change="pageChange"
+              @page-size-change="pageSizeChange"
+              :total="1"
+              :page-size="pageSize"
+              :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
+            ></v-pagination>
           </div>
         </div>
       </div>
@@ -26,6 +57,9 @@
 export default {
   data() {
     return {
+      faultId: "",
+      faultKey: "",
+
       pageIndex: 1,
       pageSize: 10,
       tableData: [],
@@ -107,9 +141,27 @@ export default {
   },
   methods: {
     selectGroupChange(selection) {
+      this.faultId = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.faultId === "") {
+          this.faultId = selection[i].id;
+        } else {
+          this.faultId += "," + selection[i].id;
+        }
+      }
+      console.log(this.faultId);
       console.log("select-group-change", selection);
     },
     selectALL(selection) {
+      this.faultId = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.faultId === "") {
+          this.faultId = selection[i].id;
+        } else {
+          this.faultId += "," + selection[i].id;
+        }
+      }
+      console.log(this.faultId);
       console.log("select-aLL", selection);
     },
     selectChange(selection, rowData) {
@@ -145,67 +197,96 @@ export default {
       }
     },
 
-    load(){
+    load() {
       this.axios
-        .get(this.global.apiSrc+"/fault/list",{params:{page:-1}})
-        .then(response=>{
+        .get(this.global.apiSrc + "/fault/list", { params: { page: -1 } })
+        .then(response => {
           this.tableData = response.data.data;
-          for (let i = 0;i<this.tableData.length;i++){
-            if(this.tableData[i].state === 0){
-              this.tableData[i].state = "待审核"
-            }
-            if(this.tableData[i].state === 1){
-              this.tableData[i].state = "审核通过"
-            }
-            if(this.tableData[i].state === 2){
-              this.tableData[i].state = "禁用"
-            }
-            if(this.tableData[i].state === 3){
-              this.tableData[i].state = "已删除"
-            }
-            if(this.tableData[i].state === 4){
-              this.tableData[i].state = "审核中"
-            }
-            if(this.tableData[i].state === 5){
-              this.tableData[i].state = "待处理"
-            }
-            if(this.tableData[i].state === 6){
-              this.tableData[i].state = "已消除"
-            }
-            if(this.tableData[i].state === 7){
-              this.tableData[i].state = "已撤销"
-            }
-            if(this.tableData[i].state === 10){
-              this.tableData[i].state = "审批被驳回"
-            }
-            if(this.tableData[i].faultLevel ===1){
-              this.tableData[i].faultLevel = "低"
-            }
-            if(this.tableData[i].faultLevel ===2){
-              this.tableData[i].faultLevel = "中"
-            }
-            if(this.tableData[i].faultLevel ===3){
-              this.tableData[i].faultLevel = "高"
-            }
-            if(this.tableData[i].faultSource==="0"){
-              this.tableData[i].faultSource="人工提交"
-            }
-            if(this.tableData[i].faultSource==="1"){
-              this.tableData[i].faultSource="设备采集"
-            }
-          }
-          this.tableDate = this.tableData
+          this.springReplacement();
+          this.tableDate = this.tableData;
         })
         .catch(function(error) {
           console.log(error);
         });
     },
-    dispel(){
-      
+    springReplacement() {
+      for (let i = 0; i < this.tableData.length; i++) {
+        if (this.tableData[i].state === 0) {
+          this.tableData[i].state = "待审核";
+        }
+        if (this.tableData[i].state === 1) {
+          this.tableData[i].state = "审核通过";
+        }
+        if (this.tableData[i].state === 2) {
+          this.tableData[i].state = "禁用";
+        }
+        if (this.tableData[i].state === 3) {
+          this.tableData[i].state = "已删除";
+        }
+        if (this.tableData[i].state === 4) {
+          this.tableData[i].state = "审核中";
+        }
+        if (this.tableData[i].state === 5) {
+          this.tableData[i].state = "待处理";
+        }
+        if (this.tableData[i].state === 6) {
+          this.tableData[i].state = "已消除";
+        }
+        if (this.tableData[i].state === 7) {
+          this.tableData[i].state = "已撤销";
+        }
+        if (this.tableData[i].state === 10) {
+          this.tableData[i].state = "审批被驳回";
+        }
+        if (this.tableData[i].faultLevel === 1) {
+          this.tableData[i].faultLevel = "低";
+        }
+        if (this.tableData[i].faultLevel === 2) {
+          this.tableData[i].faultLevel = "中";
+        }
+        if (this.tableData[i].faultLevel === 3) {
+          this.tableData[i].faultLevel = "高";
+        }
+        if (this.tableData[i].faultSource === "0") {
+          this.tableData[i].faultSource = "人工提交";
+        }
+        if (this.tableData[i].faultSource === "1") {
+          this.tableData[i].faultSource = "设备采集";
+        }
+      }
+    },
+    revoke() {
+      let qs = require("qs");
+      let data = qs.stringify({
+        faultId: this.faultId
+      });
+      this.axios
+        .post(this.global.apiSrc + "/fault/revoke", data)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    search() {
+      this.axios
+        .get(this.global.apiSrc + "/fault/search", {
+          params: { keyword: this.faultKey, page: -1 }
+        })
+        .then(response => {
+          this.tableData = response.data.data;
+          this.springReplacement();
+          this.tableDate = this.tableData;
+          // console.log(response)
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   },
-  created(){
-    this.load()
+  created() {
+    this.load();
   }
 };
 </script>

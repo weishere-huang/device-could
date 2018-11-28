@@ -90,8 +90,8 @@
     <div class="content">
       <div class="search">
         <el-button size="small" @click="toAdd">添加</el-button>
-        <!--<el-button size="small" @click="sort()"> 复制</el-button>-->
-        <el-button size="small" @click="editShow">编辑</el-button>
+        <el-button size="small" @click="redactShow">修改</el-button>
+        <el-button size="small" > 复制</el-button>
         <el-button size="small" @click="edelete">删除</el-button>
         <div class="searchright">
           <span>关键字：</span>
