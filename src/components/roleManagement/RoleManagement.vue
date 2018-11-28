@@ -256,7 +256,7 @@
 export default {
   data() {
     return {
-      role: "",
+      role: [1, 2, 3, 4],
       roleName: "",
       roleId: 0,
       systemID: "",
@@ -759,11 +759,11 @@ export default {
   },
   mounted() {
     $(".left li").click(function() {
-      $(this)
-        .addClass("fontColor")
-        .siblings()
-        .removeClass("fontColor");
-    });
+        $(this)
+          .addClass("fontColor")
+          .siblings()
+          .removeClass("fontColor");
+      });
   },
   created() {
     this.load();

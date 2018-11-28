@@ -282,6 +282,7 @@ export default {
         // .post("/api/user/login", data)
         .then(result => {
           sessionStorage.token = result.data.data;
+          console.log(result);
           if (this.userName === "") {
             console.log("请输入用户名");
             alert("请输入用户名");
@@ -615,3 +616,4 @@ export default {
     }
   }
 </style>
+

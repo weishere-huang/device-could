@@ -181,14 +181,13 @@ export default {
       this.totalNub = params.totalElements;
     },
     replace() {
-      
       location.reload();
     },
     auditblock() {
       if (this.auditValue === "") {
         alert("请选择一个企业");
       } else {
-        this.choice += "," + selection[i].id;
+        this.auditShow = true;
       }
     },
     selectALL(selection) {
@@ -325,7 +324,7 @@ export default {
         .then(response => {
           // alert("启用成功");
           // this.message("启用成功")
-          this.messageError("确认启动吗？")
+          this.messageError("确认启动吗？");
           this.load();
           this.$message("您已启用该公司");
           console.log("请求参数：" + data);
