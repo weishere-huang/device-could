@@ -265,7 +265,7 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .organization {
-  padding-left: 180px;
+  // padding-left: 180px;
   add {
     position: absolute;
     top: 50%;

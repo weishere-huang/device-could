@@ -260,107 +260,112 @@
 
 </template>
 <script>
-export default {
-  name: "",
-  data() {
-    return {
-      nameAndImg: [{ name: "", img: "" }],
-      persnneladd: {
-        employeeNo: "",
-        name: "",
-        gender: "",
-        birthday: "",
-        phone: "",
-        position: "",
-        organizeCode: "",
-        organizationName: "",
-        enterpriseId: "",
-        workType: "",
-        entryTime: "",
-        email: "",
-        marital: "",
-        idCardNo: "",
-        workingYears: "",
-        height: "",
-        nativePlace: "",
-        nationality: "",
-        postalAddress: "",
-        graduateSchool: "",
-        degree: "",
-        img: "",
-        qualificationInfo: "",
-        roleId: ""
-      },
-      options: [
-        {
-          value: "四川长虹电器有限公司",
-          label: "四川长虹电器有限公司"
+  export default {
+    name: "",
+    data() {
+      return {
+        nameAndImg:[{name:"", img:""}],
+        persnneladd: {
+          employeeNo: "",
+          name: "",
+          gender: "1",
+          birthday: "",
+          phone: "",
+          position: "",
+          organizeCode:"",
+          organizationName: "",
+          enterpriseId:"",
+          workType:"",
+          entryTime: "",
+          email: "",
+          marital: "0",
+          idCardNo: "",
+          workingYears: "",
+          height: "",
+          nativePlace: "",
+          nationality: "",
+          postalAddress: "",
+          graduateSchool: "",
+          degree: "",
+          img: "",
+          qualificationInfo:"",
+          roleId: ""
         },
-        {
-          value: "四川长虹智能制造有限公司",
-          label: "四川长虹智能制造有限公司"
-        },
-        {
-          value: "长虹网络科技有限公司",
-          label: "长虹网络科技有限公司"
-        },
-        {
-          value: "长虹电子系统有限公司",
-          label: "长虹电子系统有限公司"
-        }
-      ],
-      role: []
-    };
-  },
-  methods: {
-    tback() {
-      this.$router.back(-1);
+        options: [],
+        role: []
+      };
+
     },
-    employeeAdd() {
-      this.persnneladd.birthday = this.persnneladd.birthday.replace(/-/g, "/");
-      this.persnneladd.entryTime = this.persnneladd.entryTime.replace(
-        /-/g,
-        "/"
-      );
-      let qs = require("qs");
-      let data = qs.stringify({
-        employeeNo: this.persnneladd.employeeNo,
-        name: this.persnneladd.name,
-        gender: this.persnneladd.gender,
-        birthday: this.persnneladd.birthday,
-        phone: this.persnneladd.phone,
-        position: this.persnneladd.position,
-        organizeCode: this.persnneladd.organizeCode,
-        organizationName: this.persnneladd.organizationName,
-        enterpriseId: this.persnneladd.enterpriseId,
-        workType: this.persnneladd.workType,
-        entryTime: this.persnneladd.entryTime,
-        email: this.persnneladd.email,
-        marital: this.persnneladd.marital,
-        idCardNo: this.persnneladd.idCardNo,
-        workingYears: this.persnneladd.workingYears,
-        height: this.persnneladd.height,
-        nativePlace: this.persnneladd.nativePlace,
-        nationality: this.persnneladd.nationality,
-        postalAddress: this.persnneladd.postalAddress,
-        graduateSchool: this.persnneladd.graduateSchool,
-        degree: this.persnneladd.degree,
-        img: this.persnneladd.img,
-        qualificationInfo: this.persnneladd.qualificationInfo,
-        roleId: this.persnneladd.roleId
-      });
-      this.axios
-        .post(this.global.apiSrc + "/employee/add", data)
-        .then(response => {
-          if (response.data.msg === "成功") {
-            alert("成功");
-            this.Personnel();
-          } else {
-            alert("失败");
+    methods: {
+      tback(){
+        this.$router.back(-1)
+      },
+      organize(){
+        this.axios
+          .get(this.global.apiSrc+"/organize/allOrganize")
+          .then(response => {
+            this.options = response.data.data;
+           console.log(response.data.data)
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      codeToName(organizeCode){
+        for (let i =0;i<this.options.length;i++){
+          if(this.options[i].code === organizeCode){
+            this.persnneladd.organizationName = this.options[i].name;
           }
-        })
-        .catch(function(error) {
-          console.log(error);
+        }
+      },
+      employeeAdd() {
+        this.codeToName(this.persnneladd.organizeCode);
+        this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
+        this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
+        let qs = require("qs");
+        let data = qs.stringify({
+          employeeNo: this.persnneladd.employeeNo,
+          name:this.persnneladd.name,
+          gender:this.persnneladd.gender,
+          birthday:this.persnneladd.birthday,
+          phone:this.persnneladd.phone,
+          position:this.persnneladd.position,
+          organizeCode:this.persnneladd.organizeCode,
+          organizationName :this.persnneladd.organizationName,
+          enterpriseId  :this.persnneladd.enterpriseId,
+          workType:this.persnneladd.workType,
+          entryTime:this.persnneladd.entryTime,
+          email:this.persnneladd.email,
+          marital:this.persnneladd.marital,
+          idCardNo:this.persnneladd.idCardNo,
+          workingYears:this.persnneladd.workingYears,
+          height:this.persnneladd.height,
+          nativePlace:this.persnneladd.nativePlace,
+          nationality:this.persnneladd.nationality,
+          postalAddress:this.persnneladd. postalAddress,
+          graduateSchool:this.persnneladd. graduateSchool,
+          degree:this.persnneladd.degree,
+          img:this.persnneladd.img,
+          qualificationInfo:this.persnneladd.qualificationInfo,
+          roleId:this.persnneladd.roleId
+        });
+        this.axios
+          .post(this.global.apiSrc+"/employee/add", data)
+          .then(response => {
+            if (response.data.msg ==="成功"){
+              alert("成功");
+              this.Personnel();
+            }else{
+              alert("失败");
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      Personnel() {
+        this.$router.push({
+          path: "/Personnel"
         });
     },
     Personnel() {

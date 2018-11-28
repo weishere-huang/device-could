@@ -373,7 +373,9 @@ export default {
             alert("请输入管理员联系电话");
           } else {
             location.reload();
+            console.log(result)
           }
+
         })
         .catch(err => {
           console.log(err);

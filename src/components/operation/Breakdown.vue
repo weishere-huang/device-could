@@ -306,7 +306,7 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .turnaround-plans {
-  padding-left: 220px;
+  // padding-left: 220px;
   .userCase {
     width: 100%;
     padding: 10px;
