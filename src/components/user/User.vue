@@ -61,6 +61,7 @@ export default {
       pageIndex: 1,
       pageSize: 10,
       userIds: "",
+      choice: "",
       tableData: [],
       totalNub: "",
       tableDate: [],
@@ -72,7 +73,7 @@ export default {
           type: "selection"
         },
         {
-          field: "id",
+          field: "enterpriseName",
           title: "企业名称",
           width: 40,
           titleAlign: "center",
@@ -106,7 +107,7 @@ export default {
         },
 
         {
-          field: "gmtCreate",
+          field: "createTime",
           title: "创建时间",
           width: 80,
           titleAlign: "center",
@@ -124,6 +125,7 @@ export default {
       ]
     };
   },
+
   methods: {
     enable() {},
     prohibit() {},
@@ -152,19 +154,8 @@ export default {
         } else {
           this.userIds += "," + selection[i].id;
         }
+        console.log("select-change", selection, rowData);
       }
-      console.log("select-aLL", selection);
-    },
-    selectChange(selection, rowData) {
-      this.userIds = "";
-      for (let i = 0; i < selection.length; i++) {
-        if (this.userIds === "") {
-          this.userIds += selection[i].id;
-        } else {
-          this.userIds += "," + selection[i].id;
-        }
-      }
-      console.log("select-change", selection, rowData);
     },
     getTableData() {
       this.tableData = this.tableDate.slice(
@@ -182,6 +173,7 @@ export default {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+      this.load();
     },
     sortChange(params) {
       if (params.height.length > 0) {
@@ -206,9 +198,7 @@ export default {
           this.totalNub = response.data.data.totalElements;
           this.tableData = response.data.data.content;
           for (let i = 0; i < this.tableData.length; i++) {
-            this.tableData[i].gmtCreate = this.tableData[i].gmtCreate.split(
-              "T"
-            )[0];
+            // this.tableData[i].gmtCreate = this.tableData[i].gmtCreate.split("T")[0];
             if (this.tableData[i].state === 0) {
               this.tableData[i].state = "正常";
             } else {

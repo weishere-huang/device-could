@@ -77,7 +77,7 @@
             title: "信息标题",
             width: 150,
             titleAlign: "center",
-            columnAlign: "left",
+            columnAlign: "center",
             //   isResize: true
             //   orderBy: ""
           },
@@ -86,7 +86,7 @@
             title: "信息内容",
             width: 150,
             titleAlign: "center",
-            columnAlign: "left",
+            columnAlign: "center",
             isResize: true
           },
           {
@@ -94,7 +94,7 @@
             title: "消息类型",
             width: 50,
             titleAlign: "center",
-            columnAlign: "left",
+            columnAlign: "center",
             isResize: true
           },
           {
@@ -102,7 +102,7 @@
             title: "是否阅读",
             width: 50,
             titleAlign: "center",
-            columnAlign: "left",
+            columnAlign: "center",
             isResize: true
           },
           {
@@ -110,7 +110,7 @@
             title: "创建时间",
             width: 50,
             titleAlign: "center",
-            columnAlign: "left",
+            columnAlign: "center",
             isResize: true
           }
         ]
@@ -204,9 +204,13 @@
           .get(apiMsg+"/message/allMsg/" + this.userId, data)
           .then(result => {
             console.log(result.data.data);
-            // for(let i = 0;i<result.data.data.length;i++){
-            //   if(result.data.data[i].isRead ==)
-            // }
+            for(let i = 0;i<result.data.data.length;i++){
+              if(result.data.data[i].isRead == 0 ){
+                result.data.data[i].isRead = "未读";
+              }else{
+                result.data.data[i].isRead = "已读";
+              }
+            }
             this.tableData = result.data.data;
             this.NotReadMsgCount();
           })
@@ -251,7 +255,15 @@
           .get(apiMsg+"/message/allNotReadMsg/" + this.userId, data)
           .then(result => {
             console.log(result.data);
+            for(let i = 0;i<result.data.data.length;i++){
+              if(result.data.data[i].isRead == 0 ){
+                result.data.data[i].isRead = "未读";
+              }else{
+                result.data.data[i].isRead = "已读";
+              }
+            }
             this.tableData = result.data.data;
+
           })
           .catch(err => {
             console.log(err);

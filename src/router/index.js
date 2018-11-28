@@ -145,7 +145,7 @@ const router = new Router({
       },
     },
     {
-      path: '/Redact',
+      path: '/Redact/:id/',
       name: 'Redact',
       component: Redact,
       meta: {

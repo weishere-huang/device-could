@@ -264,7 +264,7 @@
 </template>
 <script>
 import addperson from "./AddPerson";
-
+ 
 export default {
   data() {
     return {
@@ -784,8 +784,10 @@ export default {
   },
   created() {
     this.c = this.$store.state.equipment.person;
-    console.log("当前设备ID" + this.c.id);
-    this.detail(this.c.id);
+      console.log("当前设备ID" + this.c.id);
+      this.detail(this.c.id);
+      let id = this.$route.params.id;
+      console.log("letid:"+id);
   }
 };
 </script>
