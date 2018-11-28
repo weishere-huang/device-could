@@ -43,19 +43,10 @@
     </div>
     <div class="content">
       <div class="search">
-        <el-button
-          size="small"
-          @click="toAdd"
-        >添加</el-button>
-        <el-button
-          size="small"
-          @click="redactShow"
-        >修改</el-button>
-        <el-button size="small"> 复制</el-button>
-        <el-button
-          size="small"
-          @click="edelete"
-        >删除</el-button>
+        <el-button size="small" @click="toAdd">添加</el-button>
+        <el-button size="small" @click="editShow">修改</el-button>
+        <el-button size="small" > 复制</el-button>
+        <el-button size="small" @click="edelete">删除</el-button>
         <div class="searchright">
           <span>关键字：</span>
 
@@ -129,32 +120,7 @@ export default {
       pageSize: 9,
       ids: "",
       edbt: "",
-      tableData: [
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        },
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        }
-        // {
-        //   name:"111",
-        //   tel:"222",
-        //   address:"3333",
-        //   hobby:"4444"
-        // },
-        // {
-        //   name:"111",
-        //   tel:"222",
-        //   address:"3333",
-        //   hobby:"4444"
-        // }
-      ],
+      tableData: [],
       tableDate: [],
       columns: [
         {

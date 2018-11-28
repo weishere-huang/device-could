@@ -7,33 +7,18 @@
       <ul>
         <li>
           <label for="">名称：</label>
-          <el-input
-            type="text"
-            size="small"
-          ></el-input>
+          <el-input type="text" size="small" v-model="orgname"></el-input>
         </li>
         <li>
           <label for="">类型：</label>
-          <el-select
-            style="width:70%"
-            v-model="value"
-            placeholder="请选择"
-          >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
+          <el-select style="width:70%" v-model="value" placeholder="请选择">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </li>
         <li>
           <label style="display:inline-block;height:60px;vertical-align:top;">备注：</label>
-          <textarea
-            type="textarea"
-            style="width:70%;height:60px;"
-          ></textarea>
+          <textarea type="textarea" style="width:70%;height:60px;" v-model="orgInfo"></textarea>
 
         </li>
         <li style="text-align:center;">
@@ -41,7 +26,7 @@
             size="small"
             @click="addHide"
           >取消</el-button>
-          <el-button size="small">保存</el-button>
+          <el-button size="small" @click="add">保存</el-button>
         </li>
       </ul>
     </div>
@@ -51,48 +36,79 @@
 <script>
 export default {
   name: "",
-
+  props:["nodedata"],
   data() {
     return {
       show: true,
       type: "",
+      pcode:this.nodedata.code,
       options: [
-        {
-          value: "企业",
-          label: "企业"
-        },
-        {
-          value: "工厂",
-          label: "工厂"
-        },
-        {
-          value: "生产线",
-          label: "生产线"
-        },
-        {
-          value: "车间",
-          label: "车间"
-        },
-        {
-          value: "部门",
-          label: "部门"
-        },
-        {
-          value: "其他",
-          label: "其他"
-        }
-      ],
-      value: ""
+      {
+        value: "0",
+        label: "企业"
+      },
+      {
+        value: "1",
+        label: "公司"
+      },
+      {
+        value: "2",
+        label: "工厂"
+      },
+      {
+        value: "3",
+        label: "部门"
+      },
+      {
+        value: "4",
+        label: "车间"
+      }
+    ],
+      value: "",
+      orgname:"",
+      orgInfo:""
+
     };
   },
   methods: {
+    append(data) {
+      const newChild = { id: id++, label: "text", children: [] };
+      if (!data.children) {
+        this.$set(data, "children", []);
+      }
+      data.children.push(newChild);
+    },
     handleChange(value) {
       console.log(value);
     },
     addHide() {
       this.$emit("addHide",false)
-      
-    }
+    },
+    add() {
+      //添加组织机构
+      let qs = require("qs");
+      let data = qs.stringify({
+        parentCode: this.pcode,
+        name: this.orgname,
+        organizeType: this.value,
+        organizeInfo: this.orgInfo
+      });
+      axios
+        .post(this.global.apiSrc + "/organize/add", data)
+        .then(result => {
+          if(result.data.code === 200){
+            alert("添加成功");
+            console.log(result.data);
+          }else{
+            alert("添加失败");
+            console.log(result.data);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    },
   }
 };
 </script>

@@ -10,19 +10,13 @@
         <div class="search">
           <el-input type="search" placeholder="如员工编号，姓名，手机，部门，岗位" size="small" v-model="searchs"></el-input>
           <el-button size="small" @click="search">搜索</el-button>
-
         </div>
       </div>
       <div class="bottom">
         <div>
-          <v-table :row-dblclick="modefication" :select-all="selectALL" :select-group-change="selectGroupChange"
-                   is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;"
-                   :columns="columns" :table-data="tableData" row-hover-color="#eee"
-                   row-click-color="#edf7ff"></v-table>
+          <v-table :row-dblclick="modefication" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length"
-                          :page-size="pageSize"
-                          :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
@@ -250,6 +244,7 @@
           });
         }
       },
+
       load() {
         this.axios
           .get(this.global.apiSrc + "/employee/findEmployeeList", {
@@ -257,11 +252,8 @@
           })
           .then(response => {
             this.tableData = response.data.data.content;
-            // console.log(this.tableData);
             for (let i in this.tableData) {
-              this.tableData[i].state === 1
-                ? (this.tableData[i].state = "禁用")
-                : (this.tableData[i].state = "启用");
+              this.tableData[i].state === 1 ? (this.tableData[i].state = "禁用") : (this.tableData[i].state = "启用");
             }
             this.tableDate = this.tableData;
           })
