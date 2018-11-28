@@ -410,9 +410,12 @@
             this.systemID += ","+this.systemKeyInfo[i];
           }
         }
+        console.log(this.systemID);
+        console.log(this.roleName);
+        console.log(this.roleId);
         let qs = require("qs");
         let data = qs.stringify({
-          id:this.roleId.value,
+          id:this.roleId,
           name:this.roleName,
           permissionIds:this.systemID
         });
