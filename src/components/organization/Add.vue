@@ -1,30 +1,52 @@
 <template>
-    <div class="add" v-show="show">
-        <div class="addcase">
-            <ul>
-                <li>
-                    <label for="">名称：</label>
-                    <el-input type="text" size="small"></el-input>
-                </li>
-                <li>
-                    <label for="">类型：</label>
-                    <el-select v-model="type" placeholder="请选择" size="small" style="width:70%">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                </li>
-                <li>
-                    <label style="display:inline-block;height:60px;vertical-align:top;">备注：</label>
-                    <textarea type="textarea" style="width:70%;height:60px;"></textarea>
+  <div
+    class="add"
+    v-show="show"
+  >
+    <div class="addcase">
+      <ul>
+        <li>
+          <label for="">名称：</label>
+          <el-input
+            type="text"
+            size="small"
+          ></el-input>
+        </li>
+        <li>
+          <label for="">类型：</label>
+          <el-select
+            style="width:70%"
+            v-model="value"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </li>
+        <li>
+          <label style="display:inline-block;height:60px;vertical-align:top;">备注：</label>
+          <textarea
+            type="textarea"
+            style="width:70%;height:60px;"
+          ></textarea>
 
-                </li>
-                <li style="text-align:center;">
-                    <el-button size="small" @click="add1">取消</el-button>
-                    <el-button size="small">保存</el-button>
-                </li>
-            </ul>
-        </div>
-
+        </li>
+        <li style="text-align:center;">
+          <el-button
+            size="small"
+            @click="addHide"
+          >取消</el-button>
+          <el-button size="small">保存</el-button>
+        </li>
+      </ul>
     </div>
+
+  </div>
 </template>
 <script>
 export default {
@@ -36,23 +58,39 @@ export default {
       type: "",
       options: [
         {
-          value: "1",
-          label: "1"
+          value: "企业",
+          label: "企业"
         },
         {
-          value: "2",
-          label: "2"
+          value: "工厂",
+          label: "工厂"
         },
         {
-          value: "3",
-          label: "3"
+          value: "生产线",
+          label: "生产线"
+        },
+        {
+          value: "车间",
+          label: "车间"
+        },
+        {
+          value: "部门",
+          label: "部门"
+        },
+        {
+          value: "其他",
+          label: "其他"
         }
-      ]
+      ],
+      value: ""
     };
   },
   methods: {
-    add1() {
-      this.show = !this.show;
+    handleChange(value) {
+      console.log(value);
+    },
+    addHide() {
+      this.$emit("addHide",false)
     }
   }
 };
