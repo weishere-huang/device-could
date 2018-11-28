@@ -175,14 +175,7 @@
           sHide: false,
           checkAll: false,
           checkedSystem: [],
-          systemList: [
-             "新增设备信息",
-            "修改设备信息",
-            "删除设备信息",
-            "设备分类管理",
-            "设备类别管理",
-            "设备绑定人员信息管理"
-          ],
+          systemList: [],
           systemKey :[],
           isIndeterminate: true
         },
@@ -412,10 +405,8 @@
         }
         console.log(this.systemID);
         console.log(this.roleName);
-        console.log(this.roleId);
         let qs = require("qs");
         let data = qs.stringify({
-          id:this.roleId,
           name:this.roleName,
           permissionIds:this.systemID
         });
