@@ -148,15 +148,7 @@
           sHide: false,
           checkAll: false,
           checkedSystem: [],
-          systemList: [
-            "系统参数设置",
-            "工作台管理",
-            "数据备份",
-            "系统模型管理",
-            "工作流管理",
-            "安全设置",
-            "更新缓存",
-            "数备份"],
+          systemList: [],
           systemKey :[],
           isIndeterminate: true
         },
@@ -165,16 +157,7 @@
           sHide: false,
           checkAll: false,
           checkedSystem: [],
-          systemList: [
-            "系统参数设置",
-            "工作台管理",
-            "数据备份",
-            "系统模型管理",
-            "工作流管理",
-            "安全设置",
-            "更新缓存",
-            "数备份"
-          ],
+          systemList: [],
           systemKey :[],
           isIndeterminate: true
         },
@@ -183,14 +166,7 @@
           sHide: false,
           checkAll: false,
           checkedSystem: [],
-          systemList: [
-            "新增设备信息",
-            "修改设备信息",
-            "删除设备信息",
-            "设备分类管理",
-            "设备类别管理",
-            "设备绑定人员信息管理"
-          ],
+          systemList: [],
           systemKey :[],
           isIndeterminate: true
         },
@@ -214,17 +190,8 @@
           sShow: true,
           sHide: false,
           checkAll: false,
-          checkedSystem: ["系统参数设置", "工作台管理"],
-          systemList: [
-            "系统参数设置",
-            "工作台管理",
-            "数据备份",
-            "系统模型管理",
-            "工作流管理",
-            "安全设置",
-            "更新缓存",
-            "数备份"
-          ],
+          checkedSystem: [],
+          systemList: [],
           systemKey :[],
           isIndeterminate: true
         },
@@ -232,17 +199,8 @@
           sShow: true,
           sHide: false,
           checkAll: false,
-          checkedSystem: ["系统参数设置", "工作台管理"],
-          systemList: [
-            "系统参数设置",
-            "工作台管理",
-            "数据备份",
-            "系统模型管理",
-            "工作流管理",
-            "安全设置",
-            "更新缓存",
-            "数备份"
-          ],
+          checkedSystem: [],
+          systemList: [],
           systemKey :[],
           isIndeterminate: true
         },
@@ -452,14 +410,17 @@
             this.systemID += ","+this.systemKeyInfo[i];
           }
         }
-        // console.log(this.systemID);
+        console.log(this.systemID);
+        console.log(this.roleName);
+        console.log(this.roleId);
         let qs = require("qs");
         let data = qs.stringify({
-          id:this.roleId.value,
-          name:this.roleName
+          id:this.roleId,
+          name:this.roleName,
+          permissionIds:this.systemID
         });
         this.axios
-          .post(this.global.apiSrc+"/role/add",data,{params: {permissionIds:this.systemID}})
+          .post(this.global.apiSrc+"/role/add",data)
           .then(response =>{
             if (response.data.msg ==="成功") {
               alert("成功");

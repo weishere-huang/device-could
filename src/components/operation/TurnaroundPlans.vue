@@ -55,7 +55,6 @@ export default {
       pageNumber: 0,
       pageIndex: 1,
       pageSize: 10,
-      userId: 3,
       maintenanceIds: "",
       //检修分类
       planType: [],
@@ -220,28 +219,19 @@ export default {
       }
     },
 
-    load() {
+    load(){
       this.axios
-        .get(this.global.apiSrc + "/mplan/allPlan", {
-          params: {
-            userId: this.userId,
-            page: this.pageIndex,
-            size: this.pageSize
-          }
-        })
-        .then(response => {
+        .get(this.global.apiSrc+"/mplan/allPlan",{params:{
+            page:this.pageIndex,
+            size:this.pageSize
+          }})
+        .then(response =>{
           let arr = new Array();
-          for (let i = 0; i < response.data.data.content.length; i++) {
-            if (response.data.data.content[i].maintenanceType === 0) {
-              arr[arr.length] = response.data.data.content[i];
+          for (let i = 0;i<response.data.data.content.length;i++){
+            if (response.data.data.content[i].maintenanceType === 0){
+              arr[arr.length] = response.data.data.content[i]
             }
-          }
-          this.tableData = arr;
-          this.pageNumber = this.tableData.length;
-          for (let i in this.tableData) {
-            if (this.tableData[i].state === 0) {
-              this.tableData[i].state = "待审核";
-            }
+
             if (this.tableData[i].state === 1) {
               this.tableData[i].state = "已通过";
             }
@@ -272,22 +262,12 @@ export default {
             if (this.tableData[i].frequencyType === 2) {
               this.tableData[i].frequencyType = "月";
             }
-            this.tableData[i].endTime = this.tableData[i].endTime.replace(
-              /T/g,
-              " "
-            );
-            this.tableData[i].executeTime = this.tableData[
-              i
-            ].executeTime.replace(/T/g, " ");
-            this.tableData[i].startTime = this.tableData[i].startTime.replace(
-              /T/g,
-              " "
-            );
+            this.tableData[i].endTime = this.tableData[i].endTime.replace(/T/g, " ");
+            this.tableData[i].executeTime = this.tableData[i].executeTime.replace(/T/g, " ");
+            this.tableData[i].startTime = this.tableData[i].startTime.replace(/T/g, " ");
             for (let j in this.planLevel) {
               if (this.tableData[i].maintenanceLevel === this.planLevel[j].id) {
-                this.tableData[i].maintenanceLevel = this.planLevel[
-                  j
-                ].levelDesc;
+                this.tableData[i].maintenanceLevel = this.planLevel[j].levelDesc;
               }
             }
           }
@@ -358,7 +338,7 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-    }
+    },
   },
   created() {
     this.listMaintenanceLevel();
@@ -403,3 +383,4 @@ export default {
   }
 }
 </style>
+

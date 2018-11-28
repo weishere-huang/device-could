@@ -235,6 +235,7 @@
             this.persnneladd.birthday=response.data.data.birthday.split("T")[0];
             this.persnneladd.entryTime=response.data.data.entryTime.split("T")[0];
             this.persnneladd.gender = response.data.data.gender.toString();
+            console.log(this.persnneladd.gender);
             this.persnneladd.userName= userName;
             if (this.persnneladd.marital!=null){
               this.persnneladd.marital = response.data.data.marital.toString();
@@ -258,7 +259,7 @@
           phone: this.persnneladd.phone,
           position: this.persnneladd.position,
           organizeCode: this.persnneladd.organizeCode,
-          organizeName: this.persnneladd.organizationName,
+          organizationName: this.persnneladd.organizationName,
           enterpriseId: this.persnneladd.enterpriseId,
           workType: this.persnneladd.workType,
           entryTime: this.persnneladd.entryTime,
@@ -276,7 +277,7 @@
           qualificationInfo: this.persnneladd.qualificationInfo,
           roleId: this.persnneladd.roleId
         });
-        // console.log(data);
+        console.log(this.persnneladd.organizationName);
         this.axios
           .post(this.global.apiSrc+"/employee/update",data)
           .then(response => {
