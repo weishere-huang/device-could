@@ -2,24 +2,12 @@
   <div class="userManagement">
     <div class="userCase">
       <div class="top">
-        <el-button size="small" @click="enable">启用</el-button>
-        <el-button size="small" @click="prohibit">停用</el-button>
-        <el-button size="small" @click="deleteUser">删除</el-button>
         <div class="search">
-          <el-input type="search" placeholder="如员工编号，姓名，手机" size="small"></el-input>
           <el-button size="small">搜索</el-button>
         </div>
       </div>
       <div class="bottom">
         <div>
-          <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize
-                   column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns"
-                   :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-          <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="this.totalNub"
-                          :page-size="pageSize"
-                          :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
-          </div>
         </div>
       </div>
     </div>
@@ -32,7 +20,7 @@
         pageIndex: 1,
         pageSize: 10,
         userIds: "",
-        choice:"",
+        choice: "",
         tableData: [],
         totalNub: "",
         tableDate: [],
@@ -98,35 +86,7 @@
     },
     methods: {
       enable() {
-        
-      },
-      prohibit() {
 
-      },
-      deleteUser() {
-        let qs = require("qs");
-        let data = qs.stringify({
-          userIds: this.userIds
-        });
-        this.axios
-          .post(this.global.apiSrc + "/user/deleteUsers/", data)
-          .then(response => {
-            console.log(response.data.msg);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      },
-      selectGroupChange(selection) {
-        this.choice = "";
-        for (let i = 0; i < selection.length; i++) {
-          if (this.choice == "") {
-            this.choice = selection[i].id;
-          } else {
-            this.choice += "," + selection[i].id;
-          }
-        }
-        console.log("select-group-change", selection);
       },
       selectALL(selection) {
         this.choice = "";
@@ -134,7 +94,7 @@
           if (this.choice === "") {
             this.choice += selection[i].id;
           } else {
-            this.choice += "," + selection[i].id;
+            return 0;
           }
         }
         console.log("select-aLL", selection);
@@ -176,7 +136,6 @@
             } else if (params.height === "desc") {
               return b.height - a.height;
             } else {
-              return 0;
             }
           });
         }
@@ -207,8 +166,8 @@
 
     created() {
       this.load();
-    }
-  };
+    },
+  }
 </script>
 <style lang="less" scoped>
   @blue: #409eff;

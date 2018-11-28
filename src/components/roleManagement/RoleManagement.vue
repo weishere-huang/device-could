@@ -199,7 +199,14 @@
           sHide: false,
           checkAll: false,
           checkedSystem: [],
-          systemList: [],
+          systemList: [
+             "新增设备信息",
+            "修改设备信息",
+            "删除设备信息",
+            "设备分类管理",
+            "设备类别管理",
+            "设备绑定人员信息管理"
+          ],
           systemKey :[],
           isIndeterminate: true
         },
@@ -255,12 +262,12 @@
           checkedCount > 0 && checkedCount < this.system.systemList.length;
       },
       systemShow() {
-        $(".system-slist")[0].style.height = "auto";
+        document.querySelectorAll(".system-slist")[0].style.height = "auto";
         this.system.sShow = !this.system.sShow;
         this.system.sHide = !this.system.sHide;
       },
       systemHide() {
-        $(".system-slist")[0].style.height = 0;
+        document.querySelectorAll(".system-slist")[0].style.height = 0;
         this.system.sShow = !this.system.sShow;
         this.system.sHide = !this.system.sHide;
       },
@@ -330,6 +337,7 @@
         this.personnel.sHide = !this.personnel.sHide;
       },
       personnelHide() {
+        console.log("no");
         document.querySelectorAll(".personnel-slist")[0].style.height = 0;
         this.personnel.sShow = !this.personnel.sShow;
         this.personnel.sHide = !this.personnel.sHide;
