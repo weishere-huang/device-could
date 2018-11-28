@@ -112,7 +112,7 @@
             <el-submenu index="13">
               <template slot="title"><i class="el-icon-setting"></i>系统管理</template>
               <!-- <el-menu-item index="/System">选项1</el-menu-item> -->
-              <!-- <el-menu-item index="/User">用户管理</el-menu-item> -->
+              <el-menu-item index="/User">用户管理</el-menu-item>
               <!-- <el-menu-item index="/System">选项3</el-menu-item> -->
             </el-submenu>
           </el-menu>
