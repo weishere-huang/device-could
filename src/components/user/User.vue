@@ -14,78 +14,98 @@
   </div>
 </template>
 <script>
-  export default {
-    data() {
-      return {
-        pageIndex: 1,
-        pageSize: 10,
-        userIds: "",
-        choice: "",
-        tableData: [],
-        totalNub: "",
-        tableDate: [],
-        columns: [
-          {
-            width: 50,
-            titleAlign: "center",
-            columnAlign: "center",
-            type: "selection"
-          },
-          {
-            field: "enterpriseName",
-            title: "企业名称",
-            width: 40,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
-          },
-          {
-            field: "userName",
-            title: "用户名",
-            width: 90,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
-            //   orderBy: ""
-          },
-          {
-            field: "phone",
-            title: "手机号",
-            width: 150,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "email",
-            title: "邮箱",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
-          },
-          {
-            field: "createTime",
-            title: "创建时间",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "state",
-            title: "用户状态",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          }
-        ]
-      };
+export default {
+  data() {
+    return {
+      pageIndex: 1,
+      pageSize: 10,
+      userIds: "",
+      choice: "",
+      tableData: [],
+      totalNub: "",
+      tableDate: [],
+      columns: [
+        {
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          type: "selection"
+        },
+        {
+          field: "enterpriseName",
+          title: "企业名称",
+          width: 40,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "userName",
+          title: "用户名",
+          width: 90,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+          //   orderBy: ""
+        },
+        {
+          field: "phone",
+          title: "手机号",
+          width: 150,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "email",
+          title: "邮箱",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+
+        {
+          field: "createTime",
+          title: "创建时间",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "state",
+          title: "用户状态",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        }
+      ]
+    };
+  },
+  methods: {
+    enable() {},
+    prohibit() {},
+    deleteUser() {
+      let qs = require("qs");
+      let data = qs.stringify({
+        userIds: this.userIds
+      });
+      this.axios
+        .post(this.global.apiSrc + "/user/deleteUsers", data)
+        .then(response => {
+          console.log(response.data.msg);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    selectGroupChange(selection) {
+      console.log("select-group-change", selection);
     },
     methods: {
-      enable() {
-      },
+      enable() {},
       selectALL(selection) {
         this.choice = "";
         for (let i = 0; i < selection.length; i++) {
@@ -124,11 +144,11 @@
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
-        this.load()
+        this.load();
       },
       sortChange(params) {
         if (params.height.length > 0) {
-          this.tableConfig.tableData.sort(function (a, b) {
+          this.tableConfig.tableData.sort(function(a, b) {
             if (params.height === "asc") {
               return a.height - b.height;
             } else if (params.height === "desc") {
@@ -140,65 +160,68 @@
       },
       load() {
         this.axios
-          .get(this.global.apiSrc + "/user/enterpriseUserAll", {params: {page: this.pageIndex, size: this.pageSize}})
+          .get(this.global.apiSrc + "/user/enterpriseUserAll", {
+            params: { page: this.pageIndex, size: this.pageSize }
+          })
           .then(response => {
             console.log(response);
-            this.totalNub = response.data.data.totalElements
+            this.totalNub = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             for (let i = 0; i < this.tableData.length; i++) {
               // this.tableData[i].gmtCreate = this.tableData[i].gmtCreate.split("T")[0];
               if (this.tableData[i].state === 0) {
-                this.tableData[i].state = "正常"
+                this.tableData[i].state = "正常";
               } else {
-                this.tableData[i].state = "停用"
+                this.tableData[i].state = "停用";
               }
             }
             this.tableDate = this.tableData;
             // console.log(this.tableDate)
           })
-          .catch(function (error) {
+          .catch(function(error) {
             console.log(error);
           });
       }
     },
     created() {
       this.load();
-    },
-  }
-</script>
-<style lang="less" scoped>
-  @blue: #409eff;
-  @Success: #67c23a;
-  @Warning: #e6a23c;
-  @Danger: #f56c6c;
-  @Info: #dde2eb;
-  .userManagement {
-    padding-left: 220px;
-    .userCase {
-      width: 100%;
-      padding: 10px;
-      .top {
-        height: 60px;
-        line-height: 60px;
-        border: 1px solid @Info;
-        border-radius: 5px;
-        padding-left: 10px;
-        .search {
-          float: right;
-          width: 40%;
-          .el-input {
-            width: 80%;
-          }
-        }
-      }
-      .bottom {
-        padding: 10px;
-        font-size: 12px;
-        border: 1px solid @Info;
-        margin-top: 10px;
-        min-height: 500px;
-        border-radius: 5px;
-      }
     }
   }
+};
+</script>
+<style lang="less" scoped>
+@blue: #409eff;
+@Success: #67c23a;
+@Warning: #e6a23c;
+@Danger: #f56c6c;
+@Info: #dde2eb;
+.userManagement {
+  padding-left: 220px;
+  .userCase {
+    width: 100%;
+    padding: 10px;
+    .top {
+      height: 60px;
+      line-height: 60px;
+      border: 1px solid @Info;
+      border-radius: 5px;
+      padding-left: 10px;
+      .search {
+        float: right;
+        width: 40%;
+        .el-input {
+          width: 80%;
+        }
+      }
+    }
+    .bottom {
+      padding: 10px;
+      font-size: 12px;
+      border: 1px solid @Info;
+      margin-top: 10px;
+      min-height: 500px;
+      border-radius: 5px;
+    }
+  }
+}
 </style>

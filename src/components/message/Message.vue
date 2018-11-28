@@ -38,32 +38,7 @@
         ids: "",
         rowData:"",
         msgcount: 0,
-        tableData: [
-          {
-            name: "111",
-            tel: "222",
-            address: "3333",
-            hobby: "4444"
-          },
-          {
-            name: "111",
-            tel: "222",
-            address: "3333",
-            hobby: "4444"
-          },
-          {
-            name: "111",
-            tel: "222",
-            address: "3333",
-            hobby: "4444"
-          },
-          {
-            name: "111",
-            tel: "222",
-            address: "3333",
-            hobby: "4444"
-          }
-        ],
+        tableData: [],
         tableDate: [],
         columns: [
           {
@@ -190,7 +165,6 @@
           })
           .catch(err => {
             console.log(err);
-            console.log(this.userName);
           });
       },
       allMsg() {
@@ -216,7 +190,6 @@
           })
           .catch(err => {
             console.log(err);
-            console.log(this.userName);
           });
       },
       oneMessage() {
@@ -238,7 +211,6 @@
             })
             .catch(err => {
               console.log(err);
-              console.log(this.userName);
             });
         };
         //执行修改阅读状态函数
@@ -255,19 +227,19 @@
           .get(apiMsg+"/message/allNotReadMsg/",data)
           .then(result => {
             console.log(result.data);
-            for(let i = 0;i<result.data.data.length;i++){
-              if(result.data.data[i].isRead == 0 ){
-                result.data.data[i].isRead = "未读";
-              }else{
-                result.data.data[i].isRead = "已读";
+            if(result.data.data.length>0) {
+              for (let i = 0; i < result.data.data.length; i++) {
+                if (result.data.data[i].isRead == 0) {
+                  result.data.data[i].isRead = "未读";
+                } else {
+                  result.data.data[i].isRead = "已读";
+                }
               }
+              this.tableData = result.data.data;
             }
-            this.tableData = result.data.data;
-
           })
           .catch(err => {
             console.log(err);
-            console.log(this.userName);
           });
       },
       NotReadMsgCount() {
@@ -280,7 +252,6 @@
           })
           .catch(err => {
             console.log(err);
-            console.log(this.userName);
           });
       },
       updateMessageRead() {
@@ -292,7 +263,6 @@
           })
           .catch(err => {
             console.log(err);
-            console.log(this.userName);
           });
       },
       updateAllMessageRead(){
@@ -304,7 +274,6 @@
           })
           .catch(err => {
             console.log(err);
-            console.log(this.userName);
           });
       },
       details(rowIndex, rowData, column){
@@ -324,7 +293,6 @@
           })
           .catch(err => {
             console.log(err);
-            console.log(this.userName);
           });
 
       },
@@ -349,7 +317,7 @@
   @Danger: #f56c6c;
   @Info: #dde2eb;
   .message {
-    padding-left: 180px;
+    // padding-left: 180px;
     .userCase {
       width: 100%;
       padding: 10px;

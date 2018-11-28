@@ -10,13 +10,14 @@
           <el-input
             type="text"
             size="small"
+            v-model="chengedata.name"
           ></el-input>
         </li>
         <li>
           <label for="">类型：</label>
           <el-select
             style="width:70%"
-            v-model="value"
+            v-model="chengedata.organizeType"
             placeholder="请选择"
           >
             <el-option
@@ -33,6 +34,7 @@
           <textarea
             type="textarea"
             style="width:70%;height:60px;"
+            v-model="chengedata.organizeInfo"
           ></textarea>
 
         </li>
@@ -41,7 +43,7 @@
             size="small"
             @click="reviseHide"
           >取消</el-button>
-          <el-button size="small">保存</el-button>
+          <el-button size="small" @click="update">保存</el-button>
         </li>
       </ul>
     </div>
@@ -51,44 +53,64 @@
 <script>
 export default {
   name: "",
-
+  props:["chengedata"],
   data() {
     return {
       show: true,
-      
+      Cnode:this.chengedata,
       options: [
         {
-          value: "企业",
+          value: "0",
           label: "企业"
         },
         {
-          value: "工厂",
+          value: "1",
+          label: "公司"
+        },
+        {
+          value: "2",
           label: "工厂"
         },
         {
-          value: "生产线",
-          label: "生产线"
-        },
-        {
-          value: "车间",
-          label: "车间"
-        },
-        {
-          value: "部门",
+          value: "3",
           label: "部门"
         },
         {
-          value: "其他",
-          label: "其他"
+          value: "4",
+          label: "车间"
         }
       ],
-      value: ""
     };
   },
   methods: {
     reviseHide() {
       this.$emit("reviseHide",false)
-    }
+    },
+    update() {
+      //修改组织机构
+      let qs = require("qs");
+      let data = qs.stringify({
+        organizeId: this.chengedata.id,
+        organizeName: this.chengedata.name,
+        organizeType: this.chengedata.organizeType,
+        organizeInfo: this.chengedata.organizeInfo
+      });
+      this.axios
+        .post(this.global.apiSrc + "/organize/update", data)
+        .then(result => {
+          if(result.data.code === 200){
+            alert("修改成功");
+            console.log(result.data);
+          }else{
+            alert("修改失败");
+            console.log(result.data);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    },
   }
 };
 </script>

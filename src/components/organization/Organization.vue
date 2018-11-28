@@ -5,7 +5,7 @@
         <h5>企业名称</h5>
         <div style="float:right;">
           <h5>备注</h5>
-          <h5>状态</h5>
+          <h5>类别</h5>
         </div>
         <el-tree
           :data="data"
@@ -43,15 +43,15 @@
                 </el-button>
               </span>
             </span>
-            <span class="state">{{ data.state }}</span>
+            <span class="state">{{ data.organizeType }}</span>
             <span class="organizeInfo">{{ data.organizeInfo }}</span>
           </span>
         </el-tree>
       </div>
     </div>
 
-    <add v-show="addShow" v-on:addHide="addHide"></add>
-    <revise v-show="reviseShow" v-on:reviseHide="reviseHide"></revise>
+    <add v-show="addShow" v-on:addHide="addHide" :nodedata="nodedata"></add>
+    <revise v-show="reviseShow" v-on:reviseHide="reviseHide" :chengedata="chengedata"></revise>
   </div>
 
 </template>
@@ -74,7 +74,11 @@ export default {
       defaultProps: {
         children: "children",
         label: "name"
-      }
+      },
+      //当前节点数据
+      nodedata:"",
+      //xiugai jiedian
+      chengedata:""
     };
   },
   methods: {
@@ -91,7 +95,9 @@ export default {
       this.addShow=true
     },
     handleNodeClick(data) {
-      console.log(data);
+      console.log("handleNodeClick"+data.id);
+      this.nodedata = data;
+      this.chengedata = data;
     },
     //添加组织结构
     append(data) {
@@ -107,57 +113,26 @@ export default {
       const children = parent.data.children || parent.data;
       const index = children.findIndex(d => d.id === data.id);
       children.splice(index, 1);
+      this.delete();
     },
-    add() {
-      //添加组织机构
-      let qs = require("qs");
-      let data = qs.stringify({
-        parentCode: "1000001",
-        name: "后端组55555",
-        organizeType: 1,
-        organizeInfo: "1119"
-      });
-      axios
-        .post(this.global.apiSrc + "/organize/add", data)
-        .then(result => {
-          alert("add");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(this.userName);
-        });
-    },
-    update() {
-      //修改组织机构
-      let qs = require("qs");
-      let data = qs.stringify({
-        organizeId: "356",
-        organizeType: "1",
-        organizeInfo: "14:53",
-        organizeName: "工程与技术中心"
-      });
-      axios
-        .put("api/organize/update", data)
-        .then(result => {
-          alert("updata");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(this.userName);
-        });
-    },
+
+
     delete() {
       //删除组织机构
       let qs = require("qs");
-      let data = qs.stringify({});
+      let data = qs.stringify({
+        id:this.nodedata
+      });
       axios
-        .delete(this.global.apiSrc + "/delete/327")
+        .delete(this.global.apiSrc + "/delete",data)
         .then(result => {
-          alert("delete");
-          console.log("delete");
-          console.log(result.data);
+          if(result.data.code == 200){
+            alert("删除成功");
+            console.log("delete");
+            console.log(result.data);
+          }else{
+            alert("删除失败")
+          }
         })
         .catch(err => {
           console.log(err);
@@ -165,12 +140,27 @@ export default {
         });
     },
     allOrganize() {
-      let arr = new Array();
-      axios
+      this.axios
         .get(this.global.apiSrc + "/organize/allOrganize")
-        // .get("http://192.168.1.103:8080/organize/allOrganize")
         .then(result => {
-          console.log(result);
+          console.log(result.data);
+          for(let i = 0 ; i<result.data.data.length;i++){
+            if(result.data.data[i].organizeType === 0){
+              result.data.data[i].organizeType = "企业";
+            }
+            if(result.data.data[i].organizeType === 1){
+              result.data.data[i].organizeType = "公司";
+            }
+            if(result.data.data[i].organizeType === 2){
+              result.data.data[i].organizeType = "工厂";
+            }
+            if(result.data.data[i].organizeType === 3){
+              result.data.data[i].organizeType = "部门";
+            }
+            if(result.data.data[i].organizeType === 4){
+              result.data.data[i].organizeType = "车间";
+            }
+          }
           this.data = this.filterArray(result.data.data, 0);
           console.log(this.data);
           // console.log(this.name1[0].children);
@@ -265,7 +255,7 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .organization {
-  padding-left: 180px;
+  // padding-left: 180px;
   add {
     position: absolute;
     top: 50%;
@@ -296,7 +286,7 @@ export default {
         float: left;
       }
       h5:nth-child(3) {
-        padding-right:10px; 
+        padding-right:10px;
         width: 300px;
         // float: right;
       }
