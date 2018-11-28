@@ -125,7 +125,6 @@ export default {
       ]
     };
   },
-
   methods: {
     enable() {},
     prohibit() {},

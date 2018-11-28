@@ -8,9 +8,28 @@
           <div class="stateList">
             <ul>
               <li>设备状态</li>
-              <li>消息</li>
-              <li>任务</li>
-              <li><el-button plain size="mini">退出</el-button></li>
+              <li>
+                <el-badge
+                  :value="1"
+                  class="item"
+                >
+                  <el-button size="mini">消息</el-button>
+                </el-badge>
+              </li>
+              <li>
+                <el-badge
+                  :value="1"
+                  class="item"
+                >
+                  <el-button size="mini">任务</el-button>
+                </el-badge>
+              </li>
+              <li>
+                <el-button
+                  plain
+                  size="mini"
+                >退出</el-button>
+              </li>
             </ul>
           </div>
         </el-header>
@@ -18,7 +37,7 @@
       <el-container class='box'>
         <el-aside
           width="180px"
-          style="background-color: rgb(238, 241, 246)"
+          style="background-color: rgb(238, 241, 246);overflow:hidden;"
         >
           <el-menu
             :router=true
@@ -162,18 +181,18 @@ export default {
   margin: 0;
   padding: 0;
 }
-.el-header{
+.el-header {
   overflow: hidden;
   position: relative;
   font-size: 12px;
 }
-.stateList{
+.stateList {
   position: absolute;
   right: 20px;
   bottom: 0%;
   // border: 1px solid @Info;
-  ul{
-    li{
+  ul {
+    li {
       list-style-type: none;
       float: left;
       height: 24px;
@@ -181,12 +200,12 @@ export default {
       padding: 0 7px;
       border-right: 1px solid rgb(182, 179, 179);
       cursor: pointer;
-      .el-button--mini{
-        padding: 5px 5px
+      .el-button--mini {
+        padding: 5px 5px;
       }
     }
-    li:last-child{
-      border-right:none;
+    li:last-child {
+      border-right: none;
     }
   }
 }
@@ -219,7 +238,7 @@ export default {
   .el-menu-item {
     height: 40px;
     line-height: 40px;
-    min-width: 178px;
+    min-width: 170px;
   }
 }
 

@@ -16,6 +16,8 @@ import {
   VPagination
 } from 'vue-easytable'
 import global from './components/global/Global'
+import base from "./base.js";
+Vue.use(base)
 // import {
 //   Message,
 //   MessageBox

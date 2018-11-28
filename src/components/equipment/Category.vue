@@ -1,9 +1,9 @@
 <template>
   <div class="category">
     <div class="case">
-      <div style="float:left">
+      <div style="float:left;width:500px;">
         <h5>类别名称</h5>
-        <el-tree :data="organize" :props="defaultProps" node-key="id" default-expand-all :expand-on-click-node="false">
+        <el-tree :data="organize" :props="defaultProps" @node-click="handleNodeClick" node-key="id" default-expand-all :expand-on-click-node="false">
           <span class="custom-tree-node" slot-scope="{ node, data }">
             <span>{{ node.label }}</span>
             <span class="addCase">
@@ -41,56 +41,6 @@
 let id = 1000;
 export default {
   data() {
-    const data = [
-      {
-        id: 1,
-        label: "一级 1",
-        children: [
-          {
-            id: 4,
-            label: "二级 1-1",
-            children: [
-              {
-                id: 9,
-                label: "三级 1-1-1"
-              },
-              {
-                id: 10,
-                label: "三级 1-1-2"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        id: 2,
-        label: "一级 2",
-        children: [
-          {
-            id: 5,
-            label: "二级 2-1"
-          },
-          {
-            id: 6,
-            label: "二级 2-2"
-          }
-        ]
-      },
-      {
-        id: 3,
-        label: "一级 3",
-        children: [
-          {
-            id: 7,
-            label: "二级 3-1"
-          },
-          {
-            id: 8,
-            label: "二级 3-2"
-          }
-        ]
-      }
-    ];
     return {
       organize: "",
       // data5: this.organize,
@@ -105,16 +55,9 @@ export default {
     };
   },
   methods: {
-    // renderContent(h, { node, data, store }) {
-    //     return (
-    //       <span class="custom-tree-node">
-    //         <span>{node.label}</span>
-    //         <span>
-    //           <el-button size="mini" type="text" on-click={ () => this.append(data) }>Append</el-button>
-    //           <el-button size="mini" type="text" on-click={ () => this.remove(node, data) }>Delete</el-button>
-    //         </span>
-    //       </span>);
-    //   },
+    handleNodeClick(data) {
+      console.log(data);
+    },
     append(data) {
       const newChild = { id: id++, label: "testtest", children: [] };
       if (!data.children) {
@@ -122,7 +65,6 @@ export default {
       }
       data.children.push(newChild);
     },
-
     remove(node, data) {
       const parent = node.parent;
       const children = parent.data.children || parent.data;
@@ -188,7 +130,7 @@ export default {
 .category {
   padding-left: 180px;
   .case {
-    width: 622px;
+    width: 900px;
     padding: 10px;
     border: @border;
     overflow: hidden;
@@ -201,7 +143,7 @@ export default {
       border-bottom: @border;
     }
     .el-tree {
-      width: 300px;
+      width: 100%;
       padding: 10px;
       .addCase {
         float: right;
