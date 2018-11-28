@@ -64,7 +64,6 @@
             columnAlign: "center",
             isResize: true
           },
-
           {
             field: "createTime",
             title: "创建时间",
@@ -86,7 +85,6 @@
     },
     methods: {
       enable() {
-
       },
       selectALL(selection) {
         this.choice = "";
@@ -163,7 +161,6 @@
           });
       }
     },
-
     created() {
       this.load();
     },

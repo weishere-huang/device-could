@@ -1,27 +1,16 @@
 <template>
   <div class="company">
-
     <div class="userCase">
-
       <div class="top">
-
         <el-button size="small" @click="auditblock">审核</el-button>
-
         <el-button size="small" @click="startUseing">启用</el-button>
-
         <el-button size="small" @click="forbidden">停用</el-button>
-
         <el-button size="small" @click="replace">刷新</el-button>
-
         <div class="search">
-
           <el-input type="search" placeholder="根据企业名称" size="small" v-model="name"></el-input>
-
           <el-button size="small" @click="findByName">搜索</el-button>
-
           <span style="color:#409eff" @click="adsearch">高级搜索</span>
         </div>
-
       </div>
       <div class="bottom">
         <div>
@@ -51,7 +40,6 @@
   export default {
     data() {
       return {
-
         detailsShow: false,
         auditShow: false,
         detailsValue: "",
@@ -104,29 +92,18 @@
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
-
           },
           {
             field: "gmtCreate",
-
             title: "申请时间",
-
             width: 80,
-
             titleAlign: "center",
-
             columnAlign: "center",
-
             isResize: true
-
           },
-
           {
-
             field: "state",
-
             title: "状态",
-
             width: 50,
             titleAlign: "center",
             columnAlign: "center",
@@ -199,64 +176,35 @@
         this.load();
       },
       pageSizeChange(pageSize) {
-
         this.pageIndex = 1;
-
         this.pageSize = pageSize;
-
         this.getTableData();
-
       },
       sortChange(params) {
-
         if (params.height.length > 0) {
-
           this.tableConfig.tableData.sort(function (a, b) {
-
             if (params.height === "asc") {
-
               return a.height - b.height;
-
             } else if (params.height === "desc") {
-
               return b.height - a.height;
-
             } else {
-
               return 0;
-
             }
-
           });
-
         }
-
       },
-
       load() {
-
         this.axios
-
-          .get(this.global.apiSrc + "/enterprise/all", {
-
+          .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
             params: {page: this.pageIndex, size: this.pageSize}
-
           })
-
           .then(response => {
-
             console.log(response)
-
             this.totalNub = response.data.data.totalElements
-
             for (let i = 0; i < response.data.data.content.length; i++) {
-
               // console.log(response.data.data.content.length)
-
-              // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
-
+              response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
               if (response.data.data.content[i].state === 0) {
-
                 response.data.data.content[i].state = "待审核"
               }
               if (response.data.data.content[i].state === 1) {
@@ -270,9 +218,6 @@
               }
               if (response.data.data.content[i].state === 10) {
                 response.data.data.content[i].state = "未通过"
-              }
-              if (response.data.data.content[i].state === 11) {
-                response.data.data.content[i].state = "待办审核"
               }
             }
             this.tableData = response.data.data.content;
@@ -286,6 +231,7 @@
         this.axios.get(this.global.apiSrc + "/enterprise/findByNameOrState", {
           params: {
             enterpriseName: this.name,
+            state: "",
             page: this.pageIndex,
             size: this.pageSize
           }
@@ -295,7 +241,7 @@
             console.log(response)
             for (let i = 0; i < response.data.data.content.length; i++) {
               // console.log(response.data.data.content.length)
-              // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+              response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
               if (response.data.data.content[i].state === 0) {
                 response.data.data.content[i].state = "待审核"
               }
@@ -310,9 +256,6 @@
               }
               if (response.data.data.content[i].state === 10) {
                 response.data.data.content[i].state = "未通过"
-              }
-              if (response.data.data.content[i].state === 11) {
-                response.data.data.content[i].state = "待办审核"
               }
             }
             this.tableData = response.data.data.content;
@@ -363,101 +306,52 @@
   };
 
 </script>
-
 <style lang="less" scoped>
-
   @blue: #409eff;
-
   @Success: #67c23a;
-
   @Warning: #e6a23c;
-
   @Danger: #f56c6c;
-
   @Info: #dde2eb;
-
   .company {
-
     // padding-left: 180px;
-
     position: relative;
-
     overflow: hidden;
-
     .userCase {
-
       width: 100%;
-
       padding: 10px;
-
       .top {
-
         height: 60px;
-
         line-height: 60px;
-
         border: 1px solid @Info;
-
         border-radius: 5px;
-
         padding-left: 10px;
-
         .search {
-
           float: right;
-
           overflow: hidden;
-
           width: 40%;
-
           .el-input {
-
             width: 60%;
-
           }
-
           span {
-
             font-size: 12px;
-
             cursor: pointer;
-
           }
-
         }
-
       }
-
       .bottom {
-
         padding: 10px;
-
         font-size: 12px;
-
         border: 1px solid @Info;
-
         margin-top: 10px;
-
         min-height: 500px;
-
         border-radius: 5px;
-
       }
-
     }
-
     .adsearch {
-
       position: absolute;
-
       top: 0;
-
       right: -310px;
-
       transition: all 0.3s ease-in;
-
     }
-
   }
-
 </style>
