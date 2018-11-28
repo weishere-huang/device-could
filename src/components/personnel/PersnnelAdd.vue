@@ -421,7 +421,7 @@
 @Danger: #f56c6c;
 @Info: #dde2eb;
 .persnnel-add {
-  padding-left: 180px;
+  // padding-left: 180px;
   .add-case {
     padding: 10px;
     .topbtn {
