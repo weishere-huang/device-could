@@ -1,0 +1,88 @@
+html,
+body {
+    height: 100%;
+}
+
+#app,
+.mainWrapper {
+    height: 100%;
+}
+
+.siderWrapper {
+    width: auto !important;
+    height: 100%;
+    display:flex;
+    overflow: hidden;
+    flex-direction: column;
+    ul {
+        flex: 1;
+        overflow: auto;
+        //height: 100%; //background: linear-gradient(135deg, #07a7e3 0%, #32dac3 100%);
+        //-webkit-transition: all .2s linear !important;
+        //background-color: #2F4050 !important;
+        background: linear-gradient(135deg, #2F4050 0%, rgb(58, 71, 83) 100%) !important;
+    }
+    .el-submenu__title {
+        //-webkit-transition: all 1s linear !important;
+        &:hover {
+            background: linear-gradient(135deg, transparent 0%, rgb(23, 31, 39) 50%, transparent 100%)
+        }
+    }
+    // .el-menu{
+    //     border-right: 0;
+    //     -webkit-transition: all .2s linear !important;
+    // }
+    // .el-menu--collapse{
+    //     width: 64px !important;
+    // }
+    .el-menu-item{
+        
+        &:hover{
+            background: linear-gradient(135deg, transparent 0% ,rgb(38, 52, 65) 50%, transparent 100%)
+        }
+        
+        &.is-active{
+            background: linear-gradient(135deg, transparent 0%, rgb(38, 52, 65) 50%, transparent 100%)
+        }
+    }
+    // .el-menu--collapse{
+    //     width: auto !important;
+        
+    // }
+    .el-menu{
+        //width: 100% !important;
+    }
+    .isCollapse-group{
+        font-size: 18px;
+        //padding: 3px 5px;
+        text-align: center;
+        display: inline-block;
+        background: #304151;
+        color: #fff;
+        height: 30px;
+        line-height: 30px;
+        &:hover{
+            background: #42596e;
+        }
+    }
+}
+.el-header{
+    background: #f3f3f4;
+    border-bottom: solid 1px #e3e6e8;
+    padding-left:0;
+    
+}
+.el-menu--popup{
+    background: #333 !important;
+    li{
+        &:hover{
+            background: #666!important;
+        }
+    }
+}
+.el-radio-button{
+    display: block;
+    &.is-active{
+        display: none
+    }
+}

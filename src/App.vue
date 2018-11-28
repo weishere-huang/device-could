@@ -1,42 +1,46 @@
 <template>
   <div id="app">
-    <div style="width:100%;margin:auto;">
-      <el-container>
-        <el-header style="background-color:rgb(238, 241, 246);">
-          <div class="logo">
-
-          </div>
-        </el-header>
-      </el-container>
-      <el-container class='box'>
-        <el-aside width="180px" style="background-color: rgb(238, 241, 246)">
-          <el-menu :router=true :default-active="$route.name" style="background-color:rgb(238, 241, 246);">
+      <el-container class="mainWrapper">
+        <el-aside class="siderWrapper">
+          <el-menu :router=true :default-active="$route.name"
+              class="el-menu-vertical-demo"
+              text-color="#fff"
+              active-text-color="#ffd04b"
+              :collapse="isCollapse"
+              >
+            <el-submenu>
+              <template slot="title">
+                <span slot="title">
+                  <img src='./assets/image/chlogo.png'/>
+                </span>
+                </template>
+            </el-submenu>
             <el-submenu index="/Home">
-              <template slot="title"><i class="el-icon-message" index="/Home"></i>默认工作台</template>
+              <template slot="title"><i class="el-icon-message" index="/Home"></i><span slot="title">默认工作台</span></template>
               <el-menu-item index="/Home">默认工作台</el-menu-item>
               <!-- <el-menu-item index="/Home">选项2</el-menu-item>
               <el-menu-item index="/Home">选项3</el-menu-item> -->
             </el-submenu>
             <!-- <router-link to="默认工作台"></router-link> -->
             <el-submenu index="1">
-              <template slot="title"><i class="el-icon-menu"></i>数据中心</template>
+              <template slot="title"><i class="el-icon-menu"></i><span slot="title">数据中心</span></template>
               <el-menu-item index="/Information">数据中心</el-menu-item>
               <el-menu-item index="/Information">选项2</el-menu-item>
               <el-menu-item index="/Information">选项3</el-menu-item>
             </el-submenu>
             <el-submenu index="2">
-              <template slot="title"><i class="el-icon-setting"></i>企业管理</template>
+              <template slot="title"><i class="el-icon-setting"></i><span slot="title">企业管理</span></template>
               <el-menu-item index="/Company">企业管理</el-menu-item>
               <!-- <el-menu-item index="/BusinessDetails">企业详情</el-menu-item> -->
               <!-- <el-menu-item index="/Audit">审核</el-menu-item> -->
             </el-submenu>
             <el-submenu index="3">
-              <template slot="title"><i class="el-icon-setting"></i>设备管理</template>
+              <template slot="title"><i class="el-icon-setting"></i><span slot="title">设备管理</span></template>
               <el-menu-item index="/Equipment">设备列表</el-menu-item>
               <el-menu-item index="/Category">类别管理</el-menu-item>
             </el-submenu>
             <el-submenu index="4">
-              <template slot="title"><i class="el-icon-setting"></i>运维管理</template>
+              <template slot="title"><i class="el-icon-setting"></i><span slot="title">运维管理</span></template>
               <el-menu-item index="/Breakdown">设备故障</el-menu-item>
               <el-menu-item index="/TurnaroundPlans">检修计划</el-menu-item>
               <!-- <el-menu-item index="/Operation">选项3</el-menu-item> -->
@@ -45,13 +49,13 @@
               <el-menu-item index="/Upkeep">保养计划</el-menu-item>
             </el-submenu>
             <el-submenu index="5">
-              <template slot="title"><i class="el-icon-setting"></i>组织机构</template>
+              <template slot="title"><i class="el-icon-setting"></i><span slot="title">组织机构</span></template>
               <el-menu-item index="/Organization">组织机构管理</el-menu-item>
               <!-- <el-menu-item index="/Add">添加</el-menu-item> -->
               <!-- <el-menu-item index="/Organization">选项3</el-menu-item> -->
             </el-submenu>
             <el-submenu index="6">
-              <template slot="title"><i class="el-icon-setting"></i>员工管理</template>
+              <template slot="title"><i class="el-icon-setting"></i><span slot="title">员工管理</span></template>
               <el-menu-item index="/Personnel">员工管理</el-menu-item>
               <!-- <el-menu-item index="/PersnnelAdd">添加</el-menu-item> -->
               <!-- <el-menu-item index="/Modification">修改</el-menu-item> -->
@@ -63,64 +67,65 @@
               <el-menu-item index="/User">选项3</el-menu-item>
             </el-submenu> -->
             <el-submenu index="8">
-              <template slot="title"><i class="el-icon-setting"></i>设备档案</template>
+              <template slot="title"><i class="el-icon-setting"></i><span slot="title">设备档案</span></template>
               <el-menu-item index="/EquipmentArchives">选项1</el-menu-item>
               <el-menu-item index="/EquipmentArchives">选项2</el-menu-item>
               <el-menu-item index="/EquipmentArchives">选项3</el-menu-item>
             </el-submenu>
             <el-submenu index="9">
-              <template slot="title"><i class="el-icon-setting"></i>工单</template>
+              <template slot="title"><i class="el-icon-setting"></i><span slot="title">工单</span></template>
               <el-menu-item index="/WorkOrder">选项1</el-menu-item>
               <el-menu-item index="/WorkOrder">选项2</el-menu-item>
               <el-menu-item index="/WorkOrder">选项3</el-menu-item>
             </el-submenu>
             <el-submenu index="10">
-              <template slot="title"><i class="el-icon-setting"></i>知识库</template>
+              <template slot="title"><i class="el-icon-setting"></i><span slot="title">知识库</span></template>
               <el-menu-item index="/KnowledgeBase">选项1</el-menu-item>
               <el-menu-item index="/KnowledgeBase">选项2</el-menu-item>
               <el-menu-item index="/KnowledgeBase">选项3</el-menu-item>
             </el-submenu>
             <el-submenu index="11">
-              <template slot="title"><i class="el-icon-setting"></i>消息管理</template>
+              <template slot="title"><i class="el-icon-setting"></i><span slot="title">消息管理</span></template>
               <el-menu-item index="/Message">消息管理</el-menu-item>
               <!-- <el-menu-item index="/MsgDetails">消息详情</el-menu-item> -->
               <!-- <el-menu-item index="/Message">选项3</el-menu-item> -->
             </el-submenu>
             <el-submenu index="12">
-              <template slot="title"><i class="el-icon-setting"></i>角色管理</template>
+              <template slot="title"><i class="el-icon-setting"></i><span slot="title">角色管理</span></template>
               <el-menu-item index="/RoleManagement">角色管理</el-menu-item>
               <el-menu-item index="/RoleManagement">选项2</el-menu-item>
               <el-menu-item index="/RoleManagement">选项3</el-menu-item>
             </el-submenu>
             <el-submenu index="13">
-              <template slot="title"><i class="el-icon-setting"></i>系统管理</template>
+              <template slot="title"><i class="el-icon-setting"></i><span slot="title">系统管理</span></template>
               <el-menu-item index="/System">选项1</el-menu-item>
               <el-menu-item index="/User">用户管理</el-menu-item>
               <el-menu-item index="/System">选项3</el-menu-item>
             </el-submenu>
           </el-menu>
+          <div v-on:click="TroggleHandle" class="isCollapse-group">
+            <i v-show="isCollapse === true" class="el-icon-caret-right"></i>
+            <i v-show="isCollapse === false" class="el-icon-caret-left"></i>
+          </div>
         </el-aside>
-
-        <!-- <ul class="nav">
-          <router-link to="/Home" tag="li"><i class="el-icon-document"></i>默认工作台</router-link>
-          <router-link to="/Information" tag="li"><i class="el-icon-caret-right"></i>数据中心</router-link>
-          <router-link to="/Company" tag="li"><i class="el-icon-caret-right"></i>企业管理</router-link>
-          <router-link to="/Equipment" tag="li"><i class="el-icon-caret-right"></i>设备管理</router-link>
-          <router-link to="/Operation" tag="li"><i class="el-icon-caret-right"></i>运维管理</router-link>
-          <router-link to="/Organization" tag="li"><i class="el-icon-caret-right"></i>组织机构</router-link>
-          <router-link to="/Personnel" tag="li"><i class="el-icon-caret-right"></i>人员档案</router-link>
-          <router-link to="/User" tag="li"><i class="el-icon-caret-right"></i>用户管理</router-link>
-          <router-link to="/EquipmentArchives" tag="li"><i class="el-icon-caret-right"></i>设备档案</router-link>
-          <router-link to="/WorkOrder" tag="li"><i class="el-icon-caret-right"></i>工单</router-link>
-          <router-link to="/KnowledgeBase" tag="li"><i class="el-icon-caret-right"></i>知识库</router-link>
-          <router-link to="/Message" tag="li"><i class="el-icon-caret-right"></i>消息管理</router-link>
-          <router-link to="/System" tag="li"><i class="el-icon-caret-right"></i>系统管理</router-link>
-        </ul> -->
-        <!-- </el-aside> -->
+        <el-container>
+          <el-header>
+              
+                
+              <!-- <el-radio-group v-model="isCollapse">
+                <i :label="false" class="el-icon-edit"></i>
+                <i :label="true" class="el-icon-delete"></i>
+              </el-radio-group> -->
+          </el-header>
+          <el-main>
+            <router-view />
+          </el-main>
+          <el-footer>Footer</el-footer>
+        </el-container>
       </el-container>
-      <router-view />
-    </div>
 
+
+      
   </div>
 </template>
 
@@ -129,13 +134,30 @@ export default {
   name: "App",
   data() {
     return {
-      show: true
+      show: true,
+      isCollapse: false
     };
+  },
+  methods: {
+    TroggleHandle(key, keyPath) {
+      // console.log(key, keyPath);
+      this.isCollapse = !this.isCollapse;
+    },
+    // handleOpen(key, keyPath) {
+    //   console.log(key, keyPath);
+    // },
+    // handleClose(key, keyPath) {
+    //   console.log(key, keyPath);
+    // }
   }
 };
 </script>
 
-<style lang="less" >
+ <style lang="less" >
+ .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 250px;
+    min-height: 400px;
+  }
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
@@ -160,7 +182,7 @@ export default {
   .logo {
     width: 200px;
     height: 37px;
-    margin-top: 10px;
+    margin: 10px auto;
     background-image: url("./assets/image/chlogo.png");
     background-size: cover;
   }
@@ -176,8 +198,8 @@ export default {
   line-height: 40px;
 }
 .el-submenu__title {
-  height: 40px !important;
-  line-height: 40px !important;
+  height: 50px !important;
+  line-height: 50px !important;
 }
 // body {
 //   scrollbar-arrow-color: #f2f2f3; /*上下箭头*/
@@ -201,4 +223,4 @@ export default {
   border-radius: 5px;
   -webkit-box-shadow: inset 0 0 6px rgba(7, 7, 7, 0.3);
 } /*定义滑块 内阴影+圆角*/
-</style>
+ </style>

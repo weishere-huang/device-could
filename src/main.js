@@ -11,6 +11,9 @@ import vuex from 'vuex'
 import 'vue-easytable/libs/themes-base/index.css';
 import md5 from 'js-md5/src/md5.js'
 import CryptoJS from 'crypto-js'
+import 'normalize.css'
+import './assets/less/layout.less'
+
 import {
   VTable,
   VPagination
