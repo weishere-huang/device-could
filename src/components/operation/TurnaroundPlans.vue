@@ -25,7 +25,6 @@
         pageNumber:0,
         pageIndex: 1,
         pageSize: 10,
-        userId:3,
         maintenanceIds:"",
         //检修分类
         planType:[],
@@ -195,7 +194,6 @@
       load(){
         this.axios
           .get(this.global.apiSrc+"/mplan/allPlan",{params:{
-              userId:this.userId,
               page:this.pageIndex,
               size:this.pageSize
             }})

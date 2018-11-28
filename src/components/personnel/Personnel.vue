@@ -200,7 +200,7 @@
             this.userIds += "," + selection[i].id;
           }
         }
-
+      console.log(this.userIds);
       },
       selectALL(selection){
         this.userIds = "";

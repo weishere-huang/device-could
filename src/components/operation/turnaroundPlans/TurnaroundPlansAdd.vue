@@ -118,6 +118,8 @@
     name: "",
     data() {
       return {
+        //统一token之后删除userID
+        userId:3,
         deviceIds:0,
         date:"",
         times:"",
@@ -229,6 +231,8 @@
         }
         let qs = require("qs");
         let data = qs.stringify({
+          //统一token之后删除userID
+          userId:this.userId,
           id:this.companyName.id,
           planName:this.companyName.planName,
           maintenanceClassify:this.companyName.maintenanceClassify,

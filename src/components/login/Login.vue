@@ -104,139 +104,132 @@
   </div>
 </template>
 <script>
-import md5 from "js-md5/src/md5.js";
-import CryptoJS from "crypto-js/crypto-js.js";
-import forgetThePassword from "./ForgetThePassword";
-export default {
-  name: "Login",
-  data() {
-    return {
-      fileList2: [
-        {
-          name: "food.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        },
-        {
-          name: "food2.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        }
-      ],
-
-      verification: "",
-      userName: "",
-      password: "",
-      isshow: true,
-      ishide: false,
-      nextshow: false,
-      backshow: true,
-      fileList: [
-        {
-          name: "",
-          url: ""
-        }
-      ],
-      company: {
-        name: "",
-        address: "",
-        phone: "",
-        corporation: "",
-        companyID: ""
-      },
-      manager: {
-        userName: "",
-        userPassword: "",
-        // password: "",
-        phone: "",
-        validate: ""
-      },
-      checked: true
-    };
-  },
-  methods: {
-    // let instance = axios.create({
-    //   headers: { "content-type": "application/x-www-form-urlencoded" }
-    // });
-
-    encryptByDES(message, key) {
-      // const keyHex = CryptoJS.enc.Utf8.parse(key);
-      const keyHex = CryptoJS.enc.Utf8.parse(key);
-      const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
-        mode: CryptoJS.mode.ECB,
-        padding: CryptoJS.pad.Pkcs7
-      });
-      return encrypted.toString();
-    },
-
-    login() {
-      let pass = this.password;
-      pass = md5(this.password);
-      console.log(this.password);
-      let key = "*chang_hong_device_cloud";
-      let a = pass;
-      pass = this.encryptByDES(a, key);
-      // console.log(this.password);
-      let qs = require("qs");
-      let data = qs.stringify({
-        phoneOrName: this.userName,
-        passWord: pass
-      });
-      this.axios
-        .post(this.global.apiSrc + "/user/login", data)
-        // .post("/api/user/login", data)
-        .then(result => {
-          sessionStorage.token = result.data.data;
-          if (this.userName == "") {
-            console.log("请输入用户名");
-            alert("请输入用户名");
-          } else if (this.password == "") {
-            alert("请输入密码");
-          } else if ((result.data.data = "")) {
-            alert("请输入正确的账号或密码");
-          } else {
-            console.log(result);
-            this.$store.commit("tokenSrc", sessionStorage.getItem("token"));
-            console.log("这是token:" + result.data.data);
-            this.$router.push({ path: "/Home" });
+  import md5 from "js-md5/src/md5.js";
+  import CryptoJS from "crypto-js/crypto-js.js";
+  import forgetThePassword from "./ForgetThePassword";
+  export default {
+    name: "Login",
+    data() {
+      return {
+        fileList2: [
+          {
+            name: "food.jpeg",
+            url:
+              "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
+          },
+          {
+            name: "food2.jpeg",
+            url:
+              "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
           }
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(this.userName);
-        });
+        ],
+        verification: "",
+        userName: "",
+        password: "",
+        isshow: true,
+        ishide: false,
+        nextshow: false,
+        backshow: true,
+        fileList: [
+          {
+            name: "",
+            url: ""
+          }
+        ],
+        company: {
+          name: "",
+          address: "",
+          phone: "",
+          corporation: "",
+          companyID: ""
+        },
+        manager: {
+          userName: "",
+          userPassword: "",
+          // password: "",
+          phone: "",
+          validate: ""
+        },
+        checked: true
+      };
     },
-    register() {
-      let pass=this.manager.userPassword
-       pass= md5(pass);
-      // alert(this.manager.userPassword);
-      console.log(this.manager.userPassword);
-      let key = "*chang_hong_device_cloud";
-      pass = this.encryptByDES(
-        pass,
-        key
-      );
-      // alert(this.manager.userPassword)
-      console.log(this.manager.userPassword);
-      let qs = require("qs");
-      let data = qs.stringify({
-        enterpriseName: this.company.name,
-        enterpriseAddress: this.company.address,
-        enterprisePhone: this.company.phone,
-        legalPerson: this.company.corporation,
-        creditCode: this.company.companyID,
-        businessLicenseImg: "img",
-        userName: this.manager.userName,
-        passWord: pass,
-        phone: this.manager.phone,
-
-        returnForget() {
-          this.forgetShow = true;
-          this.isshow = false;
-        }
-      });
-      this.axios
-        .post(this.global.apiSrc + "/enterprise/add", data).then(result => {
+    methods: {
+      // let instance = axios.create({
+      //   headers: { "content-type": "application/x-www-form-urlencoded" }
+      // });
+      encryptByDES(message, key) {
+        // const keyHex = CryptoJS.enc.Utf8.parse(key);
+        const keyHex = CryptoJS.enc.Utf8.parse(key);
+        const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
+          mode: CryptoJS.mode.ECB,
+          padding: CryptoJS.pad.Pkcs7
+        });
+        return encrypted.toString();
+      },
+      login() {
+        let pass = this.password;
+        pass = md5(this.password);
+        let key = "*chang_hong_device_cloud";
+        let a = pass;
+        pass = this.encryptByDES(a, key);
+        let qs = require("qs");
+        let data = qs.stringify({
+          phoneOrName: this.userName,
+          passWord: pass
+        });
+        console.log();
+        this.axios
+          .post(this.global.apiSrc + "/user/login", data)
+          // .post("/api/user/login", data)
+          .then(result => {
+            sessionStorage.token = result.data.data;
+            if (this.userName == "") {
+              console.log("请输入用户名");
+              alert("请输入用户名");
+            } else if (this.password == "") {
+              alert("请输入密码");
+            } else {
+              console.log(result);
+              this.$store.commit("tokenSrc", sessionStorage.getItem("token"));
+              console.log("这是token:" + result.data.data);
+              this.$router.push({ path: "/Home" });
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(this.userName);
+          });
+      },
+      register() {
+        let pass=this.manager.userPassword
+        pass= md5(pass);
+        // alert(this.manager.userPassword);
+        console.log(this.manager.userPassword);
+        let key = "*chang_hong_device_cloud";
+        pass = this.encryptByDES(
+          pass,
+          key
+        );
+        // alert(this.manager.userPassword)
+        console.log(this.manager.userPassword);
+        let qs = require("qs");
+        let data = qs.stringify({
+          enterpriseName: this.company.name,
+          enterpriseAddress: this.company.address,
+          enterprisePhone: this.company.phone,
+          legalPerson: this.company.corporation,
+          creditCode: this.company.companyID,
+          businessLicenseImg: "img",
+          userName: this.manager.userName,
+          passWord: pass,
+          phone: this.manager.phone,
+          returnForget() {
+            this.forgetShow = true;
+            this.isshow = false;
+          }
+        });
+        this.axios
+          .post(this.global.apiSrc + "/enterprise/add", data).then(result => {
           // axios.post("/api/enterprise/add", data).then(result => {
           console.log(result);
           if (this.company.name == "") {
@@ -277,40 +270,40 @@ export default {
             location.reload()
           }
         })
-        .catch(err => {
-          console.log(err);
-          console.log("注册失败");
+          .catch(err => {
+            console.log(err);
+            console.log("注册失败");
+          });
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      handleExceed(files, fileList) {
+        this.$message.warning(
+          `当前限制选择 3 个文件，本次选择了 ${
+            files.length
+            } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+        );
+      },
+      beforeRemove(file, fileList) {
+        return this.$confirm(`确定移除 ${file.name}？`);
+      },
+      encryptByDES(message, key) {
+        const keyHex = CryptoJS.enc.Utf8.parse(key);
+        const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
+          mode: CryptoJS.mode.ECB,
+          padding: CryptoJS.pad.Pkcs7
         });
+        return encrypted.toString();
+      }
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${
-          files.length
-        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
-      );
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`);
-    },
-    encryptByDES(message, key) {
-      const keyHex = CryptoJS.enc.Utf8.parse(key);
-      const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
-        mode: CryptoJS.mode.ECB,
-        padding: CryptoJS.pad.Pkcs7
-      });
-      return encrypted.toString();
+    components: {
+      forgetThePassword
     }
-  },
-  components: {
-    forgetThePassword
-  }
-};
+  };
 </script>
 <style lang="less" scoped>
   @blue: #409eff;
