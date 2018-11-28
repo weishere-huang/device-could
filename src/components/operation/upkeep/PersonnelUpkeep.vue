@@ -1,7 +1,7 @@
 <template>
   <div class="personnel">
     <div class="personTable">
-      
+
       <div class="search">
         <el-input
           type="search"
@@ -9,10 +9,7 @@
           v-model="key"
           style="width:30%;"
         ></el-input>
-        <el-button
-          size="mini"
-          @click="search"
-        >搜索</el-button>
+        <el-button size="mini">搜索</el-button>
         <span style="padding:0 10px;">最近搜索：{{searchs}}</span>
         <span style="text-decoration: underline;"></span>
       </div>
@@ -50,6 +47,8 @@
 export default {
   data() {
     return {
+      key: "",
+      searchs:"",
       pageIndex: 1,
       pageSize: 10,
       tableData: [
@@ -130,8 +129,8 @@ export default {
       this.pageSize = pageSize;
       this.getTableData();
     },
-    personHide(){
-        this.$emit("personHide",false)
+    personHide() {
+      this.$emit("personHide", false);
     }
   },
   created() {},

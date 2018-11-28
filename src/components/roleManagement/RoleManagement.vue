@@ -2,8 +2,14 @@
   <div class="roleManagement">
     <div class="case">
       <div class="top">
-        <el-button size="small" @click="add">添加</el-button>
-        <el-button size="small" @click="update">保存</el-button>
+        <el-button
+          size="small"
+          @click="dialogFormVisible = true"
+        >添加角色</el-button>
+        <el-button
+          size="small"
+          @click="update"
+        >保存</el-button>
       </div>
       <div class="left">
         <h6>角色列表</h6>
@@ -121,12 +127,30 @@
         </div>
       </div>
     </div>
+    <el-dialog title="角色添加" :visible.sync="dialogFormVisible" width="40%">
+      <el-form :model="form">
+        <el-form-item label="角色名称" label-width="120px">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="角色描述" label-width="120px">
+          <el-input type="textarea" v-model="form.desc"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false" size="small">保 存</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
   export default {
     data() {
       return {
+        form:{
+
+      },
+      dialogFormVisible: false,
         role:"",
         roleName: "",
         roleId:0,
@@ -568,7 +592,7 @@
   @Info: #dde2eb;
   @border: 1px solid #dde2eb;
   .roleManagement {
-    padding-left: 180px;
+    // padding-left: 180px;
     font-size: 14px;
     .case {
       padding: 10px;

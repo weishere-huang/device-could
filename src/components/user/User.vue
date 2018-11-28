@@ -260,7 +260,7 @@
 @Danger: #f56c6c;
 @Info: #dde2eb;
 .userManagement {
-  padding-left: 220px;
+  // padding-left: 220px;
   .userCase {
     width: 100%;
     padding: 10px;

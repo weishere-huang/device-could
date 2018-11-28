@@ -328,7 +328,7 @@
   @Danger: #f56c6c;
   @Info: #dde2eb;
   .persnnel-add {
-    padding-left: 180px;
+    // padding-left: 180px;
     .add-case {
       padding: 10px;
       .topbtn {
@@ -352,7 +352,7 @@
           overflow: hidden;
           .title {
             display: inline-block;
-            width: 110px;
+            // width: 110px;
             position: absolute;
             text-align: center;
             top: 0%;
@@ -399,7 +399,7 @@
           padding-left: 20px;
           .title {
             display: inline-block;
-            width: 110px;
+            // width: 110px;
             text-align: center;
             position: absolute;
             top: 48%;
