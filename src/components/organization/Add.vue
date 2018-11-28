@@ -91,6 +91,7 @@ export default {
     },
     addHide() {
       this.$emit("addHide",false)
+      
     }
   }
 };

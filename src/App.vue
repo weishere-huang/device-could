@@ -254,7 +254,7 @@ export default {
   .el-menu-item {
     height: 40px;
     line-height: 40px;
-    min-width: 178px;
+    min-width: 170px;
   }
 }
 
