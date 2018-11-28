@@ -3,7 +3,7 @@
       <el-container class="mainWrapper">
         <el-aside class="siderWrapper">
           <div class="logoWrap">
-            <img src='./assets/image/chlogo.png'/>
+            <img src='./assets/image/logo.png'/>
           </div>
           <el-menu :router=true :default-active="$route.name"
               class="el-menu-vertical-demo"
@@ -48,7 +48,7 @@
             </el-submenu>
             <el-submenu index="5">
               <template slot="title">
-                <i class="iconfont">&#xe61c;</i>
+                <i class="iconfont">&#xe62e;</i>
                 <span slot="title">组织机构</span></template>
                 <el-menu-item index="/Organization">组织机构管理</el-menu-item>
             </el-submenu>
@@ -172,11 +172,14 @@ export default {
 </script>
 
  <style lang="less" >
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 250px;
-  min-height: 400px;
-  margin-top: 60px;
-}
+ .el-menu-vertical-demo{
+    margin-top: 60px;
+    &:not(.el-menu--collapse) {
+      width: 250px;
+      min-height: 400px;
+    }
+ }
+
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
