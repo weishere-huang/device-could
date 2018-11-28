@@ -147,7 +147,7 @@
         persnneladd: {
           employeeNo: "",
           name: "",
-          gender: "",
+          gender: "1",
           birthday: "",
           phone: "",
           position: "",
@@ -197,6 +197,7 @@
         this.$router.back(-1)
       },
       employeeAdd() {
+        console.log(this.persnneladd);
         this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
         let qs = require("qs");
