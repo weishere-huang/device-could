@@ -47,7 +47,7 @@ export default ({ url, type, params, config,loadingConfig},vue) => {
                 }).catch(res => {
                     //error && error(res);
                     loading.close();
-                    console.log(info);
+                    //console.log(info);
                     Message.error({message:`网络异常：${res.message}`,customClass:'e-message', duration:5000});
                     reject({ type: 'error', info: res });
                     // dispatch({
