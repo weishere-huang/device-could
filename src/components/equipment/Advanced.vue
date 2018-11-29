@@ -81,19 +81,19 @@ export default {
         })
         .then(response => {
           // for (let i = 0; i < response.data.data.content.length; i++) {
-          //   if (response.data.data.content[i].deviceState === 0) {
+          //   if (response.data.data.content[i].deviceState === 1) {
           //     response.data.data.content[i].deviceState = "在用";
           //   }
-          //   if (response.data.data.content[i].deviceState === 1) {
+          //   if (response.data.data.content[i].deviceState === 2) {
           //     response.data.data.content[i].deviceState = "停用";
           //   }
-          //   if (response.data.data.content[i].deviceState === 2) {
+          //   if (response.data.data.content[i].deviceState === 3) {
           //     response.data.data.content[i].deviceState = "出租";
           //   }
-          //   if (response.data.data.content[i].deviceState === 3) {
+          //   if (response.data.data.content[i].deviceState === 4) {
           //     response.data.data.content[i].deviceState = "封存";
           //   }
-          //   if (response.data.data.content[i].deviceState === 4) {
+          //   if (response.data.data.content[i].deviceState === 5) {
           //     response.data.data.content[i].deviceState = "报废";
           //   }
           // }
