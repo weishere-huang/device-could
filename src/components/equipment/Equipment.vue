@@ -91,7 +91,7 @@
             <v-pagination
               @page-change="pageChange"
               @page-size-change="pageSizeChange"
-              :total="this.tableData.length"
+              :total="totalElements"
               :page-size="pageSize"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
@@ -117,13 +117,14 @@ export default {
       keyWord: "",
       deviceId: "",
       pageIndex: 1,
-      pageSize: 9,
+      pageSize: 10,
       ids: "",
       edbt: "",
       tableData: [{
         deviceNo:"",
       }],
       tableDate: [],
+      totalElements:"",
       columns: [
         {
           width: 40,
@@ -265,13 +266,14 @@ export default {
       this.pageIndex = pageIndex;
       this.getTableData();
       console.log(pageIndex);
+      console.log(this.pageSize);
       this.findall();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
-      this.findall();
+      // this.findall();
     },
     sortChange(params) {
       if (params.height.length > 0) {
@@ -319,6 +321,7 @@ export default {
             }
           }
           console.log(result.data);
+          this.totalElements=result.data.data.totalElements
         })
         .catch(err => {
           console.log(err);

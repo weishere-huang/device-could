@@ -671,22 +671,48 @@ export default {
         deviceClassify: this.sizeForm.deviceClassify,
         deviceClassifyName: this.sizeForm.deviceClassifyName,
         deviceSpec: this.sizeForm.deviceSpec,
-        //  outputDate: this.sizeForm.outputDate,
+        outputDate: this.sizeForm.outputDate,
         manufacturer: this.sizeForm.manufacturer,
         location: this.sizeForm.location,
         locationNo: this.sizeForm.locationNo,
         buyPrice: this.sizeForm.buyPrice,
-        // buyDate: this.sizeForm.buyDate,
+        buyDate: this.sizeForm.buyDate,
         deviceCategory: this.sizeForm.deviceCategory,
         deviceCategoryName: this.sizeForm.deviceCategoryName,
         deviceModel: this.sizeForm.deviceModel,
         deviceState: this.sizeForm.deviceState,
         organizeCode: this.sizeForm.organizeCode,
-        //enterFactoryDate: this.sizeForm.enterFactoryDate,
-        deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
-        devicePersonnelInfo: this.sizeForm.devicePersonnelInfo
+        enterFactoryDate: this.sizeForm.enterFactoryDate,
+       // deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
+       // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo)
+        devicePersonnelInfo: JSON.stringify([
+          {
+            workerType: 1,
+            workerName: "赵六",
+            workerId: 188,
+            workerTypeName: "负责人员"
+          },
+          {
+            workerType: 2,
+            workerTypeName: "维修人员",
+            workerId: 192,
+            workerName: "王五"
+          },
+          {
+            workerType: 3,
+            workerTypeName: "检修人员",
+            workerId: 147,
+            workerName: "李四"
+          },
+          {
+            workerType: 4,
+            workerTypeName: "保养人员",
+            workerId: 195,
+            workerName: "杨光"
+          }
+        ])
       });
-
+      console.log(this.sizeForm.devicePersonnelInfo+"this.sizeForm.devicePersonnelInfo");
       this.axios
         .post(this.global.apiSrc + "/device/update", data)
         .then(result => {
@@ -728,21 +754,16 @@ export default {
           console.log(result.data);
           this.sizeForm = result.data.data;
           if (this.sizeForm.buyDate != null) {
-            this.sizeForm.buyDate = this.sizeForm.buyDate
-              .split("T")[0]
-              .replace(/-/g, "/");
+            this.sizeForm.buyDate = this.sizeForm.buyDate.split("T")[0].replace(/-/g, "/");
             console.log("buyDAte" + this.sizeForm.buyDate);
           }
           if (this.sizeForm.buyDate != null) {
-            this.sizeForm.enterFactoryDate = this.sizeForm.enterFactoryDate
-              .split("T")[0]
-              .replace(/-/g, "/");
+            this.sizeForm.enterFactoryDate = this.sizeForm.enterFactoryDate.split("T")[0].replace(/-/g, "/");
           }
           if (this.sizeForm.buyDate != null) {
-            this.sizeForm.outputDate = this.sizeForm.outputDate
-              .split("T")[0]
-              .replace(/-/g, "/");
+            this.sizeForm.outputDate = this.sizeForm.outputDate.split("T")[0].replace(/-/g, "/");
           }
+          console.log(this.sizeForm.devicePersonnelInfo);
         })
         .catch(err => {
           console.log(err);
