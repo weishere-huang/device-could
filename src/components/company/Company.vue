@@ -250,6 +250,7 @@ export default {
       
       this.pageSize = pageSize;
       this.getTableData();
+      this.load()
     },
     sortChange(params) {
       if (params.height.length > 0) {

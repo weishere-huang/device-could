@@ -25,7 +25,7 @@
               class="custom-tree-node"
               slot-scope="{ node, data }"
             >
-              <span class="listcontent">{{ data.name }}</span>
+              <span class="listcontent">{{ data.categoryName}}</span>
             </span>
           </el-tree>
         </div>
@@ -45,7 +45,7 @@
       <div class="search">
         <el-button size="small" @click="toAdd">添加</el-button>
         <el-button size="small" @click="editShow">修改</el-button>
-        <el-button size="small" > 复制</el-button>
+        <!--<el-button size="small" > 复制</el-button>-->
         <el-button size="small" @click="edelete">删除</el-button>
         <div class="searchright">
           <span>关键字：</span>
@@ -325,38 +325,6 @@ export default {
         });
     },
     //通过
-    selectquery() {
-      //高级搜索
-      let qs = require("qs");
-      let data = qs.stringify({
-        // String deviceName,
-        deviceName: "IBM存储",
-        // Integer locationNo,
-        locationNo: "",
-        // String workerName,
-        workerName: "",
-        // String manufacturer,
-        manufacturer: "",
-        // String deviceSates,
-        deviceSates: "",
-        // Integer deviceCategory
-        deviceCategory: "",
-        page: this.pageIndex,
-        size: this.pageSize
-      });
-      this.axios
-        //axios
-        //.get("api/device/select", data)
-        .get(this.global.apiSrc + "/device/select", data)
-        .then(result => {
-          alert("selectquery");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    //通过
     findDeviceState(id) {
       //获取设备状况接口
       let ids = id;
@@ -387,6 +355,23 @@ export default {
         })
         .then(result => {
           this.tableData = result.data.data.content;
+          for (let i = 0; i < this.tableData.length; i++) {
+            if (this.tableData[i].deviceState === 1) {
+              this.tableData[i].deviceState = "在用";
+            }
+            if (this.tableData[i].deviceState === 2) {
+              this.tableData[i].deviceState = "出租";
+            }
+            if (this.tableData[i].deviceState === 3) {
+              this.tableData[i].deviceState = "停用";
+            }
+            if (this.tableData[i].deviceState === 4) {
+              this.tableData[i].deviceState = "封存";
+            }
+            if (this.tableData[i].deviceState === 5) {
+              this.tableData[i].deviceState = "报废";
+            }
+          }
           console.log(result.data.data.content);
         })
         .catch(err => {
@@ -451,19 +436,43 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    }
+    },
+    filterArray(data, parent) {
+      let vm = this;
+      var tree = [];
+      var temp;
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].categoryParentNo == parent) {
+          var obj = data[i];
+          temp = this.filterArray(data, data[i].categoryNo);
+          if (temp.length > 0) {
+            obj.children = temp;
+          }
+          tree.push(obj);
+        }
+      }
+      return tree;
+    },
+    findAlldeviceClassify(){
+      let qs = require("qs");
+      let data = qs.stringify({
+      });
+      this.axios
+        .get(this.global.apiSrc + "/deviceCategory/all", data)
+        .then(result => {
+          this.organiza= this.filterArray(result.data.data,0);
+          console.log("查找全部设备类别");
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
   },
   created() {
-    //this.detail(1);
-    //this.findDeviceState();
-    //this.selectquery();
     this.findall();
     this.findDeviceState();
-    //this.all();
-    //this.add1();
-    //this.update();
-    //this.findByKeyWord();
-    //this.findByOrganizeCode();
+    this.findAlldeviceClassify();
   },
   components: {
     advanced

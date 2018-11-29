@@ -7,8 +7,8 @@
       </div>
       <div class="left">
         <h6>角色列表</h6>
-        <ul >
-          <li v-for="item in role" :label="item.id" :key="item.id"><span @click="">{{item.name}}</span><span><i class='iconfont icon-shanchu1' @click="expurgate"></i></span></li>
+        <ul @click="getName" >
+          <li v-for="item in role" :label="item.id" :key="item.id" ><span @click="listPermissionByRoleId">{{item.name}}</span> <span><i class='iconfont icon-shanchu1' @click="expurgate"></i></span></li>
         </ul>
       </div>
       <div class="right">
@@ -33,8 +33,8 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
-          <div class="information">
+        <div v-if="information.systemList!=''">
+          <div class="information" >
             <span class="sleft">
               <i class="iconfont icon-jia" @click="informationShow" v-show="information.sShow"></i>
               <i class="iconfont icon-jian" @click="informationHide" v-show="information.sHide"></i>
@@ -50,7 +50,7 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
+        <div v-if="equipment.systemList!=''">
           <div class="equipment">
             <span class="sleft">
               <i class="iconfont icon-jia" @click="equipmentShow" v-show="equipment.sShow"></i>
@@ -67,7 +67,7 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
+        <div  v-if="personnel.systemList!=''">
           <div class="personnel">
             <span class="sleft">
               <i class="iconfont icon-jia" @click="personnelShow" v-show="personnel.sShow"></i>
@@ -84,7 +84,7 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
+        <div v-if="user.systemList!=''">
           <div class="user">
             <span class="sleft">
               <i class="iconfont icon-jia" @click="userShow" v-show="user.sShow"></i>
@@ -101,7 +101,7 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
+        <div v-if="message.systemList!=''">
           <div class="message">
             <span class="sleft">
               <i class="iconfont icon-jia" @click="messageShow" v-show="message.sShow"></i>
@@ -374,6 +374,7 @@ import { MessageBox } from 'element-ui';
             .then(response => {
               if (response.data.data){
                 this.toRoleAdd()
+                this.form=""
               }else{
                 alert("角色名以存在，请重新输入角色名称！")
               }
@@ -451,6 +452,7 @@ import { MessageBox } from 'element-ui';
           });
       },
       update(){
+        console.log(this.roleId);
         this.systemID = "";
         for(let i = 0;i< this.systemKeyInfo.length;i++){
           if(this.systemID === ""){
@@ -459,9 +461,10 @@ import { MessageBox } from 'element-ui';
             this.systemID += ","+this.systemKeyInfo[i];
           }
         }
+        console.log(this.systemID);
         let qs = require("qs");
         let data = qs.stringify({
-          id:this.roleId.value,
+          id:this.roleId,
           name:this.roleName,
           permissionIds:this.systemID
         });
@@ -479,9 +482,9 @@ import { MessageBox } from 'element-ui';
             console.log(error);
           });
       },
-      listPermissionByRoleId(){
+      listPermissionByRoleId(value){
         this.axios
-          .get(this.global.apiSrc+"/role/listPermissionByRole",{params: {roleId:this.roleId}})
+          .get(this.global.apiSrc+"/role/listPermissionByRole",{params: {roleId:value}})
           .then(response =>{
             let arr = new Array();
             let arr1 = new Array();
@@ -565,24 +568,19 @@ import { MessageBox } from 'element-ui';
             console.log(error);
           });
       },
-      listUserByRole(){
-        this.axios
-          .get(this.global.apiSrc+"/role/listUserByRole",{params: {roleId:this.roleId}})
-          .then(response =>{
-            console.log(response)
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      },
+      getName(event){
+        this.roleName = event.target.innerHTML;
+        for(let i =0;i<this.role.length;i++){
+          if(this.roleName  === this.role[i].name){
+            this.roleId = this.role[i].id;
+            this.listPermissionByRoleId(this.roleId);
+          }
+        }
+      }
     },
     mounted() {
-      $(".left").click(function(event) {
-        $(event.target)
-          .addClass("fontColor")
-          .siblings()
-          .removeClass("fontColor");
-          this.roleId = $(event.target)[0].attributes.label.value;
+      $(".left").click(event=> {
+        $(event.target).addClass("fontColor").siblings().removeClass("fontColor");
       });
     },
     created() {

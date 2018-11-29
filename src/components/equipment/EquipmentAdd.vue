@@ -203,7 +203,7 @@
 
           deviceNo: "CH000001",
           deviceName: "液压机",
-          organizeName: "超级管理员",
+          organizeName: "工程技术中心",
           deviceClassify: "1",
           deviceClassifyName: "超级存储",
           deviceSpec: "GC222",
@@ -218,7 +218,7 @@
           deviceCategoryName: "机械类",
           deviceModel: "ZA100-315315",
           deviceState: "1",
-          organizeCode: 100,
+          organizeCode: "1000",
           enterFactoryDate: "2018/11/26"
         },
         options1: [
@@ -569,7 +569,8 @@
             ]
           }
         ],
-
+        orgoptions:"",
+        ctgoptions:"",
       };
     },
     methods: {
@@ -730,12 +731,74 @@
         }
         return tree;
       },
+      allOrganize() {
+        this.axios
+          .get(this.global.apiSrc + "/organize/allOrganize")
+          .then(result => {
+            console.log(result.data);
+            for (let i = 0; i < result.data.data.length; i++) {
+              if (result.data.data[i].organizeType === 0) {
+                result.data.data[i].organizeType = "企业";
+              }
+              if (result.data.data[i].organizeType === 1) {
+                result.data.data[i].organizeType = "公司";
+              }
+              if (result.data.data[i].organizeType === 2) {
+                result.data.data[i].organizeType = "工厂";
+              }
+              if (result.data.data[i].organizeType === 3) {
+                result.data.data[i].organizeType = "部门";
+              }
+              if (result.data.data[i].organizeType === 4) {
+                result.data.data[i].organizeType = "车间";
+              }
+            }
+            this.orgoptions = this.filterArray(result.data.data, 0);
+            console.log(this.orgoptions)
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(this.userName);
+          });
+      },
+      filterArray2(data, parent) {
+        let vm = this;
+        var tree = [];
+        var temp;
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].categoryParentNo == parent) {
+            var obj = data[i];
+            temp = this.filterArray(data, data[i].categoryNo);
+            if (temp.length > 0) {
+              obj.children = temp;
+            }
+            tree.push(obj);
+          }
+        }
+        return tree;
+      },
+      findAlldeviceClassify(){
+        let qs = require("qs");
+        let data = qs.stringify({
+        });
+        this.axios
+          .get(this.global.apiSrc + "/deviceCategory/all", data)
+          .then(result => {
+            this.ctgoptions= this.filterArray2(result.data.data,0);
+            console.log(this.ctgoptions);
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
     },
 
     created() {
       this.findDeviceClassify();
       this.findDeviceState();
       this.findAlldeviceClassify();
+      this.allOrganize();
     },
     components: {
       addPerson
