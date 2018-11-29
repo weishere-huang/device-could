@@ -318,7 +318,7 @@ export default {
         }
       }
       return tree;
-    }
+    },
   },
   created() {
     //axios
