@@ -130,13 +130,13 @@
           planName:"",
           maintenanceClassify:"",
           maintenanceLevel:"",
-          maintenanceType:"",
+          maintenanceType:"1",
           planType:"",
           startTime:"",
           endTime:"",
           executeTime:"",
-          frequency:"",
-          frequencyType:"",
+          frequency:"1",
+          frequencyType:"1",
           maintenanceCc:""
         },
         columns: [
@@ -250,12 +250,10 @@
         this.axios
           .post(this.global.apiSrc+"/mplan/add",data)
           .then(response => {
-            console.log(response.data);
             if(response.data.msg ==="成功"){
-              alert("成功");
-              this.Upkeep()
+              this.TurnaroundPlans();
             }else{
-              alert("失败");
+              alert("系统繁忙请稍后再试！");
             }
           })
           .catch(function(error) {
