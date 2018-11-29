@@ -1,19 +1,17 @@
 <template>
   <div id="app">
-    <el-container class="mainWrapper">
-      <el-aside class="siderWrapper">
-        <div class="logoWrap">
-          <img src='./assets/image/chlogo.png' />
-        </div>
-        <el-menu
-          :router=true
-          :default-active="$route.name"
-          class="el-menu-vertical-demo"
-          text-color="#fff"
-          active-text-color="#ffd04b"
-          :collapse="isCollapse"
-        >
-          <!-- <el-submenu index="/">
+      <el-container class="mainWrapper">
+        <el-aside class="siderWrapper">
+          <div class="logoWrap">
+            <img src='./assets/image/logo.png'/>
+          </div>
+          <el-menu :router=true :default-active="$route.name"
+              class="el-menu-vertical-demo"
+              text-color="#fff"
+              active-text-color="#ffd04b"
+              :collapse="isCollapse"
+              >
+            <!-- <el-submenu index="/">
               <template slot="title" class="logoWrap">
                 <span slot="title">
                   
@@ -37,33 +35,32 @@
             <template slot="title">
               <i class="iconfont">&#xe61c;</i>
               <span slot="title">设备管理</span></template>
-            <el-menu-item index="/Equipment">设备列表</el-menu-item>
-            <el-menu-item index="/Category">类别管理</el-menu-item>
-            <el-menu-item index="/Redact">类别管理</el-menu-item>
-          </el-submenu>
-          <el-submenu index="4">
-            <template slot="title">
-              <i class="iconfont">&#xe73a;</i>
-              <span slot="title">运维管理</span></template>
-            <el-menu-item index="/Breakdown">设备故障</el-menu-item>
-            <el-menu-item index="/TurnaroundPlans">检修计划</el-menu-item>
-            <el-menu-item index="/Upkeep">保养计划</el-menu-item>
-          </el-submenu>
-          <el-submenu index="5">
-            <template slot="title">
-              <i class="iconfont">&#xe61c;</i>
-              <span slot="title">组织机构</span></template>
-            <el-menu-item index="/Organization">组织机构管理</el-menu-item>
-          </el-submenu>
-          <el-submenu index="6">
-            <template slot="title">
-              <i class="iconfont">&#xe68d;</i>
-              <span slot="title">员工管理</span></template>
-            <el-menu-item index="/Personnel">员工管理</el-menu-item>
-          </el-submenu>
-          <el-submenu index="8">
-            <template slot="title">
-              <i class="iconfont">&#xe62d;</i>
+              <el-menu-item index="/Equipment">设备列表</el-menu-item>
+              <el-menu-item index="/Category">类别管理</el-menu-item>
+            </el-submenu>
+            <el-submenu index="4">
+              <template slot="title">
+                <i class="iconfont">&#xe73a;</i>
+                <span slot="title">运维管理</span></template>
+                <el-menu-item index="/Breakdown">设备故障</el-menu-item>
+                <el-menu-item index="/TurnaroundPlans">检修计划</el-menu-item>
+                <el-menu-item index="/Upkeep">保养计划</el-menu-item>
+            </el-submenu>
+            <el-submenu index="5">
+              <template slot="title">
+                <i class="iconfont">&#xe62e;</i>
+                <span slot="title">组织机构</span></template>
+                <el-menu-item index="/Organization">组织机构管理</el-menu-item>
+            </el-submenu>
+            <el-submenu index="6">
+              <template slot="title">
+                <i class="iconfont">&#xe68d;</i>
+                <span slot="title">员工管理</span></template>
+                <el-menu-item index="/Personnel">员工管理</el-menu-item>
+            </el-submenu>
+            <el-submenu index="8">
+              <template slot="title">
+                <i class="iconfont">&#xe62d;</i>
               <span slot="title">设备档案</span></template>
             <el-menu-item index="/EquipmentArchives">选项1</el-menu-item>
             <el-menu-item index="/EquipmentArchives">选项2</el-menu-item>
@@ -192,6 +189,7 @@ export default {
     TroggleHandle(key, keyPath) {
       // console.log(key, keyPath);
       this.isCollapse = !this.isCollapse;
+      EventBus.$emit('sideBarTroggleHandle', this.isCollapse);
     }
     // handleOpen(key, keyPath) {
     //   console.log(key, keyPath);
@@ -204,11 +202,14 @@ export default {
 </script>
 
  <style lang="less" >
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 250px;
-  min-height: 400px;
-  margin-top: 60px;
-}
+ .el-menu-vertical-demo{
+    margin-top: 60px;
+    &:not(.el-menu--collapse) {
+      width: 250px;
+      min-height: 400px;
+    }
+ }
+
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
