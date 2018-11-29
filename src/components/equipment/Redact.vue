@@ -753,6 +753,7 @@ export default {
           console.log("detail");
           console.log(result.data);
           this.sizeForm = result.data.data;
+
           if (this.sizeForm.buyDate != null) {
             this.sizeForm.buyDate = this.sizeForm.buyDate.split("T")[0].replace(/-/g, "/");
             console.log("buyDAte" + this.sizeForm.buyDate);
