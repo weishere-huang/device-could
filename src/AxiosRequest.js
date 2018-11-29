@@ -25,7 +25,7 @@ export default ({ url, type, params, config,loadingConfig},vue) => {
         window.setTimeout(()=>{
             const loading=Loading.service(Object.assign({
                 lock: true,
-                text: '努力加载中...',
+                text: '玩命加载中，请稍候...',
                 spinner: 'el-icon-loading',
                 background: 'rgba(255,255,255, 0.8)',
                 target: document.querySelector('.mainContentWrapper'),
