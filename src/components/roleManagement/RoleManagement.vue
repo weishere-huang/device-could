@@ -576,6 +576,9 @@ import { MessageBox } from 'element-ui';
             this.listPermissionByRoleId(this.roleId);
           }
         }
+      },
+      deleteRole(){
+
       }
     },
     mounted() {
