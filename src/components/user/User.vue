@@ -150,6 +150,7 @@
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
+        this.load()
       },
       sortChange(params) {
         if (params.height.length > 0) {
@@ -198,6 +199,7 @@
           .then(response => {
             console.log(this.data)
             console.log(response);
+            this.load()
           })
           .catch(function (error) {
             console.log(error);
@@ -264,6 +266,7 @@
   .userCase {
     width: 100%;
     padding: 10px;
+    font-size: 14px;
     .top {
       height: 60px;
       line-height: 60px;

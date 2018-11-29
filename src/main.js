@@ -20,6 +20,8 @@ import {
 } from 'vue-easytable'
 import global from './components/global/Global'
 import base from "./base.js";
+
+
 Vue.use(base)
 // import {
 //   Message,
@@ -37,6 +39,7 @@ Vue.use(vuex);
 Vue.config.productionTip = false
 Vue.prototype.axios = axios
 axios.defaults.withCredentials = true;
+window.EventBus = new Vue();
 
 let AUTH_TOKEN = (function () {
   return sessionStorage.getItem("token");

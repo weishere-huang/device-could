@@ -7,15 +7,14 @@
       </div>
       <div class="left">
         <h6>角色列表</h6>
-        <ul @click="clickfun($event)">
-          <li v-for="item in role" :label="item.id" :key="item.id">{{item.name}}</li>
+        <ul >
+          <li v-for="item in role" :label="item.id" :key="item.id">{{item.name}} <span><i class='iconfont icon-shanchu1' @click="expurgate"></i></span></li>
         </ul>
       </div>
       <div class="right">
         <div class="roleName">
           <h6>权限分配</h6>
-          <label for="">角色名称:</label>
-          <el-input type="text" style="width:200px" size="small" v-model="roleName"></el-input>
+          
         </div>
         <div>
           <div class="system">
@@ -138,6 +137,7 @@
   </div>
 </template>
 <script>
+import { MessageBox } from 'element-ui';
   export default {
     data() {
       return {
@@ -219,6 +219,24 @@
       };
     },
     methods: {
+      expurgate(){
+        this.$confirm('此操作将删除该角色, 是否继续?', '提示')
+        // this.$confirm('此操作将删除该角色, 是否继续?', '提示', {
+        //   confirmButtonText: '确定',
+        //   cancelButtonText: '取消',
+        //   type: 'warning'
+        // }).then(() => {
+        //   this.$message({
+        //     type: 'success',
+        //     message: '删除成功!'
+        //   });
+        // }).catch(() => {
+        //   this.$message({
+        //     type: 'info',
+        //     message: '已取消删除'
+        //   });          
+        // });
+      },
       systemCheckAllChange(val) {
         this.list(this.system.systemList,this.system.systemList,this.system.systemKey,1);
         this.system.checkedSystem = val ? this.system.systemList : [];
@@ -392,6 +410,7 @@
       },
       clickfun(e){
         this.roleName = e.target.textContent;
+        console.log(this.roleName);
         this.roleId = e.target.attributes.label;
         this.listPermissionByRoleId(this.roleId.value);
       },
@@ -569,11 +588,12 @@
       }
     },
     mounted() {
-      $(".left li").click(function() {
-        $(this)
+      $(".left").click(function(event) {
+        $(event.target)
           .addClass("fontColor")
           .siblings()
           .removeClass("fontColor");
+          console.log($(event.target)[0].innerText);
       });
     },
     created() {
@@ -628,8 +648,15 @@
           height: 30px;
           line-height: 30px;
           cursor: pointer;
+          span:nth-child(1){
+            color: #f56c6c;
+            display: none;
+          }
           &:hover {
             color: @blue;
+            span:nth-child(1){
+              display: inline-block;
+            }
           }
         }
       }
@@ -642,13 +669,12 @@
         margin-left: 30px;
         padding: 10px;
         .roleName {
-          height: 100px;
-          line-height: 100px;
+          height: 10px;
           padding-left: 10px;
           position: relative;
           h6 {
             position: absolute;
-            top: -60px;
+            top: -15px;
             left: 30px;
           }
         }

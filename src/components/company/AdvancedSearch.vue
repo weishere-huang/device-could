@@ -10,7 +10,6 @@
             <el-checkbox label="0">待审核</el-checkbox>
             <el-checkbox label="1">正常</el-checkbox>
             <el-checkbox label="2">已禁用</el-checkbox>
-            <el-checkbox label="4">审核中</el-checkbox>
             <el-checkbox label="10">未通过</el-checkbox>
           </el-checkbox-group>
         </div>
@@ -31,7 +30,7 @@
         totalElements: "",
         companyName: "",
         checkList: [],
-        chioce: "",
+        choice: "",
       };
     },
     methods: {
@@ -51,6 +50,7 @@
         this.axios
           .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
             params: {
+              page: 1,
               enterpriseName: this.companyName,
               state: this.choice,
               // page: this.pageIndex, size: this.pageSize
@@ -73,9 +73,6 @@
               if (response.data.data.content[i].state === 2) {
                 response.data.data.content[i].state = "禁用";
               }
-              if (response.data.data.content[i].state === 4) {
-                response.data.data.content[i].state = "审核中";
-              }
               if (response.data.data.content[i].state === 10) {
                 response.data.data.content[i].state = "未通过"
               }
@@ -83,7 +80,13 @@
             console.log(this.choice)
             this.dataName = response.data.data
             console.log(this.dataName);
-            this.$emit("advanceValue", this.dataName);
+            this.$emit("advanceValue", {
+              dataName:this.dataName,
+              params:{
+                enterpriseName: this.companyName,
+                state: this.choice
+              }
+            });
           })
           .catch(function (error) {
             console.log(error);
@@ -102,7 +105,7 @@
   @border: 1px solid #dde2eb;
   .search {
     width: 300px;
-    position: absolute;
+    // position: absolute;
     padding: 20px;
     border: @border;
     border-radius: 5px;
