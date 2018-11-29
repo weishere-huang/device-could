@@ -177,7 +177,6 @@ export default {
   },
   created() {
     this.findAlldeviceClassify();
-   // this.addCategory();
   }
 };
 </script>
