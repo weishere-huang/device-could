@@ -14,14 +14,13 @@
       <div class="left">
         <h6>角色列表</h6>
         <ul @click="clickfun($event)">
-          <li v-for="item in role" :label="item.id" :key="item.id">{{item.name}}</li>
+          <li v-for="item in role" :label="item.id" :key="item.id">{{item.name}} <span>删除</span></li>
         </ul>
       </div>
       <div class="right">
         <div class="roleName">
           <h6>权限分配</h6>
-          <label for="">角色名称:</label>
-          <el-input type="text" style="width:200px" size="small" v-model="roleName"></el-input>
+          
         </div>
         <div>
           <div class="system">
@@ -638,13 +637,12 @@
         margin-left: 30px;
         padding: 10px;
         .roleName {
-          height: 100px;
-          line-height: 100px;
+          height: 10px;
           padding-left: 10px;
           position: relative;
           h6 {
             position: absolute;
-            top: -60px;
+            top: -15px;
             left: 30px;
           }
         }

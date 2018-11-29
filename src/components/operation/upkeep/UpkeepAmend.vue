@@ -37,7 +37,7 @@
           </el-form-item>
         </el-form>
 
-        <el-form label-width="110px" v-if="companyName.planType==='周期'" v-model="companyName.planType">
+        <el-form label-width="110px" v-if="companyName.planType==='周期'" v-model="companyName">
           <el-form-item label="计划日期：">
             <el-col :span="11">
               <el-date-picker type="date" placeholder="选择日期" v-model="companyName.startTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
@@ -70,7 +70,7 @@
 
         </el-form>
         <!-- 单次执行 -->
-        <el-form label-width="110px" v-if="companyName.planType==='单次'" v-model="companyName.planType">
+        <el-form label-width="110px" v-if="companyName.planType==='单次'" v-model="companyName">
           <el-form-item label="计划日期：">
             <el-col :span="11">
               <el-date-picker type="date" placeholder="选择日期" v-model="companyName.startTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
@@ -167,7 +167,7 @@ export default {
         {
           field: "location",
           title: "设备位置",
-          width: 100,
+          width: 80,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -175,7 +175,7 @@ export default {
         {
           field: "workerNames",
           title: "人员",
-          width: 100,
+          width: 80,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -183,7 +183,7 @@ export default {
         {
           field: "starTime",
           title: "操作",
-          width: 100,
+          width: 80,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -371,17 +371,17 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .turnaroundPlansAdd {
-  padding-left: 180px;
+  // padding-left: 180px;
   .top {
-    padding: 10px 20px;
+    padding: 10px 0px;
   }
   .bottom {
-    padding: 10px 20px;
+    padding: 10px 0px;
     .left {
       padding: 10px;
       border: @border;
       border-radius: 5px;
-      width: 450px;
+      width: 400px;
       float: left;
       h5 {
         position: relative;
@@ -395,7 +395,7 @@ export default {
       }
     }
     .right {
-      width: 650px;
+      width: 600px;
       font-size: 14px;
       float: left;
       padding: 10px;
