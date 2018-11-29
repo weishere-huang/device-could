@@ -45,30 +45,30 @@ let AUTH_TOKEN = (function () {
   return sessionStorage.getItem("token");
 })();
 var instance = axios.create({});
-instance.defaults.headers.common["token"] = AUTH_TOKEN;
-instance.interceptors.request.use(function (config) {
-  console.log(config)
-  let url = config.url;
-  if (url.indexOf("login") > -1) {
-    sessionStorage.setItem('token', "");
-    config.headers.token = "";
-  }
-  if (url.indexOf("user") > -1 && url.indexOf("login") < 0) {
-    config.headers.token = sessionStorage.getItem("token");
-  }
-  return config;
-}, function (err) {
-  return Promise.reject(err);
-});
-instance.interceptors.response.use(function (res) {
-  if (res.headers.token) {
-    sessionStorage.setItem('token', res.headers.token);
-  }
-  return res;
-}, function (err) {
-  return err;
-});
-export default instance;
+instance.defaults.headers.common["token"] = sessionStorage.getItem("token");
+// instance.interceptors.request.use(function (config) {
+//   console.log(config)
+//   let url = config.url;
+//   if (url.indexOf("login") > -1) {
+//     sessionStorage.setItem('token', "");
+//     config.headers.token = "";
+//   }
+//   if (url.indexOf("user") > -1 && url.indexOf("login") < 0) {
+//     config.headers.token = sessionStorage.getItem("token");
+//   }
+//   return config;
+// }, function (err) {
+//   return Promise.reject(err);
+// });
+// instance.interceptors.response.use(function (res) {
+//   if (res.headers.token) {
+//     sessionStorage.setItem('token', res.headers.token);
+//   }
+//   return res;
+// }, function (err) {
+//   return err;
+// });
+// export default instance;
 
 new Vue({
   el: '#app',
