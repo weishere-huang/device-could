@@ -208,6 +208,14 @@ export default {
       console.log(this.auditValue);
     },
     selectALL(selection) {
+      this.choice = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.choice == "") {
+          this.choice = selection[i].id;
+        } else {
+          this.choice += "," + selection[i].id;
+        }
+      }
       console.log("select-aLL", selection);
     },
     selectChange(selection, rowData) {
@@ -223,7 +231,7 @@ export default {
       this.pageIndex = pageIndex;
       this.getTableData();
       console.log(pageIndex);
-      this.load();
+      // this.load();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
