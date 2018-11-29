@@ -31,7 +31,7 @@
         totalElements: "",
         companyName: "",
         checkList: [],
-        chioce: "",
+        choice: "",
       };
     },
     methods: {

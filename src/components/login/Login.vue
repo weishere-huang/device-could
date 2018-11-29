@@ -358,7 +358,7 @@ export default {
             this.company.companyID.length != 18
           ) {
             console.log("统一社会信用编码不能为空且必须为十八位");
-            alert("统一社会信用编码不能为空，必须与营业执照上的编码相同");
+            alert("统一社会信用编码不能为空且必须为十八位，请与营业执照上的编码相同");
           }
           if (this.manager.userName == "") {
             console.log("请输入企业管理员信息");
@@ -372,7 +372,7 @@ export default {
             console.log("请输入管理员联系电话");
             alert("请输入管理员联系电话");
           } else {
-            location.reload();
+            // location.reload();
             console.log(result)
           }
 
