@@ -11,75 +11,30 @@
         <div class="left">
           <h5>组织机构</h5>
           <div class="treeCase">
-            <el-tree
-              :data="data2"
-              node-key="id"
-              :default-expanded-keys="[2, 3]"
-              :default-checked-keys="[5]"
-              :props="defaultProps"
-            >
+            <el-tree :data="data2" node-key="id" :default-expanded-keys="[2, 3]" :default-checked-keys="[5]" :props="defaultProps">
             </el-tree>
           </div>
         </div>
         <div class="center">
           <div class="search">
-            <el-input
-              type="search"
-              size="mini"
-              style="width:30%;"
-              v-model="key"
-            ></el-input>
-            <el-button
-              size="mini"
-              @click="search"
-            >搜索</el-button>
+            <el-input type="search" size="mini" style="width:30%;" v-model="key"></el-input>
+            <el-button size="mini" @click="search">搜索</el-button>
             <span style="padding:0 10px;">最近搜索：{{searchs}}</span>
             <span style="text-decoration: underline;"></span>
           </div>
           <div class="tableList">
-            <v-table
-              is-vertical-resize
-              is-horizontal-resize
-              :vertical-resize-offset='100'
-              column-width-drag
-              :multiple-sort="false"
-              style="width:100%;"
-              :columns="columns"
-              :table-data="tableData"
-              row-hover-color="#eee"
-              row-click-color="#edf7ff"
-              :select-all="selectALL"
-              :select-group-change="selectGroupChange"
-            ></v-table>
-            <div
-              class="mt20 mb20 bold"
-              style="text-align:center;margin-top:30px"
-            >
-              <v-pagination
-                @page-change="pageChange"
-                @page-size-change="pageSizeChange"
-                :total="tableData.length"
-                :page-size="pageSize"
-                :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
-              ></v-pagination>
+            <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange"></v-table>
+            <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
+              <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
             </div>
           </div>
         </div>
         <div class="right">
-          <el-button
-            size="mini"
-            @click="deletes"
-          >清空</el-button>
-          <el-button
-            size="mini"
-            @click="toAdd"
-          >保存</el-button>
+          <el-button size="mini" @click="deletes">清空</el-button>
+          <el-button size="mini" @click="toAdd">保存</el-button>
           <div class="personList">
             <ul>
-              <li
-                v-for="(item, index) in personListValue"
-                :key="index"
-              >{{item}}
+              <li v-for="(item, index) in personListValue" :key="index">{{item}}
                 <span>x</span>
               </li>
             </ul>
