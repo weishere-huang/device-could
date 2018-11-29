@@ -44,10 +44,6 @@ export default {
       pcode:this.nodedata,
       options: [
       {
-        value: 0,
-        label: "企业"
-      },
-      {
         value: 1,
         label: "公司"
       },

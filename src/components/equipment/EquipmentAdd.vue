@@ -657,7 +657,7 @@
           // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo),
         });
 
-        console.log(data);
+
         this.axios
           .post(this.global.apiSrc + "/device/add", data)
           .then(result => {
