@@ -281,7 +281,6 @@ export default {
         .post(this.global.apiSrc + "/user/login", data)
         // .post("/api/user/login", data)
         .then(result => {
-          sessionStorage.token = result.data.data;
           console.log(result);
           if (this.userName === "") {
             console.log("请输入用户名");
@@ -290,7 +289,8 @@ export default {
             alert("请输入密码");
           } else {
             if (result.data.code === 200) {
-              this.$store.commit("tokenSrc", sessionStorage.getItem("token"));
+              this.$store.commit("tokenSrc", result.data.data);
+              sessionStorage.token = result.data.data;
               this.$router.push({
                 path: "/Home",
                 redirect: "/Home"
@@ -358,7 +358,9 @@ export default {
             this.company.companyID.length != 18
           ) {
             console.log("统一社会信用编码不能为空且必须为十八位");
-            alert("统一社会信用编码不能为空且必须为十八位，请与营业执照上的编码相同");
+            alert(
+              "统一社会信用编码不能为空且必须为十八位，请与营业执照上的编码相同"
+            );
           }
           if (this.manager.userName == "") {
             console.log("请输入企业管理员信息");
@@ -373,9 +375,8 @@ export default {
             alert("请输入管理员联系电话");
           } else {
             location.reload();
-            console.log(result)
+            console.log(result);
           }
-
         })
         .catch(err => {
           console.log(err);
@@ -413,94 +414,35 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-  @blue: #409eff;
-  @Success: #67c23a;
-  @Warning: #e6a23c;
-  @Danger: #f56c6c;
-  @Info: #909399;
-  * {
-    margin: 0;
-    padding: 0;
-  }
-  .login {
-    text-align: center;
-    width: 100%;
-    height: 100vh;
-    //background-color: @blue;
-    background:#686868 url(../../assets/image/login-bg2.png) bottom no-repeat;
-    background-size: 100% auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    .loginBox {
-      width: 40%;
-      height: auto;
-      //background-color: white;
-      background: rgba(255,255,255,0.8);
-      border-radius: 10px;
-      box-shadow: 3px 3px 5px #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      h1 {
-        width: 100%;
-        padding: 20px 0;
-        letter-spacing: 2px;
-        //font-family: "和畅惠风 Hiragino Sans GB";
-        font-weight: 500;
-        color: @blue;
-        font-size: 120%;
-      }
-      p {
-        width: 60%;
-        padding: 10px 0;
-        button {
-          width: 100%;
-        }
-      }
-      .registerSkip {
-        text-align: right;
-        padding-bottom: 50px;
-        font-size: 12px;
-        span {
-          display: inline-block;
-          margin-left: 5px;
-          cursor: pointer;
-          &:hover {
-            color: @blue;
-          }
-        }
-      }
-      .proving {
-        text-align: left;
-        .el-input {
-          width: 58%;
-        }
-        .el-button {
-          width: 40%;
-          height: 38px;
-        }
-        span {
-          margin-left: 3%;
-          display: inline-block;
-          width: 30%;
-          border: 1px solid red;
-        }
-      }
-    }
-  }
-  .adminLogin {
+@blue: #409eff;
+@Success: #67c23a;
+@Warning: #e6a23c;
+@Danger: #f56c6c;
+@Info: #909399;
+* {
+  margin: 0;
+  padding: 0;
+}
+.login {
+  text-align: center;
+  width: 100%;
+  height: 100vh;
+  //background-color: @blue;
+  background: #686868 url(../../assets/image/login-bg2.png) bottom no-repeat;
+  background-size: 100% auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  .loginBox {
     width: 40%;
     height: auto;
-    background-color: white;
+    //background-color: white;
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
-    box-shadow: 10px 10px 10px @Info;
+    box-shadow: 3px 3px 5px #333;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -511,9 +453,10 @@ export default {
       width: 100%;
       padding: 20px 0;
       letter-spacing: 2px;
-      font-family: "和畅惠风 Hiragino Sans GB";
+      //font-family: "和畅惠风 Hiragino Sans GB";
       font-weight: 500;
       color: @blue;
+      font-size: 120%;
     }
     p {
       width: 60%;
@@ -536,86 +479,144 @@ export default {
       }
     }
     .proving {
-      font-size: 12px;
       text-align: left;
-      position: relative;
-      .el-input:nth-child(1) {
-        width: 40%;
-      }
-      .el-input:nth-child(2) {
-        width: 58.5%;
+      .el-input {
+        width: 58%;
       }
       .el-button {
-        position: absolute;
-        top: 20%;
-        right: 1.5%;
-        width: 70px;
-        height: 36px;
-        margin-left: 4%;
-        border: none;
+        width: 40%;
+        height: 38px;
+      }
+      span {
+        margin-left: 3%;
+        display: inline-block;
+        width: 30%;
+        border: 1px solid red;
       }
     }
   }
-  .register {
-    position: absolute;
-    right: 10%;
-    width: 35%;
-    background-color: white;
-    box-shadow: 10px 10px 10px @Info;
-    border-radius: 10px;
-    padding-bottom: 30px;
-    .next {
-      margin-top: 30px;
-    }
-    h2 {
-      letter-spacing: 2px;
-      font-weight: 500;
-      padding: 10px 0;
-    }
-    ul {
-      li {
-        list-style-type: none;
-        margin-bottom: 5px;
-        label {
-          display: inline-block;
-          width: 31%;
-          text-align: right;
-        }
-        .validate {
-          width: 30%;
-        }
-        a {
-          text-decoration: none;
-          color: @blue;
-        }
-      }
-    }
-    .el-input {
-      width: 50%;
-      padding: 0;
-    }
-    .titleText {
+}
+.adminLogin {
+  width: 40%;
+  height: auto;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 10px 10px 10px @Info;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  h1 {
+    width: 100%;
+    padding: 20px 0;
+    letter-spacing: 2px;
+    font-family: "和畅惠风 Hiragino Sans GB";
+    font-weight: 500;
+    color: @blue;
+  }
+  p {
+    width: 60%;
+    padding: 10px 0;
+    button {
       width: 100%;
-      font-size: 12px;
-      color: #909399;
-      text-align: center;
-      padding: 10px 0 10px 20px;
-    }
-    .upload-demo {
-      width: 50%;
-      display: inline-block;
-      padding: 0;
-    }
-    .registerBtn {
-      width: 30%;
-    }
-    .loginSkip {
-      padding-right: 40px;
-      margin-top: 20px;
-      text-align: right;
-      font-size: 12px;
-      cursor: pointer;
     }
   }
+  .registerSkip {
+    text-align: right;
+    padding-bottom: 50px;
+    font-size: 12px;
+    span {
+      display: inline-block;
+      margin-left: 5px;
+      cursor: pointer;
+      &:hover {
+        color: @blue;
+      }
+    }
+  }
+  .proving {
+    font-size: 12px;
+    text-align: left;
+    position: relative;
+    .el-input:nth-child(1) {
+      width: 40%;
+    }
+    .el-input:nth-child(2) {
+      width: 58.5%;
+    }
+    .el-button {
+      position: absolute;
+      top: 20%;
+      right: 1.5%;
+      width: 70px;
+      height: 36px;
+      margin-left: 4%;
+      border: none;
+    }
+  }
+}
+.register {
+  position: absolute;
+  right: 10%;
+  width: 35%;
+  background-color: white;
+  box-shadow: 10px 10px 10px @Info;
+  border-radius: 10px;
+  padding-bottom: 30px;
+  .next {
+    margin-top: 30px;
+  }
+  h2 {
+    letter-spacing: 2px;
+    font-weight: 500;
+    padding: 10px 0;
+  }
+  ul {
+    li {
+      list-style-type: none;
+      margin-bottom: 5px;
+      label {
+        display: inline-block;
+        width: 31%;
+        text-align: right;
+      }
+      .validate {
+        width: 30%;
+      }
+      a {
+        text-decoration: none;
+        color: @blue;
+      }
+    }
+  }
+  .el-input {
+    width: 50%;
+    padding: 0;
+  }
+  .titleText {
+    width: 100%;
+    font-size: 12px;
+    color: #909399;
+    text-align: center;
+    padding: 10px 0 10px 20px;
+  }
+  .upload-demo {
+    width: 50%;
+    display: inline-block;
+    padding: 0;
+  }
+  .registerBtn {
+    width: 30%;
+  }
+  .loginSkip {
+    padding-right: 40px;
+    margin-top: 20px;
+    text-align: right;
+    font-size: 12px;
+    cursor: pointer;
+  }
+}
 </style>
 
