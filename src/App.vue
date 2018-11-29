@@ -98,6 +98,7 @@
               <template slot="title">
                 <i class="iconfont">&#xe60a;</i>
                 <span slot="title">系统管理</span></template>
+                 <el-menu-item index="/User">用户管理</el-menu-item>
             </el-submenu>
           </el-menu>
           <div v-on:click="TroggleHandle" class="isCollapse-group">

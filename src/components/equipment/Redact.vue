@@ -798,7 +798,7 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .redact {
-  padding-left: 180px;
+  // padding-left: 180px;
   .addCase {
     padding: 10px;
     .top {

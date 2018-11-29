@@ -46,7 +46,6 @@
   </div>
 </template>
 <script>
-import personnel from './Personnel'
 export default {
   data() {
     return {
@@ -67,7 +66,7 @@ export default {
       }
   },
   components:{
-    personnel
+    
   }
 };
 </script>
