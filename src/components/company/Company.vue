@@ -36,8 +36,9 @@
         </div>
       </div>
       <div class="bottom">
-        <div>
+        <div style="width:100%">
           <v-table
+            ref="companysTable"
             is-horizontal-resize
             column-width-drag
             :multiple-sort="false"
@@ -173,7 +174,11 @@ export default {
       this.totalNub = params.totalElements;
     },
     replace() {
-      location.reload();
+      //location.reload();
+      //this.$refs.companysTable.resize()
+      // EventBus.$on('sizeBarTroggleHandle', isCollapse => {
+      //   console.log(`Oh, that's nice. It's gotten ${isCollapse} clicks! :)`)
+      // });
     },
     auditblock() {
       if (this.auditValue === "") {
@@ -208,9 +213,25 @@ export default {
       console.log(this.auditValue);
     },
     selectALL(selection) {
+      this.choice = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.choice == "") {
+          this.choice = selection[i].id;
+        } else {
+          this.choice += "," + selection[i].id;
+        }
+      }
       console.log("select-aLL", selection);
     },
     selectChange(selection, rowData) {
+      this.choice = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.choice === "") {
+          this.choice += selection[i].id;
+        } else {
+          this.choice += "," + selection[i].id;
+        }
+      }
       console.log("select-change", selection, rowData);
     },
     getTableData() {
@@ -229,6 +250,7 @@ export default {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+      this.load()
     },
     sortChange(params) {
       if (params.height.length > 0) {
@@ -244,6 +266,11 @@ export default {
       }
     },
     load() {
+      EventBus.$on('sizeBarTroggleHandle', isCollapse => {
+        window.setTimeout(()=>{
+          this.$refs.companysTable.resize();
+        },500);
+      });
       this.axios
         .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
           params: { page: this.pageIndex, size: this.pageSize }
@@ -376,6 +403,7 @@ export default {
 .company {
   // padding-left: 180px;
   position: relative;
+  width: 100%;
   overflow: hidden;
   .userCase {
     width: 100%;
@@ -410,7 +438,7 @@ export default {
   }
   .adsearch {
     position: absolute;
-    top: 0;
+    top: 0%;
     right: -310px;
     transition: all 0.3s ease-in;
   }

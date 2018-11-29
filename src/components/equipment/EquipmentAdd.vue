@@ -87,7 +87,7 @@
               <span>负责人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="addIsShow">
+            <div @click="dialogVisible=true">
               更改绑定
             </div>
           </li>
@@ -96,7 +96,7 @@
               <span>维修人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="addIsShow">
+            <div @click="dialogVisible=true">
               更改绑定
             </div>
           </li>
@@ -105,7 +105,7 @@
               <span>检修人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="addIsShow">
+            <div @click="dialogVisible=true">
               更改绑定
             </div>
           </li>
@@ -114,7 +114,7 @@
               <span>保养人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="addIsShow">
+            <div @click="dialogVisible=true">
               更改绑定
             </div>
           </li>
@@ -123,7 +123,7 @@
               <span>操作人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="addIsShow">
+            <div @click="dialogVisible=true">
               更改绑定
             </div>
           </li>
@@ -161,7 +161,13 @@
         </div>
       </div>
     </div>
-    <addPerson v-show="addShow" v-on:isHide="isHide"></addPerson>
+    <el-dialog
+      title="人员添加"
+      :visible.sync="dialogVisible"
+      width="80%"
+      >
+      <addPerson></addPerson>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -171,6 +177,7 @@
     name: "",
     data() {
       return {
+        dialogVisible:false,
         addShow: false,
         sizeForm: {
           // deviceNo: "",
@@ -743,7 +750,7 @@
   @Info: #dde2eb;
   @border: 1px solid #dde2eb;
   .equipmentAdd {
-    padding-left: 180px;
+    // padding-left: 180px;
     .addCase {
       padding: 10px;
       .top {

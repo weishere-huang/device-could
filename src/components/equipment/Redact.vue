@@ -149,7 +149,7 @@
               <span>负责人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="addIsShow">
+            <div @click="dialogVisible=true">
               更改绑定
             </div>
           </li>
@@ -158,7 +158,7 @@
               <span>维修人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="addIsShow">
+            <div @click="dialogVisible=true">
               更改绑定
             </div>
           </li>
@@ -167,7 +167,7 @@
               <span>检修人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="addIsShow">
+            <div @click="dialogVisible=true">
               更改绑定
             </div>
           </li>
@@ -176,7 +176,7 @@
               <span>保养人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="addIsShow">
+            <div @click="dialogVisible=true">
               更改绑定
             </div>
           </li>
@@ -185,7 +185,7 @@
               <span>操作人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="addIsShow">
+            <div @click="dialogVisible=true">
               更改绑定
             </div>
           </li>
@@ -256,18 +256,22 @@
         </div>
       </div>
     </div>
-    <addperson
-      v-show="addp"
-      v-on:isHide="isHide"
-    ></addperson>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="80%"
+      >
+      <addperson></addperson>
+    </el-dialog>
   </div>
 </template>
 <script>
-import addperson from "./AddPerson";
+import addperson from "./RedactAdd";
 
 export default {
   data() {
     return {
+       dialogVisible: false,
       addp: false,
       sizeForm: {
         deviceNo: "",
@@ -798,7 +802,7 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .redact {
-  padding-left: 180px;
+  // padding-left: 180px;
   .addCase {
     padding: 10px;
     .top {

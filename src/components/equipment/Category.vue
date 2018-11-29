@@ -172,7 +172,7 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .category {
-  padding-left: 180px;
+  // padding-left: 180px;
   .case {
     width: 900px;
     padding: 10px;
