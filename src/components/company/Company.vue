@@ -36,8 +36,9 @@
         </div>
       </div>
       <div class="bottom">
-        <div>
+        <div style="width:100%">
           <v-table
+            ref="companysTable"
             is-horizontal-resize
             column-width-drag
             :multiple-sort="false"
@@ -173,7 +174,11 @@ export default {
       this.totalNub = params.totalElements;
     },
     replace() {
-      location.reload();
+      //location.reload();
+      //this.$refs.companysTable.resize()
+      // EventBus.$on('sizeBarTroggleHandle', isCollapse => {
+      //   console.log(`Oh, that's nice. It's gotten ${isCollapse} clicks! :)`)
+      // });
     },
     auditblock() {
       if (this.auditValue === "") {
@@ -260,6 +265,11 @@ export default {
       }
     },
     load() {
+      EventBus.$on('sizeBarTroggleHandle', isCollapse => {
+        window.setTimeout(()=>{
+          this.$refs.companysTable.resize();
+        },500);
+      });
       this.axios
         .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
           params: { page: this.pageIndex, size: this.pageSize }

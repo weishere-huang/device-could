@@ -161,6 +161,7 @@ export default {
     TroggleHandle(key, keyPath) {
       // console.log(key, keyPath);
       this.isCollapse = !this.isCollapse;
+      EventBus.$emit('sideBarTroggleHandle', this.isCollapse);
     }
     // handleOpen(key, keyPath) {
     //   console.log(key, keyPath);
