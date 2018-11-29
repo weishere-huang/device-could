@@ -372,7 +372,7 @@ export default {
             console.log("请输入管理员联系电话");
             alert("请输入管理员联系电话");
           } else {
-            // location.reload();
+            location.reload();
             console.log(result)
           }
 
