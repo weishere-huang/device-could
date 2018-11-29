@@ -4,7 +4,7 @@
       <div class="top">
         <el-button
           size="small"
-          @click="toAudit"
+           @click="outerVisible = true"
         >审核</el-button>
         <el-button
           size="small"
@@ -55,14 +55,30 @@
         </div>
       </div>
     </div>
-    <audit v-show="auditShow" :auditdetails="auditdetails" v-on:auditHide="auditHide"></audit>
+    <el-dialog title="审核" :visible.sync="outerVisible">
+      <audit></audit>
+    <el-dialog
+      title="人员添加"
+      :visible.sync="innerVisible"
+      append-to-body>
+      <personnel></personnel>
+    </el-dialog>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="outerVisible = false" size="mini">取 消</el-button>
+      <el-button type="primary" size="mini">提交</el-button>
+      <el-button type="primary" @click="innerVisible = true" size="mini">添加下一级审批人</el-button>
+    </div>
+  </el-dialog>
   </div>
 </template>
 <script>
 import audit from "./breakdown/Audit";
+import personnel from "./breakdown/Personnel";
 export default {
   data() {
     return {
+      outerVisible: false,
+      innerVisible: false,
       faultId: "",
       faultKey: "",
       auditShow: false,
@@ -293,7 +309,8 @@ export default {
     this.load();
   },
   components: {
-    audit
+    audit,
+    personnel
   }
 };
 </script>

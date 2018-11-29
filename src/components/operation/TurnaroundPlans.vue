@@ -6,7 +6,8 @@
           size="small"
           @click="toPansAdd"
         >添加</el-button>
-        <el-button size="small">审核</el-button>
+        <el-button size="small"  @click="outerVisible = true">审核</el-button>
+
         <el-button
           size="small"
           @click="stopDiscontinuation"
@@ -46,12 +47,30 @@
         </div>
       </div>
     </div>
+    <el-dialog title="审核" :visible.sync="outerVisible">
+      <audit></audit>
+    <el-dialog
+      title="人员添加"
+      :visible.sync="innerVisible"
+      append-to-body>
+      <personnel></personnel>
+    </el-dialog>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="outerVisible = false" size="mini">取 消</el-button>
+      <el-button type="primary" size="mini">提交</el-button>
+      <el-button type="primary" @click="innerVisible = true" size="mini">添加下一级审批人</el-button>
+    </div>
+  </el-dialog>
   </div>
 </template>
 <script>
+import audit from './turnaroundPlans/AuditTurnaround'
+import personnel from './turnaroundPlans/PersonnelTurnaround'
 export default {
   data() {
     return {
+      outerVisible: false,
+      innerVisible: false,
       pageNumber: 0,
       pageIndex: 1,
       pageSize: 10,
@@ -72,7 +91,7 @@ export default {
         {
           field: "planName",
           title: "计划名称",
-          width: 80,
+          width: 150,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -81,7 +100,7 @@ export default {
         {
           field: "state",
           title: "当前状态",
-          width: 80,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -89,7 +108,7 @@ export default {
         {
           field: "maintenanceType",
           title: "检修分类",
-          width: 80,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -97,7 +116,7 @@ export default {
         {
           field: "maintenanceLevel",
           title: "检修级别",
-          width: 100,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -105,7 +124,7 @@ export default {
         {
           field: "startTime",
           title: "开始日期",
-          width: 100,
+          width: 70,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -113,7 +132,7 @@ export default {
         {
           field: "endTime",
           title: "结束日期",
-          width: 100,
+          width: 70,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -129,7 +148,7 @@ export default {
         {
           field: "frequencyType",
           title: "计划频次",
-          width: 100,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -145,7 +164,7 @@ export default {
         {
           field: "creator",
           title: "计划制定人",
-          width: 80,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -343,6 +362,10 @@ export default {
   created() {
     this.listMaintenanceLevel();
     this.load();
+  },
+  components: {
+    audit,
+    personnel
   }
 };
 </script>

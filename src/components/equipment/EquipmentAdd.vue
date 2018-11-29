@@ -735,7 +735,7 @@
   @Info: #dde2eb;
   @border: 1px solid #dde2eb;
   .equipmentAdd {
-    padding-left: 180px;
+    // padding-left: 180px;
     .addCase {
       padding: 10px;
       .top {

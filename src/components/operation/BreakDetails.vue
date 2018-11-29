@@ -12,46 +12,22 @@
             <h5>故障对象</h5>
             <el-form label-width="100px">
               <el-form-item label="设备编码：">
-                <el-input
-                  v-model="companyName.name"
-                  size="mini"
-                  disabled
-                ></el-input>
+                <el-input v-model="companyName.name" size="mini" disabled></el-input>
               </el-form-item>
               <el-form-item label="设备名称：">
-                <el-input
-                  v-model="companyName.region"
-                  size="mini"
-                  disabled
-                ></el-input>
+                <el-input v-model="companyName.region" size="mini" disabled></el-input>
               </el-form-item>
               <el-form-item label="规格/型号：">
-                <el-input
-                  v-model="companyName.type"
-                  size="mini"
-                  disabled
-                ></el-input>
+                <el-input v-model="companyName.type" size="mini" disabled></el-input>
               </el-form-item>
               <el-form-item label="设备位号：">
-                <el-input
-                  v-model="companyName.type"
-                  size="mini"
-                  disabled
-                ></el-input>
+                <el-input v-model="companyName.type" size="mini" disabled></el-input>
               </el-form-item>
               <el-form-item label="安装位置：">
-                <el-input
-                  v-model="companyName.type"
-                  size="mini"
-                  disabled
-                ></el-input>
+                <el-input v-model="companyName.type" size="mini" disabled></el-input>
               </el-form-item>
               <el-form-item label="所属单位：">
-                <el-input
-                  v-model="companyName.type"
-                  size="mini"
-                  disabled
-                ></el-input>
+                <el-input v-model="companyName.type" size="mini" disabled></el-input>
               </el-form-item>
             </el-form>
           </div>

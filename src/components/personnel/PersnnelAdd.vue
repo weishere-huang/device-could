@@ -55,21 +55,15 @@
               </li>
               <li>
                 <label for="">组织单位：</label>
-                <el-select
-                  v-model="persnneladd.organizationName"
-                  placeholder="请选择"
-                  size="small"
-                  style="width:70%"
-                >
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                  </el-option>
-
-                </el-select>
+               <el-cascader
+              placeholder="搜索"
+              :options="options"
+              filterable
+              change-on-select
+              :show-all-levels="false"
+              v-model="persnneladd.organizeName"
+              style="width:70%;"
+            ></el-cascader>
               </li>
               <li>
                 <label for="">入职时间：</label>
@@ -289,10 +283,13 @@
           degree: "",
           img: "",
           qualificationInfo:"",
-          roleId: ""
+          roleId: "",
+          
+          organizeName:""
         },
         options: [],
-        role: []
+        role: [],
+        options:[],
       };
 
     },
@@ -421,7 +418,7 @@
 @Danger: #f56c6c;
 @Info: #dde2eb;
 .persnnel-add {
-  padding-left: 180px;
+  // padding-left: 180px;
   .add-case {
     padding: 10px;
     .topbtn {
