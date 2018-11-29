@@ -7,7 +7,7 @@
           <span class="custom-tree-node" slot-scope="{ node, data }">
             <span>{{ node.label }}</span>
             <span class="addCase">
-              <el-button type="text" size="mini" @click="() => append(data)">
+              <el-button type="text" size="mini" @click="dialogVisible=true">
                 添加
               </el-button>
               <el-button type="text" size="mini">
@@ -35,6 +35,23 @@
         </el-form>
       </div>
     </div>
+    <el-dialog
+      title="添加"
+      :visible.sync="dialogVisible"
+      width="30%"
+      >
+      <el-form ref="form" label-width="90px">
+          <el-form-item label="类别名称：">
+            <el-input v-model="form.name" size="mini"></el-input>
+          </el-form-item>
+          <el-form-item label="备注：">
+            <el-input type="textarea" v-model="form.desc"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button size="mini">保存</el-button>
+          </el-form-item>
+        </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -42,6 +59,7 @@ let id = 1000;
 export default {
   data() {
     return {
+      dialogVisible:false,
       organize: "",
       // data5: this.organize,
       form: {
