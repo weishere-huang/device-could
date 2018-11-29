@@ -31,8 +31,8 @@
               </li>
               <li>
                 <label for="">组织单位：</label>
-                <el-select v-model="persnneladd.organizationName" placeholder="请选择" size="small" style="width:70%">
-                  <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                <el-select v-model="persnneladd.organizeCode" placeholder="请选择" size="small" style="width:70%">
+                  <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.code">
                   </el-option>
 
                 </el-select>
@@ -294,7 +294,6 @@
           alert("身份证号填写有误");
           return false;
         }
-
         if (this.persnneladd.roleId == ""){
           alert("请选择角色权限");
           return false;
@@ -303,7 +302,7 @@
           alert("手机号码有误，请重填");
           return false;
         }
-        if(this.persnneladd.birthday ==""){
+        if(this.persnneladd.birthday == ""){
           alert("请输入出生日期");
           return false;
         }
@@ -315,7 +314,7 @@
           alert("请输入岗位");
           return false;
         }
-
+        return true;
       },
       employeeAdd(){
         if(this.testValue()){
@@ -324,6 +323,7 @@
       }
     },
     created() {
+      this.organize();
       this.axios
         .get(this.global.apiSrc + "/role/listAllRole")
         .then(response => {
