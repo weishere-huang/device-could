@@ -192,11 +192,11 @@
           // deviceState: "",
           // organizeCode: "",
           // enterFactoryDate: ""
-          
+
 
           deviceNo: "CH000001",
           deviceName: "液压机",
-          organizeName: "武器事业部制造",
+          organizeName: "超级管理员",
           deviceClassify: "1",
           deviceClassifyName: "超级存储",
           deviceSpec: "GC222",
@@ -211,7 +211,7 @@
           deviceCategoryName: "机械类",
           deviceModel: "ZA100-315315",
           deviceState: "1",
-          organizeCode: "IBM",
+          organizeCode: 100,
           enterFactoryDate: "2018/11/26"
         },
         options1: [
@@ -561,7 +561,8 @@
               }
             ]
           }
-        ]
+        ],
+
       };
     },
     methods: {
@@ -599,12 +600,13 @@
           deviceState: this.sizeForm.deviceState,
           enterFactoryDate: this.sizeForm.enterFactoryDate,
           // deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
-          devicePersonnelInfo: JSON.stringify([{
+          devicePersonnelInfo: JSON.stringify([
+            {
             workerType: 1,
             workerName: "赵六",
             workerId: 188,
             workerTypeName: "负责人员"
-          },
+            },
             {
               workerType: 2,
               workerTypeName: "维修人员",
@@ -612,10 +614,16 @@
               workerName: "王五"
             },
             {
-              workerType: 1,
-              workerTypeName: "负责人员",
+              workerType: 3,
+              workerTypeName: "检修人员",
               workerId: 147,
               workerName: "李四"
+            },
+            {
+              workerType: 4,
+              workerTypeName: "保养人员",
+              workerId: 195,
+              workerName: "杨光"
             }
           ])
           // deviceNo: this.sizeForm.deviceNo,
