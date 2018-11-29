@@ -215,6 +215,15 @@
         })
           .then(response => {
             this.totalNub = response.data.data.totalElements
+            for (let i = 0; i < response.data.data.content.length; i++) {
+              // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+              if (response.data.data.content[i].state === 0) {
+                response.data.data.content[i].state = "正常"
+              }
+              if (response.data.data.content[i].state === 1) {
+                response.data.data.content[i].state = "停用"
+              }
+            }
             console.log(response)
             this.tableData = response.data.data.content;
           }).catch(function (error) {
@@ -228,8 +237,6 @@
           .then(response => {
             console.log(response);
             this.totalNub = response.data.data.totalElements
-            this.totalNub = response.data.data.totalElements;
-
             for (let i = 0; i < response.data.data.content.length; i++) {
               // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
               if (response.data.data.content[i].state === 0) {
@@ -237,9 +244,6 @@
               }
               if (response.data.data.content[i].state === 1) {
                 response.data.data.content[i].state = "停用"
-              }
-              if (response.data.data.content[i].state === 2) {
-                response.data.data.content[i].state = "删除"
               }
             }
             this.tableData = response.data.data.content;
