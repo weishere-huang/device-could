@@ -197,7 +197,6 @@
         }
       },
       toEmployeeAdd() {
-        this.codeToName(this.persnneladd.organizeCode);
         this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
         let qs = require("qs");
@@ -306,7 +305,7 @@
           alert("请输入出生日期");
           return false;
         }
-        if(this.persnneladd.organizationName == ""){
+        if(this.persnneladd.organizationName == " "){
           alert("请选择组织机构");
           return false;
         }
@@ -317,6 +316,7 @@
         return true;
       },
       employeeAdd(){
+        this.codeToName(this.persnneladd.organizeCode);
         if(this.testValue()){
           this.toEmployeeAdd()
         }
@@ -435,3 +435,4 @@
     }
   }
 </style>
+
