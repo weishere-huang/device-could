@@ -61,6 +61,7 @@
               @page-size-change="pageSizeChange"
               :total="this.totalNub"
               :page-size="pageSize"
+              :pageIndex="pageIndex"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
           </div>
@@ -111,6 +112,7 @@ export default {
           state: ""
         }
       ],
+      searchParams: {},
       tableDate: [],
       columns: [
         {
@@ -169,16 +171,14 @@ export default {
     audit
   },
   methods: {
-    advanceValue: function(params) {
-      this.tableData = params.content;
-      this.totalNub = params.totalElements;
+    advanceValue: function({ dataName, params }) {
+      this.pageIndex=1;
+      this.tableData = dataName.content;
+      this.totalNub = dataName.totalElements;
+      this.searchParams = params;
     },
     replace() {
-      //location.reload();
-      //this.$refs.companysTable.resize()
-      // EventBus.$on('sizeBarTroggleHandle', isCollapse => {
-      //   console.log(`Oh, that's nice. It's gotten ${isCollapse} clicks! :)`)
-      // });
+      location.reload();
     },
     auditblock() {
       if (this.auditValue === "") {
@@ -247,10 +247,9 @@ export default {
       this.load();
     },
     pageSizeChange(pageSize) {
-      this.pageIndex = 1;
+      
       this.pageSize = pageSize;
       this.getTableData();
-      this.load()
     },
     sortChange(params) {
       if (params.height.length > 0) {
@@ -266,14 +265,17 @@ export default {
       }
     },
     load() {
-      EventBus.$on('sizeBarTroggleHandle', isCollapse => {
-        window.setTimeout(()=>{
+      EventBus.$on("sideBarTroggleHandle", isCollapse => {
+        window.setTimeout(() => {
           this.$refs.companysTable.resize();
-        },500);
+        }, 500);
       });
       this.axios
         .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
-          params: { page: this.pageIndex, size: this.pageSize }
+          params: Object.assign(this.searchParams, {
+            page: this.pageIndex,
+            size: this.pageSize
+          })
         })
         .then(response => {
           console.log(response);
