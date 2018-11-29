@@ -108,11 +108,11 @@
         >
           <i
             v-show="isCollapse === true"
-            class="el-icon-caret-right"
+            class="el-icon-arrow-right"
           ></i>
           <i
             v-show="isCollapse === false"
-            class="el-icon-caret-left"
+            class="el-icon-arrow-left"
           ></i>
         </div>
       </el-aside>
@@ -166,7 +166,9 @@
             </div>
           </el-header>
         </el-header>
-        <el-main>
+        <el-main class="mainContentWrapper">
+          <!-- v-loading="pictLoading" element-loading-background="rgba(0, 0, 0, 0.5)"
+         element-loading-text="图标正在加载中" -->
           <router-view />
         </el-main>
         <el-footer>长虹智能终端设备生产管理云平台</el-footer>
@@ -182,7 +184,8 @@ export default {
   data() {
     return {
       show: true,
-      isCollapse: false
+      isCollapse: false,
+      pictLoading:true
     };
   },
   methods: {
@@ -305,16 +308,16 @@ export default {
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
-  background-color: #eeeeee;
+  //background-color: #eeeeee;
 } /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
 ::-webkit-scrollbar-track {
-  background-color: #2F4352;
+  background-color: transparent;
   // border-radius: 5px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  //-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 } /*定义滚动条轨道 内阴影+圆角*/
 ::-webkit-scrollbar-thumb {
-  background-color: #999;
-  border-radius: 5px;
-  -webkit-box-shadow: inset 0 0 6px rgba(7, 7, 7, 0.3);
+  background-color: #333;
+  border-radius: 3px;
+  //-webkit-box-shadow: inset 0 0 6px rgba(7, 7, 7, 0.3);
 } /*定义滑块 内阴影+圆角*/
 </style>
