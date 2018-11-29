@@ -38,6 +38,7 @@
       <div class="bottom">
         <div style="width:100%">
           <v-table
+            
             ref="companysTable"
             is-horizontal-resize
             column-width-drag
@@ -172,7 +173,7 @@ export default {
   },
   methods: {
     advanceValue: function({ dataName, params }) {
-      this.pageIndex=1;
+      this.pageIndex = 1;
       this.tableData = dataName.content;
       this.totalNub = dataName.totalElements;
       this.searchParams = params;
@@ -247,7 +248,6 @@ export default {
       this.load();
     },
     pageSizeChange(pageSize) {
-      
       this.pageSize = pageSize;
       this.getTableData();
     },
@@ -270,7 +270,61 @@ export default {
           this.$refs.companysTable.resize();
         }, 500);
       });
-      this.axios
+      const pa = Object.assign(this.searchParams, {
+        page: this.pageIndex,
+        size: this.pageSize
+      });
+      this.Axios(
+        {
+          params: Object.assign(this.searchParams, {
+            page: this.pageIndex,
+            size: this.pageSize
+          }),
+          type: "get",
+          url: "/enterprise/findByNameOrState",
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },
+        this
+      ).then(
+        response => {
+          // dispatch({
+          //     type: types.GET_CHECK_TASK_LIST_SUCCESS,
+          //     payload: res.data
+          // });
+          console.log(response);
+          this.totalNub = response.data.data.totalElements;
+          for (let i = 0; i < response.data.data.content.length; i++) {
+            // console.log(response.data.data.content.length)
+            response.data.data.content[
+              i
+            ].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+            if (response.data.data.content[i].state === 0) {
+              response.data.data.content[i].state = "待审核";
+            }
+            if (response.data.data.content[i].state === 1) {
+              response.data.data.content[i].state = "正常";
+            }
+            if (response.data.data.content[i].state === 2) {
+              response.data.data.content[i].state = "禁用";
+            }
+            if (response.data.data.content[i].state === 4) {
+              response.data.data.content[i].state = "审核中";
+            }
+            if (response.data.data.content[i].state === 10) {
+              response.data.data.content[i].state = "未通过";
+            }
+          }
+          this.tableData = response.data.data.content;
+        },
+        ({ type, info }) => {
+          //错误类型 type=faild / error
+          //error && error(type, info);
+        }
+      );
+
+      /*this.axios
         .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
           params: Object.assign(this.searchParams, {
             page: this.pageIndex,
@@ -306,7 +360,7 @@ export default {
         })
         .catch(function(error) {
           console.log(error);
-        });
+        });*/
     },
     findByName() {
       this.axios

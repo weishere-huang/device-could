@@ -7,6 +7,7 @@ import store from './store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
+import Axios from './AxiosRequest';
 import vuex from 'vuex'
 import $ from 'jquery'
 import 'vue-easytable/libs/themes-base/index.css';
@@ -28,7 +29,6 @@ Vue.use(base)
 //   MessageBox
 // } from 'element-ui'
 Vue.prototype.global = global;
-Vue.prototype.axios = axios
 // Vue.pototyype.message = function (msg) {
 //   this.$message('这是一条消息提示')
 // }
@@ -37,7 +37,8 @@ Vue.component(VTable.name, VTable)
 Vue.component(VPagination.name, VPagination)
 Vue.use(vuex);
 Vue.config.productionTip = false
-Vue.prototype.axios = axios
+Vue.prototype.axios = axios;
+Vue.prototype.Axios = Axios;
 axios.defaults.withCredentials = true;
 window.EventBus = new Vue();
 
@@ -80,5 +81,4 @@ new Vue({
   ElementUI,
   axios,
   store
-
 })
