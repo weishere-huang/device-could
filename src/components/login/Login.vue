@@ -289,8 +289,11 @@ export default {
             alert("请输入密码");
           } else {
             if (result.data.code === 200) {
-              this.$store.commit("tokenSrc", result.data.data);
-              sessionStorage.token = result.data.data;
+              sessionStorage.token = result.data.data.tokenStr;
+              console.log(result.data.data);
+              this.$store.commit("tokenSrc", result.data.data.tokenStr);
+              console.log(sessionStorage.token);
+              console.log(this.$store.state.token.tokenNub);
               this.$router.push({
                 path: "/Home",
                 redirect: "/Home"

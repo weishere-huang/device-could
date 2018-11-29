@@ -8,7 +8,7 @@
       <div class="left">
         <h6>角色列表</h6>
         <ul >
-          <li v-for="item in role" :label="item.id" :key="item.id">{{item.name}} <span><i class='iconfont icon-shanchu1' @click="expurgate"></i></span></li>
+          <li v-for="item in role" :label="item.id" :key="item.id"><span>{{item.name}}</span> <span><i class='iconfont icon-shanchu1' @click="expurgate"></i></span></li>
         </ul>
       </div>
       <div class="right">
@@ -33,8 +33,8 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
-          <div class="information">
+        <div v-if="information.systemList!=''">
+          <div class="information" >
             <span class="sleft">
               <i class="iconfont icon-jia" @click="informationShow" v-show="information.sShow"></i>
               <i class="iconfont icon-jian" @click="informationHide" v-show="information.sHide"></i>
@@ -50,7 +50,7 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
+        <div v-if="equipment.systemList!=''">
           <div class="equipment">
             <span class="sleft">
               <i class="iconfont icon-jia" @click="equipmentShow" v-show="equipment.sShow"></i>
@@ -67,7 +67,7 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
+        <div  v-if="personnel.systemList!=''">
           <div class="personnel">
             <span class="sleft">
               <i class="iconfont icon-jia" @click="personnelShow" v-show="personnel.sShow"></i>
@@ -84,7 +84,7 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
+        <div v-if="user.systemList!=''">
           <div class="user">
             <span class="sleft">
               <i class="iconfont icon-jia" @click="userShow" v-show="user.sShow"></i>
@@ -101,7 +101,7 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
+        <div v-if="message.systemList!=''">
           <div class="message">
             <span class="sleft">
               <i class="iconfont icon-jia" @click="messageShow" v-show="message.sShow"></i>
@@ -389,6 +389,7 @@ import { MessageBox } from 'element-ui';
             .then(response => {
               if (response.data.data){
                 this.toRoleAdd()
+                this.form=""
               }else{
                 alert("角色名以存在，请重新输入角色名称！")
               }
@@ -585,6 +586,9 @@ import { MessageBox } from 'element-ui';
           .catch(function(error) {
             console.log(error);
           });
+      },
+      clicklist(){
+
       }
     },
     mounted() {
@@ -648,13 +652,13 @@ import { MessageBox } from 'element-ui';
           height: 30px;
           line-height: 30px;
           cursor: pointer;
-          span:nth-child(1){
+          span:nth-child(2){
             color: #f56c6c;
             display: none;
           }
           &:hover {
             color: @blue;
-            span:nth-child(1){
+            span:nth-child(2){
               display: inline-block;
             }
           }

@@ -91,7 +91,6 @@ export default {
       const index = children.findIndex(d => d.id === data.id);
       children.splice(index, 1);
     },
-
     filterArray(data, parent) {
       let vm = this;
       var tree = [];
@@ -116,7 +115,7 @@ export default {
         .get(this.global.apiSrc + "/deviceCategory/all", data)
         .then(result => {
           this.organize= this.filterArray(result.data.data,0);
-          console.log("查找全部设备类别");
+          console.log(this.organize);
           console.log(result.data);
         })
         .catch(err => {
