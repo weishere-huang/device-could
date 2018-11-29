@@ -245,6 +245,7 @@ export default {
             size:this.pageSize
           }})
         .then(response =>{
+          console.log(response);
           let arr = new Array();
           for (let i = 0;i<response.data.data.content.length;i++){
             if (response.data.data.content[i].maintenanceType === 0){
