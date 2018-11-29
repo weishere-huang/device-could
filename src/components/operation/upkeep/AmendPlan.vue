@@ -332,73 +332,73 @@ export default {
           }
         }
       }
-      .bottom {
-        margin-top: 20px;
-        padding: 10px;
-        font-size: 0;
-        overflow: hidden;
-        .left {
-          width: 18%;
+    }
+    .bottom {
+      margin-top: 20px;
+      padding: 10px;
+      font-size: 0;
+      overflow: hidden;
+      
+      .left {
+        width: 18%;
+        border: @border;
+        min-height: 400px;
+        position: relative;
+        float: left;
+        margin-right: 1%;
+        font-size: 12px;
+        h5 {
+          position: absolute;
+          top: -10px;
+          left: 10px;
+          font-size: 14px;
+        }
+        .treeCase {
+          margin-top: 20px;
+        }
+      }
+      .center {
+        width: 60%;
+        min-height: 400px;
+        float: left;
+        margin-right: 1%;
+        font-size: 12px;
+        .search {
+          padding: 0 10px;
+        }
+        .tableList {
+          margin-top: 10px;
+          padding: 10px;
           border: @border;
-          min-height: 400px;
-          position: relative;
-          float: left;
-          margin-right: 1%;
-          font-size: 12px;
-          h5 {
-            position: absolute;
-            top: -10px;
-            left: 10px;
-            font-size: 14px;
-          }
-          .treeCase {
-            margin-top: 20px;
-          }
+          border-radius: 5px;
+          max-height: 500px;
         }
-        .center {
-          width: 60%;
-
-          min-height: 400px;
-          float: left;
-          margin-right: 1%;
-          font-size: 12px;
-          .search {
+      }
+      .right {
+        width: 20%;
+        min-height: 400px;
+        float: left;
+        font-size: 12px;
+        .personList {
+          margin-top: 10px;
+          width: 100%;
+          border: @border;
+          border-radius: 5px;
+          min-height: 360px;
+          padding: 10px;
+          li {
+            list-style-type: none;
+            height: 20px;
+            line-height: 20px;
             padding: 0 10px;
-          }
-          .tableList {
-            margin-top: 10px;
-            padding: 10px;
-            border: @border;
-            border-radius: 5px;
-            max-height: 500px;
-          }
-        }
-        .right {
-          width: 20%;
-          min-height: 400px;
-          float: left;
-          font-size: 12px;
-          .personList {
-            margin-top: 10px;
-            width: 100%;
-            border: @border;
-            border-radius: 5px;
-            min-height: 360px;
-            padding: 10px;
-            li {
-              list-style-type: none;
-              height: 20px;
-              line-height: 20px;
-              padding: 0 10px;
+            span {
+              float: right;
+              cursor: pointer;
+              display: none;
+            }
+            &:hover {
               span {
-                float: right;
-                cursor: pointer;
-                display: none;
-              }
-              &:hover {
-                span {
-                  display: block;
-                }
+                display: block;
               }
             }
           }

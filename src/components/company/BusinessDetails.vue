@@ -91,13 +91,13 @@
     width: 100vw;
     height: 100vh;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0%;
+    left: 0%;
     background-color: #8081812a;
   }
 
   .business-details {
-    margin: auto;
+    // margin: auto;
     padding: 10px;
     width: 800px;
     border: 1px solid @Info;

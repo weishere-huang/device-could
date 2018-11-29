@@ -405,6 +405,7 @@ export default {
 .company {
   // padding-left: 180px;
   position: relative;
+  width: 100%;
   overflow: hidden;
   .userCase {
     width: 100%;
@@ -439,7 +440,7 @@ export default {
   }
   .adsearch {
     position: absolute;
-    top: 0;
+    top: 0%;
     right: -310px;
     transition: all 0.3s ease-in;
   }

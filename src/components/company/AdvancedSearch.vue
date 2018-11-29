@@ -105,7 +105,7 @@
   @border: 1px solid #dde2eb;
   .search {
     width: 300px;
-    position: absolute;
+    // position: absolute;
     padding: 20px;
     border: @border;
     border-radius: 5px;

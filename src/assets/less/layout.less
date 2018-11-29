@@ -1,19 +1,17 @@
 @font-face {
-    font-family: 'iconfont';  /* project id 940294 */
+    font-family: 'iconfont';
+    /* project id 940294 */
     src: url('//at.alicdn.com/t/font_940294_148brnff08t.eot');
-    src: url('//at.alicdn.com/t/font_940294_148brnff08t.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_940294_148brnff08t.woff') format('woff'),
-    url('//at.alicdn.com/t/font_940294_148brnff08t.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_940294_148brnff08t.svg#iconfont') format('svg');
-  }
-  
-  .iconfont {
-    font-family:"iconfont" !important;
-    font-size:12px;
-    font-style:normal;
+    src: url('//at.alicdn.com/t/font_940294_148brnff08t.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_940294_148brnff08t.woff') format('woff'), url('//at.alicdn.com/t/font_940294_148brnff08t.ttf') format('truetype'), url('//at.alicdn.com/t/font_940294_148brnff08t.svg#iconfont') format('svg');
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 12px;
+    font-style: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
+}
 
 html,
 body {
@@ -29,14 +27,13 @@ body {
     width: auto !important;
     position: relative;
     height: 100%;
-    display:flex;
+    display: flex;
     overflow: hidden;
     flex-direction: column;
     background: linear-gradient(135deg, #2F4050 0%, rgb(58, 71, 83) 100%);
     ul {
         flex: 1;
-        overflow: auto;
-        //height: 100%; //background: linear-gradient(135deg, #07a7e3 0%, #32dac3 100%);
+        overflow: auto; //height: 100%; //background: linear-gradient(135deg, #07a7e3 0%, #32dac3 100%);
         //-webkit-transition: all .2s linear !important;
         //background-color: #2F4050 !important;
         background: linear-gradient(135deg, #2F4050 0%, rgb(58, 71, 83) 100%) !important;
@@ -47,24 +44,23 @@ body {
             background: linear-gradient(135deg, transparent 0%, rgb(23, 31, 39) 50%, transparent 100%)
         }
     }
-    .el-menu{
+    .el-menu {
         border-right: 0;
-        i{
+        i {
             font-size: 16px;
             margin-right: 5px;
         }
     }
-    .el-menu-item{
+    .el-menu-item {
         background: #202c36;
-        &:hover{
-            background: linear-gradient(135deg, transparent 0% ,rgb(38, 52, 65) 50%, transparent 100%)
+        &:hover {
+            background: linear-gradient(135deg, transparent 0%, rgb(38, 52, 65) 50%, transparent 100%)
         }
-        
-        &.is-active{
+        &.is-active {
             background: linear-gradient(135deg, transparent 0%, rgb(38, 52, 65) 50%, transparent 100%)
         }
     }
-    .logoWrap{
+    .logoWrap {
         width: 218px;
         text-align: center;
         z-index: 100;
@@ -73,41 +69,44 @@ body {
         padding: 5px;
         position: absolute
     }
-    .isCollapse-group{
-        font-size: 18px;
-        //padding: 3px 5px;
+    .isCollapse-group {
+        font-size: 18px; //padding: 3px 5px;
         text-align: center;
         display: inline-block;
         background: #304151;
         color: #fff;
         height: 40px;
         line-height: 40px;
-        &:hover{
+        &:hover {
             background: #42596e;
         }
     }
 }
-.el-header{
+
+.el-header {
     background: #f3f3f4;
     border-bottom: solid 1px #e3e6e8;
-    padding-left:0;
+    padding-left: 0;
     position: relative;
 }
-.el-menu--popup{
+
+.el-menu--popup {
     background: #333 !important;
-    li{
-        &:hover{
-            background: #666!important;
+    li {
+        &:hover {
+            background: #666 !important;
         }
     }
 }
-.el-radio-button{
+
+.el-radio-button {
     display: block;
-    &.is-active{
+    &.is-active {
         display: none
     }
 }
-.el-footer{
+
+.el-footer {
     height: 30px !important;
     border-top: solid 1px #eee;
     line-height: 30px;

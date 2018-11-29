@@ -1,0 +1,101 @@
+@font-face {
+  font-family: 'iconfont';
+  /* project id 940294 */
+  src: url('//at.alicdn.com/t/font_940294_148brnff08t.eot');
+  src: url('//at.alicdn.com/t/font_940294_148brnff08t.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_940294_148brnff08t.woff') format('woff'), url('//at.alicdn.com/t/font_940294_148brnff08t.ttf') format('truetype'), url('//at.alicdn.com/t/font_940294_148brnff08t.svg#iconfont') format('svg');
+}
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 12px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+html,
+body {
+  height: 100%;
+}
+#app,
+.mainWrapper {
+  height: 100%;
+}
+.siderWrapper {
+  width: auto !important;
+  position: relative;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  background: linear-gradient(135deg, #2F4050 0%, #3a4753 100%);
+}
+.siderWrapper ul {
+  flex: 1;
+  overflow: auto;
+  background: linear-gradient(135deg, #2F4050 0%, #3a4753 100%) !important;
+}
+.siderWrapper .el-submenu__title:hover {
+  background: linear-gradient(135deg, transparent 0%, #171f27 50%, transparent 100%);
+}
+.siderWrapper .el-menu {
+  border-right: 0;
+}
+.siderWrapper .el-menu i {
+  font-size: 16px;
+  margin-right: 5px;
+}
+.siderWrapper .el-menu-item {
+  background: #202c36;
+}
+.siderWrapper .el-menu-item:hover {
+  background: linear-gradient(135deg, transparent 0%, #263441 50%, transparent 100%);
+}
+.siderWrapper .el-menu-item.is-active {
+  background: linear-gradient(135deg, transparent 0%, #263441 50%, transparent 100%);
+}
+.siderWrapper .logoWrap {
+  width: 218px;
+  text-align: center;
+  z-index: 100;
+  right: 0;
+  top: 0;
+  padding: 5px;
+  position: absolute;
+}
+.siderWrapper .isCollapse-group {
+  font-size: 18px;
+  text-align: center;
+  display: inline-block;
+  background: #304151;
+  color: #fff;
+  height: 40px;
+  line-height: 40px;
+}
+.siderWrapper .isCollapse-group:hover {
+  background: #42596e;
+}
+.el-header {
+  background: #f3f3f4;
+  border-bottom: solid 1px #e3e6e8;
+  padding-left: 0;
+  position: relative;
+}
+.el-menu--popup {
+  background: #333 !important;
+}
+.el-menu--popup li:hover {
+  background: #666 !important;
+}
+.el-radio-button {
+  display: block;
+}
+.el-radio-button.is-active {
+  display: none;
+}
+.el-footer {
+  height: 30px !important;
+  border-top: solid 1px #eee;
+  line-height: 30px;
+  text-align: right;
+  font-size: 12px;
+  color: #666;
+}

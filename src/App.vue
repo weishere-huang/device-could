@@ -18,20 +18,20 @@
                 </span>
                 </template>
             </el-submenu> -->
-            <el-submenu index="/Home">
-              <template slot="title">
-                <i class="iconfont">&#xe606;</i>
-                <span slot="title">默认工作台</span></template>
-              <el-menu-item index="/Home">默认工作台</el-menu-item>
-            </el-submenu>
-            <!-- <router-link to="默认工作台"></router-link> -->
-            <el-submenu index="2">
-              <template slot="title">
-                <i class="iconfont">&#xe600;</i>
-                <span slot="title">企业管理</span></template>
-              <el-menu-item index="/Company">企业管理</el-menu-item>
-            </el-submenu>
-            <el-submenu index="3">
+          <el-submenu index="/Home">
+            <template slot="title">
+              <i class="iconfont">&#xe606;</i>
+              <span slot="title">默认工作台</span></template>
+            <el-menu-item index="/Home">默认工作台</el-menu-item>
+          </el-submenu>
+          <!-- <router-link to="默认工作台"></router-link> -->
+          <el-submenu index="2">
+            <template slot="title">
+              <i class="iconfont">&#xe600;</i>
+              <span slot="title">企业管理</span></template>
+            <el-menu-item index="/Company">企业管理</el-menu-item>
+          </el-submenu>
+          <el-submenu index="3">
             <template slot="title">
               <i class="iconfont">&#xe61c;</i>
               <span slot="title">设备管理</span></template>
@@ -62,89 +62,117 @@
               <template slot="title">
                 <i class="iconfont">&#xe62d;</i>
               <span slot="title">设备档案</span></template>
-              <el-menu-item index="/EquipmentArchives">选项1</el-menu-item>
-              <el-menu-item index="/EquipmentArchives">选项2</el-menu-item>
-              <el-menu-item index="/EquipmentArchives">选项3</el-menu-item>
-            </el-submenu>
-            <el-submenu index="9">
-              <template slot="title">
-                <i class="iconfont">&#xe60b;</i>
-                <span slot="title">工单</span></template>
-                <el-menu-item index="/WorkOrder">选项1</el-menu-item>
-                <el-menu-item index="/WorkOrder">选项2</el-menu-item>
-                <el-menu-item index="/WorkOrder">选项3</el-menu-item>
-            </el-submenu>
-            <el-submenu index="10">
-              <template slot="title">
-                <i class="iconfont">&#xe602;</i>
-                <span slot="title">知识库</span></template>
-                <el-menu-item index="/KnowledgeBase">选项1</el-menu-item>
-                <el-menu-item index="/KnowledgeBase">选项2</el-menu-item>
-                <el-menu-item index="/KnowledgeBase">选项3</el-menu-item>
-            </el-submenu>
-            <el-submenu index="11">
-              <template slot="title">
-                <i class="iconfont">&#xe601;</i>
-                <span slot="title">消息管理</span></template>
-                <el-menu-item index="/Message">消息管理</el-menu-item>
-            </el-submenu>
-            <el-submenu index="12">
-              <template slot="title">
-                <i class="iconfont">&#xe630;</i>
-                <span slot="title">角色管理</span></template>
-                <el-menu-item index="/RoleManagement">角色管理</el-menu-item>
-            </el-submenu>
-            <el-submenu index="13">
-              <template slot="title">
-                <i class="iconfont">&#xe60a;</i>
-                <span slot="title">系统管理</span></template>
-                 <el-menu-item index="/User">用户管理</el-menu-item>
-            </el-submenu>
-          </el-menu>
-          <div v-on:click="TroggleHandle" class="isCollapse-group">
-            <i v-show="isCollapse === true" class="el-icon-caret-right"></i>
-            <i v-show="isCollapse === false" class="el-icon-caret-left"></i>
-          </div>
-        </el-aside>
-        <el-container>
-          <el-header>
-              <el-header style="background-color:#efefef;">
-                <div class="stateList">
-                  <ul>
-                    <li>&nbsp;欢迎您：管理员</li>
-                    <li>
-                      <el-tooltip class="item" effect="dark" content="设备状态" placement="bottom-end">
-                        <i class="iconfont">&#xe609;</i>
-                      </el-tooltip>
-                    </li>
-                    <li>
-                      <el-tooltip class="item" effect="dark" content="我的消息" placement="bottom-end">
-                        <i class="iconfont">&#xe601;</i>
-                      </el-tooltip>
-                    </li>
-                    <li>
-                      <el-tooltip class="item" effect="dark" content="我的工单" placement="bottom-end">
-                        <i class="iconfont">&#xe61d;</i>
-                      </el-tooltip>
-                    </li>
-                    <li>
-                      <el-tooltip class="item" effect="dark" content="退出" placement="bottom-end">
-                        <i class="iconfont">&#xe6af;</i>
-                      </el-tooltip>
-                    </li>
-                  </ul>
-                </div>
-              </el-header>
+            <el-menu-item index="/EquipmentArchives">选项1</el-menu-item>
+            <el-menu-item index="/EquipmentArchives">选项2</el-menu-item>
+            <el-menu-item index="/EquipmentArchives">选项3</el-menu-item>
+          </el-submenu>
+          <el-submenu index="9">
+            <template slot="title">
+              <i class="iconfont">&#xe60b;</i>
+              <span slot="title">工单</span></template>
+            <el-menu-item index="/WorkOrder">选项1</el-menu-item>
+            <el-menu-item index="/WorkOrder">选项2</el-menu-item>
+            <el-menu-item index="/WorkOrder">选项3</el-menu-item>
+          </el-submenu>
+          <el-submenu index="10">
+            <template slot="title">
+              <i class="iconfont">&#xe602;</i>
+              <span slot="title">知识库</span></template>
+            <el-menu-item index="/KnowledgeBase">选项1</el-menu-item>
+            <el-menu-item index="/KnowledgeBase">选项2</el-menu-item>
+            <el-menu-item index="/KnowledgeBase">选项3</el-menu-item>
+          </el-submenu>
+          <el-submenu index="11">
+            <template slot="title">
+              <i class="iconfont">&#xe601;</i>
+              <span slot="title">消息管理</span></template>
+            <el-menu-item index="/Message">消息管理</el-menu-item>
+          </el-submenu>
+          <el-submenu index="12">
+            <template slot="title">
+              <i class="iconfont">&#xe630;</i>
+              <span slot="title">角色管理</span></template>
+            <el-menu-item index="/RoleManagement">角色管理</el-menu-item>
+          </el-submenu>
+          <el-submenu index="13">
+            <template slot="title">
+              <i class="iconfont">&#xe60a;</i>
+              <span slot="title">系统管理</span>
+            </template>
+            <el-menu-item index="/User">用户管理</el-menu-item>
+          </el-submenu>
+        </el-menu>
+        <div
+          v-on:click="TroggleHandle"
+          class="isCollapse-group"
+        >
+          <i
+            v-show="isCollapse === true"
+            class="el-icon-caret-right"
+          ></i>
+          <i
+            v-show="isCollapse === false"
+            class="el-icon-caret-left"
+          ></i>
+        </div>
+      </el-aside>
+      <el-container>
+        <el-header>
+          <el-header style="background-color:#efefef;">
+            <div class="stateList">
+              <ul>
+                <li>&nbsp;欢迎您：管理员</li>
+                <li>
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    content="设备状态"
+                    placement="bottom-end"
+                  >
+                    <i class="iconfont">&#xe609;</i>
+                  </el-tooltip>
+                </li>
+                <li>
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    content="我的消息"
+                    placement="bottom-end"
+                  >
+                    <i class="iconfont">&#xe601;</i>
+                  </el-tooltip>
+                </li>
+                <li>
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    content="我的工单"
+                    placement="bottom-end"
+                  >
+                    <i class="iconfont">&#xe61d;</i>
+                  </el-tooltip>
+                </li>
+                <li>
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    content="退出"
+                    placement="bottom-end"
+                  >
+                    <i class="iconfont">&#xe6af;</i>
+                  </el-tooltip>
+                </li>
+              </ul>
+            </div>
           </el-header>
-          <el-main>
-            <router-view />
-          </el-main>
-          <el-footer>长虹智能终端设备生产管理云平台</el-footer>
-        </el-container>
+        </el-header>
+        <el-main>
+          <router-view />
+        </el-main>
+        <el-footer>长虹智能终端设备生产管理云平台</el-footer>
       </el-container>
+    </el-container>
 
-
-      
   </div>
 </template>
 
@@ -280,8 +308,8 @@ export default {
   background-color: #eeeeee;
 } /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
 ::-webkit-scrollbar-track {
-  background-color: rgba(250, 245, 245, 0.699);
-  border-radius: 5px;
+  background-color: #2F4352;
+  // border-radius: 5px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 } /*定义滚动条轨道 内阴影+圆角*/
 ::-webkit-scrollbar-thumb {
