@@ -381,7 +381,7 @@
   @Info: #dde2eb;
   @border: 1px solid #dde2eb;
   .turnaroundPlansAdd {
-    padding-left: 180px;
+    // padding-left: 180px;
     .top {
       padding: 10px 20px;
     }

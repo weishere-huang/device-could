@@ -270,6 +270,7 @@
   .userCase {
     width: 100%;
     padding: 10px;
+    font-size: 14px;
     .top {
       height: 60px;
       line-height: 60px;

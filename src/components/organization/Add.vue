@@ -41,26 +41,26 @@ export default {
     return {
       show: true,
       type: "",
-      pcode:this.nodedata.code,
+      pcode:this.nodedata,
       options: [
       {
-        value: "0",
+        value: 0,
         label: "企业"
       },
       {
-        value: "1",
+        value: 1,
         label: "公司"
       },
       {
-        value: "2",
+        value: 2,
         label: "工厂"
       },
       {
-        value: "3",
+        value: 3,
         label: "部门"
       },
       {
-        value: "4",
+        value: 4,
         label: "车间"
       }
     ],
@@ -88,12 +88,13 @@ export default {
       //添加组织机构
       let qs = require("qs");
       let data = qs.stringify({
-        parentCode: this.pcode,
+        parentCode: this.pcode.code,
         name: this.orgname,
         organizeType: this.value,
         organizeInfo: this.orgInfo
       });
-      axios
+      console.log(this.pcode);
+      this.axios
         .post(this.global.apiSrc + "/organize/add", data)
         .then(result => {
           if(result.data.code === 200){

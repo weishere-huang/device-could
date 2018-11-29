@@ -25,5 +25,9 @@ exports.install = function (Vue, options) {
         });
       });
     };
+
+    Vue.prototype.tableResize = function (fn) {
+      console.log('tableResize');
+    };
   };
 }

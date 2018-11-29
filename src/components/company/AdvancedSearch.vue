@@ -50,6 +50,7 @@
         this.axios
           .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
             params: {
+              page: 1,
               enterpriseName: this.companyName,
               state: this.choice,
               // page: this.pageIndex, size: this.pageSize
@@ -79,7 +80,13 @@
             console.log(this.choice)
             this.dataName = response.data.data
             console.log(this.dataName);
-            this.$emit("advanceValue", this.dataName);
+            this.$emit("advanceValue", {
+              dataName:this.dataName,
+              params:{
+                enterpriseName: this.companyName,
+                state: this.choice
+              }
+            });
           })
           .catch(function (error) {
             console.log(error);
@@ -98,7 +105,7 @@
   @border: 1px solid #dde2eb;
   .search {
     width: 300px;
-    position: absolute;
+    // position: absolute;
     padding: 20px;
     border: @border;
     border-radius: 5px;

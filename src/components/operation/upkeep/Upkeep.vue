@@ -99,7 +99,9 @@ export default {
       planType: [],
       //保养级别
       planLevel: [],
-      tableData: [],
+      tableData: [{
+        field:"111"
+      }],
       tableDate: [],
       columns: [
         {

@@ -36,8 +36,9 @@
         </div>
       </div>
       <div class="bottom">
-        <div>
+        <div style="width:100%">
           <v-table
+            ref="companysTable"
             is-horizontal-resize
             column-width-drag
             :multiple-sort="false"
@@ -60,6 +61,7 @@
               @page-size-change="pageSizeChange"
               :total="this.totalNub"
               :page-size="pageSize"
+              :pageIndex="pageIndex"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
           </div>
@@ -110,6 +112,7 @@ export default {
           state: ""
         }
       ],
+      searchParams: {},
       tableDate: [],
       columns: [
         {
@@ -168,9 +171,11 @@ export default {
     audit
   },
   methods: {
-    advanceValue: function(params) {
-      this.tableData = params.content;
-      this.totalNub = params.totalElements;
+    advanceValue: function({ dataName, params }) {
+      this.pageIndex=1;
+      this.tableData = dataName.content;
+      this.totalNub = dataName.totalElements;
+      this.searchParams = params;
     },
     replace() {
       location.reload();
@@ -242,10 +247,9 @@ export default {
       this.load();
     },
     pageSizeChange(pageSize) {
-      this.pageIndex = 1;
+      
       this.pageSize = pageSize;
       this.getTableData();
-      this.load()
     },
     sortChange(params) {
       if (params.height.length > 0) {
@@ -261,9 +265,17 @@ export default {
       }
     },
     load() {
+      EventBus.$on("sideBarTroggleHandle", isCollapse => {
+        window.setTimeout(() => {
+          this.$refs.companysTable.resize();
+        }, 500);
+      });
       this.axios
         .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
-          params: { page: this.pageIndex, size: this.pageSize }
+          params: Object.assign(this.searchParams, {
+            page: this.pageIndex,
+            size: this.pageSize
+          })
         })
         .then(response => {
           console.log(response);
@@ -393,6 +405,7 @@ export default {
 .company {
   // padding-left: 180px;
   position: relative;
+  width: 100%;
   overflow: hidden;
   .userCase {
     width: 100%;
@@ -427,7 +440,7 @@ export default {
   }
   .adsearch {
     position: absolute;
-    top: 0;
+    top: 0%;
     right: -310px;
     transition: all 0.3s ease-in;
   }

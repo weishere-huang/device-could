@@ -130,7 +130,7 @@ export default {
         maintenanceClassify:"",
         maintenanceLevel:"",
         maintenanceType:"",
-        planType:"",
+        planType:"单次",
         startTime:"",
         endTime:"",
         executeTime:"",
@@ -173,7 +173,7 @@ export default {
         {
           field: "location",
           title: "设备位置",
-          width: 100,
+          width: 80,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -181,7 +181,7 @@ export default {
         {
           field: "workerNames",
           title: "人员",
-          width: 100,
+          width: 80,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -189,7 +189,7 @@ export default {
         {
           field: "starTime",
           title: "操作",
-          width: 100,
+          width: 80,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -347,17 +347,18 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .turnaroundPlansAdd {
-  padding-left: 180px;
+  // padding-left: 180px;
+  overflow: hidden;
   .top {
-    padding: 10px 20px;
+    padding: 10px 0px;
   }
   .bottom {
-    padding: 10px 20px;
+    padding: 10px 0px;
     .left {
       padding: 10px;
       border: @border;
       border-radius: 5px;
-      width: 450px;
+      width: 400px;
       float: left;
       h5 {
         position: relative;
@@ -371,7 +372,7 @@ export default {
       }
     }
     .right {
-      width: 650px;
+      width: 640px;
       font-size: 14px;
       float: left;
       padding: 10px;
