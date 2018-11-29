@@ -428,7 +428,7 @@ export default {
   .adsearch {
     position: absolute;
     top: 0%;
-    right: 0%;
+    right: -310px;
     transition: all 0.3s ease-in;
   }
 }

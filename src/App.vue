@@ -39,6 +39,7 @@
               <span slot="title">设备管理</span></template>
             <el-menu-item index="/Equipment">设备列表</el-menu-item>
             <el-menu-item index="/Category">类别管理</el-menu-item>
+            <el-menu-item index="/Redact">类别管理</el-menu-item>
           </el-submenu>
           <el-submenu index="4">
             <template slot="title">
@@ -306,8 +307,8 @@ export default {
   background-color: #eeeeee;
 } /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
 ::-webkit-scrollbar-track {
-  background-color: rgba(250, 245, 245, 0.699);
-  border-radius: 5px;
+  background-color: #2F4352;
+  // border-radius: 5px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 } /*定义滚动条轨道 内阴影+圆角*/
 ::-webkit-scrollbar-thumb {

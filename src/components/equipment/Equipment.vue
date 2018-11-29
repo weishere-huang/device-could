@@ -120,7 +120,9 @@ export default {
       pageSize: 9,
       ids: "",
       edbt: "",
-      tableData: [],
+      tableData: [{
+        deviceNo:"",
+      }],
       tableDate: [],
       columns: [
         {
