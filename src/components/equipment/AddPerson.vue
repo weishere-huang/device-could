@@ -93,71 +93,7 @@ export default {
     return {
       pageIndex: 1,
       pageSize: 10,
-      tableData: [
-        // {
-        //   name: "111",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "2222",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "3333",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "4444",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "5555",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "6666",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "7777",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "8888",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "9999",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // }
-      ],
+      tableData: [],
       tableDate: [],
       columns: [
         {

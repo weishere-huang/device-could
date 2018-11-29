@@ -2,19 +2,13 @@
   <div class="roleManagement">
     <div class="case">
       <div class="top">
-        <el-button
-          size="small"
-          @click="dialogFormVisible = true"
-        >添加角色</el-button>
-        <el-button
-          size="small"
-          @click="update"
-        >保存</el-button>
+        <el-button size="small" @click="dialogFormVisible = true">添加角色</el-button>
+        <el-button size="small" @click="update">保存</el-button>
       </div>
       <div class="left">
         <h6>角色列表</h6>
         <ul >
-          <li v-for="item in role" :label="item.id" :key="item.id">{{item.name}} <span><i class='iconfont icon-shanchu1' @click="expurgate"></i></span></li>
+          <li v-for="item in role" :label="item.id" :key="item.id"><span>{{item.name}}</span> <span><i class='iconfont icon-shanchu1' @click="expurgate"></i></span></li>
         </ul>
       </div>
       <div class="right">
@@ -39,8 +33,8 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
-          <div class="information">
+        <div v-if="information.systemList!=''">
+          <div class="information" >
             <span class="sleft">
               <i class="iconfont icon-jia" @click="informationShow" v-show="information.sShow"></i>
               <i class="iconfont icon-jian" @click="informationHide" v-show="information.sHide"></i>
@@ -56,7 +50,7 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
+        <div v-if="equipment.systemList!=''">
           <div class="equipment">
             <span class="sleft">
               <i class="iconfont icon-jia" @click="equipmentShow" v-show="equipment.sShow"></i>
@@ -73,7 +67,7 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
+        <div  v-if="personnel.systemList!=''">
           <div class="personnel">
             <span class="sleft">
               <i class="iconfont icon-jia" @click="personnelShow" v-show="personnel.sShow"></i>
@@ -90,7 +84,7 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
+        <div v-if="user.systemList!=''">
           <div class="user">
             <span class="sleft">
               <i class="iconfont icon-jia" @click="userShow" v-show="user.sShow"></i>
@@ -107,7 +101,7 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
+        <div v-if="message.systemList!=''">
           <div class="message">
             <span class="sleft">
               <i class="iconfont icon-jia" @click="messageShow" v-show="message.sShow"></i>
@@ -137,7 +131,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false" size="small">保 存</el-button>
+        <el-button type="primary" @click="roleAdd" size="small">保 存</el-button>
       </div>
     </el-dialog>
   </div>
@@ -148,9 +142,10 @@ import { MessageBox } from 'element-ui';
     data() {
       return {
         form:{
-
-      },
-      dialogFormVisible: false,
+          name:"",
+          desc:""
+        },
+        dialogFormVisible: false,
         role:"",
         roleName: "",
         roleId:0,
@@ -255,6 +250,7 @@ import { MessageBox } from 'element-ui';
           checkedCount > 0 && checkedCount < this.system.systemList.length;
       },
       systemShow() {
+        this.list(this.system.checkedSystem,this.system.systemList,this.system.systemKey,1);
         document.querySelectorAll(".system-slist")[0].style.height = "auto";
         this.system.sShow = !this.system.sShow;
         this.system.sHide = !this.system.sHide;
@@ -278,6 +274,7 @@ import { MessageBox } from 'element-ui';
           checkedCount > 0 && checkedCount < this.information.systemList.length;
       },
       informationShow() {
+        this.list(this.information.checkedSystem,this.information.systemList,this.information.systemKey,2);
         document.querySelectorAll(".information-slist")[0].style.height = "auto";
         this.information.sShow = !this.information.sShow;
         this.information.sHide = !this.information.sHide;
@@ -301,6 +298,7 @@ import { MessageBox } from 'element-ui';
           checkedCount > 0 && checkedCount < this.equipment.systemList.length;
       },
       equipmentShow() {
+        this.list(this.equipment.checkedSystem,this.equipment.systemList,this.equipment.systemKey,3);
         document.querySelectorAll(".equipment-slist")[0].style.height = "auto";
         this.equipment.sShow = !this.equipment.sShow;
         this.equipment.sHide = !this.equipment.sHide;
@@ -324,7 +322,7 @@ import { MessageBox } from 'element-ui';
           checkedCount > 0 && checkedCount < this.personnel.systemList.length;
       },
       personnelShow() {
-        console.log("ok");
+        this.list(this.personnel.checkedSystem,this.personnel.systemList,this.personnel.systemKey,4);
         document.querySelectorAll(".personnel-slist")[0].style.height = "auto";
         this.personnel.sShow = !this.personnel.sShow;
         this.personnel.sHide = !this.personnel.sHide;
@@ -348,7 +346,7 @@ import { MessageBox } from 'element-ui';
           checkedCount > 0 && checkedCount < this.user.systemList.length;
       },
       userShow() {
-        console.log("ok");
+        this.list(this.user.checkedSystem,this.user.systemList,this.user.systemKey,5);
         document.querySelectorAll(".user-slist")[0].style.height = "auto";
         this.user.sShow = !this.user.sShow;
         this.user.sHide = !this.user.sHide;
@@ -371,7 +369,7 @@ import { MessageBox } from 'element-ui';
           checkedCount > 0 && checkedCount < this.message.systemList.length;
       },
       messageShow() {
-        console.log("ok");
+        this.list(this.message.checkedSystem,this.message.systemList,this.message.systemKey,6);
         document.querySelectorAll(".message-slist")[0].style.height = "auto";
         this.message.sShow = !this.message.sShow;
         this.message.sHide = !this.message.sHide;
@@ -381,10 +379,26 @@ import { MessageBox } from 'element-ui';
         this.message.sShow = !this.message.sShow;
         this.message.sHide = !this.message.sHide;
       },
-      dddd(event) {
-        this.roleName = event.currentTarget.innerText;
-      },
 
+      roleAdd(){
+        if (this.form.name === ""){
+          alert("请输入角色名称");
+        } else{
+          this.axios
+            .get(this.global.apiSrc+"/role/findOnlyByRoleName",{params:{roleName:this.form.name}})
+            .then(response => {
+              if (response.data.data){
+                this.toRoleAdd()
+                this.form=""
+              }else{
+                alert("角色名以存在，请重新输入角色名称！")
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }
+      },
       load(){
         this.axios
           .get(this.global.apiSrc+"/role/listAllRole")
@@ -437,30 +451,21 @@ import { MessageBox } from 'element-ui';
             break;
         }
       },
-      add(){
-        this.systemID = "";
-        for(let i = 0;i< this.systemKeyInfo.length;i++){
-          if(this.systemID === ""){
-            this.systemID = this.systemKeyInfo[i];
-          }else{
-            this.systemID += ","+this.systemKeyInfo[i];
-          }
-        }
-        console.log(this.systemID);
-        console.log(this.roleName);
+      toRoleAdd(){
+        this.dialogFormVisible = false;
         let qs = require("qs");
         let data = qs.stringify({
-          name:this.roleName,
-          permissionIds:this.systemID
+          name:this.form.name,
+          description:this.form.desc
         });
         this.axios
           .post(this.global.apiSrc+"/role/add",data)
           .then(response =>{
             if (response.data.msg ==="成功") {
-              alert("成功");
+              alert("角色创建成功，请记得分配相关权限");
               this.load();
             }else{
-              alert("失败");
+              alert("系统繁忙，请稍后再试");
             }
           })
           .catch(function(error) {
@@ -478,10 +483,10 @@ import { MessageBox } from 'element-ui';
         }
         let qs = require("qs");
         let data = qs.stringify({
-            id:this.roleId.value,
-            name:this.roleName,
-            permissionIds:this.systemID
-          });
+          id:this.roleId.value,
+          name:this.roleName,
+          permissionIds:this.systemID
+        });
         this.axios
           .post(this.global.apiSrc+"/role/update",data)
           .then(response =>{
@@ -581,6 +586,9 @@ import { MessageBox } from 'element-ui';
           .catch(function(error) {
             console.log(error);
           });
+      },
+      clicklist(){
+
       }
     },
     mounted() {
@@ -644,13 +652,13 @@ import { MessageBox } from 'element-ui';
           height: 30px;
           line-height: 30px;
           cursor: pointer;
-          span:nth-child(1){
+          span:nth-child(2){
             color: #f56c6c;
             display: none;
           }
           &:hover {
             color: @blue;
-            span:nth-child(1){
+            span:nth-child(2){
               display: inline-block;
             }
           }
