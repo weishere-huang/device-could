@@ -3,6 +3,7 @@
     <div class="top">
       <el-button size="small" @click="toback">返回</el-button>
       <el-button size="small" @click="addPlan">保存</el-button>
+      <el-button size="small" @click="toSubmitAudit">提交审核</el-button>
     </div>
     <div class="bottom">
       <div class="left">
@@ -118,8 +119,7 @@
     name: "",
     data() {
       return {
-        //统一token之后删除userID
-        userId:3,
+        auditId:0,
         deviceIds:0,
         date:"",
         times:"",
@@ -232,7 +232,6 @@
         let qs = require("qs");
         let data = qs.stringify({
           //统一token之后删除userID
-          userId:this.userId,
           id:this.companyName.id,
           planName:this.companyName.planName,
           maintenanceClassify:this.companyName.maintenanceClassify,
@@ -250,8 +249,9 @@
         this.axios
           .post(this.global.apiSrc+"/mplan/add",data)
           .then(response => {
+            this.auditId = response.data.data.id;
             if(response.data.msg ==="成功"){
-              this.TurnaroundPlans();
+              this.submitAudit();
             }else{
               alert("系统繁忙请稍后再试！");
             }
@@ -326,12 +326,56 @@
             }})
           .then(response =>{
             this.tableData = response.data.data.content;
-            console.log(response.data.data.content);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      submitAudit(){
+        this.$confirm('计划添加成功,是否立即提交审核', '提示')
+          .then(_=>{
+            let qs = require("qs");
+            let data = qs.stringify({
+              maintenanceId:this.auditId
+            });
+            this.axios
+              .post(this.global.apiSrc+"/mplan/submitAudit",data)
+              .then(response =>{
+                if(response.data.code === 200){
+                  alert("已成功提交审核");
+                  this.TurnaroundPlans();
+                }else{
+                  alert("系统错误请稍后再试");
+                }
+              })
+              .catch(function(error) {
+                console.log(error);
+              });
+          })
+          .catch(_=>{
+            this.TurnaroundPlans();
+          })
+      },
+      toSubmitAudit(){
+        let qs = require("qs");
+        let data = qs.stringify({
+          maintenanceId:this.auditId
+        });
+        this.axios
+          .post(this.global.apiSrc+"/mplan/submitAudit",data)
+          .then(response =>{
+            if(response.data.code === 200){
+              alert("已成功提交审核");
+              this.TurnaroundPlans();
+            }else{
+              alert("系统错误请稍后再试");
+            }
           })
           .catch(function(error) {
             console.log(error);
           });
       }
+
     },
     components: {
       addPlan

@@ -213,7 +213,8 @@
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
         this.getTableData();
-        // console.log(pageIndex);
+        this.load();
+        console.log(pageIndex);
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
@@ -237,7 +238,7 @@
       load() {
         this.axios
           .get(this.global.apiSrc + "/employee/findEmployeeList", {
-            params: {page: this.pageIndex, size: 100}
+            params: {page: this.pageIndex, size:this.pageSize}
           })
           .then(response => {
             this.pageNumber = response.data.data.totalElements;
