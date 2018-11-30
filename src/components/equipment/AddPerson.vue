@@ -233,8 +233,18 @@ export default {
         });
     },
     toAdd() {
+      let personname = "";
+        for(let i = 0;i<this.toValue.length;i++){
+        if( i == 0){
+          personname += ""+this.toValue[i].name ;
+        }else{
+          personname += ","+this.toValue[i].name;
+        }
+      }
       let data = {
-        values: this.toValue,
+        pname:personname,
+        id: this.toValue.id,
+        name:this.toValue.name,
         isOk: false
       };
       this.$emit("addPerson", data);
