@@ -377,7 +377,7 @@ export default {
           if (this.manager.phone == "") {
             console.log("请输入管理员联系电话");
             alert("请输入管理员联系电话");
-          } else {
+          } if(result.data.code===200) {
             location.reload();
             console.log(result);
           }
@@ -623,4 +623,3 @@ export default {
   }
 }
 </style>
-

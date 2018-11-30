@@ -82,32 +82,53 @@
         let qs = require("qs");
         let data = qs.stringify({
           enterpriseId: this.auditValue.id,
-          passOrTurn:1
-          // userId:2
+          passOrTurn: 1
         })
-        console.log(data)
-        this.axios.post(this.global.apiSrc + "/enterprise/auditEnterprise/", data)
-          .then(response => {
-            location.reload();
-            alert("通过审核")
-            console.log(data)
-            console.log(response)
-          }).catch(function (error) {
-          console.log(error)
-        })
+        this.Axios(
+          {
+            url: "/enterprise/auditEnterprise/",
+            params: data,
+            type: "post",
+            option: {
+              enableMsg: false
+            },
+          }
+        ).then(response=>{
+          this.$message({
+              message: "您已通过该企业的审核",
+              type:"success"
+            })
+          location.reload();
+        },({type,info})=>{})
       },
       reject() {
         let qs = require("qs");
         let data = qs.stringify({
           enterpriseId: this.auditValue.id,
-          passOrTurn:0,
+          passOrTurn: 0,
           // userId:2,
           opinion: this.auditValue.opinion,
         })
+        // this.Axios(
+        //   {
+        //     url: "/enterprise/auditEnterprise/",
+        //     params: data,
+        //     type: "post",
+        //     option: {enableMsg: false}
+        //   },
+        //   this
+        //
+        // ).then(respose=>{
+        //   if(this.auditValue.opinion===""){
+        //     this.
+        //   }
+        // },({type, info})=>{})
+
+
         console.log(data.auditOpinion)
         this.axios.post(this.global.apiSrc + "/enterprise/auditEnterprise/", data)
           .then(response => {
-            if (response.data.data)
+
               alert("审核被驳回")
 
             location.reload();
