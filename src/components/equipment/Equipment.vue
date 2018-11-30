@@ -240,7 +240,7 @@
         this.$router.push("/EquipmentAdd");
       },
       editShow() {
-        if (this.ids.length == 1) {
+        if (this.edbt.length == 1) {
           this.$router.push("/Redact/" + this.edbt.id);
           this.$store.commit("equipmentRedact", this.edbt);
         } else {
