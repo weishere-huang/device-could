@@ -282,13 +282,13 @@
         this.getTableData();
         console.log(pageIndex);
         console.log(this.pageSize);
-        // this.findall();
+        this.findall();
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
-        //this.findall();
+        this.findall();
       },
       sortChange(params) {
         if (params.height.length > 0) {
@@ -312,14 +312,9 @@
             this.$refs.equipmentTable.resize();
           }, 500);
         })
-        let qs = require("qs");
-        let data = qs.stringify({
-          page: this.pageIndex,
-          size: this.pageSize
-        });
         this.axios
         //axios
-          .get(this.global.apiSrc + "/device/all", data)
+          .get(this.global.apiSrc + "/device/select", {params:{ page: this.pageIndex,size: this.pageSize}})
           // .get("api/device/all", data)
           .then(result => {
             this.tableData = result.data.data.content;
@@ -347,6 +342,7 @@
             console.log(err);
           });
       },
+
       //通过
       findDeviceState(id) {
         //获取设备状况接口

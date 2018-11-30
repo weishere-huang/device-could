@@ -91,7 +91,7 @@
           <li>
             <div>
               <span>负责人员：</span>
-              <span>（空）</span>
+              <span>{{person1}}</span>
             </div>
             <div @click="dialogVisible=true" v-on:addPerson="addPerson">
               更改绑定
@@ -100,36 +100,36 @@
           <li>
             <div>
               <span>维修人员：</span>
-              <span>（空）</span>
+              <span>{{person2}}</span>
             </div>
-            <div @click="dialogVisible=true">
+            <div @click="dialogVisible=true" v-on:addPerson="addPerson">
               更改绑定
             </div>
           </li>
           <li>
             <div>
               <span>检修人员：</span>
-              <span>（空）</span>
+              <span>{{person3}}</span>
             </div>
-            <div @click="dialogVisible=true">
+            <div @click="dialogVisible=true" v-on:addPerson="addPerson">
               更改绑定
             </div>
           </li>
           <li>
             <div>
               <span>保养人员：</span>
-              <span>（空）</span>
+              <span>{{person4}}</span>
             </div>
-            <div @click="dialogVisible=true">
+            <div @click="dialogVisible=true" v-on:addPerson="addPerson">
               更改绑定
             </div>
           </li>
           <li>
             <div>
               <span>操作人员：</span>
-              <span>（空）</span>
+              <span>{{person5}}</span>
             </div>
-            <div @click="dialogVisible=true">
+            <div @click="dialogVisible=true" v-on:addPerson="addPerson">
               更改绑定
             </div>
           </li>
@@ -285,6 +285,11 @@
 
         orgoptions:[],
         ctgoptions:[],
+        person1:"空",
+        person2:"空",
+        person3:"空",
+        person4:"空",
+        person5:"空",
       };
     },
     methods: {
@@ -517,7 +522,9 @@
           });
       },
       addPerson(params){
-
+        this.dialogVisible = params.isOk
+        this.person1 =
+        console.log(params);
       }
     },
 
