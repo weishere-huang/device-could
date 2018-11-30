@@ -32,7 +32,8 @@
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="下一级审批人：" v-if="formLabelAlign.type!=true">
-            <el-input v-model="toAudit.name" size="mini"></el-input>
+            <el-input v-model="toAudit.name" size="mini" style="width:60%"></el-input>
+            <el-button type="primary" @click="innerVisible = true" size="mini">添加审批人</el-button>
           </el-form-item>
         </div>
       </el-form>
@@ -42,7 +43,6 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="outerVisible = false" size="mini">取 消</el-button>
         <el-button @click="submitAudit" type="primary" size="mini">提 交</el-button>
-        <el-button type="primary" @click="innerVisible = true" size="mini">添加下一级审批人</el-button>
       </div>
     </el-dialog>
   </div>

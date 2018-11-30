@@ -240,7 +240,7 @@
             params: {page: this.pageIndex, size: 100}
           })
           .then(response => {
-            this.pageNumber = response.data.totalElements;
+            this.pageNumber = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             for (let i in this.tableData) {
               this.tableData[i].state === 1 ? (this.tableData[i].state = "禁用") : (this.tableData[i].state = "启用");
