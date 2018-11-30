@@ -60,7 +60,7 @@
             <v-pagination
               @page-change="pageChange"
               @page-size-change="pageSizeChange"
-              :total="this.totalNub"
+              :total="totalNub"
               :page-size="pageSize"
               :pageIndex="pageIndex"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
@@ -298,9 +298,6 @@ export default {
           this.totalNub = response.data.data.totalElements;
           for (let i = 0; i < response.data.data.content.length; i++) {
             // console.log(response.data.data.content.length)
-            response.data.data.content[
-              i
-            ].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
             if (response.data.data.content[i].state === 0) {
               response.data.data.content[i].state = "待审核";
             }
@@ -364,23 +361,22 @@ export default {
         });*/
     },
     findByName() {
-      this.axios
-        .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
-          params: {
-            enterpriseName: this.name,
+      this.Axios(
+        {
+          params:Object.assign({
+            enterpriseName:this.name,
             state: "",
             page: this.pageIndex,
             size: this.pageSize
-          }
-        })
-        .then(response => {
+          }),
+          type: "get",
+          url: "/enterprise/findByNameOrState",
+        },
+        this
+      ).then(
+        response =>{
           this.totalNub = response.data.data.totalElements;
-          console.log(response);
-          for (let i = 0; i < response.data.data.content.length; i++) {
-            // console.log(response.data.data.content.length)
-            response.data.data.content[
-              i
-            ].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+          for(let i=0;i<response.data.data.content.length;i++){
             if (response.data.data.content[i].state === 0) {
               response.data.data.content[i].state = "待审核";
             }
@@ -397,30 +393,97 @@ export default {
               response.data.data.content[i].state = "未通过";
             }
           }
-          this.tableData = response.data.data.content;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+          this.tableData=response.data.data.content;
+        },
+        ({type,info})=>{
+
+        }
+      )
     },
+    //   findByName() {
+    //   this.axios
+    //     .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
+    //       params: {
+    //         enterpriseName: this.name,
+    //         state: "",
+    //         page: this.pageIndex,
+    //         size: this.pageSize
+    //       }
+    //     })
+    //     .then(response => {
+    //       this.totalNub = response.data.data.totalElements;
+    //       console.log(response);
+    //       for (let i = 0; i < response.data.data.content.length; i++) {
+    //         // console.log(response.data.data.content.length)
+    //         response.data.data.content[
+    //           i
+    //         ].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+    //         if (response.data.data.content[i].state === 0) {
+    //           response.data.data.content[i].state = "待审核";
+    //         }
+    //         if (response.data.data.content[i].state === 1) {
+    //           response.data.data.content[i].state = "正常";
+    //         }
+    //         if (response.data.data.content[i].state === 2) {
+    //           response.data.data.content[i].state = "禁用";
+    //         }
+    //         if (response.data.data.content[i].state === 4) {
+    //           response.data.data.content[i].state = "审核中";
+    //         }
+    //         if (response.data.data.content[i].state === 10) {
+    //           response.data.data.content[i].state = "未通过";
+    //         }
+    //       }
+    //       this.tableData = response.data.data.content;
+    //     })
+    //     .catch(function(error) {
+    //       console.log(error);
+    //     });
+    // },
+
     startUseing() {
-      let qs = require("qs");
-      let data = qs.stringify({
-        enterpriseIds: this.choice
-        // state: 0
-      });
-      this.axios
-        .post(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
-        .then(response => {
-          alert("启用成功");
-          // this.message("启用成功")
-          this.load();
-          console.log("请求参数：" + data);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      this.Axios({
+        params:Object.assign({enterpriseIds:this.choice}),
+        type: "post",
+        url: "/enterprise/enableEnterprises/"
+      },
+        this
+      ).then(
+        response=>{
+          if(response.data.code===200){
+            alert("启用成功")
+            alert(response.data.code)
+          }else {
+            alert(response.data.msg)
+          }
+          console.log(response)
+          // this.load()
+        },
+        ({type,info})=>{
+          // error && error(type, info)
+          // console.log(this.choice)
+        }
+      )
     },
+
+    // startUseing() {
+    //   let qs = require("qs");
+    //   let data = qs.stringify({
+    //     enterpriseIds: this.choice
+    //     // state: 0
+    //   });
+    //   this.axios
+    //     .post(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
+    //     .then(response => {
+    //       alert("启用成功");
+    //       // this.message("启用成功")
+    //       this.load();
+    //       console.log("请求参数：" + data);
+    //     })
+    //     .catch(function(error) {
+    //       console.log(error);
+    //     });
+    // },
     forbidden() {
       let qs = require("qs");
       let data = qs.stringify({
