@@ -3,7 +3,6 @@
     <div class="add-case">
       <div class="topbtn">
         <el-button size="small" @click="tback">返回</el-button>
-        <el-button size="small" @click="stopEmployee">停用</el-button>
         <el-button size="small" @click="updateEmployee">保存</el-button>
       </div>
       <div class="botton">
@@ -32,8 +31,8 @@
               </li>
               <li>
                 <label for="">组织单位：</label>
-                <el-select v-model="persnneladd.organizationName" placeholder="请选择" size="small" style="width:70%">
-                  <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                <el-select v-model="persnneladd.organizeCode" placeholder="请选择" size="small" style="width:70%">
+                  <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.code">
                   </el-option>
                 </el-select>
               </li>
@@ -172,28 +171,29 @@
           gmtCreate:"",
           gmtModified:""
         },
-        options: [
-          {
-            value: "四川长虹电器有限公司",
-            label: "四川长虹电器有限公司"
-          },
-          {
-            value: "四川长虹智能制造有限公司",
-            label: "四川长虹智能制造有限公司"
-          },
-          {
-            value: "长虹网络科技有限公司",
-            label: "长虹网络科技有限公司"
-          },
-          {
-            value: "长虹电子系统有限公司",
-            label: "长虹电子系统有限公司"
-          }
-        ],
+        options: [],
         role: []
       };
     },
     methods: {
+      organize(){
+        this.axios
+          .get(this.global.apiSrc+"/organize/allOrganize")
+          .then(response => {
+            this.options = response.data.data;
+            console.log(response.data.data)
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      codeToName(organizeCode){
+        for (let i =0;i<this.options.length;i++){
+          if(this.options[i].code === organizeCode){
+            this.persnneladd.organizationName = this.options[i].name;
+          }
+        }
+      },
       Personnel() {
         this.$router.push({
           path: "/Personnel"
@@ -228,24 +228,24 @@
           });
       },
       selectOne(employeeId,userName){
+        // console.log(employeeId);
         this.axios
           .get(this.global.apiSrc+"/employee/selectOne",{params:{employeeId:employeeId}})
           .then(response => {
             this.persnneladd = response.data.data;
-            this.persnneladd.birthday=response.data.data.birthday.split("T")[0];
-            this.persnneladd.entryTime=response.data.data.entryTime.split("T")[0];
             this.persnneladd.gender = response.data.data.gender.toString();
             this.persnneladd.userName= userName;
             if (this.persnneladd.marital!=null){
               this.persnneladd.marital = response.data.data.marital.toString();
             }
-            console.log(response.data.data);
+            // console.log(response.data.data.entryTime);
           })
           .catch(function(error) {
             console.log(error);
           });
       },
       updateEmployee(){
+        this.codeToName(this.persnneladd.organizeCode);
         this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
         let qs = require("qs");
@@ -258,7 +258,7 @@
           phone: this.persnneladd.phone,
           position: this.persnneladd.position,
           organizeCode: this.persnneladd.organizeCode,
-          organizeName: this.persnneladd.organizationName,
+          organizationName: this.persnneladd.organizationName,
           enterpriseId: this.persnneladd.enterpriseId,
           workType: this.persnneladd.workType,
           entryTime: this.persnneladd.entryTime,
@@ -276,7 +276,6 @@
           qualificationInfo: this.persnneladd.qualificationInfo,
           roleId: this.persnneladd.roleId
         });
-        // console.log(data);
         this.axios
           .post(this.global.apiSrc+"/employee/update",data)
           .then(response => {
@@ -310,9 +309,8 @@
       }
     },
     created() {
+      this.organize();
       let aaa=this.$store.state.personnel.imId;
-      console.log(aaa);
-      // console.log(aaa.employeeNo);
       this.selectOne(aaa.id,aaa.userName);
       this.axios
         .get(this.global.apiSrc+"/role/listAllRole")
@@ -333,7 +331,7 @@
   @Danger: #f56c6c;
   @Info: #dde2eb;
   .persnnel-add {
-    padding-left: 180px;
+    // padding-left: 180px;
     .add-case {
       padding: 10px;
       .topbtn {
@@ -357,7 +355,7 @@
           overflow: hidden;
           .title {
             display: inline-block;
-            width: 110px;
+            // width: 110px;
             position: absolute;
             text-align: center;
             top: 0%;
@@ -404,7 +402,7 @@
           padding-left: 20px;
           .title {
             display: inline-block;
-            width: 110px;
+            // width: 110px;
             text-align: center;
             position: absolute;
             top: 48%;

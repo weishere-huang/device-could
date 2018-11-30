@@ -5,84 +5,38 @@
         <div class="classify">
           <ul>
             <h5><i class='iconfont icon-leimupinleifenleileibie'></i>&nbsp;所有分类</h5>
-            <li>
-              ├生产设备
-            </li>
-            <li>
-              ├非生产设备
-            </li>
-            <li>
-              ├辅助生产设备
-            </li>
-            <li>
-              ├检验检测设备
-            </li>
-            <li>
-              ├其他设备
-            </li>
+            <li>├生产设备</li>
+            <li>├非生产设备</li>
+            <li>├辅助生产设备</li>
+            <li>├检验检测设备</li>
+            <li>├其他设备</li>
           </ul>
         </div>
         <div class="category">
-          <ul>
-            <h5><i class='iconfont icon-shuqian'></i>&nbsp;所有类别</h5>
-            <li>
-              ├炉类
-            </li>
-            <li>
-              ├塔类
-            </li>
-            <li>
-              ├反应器类
-            </li>
-            <li>
-              ├动力类
-            </li>
-            <li>
-              ├储罐及容器类
-            </li>
-            <li>
-              ├冷换设备类
-            </li>
-            <li>
-              ├通用机械类
-            </li>
-            <li>
-              ├化工机械类
-            </li>
-            <li>
-              ├起重运输类
-            </li>
-            <ul class="transitlist">
-              <li>
-                ├起重设备
-              </li>
-              <li>
-                ├厂内机动车
-              </li>
-            </ul>
-            <li>
-              ├其他设备类
-            </li>
-          </ul>
+          <h5><i class='iconfont icon-shuqian'></i>&nbsp;所有类别</h5>
+          <el-tree
+            :data="organiza"
+            default-expand-all
+            :props="defaultProps"
+            @node-click="handleNodeClick"
+            :expand-on-click-node="false"
+          >
+            <span
+              class="custom-tree-node"
+              slot-scope="{ node, data }"
+            >
+              <span class="listcontent">{{ data.categoryName}}</span>
+            </span>
+          </el-tree>
         </div>
         <div class="tone">
           <h5><i class='iconfont icon-shebeiguanli'></i>&nbsp;设备状况</h5>
           <ul>
-            <li>
-              ├使用
-            </li>
-            <li style="color:#FF990E">
-              ├闲置
-            </li>
-            <li style="color:#00990C">
-              ├封存
-            </li>
-            <li style="color:#0C99FD">
-              ├租赁
-            </li>
-            <li style="color:#993202">
-              ├报废
-            </li>
+            <li>├使用</li>
+            <li style="color:#FF990E">├闲置</li>
+            <li style="color:#00990C">├封存</li>
+            <li style="color:#0C99FD">├租赁</li>
+            <li style="color:#993202">├报废</li>
           </ul>
         </div>
       </div>
@@ -90,68 +44,87 @@
     <div class="content">
       <div class="search">
         <el-button size="small" @click="toAdd">添加</el-button>
-        <!--<el-button size="small" @click="sort()"> 复制</el-button>-->
-        <el-button size="small" @click="redactShow">编辑</el-button>
+        <el-button size="small" @click="editShow">修改</el-button>
+        <!--<el-button size="small" > 复制</el-button>-->
         <el-button size="small" @click="edelete">删除</el-button>
         <div class="searchright">
           <span>关键字：</span>
 
-          <el-input type="search" size="small" placeholder="根据设备编号，名称，位号" v-model="keyWord"></el-input>
-          <el-button size="small" @click="findByKeyWord">搜索</el-button>
-          <span style="color:#409eff;font-size:12px;cursor: pointer;" @click="adsearch">高级搜索</span>
+          <el-input
+            type="search"
+            size="small"
+            placeholder="根据设备编号，名称，位号"
+            v-model="keyWord"
+          ></el-input>
+          <el-button
+            size="small"
+            @click="findByKeyWord"
+          >搜索</el-button>
+          <span
+            style="color:#409eff;font-size:12px;cursor: pointer;"
+            @click="adsearch"
+          >高级搜索</span>
 
         </div>
       </div>
       <div class="tablelist">
         <div>
-          <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange" :row-dblclick="redactShow"></v-table>
-          <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="this.tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          <v-table
+            is-vertical-resize
+            is-horizontal-resize
+            :vertical-resize-offset='100'
+            column-width-drag
+            :multiple-sort="false"
+            style="width:100%;min-height:400px;"
+            :columns="columns"
+            :table-data="tableData"
+            row-hover-color="#eee"
+            row-click-color="#edf7ff"
+            :select-all="selectALL"
+            :select-group-change="selectGroupChange"
+            :row-dblclick="redactShow"
+          ></v-table>
+          <div
+            class="mt20 mb20 bold"
+            style="text-align:center;margin-top:30px"
+          >
+            <v-pagination
+              @page-change="pageChange"
+              @page-size-change="pageSizeChange"
+              :total="totalElements"
+              :page-size="pageSize"
+              :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
+            ></v-pagination>
           </div>
         </div>
       </div>
     </div>
-    <advanced class="adsearch" v-on:isHide="isHide" v-on:advanceValue="advanceValue"></advanced>
+    <advanced
+      class="adsearch"
+      v-on:isHide="isHide"
+      v-on:advanceValue="advanceValue"
+    ></advanced>
   </div>
 </template>
 <script>
-import advanced from './Advanced'
+import advanced from "./Advanced";
 export default {
   name: "equipment",
   data() {
     return {
+      organiza: "",
+      defaultProps: "",
       keyWord: "",
       deviceId: "",
       pageIndex: 1,
-      pageSize: 9,
+      pageSize: 10,
       ids: "",
-      tableData: [
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        },
-        {
-          name: "111",
-          tel: "222",
-          address: "3333",
-          hobby: "4444"
-        }
-        // {
-        //   name:"111",
-        //   tel:"222",
-        //   address:"3333",
-        //   hobby:"4444"
-        // },
-        // {
-        //   name:"111",
-        //   tel:"222",
-        //   address:"3333",
-        //   hobby:"4444"
-        // }
-      ],
+      edbt: "",
+      tableData: [{
+        deviceNo:"",
+      }],
       tableDate: [],
+      totalElements:"",
       columns: [
         {
           width: 40,
@@ -236,8 +209,11 @@ export default {
     };
   },
   methods: {
-    advanceValue(params){
-      this.tableData=params;
+    handleNodeClick(data) {
+      console.log(data);
+    },
+    advanceValue(params) {
+      this.tableData = params;
     },
     adsearch() {
       $(".adsearch")[0].style.right = 0;
@@ -248,10 +224,17 @@ export default {
     toAdd() {
       this.$router.push("/EquipmentAdd");
     },
+    editShow() {
+      if (this.ids.length == 1) {
+        this.$router.push("/Redact/" + this.edbt.id);
+        this.$store.commit("equipmentRedact", this.edbt);
+      } else {
+        alert("只能选择选择一行数据!!!");
+      }
+    },
     redactShow(rowIndex, rowData, column) {
-      this.$router.push("/Redact");
+      this.$router.push("/Redact/" + rowData.id);
       this.$store.commit("equipmentRedact", rowData);
-      console.log("1111");
       console.log(rowData);
     },
     selectGroupChange(selection) {
@@ -261,9 +244,10 @@ export default {
         if (this.ids != "") {
           this.ids += "," + selection[i].id;
         } else {
-          this.ids += selection[i].id
+          this.ids += selection[i].id;
         }
       }
+      this.edbt = selection;
       console.log(this.ids);
     },
     selectALL(selection) {
@@ -282,13 +266,14 @@ export default {
       this.pageIndex = pageIndex;
       this.getTableData();
       console.log(pageIndex);
+      console.log(this.pageSize);
       this.findall();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
-      this.findall();
+      // this.findall();
     },
     sortChange(params) {
       if (params.height.length > 0) {
@@ -318,56 +303,25 @@ export default {
         // .get("api/device/all", data)
         .then(result => {
           this.tableData = result.data.data.content;
-          for(let i = 0 ;i<this.tableData.length;i++){
-            if(this.tableData[i].deviceState === 1){
-              this.tableData[i].deviceState = "在用"
-            };
-            if(this.tableData[i].deviceState === 2){
-              this.tableData[i].deviceState = "出租"
-            };
-            if(this.tableData[i].deviceState === 3){
-              this.tableData[i].deviceState = "停用"
-            };
-            if(this.tableData[i].deviceState === 4){
-              this.tableData[i].deviceState = "封存"
-            };
-            if(this.tableData[i].deviceState === 5){
-              this.tableData[i].deviceState = "报废"
-            };
+          for (let i = 0; i < this.tableData.length; i++) {
+            if (this.tableData[i].deviceState === 1) {
+              this.tableData[i].deviceState = "在用";
+            }
+            if (this.tableData[i].deviceState === 2) {
+              this.tableData[i].deviceState = "出租";
+            }
+            if (this.tableData[i].deviceState === 3) {
+              this.tableData[i].deviceState = "停用";
+            }
+            if (this.tableData[i].deviceState === 4) {
+              this.tableData[i].deviceState = "封存";
+            }
+            if (this.tableData[i].deviceState === 5) {
+              this.tableData[i].deviceState = "报废";
+            }
           }
           console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    //通过
-    selectquery() {
-      //高级搜索
-      let qs = require("qs");
-      let data = qs.stringify({
-        // String deviceName,
-        deviceName: "IBM存储",
-        // Integer locationNo,
-        locationNo: "",
-        // String workerName,
-        workerName: "",
-        // String manufacturer,
-        manufacturer: "",
-        // String deviceSates,
-        deviceSates: "",
-        // Integer deviceCategory
-        deviceCategory: "",
-        page: this.pageIndex,
-        size: this.pageSize
-      });
-      this.axios
-        //axios
-        //.get("api/device/select", data)
-        .get(this.global.apiSrc + "/device/select", data)
-        .then(result => {
-          alert("selectquery");
-          console.log(result.data);
+          this.totalElements=result.data.data.totalElements
         })
         .catch(err => {
           console.log(err);
@@ -383,7 +337,7 @@ export default {
         .get(this.global.apiSrc + "/device/findDeviceState")
         .then(result => {
           let arr = new Array();
-          arr= result.data.data;
+          arr = result.data.data;
           console.log(arr);
           console.log(result.data);
         })
@@ -404,6 +358,23 @@ export default {
         })
         .then(result => {
           this.tableData = result.data.data.content;
+          for (let i = 0; i < this.tableData.length; i++) {
+            if (this.tableData[i].deviceState === 1) {
+              this.tableData[i].deviceState = "在用";
+            }
+            if (this.tableData[i].deviceState === 2) {
+              this.tableData[i].deviceState = "出租";
+            }
+            if (this.tableData[i].deviceState === 3) {
+              this.tableData[i].deviceState = "停用";
+            }
+            if (this.tableData[i].deviceState === 4) {
+              this.tableData[i].deviceState = "封存";
+            }
+            if (this.tableData[i].deviceState === 5) {
+              this.tableData[i].deviceState = "报废";
+            }
+          }
           console.log(result.data.data.content);
         })
         .catch(err => {
@@ -455,7 +426,7 @@ export default {
     edelete() {
       let qs = require("qs");
       let data = qs.stringify({
-        deviceIds:this.ids
+        deviceIds: this.ids
       });
       this.axios
         .post(this.global.apiSrc + "/device/delete", data)
@@ -468,22 +439,46 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    }
+    },
+    filterArray(data, parent) {
+      let vm = this;
+      var tree = [];
+      var temp;
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].categoryParentNo == parent) {
+          var obj = data[i];
+          temp = this.filterArray(data, data[i].categoryNo);
+          if (temp.length > 0) {
+            obj.children = temp;
+          }
+          tree.push(obj);
+        }
+      }
+      return tree;
+    },
+    findAlldeviceClassify(){
+      let qs = require("qs");
+      let data = qs.stringify({
+      });
+      this.axios
+        .get(this.global.apiSrc + "/deviceCategory/all", data)
+        .then(result => {
+          this.organiza= this.filterArray(result.data.data,0);
+          console.log("查找全部设备类别");
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
   },
   created() {
-    //this.detail(1);
-    //this.findDeviceState();
-    //this.selectquery();
     this.findall();
     this.findDeviceState();
-    //this.all();
-    //this.add1();
-    //this.update();
-    //this.findByKeyWord();
-    //this.findByOrganizeCode();
+    this.findAlldeviceClassify();
   },
   components: {
-    advanced,
+    advanced
   }
 };
 </script>

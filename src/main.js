@@ -7,21 +7,28 @@ import store from './store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
+import Axios from './AxiosRequest';
 import vuex from 'vuex'
+import $ from 'jquery'
 import 'vue-easytable/libs/themes-base/index.css';
 import md5 from 'js-md5/src/md5.js'
 import CryptoJS from 'crypto-js'
+import 'normalize.css'
+import './assets/less/layout.less'
 import {
   VTable,
   VPagination
 } from 'vue-easytable'
 import global from './components/global/Global'
+import base from "./base.js";
+
+
+Vue.use(base)
 // import {
 //   Message,
 //   MessageBox
 // } from 'element-ui'
 Vue.prototype.global = global;
-Vue.prototype.axios = axios
 // Vue.pototyype.message = function (msg) {
 //   this.$message('这是一条消息提示')
 // }
@@ -30,37 +37,39 @@ Vue.component(VTable.name, VTable)
 Vue.component(VPagination.name, VPagination)
 Vue.use(vuex);
 Vue.config.productionTip = false
-Vue.prototype.axios = axios
+Vue.prototype.axios = axios;
+Vue.prototype.Axios = Axios;
 axios.defaults.withCredentials = true;
+window.EventBus = new Vue();
 
 let AUTH_TOKEN = (function () {
   return sessionStorage.getItem("token");
 })();
 var instance = axios.create({});
-instance.defaults.headers.common["token"] = AUTH_TOKEN;
-instance.interceptors.request.use(function (config) {
-  console.log(config)
-  let url = config.url;
-  if (url.indexOf("login") > -1) {
-    sessionStorage.setItem('token', "");
-    config.headers.token = "";
-  }
-  if (url.indexOf("user") > -1 && url.indexOf("login") < 0) {
-    config.headers.token = sessionStorage.getItem("token");
-  }
-  return config;
-}, function (err) {
-  return Promise.reject(err);
-});
-instance.interceptors.response.use(function (res) {
-  if (res.headers.token) {
-    sessionStorage.setItem('token', res.headers.token);
-  }
-  return res;
-}, function (err) {
-  return err;
-});
-export default instance;
+instance.defaults.headers.common["token"] = sessionStorage.getItem("token");
+// instance.interceptors.request.use(function (config) {
+//   console.log(config)
+//   let url = config.url;
+//   if (url.indexOf("login") > -1) {
+//     sessionStorage.setItem('token', "");
+//     config.headers.token = "";
+//   }
+//   if (url.indexOf("user") > -1 && url.indexOf("login") < 0) {
+//     config.headers.token = sessionStorage.getItem("token");
+//   }
+//   return config;
+// }, function (err) {
+//   return Promise.reject(err);
+// });
+// instance.interceptors.response.use(function (res) {
+//   if (res.headers.token) {
+//     sessionStorage.setItem('token', res.headers.token);
+//   }
+//   return res;
+// }, function (err) {
+//   return err;
+// });
+// export default instance;
 
 new Vue({
   el: '#app',
@@ -72,5 +81,4 @@ new Vue({
   ElementUI,
   axios,
   store
-
 })

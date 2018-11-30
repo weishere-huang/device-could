@@ -1,59 +1,111 @@
 <template>
-    <div class="add" v-show="show">
-        <div class="addcase">
-            <ul>
-                <li>
-                    <label for="">名称：</label>
-                    <el-input type="text" size="small"></el-input>
-                </li>
-                <li>
-                    <label for="">类型：</label>
-                    <el-select v-model="type" placeholder="请选择" size="small" style="width:70%">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                </li>
-                <li>
-                    <label style="display:inline-block;height:60px;vertical-align:top;">备注：</label>
-                    <textarea type="textarea" style="width:70%;height:60px;"></textarea>
+  <div
+    class="add"
+    v-show="show"
+  >
+    <div class="addcase">
+      <ul>
+        <li>
+          <label for="">名称：</label>
+          <el-input type="text" size="small" v-model="orgname"></el-input>
+        </li>
+        <li>
+          <label for="">类型：</label>
+          <el-select style="width:70%" v-model="value" placeholder="请选择">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </li>
+        <li>
+          <label style="display:inline-block;height:60px;vertical-align:top;">备注：</label>
+          <textarea type="textarea" style="width:70%;height:60px;" v-model="orgInfo"></textarea>
 
-                </li>
-                <li style="text-align:center;">
-                    <el-button size="small" @click="add1">取消</el-button>
-                    <el-button size="small">保存</el-button>
-                </li>
-            </ul>
-        </div>
-
+        </li>
+        <li style="text-align:center;">
+          <el-button
+            size="small"
+            @click="addHide"
+          >取消</el-button>
+          <el-button size="small" @click="add">保存</el-button>
+        </li>
+      </ul>
     </div>
+
+  </div>
 </template>
 <script>
 export default {
   name: "",
-
+  props:["nodedata"],
   data() {
     return {
       show: true,
       type: "",
+      pcode:this.nodedata,
       options: [
-        {
-          value: "1",
-          label: "1"
-        },
-        {
-          value: "2",
-          label: "2"
-        },
-        {
-          value: "3",
-          label: "3"
-        }
-      ]
+      {
+        value: 1,
+        label: "公司"
+      },
+      {
+        value: 2,
+        label: "工厂"
+      },
+      {
+        value: 3,
+        label: "部门"
+      },
+      {
+        value: 4,
+        label: "车间"
+      }
+    ],
+      value: "",
+      orgname:"",
+      orgInfo:""
+
     };
   },
   methods: {
-    add1() {
-      this.show = !this.show;
-    }
+    append(data) {
+      const newChild = { id: id++, label: "text", children: [] };
+      if (!data.children) {
+        this.$set(data, "children", []);
+      }
+      data.children.push(newChild);
+    },
+    handleChange(value) {
+      console.log(value);
+    },
+    addHide() {
+      this.$emit("addHide",false)
+    },
+    add() {
+      //添加组织机构
+      let qs = require("qs");
+      let data = qs.stringify({
+        parentCode: this.pcode.code,
+        name: this.orgname,
+        organizeType: this.value,
+        organizeInfo: this.orgInfo
+      });
+      console.log(this.pcode);
+      this.axios
+        .post(this.global.apiSrc + "/organize/add", data)
+        .then(result => {
+          if(result.data.code === 200){
+            alert("添加成功");
+            console.log(result.data);
+          }else{
+            alert("添加失败");
+            console.log(result.data);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    },
   }
 };
 </script>

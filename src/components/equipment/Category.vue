@@ -1,19 +1,19 @@
 <template>
   <div class="category">
     <div class="case">
-      <div style="float:left">
+      <div style="float:left;width:500px;">
         <h5>类别名称</h5>
-        <el-tree :data="organize" :props="defaultProps" node-key="id" default-expand-all :expand-on-click-node="false">
+        <el-tree :data="organize" :props="defaultProps" @node-click="handleNodeClick" node-key="id" default-expand-all :expand-on-click-node="false">
           <span class="custom-tree-node" slot-scope="{ node, data }">
-            <span>{{ node.label }}</span>
+            <span>{{ data.categoryName}}</span>
             <span class="addCase">
-              <el-button type="text" size="mini" @click="() => append(data)">
+              <el-button type="text" size="mini" @click="dialogVisible=true">
                 添加
               </el-button>
-              <el-button type="text" size="mini">
+              <el-button type="text" size="mini" >
                 修改
               </el-button>
-              <el-button type="text" size="mini" @click="() => remove(node, data)">
+              <el-button type="text" size="mini" @click="deleteCategory">
                 删除
               </el-button>
             </span>
@@ -24,6 +24,24 @@
         <h5>备注</h5>
         <el-form ref="form" label-width="90px">
           <el-form-item label="类别名称：">
+            <el-input v-model="nodedata.categoryName" size="mini"></el-input>
+          </el-form-item>
+          <el-form-item label="备注：">
+            <el-input type="textarea" v-model="nodedata.categoryMsg"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button size="mini" @click="updateCategory">保存</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </div>
+    <el-dialog
+      title="添加"
+      :visible.sync="dialogVisible"
+      width="30%"
+      >
+      <el-form ref="form" label-width="90px">
+          <el-form-item label="类别名称：">
             <el-input v-model="form.name" size="mini"></el-input>
           </el-form-item>
           <el-form-item label="备注：">
@@ -33,65 +51,15 @@
             <el-button size="mini">保存</el-button>
           </el-form-item>
         </el-form>
-      </div>
-    </div>
+    </el-dialog>
   </div>
 </template>
 <script>
 let id = 1000;
 export default {
   data() {
-    const data = [
-      {
-        id: 1,
-        label: "一级 1",
-        children: [
-          {
-            id: 4,
-            label: "二级 1-1",
-            children: [
-              {
-                id: 9,
-                label: "三级 1-1-1"
-              },
-              {
-                id: 10,
-                label: "三级 1-1-2"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        id: 2,
-        label: "一级 2",
-        children: [
-          {
-            id: 5,
-            label: "二级 2-1"
-          },
-          {
-            id: 6,
-            label: "二级 2-2"
-          }
-        ]
-      },
-      {
-        id: 3,
-        label: "一级 3",
-        children: [
-          {
-            id: 7,
-            label: "二级 3-1"
-          },
-          {
-            id: 8,
-            label: "二级 3-2"
-          }
-        ]
-      }
-    ];
     return {
+      dialogVisible:false,
       organize: "",
       // data5: this.organize,
       form: {
@@ -101,20 +69,15 @@ export default {
       defaultProps: {
         children: "children",
         label: "name"
-      }
+      },
+      nodedata:""
     };
   },
   methods: {
-    // renderContent(h, { node, data, store }) {
-    //     return (
-    //       <span class="custom-tree-node">
-    //         <span>{node.label}</span>
-    //         <span>
-    //           <el-button size="mini" type="text" on-click={ () => this.append(data) }>Append</el-button>
-    //           <el-button size="mini" type="text" on-click={ () => this.remove(node, data) }>Delete</el-button>
-    //         </span>
-    //       </span>);
-    //   },
+    handleNodeClick(data) {
+      console.log(data);
+      this.nodedata = data;
+    },
     append(data) {
       const newChild = { id: id++, label: "testtest", children: [] };
       if (!data.children) {
@@ -122,34 +85,20 @@ export default {
       }
       data.children.push(newChild);
     },
-
     remove(node, data) {
       const parent = node.parent;
       const children = parent.data.children || parent.data;
       const index = children.findIndex(d => d.id === data.id);
       children.splice(index, 1);
     },
-    allOrganize() {
-      this.axios
-        //axios
-        .get(this.global.apiSrc+"/organize/allOrganize/321")
-        // .get("api/organize/allOrganize/321")
-        .then(result => {
-          this.organize = this.filterArray(result.data.data, 0);
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(this.userName);
-        });
-    },
     filterArray(data, parent) {
       let vm = this;
       var tree = [];
       var temp;
       for (var i = 0; i < data.length; i++) {
-        if (data[i].parentCode == parent) {
+        if (data[i].categoryParentNo == parent) {
           var obj = data[i];
-          temp = this.filterArray(data, data[i].code);
+          temp = this.filterArray(data, data[i].categoryNo);
           if (temp.length > 0) {
             obj.children = temp;
           }
@@ -165,13 +114,66 @@ export default {
       this.axios
         .get(this.global.apiSrc + "/deviceCategory/all", data)
         .then(result => {
-          console.log("findAlldeviceClassify");
+          this.organize= this.filterArray(result.data.data,0);
+          console.log(this.organize);
           console.log(result.data);
         })
         .catch(err => {
           console.log(err);
         });
     },
+    addCategory(){
+      //添加设备类别
+      let qs = require("qs");
+      let data = qs.stringify({
+        categoryParentName:"测试类别跟节点1",
+        categoryParentNo:"101",
+        categoryName:"添加测试节点",
+        categoryMsg:"添加测试2.0"
+      });
+      this.axios
+        .post(this.global.apiSrc + "/deviceCategory/add", data)
+        .then(result => {
+          console.log("addCategory");
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    updateCategory(){
+      //修改设备类别
+      let qs = require("qs");
+      let data = qs.stringify({
+        categoryId:this.nodedata.id,
+        categoryName:this.nodedata.categoryName,
+        categoryMsg:this.nodedata.categoryMsg
+      });
+      this.axios
+        .post(this.global.apiSrc + "/deviceCategory/update", data)
+        .then(result => {
+          console.log("修改设备类别");
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    deleteCategory(){
+      //删除设备类别
+      let qs = require("qs");
+      let data = qs.stringify({
+        categoryId:this.nodedata.id,
+      });
+      this.axios
+        .post(this.global.apiSrc + "/deviceCategory/delete/"+this.nodedata.id)
+        .then(result => {
+          console.log("删除设备类别");
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });}
   },
   created() {
     this.findAlldeviceClassify();
@@ -186,9 +188,9 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .category {
-  padding-left: 180px;
+  // padding-left: 180px;
   .case {
-    width: 622px;
+    width: 900px;
     padding: 10px;
     border: @border;
     overflow: hidden;
@@ -201,7 +203,7 @@ export default {
       border-bottom: @border;
     }
     .el-tree {
-      width: 300px;
+      width: 100%;
       padding: 10px;
       .addCase {
         float: right;

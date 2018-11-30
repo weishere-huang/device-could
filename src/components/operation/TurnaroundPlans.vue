@@ -3,8 +3,9 @@
     <div class="userCase">
       <div class="top">
         <el-button size="small" @click="toPansAdd">添加</el-button>
-        <el-button size="small">审核</el-button>
-        <el-button size="small"@click="stopDiscontinuation">停止</el-button>
+        <el-button size="small"  @click="outerVisible = true">审核</el-button>
+
+        <el-button size="small" @click="stopDiscontinuation">停止</el-button>
         <el-button size="small" @click="deleteMaintenance">删除</el-button>
       </div>
       <div class="bottom">
@@ -16,48 +17,36 @@
         </div>
       </div>
     </div>
+    <el-dialog title="审核" :visible.sync="outerVisible">
+      <audit></audit>
+      <el-dialog title="人员添加" :visible.sync="innerVisible" append-to-body>
+        <personnel></personnel>
+      </el-dialog>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="outerVisible = false" size="mini">取 消</el-button>
+        <el-button type="primary" size="mini">提交</el-button>
+        <el-button type="primary" @click="innerVisible = true" size="mini">添加下一级审批人</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
+  import audit from './turnaroundPlans/AuditTurnaround'
+  import personnel from './turnaroundPlans/PersonnelTurnaround'
   export default {
     data() {
       return {
-        pageNumber:0,
+        outerVisible: false,
+        innerVisible: false,
+        pageNumber: 0,
         pageIndex: 1,
         pageSize: 10,
-        userId:3,
-        maintenanceIds:"",
+        maintenanceIds: "",
         //检修分类
-        planType:[],
+        planType: [],
         //检修级别
-        planLevel:[],
-        tableData: [
-          {
-            id:"",
-            organizeCode:"",
-            organizeName:"",
-            planName:"",
-            planCode:"",
-            maintenanceClassify:"",
-            maintenanceLevel:"",
-            maintenanceType:"",
-            planType:"",
-            startTime:"",
-            endTime:"",
-            executeTime:"",
-            frequency:"",
-            frequencyType:"",
-            maintenanceCc:"",
-            reminding:"",
-            remindNum:"",
-            isReceipt:"",
-            createTime:"",
-            editorTime:"",
-            creatorId:"",
-            creator:"",
-            stat:""
-          }
-        ],
+        planLevel: [],
+        tableData: [],
         tableDate: [],
         columns: [
           {
@@ -69,7 +58,7 @@
           {
             field: "planName",
             title: "计划名称",
-            width: 80,
+            width: 150,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -78,7 +67,7 @@
           {
             field: "state",
             title: "当前状态",
-            width: 80,
+            width: 60,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -86,7 +75,7 @@
           {
             field: "maintenanceType",
             title: "检修分类",
-            width: 80,
+            width: 60,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -94,7 +83,7 @@
           {
             field: "maintenanceLevel",
             title: "检修级别",
-            width: 100,
+            width: 60,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -102,7 +91,7 @@
           {
             field: "startTime",
             title: "开始日期",
-            width: 100,
+            width: 70,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -110,7 +99,7 @@
           {
             field: "endTime",
             title: "结束日期",
-            width: 100,
+            width: 70,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -126,7 +115,7 @@
           {
             field: "frequencyType",
             title: "计划频次",
-            width: 100,
+            width: 60,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -142,7 +131,7 @@
           {
             field: "creator",
             title: "计划制定人",
-            width: 80,
+            width: 60,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -165,26 +154,25 @@
       },
       selectGroupChange(selection) {
         this.maintenanceIds = "";
-        for(let i in selection){
-          if(this.maintenanceIds === ""){
+        for (let i in selection) {
+          if (this.maintenanceIds === "") {
             this.maintenanceIds = selection[i].id;
-          }else{
-            this.maintenanceIds += ","+selection[i].id;
+          } else {
+            this.maintenanceIds += "," + selection[i].id;
           }
         }
       },
       selectALL(selection) {
         this.maintenanceIds = "";
-        for(let i in selection){
-          if(this.maintenanceIds === ""){
+        for (let i in selection) {
+          if (this.maintenanceIds === "") {
             this.maintenanceIds = selection[i].id;
-          }else{
-            this.maintenanceIds += ","+selection[i].id;
+          } else {
+            this.maintenanceIds += "," + selection[i].id;
           }
         }
       },
       selectChange(selection, rowData) {
-
         console.log("select-change", selection, rowData);
       },
       getTableData() {
@@ -220,84 +208,90 @@
       load(){
         this.axios
           .get(this.global.apiSrc+"/mplan/allPlan",{params:{
-              userId:this.userId,
               page:this.pageIndex,
               size:this.pageSize
             }})
           .then(response =>{
-            console.log(response);
-            this.tableData = response.data.data.content;
-            this.pageNumber = response.data.data.content.length;
-            for(let i in this.tableData){
-              if(this.tableData[i].state === 0 ){
-                this.tableData[i].state ="待审核";
-              }
-              if(this.tableData[i].state === 1 ){
-                this.tableData[i].state ="已通过"
-              }
-              if(this.tableData[i].state === 2 ){
-                this.tableData[i].state ="已禁用"
-              }
-              if(this.tableData[i].state === 3 ){
-                this.tableData[i].state ="已删除"
-              }
-              if(this.tableData[i].state === 4 ){
-                this.tableData[i].state ="审核中"
-              }
-              if(this.tableData[i].state === 5 ){
-                this.tableData[i].state ="停用"
-              }
-              if(this.tableData[i].maintenanceType === 0){
-                this.tableData[i].maintenanceType="维修"
-              }
-              if(this.tableData[i].maintenanceType === 1){
-                this.tableData[i].maintenanceType="保养"
-              }
-              if(this.tableData[i].frequencyType === 0){
-                this.tableData[i].frequencyType = "天";
-              }
-              if(this.tableData[i].frequencyType === 1){
-                this.tableData[i].frequencyType = "周"
-              }
-              if(this.tableData[i].frequencyType === 2){
-                this.tableData[i].frequencyType = "月"
-              }
-              this.tableData[i].endTime=this.tableData[i].endTime.replace(/T/g, " ");
-              this.tableData[i].executeTime=this.tableData[i].executeTime.replace(/T/g, " ");
-              this.tableData[i].startTime=this.tableData[i].startTime.replace(/T/g, " ");
-              for(let j in this.planLevel ){
-                if(this.tableData[i].maintenanceLevel === this.planLevel[j].id) {
-                  this.tableData[i].maintenanceLevel = this.planLevel[j].levelDesc;
-                }
-              }
-            }
-            console.log(response.data.data);
-            this.pageNumber = this.tableData.length;
+           this.loadValue(response.data.data.content);
           })
           .catch(function(error) {
             console.log(error);
           });
       },
-      listMaintenanceLevel(){
+
+      loadValue(value){
+        let arr= new Array();
+        for (let i = 0;i<value.length;i++){
+          if (value[i].maintenanceType === 0){
+            arr[arr.length] = value[i];
+          }
+        }
+        this.tableData = arr;
+        for (let i = 0;i<value.length;i++){
+          if (this.tableData[i].state === 0) {
+            this.tableData[i].state = "待审核";
+          }
+          if (this.tableData[i].state === 1) {
+            this.tableData[i].state = "已通过";
+          }
+          if (this.tableData[i].state === 2) {
+            this.tableData[i].state = "已禁用";
+          }
+          if (this.tableData[i].state === 3) {
+            this.tableData[i].state = "已删除";
+          }
+          if (this.tableData[i].state === 4) {
+            this.tableData[i].state = "审核中";
+          }
+          if (this.tableData[i].state === 5) {
+            this.tableData[i].state = "停用";
+          }
+          if (this.tableData[i].maintenanceType === 0) {
+            this.tableData[i].maintenanceType = "维修";
+          }
+          if (this.tableData[i].maintenanceType === 1) {
+            this.tableData[i].maintenanceType = "保养";
+          }
+          if (this.tableData[i].frequencyType === 0) {
+            this.tableData[i].frequencyType = "天";
+          }
+          if (this.tableData[i].frequencyType === 1) {
+            this.tableData[i].frequencyType = "周";
+          }
+          if (this.tableData[i].frequencyType === 2) {
+            this.tableData[i].frequencyType = "月";
+          }
+          // this.tableData[i].endTime = this.tableData[i].endTime.replace(/T/g, " ");
+          // this.tableData[i].executeTime = this.tableData[i].executeTime.replace(/T/g, " ");
+          // this.tableData[i].startTime = this.tableData[i].startTime.replace(/T/g, " ");
+          for (let j in this.planLevel) {
+            if (this.tableData[i].maintenanceLevel === this.planLevel[j].id) {
+              this.tableData[i].maintenanceLevel = this.planLevel[j].levelDesc;
+            }
+          }
+        }
+        this.pageNumber = this.tableData.length;
+      },
+      listMaintenanceLevel() {
         this.axios
-          .get(this.global.apiSrc+"/mplan/listMaintenanceLevel")
-          .then(response =>{
+          .get(this.global.apiSrc + "/mplan/listMaintenanceLevel")
+          .then(response => {
             this.planLevel = response.data.data;
           })
           .catch(function(error) {
             console.log(error);
           });
       },
-      deleteMaintenance(){
+      deleteMaintenance() {
         let qs = require("qs");
-        let data = qs.stringify({maintenanceIds:this.maintenanceIds});
+        let data = qs.stringify({ maintenanceIds: this.maintenanceIds });
         this.axios
-          .post(this.global.apiSrc+"/mplan/delete", data)
+          .post(this.global.apiSrc + "/mplan/delete", data)
           .then(response => {
-            if(response.data.msg ==="成功") {
+            if (response.data.msg === "成功") {
               alert("成功");
-              this.load()
-            }else{
+              this.load();
+            } else {
               alert("失败");
             }
           })
@@ -305,16 +299,16 @@
             console.log(error);
           });
       },
-      stopDiscontinuation(){
+      stopDiscontinuation() {
         let qs = require("qs");
-        let data = qs.stringify({maintenanceIds:this.maintenanceIds});
+        let data = qs.stringify({ maintenanceIds: this.maintenanceIds });
         this.axios
-          .post(this.global.apiSrc+"/mplan/discontinuation", data)
+          .post(this.global.apiSrc + "/mplan/discontinuation", data)
           .then(response => {
-            if(response.data.msg ==="成功") {
+            if (response.data.msg === "成功") {
               alert("成功");
-              this.load()
-            }else{
+              this.load();
+            } else {
               alert("失败");
             }
           })
@@ -323,26 +317,30 @@
           });
       },
       //审核操作
-      submitAudit(){
+      submitAudit() {
         let qs = require("qs");
         let data = qs.stringify({
-          userId:this.userId,
-          maintenanceIds:this.maintenanceIds
+          userId: this.userId,
+          maintenanceIds: this.maintenanceIds
         });
         this.axios
-          .post(this.global.apiSrc+"/mplan/submitAudit", data)
+          .post(this.global.apiSrc + "/mplan/submitAudit", data)
           .then(response => {
             this.load();
-            console.log(response.data)
+            console.log(response.data);
           })
           .catch(function(error) {
             console.log(error);
           });
-      }
+      },
     },
-    created(){
+    created() {
       this.listMaintenanceLevel();
-      this.load()
+      this.load();
+    },
+    components: {
+      audit,
+      personnel
     }
   };
 </script>
@@ -354,7 +352,7 @@
   @Danger: #f56c6c;
   @Info: #dde2eb;
   .turnaround-plans {
-    padding-left: 220px;
+    // padding-left: 220px;
     .userCase {
       width: 100%;
       padding: 10px;
@@ -383,3 +381,4 @@
     }
   }
 </style>
+

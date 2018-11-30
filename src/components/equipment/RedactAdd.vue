@@ -93,8 +93,72 @@ export default {
     return {
       pageIndex: 1,
       pageSize: 10,
-      tableData: [],
-      tableDate: [],
+      tableData: [
+        // {
+        //   name: "111",
+        //   gender: "1111",
+        //   position: "1111",
+        //   phone: "111",
+        //   details: "111"
+        // },
+        // {
+        //   name: "2222",
+        //   gender: "1111",
+        //   position: "1111",
+        //   phone: "111",
+        //   details: "111"
+        // },
+        // {
+        //   name: "3333",
+        //   gender: "1111",
+        //   position: "1111",
+        //   phone: "111",
+        //   details: "111"
+        // },
+        // {
+        //   name: "4444",
+        //   gender: "1111",
+        //   position: "1111",
+        //   phone: "111",
+        //   details: "111"
+        // },
+        // {
+        //   name: "5555",
+        //   gender: "1111",
+        //   position: "1111",
+        //   phone: "111",
+        //   details: "111"
+        // },
+        // {
+        //   name: "6666",
+        //   gender: "1111",
+        //   position: "1111",
+        //   phone: "111",
+        //   details: "111"
+        // },
+        // {
+        //   name: "7777",
+        //   gender: "1111",
+        //   position: "1111",
+        //   phone: "111",
+        //   details: "111"
+        // },
+        // {
+        //   name: "8888",
+        //   gender: "1111",
+        //   position: "1111",
+        //   phone: "111",
+        //   details: "111"
+        // },
+        // {
+        //   name: "9999",
+        //   gender: "1111",
+        //   position: "1111",
+        //   phone: "111",
+        //   details: "111"
+        // }
+      ],
+      tableDate: [{code:1000}],
       columns: [
         {
           width: 40,
@@ -116,7 +180,7 @@ export default {
           title: "性别",
           width: 50,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true
         },
         {
@@ -132,7 +196,7 @@ export default {
           title: "手机号",
           width: 90,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true
         },
         {
@@ -140,12 +204,61 @@ export default {
           title: "分配情况",
           width: 150,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true
         }
       ],
       personListValue: [],
-      data2:[{code:"1000"}],
+      data2: [
+        {
+          id: 1,
+          label: "一级 1",
+          children: [
+            {
+              id: 4,
+              label: "二级 1-1",
+              children: [
+                {
+                  id: 9,
+                  label: "三级 1-1-1"
+                },
+                {
+                  id: 10,
+                  label: "三级 1-1-2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: 2,
+          label: "一级 2",
+          children: [
+            {
+              id: 5,
+              label: "二级 2-1"
+            },
+            {
+              id: 6,
+              label: "二级 2-2"
+            }
+          ]
+        },
+        {
+          id: 3,
+          label: "一级 3",
+          children: [
+            {
+              id: 7,
+              label: "二级 3-1"
+            },
+            {
+              id: 8,
+              label: "二级 3-2"
+            }
+          ]
+        }
+      ],
       defaultProps: {
         children: "children",
         label: "label"
@@ -155,7 +268,8 @@ export default {
   methods: {
     handleNodeClick(data) {
       console.log(data);
-      this.findpeopler(data.code)
+      console.log(data.code);
+      this.findpeopler(data.code);
     },
     isHide() {
       this.$emit("isHide", false);
@@ -212,14 +326,9 @@ export default {
       this.axios
         .get(this.global.apiSrc + "/employee/findByOrganizeCode", {params:{organizeCode:code}})
         .then(result => {
-          if(result.code === 204){
-            this.tableData="";
-          }else{
-            console.log("按照组织机构编号查询人");
-            console.log(result.data);
-            this.tableData=result.data.data.content;
-          }
-
+          console.log("按照组织机构编号查询人");
+          console.log(result.data);
+          this.tableData=result.data.data.content;
         })
         .catch(err => {
           console.log(err);
@@ -242,6 +351,7 @@ export default {
       })
       .catch(err => {
         console.log(err);
+        console.log(this.userName);
       });
   }
 };

@@ -9,9 +9,9 @@
       </div>
       <div class="bottom">
         <div class="left">
-          <h5>组织机构</h5>
+          <h5>设备类别</h5>
           <div class="treeCase">
-            <el-tree :data="data2" node-key="id" :default-expanded-keys="[2, 3]" :default-checked-keys="[5]" :props="defaultProps">
+            <el-tree :data="data2" node-key="id" @node-click="handleNodeClick" :default-expanded-keys="[2, 3]" :default-checked-keys="[5]" :props="defaultProps">
             </el-tree>
           </div>
         </div>
@@ -50,9 +50,10 @@
     name: "",
     data() {
       return {
-        key:"",
-        searchs:"",
-        toValue:"",
+        clickId:0,
+        key: "",
+        searchs: "",
+        toValue: "",
         pageIndex: 1,
         pageSize: 10,
         tableData: [],
@@ -101,66 +102,24 @@
         personListValue: [],
         data2: [
           {
-            id: 1,
-            label: "一级 1",
-            children: [
-              {
-                id: 4,
-                label: "二级 1-1",
-                children: [
-                  {
-                    id: 9,
-                    label: "三级 1-1-1"
-                  },
-                  {
-                    id: 10,
-                    label: "三级 1-1-2"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            id: 2,
-            label: "一级 2",
-            children: [
-              {
-                id: 5,
-                label: "二级 2-1"
-              },
-              {
-                id: 6,
-                label: "二级 2-2"
-              }
-            ]
-          },
-          {
-            id: 3,
-            label: "一级 3",
-            children: [
-              {
-                id: 7,
-                label: "二级 3-1"
-              },
-              {
-                id: 8,
-                label: "二级 3-2"
-              }
-            ]
+            id:"",
+            categoryName:""
           }
         ],
         defaultProps: {
           children: "children",
-          label: "label"
+          label: "categoryName"
         }
       };
     },
     methods: {
-      loads(){
+      loads() {
         let arrs = new Array();
         this.axios
-          .get(this.global.apiSrc+"/device/all",{params:{page:this.pageIndex,size:this.pageSize}})
-          .then(response=>{
+          .get(this.global.apiSrc + "/device/all", {
+            params: { page: this.pageIndex, size: this.pageSize }
+          })
+          .then(response => {
             arrs = response.data.data.content;
             this.tableData = arrs;
             this.tabledate = this.tableData;
@@ -169,10 +128,23 @@
             console.log(error);
           });
       },
-      search(){
+      toLoad() {
+        let arrs = new Array();
         this.axios
-          .get(this.global.apiSrc+"/device/findByKeyWord",{params:{keyWord:this.key}})
-          .then(response=>{
+          .get(this.global.apiSrc + "/device/select",{params:{deviceCategory:this.clickId}})
+          .then(response => {
+            this.tableData =response.data.data.content;
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      search() {
+        this.axios
+          .get(this.global.apiSrc + "/device/findByKeyWord", {
+            params: { keyWord: this.key }
+          })
+          .then(response => {
             this.tableData = response.data.data.content;
             this.tabledate = this.tableData;
             console.log(response.data);
@@ -185,36 +157,50 @@
       isHide() {
         this.$emit("isHide", false);
       },
-      toAdd(){
+      toAdd() {
         let data = {
-          values:this.toValue,
-          isOk:false
+          values: this.toValue,
+          isOk: false
         };
         this.$emit("toAdd", data);
       },
-      deletes(){
+      deletes() {
         this.personListValue = "";
-        this.toValue="";
+        this.toValue = "";
+        // let arr ="";
+        // this.selectALL(arr);
+      },
+      deviceType(){
+        this.axios
+          .get(this.global.apiSrc + "/deviceCategory/all")
+          .then(response => {
+            this.data2 = response.data.data;
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       },
 
+      handleNodeClick(data) {
+        this.clickId=data.id;
+        this.toLoad();
+      },
       selectGroupChange(selection) {
+        // console.log(selection);
         this.toValue = selection;
         let arr = new Array();
-        for (let i = 0; i < selection.length; i++){
+        for (let i = 0; i < selection.length; i++) {
           arr[i] = selection[i].deviceName;
         }
         this.personListValue = arr;
-        console.log(arr);
-        // console.log("select-group-change", selection);
       },
       selectALL(selection) {
         this.toValue = selection;
         let arr = new Array();
-        for (let i = 0; i < selection.length; i++){
+        for (let i = 0; i < selection.length; i++) {
           arr[i] = selection[i].deviceName;
         }
         this.personListValue = arr;
-        // console.log("select-aLL", selection);
       },
       selectChange(selection, rowData) {
         // console.log("select-change", selection, rowData);
@@ -236,7 +222,8 @@
         this.getTableData();
       }
     },
-    created(){
+    created() {
+      this.deviceType();
       this.loads();
     }
   };
@@ -258,7 +245,7 @@
     background-color: #42424227;
     .addCase {
       width: 80%;
-      min-height: 500px;
+      // min-height: 500px;
       background-color: white;
       margin: auto;
       border-radius: 5px;

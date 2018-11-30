@@ -17,26 +17,35 @@
             <el-input v-model="sizeForm.deviceName" style="width:512px"></el-input>
           </el-form-item>
           <el-form-item label="所属部门">
-            <el-select v-model="sizeForm.organizeName" placeholder="点击选择" style="width:512px">
-
-              <el-option v-for="item in options1" :key="" :label="item.label" :value="item.value"></el-option>
-
-            </el-select>
+            <el-cascader
+              placeholder="搜索"
+              :options="options"
+              filterable
+              change-on-select
+              :show-all-levels="false"
+              v-model="sizeForm.organizeName"
+              style="width:512px;"
+            ></el-cascader>
           </el-form-item>
           <el-form :inline="true" style="padding-left:12px" size="small">
             <el-form-item label="设备分类">
               <el-select v-model="sizeForm.deviceClassify" placeholder="点击选择" style="width:215px">
 
-                <el-option v-for="item in options2" :key="" :label="item.label" :value="item.value"></el-option>
+                <el-option v-for="(item,index) in options2" :key="index" :label="item.label"
+                           :value="item.value"></el-option>
 
               </el-select>
             </el-form-item>
             <el-form-item label="设备类别">
-              <el-select v-model="sizeForm.deviceCategory" placeholder="点击选择" style="width:215px">
-
-                <el-option v-for="item in options3" :key="" :label="item.label" :value="item.value"></el-option>
-
-              </el-select>
+              <el-cascader
+                placeholder="搜索"
+                :options="options"
+                filterable
+                change-on-select
+                :show-all-levels="false"
+                v-model="sizeForm.organizeName"
+                style="width:215px;"
+              ></el-cascader>
             </el-form-item>
           </el-form>
           <el-form :inline="true" style="padding-left:12px" size="small">
@@ -46,7 +55,8 @@
             <el-form-item label="设备状况">
               <el-select v-model="sizeForm.deviceState" placeholder="点击选择" style="width:215px">
 
-                <el-option v-for="item in options4" :key="" :label="item.label" :value="item.value"></el-option>
+                <el-option v-for="(item,index) in options4" :key="index" :label="item.label"
+                           :value="item.value"></el-option>
 
               </el-select>
             </el-form-item>
@@ -77,7 +87,7 @@
               <span>负责人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="addIsShow">
+            <div @click="dialogVisible=true">
               更改绑定
             </div>
           </li>
@@ -86,7 +96,7 @@
               <span>维修人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="addIsShow">
+            <div @click="dialogVisible=true">
               更改绑定
             </div>
           </li>
@@ -95,7 +105,7 @@
               <span>检修人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="addIsShow">
+            <div @click="dialogVisible=true">
               更改绑定
             </div>
           </li>
@@ -104,7 +114,7 @@
               <span>保养人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="addIsShow">
+            <div @click="dialogVisible=true">
               更改绑定
             </div>
           </li>
@@ -113,7 +123,7 @@
               <span>操作人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="addIsShow">
+            <div @click="dialogVisible=true">
               更改绑定
             </div>
           </li>
@@ -138,7 +148,8 @@
           </el-form-item>
           <el-form-item label="入厂日期">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="sizeForm.enterFactoryDate"
+              <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd"
+                              v-model="sizeForm.enterFactoryDate"
                               style="width: 215px;"></el-date-picker>
             </el-col>
           </el-form-item>
@@ -150,7 +161,13 @@
         </div>
       </div>
     </div>
-    <addPerson v-show="addShow" v-on:isHide="isHide"></addPerson>
+    <el-dialog
+      title="人员添加"
+      :visible.sync="dialogVisible"
+      width="80%"
+      >
+      <addPerson></addPerson>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -160,6 +177,7 @@
     name: "",
     data() {
       return {
+        dialogVisible:false,
         addShow: false,
         sizeForm: {
           // deviceNo: "",
@@ -179,13 +197,13 @@
           // deviceCategoryName: "",
           // deviceModel: "",
           // deviceState: "",
-          // gmtModified: "",
           // organizeCode: "",
           // enterFactoryDate: ""
 
+
           deviceNo: "CH000001",
           deviceName: "液压机",
-          organizeName: "武器事业部制造",
+          organizeName: "工程技术中心",
           deviceClassify: "1",
           deviceClassifyName: "超级存储",
           deviceSpec: "GC222",
@@ -200,7 +218,7 @@
           deviceCategoryName: "机械类",
           deviceModel: "ZA100-315315",
           deviceState: "1",
-          organizeCode: "IBM",
+          organizeCode: "1000",
           enterFactoryDate: "2018/11/26"
         },
         options1: [
@@ -283,6 +301,276 @@
             label: "报废"
           }
         ],
+        options: [
+          {
+            value: "zhinan",
+            label: "指南",
+            children: [
+              {
+                value: "shejiyuanze",
+                label: "设计原则",
+                children: [
+                  {
+                    value: "yizhi",
+                    label: "一致"
+                  },
+                  {
+                    value: "fankui",
+                    label: "反馈"
+                  },
+                  {
+                    value: "xiaolv",
+                    label: "效率"
+                  },
+                  {
+                    value: "kekong",
+                    label: "可控"
+                  }
+                ]
+              },
+              {
+                value: "daohang",
+                label: "导航",
+                children: [
+                  {
+                    value: "cexiangdaohang",
+                    label: "侧向导航"
+                  },
+                  {
+                    value: "dingbudaohang",
+                    label: "顶部导航"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            value: "zujian",
+            label: "组件",
+            children: [
+              {
+                value: "basic",
+                label: "Basic",
+                children: [
+                  {
+                    value: "layout",
+                    label: "Layout 布局"
+                  },
+                  {
+                    value: "color",
+                    label: "Color 色彩"
+                  },
+                  {
+                    value: "typography",
+                    label: "Typography 字体"
+                  },
+                  {
+                    value: "icon",
+                    label: "Icon 图标"
+                  },
+                  {
+                    value: "button",
+                    label: "Button 按钮"
+                  }
+                ]
+              },
+              {
+                value: "form",
+                label: "Form",
+                children: [
+                  {
+                    value: "radio",
+                    label: "Radio 单选框"
+                  },
+                  {
+                    value: "checkbox",
+                    label: "Checkbox 多选框"
+                  },
+                  {
+                    value: "input",
+                    label: "Input 输入框"
+                  },
+                  {
+                    value: "input-number",
+                    label: "InputNumber 计数器"
+                  },
+                  {
+                    value: "select",
+                    label: "Select 选择器"
+                  },
+                  {
+                    value: "cascader",
+                    label: "Cascader 级联选择器"
+                  },
+                  {
+                    value: "switch",
+                    label: "Switch 开关"
+                  },
+                  {
+                    value: "slider",
+                    label: "Slider 滑块"
+                  },
+                  {
+                    value: "time-picker",
+                    label: "TimePicker 时间选择器"
+                  },
+                  {
+                    value: "date-picker",
+                    label: "DatePicker 日期选择器"
+                  },
+                  {
+                    value: "datetime-picker",
+                    label: "DateTimePicker 日期时间选择器"
+                  },
+                  {
+                    value: "upload",
+                    label: "Upload 上传"
+                  },
+                  {
+                    value: "rate",
+                    label: "Rate 评分"
+                  },
+                  {
+                    value: "form",
+                    label: "Form 表单"
+                  }
+                ]
+              },
+              {
+                value: "data",
+                label: "Data",
+                children: [
+                  {
+                    value: "table",
+                    label: "Table 表格"
+                  },
+                  {
+                    value: "tag",
+                    label: "Tag 标签"
+                  },
+                  {
+                    value: "progress",
+                    label: "Progress 进度条"
+                  },
+                  {
+                    value: "tree",
+                    label: "Tree 树形控件"
+                  },
+                  {
+                    value: "pagination",
+                    label: "Pagination 分页"
+                  },
+                  {
+                    value: "badge",
+                    label: "Badge 标记"
+                  }
+                ]
+              },
+              {
+                value: "notice",
+                label: "Notice",
+                children: [
+                  {
+                    value: "alert",
+                    label: "Alert 警告"
+                  },
+                  {
+                    value: "loading",
+                    label: "Loading 加载"
+                  },
+                  {
+                    value: "message",
+                    label: "Message 消息提示"
+                  },
+                  {
+                    value: "message-box",
+                    label: "MessageBox 弹框"
+                  },
+                  {
+                    value: "notification",
+                    label: "Notification 通知"
+                  }
+                ]
+              },
+              {
+                value: "navigation",
+                label: "Navigation",
+                children: [
+                  {
+                    value: "menu",
+                    label: "NavMenu 导航菜单"
+                  },
+                  {
+                    value: "tabs",
+                    label: "Tabs 标签页"
+                  },
+                  {
+                    value: "breadcrumb",
+                    label: "Breadcrumb 面包屑"
+                  },
+                  {
+                    value: "dropdown",
+                    label: "Dropdown 下拉菜单"
+                  },
+                  {
+                    value: "steps",
+                    label: "Steps 步骤条"
+                  }
+                ]
+              },
+              {
+                value: "others",
+                label: "Others",
+                children: [
+                  {
+                    value: "dialog",
+                    label: "Dialog 对话框"
+                  },
+                  {
+                    value: "tooltip",
+                    label: "Tooltip 文字提示"
+                  },
+                  {
+                    value: "popover",
+                    label: "Popover 弹出框"
+                  },
+                  {
+                    value: "card",
+                    label: "Card 卡片"
+                  },
+                  {
+                    value: "carousel",
+                    label: "Carousel 走马灯"
+                  },
+                  {
+                    value: "collapse",
+                    label: "Collapse 折叠面板"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            value: "ziyuan",
+            label: "资源",
+            children: [
+              {
+                value: "axure",
+                label: "Axure Components"
+              },
+              {
+                value: "sketch",
+                label: "Sketch Templates"
+              },
+              {
+                value: "jiaohu",
+                label: "组件交互文档"
+              }
+            ]
+          }
+        ],
+        orgoptions:"",
+        ctgoptions:"",
       };
     },
     methods: {
@@ -299,6 +587,7 @@
         //添加设备信息接口
         let qs = require("qs");
         let data = qs.stringify({
+
           deviceNo: this.sizeForm.deviceNo,
           deviceName: this.sizeForm.deviceName,
           deviceClassify: this.sizeForm.deviceClassify,
@@ -319,27 +608,32 @@
           deviceState: this.sizeForm.deviceState,
           enterFactoryDate: this.sizeForm.enterFactoryDate,
           // deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
-          devicePersonnelInfo: JSON.stringify([{
-              workerType:1,
-              workerName:"赵六",
-              workerId:188,
-              workerTypeName:"负责人员"
+          devicePersonnelInfo: JSON.stringify([
+            {
+            workerType: 1,
+            workerName: "赵六",
+            workerId: 188,
+            workerTypeName: "负责人员"
             },
             {
-              workerType:2,
-              workerTypeName:"维修人员",
-              workerId:192,
-              workerName:"王五"
+              workerType: 2,
+              workerTypeName: "维修人员",
+              workerId: 192,
+              workerName: "王五"
             },
             {
-              workerType:1,
-              workerTypeName:"负责人员",
-              workerId:147,
-              workerName:"李四"
+              workerType: 3,
+              workerTypeName: "检修人员",
+              workerId: 147,
+              workerName: "李四"
+            },
+            {
+              workerType: 4,
+              workerTypeName: "保养人员",
+              workerId: 195,
+              workerName: "杨光"
             }
           ])
-
-
           // deviceNo: this.sizeForm.deviceNo,
           // deviceName: this.sizeForm.deviceName,
           // organizeName: this.sizeForm.organizeName,
@@ -361,17 +655,17 @@
           // // enterFactoryDate: this.sizeForm.enterFactoryDate,
           // deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
           // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo),
-
-
         });
 
-        console.log(data);
+
         this.axios
           .post(this.global.apiSrc + "/device/add", data)
           .then(result => {
-            if(result.data.code == 410 ){
+            console.log(result.data);
+            alert("执行添加");
+            if (result.data.code == 410) {
               alert("该设备号已存在,请重新编辑!!!")
-            }else if(result.data.code == 200){
+            } else if (result.data.code == 200) {
               alert("添加成功");
               console.log("add");
               console.log(result.data);
@@ -382,11 +676,9 @@
             console.log(err);
           });
       },
-      findDeviceClassify(){
+      findDeviceClassify() {
         let qs = require("qs");
-        let data = qs.stringify({
-
-        });
+        let data = qs.stringify({});
         this.axios
           .get(this.global.apiSrc + "/device/findDeviceClassify", data)
           .then(result => {
@@ -397,10 +689,9 @@
             console.log(err);
           });
       },
-      findDeviceState(){
+      findDeviceState() {
         let qs = require("qs");
-        let data = qs.stringify({
-        });
+        let data = qs.stringify({});
         this.axios
           .get(this.global.apiSrc + "/device/findDeviceState", data)
           .then(result => {
@@ -411,10 +702,9 @@
             console.log(err);
           });
       },
-      findAlldeviceClassify(){
+      findAlldeviceClassify() {
         let qs = require("qs");
-        let data = qs.stringify({
-        });
+        let data = qs.stringify({});
         this.axios
           .get(this.global.apiSrc + "/deviceCategory/all", data)
           .then(result => {
@@ -424,12 +714,91 @@
           .catch(err => {
             console.log(err);
           });
-      }
+      },
+      filterArray(data, parent) {
+        let vm = this;
+        var tree = [];
+        var temp;
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].parentCode == parent) {
+            var obj = data[i];
+            temp = this.filterArray(data, data[i].code);
+            if (temp.length > 0) {
+              obj.children = temp;
+            }
+            tree.push(obj);
+          }
+        }
+        return tree;
+      },
+      allOrganize() {
+        this.axios
+          .get(this.global.apiSrc + "/organize/allOrganize")
+          .then(result => {
+            console.log(result.data);
+            for (let i = 0; i < result.data.data.length; i++) {
+              if (result.data.data[i].organizeType === 0) {
+                result.data.data[i].organizeType = "企业";
+              }
+              if (result.data.data[i].organizeType === 1) {
+                result.data.data[i].organizeType = "公司";
+              }
+              if (result.data.data[i].organizeType === 2) {
+                result.data.data[i].organizeType = "工厂";
+              }
+              if (result.data.data[i].organizeType === 3) {
+                result.data.data[i].organizeType = "部门";
+              }
+              if (result.data.data[i].organizeType === 4) {
+                result.data.data[i].organizeType = "车间";
+              }
+            }
+            this.orgoptions = this.filterArray(result.data.data, 0);
+            console.log(this.orgoptions)
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(this.userName);
+          });
+      },
+      filterArray2(data, parent) {
+        let vm = this;
+        var tree = [];
+        var temp;
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].categoryParentNo == parent) {
+            var obj = data[i];
+            temp = this.filterArray(data, data[i].categoryNo);
+            if (temp.length > 0) {
+              obj.children = temp;
+            }
+            tree.push(obj);
+          }
+        }
+        return tree;
+      },
+      findAlldeviceClassify(){
+        let qs = require("qs");
+        let data = qs.stringify({
+        });
+        this.axios
+          .get(this.global.apiSrc + "/deviceCategory/all", data)
+          .then(result => {
+            this.ctgoptions= this.filterArray2(result.data.data,0);
+            console.log(this.ctgoptions);
+            console.log(result.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
     },
-    created(){
-        this.findDeviceClassify();
-        this.findDeviceState();
-        this.findAlldeviceClassify();
+
+    created() {
+      this.findDeviceClassify();
+      this.findDeviceState();
+      this.findAlldeviceClassify();
+      this.allOrganize();
     },
     components: {
       addPerson
@@ -444,7 +813,7 @@
   @Info: #dde2eb;
   @border: 1px solid #dde2eb;
   .equipmentAdd {
-    padding-left: 180px;
+    // padding-left: 180px;
     .addCase {
       padding: 10px;
       .top {

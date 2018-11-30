@@ -21,11 +21,11 @@
                 <label for="">设备状况：</label>
                 <div style="margin-top:10px;">
                     <el-checkbox-group v-model="checkList">
-                        <el-checkbox label="0">在用</el-checkbox>
-                        <el-checkbox label="1">停用</el-checkbox>
-                        <el-checkbox label="2">出租</el-checkbox>
-                        <el-checkbox label="3">封存</el-checkbox>
-                        <el-checkbox label="4">报废</el-checkbox>
+                        <el-checkbox label="1">在用</el-checkbox>
+                        <el-checkbox label="2">停用</el-checkbox>
+                        <el-checkbox label="3">出租</el-checkbox>
+                        <el-checkbox label="4">封存</el-checkbox>
+                        <el-checkbox label="5">报废</el-checkbox>
                     </el-checkbox-group>
                 </div>
             </div>
@@ -49,7 +49,7 @@ export default {
       workerName:"",
       manufacturer:"",
       deviceCategory:"",
-      choice:[],
+      choice:"",
       checkList: [],
       state: []
     };
@@ -67,6 +67,7 @@ export default {
           this.choice += ","+this.checkList[i];
         }
       }
+      console.log(this.choice);
       this.axios
         .get(this.global.apiSrc+"/device/select", {
           params: {
@@ -74,24 +75,25 @@ export default {
             locationNo:this.locationNo,
             workerName:this.workerName,
             manufacturer:this.manufacturer,
-            deviceCategory:this.choice
+            deviceSates:this.choice,
+            deviceCategory:""
           }
         })
         .then(response => {
           for (let i = 0; i < response.data.data.content.length; i++) {
-            if (response.data.data.content[i].deviceState === 0) {
+            if (response.data.data.content[i].deviceState === 1) {
               response.data.data.content[i].deviceState = "在用";
             }
-            if (response.data.data.content[i].deviceState === 1) {
-              response.data.data.content[i].deviceState = "停运";
-            }
             if (response.data.data.content[i].deviceState === 2) {
-              response.data.data.content[i].deviceState = "出租";
+              response.data.data.content[i].deviceState = "停用";
             }
             if (response.data.data.content[i].deviceState === 3) {
-              response.data.data.content[i].deviceState = "封存";
+              response.data.data.content[i].deviceState = "出租";
             }
             if (response.data.data.content[i].deviceState === 4) {
+              response.data.data.content[i].deviceState = "封存";
+            }
+            if (response.data.data.content[i].deviceState === 5) {
               response.data.data.content[i].deviceState = "报废";
             }
           }

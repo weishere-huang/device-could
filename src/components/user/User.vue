@@ -6,8 +6,8 @@
         <el-button size="small" @click="prohibit">停用</el-button>
         <el-button size="small" @click="deleteUser">删除</el-button>
         <div class="search">
-          <el-input type="search" placeholder="如员工编号，姓名，手机" size="small"></el-input>
-          <el-button size="small">搜索</el-button>
+          <el-input type="search" placeholder="如员工编号，姓名，手机" size="small" v-model="keyWord"></el-input>
+          <el-button size="small" @click="findByKeyWord">搜索</el-button>
         </div>
       </div>
       <div class="bottom">
@@ -29,10 +29,15 @@
   export default {
     data() {
       return {
+        choice: "",
         pageIndex: 1,
         pageSize: 10,
         userIds: "",
-        tableData: [],
+        keyWord: "",
+        tableData: [{
+          companyName: "",
+
+        }],
         totalNub: "",
         tableDate: [],
         columns: [
@@ -43,7 +48,7 @@
             type: "selection"
           },
           {
-            field: "id",
+            field: "enterpriseName",
             title: "企业名称",
             width: 40,
             titleAlign: "center",
@@ -77,7 +82,7 @@
           },
 
           {
-            field: "gmtCreate",
+            field: "createTime",
             title: "创建时间",
             width: 80,
             titleAlign: "center",
@@ -96,47 +101,35 @@
       };
     },
     methods: {
-      enable() {
-
-      },
-      prohibit() {
-
-      },
-      deleteUser() {
-        let qs = require("qs");
-        let data = qs.stringify({
-          userIds: this.userIds
-        });
-        this.axios
-          .post(this.global.apiSrc + "/user/deleteUsers", data)
-          .then(response => {
-            console.log(response.data.msg);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      },
       selectGroupChange(selection) {
         console.log("select-group-change", selection);
+        this.choice = "";
+        for (let i = 0; i < selection.length; i++) {
+          if (this.choice === "") {
+            this.choice += selection[i].id;
+          } else {
+            this.choice += "," + selection[i].id;
+          }
+        }
       },
       selectALL(selection) {
-        this.userIds = "";
+        this.choice = "";
         for (let i = 0; i < selection.length; i++) {
-          if (this.userIds === "") {
-            this.userIds += selection[i].id;
+          if (this.choice === "") {
+            this.choice += selection[i].id;
           } else {
-            this.userIds += "," + selection[i].id;
+            this.choice += "," + selection[i].id;
           }
         }
         console.log("select-aLL", selection);
       },
       selectChange(selection, rowData) {
-        this.userIds = "";
+        this.choice = "";
         for (let i = 0; i < selection.length; i++) {
-          if (this.userIds === "") {
-            this.userIds += selection[i].id;
+          if (this.choice === "") {
+            this.choice += selection[i].id;
           } else {
-            this.userIds += "," + selection[i].id;
+            this.choice += "," + selection[i].id;
           }
         }
         console.log("select-change", selection, rowData);
@@ -157,6 +150,7 @@
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
+        this.load()
       },
       sortChange(params) {
         if (params.height.length > 0) {
@@ -171,26 +165,91 @@
           });
         }
       },
-      load() {
+      enable() {
+        let qs = require("qs");
+        let data = qs.stringify({
+          userIds: this.choice
+        })
+        this.axios.post(this.global.apiSrc + "/user/enableUser", data)
+          .then(response => {
+            this.load()
+            console.log(response)
+          }).catch(function (error) {
+        });
+      },
+      prohibit() {
+        let qs = require("qs");
+        let data = qs.stringify({
+          userIds: this.choice
+        })
+        this.axios.post(this.global.apiSrc + "/user/discontinuationUser", data)
+          .then(response => {
+            this.load()
+            console.log(response)
+          }).catch(function (error) {
+        });
+      },
+      deleteUser() {
+        let qs = require("qs");
+        let data = qs.stringify({
+          userIds: this.choice
+        });
+        this.axios
+          .post(this.global.apiSrc + "/user/deleteUsers", data)
+          .then(response => {
+            console.log(this.data)
+            console.log(response);
+            this.load()
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
+      findByKeyWord() {
+        this.axios.get(this.global.apiSrc + "/user/findByKeyWord/", {
+          params: {
+            keyWord: this.keyWord,
+            page: this.pageIndex,
+            size: this.pageSize
+          }
+        })
+          .then(response => {
+            this.totalNub = response.data.data.totalElements
+            for (let i = 0; i < response.data.data.content.length; i++) {
+              // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+              if (response.data.data.content[i].state === 0) {
+                response.data.data.content[i].state = "正常"
+              }
+              if (response.data.data.content[i].state === 1) {
+                response.data.data.content[i].state = "停用"
+              }
+            }
+            console.log(response)
+            this.tableData = response.data.data.content;
+          }).catch(function (error) {
+          console.log(error)
+        })
+      },
 
+      load() {
         this.axios
           .get(this.global.apiSrc + "/user/enterpriseUserAll", {params: {page: this.pageIndex, size: this.pageSize}})
           .then(response => {
             console.log(response);
             this.totalNub = response.data.data.totalElements
-            this.tableData = response.data.data;
-            for (let i = 0; i < this.tableData.length; i++) {
-              this.tableData[i].gmtCreate = this.tableData[i].gmtCreate.split("T")[0];
-              if (this.tableData[i].state === 0) {
-                this.tableData[i].state = "正常"
-              } else {
-                this.tableData[i].state = "停用"
+            for (let i = 0; i < response.data.data.content.length; i++) {
+              // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+              if (response.data.data.content[i].state === 0) {
+                response.data.data.content[i].state = "正常"
+              }
+              if (response.data.data.content[i].state === 1) {
+                response.data.data.content[i].state = "停用"
               }
             }
-            this.tableDate = this.tableData;
+            this.tableData = response.data.data.content;
             // console.log(this.tableDate)
           })
-          .catch(function (error) {
+          .catch(function(error) {
             console.log(error);
           });
       }
@@ -201,38 +260,31 @@
   };
 </script>
 <style lang="less" scoped>
-  @blue: #409eff;
-  @Success: #67c23a;
-  @Warning: #e6a23c;
-  @Danger: #f56c6c;
-  @Info: #dde2eb;
-  .userManagement {
-    padding-left: 220px;
-    .userCase {
-      width: 100%;
-      padding: 10px;
-      .top {
-        height: 60px;
-        line-height: 60px;
-        border: 1px solid @Info;
-        border-radius: 5px;
-        padding-left: 10px;
-        .search {
-          float: right;
-          width: 40%;
-          .el-input {
-            width: 80%;
-          }
+@blue: #409eff;
+@Success: #67c23a;
+@Warning: #e6a23c;
+@Danger: #f56c6c;
+@Info: #dde2eb;
+.userManagement {
+  // padding-left: 220px;
+  .userCase {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    .top {
+      height: 60px;
+      line-height: 60px;
+      border: 1px solid @Info;
+      border-radius: 5px;
+      padding-left: 10px;
+      .search {
+        float: right;
+        width: 40%;
+        .el-input {
+          width: 80%;
         }
-      }
-      .bottom {
-        padding: 10px;
-        font-size: 12px;
-        border: 1px solid @Info;
-        margin-top: 10px;
-        min-height: 500px;
-        border-radius: 5px;
       }
     }
   }
+}
 </style>

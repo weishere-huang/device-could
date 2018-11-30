@@ -75,12 +75,12 @@
         <el-form label-width="110px" v-if="companyName.planType==='单次'" v-model="companyName.planType">
           <el-form-item label="计划日期：">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" format="yyyy/MM/dd" v-model="companyName.startTime" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" format="yyyy/MM/dd" value-format="yyyy/MM/dd" v-model="companyName.startTime" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
             </el-col>
           </el-form-item>
           <el-form-item label="首次执行时间：">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" format="yyyy/MM/dd" v-model="date" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" format="yyyy/MM/dd" value-format="yyyy/MM/dd" v-model="date" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
             </el-col>
             <el-col class="line" :span="2">-</el-col>
             <el-col :span="11">
@@ -118,8 +118,9 @@
     name: "",
     data() {
       return {
+        //统一token之后删除userID
         userId:3,
-        deviceIds:1,
+        deviceIds:0,
         date:"",
         times:"",
         addPlanShow: false,
@@ -129,13 +130,13 @@
           planName:"",
           maintenanceClassify:"",
           maintenanceLevel:"",
-          maintenanceType:"",
+          maintenanceType:"1",
           planType:"",
           startTime:"",
           endTime:"",
           executeTime:"",
-          frequency:"",
-          frequencyType:"",
+          frequency:"1",
+          frequencyType:"1",
           maintenanceCc:""
         },
         columns: [
@@ -197,18 +198,7 @@
         ],
         pageIndex: 1,
         pageSize: 10,
-        tableData: [{
-          deviceCategoryName:"",
-          manufacturer:"",
-          deviceName:"",
-          deviceModel:"",
-          deviceNo:"",
-          deviceState:"",
-          location:"",
-          locationNo:"",
-          workerNames:"",
-          id:""
-        }],
+        tableData: [],
         tableDate: []
       };
     },
@@ -220,13 +210,11 @@
         });
       },
       addPlan(){
-        console.log(this.times);
         this.companyName.executeTime = this.date +" "+ this.times;
-        this.companyName.executeTime = this.companyName.executeTime.split(".")[0].replace(/-/g,"/");
-        this.companyName.startTime = this.companyName.startTime.split(" ")[0].replace(/-/g,"/");
-        this.companyName.endTime = this.companyName.endTime.split(" ")[0].replace(/-/g,"/");
+        this.companyName.executeTime = this.companyName.executeTime.split(".")[0];
         this.companyName.maintenanceType = 0;
         if(this.companyName.planType === "单次"){
+          this.companyName.endTime =this.companyName.startTime;
           this.companyName.planType = 0
         }
         if(this.companyName.planType === "周期"){
@@ -243,7 +231,8 @@
         }
         let qs = require("qs");
         let data = qs.stringify({
-          userId: this.userId,
+          //统一token之后删除userID
+          userId:this.userId,
           id:this.companyName.id,
           planName:this.companyName.planName,
           maintenanceClassify:this.companyName.maintenanceClassify,
@@ -259,14 +248,12 @@
           deviceIds : this.deviceIds,
         });
         this.axios
-          .post(this.global.apiSrc+"/mplan/add", data)
+          .post(this.global.apiSrc+"/mplan/add",data)
           .then(response => {
-            console.log(response.data);
             if(response.data.msg ==="成功"){
-              alert("成功");
-              this.TurnaroundPlans()
+              this.TurnaroundPlans();
             }else{
-              alert("失败");
+              alert("系统繁忙请稍后再试！");
             }
           })
           .catch(function(error) {
@@ -300,7 +287,6 @@
             this.deviceIds += ","+selection[i].id;
           }
         }
-        console.log("select-group-change", selection);
       },
       selectALL(selection) {
         this.deviceIds = "";
@@ -361,7 +347,7 @@
   @Info: #dde2eb;
   @border: 1px solid #dde2eb;
   .turnaroundPlansAdd {
-    padding-left: 180px;
+    // padding-left: 180px;
     .top {
       padding: 10px 20px;
     }

@@ -1,59 +1,112 @@
 <template>
-    <div class="revise" v-show="show">
-        <div class="revisecase">
-            <ul>
-                <li>
-                    <label for="">名称：</label>
-                    <el-input type="text" size="small"></el-input>
-                </li>
-                <li>
-                    <label for="">类型：</label>
-                    <el-select v-model="type" placeholder="请选择" size="small" style="width:70%">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                </li>
-                <li>
-                    <label style="display:inline-block;height:60px;vertical-align:top;">备注：</label>
-                    <textarea type="textarea" style="width:70%;height:60px;"></textarea>
+  <div
+    class="revise"
+    v-show="show"
+  >
+    <div class="revisecase">
+      <ul>
+        <li>
+          <label for="">名称：</label>
+          <el-input
+            type="text"
+            size="small"
+            v-model="chengedata.name"
+          ></el-input>
+        </li>
+        <li>
+          <label for="">类型：</label>
+          <el-select
+            style="width:70%"
+            v-model="chengedata.organizeType"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </li>
+        <li>
+          <label style="display:inline-block;height:60px;vertical-align:top;">备注：</label>
+          <textarea
+            type="textarea"
+            style="width:70%;height:60px;"
+            v-model="chengedata.organizeInfo"
+          ></textarea>
 
-                </li>
-                <li style="text-align:center;">
-                    <el-button size="small" @click="add1">取消</el-button>
-                    <el-button size="small">保存</el-button>
-                </li>
-            </ul>
-        </div>
-
+        </li>
+        <li style="text-align:center;">
+          <el-button
+            size="small"
+            @click="reviseHide"
+          >取消</el-button>
+          <el-button size="small" @click="update">保存</el-button>
+        </li>
+      </ul>
     </div>
+
+  </div>
 </template>
 <script>
 export default {
   name: "",
-
+  props:["chengedata"],
   data() {
     return {
       show: true,
-      type: "",
+      Cnode:this.chengedata,
       options: [
         {
           value: "1",
-          label: "1"
+          label: "公司"
         },
         {
           value: "2",
-          label: "2"
+          label: "工厂"
         },
         {
           value: "3",
-          label: "3"
+          label: "部门"
+        },
+        {
+          value: "4",
+          label: "车间"
         }
-      ]
+      ],
     };
   },
   methods: {
-    add1() {
-      this.show = !this.show;
-    }
+    reviseHide() {
+      this.$emit("reviseHide",false)
+    },
+    update() {
+      //修改组织机构
+      let qs = require("qs");
+      let data = qs.stringify({
+        organizeId: this.chengedata.id,
+        organizeName: this.chengedata.name,
+        organizeType: this.chengedata.organizeType,
+        organizeInfo: this.chengedata.organizeInfo
+      });
+      this.axios
+        .post(this.global.apiSrc + "/organize/update", data)
+        .then(result => {
+          if(result.data.code === 200){
+            alert("修改成功");
+            console.log(result.data);
+          }else{
+            alert("修改失败");
+            console.log(result.data);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    },
   }
 };
 </script>

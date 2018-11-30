@@ -2,20 +2,19 @@
   <div class="roleManagement">
     <div class="case">
       <div class="top">
-        <el-button size="small" @click="add">添加</el-button>
+        <el-button size="small" @click="dialogFormVisible = true">添加角色</el-button>
         <el-button size="small" @click="update">保存</el-button>
       </div>
       <div class="left">
         <h6>角色列表</h6>
-        <ul @click="clickfun($event)">
-          <li v-for="item in role" :label="item.id" :key="item.id">{{item.name}}</li>
+        <ul @click="getName" >
+          <li v-for="item in role" :label="item.id" :key="item.id" ><span @click="listPermissionByRoleId">{{item.name}}</span> <span><i class='iconfont icon-shanchu1' @click="expurgate"></i></span></li>
         </ul>
       </div>
       <div class="right">
         <div class="roleName">
           <h6>权限分配</h6>
-          <label for="">角色名称:</label>
-          <el-input type="text" style="width:200px" size="small" v-model="roleName"></el-input>
+          
         </div>
         <div>
           <div class="system">
@@ -34,8 +33,8 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
-          <div class="information">
+        <div v-if="information.systemList!=''">
+          <div class="information" >
             <span class="sleft">
               <i class="iconfont icon-jia" @click="informationShow" v-show="information.sShow"></i>
               <i class="iconfont icon-jian" @click="informationHide" v-show="information.sHide"></i>
@@ -51,7 +50,7 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
+        <div v-if="equipment.systemList!=''">
           <div class="equipment">
             <span class="sleft">
               <i class="iconfont icon-jia" @click="equipmentShow" v-show="equipment.sShow"></i>
@@ -68,7 +67,7 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
+        <div  v-if="personnel.systemList!=''">
           <div class="personnel">
             <span class="sleft">
               <i class="iconfont icon-jia" @click="personnelShow" v-show="personnel.sShow"></i>
@@ -85,7 +84,7 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
+        <div v-if="user.systemList!=''">
           <div class="user">
             <span class="sleft">
               <i class="iconfont icon-jia" @click="userShow" v-show="user.sShow"></i>
@@ -102,7 +101,7 @@
             </el-checkbox-group>
           </div>
         </div>
-        <div>
+        <div v-if="message.systemList!=''">
           <div class="message">
             <span class="sleft">
               <i class="iconfont icon-jia" @click="messageShow" v-show="message.sShow"></i>
@@ -121,12 +120,32 @@
         </div>
       </div>
     </div>
+    <el-dialog title="角色添加" :visible.sync="dialogFormVisible" width="40%">
+      <el-form :model="form">
+        <el-form-item label="角色名称" label-width="120px">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="角色描述" label-width="120px">
+          <el-input type="textarea" v-model="form.desc"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
+        <el-button type="primary" @click="roleAdd" size="small">保 存</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
+import { MessageBox } from 'element-ui';
   export default {
     data() {
       return {
+        form:{
+          name:"",
+          desc:""
+        },
+        dialogFormVisible: false,
         role:"",
         roleName: "",
         roleId:0,
@@ -148,15 +167,7 @@
           sHide: false,
           checkAll: false,
           checkedSystem: [],
-          systemList: [
-            "系统参数设置",
-            "工作台管理",
-            "数据备份",
-            "系统模型管理",
-            "工作流管理",
-            "安全设置",
-            "更新缓存",
-            "数备份"],
+          systemList: [],
           systemKey :[],
           isIndeterminate: true
         },
@@ -165,16 +176,7 @@
           sHide: false,
           checkAll: false,
           checkedSystem: [],
-          systemList: [
-            "系统参数设置",
-            "工作台管理",
-            "数据备份",
-            "系统模型管理",
-            "工作流管理",
-            "安全设置",
-            "更新缓存",
-            "数备份"
-          ],
+          systemList: [],
           systemKey :[],
           isIndeterminate: true
         },
@@ -183,14 +185,7 @@
           sHide: false,
           checkAll: false,
           checkedSystem: [],
-          systemList: [
-            "新增设备信息",
-            "修改设备信息",
-            "删除设备信息",
-            "设备分类管理",
-            "设备类别管理",
-            "设备绑定人员信息管理"
-          ],
+          systemList: [],
           systemKey :[],
           isIndeterminate: true
         },
@@ -207,17 +202,8 @@
           sShow: true,
           sHide: false,
           checkAll: false,
-          checkedSystem: ["系统参数设置", "工作台管理"],
-          systemList: [
-            "系统参数设置",
-            "工作台管理",
-            "数据备份",
-            "系统模型管理",
-            "工作流管理",
-            "安全设置",
-            "更新缓存",
-            "数备份"
-          ],
+          checkedSystem: [],
+          systemList: [],
           systemKey :[],
           isIndeterminate: true
         },
@@ -225,23 +211,17 @@
           sShow: true,
           sHide: false,
           checkAll: false,
-          checkedSystem: ["系统参数设置", "工作台管理"],
-          systemList: [
-            "系统参数设置",
-            "工作台管理",
-            "数据备份",
-            "系统模型管理",
-            "工作流管理",
-            "安全设置",
-            "更新缓存",
-            "数备份"
-          ],
+          checkedSystem: [],
+          systemList: [],
           systemKey :[],
           isIndeterminate: true
         },
       };
     },
     methods: {
+      expurgate(){
+        this.$confirm('此操作将删除该角色, 是否继续?', '提示')
+      },
       systemCheckAllChange(val) {
         this.list(this.system.systemList,this.system.systemList,this.system.systemKey,1);
         this.system.checkedSystem = val ? this.system.systemList : [];
@@ -255,12 +235,13 @@
           checkedCount > 0 && checkedCount < this.system.systemList.length;
       },
       systemShow() {
-        $(".system-slist")[0].style.height = "auto";
+        this.list(this.system.checkedSystem,this.system.systemList,this.system.systemKey,1);
+        document.querySelectorAll(".system-slist")[0].style.height = "auto";
         this.system.sShow = !this.system.sShow;
         this.system.sHide = !this.system.sHide;
       },
       systemHide() {
-        $(".system-slist")[0].style.height = 0;
+        document.querySelectorAll(".system-slist")[0].style.height = 0;
         this.system.sShow = !this.system.sShow;
         this.system.sHide = !this.system.sHide;
       },
@@ -278,6 +259,7 @@
           checkedCount > 0 && checkedCount < this.information.systemList.length;
       },
       informationShow() {
+        this.list(this.information.checkedSystem,this.information.systemList,this.information.systemKey,2);
         document.querySelectorAll(".information-slist")[0].style.height = "auto";
         this.information.sShow = !this.information.sShow;
         this.information.sHide = !this.information.sHide;
@@ -301,6 +283,7 @@
           checkedCount > 0 && checkedCount < this.equipment.systemList.length;
       },
       equipmentShow() {
+        this.list(this.equipment.checkedSystem,this.equipment.systemList,this.equipment.systemKey,3);
         document.querySelectorAll(".equipment-slist")[0].style.height = "auto";
         this.equipment.sShow = !this.equipment.sShow;
         this.equipment.sHide = !this.equipment.sHide;
@@ -324,12 +307,13 @@
           checkedCount > 0 && checkedCount < this.personnel.systemList.length;
       },
       personnelShow() {
-        console.log("ok");
+        this.list(this.personnel.checkedSystem,this.personnel.systemList,this.personnel.systemKey,4);
         document.querySelectorAll(".personnel-slist")[0].style.height = "auto";
         this.personnel.sShow = !this.personnel.sShow;
         this.personnel.sHide = !this.personnel.sHide;
       },
       personnelHide() {
+        console.log("no");
         document.querySelectorAll(".personnel-slist")[0].style.height = 0;
         this.personnel.sShow = !this.personnel.sShow;
         this.personnel.sHide = !this.personnel.sHide;
@@ -347,7 +331,7 @@
           checkedCount > 0 && checkedCount < this.user.systemList.length;
       },
       userShow() {
-        console.log("ok");
+        this.list(this.user.checkedSystem,this.user.systemList,this.user.systemKey,5);
         document.querySelectorAll(".user-slist")[0].style.height = "auto";
         this.user.sShow = !this.user.sShow;
         this.user.sHide = !this.user.sHide;
@@ -370,7 +354,7 @@
           checkedCount > 0 && checkedCount < this.message.systemList.length;
       },
       messageShow() {
-        console.log("ok");
+        this.list(this.message.checkedSystem,this.message.systemList,this.message.systemKey,6);
         document.querySelectorAll(".message-slist")[0].style.height = "auto";
         this.message.sShow = !this.message.sShow;
         this.message.sHide = !this.message.sHide;
@@ -380,10 +364,26 @@
         this.message.sShow = !this.message.sShow;
         this.message.sHide = !this.message.sHide;
       },
-      dddd(event) {
-        this.roleName = event.currentTarget.innerText;
-      },
 
+      roleAdd(){
+        if (this.form.name === ""){
+          alert("请输入角色名称");
+        } else{
+          this.axios
+            .get(this.global.apiSrc+"/role/findOnlyByRoleName",{params:{roleName:this.form.name}})
+            .then(response => {
+              if (response.data.data){
+                this.toRoleAdd()
+                this.form=""
+              }else{
+                alert("角色名以存在，请重新输入角色名称！")
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }
+      },
       load(){
         this.axios
           .get(this.global.apiSrc+"/role/listAllRole")
@@ -393,11 +393,6 @@
           .catch(function(error) {
             console.log(error);
           });
-      },
-      clickfun(e){
-        this.roleName = e.target.textContent;
-        this.roleId = e.target.attributes.label;
-        this.listPermissionByRoleId(this.roleId.value);
       },
       list(value,toValues,key,number){
         this.systemID = "";
@@ -435,29 +430,21 @@
             break;
         }
       },
-      add(){
-        this.systemID = "";
-        for(let i = 0;i< this.systemKeyInfo.length;i++){
-          if(this.systemID === ""){
-            this.systemID = this.systemKeyInfo[i];
-          }else{
-            this.systemID += ","+this.systemKeyInfo[i];
-          }
-        }
-        // console.log(this.systemID);
+      toRoleAdd(){
+        this.dialogFormVisible = false;
         let qs = require("qs");
         let data = qs.stringify({
-          id:this.roleId.value,
-          name:this.roleName
+          name:this.form.name,
+          description:this.form.desc
         });
         this.axios
-          .post(this.global.apiSrc+"/role/add",data,{params: {permissionIds:this.systemID}})
+          .post(this.global.apiSrc+"/role/add",data)
           .then(response =>{
             if (response.data.msg ==="成功") {
-              alert("成功");
+              alert("角色创建成功，请记得分配相关权限");
               this.load();
             }else{
-              alert("失败");
+              alert("系统繁忙，请稍后再试");
             }
           })
           .catch(function(error) {
@@ -465,6 +452,7 @@
           });
       },
       update(){
+        console.log(this.roleId);
         this.systemID = "";
         for(let i = 0;i< this.systemKeyInfo.length;i++){
           if(this.systemID === ""){
@@ -473,12 +461,13 @@
             this.systemID += ","+this.systemKeyInfo[i];
           }
         }
+        console.log(this.systemID);
         let qs = require("qs");
         let data = qs.stringify({
-            id:this.roleId.value,
-            name:this.roleName,
-            permissionIds:this.systemID
-          });
+          id:this.roleId,
+          name:this.roleName,
+          permissionIds:this.systemID
+        });
         this.axios
           .post(this.global.apiSrc+"/role/update",data)
           .then(response =>{
@@ -493,9 +482,9 @@
             console.log(error);
           });
       },
-      listPermissionByRoleId(val){
+      listPermissionByRoleId(value){
         this.axios
-          .get(this.global.apiSrc+"/role/listPermissionByRole",{params: {roleId:val}})
+          .get(this.global.apiSrc+"/role/listPermissionByRole",{params: {roleId:value}})
           .then(response =>{
             let arr = new Array();
             let arr1 = new Array();
@@ -578,14 +567,23 @@
           .catch(function(error) {
             console.log(error);
           });
+      },
+      getName(event){
+        this.roleName = event.target.innerHTML;
+        for(let i =0;i<this.role.length;i++){
+          if(this.roleName  === this.role[i].name){
+            this.roleId = this.role[i].id;
+            this.listPermissionByRoleId(this.roleId);
+          }
+        }
+      },
+      deleteRole(){
+
       }
     },
     mounted() {
-      $(".left li").click(function() {
-        $(this)
-          .addClass("fontColor")
-          .siblings()
-          .removeClass("fontColor");
+      $(".left").click(event=> {
+        $(event.target).addClass("fontColor").siblings().removeClass("fontColor");
       });
     },
     created() {
@@ -608,7 +606,7 @@
   @Info: #dde2eb;
   @border: 1px solid #dde2eb;
   .roleManagement {
-    padding-left: 180px;
+    // padding-left: 180px;
     font-size: 14px;
     .case {
       padding: 10px;
@@ -640,8 +638,15 @@
           height: 30px;
           line-height: 30px;
           cursor: pointer;
+          span:nth-child(2){
+            color: #f56c6c;
+            display: none;
+          }
           &:hover {
             color: @blue;
+            span:nth-child(2){
+              display: inline-block;
+            }
           }
         }
       }
@@ -654,13 +659,12 @@
         margin-left: 30px;
         padding: 10px;
         .roleName {
-          height: 100px;
-          line-height: 100px;
+          height: 10px;
           padding-left: 10px;
           position: relative;
           h6 {
             position: absolute;
-            top: -60px;
+            top: -15px;
             left: 30px;
           }
         }
@@ -845,3 +849,4 @@
     color: #409eff;
   }
 </style>
+

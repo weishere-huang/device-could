@@ -31,10 +31,9 @@
               </li>
               <li>
                 <label for="">组织单位：</label>
-                <el-select v-model="persnneladd.organizationName" placeholder="请选择" size="small" style="width:70%">
-                  <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                <el-select v-model="persnneladd.organizeCode" placeholder="请选择" size="small" style="width:70%">
+                  <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.code">
                   </el-option>
-
 
                 </el-select>
               </li>
@@ -73,7 +72,6 @@
                 </span>
               </li>
 
-
             </ul>
           </div>
         </div>
@@ -105,7 +103,7 @@
             </li>
             <li>
               <label for="">电子邮箱：</label>
-              <el-input type="email" size="small" style="width:200px" v-model="persnneladd.email"></el-input>
+              <el-input type="email"  size="small" style="width:200px" v-model="persnneladd.email"></el-input>
             </li>
             <li>
               <label for="">通讯地址：</label>
@@ -143,11 +141,12 @@
     name: "",
     data() {
       return {
+        date:new Date().toLocaleString().split(" ")[0].replace(/\//g, "-"),
         nameAndImg:[{name:"", img:""}],
         persnneladd: {
           employeeNo: "",
           name: "",
-          gender: "",
+          gender: "1",
           birthday: "",
           phone: "",
           position: "",
@@ -157,7 +156,7 @@
           workType:"",
           entryTime: "",
           email: "",
-          marital: "",
+          marital: "0",
           idCardNo: "",
           workingYears: "",
           height: "",
@@ -170,24 +169,7 @@
           qualificationInfo:"",
           roleId: ""
         },
-        options: [
-          {
-            value: "四川长虹电器有限公司",
-            label: "四川长虹电器有限公司"
-          },
-          {
-            value: "四川长虹智能制造有限公司",
-            label: "四川长虹智能制造有限公司"
-          },
-          {
-            value: "长虹网络科技有限公司",
-            label: "长虹网络科技有限公司"
-          },
-          {
-            value: "长虹电子系统有限公司",
-            label: "长虹电子系统有限公司"
-          }
-        ],
+        options: [],
         role: []
       };
 
@@ -196,11 +178,54 @@
       tback(){
         this.$router.back(-1)
       },
-      employeeAdd() {
+      organize(){
+        this.axios
+          .get(this.global.apiSrc+"/organize/allOrganize")
+          .then(response => {
+            this.options = response.data.data;
+            console.log(response.data.data)
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      codeToName(organizeCode){
+        for (let i =0;i<this.options.length;i++){
+          if(this.options[i].code === organizeCode){
+            this.persnneladd.organizationName = this.options[i].name;
+          }
+        }
+      },
+      toEmployeeAdd() {
         this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
         let qs = require("qs");
-        let data = qs.stringify(this.persnneladd);
+        let data = qs.stringify({
+          employeeNo: this.persnneladd.employeeNo,
+          name:this.persnneladd.name,
+          gender:this.persnneladd.gender,
+          birthday:this.persnneladd.birthday,
+          phone:this.persnneladd.phone,
+          position:this.persnneladd.position,
+          organizeCode:this.persnneladd.organizeCode,
+          organizationName :this.persnneladd.organizationName,
+          enterpriseId  :this.persnneladd.enterpriseId,
+          workType:this.persnneladd.workType,
+          entryTime:this.persnneladd.entryTime,
+          email:this.persnneladd.email,
+          marital:this.persnneladd.marital,
+          idCardNo:this.persnneladd.idCardNo,
+          workingYears:this.persnneladd.workingYears,
+          height:this.persnneladd.height,
+          nativePlace:this.persnneladd.nativePlace,
+          nationality:this.persnneladd.nationality,
+          postalAddress:this.persnneladd. postalAddress,
+          graduateSchool:this.persnneladd. graduateSchool,
+          degree:this.persnneladd.degree,
+          img:this.persnneladd.img,
+          qualificationInfo:this.persnneladd.qualificationInfo,
+          roleId:this.persnneladd.roleId
+        });
         this.axios
           .post(this.global.apiSrc+"/employee/add", data)
           .then(response => {
@@ -246,13 +271,64 @@
             });
           });
         console.log(this.persnneladd.organizationName);
+      },
+      testValue(){
+        // let regEmail=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/;
+        // if(this.persnneladd.email.test(" ")){
+        //   if(!regEmail.test(this.persnneladd.email)){
+        //     alert("邮箱格式不正确");
+        //     return false;
+        //   }
+        // }
+        if (this.persnneladd.name == ""){
+          alert("员工名不能为空");
+          return false;
+        }
+        if(this.persnneladd.employeeNo == ""){
+          alert("员工编号不能为空");
+          return false;
+        }
+        let regIdNo = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if (!regIdNo.test(this.persnneladd.idCardNo)){
+          alert("身份证号填写有误");
+          return false;
+        }
+        if (this.persnneladd.roleId == ""){
+          alert("请选择角色权限");
+          return false;
+        }
+        if(!(/^1[34578]\d{9}$/.test(this.persnneladd.phone))){
+          alert("手机号码有误，请重填");
+          return false;
+        }
+        if(this.persnneladd.birthday == ""){
+          alert("请输入出生日期");
+          return false;
+        }
+        if(this.persnneladd.organizationName == " "){
+          alert("请选择组织机构");
+          return false;
+        }
+        if(this.persnneladd.position==""){
+          alert("请输入岗位");
+          return false;
+        }
+        return true;
+      },
+      employeeAdd(){
+        this.codeToName(this.persnneladd.organizeCode);
+        if(this.testValue()){
+          this.toEmployeeAdd()
+        }
       }
     },
     created() {
+      this.organize();
       this.axios
-        .get(this.global.apiSrc+"/role/listAllRole")
+        .get(this.global.apiSrc + "/role/listAllRole")
         .then(response => {
           this.role = response.data.data;
+          this.persnneladd.entryTime = this.date
         })
         .catch(function(error) {
           console.log(error);
@@ -268,7 +344,7 @@
   @Danger: #f56c6c;
   @Info: #dde2eb;
   .persnnel-add {
-    padding-left: 180px;
+    // padding-left: 180px;
     .add-case {
       padding: 10px;
       .topbtn {
@@ -292,7 +368,7 @@
           overflow: hidden;
           .title {
             display: inline-block;
-            width: 110px;
+            width: auto;
             position: absolute;
             text-align: center;
             top: 0%;
@@ -339,7 +415,7 @@
           padding-left: 20px;
           .title {
             display: inline-block;
-            width: 110px;
+            width: auto;
             text-align: center;
             position: absolute;
             top: 48%;
@@ -359,3 +435,4 @@
     }
   }
 </style>
+

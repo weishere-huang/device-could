@@ -2,33 +2,95 @@
   <div class="turnaround-plans">
     <div class="userCase">
       <div class="top">
-        <el-button size="small">审核</el-button>
-        <el-button size="small">停止</el-button>
+        <el-button
+          size="small"
+           @click="outerVisible = true"
+        >审核</el-button>
+        <el-button
+          size="small"
+          @click="revoke"
+        >故障消除</el-button>
         <el-button size="small">删除</el-button>
         <div class="search">
-          <el-input type="search" placeholder="如故障编码，设备名称，位号，描述" size="small"></el-input>
-          <el-button size="small">搜索</el-button>
+          <el-input
+            type="search"
+            placeholder="如故障编码，设备名称，位号，描述"
+            size="small"
+            v-model="faultKey"
+          ></el-input>
+          <el-button
+            size="small"
+            @click="search"
+          >搜索</el-button>
           <span style="padding-left:10px;">高级搜索</span>
         </div>
       </div>
       <div class="bottom">
         <div>
-          <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-          <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          <v-table
+            :select-all="selectALL"
+            :select-group-change="selectGroupChange"
+            is-horizontal-resize
+            column-width-drag
+            :multiple-sort="false"
+            style="width:100%;min-height:400px;"
+            :columns="columns"
+            :table-data="tableData"
+            row-hover-color="#eee"
+            row-click-color="#edf7ff"
+            :row-dblclick="toDetails"
+          ></v-table>
+          <div
+            class="mt20 mb20 bold"
+            style="text-align:center;margin-top:30px;"
+          >
+            <v-pagination
+              @page-change="pageChange"
+              @page-size-change="pageSizeChange"
+              :total="1"
+              :page-size="pageSize"
+              :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
+            ></v-pagination>
           </div>
         </div>
       </div>
     </div>
+    <el-dialog title="审核" :visible.sync="outerVisible">
+      <audit></audit>
+    <el-dialog
+      title="人员添加"
+      :visible.sync="innerVisible"
+      append-to-body>
+      <personnel></personnel>
+    </el-dialog>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="outerVisible = false" size="mini">取 消</el-button>
+      <el-button type="primary" size="mini">提交</el-button>
+      <el-button type="primary" @click="innerVisible = true" size="mini">添加下一级审批人</el-button>
+    </div>
+  </el-dialog>
   </div>
 </template>
 <script>
+import audit from "./breakdown/Audit";
+import personnel from "./breakdown/Personnel";
 export default {
   data() {
     return {
+      outerVisible: false,
+      innerVisible: false,
+      faultId: "",
+      faultKey: "",
+      auditShow: false,
+      auditdetails:"",
       pageIndex: 1,
       pageSize: 10,
-      tableData: [],
+      tableData: [
+        {
+          faultNo:"2222",
+          state:"2222"
+        }
+      ],
       tableDate: [],
       columns: [
         {
@@ -106,8 +168,18 @@ export default {
     };
   },
   methods: {
+    toDetails(rowIndex, rowData, column){
+      this.$router.push({path:"/BreakDetails"})
+    },
+    auditHide(params){
+      this.auditShow=params;
+    },
+    toAudit() {
+      this.auditShow = true;
+    },
     selectGroupChange(selection) {
       console.log("select-group-change", selection);
+      this.auditdetails=selection
     },
     selectALL(selection) {
       console.log("select-aLL", selection);
@@ -145,67 +217,100 @@ export default {
       }
     },
 
-    load(){
+    load() {
       this.axios
-        .get(this.global.apiSrc+"/fault/list",{params:{page:-1}})
-        .then(response=>{
+        .get(this.global.apiSrc + "/fault/list", { params: { page: -1 } })
+        .then(response => {
           this.tableData = response.data.data;
-          for (let i = 0;i<this.tableData.length;i++){
-            if(this.tableData[i].state === 0){
-              this.tableData[i].state = "待审核"
-            }
-            if(this.tableData[i].state === 1){
-              this.tableData[i].state = "审核通过"
-            }
-            if(this.tableData[i].state === 2){
-              this.tableData[i].state = "禁用"
-            }
-            if(this.tableData[i].state === 3){
-              this.tableData[i].state = "已删除"
-            }
-            if(this.tableData[i].state === 4){
-              this.tableData[i].state = "审核中"
-            }
-            if(this.tableData[i].state === 5){
-              this.tableData[i].state = "待处理"
-            }
-            if(this.tableData[i].state === 6){
-              this.tableData[i].state = "已消除"
-            }
-            if(this.tableData[i].state === 7){
-              this.tableData[i].state = "已撤销"
-            }
-            if(this.tableData[i].state === 10){
-              this.tableData[i].state = "审批被驳回"
-            }
-            if(this.tableData[i].faultLevel ===1){
-              this.tableData[i].faultLevel = "低"
-            }
-            if(this.tableData[i].faultLevel ===2){
-              this.tableData[i].faultLevel = "中"
-            }
-            if(this.tableData[i].faultLevel ===3){
-              this.tableData[i].faultLevel = "高"
-            }
-            if(this.tableData[i].faultSource==="0"){
-              this.tableData[i].faultSource="人工提交"
-            }
-            if(this.tableData[i].faultSource==="1"){
-              this.tableData[i].faultSource="设备采集"
-            }
-          }
-          this.tableDate = this.tableData
+          this.springReplacement();
+          this.tableDate = this.tableData;
         })
         .catch(function(error) {
           console.log(error);
         });
     },
-    dispel(){
-      
+    springReplacement() {
+      for (let i = 0; i < this.tableData.length; i++) {
+        if (this.tableData[i].state === 0) {
+          this.tableData[i].state = "待审核";
+        }
+        if (this.tableData[i].state === 1) {
+          this.tableData[i].state = "审核通过";
+        }
+        if (this.tableData[i].state === 2) {
+          this.tableData[i].state = "禁用";
+        }
+        if (this.tableData[i].state === 3) {
+          this.tableData[i].state = "已删除";
+        }
+        if (this.tableData[i].state === 4) {
+          this.tableData[i].state = "审核中";
+        }
+        if (this.tableData[i].state === 5) {
+          this.tableData[i].state = "待处理";
+        }
+        if (this.tableData[i].state === 6) {
+          this.tableData[i].state = "已消除";
+        }
+        if (this.tableData[i].state === 7) {
+          this.tableData[i].state = "已撤销";
+        }
+        if (this.tableData[i].state === 10) {
+          this.tableData[i].state = "审批被驳回";
+        }
+        if (this.tableData[i].faultLevel === 1) {
+          this.tableData[i].faultLevel = "低";
+        }
+        if (this.tableData[i].faultLevel === 2) {
+          this.tableData[i].faultLevel = "中";
+        }
+        if (this.tableData[i].faultLevel === 3) {
+          this.tableData[i].faultLevel = "高";
+        }
+        if (this.tableData[i].faultSource === "0") {
+          this.tableData[i].faultSource = "人工提交";
+        }
+        if (this.tableData[i].faultSource === "1") {
+          this.tableData[i].faultSource = "设备采集";
+        }
+      }
+    },
+    revoke() {
+      let qs = require("qs");
+      let data = qs.stringify({
+        faultId: this.faultId
+      });
+      this.axios
+        .post(this.global.apiSrc + "/fault/revoke", data)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    search() {
+      this.axios
+        .get(this.global.apiSrc + "/fault/search", {
+          params: { keyword: this.faultKey, page: -1 }
+        })
+        .then(response => {
+          this.tableData = response.data.data;
+          this.springReplacement();
+          this.tableDate = this.tableData;
+          // console.log(response)
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   },
-  created(){
-    this.load()
+  created() {
+    this.load();
+  },
+  components: {
+    audit,
+    personnel
   }
 };
 </script>
@@ -218,7 +323,7 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .turnaround-plans {
-  padding-left: 220px;
+  // padding-left: 220px;
   .userCase {
     width: 100%;
     padding: 10px;

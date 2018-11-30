@@ -75,12 +75,12 @@
         <el-form label-width="110px" v-if="companyName.planType==='单次'" v-model="companyName.planType">
           <el-form-item label="计划日期：">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期"  format="yyyy/MM/dd" v-model="companyName.startTime" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期"  format="yyyy/MM/dd" value-format="yyyy/MM/dd" v-model="companyName.startTime" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
             </el-col>
           </el-form-item>
           <el-form-item label="首次执行时间：">
             <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" format="yyyy/MM/dd" v-model="date" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" format="yyyy/MM/dd" value-format="yyyy/MM/dd" v-model="date" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
             </el-col>
             <el-col class="line" :span="2">-</el-col>
             <el-col :span="11">
@@ -197,20 +197,7 @@
         ],
         pageIndex: 1,
         pageSize: 10,
-        tableData: [
-          {
-            deviceCategoryName:"1",
-            manufacturer:"2",
-            deviceName:"3",
-            deviceModel:"4",
-            deviceNo:"",
-            deviceState:"",
-            location:"",
-            locationNo:"",
-            workerNames:"",
-            id:""
-          }
-        ],
+        tableData: [],
         tableDate: []
       };
     },
@@ -230,6 +217,7 @@
       amendPlanIsShow() {
         this.amendPlanShow = true;
       },
+
       TurnaroundPlans() {
         this.$router.push({
           path: "/TurnaroundPlans"
@@ -393,7 +381,7 @@
   @Info: #dde2eb;
   @border: 1px solid #dde2eb;
   .turnaroundPlansAdd {
-    padding-left: 180px;
+    // padding-left: 180px;
     .top {
       padding: 10px 20px;
     }
