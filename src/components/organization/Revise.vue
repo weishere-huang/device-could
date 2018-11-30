@@ -22,6 +22,7 @@
           >
             <el-option
               v-for="item in options"
+              :props="aaa"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -56,8 +57,12 @@ export default {
   props:["chengedata"],
   data() {
     return {
+      aaa:{
+        value:"chengedata.organizeType",
+        label:""
+      },
       show: true,
-      Cnode:this.chengedata,
+      // Cnode:this.chengedata,
       options: [
         {
           value: "1",
@@ -84,6 +89,19 @@ export default {
     },
     update() {
       //修改组织机构
+      // if (this.chengedata.organizeType == "公司"){
+      //   this.chengedata.organizeType = 1;
+      // }
+      // if (this.chengedata.organizeType == "工厂"){
+      //   this.chengedata.organizeType = 2;
+      // }
+      // if (this.chengedata.organizeType == "部门"){
+      //   this.chengedata.organizeType = 3;
+      // }
+      // if (this.chengedata.organizeType == "车间"){
+      //   this.chengedata.organizeType = 4;
+      // }
+      console.log(this.chengedata);
       let qs = require("qs");
       let data = qs.stringify({
         organizeId: this.chengedata.id,
@@ -91,20 +109,22 @@ export default {
         organizeType: this.chengedata.organizeType,
         organizeInfo: this.chengedata.organizeInfo
       });
+      console.log(data);
       this.axios
         .post(this.global.apiSrc + "/organize/update", data)
         .then(result => {
           if(result.data.code === 200){
-            alert("修改成功");
+
             console.log(result.data);
+            location.reload();
+            alert("修改成功");
           }else{
             alert("修改失败");
             console.log(result.data);
-          }
+           }
         })
         .catch(err => {
           console.log(err);
-          console.log(this.userName);
         });
     },
   }

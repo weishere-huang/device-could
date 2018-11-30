@@ -41,7 +41,7 @@ export default {
     return {
       show: true,
       type: "",
-      pcode:this.nodedata,
+      // pcode:this.nodedata,
       options: [
       {
         value: 1,
@@ -78,24 +78,31 @@ export default {
       console.log(value);
     },
     addHide() {
+      this.orgname=""
+      this.value=""
+      this.orgInfo=""
       this.$emit("addHide",false)
     },
     add() {
       //添加组织机构
       let qs = require("qs");
       let data = qs.stringify({
-        parentCode: this.pcode.code,
+        parentCode: this.nodedata.code,
         name: this.orgname,
         organizeType: this.value,
         organizeInfo: this.orgInfo
       });
-      console.log(this.pcode);
+      console.log(this.nodedata);
       this.axios
         .post(this.global.apiSrc + "/organize/add", data)
         .then(result => {
           if(result.data.code === 200){
             alert("添加成功");
             console.log(result.data);
+            this.orgname=""
+            this.value=""
+            this.orgInfo=""
+            location.reload()
           }else{
             alert("添加失败");
             console.log(result.data);

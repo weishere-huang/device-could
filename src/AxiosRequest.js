@@ -9,13 +9,14 @@ import global from './components/global/Global';
 import { Message,Loading } from 'element-ui';
 axios.defaults.withCredentials = true;
 
-export default ({ url, type, params, config,loadingConfig},vue) => {
+export default ({ url, type, params, config, option ,loadingConfig},vue) => {
     //api的url加入统一前缀
     url=`${global.apiSrc}${url}`;
-    // if (process.env.NODE_ENV === 'development') {
-    //     url = `/api${url}`;
-    // }
-    
+    //process.env.NODE_ENV === 'development' && url = `/api${url}`;
+    option = Object.assign({
+        enableMsg:true,
+        successMsg:'请求成功'
+    },option||{});
     return new Promise((resolve, reject) => {
         //这里加一个通用的数据重置后门
         if (params.reset === true) {
@@ -32,14 +33,14 @@ export default ({ url, type, params, config,loadingConfig},vue) => {
                 customClass:'loadingStyle'
                 },loadingConfig||{}));
 
-                axios[type||'post'](url, {params:params}, config || {}).then(res => {
+                axios[type||'post'](url, type==='get'?{params:params}:params, config || {}).then(res => {
                     if (res.status === 200 && res.data.code === 200) {
                         //success && success(res.data);
-                        Message.success({message:'请求成功', customClass:'e-message', duration:1500});
+                        option.enableMsg && Message.success({message:option.successMsg, customClass:'e-message', duration:1500});
                         resolve(res);
                     } else {
                         //faild && faild(res.data);
-                        console.log(info);
+                        console.log(res.data.msg);
                         Message.error({message:`${res.data.msg}(${res.data.code})`,customClass:'e-message', duration:5000});
                         reject({ type: 'faild', info: res.data });
                     }

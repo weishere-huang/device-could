@@ -19,31 +19,37 @@
           <el-form-item label="所属部门">
             <el-cascader
               placeholder="搜索"
-              :options="options"
+              :options="orgoptions"
+              :props="defaultProps"
+              expand-trigger="hover"
               filterable
+              ref="getName"
               change-on-select
               :show-all-levels="false"
-              v-model="sizeForm.organizeName"
+              v-model="ogrname"
+               @change="handleChange"
               style="width:512px;"
             ></el-cascader>
           </el-form-item>
           <el-form :inline="true" style="padding-left:12px" size="small">
             <el-form-item label="设备分类">
-              <el-select v-model="sizeForm.deviceClassify" placeholder="点击选择" style="width:215px">
-
+              <el-select v-model="sizeForm.deviceClassify" placeholder="点击选择" style="width:215px" @change="classf" ref="getclassfy">
                 <el-option v-for="(item,index) in options2" :key="index" :label="item.label"
                            :value="item.value"></el-option>
-
               </el-select>
             </el-form-item>
             <el-form-item label="设备类别">
               <el-cascader
                 placeholder="搜索"
-                :options="options"
+                :options="ctgoptions"
                 filterable
+                ref="getName2"
+                expand-trigger="hover"
+                :props="defaultProps2"
                 change-on-select
                 :show-all-levels="false"
-                v-model="sizeForm.organizeName"
+                v-model="classfynm"
+                @change="handleChange2"
                 style="width:215px;"
               ></el-cascader>
             </el-form-item>
@@ -56,7 +62,7 @@
               <el-select v-model="sizeForm.deviceState" placeholder="点击选择" style="width:215px">
 
                 <el-option v-for="(item,index) in options4" :key="index" :label="item.label"
-                           :value="item.value"></el-option>
+                           :value="item.value" @chenge="devstate"></el-option>
 
               </el-select>
             </el-form-item>
@@ -87,7 +93,7 @@
               <span>负责人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="dialogVisible=true">
+            <div @click="dialogVisible=true" v-on:addPerson="addPerson">
               更改绑定
             </div>
           </li>
@@ -177,8 +183,18 @@
     name: "",
     data() {
       return {
+        defaultProps:{
+          value:"code",
+          label:"name"
+        },
+        defaultProps2:{
+          value:"categoryNo",
+          label:"categoryName"
+        },
         dialogVisible:false,
         addShow: false,
+        ogrname:"",
+        classfynm:"",
         sizeForm: {
           // deviceNo: "",
           // deviceName: "",
@@ -203,9 +219,10 @@
 
           deviceNo: "CH000001",
           deviceName: "液压机",
-          organizeName: "工程技术中心",
-          deviceClassify: "1",
-          deviceClassifyName: "超级存储",
+          organizeName: "",
+          organizeCode: "",
+          deviceClassify: "",
+          deviceClassifyName: "",
           deviceSpec: "GC222",
           outputDate: "2018/11/26",
           manufacturer: "222",
@@ -214,31 +231,13 @@
           buyPrice: "200000",
           buyDate: "2018/11/26",
           dataInfo: "555",
-          deviceCategory: "1",
-          deviceCategoryName: "机械类",
+          deviceCategory: "",
+          deviceCategoryName: "",
           deviceModel: "ZA100-315315",
           deviceState: "1",
-          organizeCode: "1000",
+
           enterFactoryDate: "2018/11/26"
         },
-        options1: [
-          {
-            value: "1",
-            label: "1"
-          },
-          {
-            value: "2",
-            label: "2"
-          },
-          {
-            value: "3",
-            label: "3"
-          },
-          {
-            value: "4",
-            label: "4"
-          },
-        ],
         options2: [
           {
             value: "1",
@@ -259,24 +258,6 @@
           {
             value: "5",
             label: "其他设备"
-          },
-        ],
-        options3: [
-          {
-            value: "1",
-            label: "1"
-          },
-          {
-            value: "2",
-            label: "2"
-          },
-          {
-            value: "3",
-            label: "3"
-          },
-          {
-            value: "4",
-            label: "4"
           },
         ],
         options4: [
@@ -301,279 +282,38 @@
             label: "报废"
           }
         ],
-        options: [
-          {
-            value: "zhinan",
-            label: "指南",
-            children: [
-              {
-                value: "shejiyuanze",
-                label: "设计原则",
-                children: [
-                  {
-                    value: "yizhi",
-                    label: "一致"
-                  },
-                  {
-                    value: "fankui",
-                    label: "反馈"
-                  },
-                  {
-                    value: "xiaolv",
-                    label: "效率"
-                  },
-                  {
-                    value: "kekong",
-                    label: "可控"
-                  }
-                ]
-              },
-              {
-                value: "daohang",
-                label: "导航",
-                children: [
-                  {
-                    value: "cexiangdaohang",
-                    label: "侧向导航"
-                  },
-                  {
-                    value: "dingbudaohang",
-                    label: "顶部导航"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            value: "zujian",
-            label: "组件",
-            children: [
-              {
-                value: "basic",
-                label: "Basic",
-                children: [
-                  {
-                    value: "layout",
-                    label: "Layout 布局"
-                  },
-                  {
-                    value: "color",
-                    label: "Color 色彩"
-                  },
-                  {
-                    value: "typography",
-                    label: "Typography 字体"
-                  },
-                  {
-                    value: "icon",
-                    label: "Icon 图标"
-                  },
-                  {
-                    value: "button",
-                    label: "Button 按钮"
-                  }
-                ]
-              },
-              {
-                value: "form",
-                label: "Form",
-                children: [
-                  {
-                    value: "radio",
-                    label: "Radio 单选框"
-                  },
-                  {
-                    value: "checkbox",
-                    label: "Checkbox 多选框"
-                  },
-                  {
-                    value: "input",
-                    label: "Input 输入框"
-                  },
-                  {
-                    value: "input-number",
-                    label: "InputNumber 计数器"
-                  },
-                  {
-                    value: "select",
-                    label: "Select 选择器"
-                  },
-                  {
-                    value: "cascader",
-                    label: "Cascader 级联选择器"
-                  },
-                  {
-                    value: "switch",
-                    label: "Switch 开关"
-                  },
-                  {
-                    value: "slider",
-                    label: "Slider 滑块"
-                  },
-                  {
-                    value: "time-picker",
-                    label: "TimePicker 时间选择器"
-                  },
-                  {
-                    value: "date-picker",
-                    label: "DatePicker 日期选择器"
-                  },
-                  {
-                    value: "datetime-picker",
-                    label: "DateTimePicker 日期时间选择器"
-                  },
-                  {
-                    value: "upload",
-                    label: "Upload 上传"
-                  },
-                  {
-                    value: "rate",
-                    label: "Rate 评分"
-                  },
-                  {
-                    value: "form",
-                    label: "Form 表单"
-                  }
-                ]
-              },
-              {
-                value: "data",
-                label: "Data",
-                children: [
-                  {
-                    value: "table",
-                    label: "Table 表格"
-                  },
-                  {
-                    value: "tag",
-                    label: "Tag 标签"
-                  },
-                  {
-                    value: "progress",
-                    label: "Progress 进度条"
-                  },
-                  {
-                    value: "tree",
-                    label: "Tree 树形控件"
-                  },
-                  {
-                    value: "pagination",
-                    label: "Pagination 分页"
-                  },
-                  {
-                    value: "badge",
-                    label: "Badge 标记"
-                  }
-                ]
-              },
-              {
-                value: "notice",
-                label: "Notice",
-                children: [
-                  {
-                    value: "alert",
-                    label: "Alert 警告"
-                  },
-                  {
-                    value: "loading",
-                    label: "Loading 加载"
-                  },
-                  {
-                    value: "message",
-                    label: "Message 消息提示"
-                  },
-                  {
-                    value: "message-box",
-                    label: "MessageBox 弹框"
-                  },
-                  {
-                    value: "notification",
-                    label: "Notification 通知"
-                  }
-                ]
-              },
-              {
-                value: "navigation",
-                label: "Navigation",
-                children: [
-                  {
-                    value: "menu",
-                    label: "NavMenu 导航菜单"
-                  },
-                  {
-                    value: "tabs",
-                    label: "Tabs 标签页"
-                  },
-                  {
-                    value: "breadcrumb",
-                    label: "Breadcrumb 面包屑"
-                  },
-                  {
-                    value: "dropdown",
-                    label: "Dropdown 下拉菜单"
-                  },
-                  {
-                    value: "steps",
-                    label: "Steps 步骤条"
-                  }
-                ]
-              },
-              {
-                value: "others",
-                label: "Others",
-                children: [
-                  {
-                    value: "dialog",
-                    label: "Dialog 对话框"
-                  },
-                  {
-                    value: "tooltip",
-                    label: "Tooltip 文字提示"
-                  },
-                  {
-                    value: "popover",
-                    label: "Popover 弹出框"
-                  },
-                  {
-                    value: "card",
-                    label: "Card 卡片"
-                  },
-                  {
-                    value: "carousel",
-                    label: "Carousel 走马灯"
-                  },
-                  {
-                    value: "collapse",
-                    label: "Collapse 折叠面板"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            value: "ziyuan",
-            label: "资源",
-            children: [
-              {
-                value: "axure",
-                label: "Axure Components"
-              },
-              {
-                value: "sketch",
-                label: "Sketch Templates"
-              },
-              {
-                value: "jiaohu",
-                label: "组件交互文档"
-              }
-            ]
-          }
-        ],
-        orgoptions:"",
-        ctgoptions:"",
+
+        orgoptions:[],
+        ctgoptions:[],
       };
     },
     methods: {
+      classf(value){
+        console.log(value);
+        let obj = {};
+        obj = this.options2.find((item)=>{//这里的userList就是上面遍历的数据源
+          return item.value === value;//筛选出匹配数据
+        });
+        console.log(obj.label);//我这边的name就是对应label的
+        this.sizeForm.deviceClassifyName=obj.label;
+      },
+      handleChange(value) {
+        let name=this.$refs['getName'].currentLabels
+        name=name[(name.length)-1]
+        let id=value[(value.length)-1]
+        console.log(id,name);
+        this.sizeForm.organizeCode=id;
+        this.sizeForm.organizeName=name;
+
+      },
+      handleChange2(value) {
+        let name=this.$refs['getName2'].currentLabels
+        name=name[(name.length)-1]
+        let id=value[(value.length)-1]
+        console.log(id,name);
+        this.sizeForm.deviceCategory=id;
+        this.sizeForm.deviceCategoryName=name;
+      },
       tback() {
         this.$router.back(-1);
       },
@@ -607,7 +347,7 @@
           deviceModel: this.sizeForm.deviceModel,
           deviceState: this.sizeForm.deviceState,
           enterFactoryDate: this.sizeForm.enterFactoryDate,
-          // deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
+          deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
           devicePersonnelInfo: JSON.stringify([
             {
             workerType: 1,
@@ -676,45 +416,28 @@
             console.log(err);
           });
       },
-      findDeviceClassify() {
-        let qs = require("qs");
-        let data = qs.stringify({});
-        this.axios
-          .get(this.global.apiSrc + "/device/findDeviceClassify", data)
-          .then(result => {
-            console.log("findDeviceClassify");
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+      devstate(data){
+        let obj = {};
+        obj = this.options4.find((item)=>{//这里的userList就是上面遍历的数据源
+          return item.value === value;//筛选出匹配数据
+        });
+        console.log(obj.label);//我这边的name就是对应label的
+        this.sizeForm.deviceState = data.value
       },
-      findDeviceState() {
-        let qs = require("qs");
-        let data = qs.stringify({});
-        this.axios
-          .get(this.global.apiSrc + "/device/findDeviceState", data)
-          .then(result => {
-            console.log("findDeviceState");
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
-      findAlldeviceClassify() {
-        let qs = require("qs");
-        let data = qs.stringify({});
-        this.axios
-          .get(this.global.apiSrc + "/deviceCategory/all", data)
-          .then(result => {
-            console.log("findAlldeviceClassify");
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
+      // findDeviceState() {
+      //   let qs = require("qs");
+      //   let data = qs.stringify({});
+      //   this.axios
+      //     .get(this.global.apiSrc + "/device/findDeviceState", data)
+      //     .then(result => {
+      //       this.options2 =  result;
+      //       console.log("findDeviceState");
+      //       console.log(result.data);
+      //     })
+      //     .catch(err => {
+      //       console.log(err);
+      //     });
+      // },
       filterArray(data, parent) {
         let vm = this;
         var tree = [];
@@ -754,7 +477,7 @@
               }
             }
             this.orgoptions = this.filterArray(result.data.data, 0);
-            console.log(this.orgoptions)
+
           })
           .catch(err => {
             console.log(err);
@@ -768,7 +491,7 @@
         for (var i = 0; i < data.length; i++) {
           if (data[i].categoryParentNo == parent) {
             var obj = data[i];
-            temp = this.filterArray(data, data[i].categoryNo);
+            temp = this.filterArray2(data, data[i].categoryNo);
             if (temp.length > 0) {
               obj.children = temp;
             }
@@ -784,6 +507,7 @@
         this.axios
           .get(this.global.apiSrc + "/deviceCategory/all", data)
           .then(result => {
+            console.log("查询设备类别")
             this.ctgoptions= this.filterArray2(result.data.data,0);
             console.log(this.ctgoptions);
             console.log(result.data);
@@ -792,13 +516,16 @@
             console.log(err);
           });
       },
+      addPerson(params){
+
+      }
     },
 
     created() {
-      this.findDeviceClassify();
-      this.findDeviceState();
+      //this.findDeviceState();
       this.findAlldeviceClassify();
       this.allOrganize();
+      // console.log(this.options);
     },
     components: {
       addPerson

@@ -298,6 +298,7 @@ export default {
                 path: "/Home",
                 redirect: "/Home"
               });
+              location.reload()
             } else {
               alert("账号或密码错误");
               this.$router.push({ path: "/Login" });

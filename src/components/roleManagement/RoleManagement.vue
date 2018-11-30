@@ -380,7 +380,7 @@
           this.axios
             .get(this.global.apiSrc+"/role/findOnlyByRoleName",{params:{roleName:this.form.name}})
             .then(response => {
-              if (response.data.data){
+              if (response.data.code===200){
                 this.toRoleAdd();
                 this.form.name="";
                 this.form.desc=""
@@ -607,8 +607,8 @@
       }
     },
     mounted() {
-      $(".left").click(event=> {
-        $(event.target).addClass("fontColor").siblings().removeClass("fontColor");
+      $(".left").on('click',"li",function(event) {
+        $(this).addClass("fontColor").siblings().removeClass("fontColor");
       });
     },
     created() {
