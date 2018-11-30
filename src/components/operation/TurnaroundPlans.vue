@@ -19,20 +19,20 @@
     <el-dialog title="审核" :visible.sync="outerVisible">
       <el-form label-position=right label-width="120px" :model="formLabelAlign">
         <el-form-item label="审批结果：">
-          <el-radio v-model="formLabelAlign.radio" label="1">同意</el-radio>
-          <el-radio v-model="formLabelAlign.radio" label="2">驳回</el-radio>
+          <el-radio v-model="formLabelAlign.radio" :label="0">同意</el-radio>
+          <el-radio v-model="formLabelAlign.radio" :label="1">驳回</el-radio>
         </el-form-item>
         <el-form-item label="审批意见：">
           <el-input type="textarea" v-model="formLabelAlign.desc"></el-input>
         </el-form-item>
-        <div v-if="formLabelAlign.radio!=2">
+        <div v-if="formLabelAlign.radio!=1">
           <el-form-item label="是否终审：">
             <el-checkbox-group v-model="formLabelAlign.type">
-              <el-checkbox label="" value="1" name="type"></el-checkbox>
+              <el-checkbox label=""  name="type"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="下一级审批人：" v-if="formLabelAlign.type!=true">
-            <el-input v-model="toAudit.name" size="mini" @focus="pShow"></el-input>
+            <el-input v-model="formLabelAlign.name = toAudit.name" size="mini" @focus="pShow"></el-input>
           </el-form-item>
         </div>
       </el-form>
@@ -67,6 +67,7 @@
         pageIndex: 1,
         pageSize: 10,
         maintenanceIds: "",
+        arr:[],
         //检修分类
         planType: [],
         //检修级别
@@ -167,7 +168,6 @@
     methods: {
       getPersonnel(params){
         this.toAudit=params.person;
-        console.log(this.toAudit)
         this.innerVisible=params.hide;
       },
       toAmend(rowIndex, rowData, column) {
@@ -183,6 +183,7 @@
         });
       },
       selectGroupChange(selection) {
+        this.arr = selection;
         this.maintenanceIds = "";
         for (let i in selection) {
           if (this.maintenanceIds === "") {
@@ -193,6 +194,7 @@
         }
       },
       selectALL(selection) {
+        this.arr = selection;
         this.maintenanceIds = "";
         for (let i in selection) {
           if (this.maintenanceIds === "") {
@@ -248,7 +250,6 @@
             console.log(error);
           });
       },
-
       loadValue(value){
         let arr= new Array();
         for (let i = 0;i<value.length;i++){
@@ -275,6 +276,9 @@
           }
           if (this.tableData[i].state === 5) {
             this.tableData[i].state = "停用";
+          }
+          if (this.tableData[i].state === 10) {
+            this.tableData[i].state = "已驳回";
           }
           if (this.tableData[i].maintenanceType === 0) {
             this.tableData[i].maintenanceType = "维修";
@@ -313,6 +317,8 @@
           });
       },
       deleteMaintenance() {
+        this.$confirm('计划一旦删除将无法恢复，请确认选择', '提示')
+          .then(_=>{
         let qs = require("qs");
         let data = qs.stringify({ maintenanceIds: this.maintenanceIds });
         this.axios
@@ -328,44 +334,59 @@
           .catch(function(error) {
             console.log(error);
           });
+          })
+          .catch(_=>{
+            this.TurnaroundPlans();
+          })
       },
       stopDiscontinuation() {
-        let qs = require("qs");
-        let data = qs.stringify({ maintenanceIds: this.maintenanceIds });
-        this.axios
-          .post(this.global.apiSrc + "/mplan/discontinuation", data)
-          .then(response => {
-            if (response.data.msg === "成功") {
-              alert("成功");
-              this.load();
-            } else {
-              alert("失败");
-            }
+        this.$confirm('计划一旦停用将无法撤销，请确认选择', '提示')
+          .then(_=>{
+            let qs = require("qs");
+            let data = qs.stringify({ maintenanceIds: this.maintenanceIds });
+            this.axios
+              .post(this.global.apiSrc + "/mplan/discontinuation", data)
+              .then(response => {
+                if (response.data.code === 200) {
+                  alert("操作成功");
+                  this.load();
+                } else {
+                  alert("系统繁忙请稍后再试");
+                }
+              })
+              .catch(function(error) {
+                console.log(error);
+              });
           })
-          .catch(function(error) {
-            console.log(error);
-          });
+          .catch(_=>{
+            this.TurnaroundPlans();
+          })
+
       },
       //审核操作
       submitAudit() {
-        let qs = require("qs");
-        let data = qs.stringify({
-          isOk:this.formLabelAlign.radio,
-          maintenanceIds: this.maintenanceIds,
-          isEndAudit:this.formLabelAlign.type,
-          auditOpinion:this.formLabelAlign.desc,
-          name:this.formLabelAlign.name,
-        });
-        this.axios
-          .post(this.global.apiSrc + "/mplan/submitAudit", data)
-          .then(response => {
-            this.load();
-            console.log(response.data);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      },
+        if(this.arr.length ===1){
+          this.formLabelAlign.type ? this.formLabelAlign.type=0:this.formLabelAlign.type=1;
+          this.axios
+            .get(this.global.apiSrc + "/mplan/maintenanceAudit", {params:{
+                passOrTurn:this.formLabelAlign.radio,
+                maintenanceId: this.maintenanceIds,
+                isEndAudit:this.formLabelAlign.type,
+                auditOpinion:this.formLabelAlign.desc,
+                nextUserId:this.toAudit.id
+              }})
+            .then(response => {
+              this.load();
+              this.outerVisible=false;
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }else{
+          alert("请重新选择计划")
+        }
+
+      }
     },
     created() {
       this.listMaintenanceLevel();
