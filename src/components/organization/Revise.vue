@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       show: true,
-      Cnode:this.chengedata,
+      // Cnode:this.chengedata,
       options: [
         {
           value: "1",
@@ -84,6 +84,7 @@ export default {
     },
     update() {
       //修改组织机构
+      console.log(this.chengedata);
       let qs = require("qs");
       let data = qs.stringify({
         organizeId: this.chengedata.id,
@@ -91,20 +92,21 @@ export default {
         organizeType: this.chengedata.organizeType,
         organizeInfo: this.chengedata.organizeInfo
       });
+      console.log(data);
       this.axios
         .post(this.global.apiSrc + "/organize/update", data)
         .then(result => {
-          if(result.data.code === 200){
-            alert("修改成功");
+          // if(result.data.code === 200){
+          //   alert("修改成功");
+          //   console.log(result.data);
+          // }else{
+          //   alert("修改失败");
             console.log(result.data);
-          }else{
-            alert("修改失败");
-            console.log(result.data);
-          }
+          // }
         })
         .catch(err => {
           console.log(err);
-          console.log(this.userName);
+          // console.log(this.userName);
         });
     },
   }

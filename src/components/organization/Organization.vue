@@ -89,6 +89,7 @@
       },
       toRevise() {
         this.reviseShow = true;
+        console.log(this.chengedata);
       },
       addHide(params) {
         this.addShow = params;
@@ -97,9 +98,9 @@
         this.addShow = true
       },
       handleNodeClick(data) {
-        console.log("handleNodeClick" + data.id);
+        console.log(data);
         this.nodedata = data;
-        console.log( this.nodedata);
+        // console.log( this.nodedata);
         this.chengedata = data;
         this.orgID = data.id;
       },
