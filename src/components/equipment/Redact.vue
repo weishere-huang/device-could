@@ -37,7 +37,7 @@
           </el-form-item>
           <el-form-item label="所属部门">
             <el-cascader
-              placeholder="搜索"
+              placeholder="placeholder1"
               :options="orgoptions"
               :props="defaultProps"
               expand-trigger="hover"
@@ -45,7 +45,7 @@
               ref="getName"
               change-on-select
               :show-all-levels="false"
-              v-model="ogrname"
+              v-model="sizeForm.qqqqq"
               @change="handleChange"
               style="width:512px;"
             ></el-cascader>
@@ -303,8 +303,8 @@ export default {
         enterFactoryDate: ""
       },
       defaultProps:{
-        value:"code",
-        label:"name"
+        value:"organizeCode",
+        label:"organizeName"
       },
       defaultProps2:{
         value:"categoryNo",
@@ -627,6 +627,7 @@ export default {
       classfynm:"",
       orgoptions:[],
       ctgoptions:[],
+      placeholder1:'',
     };
   },
   components: {
@@ -673,7 +674,7 @@ export default {
       let qs = require("qs");
       let data = qs.stringify({
         //sizeForm: JSON.stringify(this.sizeForm),21
-        id: this.c.id,
+        id: this.urlid,
         deviceNo: this.sizeForm.deviceNo,
         deviceName: this.sizeForm.deviceName,
         organizeName: this.sizeForm.organizeName,
@@ -750,7 +751,7 @@ export default {
           console.log("detail");
           console.log(result.data);
           this.sizeForm = result.data.data;
-
+          this.placeholder=this.sizeForm.organizeName
 
 
           if (this.sizeForm.buyDate != null) {
