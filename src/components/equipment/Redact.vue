@@ -36,7 +36,14 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="所属部门">
-            <el-cascader
+            <span></span>
+            <el-button size="mini" @click="dialogVisible1=true">点击修改</el-button>
+            <el-dialog
+              title="提示"
+              :visible.sync="dialogVisible1"
+              width="30%"
+              >
+              <el-cascader
               placeholder="placeholder1"
               :options="orgoptions"
               :props="defaultProps"
@@ -45,10 +52,15 @@
               ref="getName"
               change-on-select
               :show-all-levels="false"
-              v-model="sizeForm.qqqqq"
+              v-model="qqqqq"
               @change="handleChange"
-              style="width:512px;"
+              
             ></el-cascader>
+                <el-button @click="dialogVisible1 = false">取 消</el-button>
+                <el-button type="primary" @click="dialogVisible1 = false">确 定</el-button>
+              
+            </el-dialog>
+            
           </el-form-item>
           <el-form
             :inline="true"
@@ -279,6 +291,8 @@ import addperson from "./RedactAdd";
 export default {
   data() {
     return {
+      qqqqq:"",
+      dialogVisible1:false,
        dialogVisible: false,
       addp: false,
       sizeForm: {
