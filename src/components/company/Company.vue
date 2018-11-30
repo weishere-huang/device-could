@@ -38,7 +38,6 @@
       <div class="bottom">
         <div style="width:100%">
           <v-table
-            
             ref="companysTable"
             is-horizontal-resize
             column-width-drag
@@ -250,7 +249,7 @@ export default {
     pageSizeChange(pageSize) {
       this.pageSize = pageSize;
       this.getTableData();
-      this.load()
+      this.load();
     },
     sortChange(params) {
       if (params.height.length > 0) {
@@ -281,15 +280,17 @@ export default {
             page: this.pageIndex,
             size: this.pageSize
           }),
+          option:{
+            sccessMessage:false
+          },
           type: "get",
-          url: "/enterprise/findByNameOrState",
+          url: "/enterprise/findByNameOrState"
           // loadingConfig: {
           //   target: document.querySelector("#mainContentWrapper")
           // }
         },
         this
-      ).then(
-        response => {
+      ).then(response => {
           console.log(response);
           this.totalNub = response.data.data.totalElements;
           for (let i = 0; i < response.data.data.content.length; i++) {
@@ -438,28 +439,37 @@ export default {
     // },
 
     startUseing() {
+      let qs = require("qs");
+      let data = qs.stringify({
+        enterpriseIds: this.choice
+        // state: 0
+      });
       this.Axios({
-        params:Object.assign({enterpriseIds:this.choice}),
-        type: "post",
-        url: "/enterprise/enableEnterprises/"
-      },
-        this
-      ).then(
-        response=>{
-          if(response.data.code===200){
-            alert("启用成功")
-            alert(response.data.code)
-          }else {
-            alert(response.data.msg)
-          }
-          console.log(response)
-          // this.load()
-        },
-        ({type,info})=>{
-          // error && error(type, info)
-          // console.log(this.choice)
+        url:"/enterprise/enableEnterprises/",
+        params:data,
+        option:{
+          sccessMessage:false
         }
-      )
+      }).then(response => {
+          //alert("启用成功");
+          this.$message({
+            message: '启用成功',
+            type: 'success'
+          })
+          this.load();
+          console.log("请求参数：" + data);
+        },({ type, info })=>{});
+      /*this.axios
+        .post(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
+        .then(response => {
+          alert("启用成功");
+          // this.message("启用成功")
+          this.load();
+          console.log("请求参数：" + data);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });*/
     },
 
     // startUseing() {

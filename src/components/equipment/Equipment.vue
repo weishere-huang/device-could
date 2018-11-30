@@ -43,10 +43,19 @@
     </div>
     <div class="content">
       <div class="search">
-        <el-button size="small" @click="toAdd">添加</el-button>
-        <el-button size="small" @click="editShow">修改</el-button>
+        <el-button
+          size="small"
+          @click="toAdd"
+        >添加</el-button>
+        <el-button
+          size="small"
+          @click="editShow"
+        >修改</el-button>
         <!--<el-button size="small" > 复制</el-button>-->
-        <el-button size="small" @click="edelete">删除</el-button>
+        <el-button
+          size="small"
+          @click="edelete"
+        >删除</el-button>
         <div class="searchright">
           <span>关键字：</span>
 
@@ -83,6 +92,7 @@
             :select-all="selectALL"
             :select-group-change="selectGroupChange"
             :row-dblclick="redactShow"
+            ref="equipmentTable"
           ></v-table>
           <div
             class="mt20 mb20 bold"
@@ -267,13 +277,13 @@ export default {
       this.getTableData();
       console.log(pageIndex);
       console.log(this.pageSize);
-      this.findall();
+      // this.findall();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
-      // this.findall();
+      this.findall();
     },
     sortChange(params) {
       if (params.height.length > 0) {
@@ -292,6 +302,11 @@ export default {
     //通过
     findall() {
       //根据用户token查询所属组织机构下设备类别
+      EventBus.$on("sideBarTroggleHandle", isCollapse => {
+        window.setTimeout(() => {
+          this.$refs.equipmentTable.resize();
+        }, 500);
+      })
       let qs = require("qs");
       let data = qs.stringify({
         page: this.pageIndex,
