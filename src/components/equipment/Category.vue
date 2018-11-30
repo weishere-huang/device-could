@@ -24,10 +24,10 @@
         <h5>备注</h5>
         <el-form ref="form" label-width="90px">
           <el-form-item label="类别名称：">
-            <el-input v-model="this.nodedata.categoryName" size="mini"></el-input>
+            <el-input v-model="nodedata.categoryName" size="mini"></el-input>
           </el-form-item>
           <el-form-item label="备注：">
-            <el-input type="textarea" v-model="this.nodedata.categoryMsg"></el-input>
+            <el-input type="textarea" v-model="nodedata.categoryMsg"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button size="mini" @click="updateCategory">保存</el-button>
@@ -160,13 +160,13 @@ export default {
         });
     },
     deleteCategory(){
-      //修改设备类别
+      //删除设备类别
       let qs = require("qs");
       let data = qs.stringify({
         categoryId:this.nodedata.id,
       });
       this.axios
-        .post(this.global.apiSrc + "/deviceCategory/delete"+this.nodedata.id)
+        .post(this.global.apiSrc + "/deviceCategory/delete/"+this.nodedata.id)
         .then(result => {
           console.log("删除设备类别");
           console.log(result.data);
