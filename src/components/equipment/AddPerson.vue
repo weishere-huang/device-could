@@ -69,8 +69,8 @@
           </div>
         </div>
         <div class="right">
-          <el-button size="mini">清空</el-button>
-          <el-button size="mini">保存</el-button>
+          <el-button size="mini" @click="deletes">清空</el-button>
+          <el-button size="mini" @click="toAdd">保存</el-button>
           <div class="personList">
             <ul>
               <li
@@ -93,6 +93,7 @@ export default {
     return {
       pageIndex: 1,
       pageSize: 10,
+      toValue:"",
       tableData: [],
       tableDate: [],
       columns: [
@@ -161,6 +162,7 @@ export default {
       this.$emit("isHide", false);
     },
     selectGroupChange(selection) {
+      this.toValue = selection;
       let arr = new Array();
       for (let i = 0; i < selection.length; i++) {
         arr[i] = selection[i].name;
@@ -170,7 +172,12 @@ export default {
       console.log("select-group-change", selection);
     },
     selectALL(selection) {
-      console.log("select-aLL", selection);
+      this.toValue = selection;
+      let arr = new Array();
+      for (let i = 0; i < selection.length; i++) {
+        arr[i] = selection[i].name;
+      }
+      this.personListValue = arr;
     },
     selectChange(selection, rowData) {
       console.log("select-change", selection, rowData);
@@ -212,8 +219,8 @@ export default {
       this.axios
         .get(this.global.apiSrc + "/employee/findByOrganizeCode", {params:{organizeCode:code}})
         .then(result => {
-          if(result.code === 204){
-            this.tableData="";
+          if(result.data.code === 204){
+            this.tableData=[];
           }else{
             console.log("按照组织机构编号查询人");
             console.log(result.data);
@@ -224,7 +231,20 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    }
+    },
+    toAdd() {
+      let data = {
+        values: this.toValue,
+        isOk: false
+      };
+      this.$emit("addPerson", data);
+    },
+    deletes() {
+      this.personListValue = "";
+      this.toValue = "";
+      // let arr ="";
+      // this.selectALL(arr);
+    },
   },
   created() {
     //axios

@@ -19,7 +19,7 @@
           <el-form-item label="所属部门">
             <el-cascader
               placeholder="搜索"
-              :options="options"
+              :options="orgoptions"
               filterable
               change-on-select
               :show-all-levels="false"
@@ -39,7 +39,7 @@
             <el-form-item label="设备类别">
               <el-cascader
                 placeholder="搜索"
-                :options="options"
+                :options="ctgoptions"
                 filterable
                 change-on-select
                 :show-all-levels="false"
@@ -87,7 +87,7 @@
               <span>负责人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="dialogVisible=true">
+            <div @click="dialogVisible=true" v-on:addPerson="addPerson">
               更改绑定
             </div>
           </li>
@@ -221,24 +221,6 @@
           organizeCode: "1000",
           enterFactoryDate: "2018/11/26"
         },
-        options1: [
-          {
-            value: "1",
-            label: "1"
-          },
-          {
-            value: "2",
-            label: "2"
-          },
-          {
-            value: "3",
-            label: "3"
-          },
-          {
-            value: "4",
-            label: "4"
-          },
-        ],
         options2: [
           {
             value: "1",
@@ -259,24 +241,6 @@
           {
             value: "5",
             label: "其他设备"
-          },
-        ],
-        options3: [
-          {
-            value: "1",
-            label: "1"
-          },
-          {
-            value: "2",
-            label: "2"
-          },
-          {
-            value: "3",
-            label: "3"
-          },
-          {
-            value: "4",
-            label: "4"
           },
         ],
         options4: [
@@ -569,8 +533,8 @@
             ]
           }
         ],
-        orgoptions:"",
-        ctgoptions:"",
+        orgoptions:[],
+        ctgoptions:[],
       };
     },
     methods: {
@@ -784,6 +748,7 @@
         this.axios
           .get(this.global.apiSrc + "/deviceCategory/all", data)
           .then(result => {
+            console.log("查询设备类别")
             this.ctgoptions= this.filterArray2(result.data.data,0);
             console.log(this.ctgoptions);
             console.log(result.data);
@@ -792,6 +757,9 @@
             console.log(err);
           });
       },
+      addPerson(params){
+
+      }
     },
 
     created() {
