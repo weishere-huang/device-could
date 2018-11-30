@@ -37,12 +37,16 @@
           </el-form-item>
           <el-form-item label="所属部门">
             <el-cascader
-              placeholder="搜索"
-              :options="options"
+              placeholder="placeholder1"
+              :options="orgoptions"
+              :props="defaultProps"
+              expand-trigger="hover"
               filterable
+              ref="getName"
               change-on-select
               :show-all-levels="false"
-              v-model="sizeForm.qq"
+              v-model="sizeForm.qqqqq"
+              @change="handleChange"
               style="width:512px;"
             ></el-cascader>
           </el-form-item>
@@ -53,7 +57,7 @@
           >
             <el-form-item label="设备分类">
               <el-select
-                v-model="sizeForm.deviceClassify"
+                v-model="sizeForm.deviceClassifyName"
                 placeholder="点击选择"
                 style="width:215px"
               >
@@ -68,15 +72,19 @@
               </el-select>
             </el-form-item>
             <el-form-item label="设备类别">
-             <el-cascader
-              placeholder="搜索"
-              :options="options"
-              filterable
-              change-on-select
-              :show-all-levels="false"
-              v-model="sizeForm.organizeName"
-              style="width:215px;"
-            ></el-cascader>
+              <el-cascader
+                placeholder="搜索"
+                :options="ctgoptions"
+                filterable
+                ref="getName2"
+                expand-trigger="hover"
+                :props="defaultProps2"
+                change-on-select
+                :show-all-levels="false"
+                v-model="classfynm"
+                @change="handleChange2"
+                style="width:215px;"
+              ></el-cascader>
             </el-form-item>
           </el-form>
           <el-form
@@ -276,9 +284,9 @@ export default {
       sizeForm: {
         deviceNo: "",
         deviceName: "",
-        organizeName: [],
+        organizeName: "",
         deviceClassify: "",
-        deviceClassifyName: "超级存储",
+        deviceClassifyName: "",
         deviceSpec: "",
         outputDate: "",
         manufacturer: "",
@@ -291,29 +299,18 @@ export default {
         deviceCategoryName: "",
         deviceModel: "",
         deviceState: "",
-        gmtModified: "",
         organizeCode: "",
         enterFactoryDate: ""
       },
-      c: "",
-      options1: [
-        {
-          value: "1",
-          label: "1"
-        },
-        {
-          value: "2",
-          label: "2"
-        },
-        {
-          value: "3",
-          label: "3"
-        },
-        {
-          value: "4",
-          label: "4"
-        }
-      ],
+      defaultProps:{
+        value:"organizeCode",
+        label:"organizeName"
+      },
+      defaultProps2:{
+        value:"categoryNo",
+        label:"categoryName"
+      },
+      urlid:"",
       options2: [
         {
           value: "1",
@@ -334,24 +331,6 @@ export default {
         {
           value: "5",
           label: "其他设备"
-        }
-      ],
-      options3: [
-        {
-          value: "1",
-          label: "1"
-        },
-        {
-          value: "2",
-          label: "2"
-        },
-        {
-          value: "3",
-          label: "3"
-        },
-        {
-          value: "4",
-          label: "4"
         }
       ],
       options4: [
@@ -643,13 +622,44 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      ogrname:"",
+      classfynm:"",
+      orgoptions:[],
+      ctgoptions:[],
+      placeholder1:'',
     };
   },
   components: {
     addperson
   },
   methods: {
+    handleChange(value) {
+      let name=this.$refs['getName'].currentLabels
+      name=name[(name.length)-1]
+      let id=value[(value.length)-1]
+      console.log(id,name);
+      this.sizeForm.organizeCode=id;
+      this.sizeForm.organizeName=name;
+
+    },
+    handleChange2(value) {
+      let name=this.$refs['getName2'].currentLabels
+      name=name[(name.length)-1]
+      let id=value[(value.length)-1]
+      console.log(id,name);
+      this.sizeForm.deviceCategory=id;
+      this.sizeForm.deviceCategoryName=name;
+    },
+    classf(value){
+      console.log(value);
+      let obj = {};
+      obj = this.options2.find((item)=>{
+        return item.value === value;
+      });
+      console.log(obj.label);
+      this.sizeForm.deviceClassifyName=obj.label;
+    },
     tback() {
       this.$router.back(-1);
     },
@@ -664,7 +674,7 @@ export default {
       let qs = require("qs");
       let data = qs.stringify({
         //sizeForm: JSON.stringify(this.sizeForm),21
-        id: this.c.id,
+        id: this.urlid,
         deviceNo: this.sizeForm.deviceNo,
         deviceName: this.sizeForm.deviceName,
         organizeName: this.sizeForm.organizeName,
@@ -730,19 +740,7 @@ export default {
           console.log(err);
         });
     },
-    allOrganize() {
-      this.axios
-        .get(this.global.apiSrc + "/organize/allOrganize/321")
-        .then(result => {
-          alert("查询所有组织机构");
-          console.log(result.data);
-          console.log(result.data.data[0].name);
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(this.userName);
-        });
-    },
+
     detail(id) {
       //获取设备详情接口
       this.axios
@@ -753,41 +751,25 @@ export default {
           console.log("detail");
           console.log(result.data);
           this.sizeForm = result.data.data;
+          this.placeholder=this.sizeForm.organizeName
+
 
           if (this.sizeForm.buyDate != null) {
-            this.sizeForm.buyDate = this.sizeForm.buyDate.split("T")[0].replace(/-/g, "/");
-            console.log("buyDAte" + this.sizeForm.buyDate);
+            this.sizeForm.buyDate = this.sizeForm.buyDate.replace(/-/g, "/");
           }
           if (this.sizeForm.buyDate != null) {
-            this.sizeForm.enterFactoryDate = this.sizeForm.enterFactoryDate.split("T")[0].replace(/-/g, "/");
+            this.sizeForm.enterFactoryDate = this.sizeForm.enterFactoryDate.replace(/-/g, "/");
           }
           if (this.sizeForm.buyDate != null) {
-            this.sizeForm.outputDate = this.sizeForm.outputDate.split("T")[0].replace(/-/g, "/");
+            this.sizeForm.outputDate = this.sizeForm.outputDate.replace(/-/g, "/");
           }
-          console.log(this.sizeForm.devicePersonnelInfo);
+          // console.log(this.sizeForm.devicePersonnelInfo);
         })
         .catch(err => {
           console.log(err);
         });
     },
     //分类  类别接口
-    findDeviceClassify() {
-      //获取设备分类接口
-      let qs = require("qs");
-      let data = qs.stringify({});
-      this.id = id;
-      this.axios
-        .get(this.global.apiSrc + "/device/detail", {
-          params: { deviceId: id }
-        })
-        .then(result => {
-          console.log("findDeviceClassify");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
     findDeviceState() {
       //获取设备状况接口
       let qs = require("qs");
@@ -805,14 +787,94 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    }
+    },
+
+
+    filterArray(data, parent) {
+      let vm = this;
+      var tree = [];
+      var temp;
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].parentCode == parent) {
+          var obj = data[i];
+          temp = this.filterArray(data, data[i].code);
+          if (temp.length > 0) {
+            obj.children = temp;
+          }
+          tree.push(obj);
+        }
+      }
+      return tree;
+    },
+    allOrganize() {
+      this.axios
+        .get(this.global.apiSrc + "/organize/allOrganize")
+        .then(result => {
+          console.log(result.data);
+          for (let i = 0; i < result.data.data.length; i++) {
+            if (result.data.data[i].organizeType === 0) {
+              result.data.data[i].organizeType = "企业";
+            }
+            if (result.data.data[i].organizeType === 1) {
+              result.data.data[i].organizeType = "公司";
+            }
+            if (result.data.data[i].organizeType === 2) {
+              result.data.data[i].organizeType = "工厂";
+            }
+            if (result.data.data[i].organizeType === 3) {
+              result.data.data[i].organizeType = "部门";
+            }
+            if (result.data.data[i].organizeType === 4) {
+              result.data.data[i].organizeType = "车间";
+            }
+          }
+          this.orgoptions = this.filterArray(result.data.data, 0);
+
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this.userName);
+        });
+    },
+    filterArray2(data, parent) {
+      let vm = this;
+      var tree = [];
+      var temp;
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].categoryParentNo == parent) {
+          var obj = data[i];
+          temp = this.filterArray2(data, data[i].categoryNo);
+          if (temp.length > 0) {
+            obj.children = temp;
+          }
+          tree.push(obj);
+        }
+      }
+      return tree;
+    },
+    findAlldeviceClassify(){
+      let qs = require("qs");
+      let data = qs.stringify({
+      });
+      this.axios
+        .get(this.global.apiSrc + "/deviceCategory/all", data)
+        .then(result => {
+          console.log("查询设备类别")
+          this.ctgoptions= this.filterArray2(result.data.data,0);
+          console.log(this.ctgoptions);
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
   },
   created() {
-    this.c = this.$store.state.equipment.person;
-      console.log("当前设备ID" + this.c.id);
-      this.detail(this.c.id);
-      let id = this.$route.params.id;
-      console.log("letid:"+id);
+      this.urlid = this.$route.params.id;
+      this.detail(this.urlid);
+      console.log("letid:"+this.urlid);
+      this.allOrganize();
+      this.findAlldeviceClassify();
   }
 };
 </script>

@@ -2,65 +2,27 @@
   <div class="turnaround-plans">
     <div class="userCase">
       <div class="top">
-        <el-button
-          size="small"
-           @click="outerVisible = true"
-        >审核</el-button>
-        <el-button
-          size="small"
-          @click="revoke"
-        >故障消除</el-button>
+        <el-button size="small" @click="outerVisible = true">审核</el-button>
+        <el-button size="small" @click="revoke">故障消除</el-button>
         <el-button size="small">删除</el-button>
         <div class="search">
-          <el-input
-            type="search"
-            placeholder="如故障编码，设备名称，位号，描述"
-            size="small"
-            v-model="faultKey"
-          ></el-input>
-          <el-button
-            size="small"
-            @click="search"
-          >搜索</el-button>
+          <el-input type="search" placeholder="如故障编码，设备名称，位号，描述" size="small" v-model="faultKey"></el-input>
+          <el-button size="small" @click="search">搜索</el-button>
           <span style="padding-left:10px;">高级搜索</span>
         </div>
       </div>
       <div class="bottom">
         <div>
-          <v-table
-            :select-all="selectALL"
-            :select-group-change="selectGroupChange"
-            is-horizontal-resize
-            column-width-drag
-            :multiple-sort="false"
-            style="width:100%;min-height:400px;"
-            :columns="columns"
-            :table-data="tableData"
-            row-hover-color="#eee"
-            row-click-color="#edf7ff"
-            :row-dblclick="toDetails"
-          ></v-table>
-          <div
-            class="mt20 mb20 bold"
-            style="text-align:center;margin-top:30px;"
-          >
-            <v-pagination
-              @page-change="pageChange"
-              @page-size-change="pageSizeChange"
-              :total="1"
-              :page-size="pageSize"
-              :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
-            ></v-pagination>
+          <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :row-dblclick="toDetails"></v-table>
+          <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="1" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
     </div>
     <el-dialog title="审核" :visible.sync="outerVisible">
       <audit></audit>
-    <el-dialog
-      title="人员添加"
-      :visible.sync="innerVisible"
-      append-to-body>
+    <el-dialog title="人员添加" :visible.sync="innerVisible" append-to-body>
       <personnel></personnel>
     </el-dialog>
     <div slot="footer" class="dialog-footer">
