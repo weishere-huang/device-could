@@ -16,7 +16,7 @@
         <div>
           <v-table :row-dblclick="modefication" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
@@ -30,6 +30,7 @@
         searchs: "",
         pageIndex: 1,
         pageSize: 10,
+        pageNumber:"",
         tableData: [],
         tableDate: [],
         userIds: "",
@@ -67,7 +68,7 @@
             isResize: true
           },
           {
-            field: "name",
+            field: "userName",
             title: "用户名",
             width: 80,
             titleAlign: "center",
@@ -239,6 +240,7 @@
             params: {page: this.pageIndex, size: 100}
           })
           .then(response => {
+            this.pageNumber = response.data.totalElements;
             this.tableData = response.data.data.content;
             for (let i in this.tableData) {
               this.tableData[i].state === 1 ? (this.tableData[i].state = "禁用") : (this.tableData[i].state = "启用");
@@ -258,11 +260,11 @@
         this.axios
           .post(this.global.apiSrc + "/employee/enableOrDisable", data)
           .then(response => {
-            if (response.data.msg === "成功") {
-              alert("成功");
+            if (response.data.code === 200) {
+              alert("操作成功");
               this.load();
-            } else {
-              alert("失败");
+            } else if(response.data.code === 400){
+              alert(response.data.msg);
             }
           })
           .catch(function (error) {

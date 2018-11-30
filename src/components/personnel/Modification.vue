@@ -23,7 +23,7 @@
               </li>
               <li>
                 <label for="">员工编号：</label>
-                <el-input type="text" size="small" v-model="persnneladd.employeeNo"></el-input>
+                <el-input type="text" size="small" v-model="persnneladd.employeeNo" readonly></el-input>
               </li>
               <li>
                 <label for="">手机号码：</label>
