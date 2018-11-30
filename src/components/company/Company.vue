@@ -271,10 +271,10 @@ export default {
           this.$refs.companysTable.resize();
         }, 500);
       });
-      const pa = Object.assign(this.searchParams, {
-        page: this.pageIndex,
-        size: this.pageSize
-      });
+      // const pa = Object.assign(this.searchParams, {
+      //   page: this.pageIndex,
+      //   size: this.pageSize
+      // });
       this.Axios(
         {
           params: Object.assign(this.searchParams, {
@@ -361,7 +361,7 @@ export default {
         {
           params:Object.assign({
             enterpriseName:this.name,
-            state: "",
+            // state: "",
             page: this.pageIndex,
             size: this.pageSize
           }),
