@@ -36,19 +36,43 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="所属部门">
-            <el-cascader
-              placeholder="placeholder1"
+            <span></span>
+            <el-button @click="dialogVisible1=true">点击修改</el-button>
+            <el-dialog
+              title="提示"
+              :visible.sync="dialogVisible1"
+              width="30%"
+              >
+              <el-cascader
+              placeholder=""
               :options="orgoptions"
-              :props="defaultProps"
+
               expand-trigger="hover"
               filterable
               ref="getName"
               change-on-select
               :show-all-levels="false"
-              v-model="sizeForm.qqqqq"
+              v-model="siz"
               @change="handleChange"
               style="width:512px;"
-            ></el-cascader>
+              ></el-cascader>
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
+            </el-dialog>
+            <!--<el-cascader-->
+              <!--placeholder="placeholder1"-->
+              <!--:options="orgoptions"-->
+              <!--:props="defaultProps"-->
+              <!--expand-trigger="hover"-->
+              <!--filterable-->
+              <!--ref="getName"-->
+              <!--change-on-select-->
+              <!--:show-all-levels="false"-->
+              <!--v-model="sizeForm.qqqqq"-->
+              <!--@change="handleChange"-->
+              <!--style="width:512px;"-->
+            <!--&gt;</el-cascader>-->
           </el-form-item>
           <el-form
             :inline="true"
@@ -279,6 +303,8 @@ import addperson from "./RedactAdd";
 export default {
   data() {
     return {
+      siz:"",
+      dialogVisible1: false,
        dialogVisible: false,
       addp: false,
       sizeForm: {
@@ -302,10 +328,10 @@ export default {
         organizeCode: "",
         enterFactoryDate: ""
       },
-      defaultProps:{
-        value:"organizeCode",
-        label:"organizeName"
-      },
+      // defaultProps:{
+      //   value:"organizeCode",
+      //   label:"organizeName"
+      // },
       defaultProps2:{
         value:"categoryNo",
         label:"categoryName"
