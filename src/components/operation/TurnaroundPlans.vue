@@ -4,7 +4,6 @@
       <div class="top">
         <el-button size="small" @click="toPansAdd">添加</el-button>
         <el-button size="small"  @click="outerVisible = true">审核</el-button>
-
         <el-button size="small" @click="stopDiscontinuation">停止</el-button>
         <el-button size="small" @click="deleteMaintenance">删除</el-button>
       </div>
@@ -18,13 +17,31 @@
       </div>
     </div>
     <el-dialog title="审核" :visible.sync="outerVisible">
-      <audit></audit>
+      <el-form label-position=right label-width="120px" :model="formLabelAlign">
+        <el-form-item label="审批结果：">
+          <el-radio v-model="formLabelAlign.radio" label="1">同意</el-radio>
+          <el-radio v-model="formLabelAlign.radio" label="2">驳回</el-radio>
+        </el-form-item>
+        <el-form-item label="审批意见：">
+          <el-input type="textarea" v-model="formLabelAlign.desc"></el-input>
+        </el-form-item>
+        <div v-if="formLabelAlign.radio!=2">
+          <el-form-item label="是否终审：">
+            <el-checkbox-group v-model="formLabelAlign.type">
+              <el-checkbox label="" value="1" name="type"></el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+          <el-form-item label="下一级审批人：" v-if="formLabelAlign.type!=true">
+            <el-input v-model="toAudit.name" size="mini" @focus="pShow"></el-input>
+          </el-form-item>
+        </div>
+      </el-form>
       <el-dialog title="人员添加" :visible.sync="innerVisible" append-to-body>
-        <personnel></personnel>
+        <personnel v-on:getPersonnel="getPersonnel"></personnel>
       </el-dialog>
       <div slot="footer" class="dialog-footer">
         <el-button @click="outerVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" size="mini">提交</el-button>
+        <el-button @click="submitAudit" type="primary" size="mini">提 交</el-button>
         <el-button type="primary" @click="innerVisible = true" size="mini">添加下一级审批人</el-button>
       </div>
     </el-dialog>
@@ -36,6 +53,14 @@
   export default {
     data() {
       return {
+        personShow:false,
+        formLabelAlign: {
+          desc:"",
+          type:"",
+          radio: "",
+          name:""
+        },
+        toAudit:"",
         outerVisible: false,
         innerVisible: false,
         pageNumber: 0,
@@ -140,6 +165,11 @@
       };
     },
     methods: {
+      getPersonnel(params){
+        this.toAudit=params.person;
+        console.log(this.toAudit)
+        this.innerVisible=params.hide;
+      },
       toAmend(rowIndex, rowData, column) {
         // 传值给修改
         this.$store.commit("turnaroundPlans", rowData);
@@ -320,8 +350,11 @@
       submitAudit() {
         let qs = require("qs");
         let data = qs.stringify({
-          userId: this.userId,
-          maintenanceIds: this.maintenanceIds
+          isOk:this.formLabelAlign.radio,
+          maintenanceIds: this.maintenanceIds,
+          isEndAudit:this.formLabelAlign.type,
+          auditOpinion:this.formLabelAlign.desc,
+          name:this.formLabelAlign.name,
         });
         this.axios
           .post(this.global.apiSrc + "/mplan/submitAudit", data)
