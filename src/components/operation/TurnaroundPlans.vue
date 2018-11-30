@@ -3,13 +3,13 @@
     <div class="userCase">
       <div class="top">
         <el-button size="small" @click="toPansAdd">添加</el-button>
-        <el-button size="small"  @click="outerVisible = true">审核</el-button>
+        <el-button size="small"  @click="outerVisibleIsOk">审核</el-button>
         <el-button size="small" @click="stopDiscontinuation">停止</el-button>
         <el-button size="small" @click="deleteMaintenance">删除</el-button>
       </div>
       <div class="bottom">
         <div>
-          <v-table :row-dblclick="toAmend" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+          <v-table :row-dblclick="toAmend" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:300px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
             <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
@@ -25,6 +25,7 @@
         <el-form-item label="审批意见：">
           <el-input type="textarea" v-model="formLabelAlign.desc"></el-input>
         </el-form-item>
+
         <div v-if="formLabelAlign.radio!=1">
           <el-form-item label="是否终审：">
             <el-checkbox-group v-model="formLabelAlign.type">
@@ -32,7 +33,8 @@
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="下一级审批人：" v-if="formLabelAlign.type!=true">
-            <el-input v-model="formLabelAlign.name = toAudit.name" size="mini" @focus="pShow"></el-input>
+            <el-input v-model="toAudit.name" size="mini" style="width:60%"></el-input>
+            <el-button type="primary" @click="innerVisible = true" size="mini">添加审批人</el-button>
           </el-form-item>
         </div>
       </el-form>
@@ -42,7 +44,6 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="outerVisible = false" size="mini">取 消</el-button>
         <el-button @click="submitAudit" type="primary" size="mini">提 交</el-button>
-        <el-button type="primary" @click="innerVisible = true" size="mini">添加下一级审批人</el-button>
       </div>
     </el-dialog>
   </div>
@@ -166,9 +167,9 @@
       };
     },
     methods: {
-      getPersonnel(params){
-        this.toAudit=params.person;
-        this.innerVisible=params.hide;
+      getPersonnel(params) {
+        this.toAudit = params.person;
+        this.innerVisible = params.hide;
       },
       toAmend(rowIndex, rowData, column) {
         // 传值给修改
@@ -225,7 +226,7 @@
       },
       sortChange(params) {
         if (params.height.length > 0) {
-          this.tableConfig.tableData.sort(function(a, b) {
+          this.tableConfig.tableData.sort(function (a, b) {
             if (params.height === "asc") {
               return a.height - b.height;
             } else if (params.height === "desc") {
@@ -237,28 +238,30 @@
         }
       },
 
-      load(){
+      load() {
         this.axios
-          .get(this.global.apiSrc+"/mplan/allPlan",{params:{
-              page:this.pageIndex,
-              size:this.pageSize
-            }})
-          .then(response =>{
-           this.loadValue(response.data.data.content);
+          .get(this.global.apiSrc + "/mplan/allPlan", {
+            params: {
+              page: this.pageIndex,
+              size: this.pageSize
+            }
           })
-          .catch(function(error) {
+          .then(response => {
+            this.loadValue(response.data.data.content);
+          })
+          .catch(function (error) {
             console.log(error);
           });
       },
-      loadValue(value){
-        let arr= new Array();
-        for (let i = 0;i<value.length;i++){
-          if (value[i].maintenanceType === 0){
+      loadValue(value) {
+        let arr = new Array();
+        for (let i = 0; i < value.length; i++) {
+          if (value[i].maintenanceType === 0) {
             arr[arr.length] = value[i];
           }
         }
         this.tableData = arr;
-        for (let i = 0;i<value.length;i++){
+        for (let i = 0; i < value.length; i++) {
           if (this.tableData[i].state === 0) {
             this.tableData[i].state = "待审核";
           }
@@ -312,38 +315,38 @@
           .then(response => {
             this.planLevel = response.data.data;
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error);
           });
       },
       deleteMaintenance() {
         this.$confirm('计划一旦删除将无法恢复，请确认选择', '提示')
-          .then(_=>{
-        let qs = require("qs");
-        let data = qs.stringify({ maintenanceIds: this.maintenanceIds });
-        this.axios
-          .post(this.global.apiSrc + "/mplan/delete", data)
-          .then(response => {
-            if (response.data.msg === "成功") {
-              alert("成功");
-              this.load();
-            } else {
-              alert("失败");
-            }
+          .then(_ => {
+            let qs = require("qs");
+            let data = qs.stringify({maintenanceIds: this.maintenanceIds});
+            this.axios
+              .post(this.global.apiSrc + "/mplan/delete", data)
+              .then(response => {
+                if (response.data.msg === "成功") {
+                  alert("成功");
+                  this.load();
+                } else {
+                  alert("失败");
+                }
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
           })
-          .catch(function(error) {
-            console.log(error);
-          });
-          })
-          .catch(_=>{
+          .catch(_ => {
             this.TurnaroundPlans();
           })
       },
       stopDiscontinuation() {
         this.$confirm('计划一旦停用将无法撤销，请确认选择', '提示')
-          .then(_=>{
+          .then(_ => {
             let qs = require("qs");
-            let data = qs.stringify({ maintenanceIds: this.maintenanceIds });
+            let data = qs.stringify({maintenanceIds: this.maintenanceIds});
             this.axios
               .post(this.global.apiSrc + "/mplan/discontinuation", data)
               .then(response => {
@@ -354,49 +357,55 @@
                   alert("系统繁忙请稍后再试");
                 }
               })
-              .catch(function(error) {
+              .catch(function (error) {
                 console.log(error);
               });
           })
-          .catch(_=>{
+          .catch(_ => {
             this.TurnaroundPlans();
           })
 
       },
       //审核操作
       submitAudit() {
-        if(this.arr.length ===1){
-          this.formLabelAlign.type ? this.formLabelAlign.type=0:this.formLabelAlign.type=1;
-          this.axios
-            .get(this.global.apiSrc + "/mplan/maintenanceAudit", {params:{
-                passOrTurn:this.formLabelAlign.radio,
-                maintenanceId: this.maintenanceIds,
-                isEndAudit:this.formLabelAlign.type,
-                auditOpinion:this.formLabelAlign.desc,
-                nextUserId:this.toAudit.id
-              }})
-            .then(response => {
-              this.load();
-              this.outerVisible=false;
-            })
-            .catch(function(error) {
-              console.log(error);
-            });
+        this.formLabelAlign.type ? this.formLabelAlign.type = 0 : this.formLabelAlign.type = 1;
+        this.axios
+          .get(this.global.apiSrc + "/mplan/maintenanceAudit", {
+            params: {
+              passOrTurn: this.formLabelAlign.radio,
+              maintenanceId: this.maintenanceIds,
+              isEndAudit: this.formLabelAlign.type,
+              auditOpinion: this.formLabelAlign.desc,
+              nextUserId: this.toAudit.id
+            }
+          })
+          .then(response => {
+            this.load();
+            this.outerVisible = false;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
+      outerVisibleIsOk() {
+        if (this.arr.length === 1) {
+          this.outerVisible = true
+        } else if(this.arr.length ===0){
+          alert("请选择计划")
         }else{
-          alert("请重新选择计划")
+          alert("抱歉只能计划只能单个修改")
         }
-
+      },
+    },
+      created() {
+        this.listMaintenanceLevel();
+        this.load();
+      },
+      components: {
+        audit,
+        personnel
       }
-    },
-    created() {
-      this.listMaintenanceLevel();
-      this.load();
-    },
-    components: {
-      audit,
-      personnel
     }
-  };
 </script>
 
 <style lang="less" scoped>
