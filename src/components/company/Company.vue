@@ -280,6 +280,9 @@ export default {
             page: this.pageIndex,
             size: this.pageSize
           }),
+          option:{
+            enableMsg:false
+          },
           type: "get",
           url: "/enterprise/findByNameOrState"
           // loadingConfig: {
@@ -287,8 +290,7 @@ export default {
           // }
         },
         this
-      ).then(
-        response => {
+      ).then(response => {
           console.log(response);
           this.totalNub = response.data.data.totalElements;
           for (let i = 0; i < response.data.data.content.length; i++) {
@@ -404,7 +406,22 @@ export default {
         enterpriseIds: this.choice
         // state: 0
       });
-      this.axios
+      this.Axios({
+        url:"/enterprise/enableEnterprises/",
+        params:data,
+        option:{
+          enableMsg:false
+        }
+      }).then(response => {
+          //alert("启用成功");
+          this.$message({
+            message: '启用成功',
+            type: 'success'
+          })
+          this.load();
+          console.log("请求参数：" + data);
+        },({ type, info })=>{});
+      /*this.axios
         .post(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
         .then(response => {
           alert("启用成功");
@@ -414,7 +431,7 @@ export default {
         })
         .catch(function(error) {
           console.log(error);
-        });
+        });*/
     },
     forbidden() {
       let qs = require("qs");
