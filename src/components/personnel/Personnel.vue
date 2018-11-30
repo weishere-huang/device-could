@@ -213,7 +213,8 @@
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
         this.getTableData();
-        // console.log(pageIndex);
+        this.load();
+        console.log(pageIndex);
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
@@ -237,10 +238,10 @@
       load() {
         this.axios
           .get(this.global.apiSrc + "/employee/findEmployeeList", {
-            params: {page: this.pageIndex, size: 100}
+            params: {page: this.pageIndex, size:this.pageSize}
           })
           .then(response => {
-            this.pageNumber = response.data.totalElements;
+            this.pageNumber = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             for (let i in this.tableData) {
               this.tableData[i].state === 1 ? (this.tableData[i].state = "禁用") : (this.tableData[i].state = "启用");
