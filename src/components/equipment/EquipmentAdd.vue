@@ -26,14 +26,14 @@
               ref="getName"
               change-on-select
               :show-all-levels="false"
-              v-model="sizeForm.organizeName"
+              v-model="ogrname"
                @change="handleChange"
               style="width:512px;"
             ></el-cascader>
           </el-form-item>
           <el-form :inline="true" style="padding-left:12px" size="small">
             <el-form-item label="设备分类">
-              <el-select v-model="sizeForm.deviceClassify" placeholder="点击选择" style="width:215px">
+              <el-select v-model="sizeForm.deviceClassify" placeholder="点击选择" style="width:215px" @change="classf" ref="getclassfy">
                 <el-option v-for="(item,index) in options2" :key="index" :label="item.label"
                            :value="item.value"></el-option>
               </el-select>
@@ -48,7 +48,7 @@
                 :props="defaultProps2"
                 change-on-select
                 :show-all-levels="false"
-                v-model="sizeForm.deviceCategoryName"
+                v-model="classfynm"
                 @change="handleChange2"
                 style="width:215px;"
               ></el-cascader>
@@ -62,7 +62,7 @@
               <el-select v-model="sizeForm.deviceState" placeholder="点击选择" style="width:215px">
 
                 <el-option v-for="(item,index) in options4" :key="index" :label="item.label"
-                           :value="item.value"></el-option>
+                           :value="item.value" @chenge="devstate"></el-option>
 
               </el-select>
             </el-form-item>
@@ -93,7 +93,7 @@
               <span>负责人员：</span>
               <span>（空）</span>
             </div>
-            <div @click="dialogVisible=true">
+            <div @click="dialogVisible=true" v-on:addPerson="addPerson">
               更改绑定
             </div>
           </li>
@@ -193,6 +193,8 @@
         },
         dialogVisible:false,
         addShow: false,
+        ogrname:"",
+        classfynm:"",
         sizeForm: {
           // deviceNo: "",
           // deviceName: "",
@@ -218,8 +220,9 @@
           deviceNo: "CH000001",
           deviceName: "液压机",
           organizeName: "",
+          organizeCode: "",
           deviceClassify: "",
-          deviceClassifyName: "超级存储",
+          deviceClassifyName: "",
           deviceSpec: "GC222",
           outputDate: "2018/11/26",
           manufacturer: "222",
@@ -232,27 +235,9 @@
           deviceCategoryName: "",
           deviceModel: "ZA100-315315",
           deviceState: "1",
-          organizeCode: "1000",
+
           enterFactoryDate: "2018/11/26"
         },
-        options1: [
-          {
-            value: "1",
-            label: "1"
-          },
-          {
-            value: "2",
-            label: "2"
-          },
-          {
-            value: "3",
-            label: "3"
-          },
-          {
-            value: "4",
-            label: "4"
-          },
-        ],
         options2: [
           {
             value: "1",
@@ -273,24 +258,6 @@
           {
             value: "5",
             label: "其他设备"
-          },
-        ],
-        options3: [
-          {
-            value: "1",
-            label: "1"
-          },
-          {
-            value: "2",
-            label: "2"
-          },
-          {
-            value: "3",
-            label: "3"
-          },
-          {
-            value: "4",
-            label: "4"
           },
         ],
         options4: [
@@ -315,25 +282,37 @@
             label: "报废"
           }
         ],
-       
-        orgoptions:"",
-        ctgoptions:"",
+
+        orgoptions:[],
+        ctgoptions:[],
       };
     },
     methods: {
+      classf(value){
+        console.log(value);
+        let obj = {};
+        obj = this.options2.find((item)=>{//这里的userList就是上面遍历的数据源
+          return item.value === value;//筛选出匹配数据
+        });
+        console.log(obj.label);//我这边的name就是对应label的
+        this.sizeForm.deviceClassifyName=obj.label;
+      },
       handleChange(value) {
         let name=this.$refs['getName'].currentLabels
         name=name[(name.length)-1]
         let id=value[(value.length)-1]
         console.log(id,name);
-        
+        this.sizeForm.organizeCode=id;
+        this.sizeForm.organizeName=name;
+
       },
       handleChange2(value) {
         let name=this.$refs['getName2'].currentLabels
         name=name[(name.length)-1]
         let id=value[(value.length)-1]
         console.log(id,name);
-        
+        this.sizeForm.deviceCategory=id;
+        this.sizeForm.deviceCategoryName=name;
       },
       tback() {
         this.$router.back(-1);
@@ -437,32 +416,28 @@
             console.log(err);
           });
       },
-      findDeviceClassify() {
-        let qs = require("qs");
-        let data = qs.stringify({});
-        this.axios
-          .get(this.global.apiSrc + "/device/findDeviceClassify", data)
-          .then(result => {
-            console.log("findDeviceClassify");
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+      devstate(data){
+        let obj = {};
+        obj = this.options4.find((item)=>{//这里的userList就是上面遍历的数据源
+          return item.value === value;//筛选出匹配数据
+        });
+        console.log(obj.label);//我这边的name就是对应label的
+        this.sizeForm.deviceState = data.value
       },
-      findDeviceState() {
-        let qs = require("qs");
-        let data = qs.stringify({});
-        this.axios
-          .get(this.global.apiSrc + "/device/findDeviceState", data)
-          .then(result => {
-            console.log("findDeviceState");
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
+      // findDeviceState() {
+      //   let qs = require("qs");
+      //   let data = qs.stringify({});
+      //   this.axios
+      //     .get(this.global.apiSrc + "/device/findDeviceState", data)
+      //     .then(result => {
+      //       this.options2 =  result;
+      //       console.log("findDeviceState");
+      //       console.log(result.data);
+      //     })
+      //     .catch(err => {
+      //       console.log(err);
+      //     });
+      // },
       filterArray(data, parent) {
         let vm = this;
         var tree = [];
@@ -502,7 +477,7 @@
               }
             }
             this.orgoptions = this.filterArray(result.data.data, 0);
-           
+
           })
           .catch(err => {
             console.log(err);
@@ -532,6 +507,7 @@
         this.axios
           .get(this.global.apiSrc + "/deviceCategory/all", data)
           .then(result => {
+            console.log("查询设备类别")
             this.ctgoptions= this.filterArray2(result.data.data,0);
             console.log(this.ctgoptions);
             console.log(result.data);
@@ -540,11 +516,13 @@
             console.log(err);
           });
       },
+      addPerson(params){
+
+      }
     },
 
     created() {
-      this.findDeviceClassify();
-      this.findDeviceState();
+      //this.findDeviceState();
       this.findAlldeviceClassify();
       this.allOrganize();
       // console.log(this.options);

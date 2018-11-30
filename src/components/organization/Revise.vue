@@ -99,6 +99,7 @@ export default {
           // if(result.data.code === 200){
           //   alert("修改成功");
           //   console.log(result.data);
+          //location.reload()
           // }else{
           //   alert("修改失败");
             console.log(result.data);
@@ -106,7 +107,6 @@ export default {
         })
         .catch(err => {
           console.log(err);
-          // console.log(this.userName);
         });
     },
   }
