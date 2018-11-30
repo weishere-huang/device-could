@@ -1,7 +1,6 @@
 <template>
   <div class="personnel">
     <div class="personTable">
-      
       <div class="search">
         <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
         <el-button size="mini" @click="search">搜索</el-button>
@@ -14,7 +13,6 @@
           <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="1" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -24,16 +22,11 @@ export default {
     return {
       pageIndex: 1,
       pageSize: 10,
-      tableData: [
-        {
-          faultNo: "2222",
-          state: "2222"
-        }
-      ],
+      tableData: [],
       tableDate: [],
       columns: [
         {
-          field: "faultNo",
+          field: "employeeNo",
           title: "员工编号",
           width: 80,
           titleAlign: "center",
@@ -42,7 +35,7 @@ export default {
           //   orderBy: ""
         },
         {
-          field: "state",
+          field: "name",
           title: "姓名",
           width: 80,
           titleAlign: "center",
@@ -50,7 +43,7 @@ export default {
           isResize: true
         },
         {
-          field: "deviceName",
+          field: "phone",
           title: "手机号",
           width: 80,
           titleAlign: "center",
@@ -58,7 +51,7 @@ export default {
           isResize: true
         },
         {
-          field: "deviceSpec",
+          field: "organizeName",
           title: "组织单位/部门",
           width: 100,
           titleAlign: "center",
@@ -66,7 +59,7 @@ export default {
           isResize: true
         },
         {
-          field: "faultLevel",
+          field: "position",
           title: "岗位",
           width: 100,
           titleAlign: "center",
@@ -104,9 +97,26 @@ export default {
     },
     personHide(){
         this.$emit("personHide",false)
-    }
+    },
+
+    load() {
+      this.axios
+        .get(this.global.apiSrc + "/employee/findEmployeeList", {
+          params: {page: this.pageIndex, size: 100}
+        })
+        .then(response => {
+          console.log(response);
+          this.tableData = response.data.data.content;
+          this.tableDate = this.tableData;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
   },
-  created() {},
+  created() {
+    this.load()
+  },
   mounted() {
     //   location.reload()
   }

@@ -78,6 +78,9 @@ export default {
       console.log(value);
     },
     addHide() {
+      this.orgname=""
+      this.value=""
+      this.orgInfo=""
       this.$emit("addHide",false)
     },
     add() {
