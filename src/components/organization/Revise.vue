@@ -89,18 +89,18 @@ export default {
     },
     update() {
       //修改组织机构
-      // if (this.chengedata.organizeType == "公司"){
-      //   this.chengedata.organizeType = 1;
-      // }
-      // if (this.chengedata.organizeType == "工厂"){
-      //   this.chengedata.organizeType = 2;
-      // }
-      // if (this.chengedata.organizeType == "部门"){
-      //   this.chengedata.organizeType = 3;
-      // }
-      // if (this.chengedata.organizeType == "车间"){
-      //   this.chengedata.organizeType = 4;
-      // }
+      if (this.chengedata.organizeType == "公司"){
+        this.chengedata.organizeType = 1;
+      }
+      if (this.chengedata.organizeType == "工厂"){
+        this.chengedata.organizeType = 2;
+      }
+      if (this.chengedata.organizeType == "部门"){
+        this.chengedata.organizeType = 3;
+      }
+      if (this.chengedata.organizeType == "车间"){
+        this.chengedata.organizeType = 4;
+      }
       console.log(this.chengedata);
       let qs = require("qs");
       let data = qs.stringify({
