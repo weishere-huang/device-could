@@ -187,7 +187,10 @@
       },
       auditblock() {
         if (this.auditValue === "") {
-          alert("请选择一个企业");
+          this.$message({
+            message: "请选择一个企业",
+            type: "error"
+          });
         } else {
           this.auditShow = true;
         }
@@ -252,6 +255,7 @@
         this.load();
       },
       pageSizeChange(pageSize) {
+        this.pageIndex=1;
         this.pageSize = pageSize;
         this.getTableData();
         this.load();
@@ -275,19 +279,19 @@
             this.$refs.companysTable.resize();
           }, 500);
         });
-        // const pa = Object.assign(this.searchParams, {
-        //   page: this.pageIndex,
-        //   size: this.pageSize
-        // });
+        const pa = Object.assign(this.searchParams, {
+          page: this.pageIndex,
+          size: this.pageSize
+        });
         this.Axios(
           {
             params: Object.assign(this.searchParams, {
               page: this.pageIndex,
               size: this.pageSize
             }),
-            option: {
-              enableMsg: false
-            },
+            // option: {
+            //   enableMsg: false
+            // },
             type: "get",
             url: "/enterprise/findByNameOrState"
             // loadingConfig: {
@@ -327,11 +331,11 @@
       findByName() {
         this.Axios(
           {
-            params: Object.assign({
+            params: Object.assign(this.searchParams,{
               enterpriseName: this.name,
               // state: "",
-              page: this.pageIndex,
-              size: this.pageSize
+              page: 1,
+              size: 10
             }),
             type: "get",
             url: "/enterprise/findByNameOrState",
@@ -381,7 +385,6 @@
           },
           this
         ).then(response => {
-          //alert("启用成功");
           this.$message({
             message: '启用成功',
             type: 'success'
@@ -390,37 +393,7 @@
           console.log("请求参数：" + data);
         }, ({type, info}) => {
         });
-        /*this.axios
-          .post(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
-          .then(response => {
-            alert("启用成功");
-            // this.message("启用成功")
-            this.load();
-            console.log("请求参数：" + data);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });*/
       },
-
-      // startUseing() {
-      //   let qs = require("qs");
-      //   let data = qs.stringify({
-      //     enterpriseIds: this.choice
-      //     // state: 0
-      //   });
-      //   this.axios
-      //     .post(this.global.apiSrc + "/enterprise/enableEnterprises/", data)
-      //     .then(response => {
-      //       alert("启用成功");
-      //       // this.message("启用成功")
-      //       this.load();
-      //       console.log("请求参数：" + data);
-      //     })
-      //     .catch(function(error) {
-      //       console.log(error);
-      //     });
-      // },
       forbidden() {
         let qs = require("qs");
         let data = qs.stringify({

@@ -93,13 +93,14 @@
               enableMsg: false
             },
           }
-        ).then(response=>{
+        ).then(response => {
           this.$message({
-              message: "您已通过该企业的审核",
-              type:"success"
-            })
+            message: "您已通过该企业的审核",
+            type: "success"
+          })
           location.reload();
-        },({type,info})=>{})
+        }, ({type, info}) => {
+        })
       },
       reject() {
         let qs = require("qs");
@@ -109,33 +110,27 @@
           // userId:2,
           opinion: this.auditValue.opinion,
         })
-        // this.Axios(
-        //   {
-        //     url: "/enterprise/auditEnterprise/",
-        //     params: data,
-        //     type: "post",
-        //     option: {enableMsg: false}
-        //   },
-        //   this
-        //
-        // ).then(respose=>{
-        //   if(this.auditValue.opinion===""){
-        //     this.
-        //   }
-        // },({type, info})=>{})
-
-
-        console.log(data.auditOpinion)
-        this.axios.post(this.global.apiSrc + "/enterprise/auditEnterprise/", data)
-          .then(response => {
-
-              alert("审核被驳回")
-
-            location.reload();
-            console.log(response)
-          }).catch(function (error) {
-          console.log(error)
-
+        this.Axios(
+          {
+            url: "/enterprise/auditEnterprise/",
+            params: data,
+            type: "post",
+            option: {enableMsg: false}
+          },
+          this
+        ).then(respose => {
+          if (respose.data.code === 200) {
+            this.$message({
+              message: "您已驳回该企业的审核",
+              type: "success"
+            })
+            location.reload()
+          }
+        }, ({type,info}) => {
+          this.$message({
+            message: "操作失败，请检查是否填写驳回原因",
+            type: "error"
+          })
         })
       }
     }
