@@ -36,43 +36,31 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="所属部门">
-            <span></span>
-            <el-button @click="dialogVisible1=true">点击修改</el-button>
+            <span>2222222222222</span>
+            <el-button size="mini" @click="dialogVisible1=true">点击修改</el-button>
             <el-dialog
-              title="提示"
+              title="修改部门"
               :visible.sync="dialogVisible1"
               width="30%"
               >
               <el-cascader
-              placeholder=""
+              placeholder="placeholder1"
               :options="orgoptions"
-
+              :props="defaultProps"
               expand-trigger="hover"
               filterable
               ref="getName"
               change-on-select
               :show-all-levels="false"
-              v-model="siz"
+              v-model="qqqqq"
               @change="handleChange"
-              style="width:512px;"
-              ></el-cascader>
-              <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-            </span>
+              
+            ></el-cascader>
+                <el-button @click="dialogVisible1 = false">取 消</el-button>
+                <el-button type="primary" @click="dialogVisible1 = false">确 定</el-button>
+              
             </el-dialog>
-            <!--<el-cascader-->
-              <!--placeholder="placeholder1"-->
-              <!--:options="orgoptions"-->
-              <!--:props="defaultProps"-->
-              <!--expand-trigger="hover"-->
-              <!--filterable-->
-              <!--ref="getName"-->
-              <!--change-on-select-->
-              <!--:show-all-levels="false"-->
-              <!--v-model="sizeForm.qqqqq"-->
-              <!--@change="handleChange"-->
-              <!--style="width:512px;"-->
-            <!--&gt;</el-cascader>-->
+            
           </el-form-item>
           <el-form
             :inline="true"
@@ -96,8 +84,15 @@
               </el-select>
             </el-form-item>
             <el-form-item label="设备类别">
-              <el-cascader
-                placeholder="搜索"
+              <span>2222222222222</span>
+            <el-button size="mini" @click="dialogVisible3=true">点击修改</el-button>
+              <el-dialog
+                title="修改类别"
+                :visible.sync="dialogVisible3"
+                width="30%"
+                >
+                <el-cascader
+                placeholder=""
                 :options="ctgoptions"
                 filterable
                 ref="getName2"
@@ -109,6 +104,11 @@
                 @change="handleChange2"
                 style="width:215px;"
               ></el-cascader>
+                <el-button @click="dialogVisible3 = false">取 消</el-button>
+                <el-button type="primary" @click="dialogVisible3 = false">确 定</el-button>
+                
+              </el-dialog>
+              
             </el-form-item>
           </el-form>
           <el-form
@@ -303,8 +303,9 @@ import addperson from "./RedactAdd";
 export default {
   data() {
     return {
-      siz:"",
-      dialogVisible1: false,
+      qqqqq:"",
+      dialogVisible3:false,
+      dialogVisible1:false,
        dialogVisible: false,
       addp: false,
       sizeForm: {
@@ -336,6 +337,10 @@ export default {
         value:"categoryNo",
         label:"categoryName"
       },
+      defaultProps:{
+          value:"code",
+          label:"name"
+        },
       urlid:"",
       options2: [
         {
@@ -653,7 +658,6 @@ export default {
       classfynm:"",
       orgoptions:[],
       ctgoptions:[],
-      placeholder1:'',
     };
   },
   components: {
@@ -855,7 +859,8 @@ export default {
             }
           }
           this.orgoptions = this.filterArray(result.data.data, 0);
-
+          console.log("组织结构");
+          console.log(this.orgoptions);
         })
         .catch(err => {
           console.log(err);
@@ -887,6 +892,7 @@ export default {
         .then(result => {
           console.log("查询设备类别")
           this.ctgoptions= this.filterArray2(result.data.data,0);
+          console.log("类别转换");
           console.log(this.ctgoptions);
           console.log(result.data);
         })
