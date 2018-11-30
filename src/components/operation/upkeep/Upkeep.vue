@@ -14,7 +14,40 @@
           title="审核"
           :visible.sync="outerVisible"
         >
-          <audit></audit>
+           <el-form
+          label-position=right
+          label-width="120px"
+          :model="formLabelAlign"
+        >
+          <el-form-item label="审批结果：">
+            <el-radio
+              v-model="radio"
+              label="1"
+            >同意</el-radio>
+            <el-radio
+              v-model="radio"
+              label="2"
+            >驳回</el-radio>
+          </el-form-item>
+          <el-form-item label="审批意见：">
+            <el-input type="textarea" v-model="formLabelAlign.desc"></el-input>
+          </el-form-item>
+          <div v-if="radio!=2">
+            <el-form-item label="是否终审：">
+                <el-checkbox-group v-model="formLabelAlign.type">
+                    <el-checkbox label="" name="type"></el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+            <el-form-item label="下一级审批人：" v-if="formLabelAlign.type!=true">
+                <el-input v-model="formLabelAlign.personnel" size="mini" style="width:60%"></el-input>
+                <el-button
+              type="primary"
+              @click="innerVisible = true"
+              size="mini"
+            >添加审批人</el-button>
+            </el-form-item>
+          </div>
+        </el-form>
           <el-dialog
             title="人员添加"
             :visible.sync="innerVisible"
@@ -34,11 +67,6 @@
               type="primary"
               size="mini"
             >提交</el-button>
-            <el-button
-              type="primary"
-              @click="innerVisible = true"
-              size="mini"
-            >添加下一级审批人</el-button>
           </div>
         </el-dialog>
         <el-button
@@ -88,6 +116,8 @@ import personnel from "./PersonnelUpkeep";
 export default {
   data() {
     return {
+      radio:"",
+      formLabelAlign:{},
       outerVisible: false,
       innerVisible: false,
       pageNumber: 0,
