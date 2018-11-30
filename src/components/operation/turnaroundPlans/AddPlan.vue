@@ -129,7 +129,6 @@
           });
       },
       toLoad() {
-        let arrs = new Array();
         this.axios
           .get(this.global.apiSrc + "/device/select",{params:{deviceCategory:this.clickId}})
           .then(response => {
