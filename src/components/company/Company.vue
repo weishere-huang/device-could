@@ -289,10 +289,6 @@ export default {
         this
       ).then(
         response => {
-          // dispatch({
-          //     type: types.GET_CHECK_TASK_LIST_SUCCESS,
-          //     payload: res.data
-          // });
           console.log(response);
           this.totalNub = response.data.data.totalElements;
           for (let i = 0; i < response.data.data.content.length; i++) {

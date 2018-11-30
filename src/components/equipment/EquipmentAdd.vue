@@ -188,7 +188,7 @@
           label:"name"
         },
         defaultProps2:{
-          value:"id",
+          value:"categoryNo",
           label:"categoryName"
         },
         dialogVisible:false,
@@ -218,7 +218,7 @@
           deviceNo: "CH000001",
           deviceName: "液压机",
           organizeName: "",
-          deviceClassify: "1",
+          deviceClassify: "",
           deviceClassifyName: "超级存储",
           deviceSpec: "GC222",
           outputDate: "2018/11/26",
@@ -228,7 +228,7 @@
           buyPrice: "200000",
           buyDate: "2018/11/26",
           dataInfo: "555",
-          deviceCategory: "1",
+          deviceCategory: "",
           deviceCategoryName: "",
           deviceModel: "ZA100-315315",
           deviceState: "1",
@@ -418,7 +418,7 @@
           // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo),
         });
 
-        console.log(data);
+
         this.axios
           .post(this.global.apiSrc + "/device/add", data)
           .then(result => {
@@ -457,19 +457,6 @@
           .get(this.global.apiSrc + "/device/findDeviceState", data)
           .then(result => {
             console.log("findDeviceState");
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
-      findAlldeviceClassify() {
-        let qs = require("qs");
-        let data = qs.stringify({});
-        this.axios
-          .get(this.global.apiSrc + "/deviceCategory/all", data)
-          .then(result => {
-            console.log("findAlldeviceClassify");
             console.log(result.data);
           })
           .catch(err => {
@@ -529,7 +516,7 @@
         for (var i = 0; i < data.length; i++) {
           if (data[i].categoryParentNo == parent) {
             var obj = data[i];
-            temp = this.filterArray(data, data[i].categoryNo);
+            temp = this.filterArray2(data, data[i].categoryNo);
             if (temp.length > 0) {
               obj.children = temp;
             }
