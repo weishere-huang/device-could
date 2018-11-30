@@ -7,14 +7,14 @@
       </div>
       <div class="left">
         <h6>角色列表</h6>
-        <ul @click="getName" >
-          <li v-for="item in role" :label="item.id" :key="item.id" ><span @click="listPermissionByRoleId">{{item.name}}</span> <span><i class='iconfont icon-shanchu1' @click="expurgate"></i></span></li>
+        <ul @click="getName($event)">
+          <li v-for="item in role" :label="item.id" :key="item.id" ><span :label="item.id">{{item.name}}</span> <span @click="expurgate" :label="item.id"><i class='iconfont icon-shanchu1'></i></span></li>
         </ul>
       </div>
       <div class="right">
         <div class="roleName">
           <h6>权限分配</h6>
-          
+
         </div>
         <div>
           <div class="system">
@@ -137,7 +137,7 @@
   </div>
 </template>
 <script>
-import { MessageBox } from 'element-ui';
+  import { MessageBox } from 'element-ui';
   export default {
     data() {
       return {
@@ -219,9 +219,16 @@ import { MessageBox } from 'element-ui';
       };
     },
     methods: {
-      expurgate(){
+      expurgate(event){
         this.$confirm('此操作将删除该角色, 是否继续?', '提示')
+          .then(_=>{
+            this.deleteRole(event.target.parentNode.attributes.label.textContent);
+          })
+          .catch(_=>{
+            console.log("stop")
+          })
       },
+      test(){},
       systemCheckAllChange(val) {
         this.list(this.system.systemList,this.system.systemList,this.system.systemKey,1);
         this.system.checkedSystem = val ? this.system.systemList : [];
@@ -368,13 +375,15 @@ import { MessageBox } from 'element-ui';
       roleAdd(){
         if (this.form.name === ""){
           alert("请输入角色名称");
-        } else{
+        }else{
+          console.log(this.form.name);
           this.axios
             .get(this.global.apiSrc+"/role/findOnlyByRoleName",{params:{roleName:this.form.name}})
             .then(response => {
-              if (response.data.data){
-                this.toRoleAdd()
-                this.form=""
+              if (response.data.code===200){
+                this.toRoleAdd();
+                this.form.name="";
+                this.form.desc=""
               }else{
                 alert("角色名以存在，请重新输入角色名称！")
               }
@@ -440,7 +449,7 @@ import { MessageBox } from 'element-ui';
         this.axios
           .post(this.global.apiSrc+"/role/add",data)
           .then(response =>{
-            if (response.data.msg ==="成功") {
+            if (response.data.code === 200) {
               alert("角色创建成功，请记得分配相关权限");
               this.load();
             }else{
@@ -452,7 +461,6 @@ import { MessageBox } from 'element-ui';
           });
       },
       update(){
-        console.log(this.roleId);
         this.systemID = "";
         for(let i = 0;i< this.systemKeyInfo.length;i++){
           if(this.systemID === ""){
@@ -465,7 +473,6 @@ import { MessageBox } from 'element-ui';
         let qs = require("qs");
         let data = qs.stringify({
           id:this.roleId,
-          name:this.roleName,
           permissionIds:this.systemID
         });
         this.axios
@@ -577,13 +584,31 @@ import { MessageBox } from 'element-ui';
           }
         }
       },
-      deleteRole(){
-
+      deleteRole(value){
+        let qs = require("qs");
+        let data = qs.stringify({
+          roleId:value
+        });
+        this.axios
+          .post(this.global.apiSrc+"/role/delete",data)
+          .then(response =>{
+            if (response.data.code === 200) {
+              alert("成功删除角色");
+              this.load();
+            }else if(response.data.code === 400){
+              alert(response.data.msg);
+            }else{
+              alert("系统繁忙请稍后再试！");
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       }
     },
     mounted() {
-      $(".left").click(event=> {
-        $(event.target).addClass("fontColor").siblings().removeClass("fontColor");
+      $(".left").on('click',"li",function(event) {
+        $(this).addClass("fontColor").siblings().removeClass("fontColor");
       });
     },
     created() {

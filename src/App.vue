@@ -314,7 +314,7 @@ export default {
   //-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 } /*定义滚动条轨道 内阴影+圆角*/
 ::-webkit-scrollbar-thumb {
-  background-color: #333;
+  background-color: #999999;
   border-radius: 3px;
   //-webkit-box-shadow: inset 0 0 6px rgba(7, 7, 7, 0.3);
 } /*定义滑块 内阴影+圆角*/

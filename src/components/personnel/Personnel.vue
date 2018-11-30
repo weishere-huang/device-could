@@ -119,13 +119,9 @@
             this.tableData = response.data.data.content;
             this.searchs = "";
             for (let i in this.tableData) {
-              this.tableData[i].state === -1
-                ? (this.tableData[i].state = "禁用")
-                : (this.tableData[i].state = "正常");
-              this.tableData[i].entryTime = this.tableData[i].entryTime.split("T")[0];
+              this.tableData[i].state === 1 ? (this.tableData[i].state = "禁用") : (this.tableData[i].state = "启用");
             }
             this.tableDate = this.tableData;
-
           })
           .catch(function (error) {
             console.log(error);
@@ -151,19 +147,11 @@
         this.axios
           .post(this.global.apiSrc + "/employee/enableOrDisable", data)
           .then(response => {
-            this.load()
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-        this.axios
-          .post(this.global.apiSrc + "/employee/enableOrDisable", data)
-          .then(response => {
-            if (response.data.msg === "成功") {
-              alert("成功");
+            if (response.data.code === 200) {
+              alert("操作成功");
               this.load();
-            } else {
-              alert("失败");
+            } else if(response.data.code === 400){
+              alert(response.data.msg);
             }
           })
           .catch(function (error) {
@@ -179,11 +167,11 @@
         this.axios
           .post(this.global.apiSrc + "/employee/enableOrDisable", data)
           .then(response => {
-            if (response.data.msg === "成功") {
-              alert("成功");
+            if (response.data.code === 200) {
+              alert("操作成功");
               this.load();
-            } else {
-              alert("失败");
+            } else if(response.data.code === 400){
+              alert(response.data.msg);
             }
           })
           .catch(function (error) {
@@ -282,7 +270,7 @@
           });
       },
       updateEmployee(){
-        if (this.values.length == 1){
+        if (this.values.length === 1){
           this.$router.push({
             path: "/Modification"
           });
