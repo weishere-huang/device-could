@@ -54,15 +54,6 @@
           },
           this
         )
-        // this.axios
-        //   .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
-        //     params: {
-        //       page: 1,
-        //       enterpriseName: this.companyName,
-        //       state: this.choice,
-        //       // page: this.pageIndex, size: this.pageSize
-        //     }
-        //   })
           .then(response => {
             console.log(response);
             document.querySelectorAll(".adsearch")[0].style.right = "-310px";
