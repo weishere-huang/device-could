@@ -281,7 +281,7 @@ export default {
             size: this.pageSize
           }),
           option:{
-            sccessMessage:false
+            enableMsg:false
           },
           type: "get",
           url: "/enterprise/findByNameOrState"
@@ -448,7 +448,7 @@ export default {
         url:"/enterprise/enableEnterprises/",
         params:data,
         option:{
-          sccessMessage:false
+          enableMsg:false
         }
       }).then(response => {
           //alert("启用成功");
