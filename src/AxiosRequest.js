@@ -14,7 +14,8 @@ export default ({ url, type, params, config, option ,loadingConfig},vue) => {
     url=`${global.apiSrc}${url}`;
     //process.env.NODE_ENV === 'development' && url = `/api${url}`;
     option = Object.assign({
-        sccessMessage:true
+        enableMsg:true,
+        successMsg:'请求成功'
     },option||{});
     return new Promise((resolve, reject) => {
         //这里加一个通用的数据重置后门
@@ -35,7 +36,7 @@ export default ({ url, type, params, config, option ,loadingConfig},vue) => {
                 axios[type||'post'](url, type==='get'?{params:params}:params, config || {}).then(res => {
                     if (res.status === 200 && res.data.code === 200) {
                         //success && success(res.data);
-                        option.sccessMessage && Message.success({message:'请求成功', customClass:'e-message', duration:1500});
+                        option.enableMsg && Message.success({message:option.successMsg, customClass:'e-message', duration:1500});
                         resolve(res);
                     } else {
                         //faild && faild(res.data);
