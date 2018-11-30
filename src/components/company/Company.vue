@@ -38,7 +38,6 @@
       <div class="bottom">
         <div style="width:100%">
           <v-table
-            
             ref="companysTable"
             is-horizontal-resize
             column-width-drag
@@ -250,7 +249,7 @@ export default {
     pageSizeChange(pageSize) {
       this.pageSize = pageSize;
       this.getTableData();
-      this.load()
+      this.load();
     },
     sortChange(params) {
       if (params.height.length > 0) {
@@ -282,7 +281,7 @@ export default {
             size: this.pageSize
           }),
           type: "get",
-          url: "/enterprise/findByNameOrState",
+          url: "/enterprise/findByNameOrState"
           // loadingConfig: {
           //   target: document.querySelector("#mainContentWrapper")
           // }
