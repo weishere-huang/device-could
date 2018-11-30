@@ -167,8 +167,6 @@
           </el-header>
         </el-header>
         <el-main class="mainContentWrapper">
-          <!-- v-loading="pictLoading" element-loading-background="rgba(0, 0, 0, 0.5)"
-         element-loading-text="图标正在加载中" -->
           <router-view />
         </el-main>
         <el-footer>长虹智能终端设备生产管理云平台</el-footer>
@@ -206,7 +204,7 @@ export default {
 
  <style lang="less" >
  .el-menu-vertical-demo{
-    margin-top: 60px;
+    margin-top: 60px !important;
     &:not(.el-menu--collapse) {
       width: 250px;
       min-height: 400px;
