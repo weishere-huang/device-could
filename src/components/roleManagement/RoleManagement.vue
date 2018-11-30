@@ -597,7 +597,6 @@ import { MessageBox } from 'element-ui';
           .addClass("fontColor")
           .siblings()
           .removeClass("fontColor");
-          console.log($(event.target)[0].innerText);
       });
     },
     created() {
