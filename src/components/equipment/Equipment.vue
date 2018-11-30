@@ -277,7 +277,7 @@ export default {
       this.getTableData();
       console.log(pageIndex);
       console.log(this.pageSize);
-      // this.findall();
+      this.findall();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
@@ -312,11 +312,13 @@ export default {
         page: this.pageIndex,
         size: this.pageSize
       });
+      console.log(data);
       this.axios
         //axios
         .get(this.global.apiSrc + "/device/all", data)
         // .get("api/device/all", data)
         .then(result => {
+          console.log(result.data.data.content);
           this.tableData = result.data.data.content;
           for (let i = 0; i < this.tableData.length; i++) {
             if (this.tableData[i].deviceState === 1) {
@@ -335,7 +337,6 @@ export default {
               this.tableData[i].deviceState = "报废";
             }
           }
-          console.log(result.data);
           this.totalElements=result.data.data.totalElements
         })
         .catch(err => {
