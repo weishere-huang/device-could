@@ -7,8 +7,8 @@
       </div>
       <div class="left">
         <h6>角色列表</h6>
-        <ul >
-          <li v-for="item in role" :label="item.id" :key="item.id"><span>{{item.name}}</span> <span><i class='iconfont icon-shanchu1' @click="expurgate"></i></span></li>
+        <ul @click="getName" >
+          <li v-for="item in role" :label="item.id" :key="item.id" ><span @click="listPermissionByRoleId">{{item.name}}</span> <span><i class='iconfont icon-shanchu1' @click="expurgate"></i></span></li>
         </ul>
       </div>
       <div class="right">
@@ -221,21 +221,6 @@ import { MessageBox } from 'element-ui';
     methods: {
       expurgate(){
         this.$confirm('此操作将删除该角色, 是否继续?', '提示')
-        // this.$confirm('此操作将删除该角色, 是否继续?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(() => {
-        //   this.$message({
-        //     type: 'success',
-        //     message: '删除成功!'
-        //   });
-        // }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });          
-        // });
       },
       systemCheckAllChange(val) {
         this.list(this.system.systemList,this.system.systemList,this.system.systemKey,1);
@@ -409,12 +394,6 @@ import { MessageBox } from 'element-ui';
             console.log(error);
           });
       },
-      clickfun(e){
-        this.roleName = e.target.textContent;
-        console.log(this.roleName);
-        this.roleId = e.target.attributes.label;
-        this.listPermissionByRoleId(this.roleId.value);
-      },
       list(value,toValues,key,number){
         this.systemID = "";
         for(let i in value){
@@ -473,6 +452,7 @@ import { MessageBox } from 'element-ui';
           });
       },
       update(){
+        console.log(this.roleId);
         this.systemID = "";
         for(let i = 0;i< this.systemKeyInfo.length;i++){
           if(this.systemID === ""){
@@ -481,9 +461,10 @@ import { MessageBox } from 'element-ui';
             this.systemID += ","+this.systemKeyInfo[i];
           }
         }
+        console.log(this.systemID);
         let qs = require("qs");
         let data = qs.stringify({
-          id:this.roleId.value,
+          id:this.roleId,
           name:this.roleName,
           permissionIds:this.systemID
         });
@@ -501,9 +482,9 @@ import { MessageBox } from 'element-ui';
             console.log(error);
           });
       },
-      listPermissionByRoleId(val){
+      listPermissionByRoleId(value){
         this.axios
-          .get(this.global.apiSrc+"/role/listPermissionByRole",{params: {roleId:val}})
+          .get(this.global.apiSrc+"/role/listPermissionByRole",{params: {roleId:value}})
           .then(response =>{
             let arr = new Array();
             let arr1 = new Array();
@@ -587,17 +568,22 @@ import { MessageBox } from 'element-ui';
             console.log(error);
           });
       },
-      clicklist(){
+      getName(event){
+        this.roleName = event.target.innerHTML;
+        for(let i =0;i<this.role.length;i++){
+          if(this.roleName  === this.role[i].name){
+            this.roleId = this.role[i].id;
+            this.listPermissionByRoleId(this.roleId);
+          }
+        }
+      },
+      deleteRole(){
 
       }
     },
     mounted() {
-      $(".left").click(function(event) {
-        $(event.target)
-          .addClass("fontColor")
-          .siblings()
-          .removeClass("fontColor");
-          console.log($(event.target)[0].innerText);
+      $(".left").click(event=> {
+        $(event.target).addClass("fontColor").siblings().removeClass("fontColor");
       });
     },
     created() {

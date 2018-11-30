@@ -3,43 +3,15 @@
     <div class="personTable">
       
       <div class="search">
-        <el-input
-          type="search"
-          size="mini"
-          v-model="key"
-          style="width:30%;"
-        ></el-input>
-        <el-button
-          size="mini"
-          @click="search"
-        >搜索</el-button>
+        <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
+        <el-button size="mini" @click="search">搜索</el-button>
         <span style="padding:0 10px;">最近搜索：{{searchs}}</span>
         <span style="text-decoration: underline;"></span>
       </div>
       <div class="tableList">
-        <v-table
-          :select-all="selectALL"
-          :select-group-change="selectGroupChange"
-          is-horizontal-resize
-          column-width-drag
-          :multiple-sort="false"
-          style="width:100%;min-height:300px;"
-          :columns="columns"
-          :table-data="tableData"
-          row-hover-color="#eee"
-          row-click-color="#edf7ff"
-        ></v-table>
-        <div
-          class="mt20 mb20 bold"
-          style="text-align:center;"
-        >
-          <v-pagination
-            @page-change="pageChange"
-            @page-size-change="pageSizeChange"
-            :total="1"
-            :page-size="pageSize"
-            :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
-          ></v-pagination>
+        <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:300px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+        <div class="mt20 mb20 bold" style="text-align:center;">
+          <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="1" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
         </div>
       </div>
 

@@ -158,7 +158,7 @@ export default {
         //   details: "111"
         // }
       ],
-      tableDate: [],
+      tableDate: [{code:1000}],
       columns: [
         {
           width: 40,
@@ -180,7 +180,7 @@ export default {
           title: "性别",
           width: 50,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true
         },
         {
@@ -196,7 +196,7 @@ export default {
           title: "手机号",
           width: 90,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true
         },
         {
@@ -204,7 +204,7 @@ export default {
           title: "分配情况",
           width: 150,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true
         }
       ],
@@ -268,6 +268,8 @@ export default {
   methods: {
     handleNodeClick(data) {
       console.log(data);
+      console.log(data.code);
+      this.findpeopler(data.code);
     },
     isHide() {
       this.$emit("isHide", false);
@@ -319,6 +321,19 @@ export default {
       }
       return tree;
     },
+    findpeopler(code){
+      console.log("该组织机构code---"+code)
+      this.axios
+        .get(this.global.apiSrc + "/employee/findByOrganizeCode", {params:{organizeCode:code}})
+        .then(result => {
+          console.log("按照组织机构编号查询人");
+          console.log(result.data);
+          this.tableData=result.data.data.content;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   },
   created() {
     //axios

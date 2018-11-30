@@ -145,56 +145,7 @@ export default {
         }
       ],
       personListValue: [],
-      data2: [
-        {
-          id: 1,
-          label: "一级 1",
-          children: [
-            {
-              id: 4,
-              label: "二级 1-1",
-              children: [
-                {
-                  id: 9,
-                  label: "三级 1-1-1"
-                },
-                {
-                  id: 10,
-                  label: "三级 1-1-2"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 2,
-          label: "一级 2",
-          children: [
-            {
-              id: 5,
-              label: "二级 2-1"
-            },
-            {
-              id: 6,
-              label: "二级 2-2"
-            }
-          ]
-        },
-        {
-          id: 3,
-          label: "一级 3",
-          children: [
-            {
-              id: 7,
-              label: "二级 3-1"
-            },
-            {
-              id: 8,
-              label: "二级 3-2"
-            }
-          ]
-        }
-      ],
+      data2:[{code:"1000"}],
       defaultProps: {
         children: "children",
         label: "label"
@@ -204,6 +155,7 @@ export default {
   methods: {
     handleNodeClick(data) {
       console.log(data);
+      this.findpeopler(data.code)
     },
     isHide() {
       this.$emit("isHide", false);
@@ -254,6 +206,24 @@ export default {
         }
       }
       return tree;
+    },
+    findpeopler(code){
+      console.log("该组织机构code---"+code)
+      this.axios
+        .get(this.global.apiSrc + "/employee/findByOrganizeCode", {params:{organizeCode:code}})
+        .then(result => {
+          if(result.code === 204){
+            this.tableData="";
+          }else{
+            console.log("按照组织机构编号查询人");
+            console.log(result.data);
+            this.tableData=result.data.data.content;
+          }
+
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   created() {
@@ -272,7 +242,6 @@ export default {
       })
       .catch(err => {
         console.log(err);
-        console.log(this.userName);
       });
   }
 };
