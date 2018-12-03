@@ -209,6 +209,13 @@
         });
       },
       addPlan(){
+        if(this.deviceIds!==""){
+          this.toAddPlan()
+        }else{
+          alert("请至少选择一个设备")
+        }
+      },
+      toAddPlan(){
         this.companyName.executeTime = this.date +" "+ this.times;
         this.companyName.executeTime = this.companyName.executeTime.split(".")[0];
         this.companyName.maintenanceType = 0;
