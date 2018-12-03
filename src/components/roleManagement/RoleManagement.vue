@@ -228,7 +228,6 @@
             console.log("stop")
           })
       },
-      test(){},
       systemCheckAllChange(val) {
         this.list(this.system.systemList,this.system.systemList,this.system.systemKey,1);
         this.system.checkedSystem = val ? this.system.systemList : [];

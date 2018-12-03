@@ -3,7 +3,6 @@
         <div class="top">
             <el-button size="small" @click="toBack">返回</el-button>
           <el-button size="small" @click="addPlan">保存</el-button>
-          <el-button size="small" @click="toSubmitAudit">提交审核</el-button>
         </div>
         <div class="bottom">
             <div class="left">
@@ -263,7 +262,8 @@ export default {
         .then(response => {
           this.auditId = response.data.data.id;
           if(response.data.msg ==="成功"){
-            this.submitAudit()
+            alert("计划添加成功");
+            this.Upkeep();
           }else{
             alert("计划添加失败");
           }

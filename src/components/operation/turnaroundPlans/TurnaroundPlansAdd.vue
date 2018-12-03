@@ -3,7 +3,6 @@
     <div class="top">
       <el-button size="small" @click="toback">返回</el-button>
       <el-button size="small" @click="addPlan">保存</el-button>
-      <el-button size="small" @click="toSubmitAudit">提交审核</el-button>
     </div>
     <div class="bottom">
       <div class="left">
