@@ -174,6 +174,11 @@
       });
     },
     methods: {
+      toPansAdd() {
+        this.$router.push({
+          path: "/Breakdown"
+        });
+      },
       toback() {
         this.$router.back(-1)
       },
@@ -250,7 +255,7 @@
           },
           this
         ).then(response => {
-
+          this.toPansAdd()
           },
           ({type, info}) => {
 
@@ -270,7 +275,7 @@
           },
           this
         ).then(response => {
-
+            this.toPansAdd()
           },
           ({type, info}) => {
 
