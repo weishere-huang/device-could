@@ -134,6 +134,7 @@
               alert("删除成功");
               console.log("delete");
               console.log(result.data);
+              location.reload();
             } else {
               alert("删除失败");
               console.log(result.data);
