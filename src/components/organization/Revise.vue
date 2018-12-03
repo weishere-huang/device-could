@@ -110,11 +110,17 @@ export default {
         organizeInfo: this.chengedata.organizeInfo
       });
       console.log(data);
-      this.axios
-        .post(this.global.apiSrc + "/organize/update", data)
+      this.Axios({
+        url: "/organize/update",
+        params: data,
+        type: "post",
+        option: {
+          enableMsg: false
+        }
+      },this)
+        //.post(this.global.apiSrc + "/organize/update", data)
         .then(result => {
           if(result.data.code === 200){
-
             console.log(result.data);
             location.reload();
             alert("修改成功");
