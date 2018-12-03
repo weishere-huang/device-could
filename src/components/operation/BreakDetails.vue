@@ -160,18 +160,18 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .breakDetails {
-  padding-left: 180px;
+  // padding-left: 180px;
   .case {
     width: 100%;
-    padding: 10px;
+    // padding: 10px;
     .top {
-      padding: 10px;
+      padding: 10px 0;
     }
     .bottom {
       width: 100%;
       overflow: hidden;
       .left {
-        padding: 10px;
+        padding: 10px 0;
         float: left;
         .fault-top {
           width: 350px;
@@ -212,7 +212,7 @@ export default {
       }
       .right {
         padding: 10px;
-        width: 680px;
+        width: 600px;
         float: left;
 
         .msgCase {

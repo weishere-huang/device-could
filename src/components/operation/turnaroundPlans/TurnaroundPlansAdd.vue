@@ -130,7 +130,7 @@
           planName:"",
           maintenanceClassify:"",
           maintenanceLevel:"",
-          maintenanceType:"1",
+          maintenanceType:0,
           planType:"",
           startTime:"",
           endTime:"",
@@ -393,15 +393,15 @@
   .turnaroundPlansAdd {
     // padding-left: 180px;
     .top {
-      padding: 10px 20px;
+      padding: 10px 0px;
     }
     .bottom {
-      padding: 10px 20px;
+      padding: 10px 0px;
       .left {
         padding: 10px;
         border: @border;
         border-radius: 5px;
-        width: 450px;
+        width: 400px;
         float: left;
         h5 {
           position: relative;
@@ -415,7 +415,7 @@
         }
       }
       .right {
-        width: 650px;
+        width: 640px;
         font-size: 14px;
         float: left;
         padding: 10px;

@@ -72,14 +72,34 @@
           <el-button size="mini">清空</el-button>
           <el-button size="mini">保存</el-button>
           <div class="personList">
-            <ul>
-              <li
-                v-for="(item, index) in personListValue"
-                :key="index"
-              >{{item}}
-                <span>x</span>
-              </li>
-            </ul>
+            <el-tabs type="border-card" :tab-position="tabPosition" style="height: 200px;">
+                <el-tab-pane label="负责">
+                  <span>负责人员
+                    <label><i class="iconfont icon-cha"></i></label>
+                  </span>
+                </el-tab-pane>
+                <el-tab-pane label="维修">
+                  <span>维修人员
+                    <label><i class="iconfont icon-cha"></i></label>
+                  </span>
+                  
+                </el-tab-pane>
+                <el-tab-pane label="检修">
+                  <span>检修人员
+                  <label><i class="iconfont icon-cha"></i></label>
+                  </span>
+                </el-tab-pane>
+                <el-tab-pane label="保养">
+                  <span>保养人员
+                  <label><i class="iconfont icon-cha"></i></label>
+                  </span>
+                </el-tab-pane>
+                <el-tab-pane label="操作">
+                  <span>操作人员
+                  <label><i class="iconfont icon-cha"></i></label>
+                  </span>
+                </el-tab-pane>
+              </el-tabs>
           </div>
         </div>
       </div>
@@ -91,6 +111,7 @@ export default {
   name: "",
   data() {
     return {
+      tabPosition:"top",
       pageIndex: 1,
       pageSize: 10,
       tableData: [
@@ -161,12 +182,6 @@ export default {
       tableDate: [{code:1000}],
       columns: [
         {
-          width: 40,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
-        {
           field: "name",
           title: "姓名",
           width: 80,
@@ -175,14 +190,7 @@ export default {
           isResize: true
           // orderBy: ""
         },
-        {
-          field: "gender",
-          title: "性别",
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
+      
         {
           field: "position",
           title: "岗位",
@@ -196,7 +204,7 @@ export default {
           title: "手机号",
           width: 90,
           titleAlign: "center",
-          columnAlign: "center",
+          columnAlign: "left",
           isResize: true
         },
         {
@@ -204,7 +212,7 @@ export default {
           title: "分配情况",
           width: 150,
           titleAlign: "center",
-          columnAlign: "center",
+          columnAlign: "left",
           isResize: true
         }
       ],
@@ -381,6 +389,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+ @import url("../../assets/font/font.css");
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
@@ -396,7 +405,7 @@ export default {
   // background-color: #42424227;
   .addCase {
     width: 100%;
-    min-height: 500px;
+    // min-height: 500px;
     background-color: white;
     margin: auto;
     border-radius: 5px;
@@ -444,7 +453,7 @@ export default {
         }
       }
       .center {
-        width: 60%;
+        width: 55%;
 
         min-height: 400px;
         float: left;
@@ -462,7 +471,7 @@ export default {
         }
       }
       .right {
-        width: 20%;
+        width: 25%;
         min-height: 400px;
         float: left;
         font-size: 12px;
@@ -473,21 +482,29 @@ export default {
           border-radius: 5px;
           min-height: 360px;
           padding: 10px;
-          li {
-            list-style-type: none;
-            height: 20px;
-            line-height: 20px;
-            padding: 0 10px;
-            span {
-              float: right;
-              cursor: pointer;
-              display: none;
-            }
-            &:hover {
-              span {
-                display: block;
+          .el-tab-pane{
+            span{
+              display: inline-block;
+              width: 100%;
+              label{
+                float: right;
+                display: none;
+                i{
+                  cursor: pointer;
+                  &:hover{
+                    color: #409eff;
+                  }
+                }
+              }
+              &:hover{
+                label{
+                  display: block;
+                  
+                }
+                  
               }
             }
+            
           }
         }
       }

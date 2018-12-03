@@ -206,6 +206,7 @@ export default {
   name: "Login",
   data() {
     return {
+      dialogVisible:true,
       fileList2: [
         {
           name: "food.jpeg",
@@ -413,7 +414,7 @@ export default {
     }
   },
   components: {
-    forgetThePassword
+    forgetThePassword,
   }
 };
 </script>

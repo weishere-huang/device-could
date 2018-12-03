@@ -16,7 +16,7 @@
                    column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns"
                    :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="this.totalNub"
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="totalNub"
                           :page-size="pageSize"
                           :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
@@ -98,7 +98,8 @@
             columnAlign: "left",
             isResize: true
           }
-        ]
+        ],
+
       };
     },
     methods: {
@@ -172,96 +173,161 @@
         let data = qs.stringify({
           userIds: this.choice
         })
-        this.axios.post(this.global.apiSrc + "/user/enableUser", data)
-          .then(response => {
-            this.load()
-            console.log(response)
-          }).catch(function (error) {
-        });
+        this.Axios(
+          {
+            url: "/user/enableUser",
+            params:data,
+            type:"post"
+          },this
+        ).then(response=>{
+            this.$message({
+              message: "启用成功",
+              type:"success"
+            })
+        },({type,info})=>{})
+
+        // this.axios.post(this.global.apiSrc + "/user/enableUser", data)
+        //   .then(response => {
+        //     this.load()
+        //     console.log(response)
+        //   }).catch(function (error) {
+        // });
       },
       prohibit() {
         let qs = require("qs");
         let data = qs.stringify({
           userIds: this.choice
         })
-        this.axios.post(this.global.apiSrc + "/user/discontinuationUser", data)
-          .then(response => {
-            this.load()
-            console.log(response)
-          }).catch(function (error) {
-        });
+        this.Axios(
+          {
+            url:"/user/discontinuationUser",
+            params:data,
+            type:"post"
+          },
+          this
+        ).then(response=>{
+          this.$message({
+            message:"禁用成功",
+            type:"success"
+          })
+          this.load()
+        },({type,info})=>{})
+
+        // this.axios.post(this.global.apiSrc + "/user/discontinuationUser", data)
+        //   .then(response => {
+        //     this.load()
+        //     console.log(response)
+        //   }).catch(function (error) {
+        // });
       },
       deleteUser() {
         let qs = require("qs");
         let data = qs.stringify({
           userIds: this.choice
         });
-        this.axios
-          .post(this.global.apiSrc + "/user/deleteUsers", data)
-          .then(response => {
-            console.log(this.data)
-            console.log(response);
-            this.load()
+        this.Axios(
+          {
+            url: "/user/deleteUsers",
+            params:data,
+            type:"post"
+          },
+          this
+        ).then(response=>{
+          this.load();
+          this.$message({
+            message: "您已经删除该企业",
+            type:"success"
           })
-          .catch(function (error) {
-            console.log(error);
-          });
+
+        },({type,info})=>{})
+        //
+        // this.axios
+        //   .post(this.global.apiSrc + "/user/deleteUsers", data)
+        //   .then(response => {
+        //     console.log(this.data)
+        //     console.log(response);
+        //     this.load()
+        //   })
+        //   .catch(function (error) {
+        //     console.log(error);
+        //   });
       },
       findByKeyWord() {
-        // this.Axios(
-        //   {
-        //     url:"/user/findByKeyWord/",
-        //     params:Object.assign(this.searchParams,{
-        //       keyWord: this.keyWord,
-        //       page: 1,
-        //       size:10
-        //     }),
-        //     type:"get",
-        //   },
-        //   this
-        // ).then(response=>{
-        //
-        // },({type,info})=>{})
-        //
-
-        this.axios.get(this.global.apiSrc + "/user/findByKeyWord/", {
-          params: {
-            keyWord: this.keyWord,
-            page: 1,
-            size: this.pageSize
-          }
-        })
-          .then(response => {
-            this.totalNub = response.data.data.totalElements
-            for (let i = 0; i < response.data.data.content.length; i++) {
-              // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
-              if (response.data.data.content[i].state === 0) {
-                response.data.data.content[i].state = "正常"
-              }
-              if (response.data.data.content[i].state === 1) {
-                response.data.data.content[i].state = "停用"
-              }
+        // this.pageIndex = 1;
+        this.Axios(
+          {
+            url:"/user/findByKeyWord/",
+            params:Object.assign(this.searchParams,{
+              keyWord: this.keyWord,
+              page: 1,
+              size:10
+            }),
+            type:"get",
+          },
+          this
+        ).then(response=>{
+          this.totalNub = response.data.data.totalElements
+          // this.pageInde = 1
+          for (let i = 0; i < response.data.data.content.length; i++) {
+            // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+            if (response.data.data.content[i].state === 0) {
+              response.data.data.content[i].state = "正常"
             }
-            console.log(response)
-            this.tableData = response.data.data.content;
-          }).catch(function (error) {
-          console.log(error)
-        })
+            if (response.data.data.content[i].state === 1) {
+              response.data.data.content[i].state = "停用"
+            }
+            // this.pageindex = 1;
+          }
+          console.log(response)
+          this.tableData = response.data.data.content;
+        },({type,info})=>{})
+
+
+        // this.axios.get(this.global.apiSrc + "/user/findByKeyWord/", {
+        //   params: {
+        //     keyWord: this.keyWord,
+        //     page: 1,
+        //     size: this.pageSize
+        //   }
+        // })
+        //   .then(response => {
+        //     this.totalNub = response.data.data.totalElements
+        //     for (let i = 0; i < response.data.data.content.length; i++) {
+        //       // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+        //       if (response.data.data.content[i].state === 0) {
+        //         response.data.data.content[i].state = "正常"
+        //       }
+        //       if (response.data.data.content[i].state === 1) {
+        //         response.data.data.content[i].state = "停用"
+        //       }
+        //     }
+        //     console.log(response)
+        //     this.tableData = response.data.data.content;
+        //   }).catch(function (error) {
+        //   console.log(error)
+        // })
       },
 
       load() {
+        EventBus.$on("sideBarTroggleHandle", isCollapse => {
+          window.setTimeout(() => {
+            this.$refs.companysTable.resize();
+          }, 500);
+        });
         this.Axios(
           {
-            url: "/user/enterpriseUserAll",
-            params: Object.assign({
+            url: "/user/findByKeyWord/",
+            params: Object.assign(this.searchParams,{
               page: this.pageIndex,
               size: this.pageSize
             }),
             type: "get",
+            option:{}
           },
           this
         ).then(response => {
           console.log(response);
+          // this.pageIndex=1
           this.totalNub = response.data.data.totalElements
           for (let i = 0; i < response.data.data.content.length; i++) {
             // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];

@@ -30,7 +30,7 @@
           </el-dialog>
           <div slot="footer" class="dialog-footer">
             <el-button @click="outerVisible = false" size="mini">取 消</el-button>
-            <el-button type="primary" size="mini">提交</el-button>
+            <el-button @click="submitAudit" type="primary" size="mini">提交</el-button>
           </div>
         </el-dialog>
         <el-button size="small" @click="stopDiscontinuation">停止</el-button>
@@ -40,7 +40,7 @@
         <div>
           <v-table :row-dblclick="toAmend" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
@@ -251,7 +251,7 @@ export default {
     loadValue(value) {
       let arr = new Array();
       for (let i = 0; i < value.length; i++) {
-        if (value[i].maintenanceType === 1) {
+        if (value[i].maintenanceType === 1 ) {
           arr[arr.length] = value[i];
         }
       }
@@ -371,6 +371,7 @@ export default {
           }
         })
         .then(response => {
+          this.arr ="";
           this.load();
           this.outerVisible = false;
         })
@@ -381,7 +382,7 @@ export default {
     outerVisibleIsOk() {
       if (this.arr.length === 1) {
         this.outerVisible = true
-      } else if(this.arr.length ===0){
+      } else if(this.arr.length === 0){
         alert("请选择计划")
       }else{
         alert("抱歉只能计划只能单个修改")
