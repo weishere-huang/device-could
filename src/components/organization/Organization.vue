@@ -128,7 +128,7 @@
         });
         console.log("delete" + this.orgID);
         this.Axios({
-          url: "/organize/delete/",
+          url: "/organize/delete/" + this.orgID,
           params: data,
           type: "post",
           option: {

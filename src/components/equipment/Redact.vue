@@ -286,7 +286,7 @@ export default {
     return {
       aaaa:{
         label:"",
-        value:this.sizeForm.deviceState
+        value:""
       },
       qqqqq:"",
       dialogVisible3:false,
@@ -351,23 +351,23 @@ export default {
       ],
       options4: [
         {
-          value: "1",
+          value: 1,
           label: "在用"
         },
         {
-          value: "2",
+          value: 2,
           label: "出租"
         },
         {
-          value: "3",
+          value: 3,
           label: "停用"
         },
         {
-          value: "4",
+          value: 4,
           label: "封存"
         },
         {
-          value: "5",
+          value: 5,
           label: "报废"
         }
       ],
@@ -522,7 +522,8 @@ export default {
           console.log("detail");
           console.log(result.data);
           this.sizeForm = result.data.data;
-          this.placeholder=this.sizeForm.organizeName
+          this.aaaa.value = this.sizeForm.deviceState;
+          this.placeholder=this.sizeForm.organizeName;
           if (this.sizeForm.buyDate != null) {
             this.sizeForm.buyDate = this.sizeForm.buyDate.replace(/-/g, "/");
           }
