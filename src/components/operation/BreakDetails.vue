@@ -236,8 +236,10 @@
       },
 
       commitAudit(){
+        let qs = require("qs");
+        let data = qs.stringify({});
         this.axios
-          .get(this.global.apiSrc + "/fault/commitAudit")
+          .post(this.global.apiSrc + "/fault/commitAudit",data)
           .then(response =>{
 
           })

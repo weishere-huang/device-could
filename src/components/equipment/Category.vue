@@ -7,7 +7,7 @@
           <span class="custom-tree-node" slot-scope="{ node, data }">
             <span>{{ data.categoryName}}</span>
             <span class="addCase">
-              <el-button type="text" size="mini" @click="dialogVisible=true">
+              <el-button type="text" size="mini" @click="dialogVisible=true" >
                 添加
               </el-button>
               <el-button type="text" size="mini" >
@@ -42,13 +42,13 @@
       >
       <el-form ref="form" label-width="90px">
           <el-form-item label="类别名称：">
-            <el-input v-model="form.name" size="mini"></el-input>
+            <el-input v-model="addname" size="mini"></el-input>
           </el-form-item>
           <el-form-item label="备注：">
-            <el-input type="textarea" v-model="form.desc"></el-input>
+            <el-input type="textarea" v-model="addmsg"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button size="mini">保存</el-button>
+            <el-button size="mini" @click="addCategory">保存</el-button>
           </el-form-item>
         </el-form>
     </el-dialog>
@@ -70,7 +70,9 @@ export default {
         children: "children",
         label: "name"
       },
-      nodedata:""
+      nodedata:"",
+      addname:"",
+      addmsg:""
     };
   },
   methods: {
@@ -108,38 +110,61 @@ export default {
       return tree;
     },
     findAlldeviceClassify(){
-      let qs = require("qs");
-      let data = qs.stringify({
-      });
-      this.axios
-        .get(this.global.apiSrc + "/deviceCategory/all", data)
+      this.Axios({
+        params: {
+        },
+        type: "get",
+        url: "/deviceCategory/all"
+      },this)
+        // .get(this.global.apiSrc + "/deviceCategory/all", data)
         .then(result => {
           this.organize= this.filterArray(result.data.data,0);
           console.log(this.organize);
           console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        },
+          ({type, info}) => {
+            //错误类型 type=faild / error
+            //error && error(type, info);
+          }
+        )
+        // .catch(err => {
+        //   console.log(err);
+        // });
     },
     addCategory(){
       //添加设备类别
       let qs = require("qs");
       let data = qs.stringify({
-        categoryParentName:"测试类别跟节点1",
-        categoryParentNo:"101",
-        categoryName:"添加测试节点",
-        categoryMsg:"添加测试2.0"
+        categoryParentName:this.nodedata.categoryName,
+        categoryParentNo:this.nodedata.categoryNo,
+        categoryName:this.addname,
+        categoryMsg:this.addmsg
       });
-      this.axios
-        .post(this.global.apiSrc + "/deviceCategory/add", data)
+      this.Axios({
+        url: "/deviceCategory/add",
+        params: data,
+        type: "post",
+        option: {
+          enableMsg: false
+        }
+      },this)
+        //.post(this.global.apiSrc + "/deviceCategory/add", data)
         .then(result => {
+          if(result.data.code === 200){
+            alert("添加成功");
+            location.reload();
+          }else {
+            alert("添加失败,请重新添加");
+          }
           console.log("addCategory");
           console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        },
+          ({type, info}) => {
+          }
+        );
+        // .catch(err => {
+        //   console.log(err);
+        // });
     },
     updateCategory(){
       //修改设备类别
@@ -149,15 +174,31 @@ export default {
         categoryName:this.nodedata.categoryName,
         categoryMsg:this.nodedata.categoryMsg
       });
-      this.axios
-        .post(this.global.apiSrc + "/deviceCategory/update", data)
+      this.Axios({
+        url: "/deviceCategory/update",
+        params: data,
+        type: "post",
+        option: {
+          enableMsg: false
+        }
+      },this)
+        // .post(this.global.apiSrc + "/deviceCategory/update", data)
         .then(result => {
+          if(result.data.code === 200){
+            alert("修改成功");
+            location.reload();
+          }else{
+            alert("修改失败,请重新尝试")
+          }
           console.log("修改设备类别");
           console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        },
+          ({type, info}) => {
+          }
+        )
+        // .catch(err => {
+        //   console.log(err);
+        // });
     },
     deleteCategory(){
       //删除设备类别
@@ -165,15 +206,32 @@ export default {
       let data = qs.stringify({
         categoryId:this.nodedata.id,
       });
-      this.axios
-        .post(this.global.apiSrc + "/deviceCategory/delete/"+this.nodedata.id)
+      this.Axios({
+        url: "/deviceCategory/delete/"+this.nodedata.id,
+        params: data,
+        type: "post",
+        option: {
+          enableMsg: false
+        }
+      },this)
+        // .post(this.global.apiSrc + "/deviceCategory/delete/"+this.nodedata.id)
         .then(result => {
+          if(result.data.code === 200){
+            alert("删除成功");
+            location.reload();
+          }else{
+            alert("删除失败,请重新尝试")
+          }
           console.log("删除设备类别");
           console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });}
+        },
+          ({type, info}) => {
+          }
+        )
+        // .catch(err => {
+        //   console.log(err);
+        // });
+    }
   },
   created() {
     this.findAlldeviceClassify();

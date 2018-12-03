@@ -68,17 +68,38 @@ export default {
         }
       }
       console.log(this.choice);
-      this.axios
-        .get(this.global.apiSrc+"/device/select", {
-          params: {
-            deviceName:this.deviceName,
-            locationNo:this.locationNo,
-            workerName:this.workerName,
-            manufacturer:this.manufacturer,
-            deviceSates:this.choice,
-            deviceCategory:""
-          }
-        })
+      this.Axios({
+        params: {
+          deviceName:this.deviceName,
+          locationNo:this.locationNo,
+          workerName:this.workerName,
+          manufacturer:this.manufacturer,
+          deviceSates:this.choice,
+          deviceCategory:"",
+          page:1,
+          size:10
+        },
+        // option: {
+        //   enableMsg: false
+        // },
+        type: "get",
+        url: "/device/select"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        // .get(this.global.apiSrc+"/device/select", {
+        //   params: {
+        //     deviceName:this.deviceName,
+        //     locationNo:this.locationNo,
+        //     workerName:this.workerName,
+        //     manufacturer:this.manufacturer,
+        //     deviceSates:this.choice,
+        //     deviceCategory:"",
+        //     page:1,
+        //     size:10
+        //   }
+        // })
         .then(response => {
           for (let i = 0; i < response.data.data.content.length; i++) {
             if (response.data.data.content[i].deviceState === 1) {
@@ -102,10 +123,15 @@ export default {
           this.dataName = response.data.data.content;
           console.log(this.dataName);
           this.$emit("advanceValue", this.dataName);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+        },
+          ({type, info}) => {
+            //错误类型 type=faild / error
+            //error && error(type, info);
+          }
+        )
+        // .catch(function(error) {
+        //   console.log(error);
+        // });
     }
   }
 };
