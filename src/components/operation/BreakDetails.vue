@@ -43,15 +43,8 @@
               <el-form-item label="取消时间：">
                 <span></span>
               </el-form-item>
-              <el-form-item
-                label="取消原因："
-                style="border-bottom:1px dashed #dde2eb; height:auto; padding-bottom:5px"
-              >
-                <el-input
-                  type="textarea"
-                  style="width:100%;"
-                  disabled
-                ></el-input>
+              <el-form-item label="取消原因：" style="border-bottom:1px dashed #dde2eb; height:auto; padding-bottom:5px">
+                <el-input type="textarea" style="width:100%;" disabled></el-input>
               </el-form-item>
               <el-form-item label="是否撤销：">
                 <span></span>
@@ -62,15 +55,8 @@
               <el-form-item label="撤销时间：">
                 <span></span>
               </el-form-item>
-              <el-form-item
-                label="撤销原因："
-                style="height:auto; padding-bottom:5px"
-              >
-                <el-input
-                  type="textarea"
-                  style="width:100%;"
-                  disabled
-                ></el-input>
+              <el-form-item label="撤销原因：" style="height:auto; padding-bottom:5px">
+                <el-input type="textarea" style="width:100%;" disabled></el-input>
               </el-form-item>
             </el-form>
           </div>
@@ -78,124 +64,43 @@
         <div class="right">
           <div class="msgCase">
             <h5>故障信息</h5>
-            <el-form
-              :inline="true"
-              style="margin-bottom:5px"
-              size="small"
-              label-width="100px"
-            >
+            <el-form :inline="true" style="margin-bottom:5px" size="small" label-width="100px">
               <el-form-item label="故障编码：">
-                <el-input
-                  v-model="companyName.name"
-                  style="width:150px"
-                  disabled
-                  size="mini"
-                ></el-input>
+                <el-input v-model="companyName.name" style="width:150px" disabled size="mini"></el-input>
               </el-form-item>
               <el-form-item label="故障状况：">
-                <el-input
-                  v-model="companyName.name"
-                  style="width:150px"
-                  disabled
-                  size="mini"
-                ></el-input>
+                <el-input v-model="companyName.name" style="width:150px" disabled size="mini"></el-input>
               </el-form-item>
             </el-form>
-            <el-form
-              :inline="true"
-              style="margin-bottom:5px"
-              size="small"
-              label-width="100px"
-            >
+            <el-form :inline="true" style="margin-bottom:5px" size="small" label-width="100px">
               <el-form-item label="故障等级：">
-                <el-input
-                  v-model="companyName.name"
-                  style="width:150px"
-                  disabled
-                  size="mini"
-                ></el-input>
+                <el-input v-model="companyName.name" style="width:150px" disabled size="mini"></el-input>
               </el-form-item>
               <el-form-item label="故障来源：">
-                <el-input
-                  v-model="companyName.name"
-                  style="width:150px"
-                  disabled
-                  size="mini"
-                ></el-input>
+                <el-input v-model="companyName.name" style="width:150px" disabled size="mini"></el-input>
               </el-form-item>
             </el-form>
-            <el-form
-              :inline="true"
-              style="margin-bottom:5px"
-              size="small"
-              label-width="100px"
-            >
+            <el-form :inline="true" style="margin-bottom:5px" size="small" label-width="100px">
               <el-form-item label="报告人：">
-                <el-input
-                  v-model="companyName.name"
-                  style="width:150px"
-                  disabled
-                  size="mini"
-                ></el-input>
+                <el-input v-model="companyName.name" style="width:150px" disabled size="mini"></el-input>
               </el-form-item>
               <el-form-item label="报告时间：">
                 <span></span>
               </el-form-item>
             </el-form>
-            <el-form
-              style="margin-bottom:5px"
-              size="small"
-              label-width="100px"
-            >
-              <el-form-item
-                label="故障描述："
-                style="margin-bottom:5px;"
-              >
-                <el-input
-                  type="textarea"
-                  :autosize="{ minRows: 4, maxRows: 6}"
-                  placeholder="请输入内容"
-                  v-model="companyName.textarea"
-                  style="width:94%"
+            <el-form style="margin-bottom:5px" size="small" label-width="100px">
+              <el-form-item label="故障描述：" style="margin-bottom:5px;">
+                <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" placeholder="请输入内容" v-model="companyName.textarea" style="width:94%"
                 >
                 </el-input>
               </el-form-item>
               <el-form-item label="原因分析：">
-                <el-input
-                  type="textarea"
-                  :autosize="{ minRows: 4, maxRows: 6}"
-                  placeholder="请输入内容"
-                  v-model="companyName.textarea1"
-                  style="width:94%"
-                >
-                </el-input>
+                <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" placeholder="请输入内容" v-model="companyName.textarea1" style="width:94%"></el-input>
               </el-form-item>
               <el-form-item label="照片：">
-                <!-- <div class="slideshow">
-                                    <ul>
-                                        <li>1</li>
-                                        <li>2</li>
-                                        <li>3</li>
-                                        <li>4</li>
-                                        <li>5</li>
-                                        <li>6</li>
-                                        <li>7</li>
-                                        <li>8</li>
-                                        <li>9</li>
-                                    </ul>
-                                    <span class="leftButton">《</span>
-                                    <span class="rightButton">》</span>
-                                </div> -->
                 <template>
-                  <el-carousel
-                    trigger="click"
-                    :autoplay=false
-                    height="200px"
-                  >
-                    <el-carousel-item
-                      v-for="item in 6"
-                      :key="item"
-                    >
+                  <el-carousel trigger="click" :autoplay=false height="200px">
+                    <el-carousel-item v-for="item in 6" :key="item">
                       <h3>{{ item }}</h3>
                     </el-carousel-item>
                   </el-carousel>
@@ -255,18 +160,18 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .breakDetails {
-  padding-left: 180px;
+  // padding-left: 180px;
   .case {
     width: 100%;
-    padding: 10px;
+    // padding: 10px;
     .top {
-      padding: 10px;
+      padding: 10px 0;
     }
     .bottom {
       width: 100%;
       overflow: hidden;
       .left {
-        padding: 10px;
+        padding: 10px 0;
         float: left;
         .fault-top {
           width: 350px;
@@ -307,7 +212,7 @@ export default {
       }
       .right {
         padding: 10px;
-        width: 680px;
+        width: 600px;
         float: left;
 
         .msgCase {

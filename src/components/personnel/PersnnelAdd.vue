@@ -39,7 +39,9 @@
               </li>
               <li>
                 <label for="">入职时间：</label>
-                <el-input type="date" size="small" v-model="persnneladd.entryTime"></el-input>
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.entryTime"
+                              size="small"  ></el-date-picker>
+                <!-- <el-input type="date" size="small" v-model="persnneladd.entryTime"></el-input> -->
               </li>
             </ul>
           </div>
@@ -58,7 +60,9 @@
               </li>
               <li>
                 <label for="">出生日期：</label>
-                <el-input type="date" size="small" v-model="persnneladd.birthday"></el-input>
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.birthday"
+                              size="small"  ></el-date-picker>
+                <!-- <el-input type="date" size="small" v-model="persnneladd.birthday"></el-input> -->
               </li>
               <li>
                 <label for="">岗位：</label>
@@ -183,7 +187,6 @@
           .get(this.global.apiSrc+"/organize/allOrganize")
           .then(response => {
             this.options = response.data.data;
-            console.log(response.data.data)
           })
           .catch(function(error) {
             console.log(error);

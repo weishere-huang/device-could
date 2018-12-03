@@ -29,6 +29,7 @@
   export default {
     data() {
       return {
+        searchParams: {},
         choice: "",
         pageIndex: 1,
         pageSize: 10,
@@ -101,6 +102,7 @@
       };
     },
     methods: {
+
       selectGroupChange(selection) {
         console.log("select-group-change", selection);
         this.choice = "";
@@ -206,10 +208,26 @@
           });
       },
       findByKeyWord() {
+        // this.Axios(
+        //   {
+        //     url:"/user/findByKeyWord/",
+        //     params:Object.assign(this.searchParams,{
+        //       keyWord: this.keyWord,
+        //       page: 1,
+        //       size:10
+        //     }),
+        //     type:"get",
+        //   },
+        //   this
+        // ).then(response=>{
+        //
+        // },({type,info})=>{})
+        //
+
         this.axios.get(this.global.apiSrc + "/user/findByKeyWord/", {
           params: {
             keyWord: this.keyWord,
-            page: this.pageIndex,
+            page: 1,
             size: this.pageSize
           }
         })
@@ -232,26 +250,54 @@
       },
 
       load() {
-        this.axios
-          .get(this.global.apiSrc + "/user/enterpriseUserAll", {params: {page: this.pageIndex, size: this.pageSize}})
-          .then(response => {
-            console.log(response);
-            this.totalNub = response.data.data.totalElements
-            for (let i = 0; i < response.data.data.content.length; i++) {
-              // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
-              if (response.data.data.content[i].state === 0) {
-                response.data.data.content[i].state = "正常"
-              }
-              if (response.data.data.content[i].state === 1) {
-                response.data.data.content[i].state = "停用"
-              }
+        this.Axios(
+          {
+            url: "/user/enterpriseUserAll",
+            params: Object.assign({
+              page: this.pageIndex,
+              size: this.pageSize
+            }),
+            type: "get",
+          },
+          this
+        ).then(response => {
+          console.log(response);
+          this.totalNub = response.data.data.totalElements
+          for (let i = 0; i < response.data.data.content.length; i++) {
+            // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+            if (response.data.data.content[i].state === 0) {
+              response.data.data.content[i].state = "正常"
             }
-            this.tableData = response.data.data.content;
-            // console.log(this.tableDate)
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+            if (response.data.data.content[i].state === 1) {
+              response.data.data.content[i].state = "停用"
+            }
+          }
+          this.tableData = response.data.data.content;
+          console.log(this.tableDate)
+        }, ({type, info}) => {
+
+        })
+
+        // this.axios
+        //   .get(this.global.apiSrc + "/user/enterpriseUserAll", {params: {page: this.pageIndex, size: this.pageSize}})
+        //   .then(response => {
+        //     console.log(response);
+        //     this.totalNub = response.data.data.totalElements
+        //     for (let i = 0; i < response.data.data.content.length; i++) {
+        //       // response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
+        //       if (response.data.data.content[i].state === 0) {
+        //         response.data.data.content[i].state = "正常"
+        //       }
+        //       if (response.data.data.content[i].state === 1) {
+        //         response.data.data.content[i].state = "停用"
+        //       }
+        //     }
+        //     this.tableData = response.data.data.content;
+        //     console.log(this.tableDate)
+        //   })
+        //   .catch(function (error) {
+        //     console.log(error);
+        //   });
       }
     },
     created() {
@@ -260,31 +306,31 @@
   };
 </script>
 <style lang="less" scoped>
-@blue: #409eff;
-@Success: #67c23a;
-@Warning: #e6a23c;
-@Danger: #f56c6c;
-@Info: #dde2eb;
-.userManagement {
-  // padding-left: 220px;
-  .userCase {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    .top {
-      height: 60px;
-      line-height: 60px;
-      border: 1px solid @Info;
-      border-radius: 5px;
-      padding-left: 10px;
-      .search {
-        float: right;
-        width: 40%;
-        .el-input {
-          width: 80%;
+  @blue: #409eff;
+  @Success: #67c23a;
+  @Warning: #e6a23c;
+  @Danger: #f56c6c;
+  @Info: #dde2eb;
+  .userManagement {
+    // padding-left: 220px;
+    .userCase {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      .top {
+        height: 60px;
+        line-height: 60px;
+        border: 1px solid @Info;
+        border-radius: 5px;
+        padding-left: 10px;
+        .search {
+          float: right;
+          width: 40%;
+          .el-input {
+            width: 80%;
+          }
         }
       }
     }
   }
-}
 </style>

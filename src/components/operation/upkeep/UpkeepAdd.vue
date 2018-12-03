@@ -3,6 +3,7 @@
         <div class="top">
             <el-button size="small" @click="toBack">返回</el-button>
           <el-button size="small" @click="addPlan">保存</el-button>
+          <el-button size="small" @click="toSubmitAudit">提交审核</el-button>
         </div>
         <div class="bottom">
             <div class="left">
@@ -13,10 +14,13 @@
                     </el-form-item>
                     <el-form-item label="检修分类：">
                         <el-select v-model="companyName.maintenanceClassify" placeholder="请选择" size="mini">
-                            <el-option label="日常检修（DM）" value="1"></el-option>
-                            <el-option label="定期检修（TBM）" value="2"></el-option>
-                            <el-option label="改进性检修（PAM）" value="3"></el-option>
-                            <el-option label="故障检修（RTF）" value="4"></el-option>
+                          <el-option label="例行保养" value="1"></el-option>
+                          <el-option label="季节性保养" value="2"></el-option>
+                          <el-option label="换季保养" value="3"></el-option>
+                          <el-option label="磨合期保养" value="4"></el-option>
+                          <el-option label="转移保养" value="5"></el-option>
+                          <el-option label="停放保养" value="6"></el-option>
+                          <el-option label="其他" value="7"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="检修级别：">
@@ -119,23 +123,24 @@ export default {
   data() {
     return {
       //统一token之后删除userID
-      userId:3,
       deviceIds:1,
+      auditId:0,
       date:"",
       times:"",
       addPlanShow: false,
       time: new Date().toLocaleString(),
       companyName: {
+        id:"",
         planName:"",
         maintenanceClassify:"",
         maintenanceLevel:"",
-        maintenanceType:"",
+        maintenanceType:1,
         planType:"单次",
         startTime:"",
         endTime:"",
         executeTime:"",
-        frequency:"",
-        frequencyType:"",
+        frequency:1,
+        frequencyType:"天",
         maintenanceCc:""
       },
       columns: [
@@ -220,7 +225,7 @@ export default {
     addPlan(){
       this.companyName.executeTime = this.date +" "+ this.times;
       this.companyName.executeTime = this.companyName.executeTime.split(".")[0];
-      this.companyName.maintenanceType = 0;
+      this.companyName.maintenanceType = 1;
       if(this.companyName.planType === "单次"){
         this.companyName.endTime =this.companyName.startTime;
         this.companyName.planType = 0
@@ -239,8 +244,6 @@ export default {
       }
       let qs = require("qs");
       let data = qs.stringify({
-        //统一token之后删除userID
-        userId:this.userId,
         id:this.companyName.id,
         planName:this.companyName.planName,
         maintenanceClassify:this.companyName.maintenanceClassify,
@@ -258,12 +261,55 @@ export default {
       this.axios
         .post(this.global.apiSrc+"/mplan/add", data)
         .then(response => {
-          console.log(response.data);
+          this.auditId = response.data.data.id;
           if(response.data.msg ==="成功"){
-            alert("成功");
-            this.Upkeep()
+            this.submitAudit()
           }else{
-            alert("失败");
+            alert("计划添加失败");
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    submitAudit(){
+      this.$confirm('计划添加成功,是否立即提交审核', '提示')
+        .then(_=>{
+          let qs = require("qs");
+          let data = qs.stringify({
+            maintenanceId:this.auditId
+          });
+          this.axios
+            .post(this.global.apiSrc+"/mplan/submitAudit",data)
+            .then(response =>{
+              if(response.data.code === 200){
+                alert("已成功提交审核");
+                this.Upkeep();
+              }else{
+                alert("系统错误请稍后再试");
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        })
+        .catch(_=>{
+          this.TurnaroundPlans();
+        })
+    },
+    toSubmitAudit(){
+      let qs = require("qs");
+      let data = qs.stringify({
+        maintenanceId:this.auditId
+      });
+      this.axios
+        .post(this.global.apiSrc+"/mplan/submitAudit",data)
+        .then(response =>{
+          if(response.data.code === 200){
+            alert("已成功提交审核");
+            this.Upkeep();
+          }else{
+            alert("系统错误请稍后再试");
           }
         })
         .catch(function(error) {
@@ -279,6 +325,7 @@ export default {
         path: "/Upkeep"
       });
     },
+
 
     isHide(params) {
       this.addPlanShow = params;

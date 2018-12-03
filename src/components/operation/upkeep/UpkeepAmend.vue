@@ -203,6 +203,7 @@ export default {
   methods: {
     loadValue(){
       this.companyName = this.$store.state.operation.turnround;
+      console.log(this.$store.state.operation.turnround);
       this.date = this.companyName.executeTime.split(" ")[0];
       this.times = this.companyName.executeTime.split(" ")[1].split(".")[0];
       this.companyName.maintenanceClassify = this.companyName.maintenanceClassify.toString();
@@ -246,7 +247,9 @@ export default {
     updatePlan(){
       console.log(this.times);
       this.companyName.executeTime = this.date +" "+ this.times;
-      this.companyName.executeTime = this.companyName.executeTime.split(".")[0];
+      this.companyName.executeTime = this.companyName.executeTime.split(".")[0].replace(/-/g,"/");
+      this.companyName.startTime = this.companyName.startTime.split(" ")[0].replace(/-/g,"/");
+      this.companyName.endTime = this.companyName.endTime.split(" ")[0].replace(/-/g,"/");
       if(this.companyName.planType === "单次"){
         this.companyName.planType = 0
       }
@@ -395,7 +398,7 @@ export default {
       }
     }
     .right {
-      width: 600px;
+      width: 640px;
       font-size: 14px;
       float: left;
       padding: 10px;

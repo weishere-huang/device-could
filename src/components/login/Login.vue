@@ -206,6 +206,7 @@ export default {
   name: "Login",
   data() {
     return {
+      dialogVisible:true,
       fileList2: [
         {
           name: "food.jpeg",
@@ -377,7 +378,7 @@ export default {
           if (this.manager.phone == "") {
             console.log("请输入管理员联系电话");
             alert("请输入管理员联系电话");
-          } else {
+          } if(result.data.code===200) {
             location.reload();
             console.log(result);
           }
@@ -413,7 +414,7 @@ export default {
     }
   },
   components: {
-    forgetThePassword
+    forgetThePassword,
   }
 };
 </script>
@@ -623,4 +624,3 @@ export default {
   }
 }
 </style>
-
