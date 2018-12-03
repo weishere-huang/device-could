@@ -176,17 +176,18 @@
         this.Axios(
           {
             url: "/user/enableUser",
-            params:data,
-            type:"post",
-            option:{enableMsg:false}
-          },this
-        ).then(response=>{
-            this.$message({
-              message: "启用成功",
-              type:"success"
-            })
+            params: data,
+            type: "post",
+            option: {enableMsg: false}
+          }, this
+        ).then(response => {
+          this.$message({
+            message: "启用成功",
+            type: "success"
+          })
           this.load()
-        },({type,info})=>{})
+        }, ({type, info}) => {
+        })
       },
       prohibit() {
         let qs = require("qs");
@@ -195,19 +196,20 @@
         })
         this.Axios(
           {
-            url:"/user/discontinuationUser",
-            params:data,
-            type:"post",
-            option:{enableMsg:false}
+            url: "/user/discontinuationUser",
+            params: data,
+            type: "post",
+            option: {enableMsg: false}
           },
           this
-        ).then(response=>{
+        ).then(response => {
           this.$message({
-            message:"禁用成功",
-            type:"success"
+            message: "禁用成功",
+            type: "success"
           })
           this.load()
-        },({type,info})=>{})
+        }, ({type, info}) => {
+        })
       },
       deleteUser() {
         let qs = require("qs");
@@ -217,41 +219,44 @@
         this.Axios(
           {
             url: "/user/deleteUsers",
-            params:data,
-            type:"post",
-            option:{enableMsg:false}
+            params: data,
+            type: "post",
+            option: {enableMsg: false}
           },
           this
-        ).then(response=>{
+        ).then(response => {
           this.load();
           this.$message({
             message: "您已经删除该企业",
-            type:"success"
+            type: "success"
           })
 
-        },({type,info})=>{})
+        }, ({type, info}) => {
+        })
       },
       findByKeyWord() {
-        // this.pageIndex = 1;
         this.Axios(
           {
-            url:"/user/findByKeyWord/",
-            params:Object.assign(this.searchParams,{
+            url: "/user/findByKeyWord/",
+            params: Object.assign(this.searchParams, {
               keyWord: this.keyWord,
               page: 1,
-              size:10
+              size: this.pageSize
             }),
-            type:"get",
+            type: "get",
           },
           this
-        ).then(response=>{
+        ).then(response => {
+          this.pageIndex = 1
           this.totalNub = response.data.data.totalElements
           this.tableData = response.data.data.content;
           for (let i = 0; i < response.data.data.content.length; i++) {
-            this.tableData[i].state===0?this.tableData[i].state="正常":this.tableData[i].state="停用"
+            this.tableData[i].state === 0 ? this.tableData[i].state = "正常" : this.tableData[i].state = "停用"
           }
+          console.log(this.pageIndex)
           console.log(response)
-        },({type,info})=>{})
+        }, ({type, info}) => {
+        })
       },
 
       load() {
@@ -263,12 +268,12 @@
         this.Axios(
           {
             url: "/user/findByKeyWord/",
-            params: Object.assign(this.searchParams,{
+            params: Object.assign(this.searchParams, {
               page: this.pageIndex,
               size: this.pageSize
             }),
             type: "get",
-            option:{enableMsg:false},
+            option: {enableMsg: false},
             // loadingConfig: {
             //   target: document.querySelector("#mainContentWrapper")
             // }
@@ -281,7 +286,7 @@
           this.tableData = response.data.data.content;
 
           for (let i = 0; i < response.data.data.content.length; i++) {
-            this.tableData[i].state===0?this.tableData[i].state="正常":this.tableData[i].state="停用"
+            this.tableData[i].state === 0 ? this.tableData[i].state = "正常" : this.tableData[i].state = "停用"
           }
           console.log(this.tableDate)
         }, ({type, info}) => {

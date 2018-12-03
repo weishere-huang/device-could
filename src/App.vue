@@ -159,7 +159,7 @@
                     content="退出"
                     placement="bottom-end"
                   >
-                    <i class="iconfont">&#xe6af;</i>
+                    <i class="iconfont" @click="out">&#xe6af;</i>
                   </el-tooltip>
                 </li>
               </ul>
@@ -191,13 +191,23 @@ export default {
       // console.log(key, keyPath);
       this.isCollapse = !this.isCollapse;
       EventBus.$emit('sideBarTroggleHandle', this.isCollapse);
-    }
+    },
     // handleOpen(key, keyPath) {
     //   console.log(key, keyPath);
     // },
     // handleClose(key, keyPath) {
     //   console.log(key, keyPath);
     // }
+
+    out(){
+      this.Axios(
+        {
+
+        }
+      )
+
+    }
+
   }
 };
 </script>
