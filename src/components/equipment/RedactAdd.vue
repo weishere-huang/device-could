@@ -323,23 +323,41 @@ export default {
     },
     findpeopler(code){
       console.log("该组织机构code---"+code)
-      this.axios
-        .get(this.global.apiSrc + "/employee/findByOrganizeCode", {params:{organizeCode:code}})
+      this.Axios({
+        params: {
+          organizeCode:code
+        },
+        option: {
+          enableMsg: false
+        },
+        type: "get",
+        url: "/employee/findByOrganizeCode"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        //.get(this.global.apiSrc + "/employee/findByOrganizeCode", {params:{organizeCode:code}})
         .then(result => {
           console.log("按照组织机构编号查询人");
           console.log(result.data);
           this.tableData=result.data.data.content;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        },
+          ({type, info}) => {
+            //错误类型 type=faild / error
+            //error && error(type, info);
+          }
+        )
+        // .catch(err => {
+        //   console.log(err);
+        // });
     }
   },
   created() {
-    //axios
-    this.axios
-      .get(this.global.apiSrc + "/organize/allOrganize")
-      //.get("api/organize/allOrganize/321")
+    this.Axios({
+      type: "get",
+      url: "/organize/allOrganize"
+    },this)
+     // .get(this.global.apiSrc + "/organize/allOrganize")
       .then(result => {
         console.log("查询所有组织机构");
         console.log(result.data);
@@ -348,11 +366,16 @@ export default {
         console.log(arr);
         //this.data2 = this.filterArray(result.data.data,1000);
         this.data2 = arr;
-      })
-      .catch(err => {
-        console.log(err);
-        console.log(this.userName);
-      });
+      },
+        ({type, info}) => {
+          //错误类型 type=faild / error
+          //error && error(type, info);
+        }
+      )
+      // .catch(err => {
+      //   console.log(err);
+      //   console.log(this.userName);
+      // });
   }
 };
 </script>
