@@ -72,14 +72,34 @@
           <el-button size="mini" @click="deletes">清空</el-button>
           <el-button size="mini" @click="toAdd">保存</el-button>
           <div class="personList">
-            <ul>
-              <li
-                v-for="(item, index) in personListValue"
-                :key="index"
-              >{{item}}
-                <span>x</span>
-              </li>
-            </ul>
+               <el-tabs type="border-card" :tab-position="tabPosition" style="height: 200px;">
+                <el-tab-pane label="负责">
+                  <span>负责人员
+                    <label><i class="iconfont icon-cha"></i></label>
+                  </span>
+                </el-tab-pane>
+                <el-tab-pane label="维修">
+                  <span>维修人员
+                    <label><i class="iconfont icon-cha"></i></label>
+                  </span>
+                  
+                </el-tab-pane>
+                <el-tab-pane label="检修">
+                  <span>检修人员
+                  <label><i class="iconfont icon-cha"></i></label>
+                  </span>
+                </el-tab-pane>
+                <el-tab-pane label="保养">
+                  <span>保养人员
+                  <label><i class="iconfont icon-cha"></i></label>
+                  </span>
+                </el-tab-pane>
+                <el-tab-pane label="操作">
+                  <span>操作人员
+                  <label><i class="iconfont icon-cha"></i></label>
+                  </span>
+                </el-tab-pane>
+              </el-tabs>
           </div>
         </div>
       </div>
@@ -91,18 +111,13 @@ export default {
   name: "",
   data() {
     return {
+      tabPosition:'top',
       pageIndex: 1,
       pageSize: 10,
       toValue:"",
       tableData: [],
       tableDate: [],
       columns: [
-        {
-          width: 40,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
         {
           field: "name",
           title: "姓名",
@@ -112,14 +127,7 @@ export default {
           isResize: true
           // orderBy: ""
         },
-        {
-          field: "gender",
-          title: "性别",
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
+      
         {
           field: "position",
           title: "岗位",
@@ -145,12 +153,29 @@ export default {
           isResize: true
         }
       ],
-      personListValue: [],
+      personListValue: [1,2],
       data2:[{code:"1000"}],
       defaultProps: {
         children: "children",
         label: "label"
-      }
+      },
+       options: [{
+          value: '选项1',
+          label: '负责人员'
+        }, {
+          value: '选项2',
+          label: '维修人员'
+        }, {
+          value: '选项3',
+          label: '检修人员'
+        }, {
+          value: '选项4',
+          label: '保养人员'
+        }, {
+          value: '选项5',
+          label: '操作人员'
+        }],
+        value: ''
     };
   },
   methods: {
@@ -278,6 +303,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+ @import url("../../assets/font/font.css");
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
@@ -293,7 +319,6 @@ export default {
   // background-color: #42424227;
   .addCase {
     width: 100%;
-    min-height: 500px;
     background-color: white;
     margin: auto;
     border-radius: 5px;
@@ -341,8 +366,7 @@ export default {
         }
       }
       .center {
-        width: 60%;
-
+        width: 55%;
         min-height: 400px;
         float: left;
         margin-right: 1%;
@@ -359,7 +383,7 @@ export default {
         }
       }
       .right {
-        width: 20%;
+        width: 25%;
         min-height: 400px;
         float: left;
         font-size: 12px;
@@ -370,21 +394,29 @@ export default {
           border-radius: 5px;
           min-height: 360px;
           padding: 10px;
-          li {
-            list-style-type: none;
-            height: 20px;
-            line-height: 20px;
-            padding: 0 10px;
-            span {
-              float: right;
-              cursor: pointer;
-              display: none;
-            }
-            &:hover {
-              span {
-                display: block;
+          .el-tab-pane{
+            span{
+              display: inline-block;
+              width: 100%;
+              label{
+                float: right;
+                display: none;
+                i{
+                  cursor: pointer;
+                  &:hover{
+                    color: #409eff;
+                  }
+                }
+              }
+              &:hover{
+                label{
+                  display: block;
+                  
+                }
+                  
               }
             }
+            
           }
         }
       }
