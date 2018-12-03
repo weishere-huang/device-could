@@ -127,8 +127,15 @@
           organizeId: this.orgID
         });
         console.log("delete" + this.orgID);
-        this.axios
-          .post(this.global.apiSrc + "/organize/delete/"+this.orgID,data)
+        this.Axios({
+          url: "/organize/delete/",
+          params: data,
+          type: "post",
+          option: {
+            enableMsg: false
+          }
+        },this)
+         // .post(this.global.apiSrc + "/organize/delete/"+this.orgID,data)
           .then(result => {
             if (result.data.code == 200) {
               alert("删除成功");
@@ -139,15 +146,23 @@
               alert("删除失败");
               console.log(result.data);
             }
-          })
-          .catch(err => {
-            console.log(err);
-            console.log(this.userName);
-          });
+          },
+            ({type, info}) => {
+            }
+          )
+          // .catch(err => {
+          //   console.log(err);
+          //   console.log(this.userName);
+          // });
       },
       allOrganize() {
-        this.axios
-          .get(this.global.apiSrc + "/organize/allOrganize")
+        this.Axios({
+          params: {
+          },
+          type: "get",
+          url: "/organize/allOrganize",
+        },this)
+         // .get(this.global.apiSrc + "/organize/allOrganize")
           .then(result => {
             console.log(result.data);
             for (let i = 0; i < result.data.data.length; i++) {
@@ -181,11 +196,15 @@
             //   "gmtCreate": "2018-11-14T05:46:01.000+0000",
             //   "gmtModified": "2018-11-14T05:46:01.000+0000",
             //   "state": 1
-          })
-          .catch(err => {
-            console.log(err);
-            console.log(this.userName);
-          });
+          },
+            ({type, info}) => {
+
+            }
+          )
+          // .catch(err => {
+          //   console.log(err);
+          //   console.log(this.userName);
+          // });
       },
       findOneOrganize() {
         //查询单个组织机构

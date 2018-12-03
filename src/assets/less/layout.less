@@ -41,7 +41,8 @@ body {
     .el-submenu__title {
         //-webkit-transition: all 1s linear !important;
         &:hover {
-            background: linear-gradient(135deg, transparent 0%, rgb(23, 31, 39) 50%, transparent 100%)
+            cursor: pointer;
+            background: linear-gradient(135deg, transparent 0%, rgb(44, 59, 75) 50%, transparent 100%)
         }
     }
     .el-menu {
@@ -54,10 +55,13 @@ body {
     .el-menu-item {
         background: #202c36;
         &:hover {
-            background: linear-gradient(135deg, transparent 0%, rgb(38, 52, 65) 50%, transparent 100%)
+            color: rgb(233, 198, 103) !important;
+            //background: linear-gradient(135deg, transparent 0%, rgb(38, 52, 65) 50%, transparent 100%)
         }
         &.is-active {
-            background: linear-gradient(135deg, transparent 0%, rgb(38, 52, 65) 50%, transparent 100%)
+            color: rgb(255, 208, 75) !important;
+            font-weight: bold
+            //background: linear-gradient(135deg, transparent 0%, rgb(38, 52, 65) 50%, transparent 100%)
         }
     }
     .logoWrap {

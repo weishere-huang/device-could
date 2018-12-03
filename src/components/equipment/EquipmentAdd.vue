@@ -114,7 +114,7 @@
       </div>
       <div class="bottom">
         <h5>其他信息</h5>
-        
+
         <el-form :inline="true" style="padding-left:12px" size="small">
           <el-form-item label="安装位置">
             <el-input v-model="sizeForm.location" style="width:215px"></el-input>
@@ -310,7 +310,6 @@
         //添加设备信息接口
         let qs = require("qs");
         let data = qs.stringify({
-
           deviceNo: this.sizeForm.deviceNo,
           deviceName: this.sizeForm.deviceName,
           deviceClassify: this.sizeForm.deviceClassify,
@@ -381,8 +380,15 @@
         });
 
 
-        this.axios
-          .post(this.global.apiSrc + "/device/add", data)
+        this.Axios({
+          url: "/device/add",
+          params: data,
+          type: "post",
+          // option: {
+          //   enableMsg: false
+          // }
+        },this)
+          //.post(this.global.apiSrc + "/device/add", data)
           .then(result => {
             console.log(result.data);
             alert("执行添加");
@@ -394,10 +400,11 @@
               console.log(result.data);
               this.$router.push("/Equipment");
             }
+          },({type, info}) => {
           })
-          .catch(err => {
-            console.log(err);
-          });
+          // .catch(err => {
+          //   console.log(err);
+          // });
       },
       devstate(data){
         let obj = {};
@@ -408,6 +415,7 @@
         this.sizeForm.deviceState = data.value
       },
       // findDeviceState() {
+      // 查找设备状态,暂时启用,写死状态
       //   let qs = require("qs");
       //   let data = qs.stringify({});
       //   this.axios
@@ -422,6 +430,7 @@
       //     });
       // },
       filterArray(data, parent) {
+        //编辑组织机构数据为树状结构方法
         let vm = this;
         var tree = [];
         var temp;
@@ -438,36 +447,34 @@
         return tree;
       },
       allOrganize() {
-        this.axios
-          .get(this.global.apiSrc + "/organize/allOrganize")
+        this.Axios({
+          params: {
+          },
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/organize/allOrganize"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },this)
+          //.get(this.global.apiSrc + "/organize/allOrganize")
           .then(result => {
             console.log(result.data);
-            for (let i = 0; i < result.data.data.length; i++) {
-              if (result.data.data[i].organizeType === 0) {
-                result.data.data[i].organizeType = "企业";
-              }
-              if (result.data.data[i].organizeType === 1) {
-                result.data.data[i].organizeType = "公司";
-              }
-              if (result.data.data[i].organizeType === 2) {
-                result.data.data[i].organizeType = "工厂";
-              }
-              if (result.data.data[i].organizeType === 3) {
-                result.data.data[i].organizeType = "部门";
-              }
-              if (result.data.data[i].organizeType === 4) {
-                result.data.data[i].organizeType = "车间";
-              }
-            }
             this.orgoptions = this.filterArray(result.data.data, 0);
 
-          })
-          .catch(err => {
-            console.log(err);
-            console.log(this.userName);
-          });
+          },
+            ({type, info}) => {
+            }
+          )
+          // .catch(err => {
+          //   console.log(err);
+          //   console.log(this.userName);
+          // });
       },
       filterArray2(data, parent) {
+        //编辑设备类别数据为树状结构方法
         let vm = this;
         var tree = [];
         var temp;
@@ -487,8 +494,16 @@
         let qs = require("qs");
         let data = qs.stringify({
         });
-        this.axios
-          .get(this.global.apiSrc + "/deviceCategory/all", data)
+        this.Axios({
+          params: {
+          },
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/deviceCategory/all",
+        },this)
+          //.get(this.global.apiSrc + "/deviceCategory/all", data)
           .then(result => {
             console.log("查询设备类别")
             this.ctgoptions= this.filterArray2(result.data.data,0);
@@ -612,8 +627,8 @@
           }
         }
       }
-      
+
     }
-    
+
   }
 </style>
