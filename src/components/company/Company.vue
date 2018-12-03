@@ -289,9 +289,9 @@
               page: this.pageIndex,
               size: this.pageSize
             }),
-            // option: {
-            //   enableMsg: false
-            // },
+            option: {
+              enableMsg: false
+            },
             type: "get",
             url: "/enterprise/findByNameOrState"
             // loadingConfig: {
@@ -407,7 +407,7 @@
             type: "post",
             option: {
               enableMsg: false
-            }
+            },
           },
           this
         ).then(response => {
