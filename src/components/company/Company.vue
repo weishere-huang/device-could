@@ -106,7 +106,7 @@
         pageIndex: 1,
         pageSize: 10,
         name: "",
-        totalNub: "",
+        totalNub: '',
         tableData: [
           {
             name: "",

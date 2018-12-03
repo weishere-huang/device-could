@@ -1,7 +1,69 @@
 
 <template>
-    <el-tree :data="treeData" :props="defaultProps" accordion @node-click="handleNodeClick">
-    </el-tree>
+  <div class="work-order">
+    <div class="top">
+      <el-badge class="item">
+        <el-button size="small">全部工单</el-button>
+      </el-badge>
+      <el-badge
+        :value="3"
+        class="item"
+      >
+        <el-button size="small">待审核</el-button>
+      </el-badge>
+      <el-badge
+        :value="1"
+        class="item"
+      >
+        <el-button size="small">审核中</el-button>
+      </el-badge>
+      <el-badge
+        :value="2"
+        class="item"
+      >
+        <el-button size="small">待处理</el-button>
+      </el-badge>
+      <el-badge class="item">
+        <el-button size="small">已撤销</el-button>
+      </el-badge>
+      <el-badge class="item">
+        <el-button size="small">已驳回</el-button>
+      </el-badge>
+      <el-badge class="item">
+        <el-button size="small">已完成</el-button>
+      </el-badge>
+    </div>
+    <div class="bottom">
+      <v-table
+        ref="companysTable"
+        is-horizontal-resize
+        column-width-drag
+        :multiple-sort="false"
+        style="width:100%;min-height:400px;"
+        :columns="columns"
+        :table-data="tableData"
+        row-hover-color="#eee"
+        :select-all="selectALL"
+        :select-group-change="selectGroupChange"
+        :row-dblclick="details"
+        row-click-color="#edf7ff"
+      >
+      </v-table>
+      <div
+        class="mt20 mb20 bold"
+        style="text-align:center;margin-top:30px"
+      >
+        <v-pagination
+          @page-change="pageChange"
+          @page-size-change="pageSizeChange"
+          :total="totalNub"
+          :page-size="pageSize"
+          :pageIndex="pageIndex"
+          :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
+        ></v-pagination>
+      </div>
+    </div>
+  </div>
 </template>
 
  
@@ -10,55 +72,169 @@ export default {
   name: "Test",
   data() {
     return {
-      data: [
-        { id: 1, parentId: 0, name: "一级菜单A", rank: 1 },
-        { id: 2, parentId: 0, name: "一级菜单B", rank: 1 },
-        { id: 3, parentId: 0, name: "一级菜单C", rank: 1 },
-        { id: 4, parentId: 1, name: "二级菜单A-A", rank: 2 },
-        { id: 5, parentId: 1, name: "二级菜单A-B", rank: 2 },
-        { id: 6, parentId: 2, name: "二级菜单B-A", rank: 2 },
-        { id: 7, parentId: 4, name: "三级菜单A-A-A", rank: 3 },
-        { id: 8, parentId: 7, name: "四级菜单A-A-A-A", rank: 4 },
-        { id: 9, parentId: 8, name: "五级菜单A-A-A-A-A", rank: 5 },
-        { id: 10, parentId: 9, name: "六级菜单A-A-A-A-A-A", rank: 6 },
-        { id: 11, parentId: 10, name: "七级菜单A-A-A-A-A-A-A", rank: 7 },
-        { id: 12, parentId: 11, name: "八级菜单A-A-A-A-A-A-A-A", rank: 8 },
-        { id: 13, parentId: 12, name: "九级菜单A-A-A-A-A-A-A-A-A", rank: 9 },
-        { id: 14, parentId: 13, name: "十级菜单A-A-A-A-A-A-A-A-A-A", rank: 10 }
-      ],
-      defaultProps: {
-        children: "children",
-        label: "name"
-      }
+      pageIndex: 1,
+      pageSize: 10,
+      totalNub: "",
+      tableData: [],
+      tableDate: [],
+      columns: [
+        {
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          type: "selection"
+        },
+        {
+          field: "name",
+          title: "工单编号",
+          width: 150,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+          //   orderBy: ""
+        },
+        {
+          field: "address",
+          title: "工单状态",
+          width: 200,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "phone",
+          title: "工单类型",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "gmtCreate",
+          title: "工单描述",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "state",
+          title: "原因分析",
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "state",
+          title: "设备名称",
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "state",
+          title: "型号/规格",
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "state",
+          title: "设备位号",
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "state",
+          title: "开始时间",
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "state",
+          title: "结束时间",
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "state",
+          title: "计划/故障提交人",
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "state",
+          title: "工单创建时间",
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        }
+      ]
     };
   },
-  computed: {
-    treeData() {
-      let tree = this.data.filter(father => {
-        //循环所有项
-        let branchArr = this.data.filter(child => {
-          return father.id == child.parentId; //返回每一项的子级数组
-        });
-        if (branchArr.length > 0) {
-          father.children = branchArr; //如果存在子级，则给父级添加一个children属性，并赋值
-        }
-        return father.parentId == 0; //返回第一层
-      });
-      return tree; //返回树形数据
-    }
-  },
   methods: {
-    handleNodeClick(data) {
-      // console.log(data)
-      console.log(this.treeData);
+    selectGroupChange(selection) {
+      console.log("select-group-change", selection);
+    },
+    selectALL(selection) {
+      console.log("select-aLL", selection);
+    },
+    selectChange(selection, rowData) {
+      console.log("select-change", selection, rowData);
+    },
+    getTableData() {
+      this.tableData = this.tableDate.slice(
+        (this.pageIndex - 1) * this.pageSize,
+        this.pageIndex * this.pageSize
+      );
+    },
+    pageChange(pageIndex) {
+      this.pageIndex = pageIndex;
+      this.getTableData();
+      console.log(pageIndex);
+    },
+    pageSizeChange(pageSize) {
+      this.pageIndex = 1;
+      this.pageSize = pageSize;
+      this.getTableData();
+    },
+    details(rowIndex, rowData, column) {
+      console.log(rowData);
     }
   },
-  mounted() {
-    
-  }
+  mounted() {}
 };
 </script>
  
-<style scoped>
+<style scoped lang="less">
+@blue: #409eff;
+@Success: #67c23a;
+@Warning: #e6a23c;
+@Danger: #f56c6c;
+@Info: #dde2eb;
+@border: 1px solid #dde2eb;
+.work-order {
+  font-size: 14px;
+  .top {
+    border: @border;
+    padding: 10px;
+    border-radius: 5px;
+    .el-badge:not(:last-child) {
+      margin-right: 20px;
+    }
+  }
+}
 </style>
 
