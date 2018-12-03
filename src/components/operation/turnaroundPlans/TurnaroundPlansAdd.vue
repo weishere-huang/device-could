@@ -130,7 +130,7 @@
           planName:"",
           maintenanceClassify:"",
           maintenanceLevel:"",
-          maintenanceType:"1",
+          maintenanceType:0,
           planType:"",
           startTime:"",
           endTime:"",
