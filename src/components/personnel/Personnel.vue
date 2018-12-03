@@ -214,7 +214,6 @@
         this.pageIndex = pageIndex;
         this.getTableData();
         this.load();
-        console.log(pageIndex);
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;

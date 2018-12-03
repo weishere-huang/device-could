@@ -8,9 +8,9 @@
         <span style="text-decoration: underline;"></span>
       </div>
       <div class="tableList">
-        <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:300px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+        <v-table  :row-dblclick="getPersonnel" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:300px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
         <div class="mt20 mb20 bold" style="text-align:center;">
-          <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="1" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
         </div>
       </div>
     </div>
@@ -20,6 +20,7 @@
 export default {
   data() {
     return {
+      pageNumber:0,
       pageIndex: 1,
       pageSize: 10,
       tableData: [],
@@ -98,14 +99,20 @@ export default {
     personHide(){
         this.$emit("personHide",false)
     },
-
+    getPersonnel(rowIndex, rowData, column){
+      let jihe={
+        person:rowData,
+        hide:false
+      };
+      this.$emit("getPersonnel",jihe)
+    },
     load() {
       this.axios
         .get(this.global.apiSrc + "/employee/findEmployeeList", {
-          params: {page: this.pageIndex, size: 100}
+          params: {page: this.pageIndex, size: this.pageSize}
         })
         .then(response => {
-          console.log(response);
+          this.pageNumber = response.data.data.totalElements;
           this.tableData = response.data.data.content;
           this.tableDate = this.tableData;
         })

@@ -278,38 +278,66 @@ export default {
         phoneOrName: this.userName,
         passWord: pass
       });
-      this.axios
-        .post(this.global.apiSrc + "/user/login", data)
-        // .post("/api/user/login", data)
-        .then(result => {
-          console.log(result);
-          if (this.userName === "") {
-            console.log("请输入用户名");
-            alert("请输入用户名");
-          } else if (this.password === "") {
-            alert("请输入密码");
-          } else {
-            if (result.data.code === 200) {
-              sessionStorage.token = result.data.data.tokenStr;
-              console.log(result.data.data);
-              this.$store.commit("tokenSrc", result.data.data.tokenStr);
-              console.log(sessionStorage.token);
-              console.log(this.$store.state.token.tokenNub);
-              this.$router.push({
-                path: "/Home",
-                redirect: "/Home"
-              });
-              location.reload()
-            } else {
-              alert("账号或密码错误");
-              this.$router.push({ path: "/Login" });
-            }
+      this.Axios(
+        {
+          url: "/user/login",
+          params:data,
+          type:"post"
+        },
+        this
+      ).then(result=>{
+          if (result.data.code === 200) {
+            sessionStorage.token=result.data.data.tokenStr;
+            console.log(result.data.data);
+            this.$store.commit("tokenSrc",result.data.data.tokenStr);
+            console.log(sessionStorage.token);
+            console.log(this.$store.state.token.tokenNub);
+            this.$router.push({
+              path: "/Home",
+              redirect: "/Home"
+            });
+            // location.reload()
+          }else{
+            this.$message({
+              message: "账号或密码错误",
+              type: "error"
+            })
+            this.$router.push({path:"/Login"})
           }
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(this.userName);
-        });
+      },({type,info})=>{})
+
+      // this.axios
+      //   .post(this.global.apiSrc + "/user/login", data)
+      //   // .post("/api/user/login", data)
+      //   .then(result => {
+      //     console.log(result);
+      //     if (this.userName === "") {
+      //       console.log("请输入用户名");
+      //       alert("请输入用户名");
+      //     } else if (this.password === "") {
+      //       alert("请输入密码");
+      //     } else {
+      //       if (result.data.code === 200) {
+      //         sessionStorage.token = result.data.data.tokenStr;
+      //         console.log(result.data.data);
+      //         this.$store.commit("tokenSrc", result.data.data.tokenStr);
+      //         console.log(sessionStorage.token);
+      //         console.log(this.$store.state.token.tokenNub);
+      //         this.$router.push({
+      //           path: "/Home",
+      //           redirect: "/Home"
+      //         });
+      //         location.reload()
+      //       } else {
+      //         alert("账号或密码错误");
+      //         this.$router.push({ path: "/Login" });
+      //       }
+      //     }
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //     console.log(this.userName);
+      //   });
     },
     register() {
       let pass = this.manager.userPassword;
@@ -337,6 +365,17 @@ export default {
           this.isshow = false;
         }
       });
+      // this.Axios(
+      //   {
+      //     url: "/enterprise/add",
+      //     params:data,
+      //     type:"post"
+      //   },
+      //   this
+      // ).then(result=>{
+      //
+      // },({type,info})=>{})
+
       this.axios
         .post(this.global.apiSrc + "/enterprise/add", data)
         .then(result => {

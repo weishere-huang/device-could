@@ -1,7 +1,8 @@
 export default {
   state: {
     upkeep: "",
-    turnround:""
+    turnround:"",
+    breakList:""
   },
   mutations: {
     upkeepAmend(state, data) {
@@ -9,6 +10,9 @@ export default {
     },
     turnaroundPlans(state, data) {
       state.turnround=data
+    },
+    breakDetails(state,data){
+      state.breakList = data
     }
   }
 }
