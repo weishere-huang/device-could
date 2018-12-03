@@ -4,7 +4,7 @@
       <div class="top">
         <el-button size="small" @click="toback">返回</el-button>
         <el-button size="small" @click="commitAudit">提交审核</el-button>
-        <el-button size="small">故障消除</el-button>
+        <el-button size="small" @click="dispel">故障消除</el-button>
       </div>
       <div class="bottom">
         <div class="left">
@@ -92,7 +92,7 @@
                 </el-input>
               </el-form-item>
               <el-form-item label="原因分析：">
-                <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" placeholder="请输入内容" v-model="companyName.causeAnalysis" style="width:94%"></el-input>
+                <el-input type="textarea"  :autosize="{ minRows: 4, maxRows: 6}" placeholder="请输入内容" v-model="companyName.causeAnalysis" style="width:94%"></el-input>
               </el-form-item>
               <el-form-item label="照片：">
                 <template>
@@ -225,7 +225,6 @@
         this.axios
           .get(this.global.apiSrc + "/fault/detail", {params: {faultId: this.faultId}})
           .then(response =>{
-            console.log(response.data.data);
             this.tableData = response.data.data;
             this.companyName = this.tableData;
             this.toValue(response.data.data);
@@ -234,14 +233,28 @@
             console.log(error);
           });
       },
-
       commitAudit(){
         let qs = require("qs");
-        let data = qs.stringify({});
+        let data = qs.stringify({faultId:this.companyName.id});
         this.axios
           .post(this.global.apiSrc + "/fault/commitAudit",data)
           .then(response =>{
-
+            alert(response.data.msg);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      dispel(){
+        let qs = require("qs");
+        let data = qs.stringify({
+          faultIds:this.companyName.id,
+          dispelCause:this.companyName.revokeCause
+        });
+        this.axios
+          .post(this.global.apiSrc + "/fault/dispel",data)
+          .then(response =>{
+            alert(response.data.msg);
           })
           .catch(function(error) {
             console.log(error);
