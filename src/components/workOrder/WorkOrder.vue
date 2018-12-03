@@ -39,7 +39,7 @@
         is-horizontal-resize
         column-width-drag
         :multiple-sort="false"
-        style="width:100%;min-height:400px;"
+        style="width:100%;min-height:200px;"
         :columns="columns"
         :table-data="tableData"
         row-hover-color="#eee"
@@ -87,7 +87,7 @@ export default {
         {
           field: "name",
           title: "工单编号",
-          width: 150,
+          width: 80,
           titleAlign: "center",
           columnAlign: "left",
           isResize: true
@@ -96,7 +96,7 @@ export default {
         {
           field: "address",
           title: "工单状态",
-          width: 200,
+          width: 70,
           titleAlign: "center",
           columnAlign: "left",
           isResize: true
@@ -112,7 +112,7 @@ export default {
         {
           field: "gmtCreate",
           title: "工单描述",
-          width: 80,
+          width: 200,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -120,7 +120,7 @@ export default {
         {
           field: "state",
           title: "原因分析",
-          width: 50,
+          width: 80,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -128,7 +128,7 @@ export default {
         {
           field: "state",
           title: "设备名称",
-          width: 50,
+          width: 120,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -136,7 +136,7 @@ export default {
         {
           field: "state",
           title: "型号/规格",
-          width: 50,
+          width: 90,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -144,7 +144,7 @@ export default {
         {
           field: "state",
           title: "设备位号",
-          width: 50,
+          width: 90,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -152,7 +152,7 @@ export default {
         {
           field: "state",
           title: "开始时间",
-          width: 50,
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -160,7 +160,7 @@ export default {
         {
           field: "state",
           title: "结束时间",
-          width: 50,
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -168,7 +168,7 @@ export default {
         {
           field: "state",
           title: "计划/故障提交人",
-          width: 50,
+          width: 90,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -176,7 +176,7 @@ export default {
         {
           field: "state",
           title: "工单创建时间",
-          width: 50,
+          width: 180,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true

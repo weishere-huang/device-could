@@ -81,12 +81,23 @@
       v-show="auditShow"
       v-on:auditByValue="auditByValue"
       :auditValue="auditValue"
+      :searchData="name"
     ></audit>
     <businessDetails
       v-show="detailsShow"
       v-on:childByValue="childByValue"
       :detailsValue="detailsValue"
     ></businessDetails>
+    <!-- <el-dialog
+      title="企业详情"
+      :visible.sync="dialogVisible"
+      :before-close="handleClose">
+      <span>这是一段信息</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog> -->
   </div>
 </template>
 <script>
@@ -97,6 +108,7 @@
   export default {
     data() {
       return {
+        dialogVisible:true,
         detailsShow: false,
         auditShow: false,
         detailsValue: "",

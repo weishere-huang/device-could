@@ -70,8 +70,8 @@
             <template slot="title">
               <i class="iconfont">&#xe60b;</i>
               <span slot="title">工单</span></template>
-            <el-menu-item index="/WorkOrder">选项1</el-menu-item>
-            <el-menu-item index="/WorkOrder">选项2</el-menu-item>
+            <el-menu-item index="/WorkOrder">工单列表</el-menu-item>
+            <el-menu-item index="/BreakdownOrder">故障工单详情</el-menu-item>
             <el-menu-item index="/WorkOrder">选项3</el-menu-item>
           </el-submenu>
           <el-submenu index="10">

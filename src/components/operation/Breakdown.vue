@@ -8,7 +8,6 @@
         <div class="search">
           <el-input type="search" placeholder="如故障编码，设备名称，位号，描述" size="small" v-model="faultKey"></el-input>
           <el-button size="small" @click="search">搜索</el-button>
-          <span style="padding-left:10px;">高级搜索</span>
         </div>
       </div>
       <div class="bottom">

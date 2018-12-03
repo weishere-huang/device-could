@@ -296,7 +296,7 @@ export default {
               path: "/Home",
               redirect: "/Home"
             });
-            // location.reload()
+            location.reload()
           }else{
             this.$message({
               message: "账号或密码错误",
