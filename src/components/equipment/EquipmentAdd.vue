@@ -85,55 +85,36 @@
         </el-form>
 
       </div>
+      <div class="administrator">
+        <h5>管理人员</h5>
+        <el-form :inline="true"  class="demo-form-inline" label-width="100px">
+          <el-form-item label="负责人员：">
+            <span>（空）</span>
+          </el-form-item>
+          <el-form-item label="维修人员：">
+            <span>（空）</span>
+          </el-form-item>
+        </el-form>
+        <el-form :inline="true"  class="demo-form-inline" label-width="100px">
+          <el-form-item label="检修人员：">
+            <span>（空）</span>
+          </el-form-item>
+          <el-form-item label="保养人员：">
+            <span>（空）</span>
+          </el-form-item>
+        </el-form>
+        <el-form :inline="true"  class="demo-form-inline" label-width="100px">
+          <el-form-item label="操作人员：">
+            <span>（空）</span>
+          </el-form-item>
+          <el-form-item style="padding-left:20px">
+            <el-button size="mini" @click="dialogVisible=true" >添加人员</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
       <div class="bottom">
-        <h5>管理信息</h5>
-        <ul class="staff">
-          <li>
-            <div>
-              <span>负责人员：</span>
-              <span>{{person1}}</span>
-            </div>
-            <div @click="dialogVisible=true" v-on:addPerson="addPerson">
-              更改绑定
-            </div>
-          </li>
-          <li>
-            <div>
-              <span>维修人员：</span>
-              <span>{{person2}}</span>
-            </div>
-            <div @click="dialogVisible=true" v-on:addPerson="addPerson">
-              更改绑定
-            </div>
-          </li>
-          <li>
-            <div>
-              <span>检修人员：</span>
-              <span>{{person3}}</span>
-            </div>
-            <div @click="dialogVisible=true" v-on:addPerson="addPerson">
-              更改绑定
-            </div>
-          </li>
-          <li>
-            <div>
-              <span>保养人员：</span>
-              <span>{{person4}}</span>
-            </div>
-            <div @click="dialogVisible=true" v-on:addPerson="addPerson">
-              更改绑定
-            </div>
-          </li>
-          <li>
-            <div>
-              <span>操作人员：</span>
-              <span>{{person5}}</span>
-            </div>
-            <div @click="dialogVisible=true" v-on:addPerson="addPerson">
-              更改绑定
-            </div>
-          </li>
-        </ul>
+        <h5>其他信息</h5>
+        
         <el-form :inline="true" style="padding-left:12px" size="small">
           <el-form-item label="安装位置">
             <el-input v-model="sizeForm.location" style="width:215px"></el-input>
@@ -191,7 +172,7 @@
           value:"categoryNo",
           label:"categoryName"
         },
-        dialogVisible:false,
+        dialogVisible:true,
         addShow: false,
         ogrname:"",
         classfynm:"",
@@ -560,14 +541,36 @@
         border: @border;
         border-radius: 5px;
         position: relative;
+        font-size: 14px;
+        color: #606266;
         h5 {
           position: absolute;
-          top: -10px;
+          top: -5px;
           left: 23px;
           background-color: white;
         }
         .el-form-item {
           height: 30px;
+        }
+      }
+      .administrator{
+        width: 650px;
+        padding: 10px;
+        border: @border;
+        border-radius: 5px;
+        position: relative;
+        margin-top: 20px;
+        font-size: 14px;
+        color: #606266;
+        h5 {
+          position: absolute;
+          top: -5px;
+          left: 23px;
+          background-color: white;
+        }
+        .el-form-item {
+          margin-bottom: 0px;
+          width: 45%;
         }
       }
       .bottom {
@@ -581,7 +584,7 @@
         color: #606266;
         h5 {
           position: absolute;
-          top: -10px;
+          top: -5px;
           left: 23px;
           background-color: white;
         }
@@ -612,6 +615,8 @@
           }
         }
       }
+      
     }
+    
   }
 </style>

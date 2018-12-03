@@ -76,8 +76,16 @@
               <li
                 v-for="(item, index) in personListValue"
                 :key="index"
-              >{{item}}
-                <span>x</span>
+              ><span>张三</span> 
+               <el-select v-model="value" placeholder="请选择" size="mini">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+              <label><i class="iconfont icon-cha"></i></label>
               </li>
             </ul>
           </div>
@@ -358,6 +366,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+ @import url("../../assets/font/font.css");
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
@@ -450,20 +459,31 @@ export default {
           border-radius: 5px;
           min-height: 360px;
           padding: 10px;
-          li {
+           li {
             list-style-type: none;
-            height: 20px;
-            line-height: 20px;
+            // height: 20px;
+            // line-height: 20px;
+            margin-top: 5px;
             padding: 0 10px;
-            span {
-              float: right;
-              cursor: pointer;
-              display: none;
+            text-align: left;
+            .el-select{
+              width: 40%;
             }
-            &:hover {
-              span {
-                display: block;
-              }
+            span{
+              display: inline-block;
+              width: 40%;
+              margin-right:10px; 
+            }
+            label{
+              
+              display: none;
+              transition: all 0.3s ease-in-out;
+              cursor: pointer;
+            }
+            &:hover{
+              label{
+              display: inline-block;
+            }
             }
           }
         }

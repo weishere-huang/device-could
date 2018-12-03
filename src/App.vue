@@ -291,7 +291,9 @@ export default {
     min-width: 170px;
   }
 }
-
+.el-dialog__body{
+  padding: 0px !important;
+}
 .el-submenu__title {
   height: 50px !important;
   line-height: 50px !important;

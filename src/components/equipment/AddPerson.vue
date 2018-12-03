@@ -73,11 +73,28 @@
           <el-button size="mini" @click="toAdd">保存</el-button>
           <div class="personList">
             <ul>
+              <el-select v-model="value" placeholder="请选择" size="mini">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
               <li
                 v-for="(item, index) in personListValue"
                 :key="index"
-              >{{item}}
-                <span>x</span>
+              >
+               <span>张三</span> 
+               <el-select v-model="value" placeholder="请选择" size="mini">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+              <label><i class="iconfont icon-cha"></i></label>
               </li>
             </ul>
           </div>
@@ -98,12 +115,6 @@ export default {
       tableDate: [],
       columns: [
         {
-          width: 40,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
-        {
           field: "name",
           title: "姓名",
           width: 80,
@@ -112,14 +123,7 @@ export default {
           isResize: true
           // orderBy: ""
         },
-        {
-          field: "gender",
-          title: "性别",
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
+      
         {
           field: "position",
           title: "岗位",
@@ -145,12 +149,29 @@ export default {
           isResize: true
         }
       ],
-      personListValue: [],
+      personListValue: [1,2],
       data2:[{code:"1000"}],
       defaultProps: {
         children: "children",
         label: "label"
-      }
+      },
+       options: [{
+          value: '选项1',
+          label: '负责人员'
+        }, {
+          value: '选项2',
+          label: '维修人员'
+        }, {
+          value: '选项3',
+          label: '检修人员'
+        }, {
+          value: '选项4',
+          label: '保养人员'
+        }, {
+          value: '选项5',
+          label: '操作人员'
+        }],
+        value: ''
     };
   },
   methods: {
@@ -278,6 +299,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+ @import url("../../assets/font/font.css");
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
@@ -293,7 +315,6 @@ export default {
   // background-color: #42424227;
   .addCase {
     width: 100%;
-    min-height: 500px;
     background-color: white;
     margin: auto;
     border-radius: 5px;
@@ -341,8 +362,7 @@ export default {
         }
       }
       .center {
-        width: 60%;
-
+        width: 55%;
         min-height: 400px;
         float: left;
         margin-right: 1%;
@@ -359,7 +379,7 @@ export default {
         }
       }
       .right {
-        width: 20%;
+        width: 25%;
         min-height: 400px;
         float: left;
         font-size: 12px;
@@ -372,23 +392,35 @@ export default {
           padding: 10px;
           li {
             list-style-type: none;
-            height: 20px;
-            line-height: 20px;
+            // height: 20px;
+            // line-height: 20px;
+            margin-top: 5px;
             padding: 0 10px;
-            span {
-              float: right;
-              cursor: pointer;
-              display: none;
+            text-align: left;
+            .el-select{
+              width: 40%;
             }
-            &:hover {
-              span {
-                display: block;
-              }
+            span{
+              display: inline-block;
+              width: 40%;
+              margin-right:10px; 
+            }
+            label{
+              
+              display: none;
+              transition: all 0.3s ease-in-out;
+              cursor: pointer;
+            }
+            &:hover{
+              label{
+              display: inline-block;
+            }
             }
           }
         }
       }
     }
   }
+  
 }
 </style>
