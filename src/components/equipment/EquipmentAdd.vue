@@ -172,7 +172,7 @@
           value:"categoryNo",
           label:"categoryName"
         },
-        dialogVisible:true,
+        dialogVisible:false,
         addShow: false,
         ogrname:"",
         classfynm:"",
@@ -196,28 +196,25 @@
           // deviceState: "",
           // organizeCode: "",
           // enterFactoryDate: ""
-
-
-          deviceNo: "CH000001",
-          deviceName: "液压机",
+          deviceNo: "",
+          deviceName: "",
           organizeName: "",
           organizeCode: "",
           deviceClassify: "",
           deviceClassifyName: "",
-          deviceSpec: "GC222",
-          outputDate: "2018/11/26",
-          manufacturer: "222",
-          location: "金牛市民中心",
-          locationNo: "333",
-          buyPrice: "200000",
-          buyDate: "2018/11/26",
-          dataInfo: "555",
+          deviceSpec: "",
+          outputDate: "",
+          manufacturer: "",
+          location: "",
+          locationNo: "",
+          buyPrice: "",
+          buyDate: "",
+          dataInfo: "",
           deviceCategory: "",
           deviceCategoryName: "",
-          deviceModel: "ZA100-315315",
-          deviceState: "1",
-
-          enterFactoryDate: "2018/11/26"
+          deviceModel: "",
+          deviceState: "",
+          enterFactoryDate: ""
         },
         options2: [
           {

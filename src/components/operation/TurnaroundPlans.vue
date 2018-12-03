@@ -247,6 +247,7 @@
             }
           })
           .then(response => {
+            this.pageNumber = response.data.data.totalElements;
             this.loadValue(response.data.data.content);
           })
           .catch(function (error) {
@@ -261,7 +262,7 @@
           }
         }
         this.tableData = arr;
-        for (let i = 0; i < value.length; i++) {
+        for (let i = 0; i < this.tableData.length; i++) {
           if (this.tableData[i].state === 0) {
             this.tableData[i].state = "待审核";
           }
@@ -298,16 +299,12 @@
           if (this.tableData[i].frequencyType === 2) {
             this.tableData[i].frequencyType = "月";
           }
-          // this.tableData[i].endTime = this.tableData[i].endTime.replace(/T/g, " ");
-          // this.tableData[i].executeTime = this.tableData[i].executeTime.replace(/T/g, " ");
-          // this.tableData[i].startTime = this.tableData[i].startTime.replace(/T/g, " ");
           for (let j in this.planLevel) {
             if (this.tableData[i].maintenanceLevel === this.planLevel[j].id) {
               this.tableData[i].maintenanceLevel = this.planLevel[j].levelDesc;
             }
           }
         }
-        this.pageNumber = this.tableData.length;
       },
       listMaintenanceLevel() {
         this.axios

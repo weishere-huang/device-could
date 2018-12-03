@@ -36,7 +36,7 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="所属部门">
-            <span>2222222222222</span>
+            <span>{{sizeForm.organizeName}}</span>
             <el-button size="mini" @click="dialogVisible1=true">点击修改</el-button>
             <el-dialog
               title="修改部门"
@@ -54,13 +54,13 @@
               :show-all-levels="false"
               v-model="qqqqq"
               @change="handleChange"
-              
+
             ></el-cascader>
                 <el-button @click="dialogVisible1 = false">取 消</el-button>
                 <el-button type="primary" @click="dialogVisible1 = false">确 定</el-button>
-              
+
             </el-dialog>
-            
+
           </el-form-item>
           <el-form
             :inline="true"
@@ -84,7 +84,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="设备类别">
-              <span>2222222222222</span>
+              <span>{{sizeForm.deviceCategoryName}}</span>
             <el-button size="mini" @click="dialogVisible3=true">点击修改</el-button>
               <el-dialog
                 title="修改类别"
@@ -106,9 +106,9 @@
               ></el-cascader>
                 <el-button @click="dialogVisible3 = false">取 消</el-button>
                 <el-button type="primary" @click="dialogVisible3 = false">确 定</el-button>
-                
+
               </el-dialog>
-              
+
             </el-form-item>
           </el-form>
           <el-form
@@ -269,7 +269,7 @@
       </div>
     </div>
     <el-dialog
-      title="提示"
+      title="人员添加"
       :visible.sync="dialogVisible"
       width="80%"
       >
