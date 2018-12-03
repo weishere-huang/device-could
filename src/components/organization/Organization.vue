@@ -157,6 +157,8 @@
       },
       allOrganize() {
         this.Axios({
+          params: {
+          },
           type: "get",
           url: "/organize/allOrganize",
         },this)
