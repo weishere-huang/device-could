@@ -240,8 +240,8 @@
         this.$router.push("/EquipmentAdd");
       },
       editShow() {
-        if (this.ids.length == 1) {
-          this.$router.push("/Redact/" + this.edbt.id);
+        if (this.edbt.length == 1) {
+          this.$router.push("/Redact/" + this.edbt[0].id);
           this.$store.commit("equipmentRedact", this.edbt);
         } else {
           alert("只能选择选择一行数据!!!");

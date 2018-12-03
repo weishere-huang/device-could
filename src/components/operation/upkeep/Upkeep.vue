@@ -7,26 +7,26 @@
         <el-dialog title="审核" :visible.sync="outerVisible">
           <el-form label-position=right label-width="120px" :model="formLabelAlign">
           <el-form-item label="审批结果：">
-            <el-radio v-model="radio" label="1">同意</el-radio>
-            <el-radio v-model="radio" label="2">驳回</el-radio>
+            <el-radio v-model="formLabelAlign.radio" label="0">同意</el-radio>
+            <el-radio v-model="formLabelAlign.radio" label="1">驳回</el-radio>
           </el-form-item>
           <el-form-item label="审批意见：">
             <el-input type="textarea" v-model="formLabelAlign.desc"></el-input>
           </el-form-item>
-          <div v-if="radio!=2">
+          <div v-if="formLabelAlign.radio!=1">
             <el-form-item label="是否终审：">
                 <el-checkbox-group v-model="formLabelAlign.type">
                     <el-checkbox label="" name="type"></el-checkbox>
                 </el-checkbox-group>
             </el-form-item>
             <el-form-item label="下一级审批人：" v-if="formLabelAlign.type!=true">
-                <el-input v-model="formLabelAlign.personnel" size="mini" style="width:60%"></el-input>
+                <el-input v-model="formLabelAlign.name = toAudit.name" size="mini" style="width:60%"></el-input>
                 <el-button type="primary" @click="innerVisible = true" size="mini">添加审批人</el-button>
             </el-form-item>
           </div>
         </el-form>
           <el-dialog title="人员添加" :visible.sync="innerVisible" append-to-body>
-            <personnel></personnel>
+            <personnel v-on:getPersonnel="getPersonnel"></personnel>
           </el-dialog>
           <div slot="footer" class="dialog-footer">
             <el-button @click="outerVisible = false" size="mini">取 消</el-button>
@@ -54,8 +54,14 @@ export default {
   data() {
     return {
       arr:[],
+      toAudit:"",
       radio:"",
-      formLabelAlign:{},
+      formLabelAlign: {
+        desc:"",
+        type:"",
+        radio: "",
+        name:""
+      },
       outerVisible: false,
       innerVisible: false,
       pageNumber: 0,
@@ -373,14 +379,17 @@ export default {
         });
     },
     outerVisibleIsOk() {
-      this.outerVisible = true
-      // if (this.arr.length === 1) {
-      //   this.outerVisible = true
-      // } else if(this.arr.length ===0){
-      //   alert("请选择计划")
-      // }else{
-      //   alert("抱歉只能计划只能单个修改")
-      // }
+      if (this.arr.length === 1) {
+        this.outerVisible = true
+      } else if(this.arr.length ===0){
+        alert("请选择计划")
+      }else{
+        alert("抱歉只能计划只能单个修改")
+      }
+    },
+    getPersonnel(params) {
+      this.toAudit = params.person;
+      this.innerVisible = params.hide;
     },
   },
   created() {
