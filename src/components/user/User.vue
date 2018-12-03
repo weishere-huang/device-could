@@ -255,11 +255,11 @@
       },
 
       load() {
-        EventBus.$on("sideBarTroggleHandle", isCollapse => {
-          window.setTimeout(() => {
-            this.$refs.companysTable.resize();
-          }, 500);
-        });
+        // EventBus.$on("sideBarTroggleHandle", isCollapse => {
+        //   window.setTimeout(() => {
+        //     this.$refs.companysTable.resize();
+        //   }, 500);
+        // });
         this.Axios(
           {
             url: "/user/findByKeyWord/",
@@ -268,7 +268,7 @@
               size: this.pageSize
             }),
             type: "get",
-            // option:{enableMsg:false},
+            option:{enableMsg:false},
             // loadingConfig: {
             //   target: document.querySelector("#mainContentWrapper")
             // }
