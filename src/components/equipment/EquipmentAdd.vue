@@ -114,7 +114,7 @@
       </div>
       <div class="bottom">
         <h5>其他信息</h5>
-        
+
         <el-form :inline="true" style="padding-left:12px" size="small">
           <el-form-item label="安装位置">
             <el-input v-model="sizeForm.location" style="width:215px"></el-input>
@@ -448,6 +448,8 @@
       },
       allOrganize() {
         this.Axios({
+          params: {
+          },
           option: {
             enableMsg: false
           },
@@ -493,11 +495,13 @@
         let data = qs.stringify({
         });
         this.Axios({
+          params: {
+          },
           option: {
             enableMsg: false
           },
           type: "get",
-          url: "/enterprise/findByNameOrState",
+          url: "/deviceCategory/all",
         },this)
           //.get(this.global.apiSrc + "/deviceCategory/all", data)
           .then(result => {
@@ -623,8 +627,8 @@
           }
         }
       }
-      
+
     }
-    
+
   }
 </style>

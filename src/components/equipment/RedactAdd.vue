@@ -82,7 +82,7 @@
                   <span>维修人员
                     <label><i class="iconfont icon-cha"></i></label>
                   </span>
-                  
+
                 </el-tab-pane>
                 <el-tab-pane label="检修">
                   <span>检修人员
@@ -190,7 +190,7 @@ export default {
           isResize: true
           // orderBy: ""
         },
-      
+
         {
           field: "position",
           title: "岗位",
@@ -362,6 +362,8 @@ export default {
   },
   created() {
     this.Axios({
+      params: {
+      },
       type: "get",
       url: "/organize/allOrganize"
     },this)
@@ -499,12 +501,12 @@ export default {
               &:hover{
                 label{
                   display: block;
-                  
+
                 }
-                  
+
               }
             }
-            
+
           }
         }
       }
