@@ -196,14 +196,12 @@ export default {
     };
   },
   created() {
-    // 页面跳转过来传递的数据在此
     this.loadValue();
     this.loadSelect();
   },
   methods: {
     loadValue(){
-      this.companyName = this.$store.state.operation.turnround;
-      console.log(this.$store.state.operation.turnround);
+      this.companyName = this.$store.state.operation.upkeep;
       this.date = this.companyName.executeTime.split(" ")[0];
       this.times = this.companyName.executeTime.split(" ")[1].split(".")[0];
       this.companyName.maintenanceClassify = this.companyName.maintenanceClassify.toString();
@@ -231,18 +229,22 @@ export default {
       this.companyName.maintenanceLevel = this.companyName.maintenanceLevel.toString();
     },
     loadSelect(){
-      //通过设备计划id查询有哪些设备使用该计划
       let arr=new Array()
-      this.axios
-        .get(this.global.apiSrc+"/mplan/listDevice", {params:{maintenanceId:this.companyName.id}})
-        .then(response => {
+      this.Axios(
+        {
+          params:{maintenanceId:this.companyName.id},
+          type: "get",
+          url: "/mplan/listDevice",
+        },
+        this
+      ).then(response => {
           arr = response.data.data;
           this.tableData = arr;
           this.tableDate = this.tableData;
+        },
+        ({type, info}) => {
+
         })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
     updatePlan(){
       console.log(this.times);
@@ -282,19 +284,19 @@ export default {
         maintenanceCc:this.companyName.maintenanceCc,
         deviceIds : this.deviceIds,
       });
-      this.axios
-        .post(this.global.apiSrc+"/mplan/updateMaintenancePlan", data)
-        .then(response => {
-          console.log(response.data.msg);
-          if(response.data.msg ==="成功"){
-            alert("成功");
-            this.Upkeep()
-          }else{
-            alert("失败");
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
+      this.Axios(
+        {
+          params:data,
+          type: "post",
+          url: "/mplan/updateMaintenancePlan",
+        },
+        this
+      ).then(response => {
+          this.auditId = response.data.data.id;
+          this.TurnaroundPlans();
+        },
+        ({type, info}) => {
+
         });
     },
     Upkeep() {
