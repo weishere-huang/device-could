@@ -398,7 +398,7 @@ export default {
       }
     }
     .right {
-      width: 600px;
+      width: 640px;
       font-size: 14px;
       float: left;
       padding: 10px;
