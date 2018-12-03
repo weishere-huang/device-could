@@ -545,30 +545,24 @@ export default {
         // .get(this.global.apiSrc + "/device/detail", {
         //   params: { deviceId: id }
         // })
-        .then(
-          result => {
-            console.log("detail");
-            console.log(result.data);
-            this.sizeForm = result.data.data;
-            this.placeholder = this.sizeForm.organizeName;
-            if (this.sizeForm.buyDate != null) {
-              this.sizeForm.buyDate = this.sizeForm.buyDate.replace(/-/g, "/");
-            }
-            if (this.sizeForm.buyDate != null) {
-              this.sizeForm.enterFactoryDate = this.sizeForm.enterFactoryDate.replace(
-                /-/g,
-                "/"
-              );
-            }
-            if (this.sizeForm.buyDate != null) {
-              this.sizeForm.outputDate = this.sizeForm.outputDate.replace(
-                /-/g,
-                "/"
-              );
-            }
-            // console.log(this.sizeForm.devicePersonnelInfo);
-          },
-          ({ type, info }) => {
+        .then(result => {
+          console.log("detail");
+          console.log(result.data);
+          this.sizeForm = result.data.data;
+          this.aaaa.value = this.sizeForm.deviceState;
+          this.placeholder=this.sizeForm.organizeName;
+          if (this.sizeForm.buyDate != null) {
+            this.sizeForm.buyDate = this.sizeForm.buyDate.replace(/-/g, "/");
+          }
+          if (this.sizeForm.buyDate != null) {
+            this.sizeForm.enterFactoryDate = this.sizeForm.enterFactoryDate.replace(/-/g, "/");
+          }
+          if (this.sizeForm.buyDate != null) {
+            this.sizeForm.outputDate = this.sizeForm.outputDate.replace(/-/g, "/");
+          }
+          // console.log(this.sizeForm.devicePersonnelInfo);
+        },
+          ({type, info}) => {
             //错误类型 type=faild / error
             //error && error(type, info);
           }

@@ -375,32 +375,37 @@
         if (this.form.name === ""){
           alert("请输入角色名称");
         }else{
-          console.log(this.form.name);
-          this.axios
-            .get(this.global.apiSrc+"/role/findOnlyByRoleName",{params:{roleName:this.form.name}})
-            .then(response => {
-              if (response.data.code===200){
-                this.toRoleAdd();
-                this.form.name="";
-                this.form.desc=""
-              }else{
-                alert("角色名以存在，请重新输入角色名称！")
-              }
+          this.Axios(
+            {
+              params: {roleName:this.form.name},
+              type: "get",
+              url: "/role/findOnlyByRoleName",
+            },
+            this
+          ).then(
+            response => {
+              this.toRoleAdd();
+            },
+            ({type, info}) => {
+
             })
-            .catch(function(error) {
-              console.log(error);
-            });
         }
       },
       load(){
-        this.axios
-          .get(this.global.apiSrc+"/role/listAllRole")
-          .then(response => {
+        this.Axios(
+          {
+            params: {},
+            type: "get",
+            url: "/role/listAllRole",
+          },
+          this
+        ).then(
+          response => {
             this.role = response.data.data;
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+          },
+        ({type, info}) => {
+
+        })
       },
       list(value,toValues,key,number){
         this.systemID = "";
@@ -445,19 +450,20 @@
           name:this.form.name,
           description:this.form.desc
         });
-        this.axios
-          .post(this.global.apiSrc+"/role/add",data)
-          .then(response =>{
-            if (response.data.code === 200) {
-              alert("角色创建成功，请记得分配相关权限");
-              this.load();
-            }else{
-              alert("系统繁忙，请稍后再试");
-            }
+        this.Axios(
+          {
+            params:data ,
+            type: "post",
+            url: "/role/add",
+          },
+          this
+        ).then(
+          response => {
+            this.load();
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       update(){
         this.systemID = "";
@@ -474,24 +480,32 @@
           id:this.roleId,
           permissionIds:this.systemID
         });
-        this.axios
-          .post(this.global.apiSrc+"/role/update",data)
-          .then(response =>{
-            if (response.data.msg ==="成功") {
-              alert("成功");
-              this.load();
-            }else{
-              alert("失败");
-            }
+        this.Axios(
+          {
+            params:data ,
+            type: "post",
+            url: "/role/update",
+          },
+          this
+        ).then(
+          response => {
+            this.load();
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       listPermissionByRoleId(value){
-        this.axios
-          .get(this.global.apiSrc+"/role/listPermissionByRole",{params: {roleId:value}})
-          .then(response =>{
+
+        this.Axios(
+          {
+            params:{roleId:value} ,
+            type: "get",
+            url: "/role/listPermissionByRole",
+          },
+          this
+        ).then(
+          response => {
             let arr = new Array();
             let arr1 = new Array();
             let arr2 = new Array();
@@ -524,15 +538,21 @@
             this.personnel.checkedSystem = arr3;
             this.user.checkedSystem = arr4;
             this.message.checkedSystem = arr5;
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       PermissionsList(number){
-        this.axios
-          .get(this.global.apiSrc+"/permission/listAllPermission")
-          .then(response =>{
+        this.Axios(
+          {
+            params: {},
+            type: "get",
+            url: "/permission/listAllPermission",
+          },
+          this
+        ).then(
+          response => {
             let arr = new Array();
             let k = new Array();
             for (let i in response.data.data) {
@@ -569,10 +589,10 @@
                 }
               }
             }
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       getName(event){
         this.roleName = event.target.innerHTML;
@@ -588,22 +608,21 @@
         let data = qs.stringify({
           roleId:value
         });
-        this.axios
-          .post(this.global.apiSrc+"/role/delete",data)
-          .then(response =>{
-            if (response.data.code === 200) {
-              alert("成功删除角色");
-              this.load();
-            }else if(response.data.code === 400){
-              alert(response.data.msg);
-            }else{
-              alert("系统繁忙请稍后再试！");
-            }
+        this.Axios(
+          {
+            params:data ,
+            type: "post",
+            url: "/role/delete",
+          },
+          this
+        ).then(
+          response => {
+            this.load();
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
-      }
+      },
     },
     mounted() {
       $(".left").on('click',"li",function(event) {

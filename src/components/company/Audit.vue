@@ -58,7 +58,6 @@
         img: "",
         block: false,
         enterpriseIds: "",
-
         company: {
           name: "",
           address: "",

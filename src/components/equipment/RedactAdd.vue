@@ -116,7 +116,7 @@ export default {
           name: '4',
           content: ''
         }
-        ],
+      ],
       editableTabsValue:"0",
       tabPosition:"top",
       pageIndex: 1,

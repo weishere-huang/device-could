@@ -105,7 +105,7 @@
             <v-pagination
               @page-change="pageChange"
               @page-size-change="pageSizeChange"
-              :total="1"
+              :total="totalnum"
               :page-size="pageSize"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
@@ -128,6 +128,7 @@
     data() {
       return {
         organiza: "",
+        totalnum:"",
         defaultProps: "",
         keyWord: "",
         deviceId: "",
@@ -136,7 +137,6 @@
         ids: "",
         edbt: "",
         tableData: [{
-          deviceNo: "",
         }],
         tableDate: [],
         totalElements: "",
@@ -220,7 +220,9 @@
             columnAlign: "center",
             isResize: true
           }
-        ]
+        ],
+        //监控为条件或高级搜索
+        keyorall:0,
       };
     },
     methods: {
@@ -229,6 +231,7 @@
       },
       advanceValue(params) {
         this.tableData = params;
+
       },
       adsearch() {
         $(".adsearch")[0].style.right = 0;
@@ -282,7 +285,12 @@
         this.getTableData();
         console.log(pageIndex);
         console.log(this.pageSize);
-        this.findall();
+        if(this.keyorall === 0){
+          this.findall();
+        }else{
+          this.findByKeyWord();
+
+        }
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
@@ -306,6 +314,7 @@
 
       //通过
       findall() {
+        this.keyorall = 0
         //根据用户token查询所属组织机构下设备类别
         EventBus.$on("sideBarTroggleHandle", isCollapse => {
           window.setTimeout(() => {
@@ -328,6 +337,9 @@
         },this)
           //.get(this.global.apiSrc + "/device/select", {params:{ page: this.pageIndex,size: this.pageSize}})
           .then(result => {
+            this.totalnum = result.data.data.totalElements;
+              console.log("++++");
+            console.log(result.data);
             this.tableData = result.data.data.content;
             for (let i = 0; i < this.tableData.length; i++) {
               if (this.tableData[i].deviceState === 1) {
@@ -385,6 +397,7 @@
       //     });
       // },
       findByKeyWord() {
+        this.keyorall = 1
         //根据设备编号、位号、名称查询
         this.Axios({
           params: {

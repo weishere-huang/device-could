@@ -76,6 +76,7 @@
     <advancedsearch
       class="adsearch"
       v-on:advanceValue="advanceValue"
+      :pageSize="pageSize"
     ></advancedsearch>
     <audit
       v-show="auditShow"
@@ -118,7 +119,8 @@
         pageIndex: 1,
         pageSize: 10,
         name: "",
-        totalNub: '',
+        totalNub: "",
+        states:"",
         tableData: [
           {
             name: "",
@@ -222,14 +224,17 @@
         console.log("select-group-change", selection);
         this.auditValue = selection[0];
         this.choice = "";
+        this.states=="";
         for (let i = 0; i < selection.length; i++) {
           if (this.choice == "") {
             this.choice = selection[i].id;
+            this.states=selection[i].state
           } else {
             this.choice += "," + selection[i].id;
           }
         }
         console.log(this.choice);
+        console.log(this.states)
         console.log(this.auditValue);
       },
       selectALL(selection) {
@@ -248,6 +253,7 @@
         for (let i = 0; i < selection.length; i++) {
           if (this.choice === "") {
             this.choice += selection[i].id;
+
           } else {
             this.choice += "," + selection[i].id;
           }
@@ -267,7 +273,7 @@
         this.load();
       },
       pageSizeChange(pageSize) {
-        this.pageIndex=1;
+        this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
         this.load();
@@ -343,18 +349,18 @@
       findByName() {
         this.Axios(
           {
-            params: Object.assign(this.searchParams,{
+            url: "/enterprise/findByNameOrState",
+            params: Object.assign(this.searchParams, {
               enterpriseName: this.name,
-              // state: "",
               page: 1,
-              size: 10
+              size: this.pageSize
             }),
             type: "get",
-            url: "/enterprise/findByNameOrState",
           },
           this
         ).then(
           response => {
+            this.pageIndex = 1
             this.totalNub = response.data.data.totalElements;
             for (let i = 0; i < response.data.data.content.length; i++) {
               if (response.data.data.content[i].state === 0) {
@@ -374,6 +380,7 @@
               }
             }
             this.tableData = response.data.data.content;
+            console.log(this.pageIndex)
           },
           ({type, info}) => {
 

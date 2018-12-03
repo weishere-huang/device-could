@@ -24,6 +24,7 @@
 <script>
   export default {
     name: "",
+    props:["pageSize"],
     data() {
       return {
         dataName: "",
@@ -48,7 +49,7 @@
         }
         this.Axios(
           {
-            params: Object.assign({page: 1,size:10, enterpriseName: this.companyName, state: this.choice}),
+            params: Object.assign({page: 1,size:this.pageSize, enterpriseName: this.companyName, state: this.choice}),
             type: "get",
             url: "/enterprise/findByNameOrState",
           },
@@ -80,7 +81,7 @@
               dataName: this.dataName,
               params: {
                 enterpriseName: this.companyName,
-                state: this.choice
+                state: this.choice,
               }
             });
           }, ({type, info}) => {
