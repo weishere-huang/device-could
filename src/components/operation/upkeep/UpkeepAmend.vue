@@ -292,8 +292,7 @@ export default {
         },
         this
       ).then(response => {
-          this.auditId = response.data.data.id;
-          this.TurnaroundPlans();
+          this.Upkeep();
         },
         ({type, info}) => {
 

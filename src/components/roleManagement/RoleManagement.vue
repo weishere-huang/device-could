@@ -141,6 +141,7 @@
   export default {
     data() {
       return {
+        adminKey:[],
         form:{
           name:"",
           desc:""
@@ -229,7 +230,11 @@
           })
       },
       systemCheckAllChange(val) {
-        this.list(this.system.systemList,this.system.systemList,this.system.systemKey,1);
+        if(val){
+          this.list(this.system.systemList,this.system.systemList,this.system.systemKey,1);
+        }else{
+          this.list(this.adminKey,this.system.systemList,this.system.systemKey,1);
+        }
         this.system.checkedSystem = val ? this.system.systemList : [];
         this.system.isIndeterminate = false;
       },
@@ -252,7 +257,11 @@
         this.system.sHide = !this.system.sHide;
       },
       informationCheckAllChange(val) {
-        this.list(this.information.systemList,this.information.systemList,this.information.systemKey,2);
+        if(val){
+          this.list(this.information.systemList,this.information.systemList,this.information.systemKey,2);
+        }else{
+          this.list(this.adminKey,this.information.systemList,this.system.systemKey,1);
+        }
         this.information.checkedSystem = val ? this.information.systemList : [];
         this.information.isIndeterminate = false;
       },
@@ -276,7 +285,11 @@
         this.information.sHide = !this.information.sHide;
       },
       equipmentCheckAllChange(val) {
-        this.list(this.equipment.systemList,this.equipment.systemList,this.equipment.systemKey,3);
+        if(val){
+          this.list(this.equipment.systemList,this.equipment.systemList,this.equipment.systemKey,3);
+        }else{
+          this.list(this.adminKey,this.equipment.systemList,this.system.systemKey,1);
+        }
         this.equipment.checkedSystem = val ? this.equipment.systemList : [];
         this.equipment.isIndeterminate = false;
       },
@@ -301,7 +314,11 @@
       },
 
       personnelCheckAllChange(val) {
-        this.list(this.personnel.systemList,this.personnel.systemList,this.personnel.systemKey,4);
+        if(val){
+          this.list(this.personnel.systemList,this.personnel.systemList,this.personnel.systemKey,4);
+        }else{
+          this.list(this.adminKey,this.personnel.systemList,this.system.systemKey,1);
+        }
         this.personnel.checkedSystem = val ? this.personnel.systemList : [];
         this.personnel.isIndeterminate = false;
       },
@@ -325,7 +342,11 @@
         this.personnel.sHide = !this.personnel.sHide;
       },
       userCheckAllChange(val) {
-        this.list(this.user.systemList,this.user.systemList,this.user.systemKey,5);
+        if(val){
+          this.list(this.user.systemList,this.user.systemList,this.user.systemKey,5);
+        }else{
+          this.list(this.adminKey,this.user.systemList,this.system.systemKey,1);
+        }
         this.user.checkedSystem = val ? this.user.systemList : [];
         this.user.isIndeterminate = false;
       },
@@ -348,7 +369,11 @@
         this.user.sHide = !this.user.sHide;
       },
       messageCheckAllChange(val) {
-        this.list(this.message.systemList,this.message.systemList,this.message.systemKey,6);
+        if(val){
+          this.list(this.message.systemList,this.message.systemList,this.message.systemKey,6);
+        }else{
+          this.list(this.adminKey,this.message.systemList,this.system.systemKey,1);
+        }
         this.message.checkedSystem = val ? this.message.systemList : [];
         this.message.isIndeterminate = false;
       },
@@ -403,9 +428,9 @@
           response => {
             this.role = response.data.data;
           },
-        ({type, info}) => {
+          ({type, info}) => {
 
-        })
+          })
       },
       list(value,toValues,key,number){
         this.systemID = "";
