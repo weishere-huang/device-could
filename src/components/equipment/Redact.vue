@@ -561,6 +561,8 @@ export default {
     },
     allOrganize() {
       this.Axios({
+        params: {
+        },
         option: {
           enableMsg: false
         },
@@ -620,6 +622,8 @@ export default {
     findAlldeviceClassify(){
 
       this.Axios({
+        params: {
+        },
         option: {
           enableMsg: false
         },
