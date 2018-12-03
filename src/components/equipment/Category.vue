@@ -110,8 +110,9 @@ export default {
       return tree;
     },
     findAlldeviceClassify(){
-      debugger
       this.Axios({
+        params: {
+        },
         type: "get",
         url: "/deviceCategory/all"
       },this)
