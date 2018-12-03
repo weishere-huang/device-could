@@ -13,9 +13,9 @@
       </div>
       <div class="bottom">
         <div>
-          <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :row-dblclick="toDetails"></v-table>
+          <v-table :row-dblclick="toDetails" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" ></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="1" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
@@ -23,13 +23,13 @@
     <el-dialog title="审核" :visible.sync="outerVisible">
       <el-form label-position=right label-width="120px" :model="formLabelAlign">
           <el-form-item label="审批结果：">
-            <el-radio v-model="approval" label="1">同意</el-radio>
-            <el-radio v-model="approval" label="2">驳回</el-radio>
+            <el-radio v-model="approval" label="0">同意</el-radio>
+            <el-radio v-model="approval" label="1">驳回</el-radio>
           </el-form-item>
           <el-form-item label="审批意见：">
             <el-input type="textarea" v-model="formLabelAlign.desc"></el-input>
           </el-form-item>
-          <div v-if="approval!=2">
+          <div v-if="approval!=1">
             <el-form-item label="是否终审：">
                 <el-checkbox-group v-model="formLabelAlign.type">
                     <el-checkbox label="" name="type"></el-checkbox>
@@ -46,7 +46,7 @@
     </el-dialog>
     <div slot="footer" class="dialog-footer">
       <el-button @click="outerVisible = false" size="mini">取 消</el-button>
-      <el-button type="primary" size="mini">提交</el-button>
+      <el-button type="primary" size="mini">提 交</el-button>
       
     </div>
   </el-dialog>
@@ -60,6 +60,7 @@ export default {
     return {
       formLabelAlign:{},
       approval:"",
+      pageNumber:0,
       outerVisible: false,
       innerVisible: false,
       faultId: "",
@@ -68,12 +69,7 @@ export default {
       auditdetails:"",
       pageIndex: 1,
       pageSize: 10,
-      tableData: [
-        {
-          faultNo:"2222",
-          state:"2222"
-        }
-      ],
+      tableData: [],
       tableDate: [],
       columns: [
         {
@@ -152,6 +148,7 @@ export default {
   },
   methods: {
     toDetails(rowIndex, rowData, column){
+      this.$store.commit("breakDetails" , rowData);
       this.$router.push({path:"/BreakDetails"})
     },
     auditHide(params){
@@ -202,7 +199,7 @@ export default {
 
     load() {
       this.axios
-        .get(this.global.apiSrc + "/fault/list", { params: { page: -1 } })
+        .get(this.global.apiSrc + "/fault/list", { params: {page: -1} })
         .then(response => {
           this.tableData = response.data.data;
           this.springReplacement();
