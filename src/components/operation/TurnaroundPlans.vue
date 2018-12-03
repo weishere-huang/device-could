@@ -394,26 +394,6 @@
           alert("抱歉只能计划只能单个修改")
         }
       },
-      //待审核提交
-      toSubmitAudit(){
-        let qs = require("qs");
-        let data = qs.stringify({
-          maintenanceId:this.auditId
-        });
-        this.axios
-          .post(this.global.apiSrc+"/mplan/submitAudit",data)
-          .then(response =>{
-            if(response.data.code === 200){
-              alert("已成功提交审核");
-              this.TurnaroundPlans();
-            }else{
-              alert("系统错误请稍后再试");
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      }
     },
       created() {
         this.listMaintenanceLevel();
