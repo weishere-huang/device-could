@@ -93,8 +93,15 @@ export default {
         organizeInfo: this.orgInfo
       });
       console.log(this.nodedata);
-      this.axios
-        .post(this.global.apiSrc + "/organize/add", data)
+      this.Axios({
+        url: "/organize/add",
+        params: data,
+        type: "post",
+        // option: {
+        //   enableMsg: false
+        // }
+      },this)
+        //.post(this.global.apiSrc + "/organize/add", data)
         .then(result => {
           if(result.data.code === 200){
             alert("添加成功");
@@ -102,7 +109,7 @@ export default {
             this.orgname=""
             this.value=""
             this.orgInfo=""
-            location.reload()
+            location.reload();
           }else{
             alert("添加失败");
             console.log(result.data);
