@@ -8,7 +8,6 @@
         <div class="search">
           <el-input type="search" placeholder="如故障编码，设备名称，位号，描述" size="small" v-model="faultKey"></el-input>
           <el-button size="small" @click="search">搜索</el-button>
-          <span style="padding-left:10px;">高级搜索</span>
         </div>
       </div>
       <div class="bottom">
@@ -222,16 +221,24 @@ export default {
     },
 
     load() {
-      this.axios
-        .get(this.global.apiSrc + "/fault/list", { params: {page: -1} })
-        .then(response => {
-          this.tableData = response.data.data;
+      this.Axios(
+        {
+          params:{
+            page: this.pageIndex,
+            size: this.pageSize
+          },
+          type: "get",
+          url: "/fault/list",
+        },
+        this
+      ).then(response => {
+          this.tableData = response.data.data.content;
           this.springReplacement();
           this.tableDate = this.tableData;
+        },
+        ({type, info}) => {
+
         })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
     springReplacement() {
       for (let i = 0; i < this.tableData.length; i++) {
@@ -280,49 +287,59 @@ export default {
       }
     },
     search() {
-      this.axios
-        .get(this.global.apiSrc + "/fault/search", {
-          params: { keyword: this.faultKey, page: -1 }
-        })
-        .then(response => {
-          this.tableData = response.data.data;
+      this.Axios(
+        {
+          params:{ keyword: this.faultKey, page: this.pageIndex,size:this.pageSize},
+          type: "get",
+          url: "/fault/search",
+        },
+        this
+      ).then(response => {
+          this.tableData = response.data.data.content;
           this.springReplacement();
           this.tableDate = this.tableData;
-          // console.log(response)
+        },
+        ({type, info}) => {
+
         })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
     dispel(){
       let qs = require("qs");
       let data = qs.stringify({
         faultIds:this.faultIds,
       });
-      this.axios
-        .post(this.global.apiSrc + "/fault/dispel",data)
-        .then(response =>{
-          alert(response.data.msg);
+      this.Axios(
+        {
+          params:data,
+          type: "post",
+          url: "/fault/dispel",
+        },
+        this
+      ).then(response => {
           this.load();
+        },
+        ({type, info}) => {
+
         })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
     deleteBreak(){
       let qs = require("qs");
       let data = qs.stringify({
        ids:this.faultIds,
       });
-      this.axios
-        .post(this.global.apiSrc + "/fault/delete",data)
-        .then(response =>{
-          alert(response.data.msg);
+      this.Axios(
+        {
+          params:data,
+          type: "post",
+          url: "/fault/delete",
+        },
+        this
+      ).then(response => {
           this.load();
+        },
+        ({type, info}) => {
+
         })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
     getPersonnel(params) {
       this.toAuditName = params.person;
@@ -330,24 +347,27 @@ export default {
     },
     submitAudit() {
       this.formLabelAlign.type ? this.formLabelAlign.type = 0 : this.formLabelAlign.type = 1;
-      this.axios
-        .get(this.global.apiSrc + "/mplan/maintenanceAudit", {
-          params: {
+      this.Axios(
+        {
+          params:{
             passOrTurn: this.formLabelAlign.radio,
             maintenanceId: this.maintenanceIds,
             isEndAudit: this.formLabelAlign.type,
             auditOpinion: this.formLabelAlign.desc,
             nextUserId: this.toAudit.id
-          }
-        })
-        .then(response => {
+          },
+          type: "post",
+          url: "/fault/maintenanceAudit",
+        },
+        this
+      ).then(response => {
           this.arr="";
           this.load();
           this.outerVisible = false;
+        },
+        ({type, info}) => {
+
         })
-        .catch(function (error) {
-          console.log(error);
-        });
     },
     outerVisibleIsOk() {
       if (this.arr.length === 1) {

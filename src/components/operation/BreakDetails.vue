@@ -222,28 +222,39 @@
         }
       },
       load() {
-        this.axios
-          .get(this.global.apiSrc + "/fault/detail", {params: {faultId: this.faultId}})
-          .then(response =>{
+        this.Axios(
+          {
+            params:{faultId: this.faultId},
+            type: "get",
+            url: "/fault/detail",
+          },
+          this
+        ).then(response => {
             this.tableData = response.data.data;
             this.companyName = this.tableData;
             this.toValue(response.data.data);
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       commitAudit(){
         let qs = require("qs");
         let data = qs.stringify({faultId:this.companyName.id});
-        this.axios
-          .post(this.global.apiSrc + "/fault/commitAudit",data)
-          .then(response =>{
-            alert(response.data.msg);
+
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/fault/commitAudit",
+          },
+          this
+        ).then(response => {
+
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       dispel(){
         let qs = require("qs");
@@ -251,14 +262,19 @@
           faultIds:this.companyName.id,
           dispelCause:this.companyName.revokeCause
         });
-        this.axios
-          .post(this.global.apiSrc + "/fault/dispel",data)
-          .then(response =>{
-            alert(response.data.msg);
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/fault/dispel",
+          },
+          this
+        ).then(response => {
+
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       }
     },
     created(){

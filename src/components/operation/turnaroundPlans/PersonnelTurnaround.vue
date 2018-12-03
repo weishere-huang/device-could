@@ -75,33 +75,39 @@
     },
     methods: {
       load() {
-        this.axios
-          .get(this.global.apiSrc + "/employee/findEmployeeList", {
-            params: {page: this.pageIndex, size: this.pageSize}
-          })
-          .then(response => {
-            console.log(response);
+        this.Axios(
+          {
+            params:{page: this.pageIndex, size: this.pageSize},
+            type: "get",
+            url: "/employee/findEmployeeList",
+          },
+          this
+        ).then(response => {
             this.pageNumber = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             this.tableDate = this.tableData;
+          },
+          ({type, info}) => {
+
           })
-          .catch(function (error) {
-            console.log(error);
-          });
       },
       search() {
-        this.axios
-          .get(this.global.apiSrc + "/employee/search", {
-            params: {condition: this.key}
-          })
-          .then(response => {
+        this.Axios(
+          {
+            params:{condition: this.key},
+            type: "get",
+            url: "/employee/search",
+          },
+          this
+        ).then(response => {
+            this.pageNumber = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             this.searchs = this.key;
             this.tableDate = this.tableData;
+          },
+          ({type, info}) => {
+
           })
-          .catch(function (error) {
-            console.log(error);
-          });
       },
 
       selectGroupChange(selection) {
@@ -138,8 +144,7 @@
         let jihe={
           person:rowData,
           hide:false
-        }
-
+        };
         this.$emit("getPersonnel",jihe)
       }
     },

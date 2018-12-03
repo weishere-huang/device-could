@@ -230,8 +230,6 @@
         }
         let qs = require("qs");
         let data = qs.stringify({
-          //统一token之后删除userID
-          id:this.companyName.id,
           planName:this.companyName.planName,
           maintenanceClassify:this.companyName.maintenanceClassify,
           maintenanceLevel:this.companyName.maintenanceLevel,
@@ -245,19 +243,20 @@
           maintenanceCc:this.companyName.maintenanceCc,
           deviceIds : this.deviceIds,
         });
-        this.axios
-          .post(this.global.apiSrc+"/mplan/add",data)
-          .then(response => {
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/mplan/add",
+          },
+          this
+        ).then(response => {
             this.auditId = response.data.data.id;
-            if(response.data.msg ==="成功"){
-              this.submitAudit();
-            }else{
-              alert("系统繁忙请稍后再试！");
-            }
+            this.submitAudit();
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       eliminateAll(){
         this.tableData = "";
@@ -318,17 +317,22 @@
         this.getTableData();
       },
       load(){
-        this.axios
-          .get(this.global.apiSrc+"/device/all",{params:{
-              page:this.pageIndex,
-              size:this.pageSize
-            }})
-          .then(response =>{
+        this.Axios(
+          {
+            params:Object.assign(this.searchParams, {
+              page: this.pageIndex,
+              size: this.pageSize
+            }),
+            type: "get",
+            url: "/device/all",
+          },
+          this
+        ).then(response => {
             this.tableData = response.data.data.content;
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       submitAudit(){
         this.$confirm('计划添加成功,是否立即提交审核', '提示')
@@ -337,19 +341,22 @@
             let data = qs.stringify({
               maintenanceId:this.auditId
             });
-            this.axios
-              .post(this.global.apiSrc+"/mplan/submitAudit",data)
-              .then(response =>{
-                if(response.data.code === 200){
-                  alert("已成功提交审核");
-                  this.TurnaroundPlans();
-                }else{
-                  alert("系统错误请稍后再试");
-                }
+            this.Axios(
+              {
+                params:Object.assign(this.searchParams, {
+                  page: this.pageIndex,
+                  size: this.pageSize
+                }),
+                type: "post",
+                url: "/mplan/submitAudit",
+              },
+              this
+            ).then(response => {
+                this.TurnaroundPlans();
+              },
+              ({type, info}) => {
+
               })
-              .catch(function(error) {
-                console.log(error);
-              });
           })
           .catch(_=>{
             this.TurnaroundPlans();
@@ -360,19 +367,18 @@
         let data = qs.stringify({
           maintenanceId:this.auditId
         });
-        this.axios
-          .post(this.global.apiSrc+"/mplan/submitAudit",data)
-          .then(response =>{
-            if(response.data.code === 200){
-              alert("已成功提交审核");
-              this.TurnaroundPlans();
-            }else{
-              alert("系统错误请稍后再试");
-            }
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/mplan/submitAudit",
+          },
+          this
+        ).then(response => {
+            this.TurnaroundPlans();
+          },
+          ({type, info}) => {
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       }
 
     },
