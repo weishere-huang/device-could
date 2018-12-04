@@ -35,7 +35,7 @@
         <div>
           <v-table :row-dblclick="toDetails" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" ></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" pageIndex="pageIndex" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
@@ -222,13 +222,14 @@
       },
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
+        this.load();
         this.getTableData();
-        console.log(pageIndex);
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
+        this.load();
       },
       sortChange(params) {
         if (params.height.length > 0) {
@@ -256,6 +257,8 @@
           },
           this
         ).then(response => {
+
+            this.pageNumber = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             this.springReplacement();
             this.tableDate = this.tableData;
@@ -319,9 +322,14 @@
           },
           this
         ).then(response => {
-            this.tableData = response.data.data.content;
-            this.springReplacement();
-            this.tableDate = this.tableData;
+            if(this.faultKey===""){
+              this.faultKey = "";
+              this.tableData = response.data.data.content;
+              this.springReplacement();
+              this.tableDate = this.tableData;
+            }else {
+              this.pageChange(1);
+            }
           },
           ({type, info}) => {
 

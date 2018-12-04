@@ -27,7 +27,6 @@
   export default {
     data() {
       return {
-        isPageOk:true,
         searchs: "",
         pageIndex: 1,
         pageSize: 10,
@@ -123,7 +122,6 @@
           this
         ).then(response => {
             if(this.searchs!==""){
-              this.isPageOk = false;
               this.pageNumber = response.data.data.totalElements;
               this.tableData = response.data.data.content;
               this.searchs = "";
@@ -132,7 +130,6 @@
               }
               this.tableDate = this.tableData;
             }else{
-              this.isPageOk = true;
               this.pageChange(1);
             }
           },
@@ -220,12 +217,9 @@
         );
       },
       pageChange(pageIndex) {
-        console.log(pageIndex);
         this.pageIndex = pageIndex;
         this.getTableData();
-        if(this.isPageOk){
           this.load();
-        }
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
