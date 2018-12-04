@@ -13,7 +13,7 @@
               <el-button type="text" size="mini" >
                 修改
               </el-button>
-              <el-button type="text" size="mini" @click="deleteCategory">
+              <el-button type="text" size="mini" @click="() => deleteCategory(data.id)">
                 删除
               </el-button>
             </span>
@@ -200,15 +200,17 @@ export default {
         //   console.log(err);
         // });
     },
-    deleteCategory(){
-      //删除设备类别
+    deleteCategory(nodeId){
+      console.log(nodeId+"nodeiddd");
+
+    //  删除设备类别
       console.log(this.nodedata.id);
       let qs = require("qs");
       let data = qs.stringify({
-        categoryId:this.nodedata.id,
+        categoryId:nodeId,
       });
       this.Axios({
-        url: "/deviceCategory/delete/"+this.nodedata.id,
+        url: "/deviceCategory/delete/"+nodeId,
         params: data,
         type: "post",
         option: {
