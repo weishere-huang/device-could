@@ -40,7 +40,6 @@
                 <label for="">入职时间：</label>
                 <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.entryTime"
                                 size="small"  ></el-date-picker>
-                <!-- <el-input type="date" size="small" v-model="persnneladd.entryTime"></el-input> -->
               </li>
             </ul>
           </div>
