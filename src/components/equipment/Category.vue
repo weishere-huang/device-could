@@ -10,7 +10,7 @@
               <el-button type="text" size="mini" @click="dialogVisible=true" >
                 添加
               </el-button>
-              <el-button type="text" size="mini" >
+              <el-button type="text" size="mini"  @click="dialogVisible1=true">
                 修改
               </el-button>
               <el-button type="text" size="mini" @click="() => deleteCategory(data.id)">
@@ -19,10 +19,34 @@
             </span>
           </span>
         </el-tree>
+        <div style="width:100%;text-align:center">
+          <el-button size="small" style="width:200px;margin:auto" v-if="organize===''" @click="dialogVisible3=true">添加</el-button>          
+        </div>
+        <el-dialog
+          title="添加根节点"
+          :visible.sync="dialogVisible3"
+          width="30%"
+          >
+          <el-form ref="form" label-width="90px" style="padding:10px">
+            <el-form-item label="类别名称：">
+              <el-input v-model="nodedata.categoryName" size="mini"></el-input>
+            </el-form-item>
+            <el-form-item label="备注：">
+              <el-input type="textarea" v-model="nodedata.categoryMsg"></el-input>
+            </el-form-item>
+          </el-form>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible3 = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible3 = false">确 定</el-button>
+          </span>
+        </el-dialog>
       </div>
-      <div class="remark">
-        <h5>修改</h5>
-        <el-form ref="form" label-width="90px">
+      <el-dialog
+        title="修改"
+        :visible.sync="dialogVisible1"
+        width="30%"
+        >
+       <el-form ref="form" label-width="90px">
           <el-form-item label="类别名称：">
             <el-input v-model="nodedata.categoryName" size="mini"></el-input>
           </el-form-item>
@@ -33,7 +57,11 @@
             <el-button size="mini" @click="updateCategory">确认修改</el-button>
           </el-form-item>
         </el-form>
-      </div>
+        <!-- <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span> -->
+      </el-dialog>
     </div>
     <el-dialog
       title="添加"
@@ -59,6 +87,8 @@ let id = 1000;
 export default {
   data() {
     return {
+      dialogVisible3:false,
+      dialogVisible1:false,
       dialogVisible:false,
       organize: "",
       // data5: this.organize,
