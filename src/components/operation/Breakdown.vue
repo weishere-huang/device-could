@@ -12,7 +12,7 @@
           >
            <el-form label-position=right label-width="120px" :model="formLabelAlign" style="padding:10px">
             <el-form-item label="故障持续时间：">
-              <el-input  v-model="formLabelAlign.desc" size="mini" style="width:30%"></el-input>
+              <el-input  v-model="formLabelAlign.time" size="mini" style="width:30%"></el-input>
               <span>小时</span>
             </el-form-item>
             <el-form-item label="消除原因：">
@@ -21,7 +21,7 @@
            </el-form>
           <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            <el-button type="primary" @click="toDispel">确 定</el-button>
           </span>
         </el-dialog>
         <!-- 故障消除弹框结束 -->
@@ -35,7 +35,7 @@
         <div>
           <v-table :row-dblclick="toDetails" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" ></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" pageIndex="pageIndex" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
@@ -83,6 +83,7 @@
         dialogVisible:false,
         toAuditName:"",
         formLabelAlign: {
+          time:"",
           desc:"",
           type:"",
           radio: "",
@@ -221,13 +222,14 @@
       },
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
+        this.load();
         this.getTableData();
-        console.log(pageIndex);
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
+        this.load();
       },
       sortChange(params) {
         if (params.height.length > 0) {
@@ -255,6 +257,8 @@
           },
           this
         ).then(response => {
+
+            this.pageNumber = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             this.springReplacement();
             this.tableDate = this.tableData;
@@ -318,18 +322,22 @@
           },
           this
         ).then(response => {
-            this.tableData = response.data.data.content;
-            this.springReplacement();
-            this.tableDate = this.tableData;
+            if(this.faultKey===""){
+              this.faultKey = "";
+              this.tableData = response.data.data.content;
+              this.springReplacement();
+              this.tableDate = this.tableData;
+            }else {
+              this.pageChange(1);
+            }
           },
           ({type, info}) => {
 
           })
       },
       dispel(){
-        this.dialogVisible=true
         if(this.arr.length === 1){
-          this.toDispel();
+          this.dialogVisible=true;
         }
         if(this.arr.length >1){
           alert("抱歉、只能单个处理")
@@ -342,6 +350,8 @@
         let qs = require("qs");
         let data = qs.stringify({
           faultIds:this.faultIds,
+          dispelCause:this.formLabelAlign.desc,
+          faultDuration:this.formLabelAlign.time
         });
         this.Axios(
           {
@@ -352,6 +362,7 @@
           this
         ).then(response => {
             this.load();
+            this.dialogVisible = false
           },
           ({type, info}) => {
 

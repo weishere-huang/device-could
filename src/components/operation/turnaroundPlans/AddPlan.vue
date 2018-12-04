@@ -157,6 +157,7 @@ export default {
       }
     };
   },
+
   methods: {
     loads() {
       let arrs = new Array();
@@ -169,6 +170,7 @@ export default {
         this
       ).then(
         response => {
+          console.log(response);
           arrs = response.data.data.content;
           this.tableData = arrs;
           this.tabledate = this.tableData;
