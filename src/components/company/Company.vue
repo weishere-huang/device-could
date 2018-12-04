@@ -120,7 +120,7 @@
         pageSize: 10,
         name: "",
         totalNub: "",
-        states: "",
+        states: [],
         tableData: [
           {
             name: "",
@@ -224,11 +224,11 @@
         console.log("select-group-change", selection);
         this.auditValue = selection[0];
         this.choice = "";
-        this.states == "";
+        this.states == [];
         for (let i = 0; i < selection.length; i++) {
           if (this.choice == "") {
             this.choice = selection[i].id;
-            this.states = selection[i].state
+            this.states[i] = selection[i].state
             this.auditValue==selection[0]
           } else {
             this.choice += "," + selection[i].id;
@@ -406,24 +406,14 @@
           },
           this
         ).then(response => {
-          if(this.states=="禁用"){
             this.$message({
               message: '启用成功',
               type: 'success'
             })
             this.load();
-          }else{
-            this.$message({
-              message: "这能启用被禁用的企业",
-              type:"error"
-            })
-          }
-
           console.log("请求参数：" + data);
         }, ({type, info}) => {
-          this.$message({
 
-          })
         });
       },
       forbidden() {
@@ -443,12 +433,14 @@
           },
           this
         ).then(response => {
+
             this.$message({
               message: "禁用成功",
               type: "success"
             })
             this.load()
           }, ({type, info}) => {
+
           }
         )
       },
