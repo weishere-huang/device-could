@@ -177,11 +177,31 @@
               ></el-input>
             </el-form-item>
             <el-form-item label="相关照片：">
-              <span style="cursor: pointer;color:#409eff">查看照片</span>
+              <span style="cursor: pointer;color:#409eff" @click="pictureDialog=true">查看照片</span>
             </el-form-item>
           </el-form>
         </div>
       </div>
+      <!-- 照片弹框 -->
+      <el-dialog
+        title="查看图片"
+        :visible.sync="pictureDialog"
+        width="60%"
+      >
+        <el-carousel
+          :interval="4000"
+          type="card"
+          height="400px"
+        >
+          <el-carousel-item
+            v-for="item in 6"
+            :key="item"
+          >
+            <h3>{{ item }}</h3>
+          </el-carousel-item>
+        </el-carousel>
+      </el-dialog>
+      <!-- 照片弹框结束 -->
       <div class="right">
         <div class="equipment">
           <h5>设备对象</h5>
@@ -226,7 +246,10 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-            <el-button size="mini">从物料库中添加</el-button>
+            <el-button
+              size="mini"
+              @click="dialogVisible2=true"
+            >从物料库中添加</el-button>
             <el-button size="mini">保存列表</el-button>
           </div>
           <v-table
@@ -250,21 +273,54 @@
           :visible.sync="dialogVisible2"
           width="70%"
         >
-          <div class="spare-parts-list"></div>
-          <div style="padding:10px">
-            <v-table
-              is-horizontal-resize
-              column-width-drag
-              :multiple-sort="false"
-              style="width:100%;"
-              :columns="personTable"
-              :table-data="personData"
-              row-hover-color="#eee"
-              row-click-color="#edf7ff"
-              :cell-edit-done="cellEditDone"
-              row-height=24
-              :height="230"
-            ></v-table>
+          <div
+            style="padding:10px"
+            class="dialog-case"
+          >
+            <div class="spare-parts-list">
+              <el-tree
+                :data="spareParts"
+                node-key="id"
+                @node-click="handleNodeClick"
+                :props="defaultProps"
+                default-expand-all
+              >
+              </el-tree>
+            </div>
+            <div class="center-list">
+              <div style="padding:10px;">
+                <el-input
+                  type="search"
+                  size="mini"
+                  v-model="searchPerson"
+                  style="width:50%;"
+                  placeholder="关键词：设备编号、备件名称、型号/规格"
+                ></el-input>
+                <el-button size="mini">查询</el-button>
+              </div>
+              <v-table
+                is-horizontal-resize
+                column-width-drag
+                :multiple-sort="false"
+                style="width:100%; min-height:300px;max-height:400px"
+                :columns="personTable"
+                :table-data="personData"
+                row-hover-color="#eee"
+                row-click-color="#edf7ff"
+                :cell-edit-done="cellEditDone"
+                row-height=24
+                :height="230"
+              ></v-table>
+            </div>
+            <div class="add">
+              <div style="text-align:center">
+                <el-button size="mini">提交</el-button>
+              </div>
+              <ul>
+                <h6>已选择</h6>
+                <li></li>
+              </ul>
+            </div>
           </div>
         </el-dialog>
         <!-- 物料添加弹窗结束 -->
@@ -291,7 +347,7 @@
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 2, maxRows: 4}"
-                  placeholder="请输入内容"
+                  placeholder=""
                   readonly
                   style="width:94%"
                   v-model="formLabelAlign.msg"
@@ -324,244 +380,28 @@
 export default {
   data() {
     return {
+      spareParts: [],
+      defaultProps: {
+        children: "",
+        label: ""
+      },
+      searchPerson: "",
       key: "",
       toAudit: {},
       formLabelAlign: {
         radio: ""
       },
-      dialogVisible2: true,
+      pictureDialog: false,
+      dialogVisible2: false,
       dialogVisible1: false,
       outerVisible: false,
       innerVisible: false,
       formLabelAlign: {
         msg: ""
       },
-      suppliesTableData: [
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "999",
-          address: "999",
-          gmtCreate: "999"
-        }
-      ],
-      equipmentTableData: [
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "999",
-          address: "999",
-          gmtCreate: "999"
-        }
-      ],
-      informationData: [
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "11",
-          address: "22",
-          gmtCreate: "33"
-        },
-        {
-          name: "999",
-          address: "999",
-          gmtCreate: "999"
-        }
-      ],
+      suppliesTableData: [],
+      equipmentTableData: [],
+      informationData: [],
       equipmentTable: [
         {
           field: "name",
@@ -701,32 +541,56 @@ export default {
       personTable: [
         {
           field: "name",
-          title: "姓名",
-          width: 100,
+          title: "备件编号",
+          width: 80,
           titleAlign: "center",
           columnAlign: "left",
           isResize: true
         },
         {
           field: "name",
-          title: "手机号",
-          width: 100,
+          title: "备件名称",
+          width: 80,
           titleAlign: "center",
           columnAlign: "left",
           isResize: true
         },
         {
           field: "name",
-          title: "组织单位/部门",
-          width: 100,
+          title: "型号/规格",
+          width: 80,
           titleAlign: "center",
           columnAlign: "left",
           isResize: true
         },
         {
           field: "name",
-          title: "岗位",
-          width: 100,
+          title: "备件级别",
+          width: 60,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "name",
+          title: "备件分类",
+          width: 70,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "name",
+          title: "库存",
+          width: 60,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "name",
+          title: "计量单位",
+          width: 60,
           titleAlign: "center",
           columnAlign: "left",
           isResize: true
@@ -801,6 +665,26 @@ export default {
     checkPerson(rowIndex, rowData, column) {
       console.log(rowData);
       this.dialogVisible1 = true;
+    },
+    handleNodeClick(data) {
+      this.clickId = data.id;
+      this.toLoad();
+    },
+    filterArray(data, parent) {
+      let vm = this;
+      var tree = [];
+      var temp;
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].parentCode == parent) {
+          var obj = data[i];
+          temp = this.filterArray(data, data[i].code);
+          if (temp.length > 0) {
+            obj.children = temp;
+          }
+          tree.push(obj);
+        }
+      }
+      return tree;
     }
   }
 };
@@ -897,5 +781,56 @@ export default {
       }
     }
   }
+}
+.dialog-case {
+  overflow: hidden;
+  .spare-parts-list {
+    float: left;
+    width: 20%;
+    border: @border;
+    border-radius: 5px;
+    margin-right: 5px;
+    padding: 10px;
+  }
+  .center-list {
+    width: 60%;
+    float: left;
+    border: @border;
+    margin-right: 5px;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  .add {
+    width: 18%;
+    float: left;
+    border: @border;
+    padding: 10px;
+    border-radius: 5px;
+    ul {
+      margin-top: 10px;
+      li {
+        list-style-type: none;
+        height: 24px;
+        line-height: 24px;
+        width: 100%;
+        padding: 0 5px;
+      }
+    }
+  }
+}
+.el-carousel__item h3 {
+  color: #475669;
+  font-size: 14px;
+  opacity: 0.75;
+  line-height: 200px;
+  margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n + 1) {
+  background-color: #d3dce6;
 }
 </style>
