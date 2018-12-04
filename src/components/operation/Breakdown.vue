@@ -45,7 +45,7 @@
       </el-dialog>
       <div slot="footer" class="dialog-footer">
         <el-button @click="outerVisible = false" size="mini">取 消</el-button>
-        <el-button  @click="submitAudit" type="primary" size="mini">提 交</el-button>
+        <el-button @click="isSubmitAudit" type="primary" size="mini">提 交</el-button>
 
       </div>
     </el-dialog>
@@ -368,21 +368,22 @@
         this.toAuditName = params.person;
         this.innerVisible = params.hide;
       },
-      submitAudit() {
+      isSubmitAudit() {
         this.formLabelAlign.type ? this.formLabelAlign.type = 0 : this.formLabelAlign.type = 1;
-        if(this.formLabelAlign.radio === 0){
+        if(this.formLabelAlign.radio === "0"){
           let qs = require("qs");
           let data = qs.stringify({
-            faultId: this.faultIds,
+            faultIds: this.faultIds,
             nextUserId: this.toAuditName.id,
             isEnd:this.formLabelAlign.type,
             auditOpinion: this.formLabelAlign.desc,
           });
+          console.log(data);
           this.Axios(
             {
               params:data,
               type: "post",
-              url: "fault/auditPass",
+              url: "/fault/auditPass",
             },
             this
           ).then(response => {
@@ -394,17 +395,17 @@
             ({type, info}) => {
 
             })
-        }else if(this.formLabelAlign.radio === 1 ){
+        }else if(this.formLabelAlign.radio === "1" ){
           let qs = require("qs");
           let data = qs.stringify({
-            faultId: this.faultIds,
+            faultIds: this.faultIds,
             auditOpinion: this.formLabelAlign.desc,
           });
           this.Axios(
             {
               params:data,
               type: "post",
-              url: "fault/auditReject",
+              url: "/fault/auditReject",
             },
             this
           ).then(response => {
