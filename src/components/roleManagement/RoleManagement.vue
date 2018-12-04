@@ -459,13 +459,14 @@
               }
             }
           }
+          // console.log(toKey);
         }
         switch(number){
           case 1:
             this.system.adminKey = toKey;
             break;
           case 2:
-            this.information.adminKey =toKey;
+            this.information.adminKey = toKey;
             break;
           case 3:
             this.equipment.adminKey = toKey;
@@ -507,12 +508,12 @@
       },
       update(){
         this.systemID = "";
-        this.test(this.system.adminKey);
-        this.test(this.information.adminKey);
-        this.test(this.equipment.adminKey);
-        this.test(this.personnel.adminKey);
-        this.test(this.user.adminKey);
-        this.test(this.message.adminKey);
+        this.systemID = this.system.adminKey.toString();
+        this.systemID == "" ? this.systemID = this.information.adminKey : this.information.adminKey!="" ? this.systemID +=","+this.information.adminKey:"";
+        this.systemID == "" ? this.systemID = this.equipment.adminKey : this.equipment.adminKey!="" ? this.systemID +=","+this.equipment.adminKey:"";
+        this.systemID == "" ? this.systemID = this.personnel.adminKey : this.personnel.adminKey!="" ? this.systemID +=","+this.personnel.adminKey:"";
+        this.systemID == "" ? this.systemID = this.user.adminKey : this.user.adminKey!="" ? this.systemID +=","+this.user.adminKey:"";
+        this.systemID == "" ? this.systemID = this.message.adminKey : this.message.adminKey!="" ? this.systemID +=","+this.message.adminKey:"";
         let qs = require("qs");
         let data = qs.stringify({
           id:this.roleId,
@@ -680,15 +681,6 @@
           ({type, info}) => {
 
           })
-      },
-      test(value){
-        if(value.length>0){
-          if(this.systemID === ""){
-            this.systemID = value
-          }else if(this.systemID!==""){
-            this.systemID += ","+value
-          }
-        }
       },
     },
     mounted() {
