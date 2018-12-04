@@ -308,7 +308,7 @@
           return false;
         }
         if(this.persnneladd.birthday == ""){
-          alert("请输入出生日期");
+          alert("请选择出生日期");
           return false;
         }
         if(this.persnneladd.organizationName == " "){
