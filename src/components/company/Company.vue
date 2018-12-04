@@ -84,21 +84,25 @@
       :auditValue="auditValue"
       :searchData="name"
     ></audit>
-    <businessDetails
+    <!-- <businessDetails
       v-show="detailsShow"
       v-on:childByValue="childByValue"
       :detailsValue="detailsValue"
-    ></businessDetails>
-    <!-- <el-dialog
+    ></businessDetails> -->
+    <el-dialog
       title="企业详情"
       :visible.sync="dialogVisible"
-      :before-close="handleClose">
-      <span>这是一段信息</span>
+      width="70%"
+      >
+      <businessDetails
+      v-on:childByValue="childByValue"
+      :detailsValue="detailsValue"
+      ></businessDetails>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -109,8 +113,8 @@
   export default {
     data() {
       return {
-        dialogVisible:true,
-        detailsShow: false,
+        dialogVisible:false,
+        detailsShow: true,
         auditShow: false,
         detailsValue: "",
         auditValue: "",
@@ -213,10 +217,10 @@
         this.auditShow = params;
       },
       childByValue: function (params) {
-        this.detailsShow = params;
+        this.dialogVisible = params;
       },
       details(rowIndex, rowData, column) {
-        this.detailsShow = true;
+        this.dialogVisible = true;
         this.detailsValue = rowData;
         console.log(rowData);
       },
