@@ -11,7 +11,6 @@ axios.defaults.withCredentials = true;
 
 export default ({ url, type, params, config, option ,loadingConfig},vue) => {
     
-    params = params || {};
     //process.env.NODE_ENV === 'development' && url = `/api${url}`;
     option = Object.assign({
         enableMsg:true,
@@ -29,12 +28,14 @@ export default ({ url, type, params, config, option ,loadingConfig},vue) => {
     } 
     if(Object.prototype.toString.call(url)  === '[object Array]'){
         //数组
+        params = Object.prototype.toString.call(params)!== '[object Array]'?[params||{},params||{}]:params;
+        type=Object.prototype.toString.call(type)!== '[object Array]'?[(type||"post"),(type||"post")]:type;
         const loading=loadInit();
-        const runAsync=url.map(_url=>{
+        const runAsync=url.map((_url,index)=>{
             //api的url加入统一前缀
             _url=`${global.apiSrc}${_url}`;
                 return new Promise(function(resolve, reject){
-                    axios[type||'post'](_url, type==='get'?{params:params}:params, config || {}).then(res => {
+                    axios[type[index]](_url, type==="get"?{params:params[index]}:params[index], config || {}).then(res => {
                         if (res.status === 200 && res.data.code === 200) {
                             //success && success(res.data);
                             //option.enableMsg && Message.success({message:option.successMsg, customClass:'e-message', duration:1500});
@@ -55,12 +56,15 @@ export default ({ url, type, params, config, option ,loadingConfig},vue) => {
                 });
         });
         return new Promise((resolve, reject)=>{
-            Promise.all(runAsync).then(function(results){
-                resolve(results);
-            });
-        })
+            window.setTimeout(()=>{
+                Promise.all(runAsync).then(function(results){
+                    resolve(results);
+                });
+            },10);
+        });
     }else{
         url=`${global.apiSrc}${url}`;
+        params = params || {};
         return new Promise((resolve, reject) => {
             //这里加一个通用的数据重置后门
             if (params.reset === true) {
@@ -97,5 +101,4 @@ export default ({ url, type, params, config, option ,loadingConfig},vue) => {
             },10)
         })
     }
-    
 }
