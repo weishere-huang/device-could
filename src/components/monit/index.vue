@@ -116,7 +116,8 @@ export default {
     this.Axios(
       {
         url: ["/organize/allOrganize", "/deviceCategory/all"],
-        type: "get"
+        type: ["get","get"],
+        params:[{},{}]
       },
       this
     ).then(
@@ -156,11 +157,11 @@ export default {
           radius: "55%",
           center: ["50%", "60%"],
           data: [
-            { value: 1, name: "开机初始化" },
-            { value: 8, name: "正常运行" },
-            { value: 2, name: "故障中" },
-            { value: 3, name: "维修中" },
-            { value: 6, name: "关机" }
+            { value: 1, name: "开机初始化", itemStyle: { color: "#FF00FF" } },
+            { value: 8, name: "正常运行", itemStyle: { color: "#008000" } },
+            { value: 2, name: "故障中", itemStyle: { color: "#FF0000" } },
+            { value: 3, name: "维修中", itemStyle: { color: "#FFD700" } },
+            { value: 6, name: "关机", itemStyle: { color: "#C0C0C0" } }
           ],
           itemStyle: {
             emphasis: {
@@ -186,7 +187,7 @@ export default {
       legend: {
         orient: "vertical",
         left: "left",
-        data: ["无预警", "橙色预警", "黄色预警", "红色预警","预警断线"]
+        data: ["无预警", "橙色预警", "黄色预警", "红色预警", "预警断线"]
       },
       series: [
         {
@@ -195,11 +196,11 @@ export default {
           radius: "55%",
           center: ["50%", "60%"],
           data: [
-            { value: 8, name: "正常" },
-            { value: 4, name: "橙色预警" },
-            { value: 2, name: "黄色预警" },
-            { value: 3, name: "红色预警" },
-            { value: 3, name: "预警断线" }
+            { value: 8, name: "正常",itemStyle: { color: "#008000" }  },
+            { value: 4, name: "橙色预警",itemStyle: { color: "#FF8C00" }  },
+            { value: 2, name: "黄色预警",itemStyle: { color: "#CDCD00" }  },
+            { value: 3, name: "红色预警" ,itemStyle: { color: "#FF0000" } },
+            { value: 3, name: "预警断线" ,itemStyle: { color: "#CDC9C9" } }
           ],
           itemStyle: {
             emphasis: {
@@ -233,11 +234,11 @@ export default {
   .monitMainContent {
     padding-top: 0;
   }
-  .pinsWrap{
-    margin:0 10px 10px 10px;
+  .pinsWrap {
+    margin: 0 10px 10px 10px;
     height: 300px;
     display: flex;
-    &>div{
+    & > div {
       flex: 1;
       margin: 5px;
       border: solid 1px #ccc;
