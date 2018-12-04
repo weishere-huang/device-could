@@ -29,6 +29,7 @@ import Modification from '@/components/personnel/Modification'
 import User from '@/components/user/User'
 import EquipmentArchives from '@/components/equipmentArchives/EquipmentArchives'
 import WorkOrder from '@/components/workOrder/WorkOrder'
+import BreakdownOrder from '@/components/workOrder/breakdownDetails/BreakdownOrder'
 import KnowledgeBase from '@/components/knowledgeBase/KnowledgeBase'
 import Message from '@/components/message/Message'
 import System from '@/components/system/System'
@@ -285,6 +286,14 @@ const router = new Router({
       path: '/WorkOrder',
       name: 'WorkOrder',
       component: WorkOrder,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/BreakdownOrder',
+      name: 'BreakdownOrder',
+      component: BreakdownOrder,
       meta: {
         requireAuth: true
       },

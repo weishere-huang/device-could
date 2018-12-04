@@ -9,7 +9,7 @@
       </div>
       <div class="bottom">
         <div class="left">
-          <h5>组织机构</h5>
+          <h5>设备类别</h5>
           <div class="treeCase">
             <el-tree :data="data2" node-key="id" :default-expanded-keys="[2, 3]" :default-checked-keys="[5]" :props="defaultProps">
             </el-tree>
@@ -101,52 +101,8 @@ export default {
       data2: [
         {
           id: 1,
-          label: "一级 1",
-          children: [
-            {
-              id: 4,
-              label: "二级 1-1",
-              children: [
-                {
-                  id: 9,
-                  label: "三级 1-1-1"
-                },
-                {
-                  id: 10,
-                  label: "三级 1-1-2"
-                }
-              ]
-            }
-          ]
+          label: "",
         },
-        {
-          id: 2,
-          label: "一级 2",
-          children: [
-            {
-              id: 5,
-              label: "二级 2-1"
-            },
-            {
-              id: 6,
-              label: "二级 2-2"
-            }
-          ]
-        },
-        {
-          id: 3,
-          label: "一级 3",
-          children: [
-            {
-              id: 7,
-              label: "二级 3-1"
-            },
-            {
-              id: 8,
-              label: "二级 3-2"
-            }
-          ]
-        }
       ],
       defaultProps: {
         children: "children",
@@ -157,32 +113,38 @@ export default {
   methods: {
     loads() {
       let arrs = new Array();
-      this.axios
-        .get(this.global.apiSrc + "/device/all", {
-          params: { page: this.pageIndex, size: this.pageSize }
-        })
-        .then(response => {
+      this.Axios(
+        {
+          params:{page: this.pageIndex, size: this.pageSize},
+          type: "get",
+          url: "/device/all",
+        },
+        this
+      ).then(response => {
           arrs = response.data.data.content;
           this.tableData = arrs;
           this.tabledate = this.tableData;
+        },
+        ({type, info}) => {
+
         })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
     search() {
-      this.axios
-        .get(this.global.apiSrc + "/device/findByKeyWord", {
-          params: { keyWord: this.key }
-        })
-        .then(response => {
+      this.Axios(
+        {
+          params:{ keyWord: this.key },
+          type: "get",
+          url: "/device/findByKeyWord",
+        },
+        this
+      ).then(response => {
           this.tableData = response.data.data.content;
           this.tabledate = this.tableData;
           console.log(response.data);
           this.searchs = this.key;
-        })
-        .catch(function(error) {
-          console.log(error);
+        },
+        ({type, info}) => {
+
         });
     },
     deletes() {

@@ -76,17 +76,29 @@
     <advancedsearch
       class="adsearch"
       v-on:advanceValue="advanceValue"
+      :pageSize="pageSize"
     ></advancedsearch>
     <audit
       v-show="auditShow"
       v-on:auditByValue="auditByValue"
       :auditValue="auditValue"
+      :searchData="name"
     ></audit>
     <businessDetails
       v-show="detailsShow"
       v-on:childByValue="childByValue"
       :detailsValue="detailsValue"
     ></businessDetails>
+    <!-- <el-dialog
+      title="企业详情"
+      :visible.sync="dialogVisible"
+      :before-close="handleClose">
+      <span>这是一段信息</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog> -->
   </div>
 </template>
 <script>
@@ -97,6 +109,7 @@
   export default {
     data() {
       return {
+        dialogVisible:true,
         detailsShow: false,
         auditShow: false,
         detailsValue: "",
@@ -107,6 +120,7 @@
         pageSize: 10,
         name: "",
         totalNub: "",
+        states:"",
         tableData: [
           {
             name: "",
@@ -210,14 +224,17 @@
         console.log("select-group-change", selection);
         this.auditValue = selection[0];
         this.choice = "";
+        this.states=="";
         for (let i = 0; i < selection.length; i++) {
           if (this.choice == "") {
             this.choice = selection[i].id;
+            this.states=selection[i].state
           } else {
             this.choice += "," + selection[i].id;
           }
         }
         console.log(this.choice);
+        console.log(this.states)
         console.log(this.auditValue);
       },
       selectALL(selection) {
@@ -236,6 +253,7 @@
         for (let i = 0; i < selection.length; i++) {
           if (this.choice === "") {
             this.choice += selection[i].id;
+
           } else {
             this.choice += "," + selection[i].id;
           }
@@ -255,7 +273,7 @@
         this.load();
       },
       pageSizeChange(pageSize) {
-        this.pageIndex=1;
+        this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
         this.load();
@@ -289,9 +307,9 @@
               page: this.pageIndex,
               size: this.pageSize
             }),
-            // option: {
-            //   enableMsg: false
-            // },
+            option: {
+              enableMsg: false
+            },
             type: "get",
             url: "/enterprise/findByNameOrState"
             // loadingConfig: {
@@ -331,18 +349,18 @@
       findByName() {
         this.Axios(
           {
-            params: Object.assign(this.searchParams,{
+            url: "/enterprise/findByNameOrState",
+            params: Object.assign(this.searchParams, {
               enterpriseName: this.name,
-              // state: "",
               page: 1,
-              size: 10
+              size: this.pageSize
             }),
             type: "get",
-            url: "/enterprise/findByNameOrState",
           },
           this
         ).then(
           response => {
+            this.pageIndex = 1
             this.totalNub = response.data.data.totalElements;
             for (let i = 0; i < response.data.data.content.length; i++) {
               if (response.data.data.content[i].state === 0) {
@@ -362,6 +380,7 @@
               }
             }
             this.tableData = response.data.data.content;
+            console.log(this.pageIndex)
           },
           ({type, info}) => {
 
@@ -407,7 +426,7 @@
             type: "post",
             option: {
               enableMsg: false
-            }
+            },
           },
           this
         ).then(response => {

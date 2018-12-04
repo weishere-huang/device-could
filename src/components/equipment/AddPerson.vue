@@ -49,8 +49,9 @@
               style="width:100%;min-height:250px;"
               :columns="columns"
               :table-data="tableData"
+              :row-dblclick="getRowData"
               row-hover-color="#eee"
-              row-click-color="#edf7ff"
+              row-click-color="#edf7ff"            
               :select-all="selectALL"
               :select-group-change="selectGroupChange"
             ></v-table>
@@ -69,37 +70,33 @@
           </div>
         </div>
         <div class="right">
-          <el-button size="mini" @click="deletes">清空</el-button>
-          <el-button size="mini" @click="toAdd">保存</el-button>
+          <el-button
+            size="mini"
+            @click="deletes"
+          >清空</el-button>
+          <el-button
+            size="mini"
+            @click="toAdd"
+          >保存</el-button>
           <div class="personList">
-               <el-tabs type="border-card" :tab-position="tabPosition" style="height: 200px;">
-                <el-tab-pane label="负责">
-                  <span>负责人员
-                    <label><i class="iconfont icon-cha"></i></label>
-                  </span>
-                </el-tab-pane>
-                <el-tab-pane label="维修">
-                  <span>维修人员
-                    <label><i class="iconfont icon-cha"></i></label>
-                  </span>
-                  
-                </el-tab-pane>
-                <el-tab-pane label="检修">
-                  <span>检修人员
+            <el-tabs
+              type="border-card"
+              @tab-click="getNode"
+              v-model="editableTabsValue"
+              :tab-position="tabPosition"
+              style="height: 200px;"
+            >
+              <el-tab-pane
+                :key="item.name"
+                v-for="item in editableTabs"
+                :label="item.title"
+                :name="item.name"
+              >
+                <span>{{item.content}}
                   <label><i class="iconfont icon-cha"></i></label>
-                  </span>
-                </el-tab-pane>
-                <el-tab-pane label="保养">
-                  <span>保养人员
-                  <label><i class="iconfont icon-cha"></i></label>
-                  </span>
-                </el-tab-pane>
-                <el-tab-pane label="操作">
-                  <span>操作人员
-                  <label><i class="iconfont icon-cha"></i></label>
-                  </span>
-                </el-tab-pane>
-              </el-tabs>
+                </span>
+              </el-tab-pane>
+            </el-tabs>
           </div>
         </div>
       </div>
@@ -111,10 +108,38 @@ export default {
   name: "",
   data() {
     return {
-      tabPosition:'top',
+      editableTabs: [
+        {
+          title: "负责",
+          name: "0",
+          content: ""
+        },
+        {
+          title: "维修",
+          name: "1",
+          content: ""
+        },
+        {
+          title: "检修",
+          name: "2",
+          content: ""
+        },
+        {
+          title: "保养",
+          name: "3",
+          content: ""
+        },
+        {
+          title: "操作",
+          name: "4",
+          content: ""
+        }
+      ],
+      editableTabsValue: "0",
+      tabPosition: "top",
       pageIndex: 1,
       pageSize: 10,
-      toValue:"",
+      toValue: "",
       tableData: [],
       tableDate: [],
       columns: [
@@ -127,7 +152,7 @@ export default {
           isResize: true
           // orderBy: ""
         },
-      
+
         {
           field: "position",
           title: "岗位",
@@ -153,60 +178,64 @@ export default {
           isResize: true
         }
       ],
-      personListValue: [1,2],
-      data2:[{code:"1000"}],
+      tablenum: 1,
+      personListValue1: "",
+      personListValue2: "",
+      personListValue3: "",
+      personListValue4: "",
+      personListValue5: "",
+      data2: [{ code: "1000" }],
       defaultProps: {
         children: "children",
         label: "label"
       },
-       options: [{
-          value: '选项1',
-          label: '负责人员'
-        }, {
-          value: '选项2',
-          label: '维修人员'
-        }, {
-          value: '选项3',
-          label: '检修人员'
-        }, {
-          value: '选项4',
-          label: '保养人员'
-        }, {
-          value: '选项5',
-          label: '操作人员'
-        }],
-        value: ''
+      value: ""
     };
   },
   methods: {
+    getRowData(a,b,c){
+      console.log(b.name);
+      console.log(this.editableTabs[this.editableTabsValue]);
+      this.editableTabs[this.editableTabsValue].content+=b.name+','
+    },
+    getNode(a){
+      console.log(a);
+      console.log(this.editableTabsValue);
+    },
     handleNodeClick(data) {
       console.log(data);
-      this.findpeopler(data.code)
+      this.findpeopler(data.code);
     },
     isHide() {
       this.$emit("isHide", false);
     },
-    selectGroupChange(selection) {
-      this.toValue = selection;
-      let arr = new Array();
-      for (let i = 0; i < selection.length; i++) {
-        arr[i] = selection[i].name;
+    
+    addfun(data, plist) {
+      for (let i = 0; i < data.length; i++) {
+        plist += data[i].name + "   ";
       }
-      this.personListValue = arr;
-      console.log(arr);
-      console.log("select-group-change", selection);
     },
-    selectALL(selection) {
-      this.toValue = selection;
-      let arr = new Array();
-      for (let i = 0; i < selection.length; i++) {
-        arr[i] = selection[i].name;
-      }
-      this.personListValue = arr;
-    },
-    selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
-    },
+    // selectGroupChange(selection) {
+    //   this.toValue = selection;
+    //   let arr = new Array();
+    //   for (let i = 0; i < selection.length; i++) {
+    //     arr[i] = selection[i].name;
+    //   }
+    //   this.personListValue = arr;
+    //   console.log(arr);
+    //   console.log("select-group-change", selection);
+    // },
+    // selectALL(selection) {
+    //   this.toValue = selection;
+    //   let arr = new Array();
+    //   for (let i = 0; i < selection.length; i++) {
+    //     arr[i] = selection[i].name;
+    //   }
+    //   this.personListValue = arr;
+    // },
+    // selectChange(selection, rowData) {
+    //   console.log("select-change", selection, rowData);
+    // },
     getTableData() {
       this.tableData = this.tableDate.slice(
         (this.pageIndex - 1) * this.pageSize,
@@ -239,37 +268,56 @@ export default {
       }
       return tree;
     },
-    findpeopler(code){
-      console.log("该组织机构code---"+code)
-      this.axios
-        .get(this.global.apiSrc + "/employee/findByOrganizeCode", {params:{organizeCode:code}})
-        .then(result => {
-          if(result.data.code === 204){
-            this.tableData=[];
-          }else{
+    findpeopler(code) {
+      console.log("该组织机构code---" + code);
+      this.Axios(
+        {
+          params: {
+            organizeCode: code
+          },
+          option: {
+            enableMsg: true
+          },
+          type: "get",
+          url: "/employee/findByOrganizeCode",
+          loadingConfig: {
+            target: document.querySelector(".el-dialog")
+          }
+        },
+        this
+        // .get(this.global.apiSrc + "/employee/findByOrganizeCode", {params:{organizeCode:code}})
+      ).then(
+        result => {
+          if (result.data.code === 204) {
+            this.tableData = [];
+          } else {
             console.log("按照组织机构编号查询人");
             console.log(result.data);
-            this.tableData=result.data.data.content;
+            this.tableData = result.data.data.content;
           }
-
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        },
+        ({ type, info }) => {
+          //错误类型 type=faild / error
+          //error && error(type, info);
+        }
+      );
+      // .catch(err => {
+      //   console.log(err);
+      // });
     },
     toAdd() {
       let personname = "";
-        for(let i = 0;i<this.toValue.length;i++){
-        if( i == 0){
-          personname += ""+this.toValue[i].name ;
-        }else{
-          personname += ","+this.toValue[i].name;
+      for (let i = 0; i < this.toValue.length; i++) {
+        if (i == 0) {
+          personname += "" + this.toValue[i].name;
+        } else {
+          personname += "," + this.toValue[i].name;
         }
       }
       let data = {
-        pname:personname,
+        pname: personname,
         id: this.toValue.id,
-        name:this.toValue.name,
+        name: this.toValue.name,
         isOk: false
       };
       this.$emit("addPerson", data);
@@ -279,22 +327,43 @@ export default {
       this.toValue = "";
       // let arr ="";
       // this.selectALL(arr);
-    },
+    }
   },
   created() {
     //axios
-    this.axios
-      .get(this.global.apiSrc + "/organize/allOrganize")
-      //.get("api/organize/allOrganize/321")
-      .then(result => {
-        console.log("查询所有组织机构");
-        console.log(result.data);
-        console.log(result.data.data);
-        let arr = this.filterArray(result.data.data, 0);
-        console.log(arr);
-        //this.data2 = this.filterArray(result.data.data,1000);
-        this.data2 = arr;
-      })
+    this.Axios(
+      {
+        params: {
+          page: this.pageIndex,
+          size: this.pageSize
+        },
+        // option: {
+        //   enableMsg: false
+        // },
+        type: "get",
+        url: "/organize/allOrganize"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },
+      this
+    )
+      // .get(this.global.apiSrc + "/organize/allOrganize")
+      .then(
+        result => {
+          console.log("查询所有组织机构");
+          console.log(result.data);
+          console.log(result.data.data);
+          let arr = this.filterArray(result.data.data, 0);
+          console.log(arr);
+          //this.data2 = this.filterArray(result.data.data,1000);
+          this.data2 = arr;
+        },
+        ({ type, info }) => {
+          //错误类型 type=faild / error
+          //error && error(type, info);
+        }
+      )
       .catch(err => {
         console.log(err);
       });
@@ -303,7 +372,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
- @import url("../../assets/font/font.css");
+@import url("../../assets/font/font.css");
+
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
@@ -394,29 +464,26 @@ export default {
           border-radius: 5px;
           min-height: 360px;
           padding: 10px;
-          .el-tab-pane{
-            span{
+          .el-tab-pane {
+            span {
               display: inline-block;
               width: 100%;
-              label{
+              label {
                 float: right;
                 display: none;
-                i{
+                i {
                   cursor: pointer;
-                  &:hover{
+                  &:hover {
                     color: #409eff;
                   }
                 }
               }
-              &:hover{
-                label{
+              &:hover {
+                label {
                   display: block;
-                  
                 }
-                  
               }
             }
-            
           }
         }
       }

@@ -51,6 +51,7 @@
               :table-data="tableData"
               row-hover-color="#eee"
               row-click-color="#edf7ff"
+              :row-dblclick="getRowData"
               :select-all="selectALL"
               :select-group-change="selectGroupChange"
             ></v-table>
@@ -72,31 +73,13 @@
           <el-button size="mini">清空</el-button>
           <el-button size="mini">保存</el-button>
           <div class="personList">
-            <el-tabs type="border-card" :tab-position="tabPosition" style="height: 200px;">
-                <el-tab-pane label="负责">
-                  <span>负责人员
+            <el-tabs type="border-card" @tab-click="getNode" v-model="editableTabsValue" :tab-position="tabPosition" style="height: 200px;">
+                <el-tab-pane :key="item.name"
+                  v-for="item in editableTabs"
+                  :label="item.title"
+                  :name="item.name">
+                  <span>{{item.content}}
                     <label><i class="iconfont icon-cha"></i></label>
-                  </span>
-                </el-tab-pane>
-                <el-tab-pane label="维修">
-                  <span>维修人员
-                    <label><i class="iconfont icon-cha"></i></label>
-                  </span>
-                  
-                </el-tab-pane>
-                <el-tab-pane label="检修">
-                  <span>检修人员
-                  <label><i class="iconfont icon-cha"></i></label>
-                  </span>
-                </el-tab-pane>
-                <el-tab-pane label="保养">
-                  <span>保养人员
-                  <label><i class="iconfont icon-cha"></i></label>
-                  </span>
-                </el-tab-pane>
-                <el-tab-pane label="操作">
-                  <span>操作人员
-                  <label><i class="iconfont icon-cha"></i></label>
                   </span>
                 </el-tab-pane>
               </el-tabs>
@@ -111,6 +94,30 @@ export default {
   name: "",
   data() {
     return {
+      editableTabs: [
+        {
+          title: '负责',
+          name: '0',
+          content:''
+        }, {
+          title: '维修',
+          name: '1',
+          content: ''
+        }, {
+          title: '检修',
+          name: '2',
+          content:''
+        }, {
+          title: '保养',
+          name: '3',
+          content: ''
+        }, {
+          title: '操作',
+          name: '4',
+          content: ''
+        }
+      ],
+      editableTabsValue:"0",
       tabPosition:"top",
       pageIndex: 1,
       pageSize: 10,
@@ -190,7 +197,7 @@ export default {
           isResize: true
           // orderBy: ""
         },
-      
+
         {
           field: "position",
           title: "岗位",
@@ -274,6 +281,15 @@ export default {
     };
   },
   methods: {
+    getRowData(a,b,c){
+      console.log(b.name);
+      console.log(this.editableTabs[this.editableTabsValue]);
+      this.editableTabs[this.editableTabsValue].content+=b.name+','
+    },
+    getNode(a){
+      console.log(a);
+      console.log(this.editableTabsValue);
+    },
     handleNodeClick(data) {
       console.log(data);
       console.log(data.code);
@@ -331,23 +347,43 @@ export default {
     },
     findpeopler(code){
       console.log("该组织机构code---"+code)
-      this.axios
-        .get(this.global.apiSrc + "/employee/findByOrganizeCode", {params:{organizeCode:code}})
+      this.Axios({
+        params: {
+          organizeCode:code
+        },
+        option: {
+          enableMsg: false
+        },
+        type: "get",
+        url: "/employee/findByOrganizeCode"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        //.get(this.global.apiSrc + "/employee/findByOrganizeCode", {params:{organizeCode:code}})
         .then(result => {
           console.log("按照组织机构编号查询人");
           console.log(result.data);
           this.tableData=result.data.data.content;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        },
+          ({type, info}) => {
+            //错误类型 type=faild / error
+            //error && error(type, info);
+          }
+        )
+        // .catch(err => {
+        //   console.log(err);
+        // });
     }
   },
   created() {
-    //axios
-    this.axios
-      .get(this.global.apiSrc + "/organize/allOrganize")
-      //.get("api/organize/allOrganize/321")
+    this.Axios({
+      params: {
+      },
+      type: "get",
+      url: "/organize/allOrganize"
+    },this)
+     // .get(this.global.apiSrc + "/organize/allOrganize")
       .then(result => {
         console.log("查询所有组织机构");
         console.log(result.data);
@@ -356,11 +392,16 @@ export default {
         console.log(arr);
         //this.data2 = this.filterArray(result.data.data,1000);
         this.data2 = arr;
-      })
-      .catch(err => {
-        console.log(err);
-        console.log(this.userName);
-      });
+      },
+        ({type, info}) => {
+          //错误类型 type=faild / error
+          //error && error(type, info);
+        }
+      )
+      // .catch(err => {
+      //   console.log(err);
+      //   console.log(this.userName);
+      // });
   }
 };
 </script>
@@ -476,12 +517,12 @@ export default {
               &:hover{
                 label{
                   display: block;
-                  
+
                 }
-                  
+
               }
             }
-            
+
           }
         }
       }

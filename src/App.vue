@@ -76,8 +76,8 @@
             <template slot="title">
               <i class="iconfont">&#xe60b;</i>
               <span slot="title">工单</span></template>
-            <el-menu-item index="/WorkOrder">选项1</el-menu-item>
-            <el-menu-item index="/WorkOrder">选项2</el-menu-item>
+            <el-menu-item index="/WorkOrder">工单列表</el-menu-item>
+            <el-menu-item index="/BreakdownOrder">故障工单详情</el-menu-item>
             <el-menu-item index="/WorkOrder">选项3</el-menu-item>
           </el-submenu>
           <!-- <el-submenu index="10">
@@ -165,7 +165,7 @@
                     content="退出"
                     placement="bottom-end"
                   >
-                    <i class="iconfont">&#xe6af;</i>
+                    <i class="iconfont" @click="out">&#xe6af;</i>
                   </el-tooltip>
                 </li>
               </ul>
@@ -196,14 +196,24 @@ export default {
     TroggleHandle(key, keyPath) {
       // console.log(key, keyPath);
       this.isCollapse = !this.isCollapse;
-      EventBus.$emit("sideBarTroggleHandle", this.isCollapse);
-    }
+      EventBus.$emit('sideBarTroggleHandle', this.isCollapse);
+    },
     // handleOpen(key, keyPath) {
     //   console.log(key, keyPath);
     // },
     // handleClose(key, keyPath) {
     //   console.log(key, keyPath);
     // }
+
+    out(){
+      this.Axios(
+        {
+
+        }
+      )
+
+    }
+
   }
 };
 </script>

@@ -239,20 +239,23 @@
       },
 
       load() {
-        this.axios
-          .get(this.global.apiSrc + "/mplan/allPlan", {
-            params: {
+        this.Axios(
+          {
+            params:{
               page: this.pageIndex,
               size: this.pageSize
-            }
-          })
-          .then(response => {
+            },
+            type: "get",
+            url: "/mplan/allPlan",
+          },
+          this
+        ).then(response => {
             this.pageNumber = response.data.data.totalElements;
             this.loadValue(response.data.data.content);
+          },
+          ({type, info}) => {
+
           })
-          .catch(function (error) {
-            console.log(error);
-          });
       },
       loadValue(value) {
         let arr = new Array();
@@ -262,6 +265,7 @@
           }
         }
         this.tableData = arr;
+        // console.log(this.tableData);
         for (let i = 0; i < this.tableData.length; i++) {
           if (this.tableData[i].state === 0) {
             this.tableData[i].state = "待审核";
@@ -307,83 +311,85 @@
         }
       },
       listMaintenanceLevel() {
-        this.axios
-          .get(this.global.apiSrc + "/mplan/listMaintenanceLevel")
-          .then(response => {
+        this.Axios(
+          {
+            params:{},
+            type: "get",
+            url: "/mplan/listMaintenanceLevel",
+          },
+          this
+        ).then(response => {
             this.planLevel = response.data.data;
+          },
+          ({type, info}) => {
+
           })
-          .catch(function (error) {
-            console.log(error);
-          });
       },
       deleteMaintenance() {
         this.$confirm('计划一旦删除将无法恢复，请确认选择', '提示')
           .then(_ => {
             let qs = require("qs");
             let data = qs.stringify({maintenanceIds: this.maintenanceIds});
-            this.axios
-              .post(this.global.apiSrc + "/mplan/delete", data)
-              .then(response => {
-                if (response.data.msg === "成功") {
-                  alert("成功");
-                  this.load();
-                } else {
-                  alert("失败");
-                }
+            this.Axios(
+              {
+                params:data,
+                type: "post",
+                url: "/mplan/delete",
+              },
+              this
+            ).then(response => {
+                this.load();
+              },
+              ({type, info}) => {
+
               })
-              .catch(function (error) {
-                console.log(error);
-              });
           })
-          .catch(_ => {
-            this.TurnaroundPlans();
-          })
+
       },
       stopDiscontinuation() {
         this.$confirm('计划一旦停用将无法撤销，请确认选择', '提示')
           .then(_ => {
             let qs = require("qs");
             let data = qs.stringify({maintenanceIds: this.maintenanceIds});
-            this.axios
-              .post(this.global.apiSrc + "/mplan/discontinuation", data)
-              .then(response => {
-                if (response.data.code === 200) {
-                  alert("操作成功");
-                  this.load();
-                } else {
-                  alert("系统繁忙请稍后再试");
-                }
-              })
-              .catch(function (error) {
-                console.log(error);
-              });
-          })
-          .catch(_ => {
-            this.TurnaroundPlans();
-          })
+            this.Axios(
+              {
+                params:data,
+                type: "post",
+                url: "/mplan/discontinuation",
+              },
+              this
+            ).then(response => {
+                this.load();
+              },
+              ({type, info}) => {
 
+              })
+          })
       },
       //审核操作
       submitAudit() {
         this.formLabelAlign.type ? this.formLabelAlign.type = 0 : this.formLabelAlign.type = 1;
-        this.axios
-          .get(this.global.apiSrc + "/mplan/maintenanceAudit", {
-            params: {
+        this.Axios(
+          {
+            params:{
               passOrTurn: this.formLabelAlign.radio,
               maintenanceId: this.maintenanceIds,
               isEndAudit: this.formLabelAlign.type,
               auditOpinion: this.formLabelAlign.desc,
               nextUserId: this.toAudit.id
-            }
-          })
-          .then(response => {
+            },
+            type: "get",
+            url: "/mplan/maintenanceAudit",
+          },
+          this
+        ).then(response => {
             this.arr="";
             this.load();
             this.outerVisible = false;
+          },
+          ({type, info}) => {
+
           })
-          .catch(function (error) {
-            console.log(error);
-          });
       },
       outerVisibleIsOk() {
         if (this.arr.length === 1) {
@@ -394,26 +400,6 @@
           alert("抱歉只能计划只能单个修改")
         }
       },
-      //待审核提交
-      toSubmitAudit(){
-        let qs = require("qs");
-        let data = qs.stringify({
-          maintenanceId:this.auditId
-        });
-        this.axios
-          .post(this.global.apiSrc+"/mplan/submitAudit",data)
-          .then(response =>{
-            if(response.data.code === 200){
-              alert("已成功提交审核");
-              this.TurnaroundPlans();
-            }else{
-              alert("系统错误请稍后再试");
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      }
     },
       created() {
         this.listMaintenanceLevel();

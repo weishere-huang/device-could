@@ -112,21 +112,24 @@
     },
     methods: {
       search() {
-        this.axios
-          .get(this.global.apiSrc + "/employee/search", {
-            params: {condition: this.searchs}
-          })
-          .then(response => {
+        this.Axios(
+          {
+            params: {condition: this.searchs},
+            type: "get",
+            url: "/employee/search",
+          },
+          this
+        ).then(response => {
+            this.pageNumber = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             this.searchs = "";
             for (let i in this.tableData) {
               this.tableData[i].state === 1 ? (this.tableData[i].state = "禁用") : (this.tableData[i].state = "启用");
             }
             this.tableDate = this.tableData;
+          },
+          ({type, info}) => {
           })
-          .catch(function (error) {
-            console.log(error);
-          });
       },
       PersnnelAdd() {
         this.$router.push({
@@ -145,19 +148,18 @@
           employeeIds: this.userIds,
           enableOrDisable: 1
         });
-        this.axios
-          .post(this.global.apiSrc + "/employee/enableOrDisable", data)
-          .then(response => {
-            if (response.data.code === 200) {
-              alert("操作成功");
-              this.load();
-            } else if(response.data.code === 400){
-              alert(response.data.msg);
-            }
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/employee/enableOrDisable",
+          },
+          this
+        ).then(response => {
+            this.load();
+          },
+          ({type, info}) => {
           })
-          .catch(function (error) {
-            console.log(error);
-          });
       },
       enable() {
         let qs = require("qs");
@@ -165,19 +167,18 @@
           employeeIds: this.userIds,
           enableOrDisable: 0
         });
-        this.axios
-          .post(this.global.apiSrc + "/employee/enableOrDisable", data)
-          .then(response => {
-            if (response.data.code === 200) {
-              alert("操作成功");
-              this.load();
-            } else if(response.data.code === 400){
-              alert(response.data.msg);
-            }
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/employee/enableOrDisable",
+          },
+          this
+        ).then(response => {
+            this.load();
+          },
+          ({type, info}) => {
           })
-          .catch(function (error) {
-            console.log(error);
-          });
       },
       selectGroupChange(selection) {
         this.userIds = "";
@@ -214,11 +215,11 @@
         this.pageIndex = pageIndex;
         this.getTableData();
         this.load();
-        console.log(pageIndex);
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
         this.pageSize = pageSize;
+        this.load();
         this.getTableData();
       },
       sortChange(params) {
@@ -233,24 +234,29 @@
             }
           });
         }
+        console.log("ok");
       },
 
       load() {
-        this.axios
-          .get(this.global.apiSrc + "/employee/findEmployeeList", {
-            params: {page: this.pageIndex, size:this.pageSize}
-          })
-          .then(response => {
+        this.Axios(
+          {
+            params: {page: this.pageIndex, size:this.pageSize},
+            type: "get",
+            url: "/employee/findEmployeeList",
+          },
+          this
+        ).then(
+          response => {
             this.pageNumber = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             for (let i in this.tableData) {
               this.tableData[i].state === 1 ? (this.tableData[i].state = "禁用") : (this.tableData[i].state = "启用");
             }
             this.tableDate = this.tableData;
+          },
+          ({type, info}) => {
+
           })
-          .catch(function (error) {
-            console.log(error);
-          });
       },
       deleteEmployee(){
         let qs = require("qs");
@@ -258,19 +264,20 @@
           employeeIds: this.userIds,
           enableOrDisable: 2
         });
-        this.axios
-          .post(this.global.apiSrc + "/employee/enableOrDisable", data)
-          .then(response => {
-            if (response.data.code === 200) {
-              alert("操作成功");
-              this.load();
-            } else if(response.data.code === 400){
-              alert(response.data.msg);
-            }
+
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/employee/enableOrDisable",
+          },
+          this
+        ).then(response => {
+            this.load();
+          },
+          ({type, info}) => {
+
           })
-          .catch(function (error) {
-            console.log(error);
-          });
       },
       updateEmployee(){
         if (this.values.length === 1){

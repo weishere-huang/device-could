@@ -105,7 +105,7 @@
             <v-pagination
               @page-change="pageChange"
               @page-size-change="pageSizeChange"
-              :total="1"
+              :total="totalnum"
               :page-size="pageSize"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
@@ -128,6 +128,7 @@
     data() {
       return {
         organiza: "",
+        totalnum:"",
         defaultProps: "",
         keyWord: "",
         deviceId: "",
@@ -136,7 +137,6 @@
         ids: "",
         edbt: "",
         tableData: [{
-          deviceNo: "",
         }],
         tableDate: [],
         totalElements: "",
@@ -220,7 +220,9 @@
             columnAlign: "center",
             isResize: true
           }
-        ]
+        ],
+        //监控为条件或高级搜索
+        keyorall:0,
       };
     },
     methods: {
@@ -229,6 +231,7 @@
       },
       advanceValue(params) {
         this.tableData = params;
+
       },
       adsearch() {
         $(".adsearch")[0].style.right = 0;
@@ -282,7 +285,12 @@
         this.getTableData();
         console.log(pageIndex);
         console.log(this.pageSize);
-        this.findall();
+        if(this.keyorall === 0){
+          this.findall();
+        }else{
+          this.findByKeyWord();
+
+        }
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
@@ -306,17 +314,32 @@
 
       //通过
       findall() {
+        this.keyorall = 0
         //根据用户token查询所属组织机构下设备类别
         EventBus.$on("sideBarTroggleHandle", isCollapse => {
           window.setTimeout(() => {
             this.$refs.equipmentTable.resize();
           }, 500);
         })
-        this.axios
-        //axios
-          .get(this.global.apiSrc + "/device/select", {params:{ page: this.pageIndex,size: this.pageSize}})
-          // .get("api/device/all", data)
+        this.Axios({
+          params: {
+            page: this.pageIndex,
+            size: this.pageSize
+          },
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/device/select"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },this)
+          //.get(this.global.apiSrc + "/device/select", {params:{ page: this.pageIndex,size: this.pageSize}})
           .then(result => {
+            this.totalnum = result.data.data.totalElements;
+              console.log("++++");
+            console.log(result.data);
             this.tableData = result.data.data.content;
             for (let i = 0; i < this.tableData.length; i++) {
               if (this.tableData[i].deviceState === 1) {
@@ -337,41 +360,67 @@
             }
             console.log(result.data);
             this.totalElements = result.data.data.totalElements
-          })
-          .catch(err => {
-            console.log(err);
-          });
+          },
+            ({type, info}) => {
+              //错误类型 type=faild / error
+              //error && error(type, info);
+            }
+          )
+          // .catch(err => {
+          //   console.log(err);
+          // });
       },
 
       //通过
-      findDeviceState(id) {
-        //获取设备状况接口
-        let ids = id;
-        this.axios
-        //axios
-        //.get("api/device/findDeviceState",{params:{deviceId:ids}})
-          .get(this.global.apiSrc + "/device/findDeviceState")
-          .then(result => {
-            let arr = new Array();
-            arr = result.data.data;
-            console.log(arr);
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
+      // findDeviceState(id) {
+      //   //获取设备状况接口
+      //   let ids = id;
+      //   this.Axios({
+      //     option: {
+      //       enableMsg: false
+      //     },
+      //     type: "get",
+      //     url: "/enterprise/findByNameOrState"
+      //     // loadingConfig: {
+      //     //   target: document.querySelector("#mainContentWrapper")
+      //     // }
+      //   },this)
+      //    // .get(this.global.apiSrc + "/device/findDeviceState")
+      //     .then(result => {
+      //       let arr = new Array();
+      //       arr = result.data.data;
+      //       console.log(arr);
+      //       console.log(result.data);
+      //     })
+      //     .catch(err => {
+      //       console.log(err);
+      //     });
+      // },
       findByKeyWord() {
+        this.keyorall = 1
         //根据设备编号、位号、名称查询
-        this.axios
-        //axios
-          .get(this.global.apiSrc + "/device/findByKeyWord", {
-            params: {
-              page: this.pageIndex,
-              size: this.pageSize,
-              keyWord: this.keyWord
-            }
-          })
+        this.Axios({
+          params: {
+            page: this.pageIndex,
+            size: this.pageSize,
+            keyWord: this.keyWord
+          },
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/device/findByKeyWord"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },this)
+          // .get(this.global.apiSrc + "/device/findByKeyWord", {
+          //   params: {
+          //     page: this.pageIndex,
+          //     size: this.pageSize,
+          //     keyWord: this.keyWord
+          //   }
+          // })
           .then(result => {
             this.tableData = result.data.data.content;
             for (let i = 0; i < this.tableData.length; i++) {
@@ -397,64 +446,64 @@
             console.log(err);
           });
       },
-      findByOrganizeCode() {
-        //根据组织代码查询所有员工数据，支持分页（用于设备模块）
-        let qs = require("qs");
-        let data = qs.stringify({
-          organizeCode: ""
-        });
-        this.axios
-          .get(this.global.apiSrc + "/employee/findByOrganizeCode", {
-            params: {
-              page: this.pageIndex,
-              size: this.pageSize,
-              organizeCode: "1000"
-            }
-          })
-          .then(result => {
-            alert("findByKeyWord");
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
-      getDeviceById() {
-        //根据员工id查询相关设备信息接口，支持分页（用于设备模块）
-        let qs = require("qs");
-        let data = qs.stringify({
-          page: this.pageIndex,
-          size: this.pageSize,
-          employeeId: 147
-        });
-        this.axios
-        //axios
-        // .get("api/employee/getDeviceById", data)
-          .get(this.global.apiSrc + "/employee/getDeviceById", data)
-          .then(result => {
-            alert("getDeviceById");
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
+      // getDeviceById() {
+      //   //根据员工id查询相关设备信息接口，支持分页（用于设备模块）
+      //   let qs = require("qs");
+      //   let data = qs.stringify({
+      //     page: this.pageIndex,
+      //     size: this.pageSize,
+      //     employeeId: 147
+      //   });
+      //   this.Axios({
+      //     params: Object.assign(this.searchParams, {
+      //       page: this.pageIndex,
+      //       size: this.pageSize,
+      //       employeeId: 147
+      //     }),
+      //     // option: {
+      //     //   enableMsg: false
+      //     // },
+      //     type: "get",
+      //     url: "/enterprise/findByNameOrState"
+      //     // loadingConfig: {
+      //     //   target: document.querySelector("#mainContentWrapper")
+      //     // }
+      //   },this)
+      //    // .get(this.global.apiSrc + "/employee/getDeviceById", data)
+      //     .then(result => {
+      //       alert("getDeviceById");
+      //       console.log(result.data);
+      //     })
+      //     .catch(err => {
+      //       console.log(err);
+      //     });
+      // },
       edelete() {
         let qs = require("qs");
         let data = qs.stringify({
           deviceIds: this.ids
         });
-        this.axios
-          .post(this.global.apiSrc + "/device/delete", data)
+        this.Axios({
+          url: "/device/delete",
+          params: data,
+          type: "post",
+          option: {
+            enableMsg: false
+          }
+        },this)
+          //.post(this.global.apiSrc + "/device/delete", data)
           .then(result => {
             this.findall();
             alert("删除成功");
             console.log("delete");
             console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+          },
+            ({type, info}) => {
+            }
+          )
+          // .catch(err => {
+          //   console.log(err);
+          // });
       },
       filterArray(data, parent) {
         let vm = this;
@@ -473,10 +522,21 @@
         return tree;
       },
       findAlldeviceClassify() {
-        let qs = require("qs");
-        let data = qs.stringify({});
-        this.axios
-          .get(this.global.apiSrc + "/deviceCategory/all", data)
+        this.Axios({
+          params: {
+            page: this.pageIndex,
+            size: this.pageSize
+          },
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/deviceCategory/all"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },this)
+         // .get(this.global.apiSrc + "/deviceCategory/all", data)
           .then(result => {
             this.organiza = this.filterArray(result.data.data, 0);
             console.log("查找全部设备类别");
@@ -489,8 +549,9 @@
     },
     created() {
       this.findall();
-      this.findDeviceState();
+      //this.findDeviceState();
       this.findAlldeviceClassify();
+
     },
     components: {
       advanced

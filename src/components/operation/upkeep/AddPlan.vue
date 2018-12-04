@@ -115,43 +115,53 @@
     methods: {
       loads() {
         let arrs = new Array();
-        this.axios
-          .get(this.global.apiSrc + "/device/all", {
-            params: { page: this.pageIndex, size: this.pageSize }
-          })
-          .then(response => {
+        this.Axios(
+          {
+            params:{page: this.pageIndex, size: this.pageSize},
+            type: "get",
+            url: "/device/all",
+          },
+          this
+        ).then(response => {
             arrs = response.data.data.content;
             this.tableData = arrs;
             this.tabledate = this.tableData;
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       toLoad() {
-        this.axios
-          .get(this.global.apiSrc + "/device/select",{params:{deviceCategory:this.clickId}})
-          .then(response => {
+        this.Axios(
+          {
+            params:{deviceCategory:this.clickId},
+            type: "get",
+            url: "/device/select",
+          },
+          this
+        ).then(response => {
             this.tableData =response.data.data.content;
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       search() {
-        this.axios
-          .get(this.global.apiSrc + "/device/findByKeyWord", {
-            params: { keyWord: this.key }
-          })
-          .then(response => {
+        this.Axios(
+          {
+            params:{ keyWord: this.key },
+            type: "get",
+            url: "/device/findByKeyWord",
+          },
+          this
+        ).then(response => {
             this.tableData = response.data.data.content;
             this.tabledate = this.tableData;
-            console.log(response.data);
             this.searchs = this.key;
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       isHide() {
         this.$emit("isHide", false);
@@ -168,14 +178,19 @@
         this.toValue = "";
       },
       deviceType(){
-        this.axios
-          .get(this.global.apiSrc + "/deviceCategory/all")
-          .then(response => {
+        this.Axios(
+          {
+            params:{},
+            type: "get",
+            url: "/deviceCategory/all",
+          },
+          this
+        ).then(response => {
             this.data2 = response.data.data;
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       handleNodeClick(data) {
         this.clickId=data.id;
