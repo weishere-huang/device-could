@@ -4,6 +4,27 @@
       <div class="top">
         <el-button size="small" @click="outerVisibleIsOk">审核</el-button>
         <el-button size="small" @click="dispel">故障消除</el-button>
+        <!-- 故障消除弹框 -->
+        <el-dialog
+          title="故障消除"
+          :visible.sync="dialogVisible"
+          width="30%"
+          >
+           <el-form label-position=right label-width="120px" :model="formLabelAlign" style="padding:10px">
+            <el-form-item label="故障持续时间：">
+              <el-input  v-model="formLabelAlign.desc" size="mini" style="width:30%"></el-input>
+              <span>小时</span>
+            </el-form-item>
+            <el-form-item label="消除原因：">
+              <el-input type="textarea" v-model="formLabelAlign.desc"></el-input>
+            </el-form-item>
+           </el-form>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+          </span>
+        </el-dialog>
+        <!-- 故障消除弹框结束 -->
         <el-button size="small" @click="deleteBreak">删除</el-button>
         <div class="search">
           <el-input type="search" placeholder="如故障编码，设备名称，位号，描述" size="small" v-model="faultKey"></el-input>
@@ -59,6 +80,7 @@
       return {
 
         arr:[],
+        dialogVisible:false,
         toAuditName:"",
         formLabelAlign: {
           desc:"",
@@ -305,6 +327,7 @@
           })
       },
       dispel(){
+        this.dialogVisible=true
         if(this.arr.length === 1){
           this.toDispel();
         }

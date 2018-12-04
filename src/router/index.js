@@ -30,6 +30,7 @@ import User from '@/components/user/User'
 import EquipmentArchives from '@/components/equipmentArchives/EquipmentArchives'
 import WorkOrder from '@/components/workOrder/WorkOrder'
 import BreakdownOrder from '@/components/workOrder/breakdownDetails/BreakdownOrder'
+import UpkeepAndTurnaroundPlans from '@/components/workOrder/upkeepAndTurnaroundPlans/UpkeepAndTurnaroundPlans'
 import KnowledgeBase from '@/components/knowledgeBase/KnowledgeBase'
 import Message from '@/components/message/Message'
 import System from '@/components/system/System'
@@ -299,6 +300,14 @@ const router = new Router({
       },
     },
     {
+      path: '/UpkeepAndTurnaroundPlans',
+      name: 'UpkeepAndTurnaroundPlans',
+      component: UpkeepAndTurnaroundPlans,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
       path: '/KnowledgeBase',
       name: 'KnowledgeBase',
       component: KnowledgeBase,
@@ -349,7 +358,7 @@ router.beforeEach((to, from, next) => {
       next({
         path: '/Login',
         query: {
-          redirect: to.fullPath
+          redirect: "/Login"
         }
       })
     }

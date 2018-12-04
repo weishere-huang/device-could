@@ -27,46 +27,43 @@
           </el-form>
         </div>
         <div class="breakdown-details">
-          <h5>故障详情</h5>
+          <h5>计划详情</h5>
           <el-form
             label-width="120px"
             :model="formLabelAlign"
           >
-            <el-form-item label="故障编码：">
+            <el-form-item label="分类：">
               <span></span>
             </el-form-item>
-            <el-form-item label="故障等级：">
+            <el-form-item label="级别：">
               <span></span>
             </el-form-item>
-            <el-form-item label="影响范围：">
+            <el-form-item label="计划周期：">
               <span></span>
             </el-form-item>
-            <el-form-item label="故障提交人：">
+            <el-form-item label="开始时间：">
               <span></span>
             </el-form-item>
-            <el-form-item label="故障上报时间：">
+            <el-form-item label="结束时间：">
               <span></span>
             </el-form-item>
-            <el-form-item label="故障描述：">
+            <el-form-item label="执行时间：">
+              <span></span>
+            </el-form-item>
+            <el-form-item label="计划频次：">
+              <span></span>
+            </el-form-item>
+            <el-form-item label="计划内容：">
               <el-input
                 type="textarea"
                 :autosize="{ minRows: 6, maxRows: 6}"
-                placeholder=""
+                placeholder="请输入内容"
                 readonly
                 style="width:94%"
               ></el-input>
             </el-form-item>
-            <el-form-item label="原因分析：">
-              <el-input
-                type="textarea"
-                :autosize="{ minRows: 6, maxRows: 6}"
-                placeholder=""
-                readonly
-                style="width:94%"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="相关照片：">
-              <span style="cursor: pointer;color:#409eff">查看照片</span>
+            <el-form-item label="计划制定人：">
+              <span></span>
             </el-form-item>
           </el-form>
         </div>
@@ -143,20 +140,20 @@
 
         </div>
         <div class="information-flow">
-          <h5>回执信息</h5>
-          <v-table
-            is-horizontal-resize
-            column-width-drag
-            :multiple-sort="false"
-            style="width:100%;"
-            :columns="informationTable"
-            :table-data="informationData"
-            row-hover-color="#eee"
-            row-click-color="#edf7ff"
-            :cell-edit-done="cellEditDone"
-            row-height=24
-            :height="230"
-          ></v-table>
+            <h5>回执信息</h5>
+            <v-table
+              is-horizontal-resize
+              column-width-drag
+              :multiple-sort="false"
+              style="width:100%;"
+              :columns="informationTable"
+              :table-data="informationData"
+              row-hover-color="#eee"
+              row-click-color="#edf7ff"
+              :cell-edit-done="cellEditDone"
+              row-height=24
+              :height="230"
+            ></v-table>
         </div>
       </div>
     </div>
@@ -189,8 +186,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -199,8 +195,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -209,8 +204,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -219,8 +213,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -229,8 +222,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -239,10 +231,10 @@ export default {
           name: "999",
           address: "999",
           gmtCreate: "999"
-        }
+        },
       ],
       equipmentTableData: [
-        {
+          {
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -251,8 +243,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -261,8 +252,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -271,8 +261,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -281,8 +270,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -291,8 +279,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -301,8 +288,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -311,8 +297,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -321,8 +306,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -331,10 +315,10 @@ export default {
           name: "999",
           address: "999",
           gmtCreate: "999"
-        }
+        },
       ],
       informationData: [
-        {
+          {
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -343,8 +327,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -353,8 +336,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -363,8 +345,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -373,8 +354,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"
@@ -383,8 +363,7 @@ export default {
           name: "11",
           address: "22",
           gmtCreate: "33"
-        },
-        {
+        },{
           name: "11",
           address: "22",
           gmtCreate: "33"

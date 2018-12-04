@@ -78,7 +78,7 @@
               <span slot="title">工单</span></template>
             <el-menu-item index="/WorkOrder">工单列表</el-menu-item>
             <el-menu-item index="/BreakdownOrder">故障工单详情</el-menu-item>
-            <el-menu-item index="/WorkOrder">选项3</el-menu-item>
+            <el-menu-item index="/UpkeepAndTurnaroundPlans">检修&保养计划工单详情</el-menu-item>
           </el-submenu>
           <!-- <el-submenu index="10">
             <template slot="title">
