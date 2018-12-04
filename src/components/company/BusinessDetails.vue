@@ -2,7 +2,7 @@
   <div class="back">
     <div class="business-details">
 
-      <span class="title">企业信息</span>
+      <!-- <span class="title">企业信息</span> -->
       <div class="left">
 
         <ul>
@@ -39,9 +39,9 @@
             <p>{{detailsValue.auditOpinion}}</p>
           </span>
         </div>
-        <div style="margin-top:20px;text-align:center;">
+        <!-- <div style="margin-top:20px;text-align:center;">
           <el-button size="small" @click="isHide">返回</el-button>
-        </div>
+        </div> -->
       </div>
       <div class="right">
         <img src="../../assets/image/chlogo.png" alt="">
@@ -73,7 +73,7 @@
     },
     methods: {
       isHide() {
-        this.$emit("childByValue", this.block)
+        this.$emit("childByValue", false)
       }
     },
     created() {
@@ -87,23 +87,23 @@
   @Warning: #e6a23c;
   @Danger: #f56c6c;
   @Info: #dde2eb;
-  .back {
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 0%;
-    left: 0%;
-    background-color: #8081812a;
-  }
+  // .back {
+  //   width: 100vw;
+  //   height: 100vh;
+  //   position: absolute;
+  //   top: 0%;
+  //   left: 0%;
+  //   background-color: #8081812a;
+  // }
 
   .business-details {
     // margin: auto;
     padding: 10px;
-    width: 800px;
+    // width: 800px;
     border: 1px solid @Info;
     overflow: hidden;
-    background-color: white;
-    margin-top: 100px;
+    // background-color: white;
+    // margin-top: 100px;
     // position: absolute;
     // top: 0;
     // left: 0;

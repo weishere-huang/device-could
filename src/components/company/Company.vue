@@ -84,21 +84,25 @@
       :auditValue="auditValue"
       :searchData="name"
     ></audit>
-    <businessDetails
+    <!-- <businessDetails
       v-show="detailsShow"
       v-on:childByValue="childByValue"
       :detailsValue="detailsValue"
-    ></businessDetails>
-    <!-- <el-dialog
+    ></businessDetails> -->
+    <el-dialog
       title="企业详情"
       :visible.sync="dialogVisible"
-      :before-close="handleClose">
-      <span>这是一段信息</span>
+      width="70%"
+      >
+      <businessDetails
+      v-on:childByValue="childByValue"
+      :detailsValue="detailsValue"
+      ></businessDetails>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -109,8 +113,8 @@
   export default {
     data() {
       return {
-        dialogVisible:true,
-        detailsShow: false,
+        dialogVisible:false,
+        detailsShow: true,
         auditShow: false,
         detailsValue: "",
         auditValue: "",
@@ -120,7 +124,7 @@
         pageSize: 10,
         name: "",
         totalNub: "",
-        states:"",
+        states: "",
         tableData: [
           {
             name: "",
@@ -200,9 +204,9 @@
         location.reload();
       },
       auditblock() {
-        if (this.auditValue === "") {
+        if (this.choice.length==0||this.choice.length>1) {
           this.$message({
-            message: "请选择一个企业",
+            message: "请选择一个企业进行审核",
             type: "error"
           });
         } else {
@@ -213,10 +217,10 @@
         this.auditShow = params;
       },
       childByValue: function (params) {
-        this.detailsShow = params;
+        this.dialogVisible = params;
       },
       details(rowIndex, rowData, column) {
-        this.detailsShow = true;
+        this.dialogVisible = true;
         this.detailsValue = rowData;
         console.log(rowData);
       },
@@ -224,13 +228,15 @@
         console.log("select-group-change", selection);
         this.auditValue = selection[0];
         this.choice = "";
-        this.states=="";
+        this.states == "";
         for (let i = 0; i < selection.length; i++) {
           if (this.choice == "") {
             this.choice = selection[i].id;
-            this.states=selection[i].state
+            this.states = selection[i].state
+            this.auditValue==selection[0]
           } else {
             this.choice += "," + selection[i].id;
+            // this.auditValue +=","+selection[i]
           }
         }
         console.log(this.choice);
@@ -404,13 +410,24 @@
           },
           this
         ).then(response => {
-          this.$message({
-            message: '启用成功',
-            type: 'success'
-          })
-          this.load();
+          if(this.states=="禁用"){
+            this.$message({
+              message: '启用成功',
+              type: 'success'
+            })
+            this.load();
+          }else{
+            this.$message({
+              message: "这能启用被禁用的企业",
+              type:"error"
+            })
+          }
+
           console.log("请求参数：" + data);
         }, ({type, info}) => {
+          this.$message({
+
+          })
         });
       },
       forbidden() {
