@@ -108,7 +108,7 @@
         pageSize: 10,
         name: "",
         totalNub: "",
-        states:"",
+        states: "",
         tableData: [
           {
             name: "",
@@ -188,9 +188,9 @@
         location.reload();
       },
       auditblock() {
-        if (this.auditValue === "") {
+        if (this.choice.length==0||this.choice.length>1) {
           this.$message({
-            message: "请选择一个企业",
+            message: "请选择一个企业进行审核",
             type: "error"
           });
         } else {
@@ -212,13 +212,15 @@
         console.log("select-group-change", selection);
         this.auditValue = selection[0];
         this.choice = "";
-        this.states=="";
+        this.states == "";
         for (let i = 0; i < selection.length; i++) {
           if (this.choice == "") {
             this.choice = selection[i].id;
-            this.states=selection[i].state
+            this.states = selection[i].state
+            this.auditValue==selection[0]
           } else {
             this.choice += "," + selection[i].id;
+            // this.auditValue +=","+selection[i]
           }
         }
         console.log(this.choice);
@@ -392,13 +394,24 @@
           },
           this
         ).then(response => {
-          this.$message({
-            message: '启用成功',
-            type: 'success'
-          })
-          this.load();
+          if(this.states=="禁用"){
+            this.$message({
+              message: '启用成功',
+              type: 'success'
+            })
+            this.load();
+          }else{
+            this.$message({
+              message: "这能启用被禁用的企业",
+              type:"error"
+            })
+          }
+
           console.log("请求参数：" + data);
         }, ({type, info}) => {
+          this.$message({
+
+          })
         });
       },
       forbidden() {
