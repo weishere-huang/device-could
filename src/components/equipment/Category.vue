@@ -21,7 +21,7 @@
         </el-tree>
       </div>
       <div class="remark">
-        <h5>备注</h5>
+        <h5>修改</h5>
         <el-form ref="form" label-width="90px">
           <el-form-item label="类别名称：">
             <el-input v-model="nodedata.categoryName" size="mini"></el-input>
@@ -30,7 +30,7 @@
             <el-input type="textarea" v-model="nodedata.categoryMsg"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button size="mini" @click="updateCategory">保存</el-button>
+            <el-button size="mini" @click="updateCategory">确认修改</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -202,6 +202,7 @@ export default {
     },
     deleteCategory(){
       //删除设备类别
+      console.log(this.nodedata.id);
       let qs = require("qs");
       let data = qs.stringify({
         categoryId:this.nodedata.id,

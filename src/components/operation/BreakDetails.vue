@@ -12,22 +12,22 @@
             <h5>故障对象</h5>
             <el-form label-width="100px">
               <el-form-item label="设备编码：">
-                <el-input v-model="companyName.deviceNo" size="mini" disabled></el-input>
+                <el-input v-model="companyName.deviceNo" size="mini" readonly></el-input>
               </el-form-item>
               <el-form-item label="设备名称：">
-                <el-input v-model="companyName.deviceName" size="mini" disabled></el-input>
+                <el-input v-model="companyName.deviceName" size="mini" readonly></el-input>
               </el-form-item>
               <el-form-item label="规格/型号：">
-                <el-input v-model="companyName.deviceSpec" size="mini" disabled></el-input>
+                <el-input v-model="companyName.deviceSpec" size="mini" readonly></el-input>
               </el-form-item>
               <el-form-item label="设备位号：">
-                <el-input v-model="companyName.locationNo" size="mini" disabled></el-input>
+                <el-input v-model="companyName.locationNo" size="mini" readonly></el-input>
               </el-form-item>
               <el-form-item label="安装位置：">
-                <el-input v-model="companyName.location" size="mini" disabled></el-input>
+                <el-input v-model="companyName.location" size="mini" readonly></el-input>
               </el-form-item>
               <el-form-item label="所属单位：">
-                <el-input v-model="companyName.organizeName" size="mini" disabled></el-input>
+                <el-input v-model="companyName.organizeName" size="mini" readonly></el-input>
               </el-form-item>
             </el-form>
           </div>
@@ -44,7 +44,7 @@
                 <span>{{companyName.dispelTime}}</span>
               </el-form-item>
               <el-form-item label="取消原因：" style="border-bottom:1px dashed #dde2eb; height:auto; padding-bottom:5px">
-                <el-input type="textarea" v-model="companyName.dispelCause" style="width:100%;" disabled></el-input>
+                <el-input type="textarea" v-model="companyName.dispelCause" style="width:100%;" readonly></el-input>
               </el-form-item>
               <el-form-item label="撤销人：">
                 <span>{{companyName.revokePeople}}</span>
@@ -53,7 +53,7 @@
                 <span>{{companyName.revokeTime}}</span>
               </el-form-item>
               <el-form-item label="撤销原因：" style="height:auto; padding-bottom:5px">
-                <el-input type="textarea" style="width:100%;" v-model="companyName.revokeCause" disabled></el-input>
+                <el-input type="textarea" style="width:100%;" v-model="companyName.revokeCause" readonly></el-input>
               </el-form-item>
             </el-form>
           </div>
@@ -63,23 +63,23 @@
             <h5>故障信息</h5>
             <el-form :inline="true" style="margin-bottom:5px" size="small" label-width="100px">
               <el-form-item label="故障编码：">
-                <el-input v-model="companyName.faultNo" style="width:150px" disabled size="mini"></el-input>
+                <el-input v-model="companyName.faultNo" style="width:150px" readonly size="mini"></el-input>
               </el-form-item>
               <el-form-item label="故障状况：">
-                <el-input v-model="companyName.state" style="width:150px" disabled size="mini"></el-input>
+                <el-input v-model="companyName.state" style="width:150px" readonly size="mini"></el-input>
               </el-form-item>
             </el-form>
             <el-form :inline="true" style="margin-bottom:5px" size="small" label-width="100px">
               <el-form-item label="故障等级：">
-                <el-input v-model="companyName.faultLevel" style="width:150px" disabled size="mini"></el-input>
+                <el-input v-model="companyName.faultLevel" style="width:150px" readonly size="mini"></el-input>
               </el-form-item>
               <el-form-item label="故障来源：">
-                <el-input v-model="companyName.faultSource" style="width:150px" disabled size="mini"></el-input>
+                <el-input v-model="companyName.faultSource" style="width:150px" readonly size="mini"></el-input>
               </el-form-item>
             </el-form>
             <el-form :inline="true" style="margin-bottom:5px" size="small" label-width="100px">
               <el-form-item label="报告人：">
-                <el-input v-model="companyName.discovery" style="width:150px" disabled size="mini"></el-input>
+                <el-input v-model="companyName.discovery" style="width:150px" readonly size="mini"></el-input>
               </el-form-item>
               <el-form-item label="报告时间：">
                 <span>{{companyName.discoveryTime}}</span>
@@ -174,6 +174,11 @@
       });
     },
     methods: {
+      toPansAdd() {
+        this.$router.push({
+          path: "/Breakdown"
+        });
+      },
       toback() {
         this.$router.back(-1)
       },
@@ -222,28 +227,39 @@
         }
       },
       load() {
-        this.axios
-          .get(this.global.apiSrc + "/fault/detail", {params: {faultId: this.faultId}})
-          .then(response =>{
+        this.Axios(
+          {
+            params:{faultId: this.faultId},
+            type: "get",
+            url: "/fault/detail",
+          },
+          this
+        ).then(response => {
             this.tableData = response.data.data;
             this.companyName = this.tableData;
             this.toValue(response.data.data);
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       commitAudit(){
         let qs = require("qs");
         let data = qs.stringify({faultId:this.companyName.id});
-        this.axios
-          .post(this.global.apiSrc + "/fault/commitAudit",data)
-          .then(response =>{
-            alert(response.data.msg);
+
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/fault/commitAudit",
+          },
+          this
+        ).then(response => {
+          this.toPansAdd()
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       dispel(){
         let qs = require("qs");
@@ -251,14 +267,19 @@
           faultIds:this.companyName.id,
           dispelCause:this.companyName.revokeCause
         });
-        this.axios
-          .post(this.global.apiSrc + "/fault/dispel",data)
-          .then(response =>{
-            alert(response.data.msg);
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/fault/dispel",
+          },
+          this
+        ).then(response => {
+            this.toPansAdd()
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       }
     },
     created(){
@@ -275,7 +296,7 @@
   @Info: #dde2eb;
   @border: 1px solid #dde2eb;
   .breakDetails {
-    padding-left: 180px;
+    // padding-left: 180px;
     .case {
       width: 100%;
       padding: 10px;
@@ -327,7 +348,7 @@
         }
         .right {
           padding: 10px;
-          width: 680px;
+          width: 650px;
           float: left;
 
           .msgCase {

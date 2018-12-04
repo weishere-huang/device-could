@@ -11,75 +11,30 @@
         <div class="left">
           <h5>组织机构</h5>
           <div class="treeCase">
-            <el-tree
-              :data="data2"
-              node-key="id"
-              :default-expanded-keys="[2, 3]"
-              :default-checked-keys="[5]"
-              :props="defaultProps"
-            >
+            <el-tree :data="data2" node-key="id" :default-expanded-keys="[2, 3]" :default-checked-keys="[5]" :props="defaultProps">
             </el-tree>
           </div>
         </div>
         <div class="center">
           <div class="search">
-            <el-input
-              type="search"
-              size="mini"
-              style="width:30%;"
-              v-model="key"
-            ></el-input>
-            <el-button
-              size="mini"
-              @click="search"
-            >搜索</el-button>
+            <el-input type="search" size="mini" style="width:30%;" v-model="key"></el-input>
+            <el-button size="mini" @click="search">搜索</el-button>
             <span style="padding:0 10px;">最近搜索：{{searchs}}</span>
             <span style="text-decoration: underline;"></span>
           </div>
           <div class="tableList">
-            <v-table
-              is-vertical-resize
-              is-horizontal-resize
-              :vertical-resize-offset='100'
-              column-width-drag
-              :multiple-sort="false"
-              style="width:100%;min-height:250px;"
-              :columns="columns"
-              :table-data="tableData"
-              row-hover-color="#eee"
-              row-click-color="#edf7ff"
-              :select-all="selectALL"
-              :select-group-change="selectGroupChange"
-            ></v-table>
-            <div
-              class="mt20 mb20 bold"
-              style="text-align:center;margin-top:30px"
-            >
-              <v-pagination
-                @page-change="pageChange"
-                @page-size-change="pageSizeChange"
-                :total="tableData.length"
-                :page-size="pageSize"
-                :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
-              ></v-pagination>
+            <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;min-height:250px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange"></v-table>
+            <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
+              <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
             </div>
           </div>
         </div>
         <div class="right">
-          <el-button
-            size="mini"
-            @click="deletes"
-          >清空</el-button>
-          <el-button
-            size="mini"
-            @click="toAdd"
-          >保存</el-button>
+          <el-button size="mini" @click="deletes">清空</el-button>
+          <el-button size="mini" @click="toAdd">保存</el-button>
           <div class="personList">
             <ul>
-              <li
-                v-for="(item, index) in personListValue"
-                :key="index"
-              >{{item}}
+              <li v-for="(item, index) in personListValue" :key="index">{{item}}
                 <span>x</span>
               </li>
             </ul>
@@ -146,51 +101,7 @@ export default {
       data2: [
         {
           id: 1,
-          label: "一级 1",
-          children: [
-            {
-              id: 4,
-              label: "二级 1-1",
-              children: [
-                {
-                  id: 9,
-                  label: "三级 1-1-1"
-                },
-                {
-                  id: 10,
-                  label: "三级 1-1-2"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 2,
-          label: "一级 2",
-          children: [
-            {
-              id: 5,
-              label: "二级 2-1"
-            },
-            {
-              id: 6,
-              label: "二级 2-2"
-            }
-          ]
-        },
-        {
-          id: 3,
-          label: "一级 3",
-          children: [
-            {
-              id: 7,
-              label: "二级 3-1"
-            },
-            {
-              id: 8,
-              label: "二级 3-2"
-            }
-          ]
+          label: "",
         }
       ],
       defaultProps: {
@@ -202,32 +113,38 @@ export default {
   methods: {
     loads() {
       let arrs = new Array();
-      this.axios
-        .get(this.global.apiSrc + "/device/all", {
-          params: { page: this.pageIndex, size: this.pageSize }
-        })
-        .then(response => {
+      this.Axios(
+        {
+          params:{page: this.pageIndex, size: this.pageSize},
+          type: "get",
+          url: "/device/all",
+        },
+        this
+      ).then(response => {
           arrs = response.data.data.content;
           this.tableData = arrs;
           this.tabledate = this.tableData;
+        },
+        ({type, info}) => {
+
         })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
     search() {
-      this.axios
-        .get(this.global.apiSrc + "/device/findByKeyWord", {
-          params: { keyWord: this.key }
-        })
-        .then(response => {
+      this.Axios(
+        {
+          params:{ keyWord: this.key },
+          type: "get",
+          url: "/device/findByKeyWord",
+        },
+        this
+      ).then(response => {
           this.tableData = response.data.data.content;
           this.tabledate = this.tableData;
           console.log(response.data);
           this.searchs = this.key;
-        })
-        .catch(function(error) {
-          console.log(error);
+        },
+        ({type, info}) => {
+
         });
     },
     deletes() {

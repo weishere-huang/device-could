@@ -208,20 +208,31 @@ export default {
   created() {},
   methods: {
     load(){
-      this.axios
-        .get(this.global.apiSrc+"/device/all",{params:{
-            page:this.pageIndex,
-            size:this.pageSize
-          }})
-        .then(response =>{
+      this.Axios(
+        {
+          params:Object.assign(this.searchParams, {
+            page: this.pageIndex,
+            size: this.pageSize
+          }),
+          type: "get",
+          url: "/device/all",
+        },
+        this
+      ).then(response => {
           this.tableData = response.data.data.content;
-          console.log(response.data.data.content);
+        },
+        ({type, info}) => {
+
         })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
     addPlan(){
+      if(this.deviceIds!==""){
+        this.toAddPlan()
+      }else{
+        alert("请至少选择一个设备")
+      }
+    },
+    toAddPlan(){
       this.companyName.executeTime = this.date +" "+ this.times;
       this.companyName.executeTime = this.companyName.executeTime.split(".")[0];
       this.companyName.maintenanceType = 1;
@@ -272,6 +283,7 @@ export default {
           console.log(error);
         });
     },
+
     submitAudit(){
       this.$confirm('计划添加成功,是否立即提交审核', '提示')
         .then(_=>{
@@ -279,19 +291,22 @@ export default {
           let data = qs.stringify({
             maintenanceId:this.auditId
           });
-          this.axios
-            .post(this.global.apiSrc+"/mplan/submitAudit",data)
-            .then(response =>{
-              if(response.data.code === 200){
-                alert("已成功提交审核");
-                this.Upkeep();
-              }else{
-                alert("系统错误请稍后再试");
-              }
+          this.Axios(
+            {
+              params:Object.assign(this.searchParams, {
+                page: this.pageIndex,
+                size: this.pageSize
+              }),
+              type: "post",
+              url: "/mplan/submitAudit",
+            },
+            this
+          ).then(response => {
+              this.TurnaroundPlans();
+            },
+            ({type, info}) => {
+
             })
-            .catch(function(error) {
-              console.log(error);
-            });
         })
         .catch(_=>{
           this.TurnaroundPlans();
@@ -302,19 +317,18 @@ export default {
       let data = qs.stringify({
         maintenanceId:this.auditId
       });
-      this.axios
-        .post(this.global.apiSrc+"/mplan/submitAudit",data)
-        .then(response =>{
-          if(response.data.code === 200){
-            alert("已成功提交审核");
-            this.Upkeep();
-          }else{
-            alert("系统错误请稍后再试");
-          }
+      this.Axios(
+        {
+          params:data,
+          type: "post",
+          url: "/mplan/submitAudit",
+        },
+        this
+      ).then(response => {
+          this.TurnaroundPlans();
+        },
+        ({type, info}) => {
         })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
     eliminateAll(){
       this.tableData = "";

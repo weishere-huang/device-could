@@ -37,27 +37,32 @@
           </el-form-item>
           <el-form-item label="所属部门">
             <span>{{sizeForm.organizeName}}</span>
-            <el-button size="mini" @click="dialogVisible1=true">点击修改</el-button>
+            <el-button
+              size="mini"
+              @click="dialogVisible1=true"
+            >点击修改</el-button>
             <el-dialog
               title="修改部门"
               :visible.sync="dialogVisible1"
               width="30%"
-              >
+            >
               <el-cascader
-              placeholder="placeholder1"
-              :options="orgoptions"
-              :props="defaultProps"
-              expand-trigger="hover"
-              filterable
-              ref="getName"
-              change-on-select
-              :show-all-levels="false"
-              v-model="qqqqq"
-              @change="handleChange"
-
-            ></el-cascader>
-                <el-button @click="dialogVisible1 = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible1 = false">确 定</el-button>
+                placeholder="placeholder1"
+                :options="orgoptions"
+                :props="defaultProps"
+                expand-trigger="hover"
+                filterable
+                ref="getName"
+                change-on-select
+                :show-all-levels="false"
+                v-model="qqqqq"
+                @change="handleChange"
+              ></el-cascader>
+              <el-button @click="dialogVisible1 = false">取 消</el-button>
+              <el-button
+                type="primary"
+                @click="dialogVisible1 = false"
+              >确 定</el-button>
 
             </el-dialog>
 
@@ -85,27 +90,33 @@
             </el-form-item>
             <el-form-item label="设备类别">
               <span>{{sizeForm.deviceCategoryName}}</span>
-            <el-button size="mini" @click="dialogVisible3=true">点击修改</el-button>
+              <el-button
+                size="mini"
+                @click="dialogVisible3=true"
+              >点击修改</el-button>
               <el-dialog
                 title="修改类别"
                 :visible.sync="dialogVisible3"
                 width="30%"
-                >
+              >
                 <el-cascader
-                placeholder=""
-                :options="ctgoptions"
-                filterable
-                ref="getName2"
-                expand-trigger="hover"
-                :props="defaultProps2"
-                change-on-select
-                :show-all-levels="false"
-                v-model="classfynm"
-                @change="handleChange2"
-                style="width:215px;"
-              ></el-cascader>
+                  placeholder=""
+                  :options="ctgoptions"
+                  filterable
+                  ref="getName2"
+                  expand-trigger="hover"
+                  :props="defaultProps2"
+                  change-on-select
+                  :show-all-levels="false"
+                  v-model="classfynm"
+                  @change="handleChange2"
+                  style="width:215px;"
+                ></el-cascader>
                 <el-button @click="dialogVisible3 = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible3 = false">确 定</el-button>
+                <el-button
+                  type="primary"
+                  @click="dialogVisible3 = false"
+                >确 定</el-button>
 
               </el-dialog>
 
@@ -128,10 +139,8 @@
                 placeholder="点击选择"
                 style="width:215px"
               >
-
                 <el-option
                   v-for="(item,index) in options4"
-                  :props="aaaa"
                   :key="index"
                   :label="item.label"
                   :value="item.value"
@@ -176,7 +185,11 @@
       </div>
       <div class="administrator">
         <h5>管理人员</h5>
-        <el-form :inline="true"  class="demo-form-inline" label-width="100px">
+        <el-form
+          :inline="true"
+          class="demo-form-inline"
+          label-width="100px"
+        >
           <el-form-item label="负责人员：">
             <span>（空）</span>
           </el-form-item>
@@ -184,7 +197,11 @@
             <span>（空）</span>
           </el-form-item>
         </el-form>
-        <el-form :inline="true"  class="demo-form-inline" label-width="100px">
+        <el-form
+          :inline="true"
+          class="demo-form-inline"
+          label-width="100px"
+        >
           <el-form-item label="检修人员：">
             <span>（空）</span>
           </el-form-item>
@@ -192,12 +209,19 @@
             <span>（空）</span>
           </el-form-item>
         </el-form>
-        <el-form :inline="true"  class="demo-form-inline" label-width="100px">
+        <el-form
+          :inline="true"
+          class="demo-form-inline"
+          label-width="100px"
+        >
           <el-form-item label="操作人员：">
             <span>（空）</span>
           </el-form-item>
           <el-form-item style="padding-left:20px">
-            <el-button size="mini" @click="dialogVisible=true" >添加人员</el-button>
+            <el-button
+              size="mini"
+              @click="dialogVisible=true"
+            >添加人员</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -273,25 +297,20 @@
       title="人员添加"
       :visible.sync="dialogVisible"
       width="80%"
-      >
+    >
       <addperson></addperson>
     </el-dialog>
   </div>
 </template>
 <script>
 import addperson from "./RedactAdd";
-
 export default {
   data() {
     return {
-      aaaa:{
-        label:"",
-        value:""
-      },
-      qqqqq:"",
-      dialogVisible3:false,
-      dialogVisible1:false,
-       dialogVisible: false,
+      qqqqq: "",
+      dialogVisible3: false,
+      dialogVisible1: false,
+      dialogVisible: false,
       addp: false,
       sizeForm: {
         deviceNo: "",
@@ -318,15 +337,15 @@ export default {
       //   value:"organizeCode",
       //   label:"organizeName"
       // },
-      defaultProps2:{
-        value:"categoryNo",
-        label:"categoryName"
+      defaultProps2: {
+        value: "categoryNo",
+        label: "categoryName"
       },
-      defaultProps:{
-          value:"code",
-          label:"name"
-        },
-      urlid:"",
+      defaultProps: {
+        value: "code",
+        label: "name"
+      },
+      urlid: "",
       options2: [
         {
           value: "1",
@@ -355,7 +374,7 @@ export default {
           label: "在用"
         },
         {
-          value: 2,
+          value:2,
           label: "出租"
         },
         {
@@ -371,10 +390,10 @@ export default {
           label: "报废"
         }
       ],
-      ogrname:"",
-      classfynm:"",
-      orgoptions:[],
-      ctgoptions:[],
+      ogrname: "",
+      classfynm: "",
+      orgoptions: [],
+      ctgoptions: []
     };
   },
   components: {
@@ -382,30 +401,29 @@ export default {
   },
   methods: {
     handleChange(value) {
-      let name=this.$refs['getName'].currentLabels
-      name=name[(name.length)-1]
-      let id=value[(value.length)-1]
-      console.log(id,name);
-      this.sizeForm.organizeCode=id;
-      this.sizeForm.organizeName=name;
-
+      let name = this.$refs["getName"].currentLabels;
+      name = name[name.length - 1];
+      let id = value[value.length - 1];
+      console.log(id, name);
+      this.sizeForm.organizeCode = id;
+      this.sizeForm.organizeName = name;
     },
     handleChange2(value) {
-      let name=this.$refs['getName2'].currentLabels
-      name=name[(name.length)-1]
-      let id=value[(value.length)-1]
-      console.log(id,name);
-      this.sizeForm.deviceCategory=id;
-      this.sizeForm.deviceCategoryName=name;
+      let name = this.$refs["getName2"].currentLabels;
+      name = name[name.length - 1];
+      let id = value[value.length - 1];
+      console.log(id, name);
+      this.sizeForm.deviceCategory = id;
+      this.sizeForm.deviceCategoryName = name;
     },
-    classf(value){
+    classf(value) {
       console.log(value);
       let obj = {};
-      obj = this.options2.find((item)=>{
+      obj = this.options2.find(item => {
         return item.value === value;
       });
       console.log(obj.label);
-      this.sizeForm.deviceClassifyName=obj.label;
+      this.sizeForm.deviceClassifyName = obj.label;
     },
     tback() {
       this.$router.back(-1);
@@ -440,8 +458,8 @@ export default {
         deviceState: this.sizeForm.deviceState,
         organizeCode: this.sizeForm.organizeCode,
         enterFactoryDate: this.sizeForm.enterFactoryDate,
-       // deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
-       // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo)
+        // deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
+        // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo)
         devicePersonnelInfo: JSON.stringify([
           {
             workerType: 1,
@@ -469,52 +487,61 @@ export default {
           }
         ])
       });
-      console.log(this.sizeForm.devicePersonnelInfo+"this.sizeForm.devicePersonnelInfo");
-      this.Axios({
-        url: "/device/update",
-        params: data,
-        type: "post",
-        option: {
-          enableMsg: false
-        }
-      },this)
-       // .post(this.global.apiSrc + "/device/update", data)
-        .then(result => {
-          if (result.data.code == 200) {
-            alert("修改成功");
-            console.log(result);
-            console.log("update");
-            console.log(result.data);
-            this.$router.push("/Equipment");
-          } else if (result.data.code == 410) {
-            alert("该设备编号以存在,请修改!!!");
+      console.log(
+        this.sizeForm.devicePersonnelInfo + "this.sizeForm.devicePersonnelInfo"
+      );
+      this.Axios(
+        {
+          url: "/device/update",
+          params: data,
+          type: "post",
+          option: {
+            enableMsg: false
           }
         },
-          ({type, info}) => {
+        this
+      )
+        // .post(this.global.apiSrc + "/device/update", data)
+        .then(
+          result => {
+            if (result.data.code == 200) {
+              alert("修改成功");
+              console.log(result);
+              console.log("update");
+              console.log(result.data);
+              this.$router.push("/Equipment");
+            } else if (result.data.code == 410) {
+              alert("该设备编号以存在,请修改!!!");
+            }
+          },
+          ({ type, info }) => {
             //错误类型 type=faild / error
             //error && error(type, info);
           }
-        )
-        // .catch(err => {
-        //   console.log(err);
-        // });
+        );
+      // .catch(err => {
+      //   console.log(err);
+      // });
     },
 
     detail(id) {
       //获取设备详情接口
-      this.Axios({
-        params: {
-          deviceId: id
+      this.Axios(
+        {
+          params: {
+            deviceId: id
+          },
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/device/detail"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
         },
-        // option: {
-        //   enableMsg: false
-        // },
-        type: "get",
-        url: "/device/detail"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
+        this
+      )
         // .get(this.global.apiSrc + "/device/detail", {
         //   params: { deviceId: id }
         // })
@@ -539,10 +566,10 @@ export default {
             //错误类型 type=faild / error
             //error && error(type, info);
           }
-        )
-        // .catch(err => {
-        //   console.log(err);
-        // });
+        );
+      // .catch(err => {
+      //   console.log(err);
+      // });
     },
     filterArray(data, parent) {
       let vm = this;
@@ -561,48 +588,51 @@ export default {
       return tree;
     },
     allOrganize() {
-      this.Axios({
-        params: {
+      this.Axios(
+        {
+          params: {},
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/organize/allOrganize"
         },
-        option: {
-          enableMsg: false
-        },
-        type: "get",
-        url: "/organize/allOrganize"
-      },this)
+        this
+      )
         //.get(this.global.apiSrc + "/organize/allOrganize")
-        .then(result => {
-          console.log(result.data);
-          for (let i = 0; i < result.data.data.length; i++) {
-            if (result.data.data[i].organizeType === 0) {
-              result.data.data[i].organizeType = "企业";
+        .then(
+          result => {
+            console.log(result.data);
+            for (let i = 0; i < result.data.data.length; i++) {
+              if (result.data.data[i].organizeType === 0) {
+                result.data.data[i].organizeType = "企业";
+              }
+              if (result.data.data[i].organizeType === 1) {
+                result.data.data[i].organizeType = "公司";
+              }
+              if (result.data.data[i].organizeType === 2) {
+                result.data.data[i].organizeType = "工厂";
+              }
+              if (result.data.data[i].organizeType === 3) {
+                result.data.data[i].organizeType = "部门";
+              }
+              if (result.data.data[i].organizeType === 4) {
+                result.data.data[i].organizeType = "车间";
+              }
             }
-            if (result.data.data[i].organizeType === 1) {
-              result.data.data[i].organizeType = "公司";
-            }
-            if (result.data.data[i].organizeType === 2) {
-              result.data.data[i].organizeType = "工厂";
-            }
-            if (result.data.data[i].organizeType === 3) {
-              result.data.data[i].organizeType = "部门";
-            }
-            if (result.data.data[i].organizeType === 4) {
-              result.data.data[i].organizeType = "车间";
-            }
-          }
-          this.orgoptions = this.filterArray(result.data.data, 0);
-          console.log("组织结构");
-          console.log(this.orgoptions);
-        },
-          ({type, info}) => {
+            this.orgoptions = this.filterArray(result.data.data, 0);
+            console.log("组织结构");
+            console.log(this.orgoptions);
+          },
+          ({ type, info }) => {
             //错误类型 type=faild / error
             //error && error(type, info);
           }
-        )
-        // .catch(err => {
-        //   console.log(err);
-        //   console.log(this.userName);
-        // });
+        );
+      // .catch(err => {
+      //   console.log(err);
+      //   console.log(this.userName);
+      // });
     },
     filterArray2(data, parent) {
       let vm = this;
@@ -620,41 +650,43 @@ export default {
       }
       return tree;
     },
-    findAlldeviceClassify(){
-
-      this.Axios({
-        params: {
+    findAlldeviceClassify() {
+      this.Axios(
+        {
+          params: {},
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/deviceCategory/all"
         },
-        option: {
-          enableMsg: false
-        },
-        type: "get",
-        url: "/deviceCategory/all"
-      },this)
+        this
+      )
         //.get(this.global.apiSrc + "/deviceCategory/all", data)
-        .then(result => {
-          console.log("查询设备类别")
-          this.ctgoptions= this.filterArray2(result.data.data,0);
-          console.log("类别转换");
-          console.log(this.ctgoptions);
-          console.log(result.data);
-        },
-          ({type, info}) => {
+        .then(
+          result => {
+            console.log("查询设备类别");
+            this.ctgoptions = this.filterArray2(result.data.data, 0);
+            console.log("类别转换");
+            console.log(this.ctgoptions);
+            console.log(result.data);
+          },
+          ({ type, info }) => {
             //错误类型 type=faild / error
             //error && error(type, info);
           }
-        )
-        // .catch(err => {
-        //   console.log(err);
-        // });
-    },
+        );
+      // .catch(err => {
+      //   console.log(err);
+      // });
+    }
   },
   created() {
-      this.urlid = this.$route.params.id;
-      this.detail(this.urlid);
-      console.log("letid:"+this.urlid);
-      this.allOrganize();
-      this.findAlldeviceClassify();
+    this.urlid = this.$route.params.id;
+    this.detail(this.urlid);
+    console.log("letid:" + this.urlid);
+    this.allOrganize();
+    this.findAlldeviceClassify();
   }
 };
 </script>
@@ -691,26 +723,26 @@ export default {
         height: 30px;
       }
     }
-    .administrator{
-        width: 650px;
-        padding: 10px;
-        border: @border;
-        border-radius: 5px;
-        position: relative;
-        margin-top: 20px;
-        font-size: 14px;
-        color: #606266;
-        h5 {
-          position: absolute;
-          top: -5px;
-          left: 23px;
-          background-color: white;
-        }
-        .el-form-item {
-          margin-bottom: 0px;
-          width: 45%;
-        }
+    .administrator {
+      width: 650px;
+      padding: 10px;
+      border: @border;
+      border-radius: 5px;
+      position: relative;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #606266;
+      h5 {
+        position: absolute;
+        top: -5px;
+        left: 23px;
+        background-color: white;
       }
+      .el-form-item {
+        margin-bottom: 0px;
+        width: 45%;
+      }
+    }
     .bottom {
       padding: 10px;
       width: 650px;

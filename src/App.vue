@@ -38,6 +38,12 @@
               <el-menu-item index="/Equipment">设备列表</el-menu-item>
               <el-menu-item index="/Category">类别管理</el-menu-item>
             </el-submenu>
+            <el-submenu index="monit">
+            <template slot="title">
+              <i class="iconfont">&#xe6a0;</i>
+              <span slot="title">设备监控</span></template>
+              <el-menu-item index="/Monit">设备实时状态</el-menu-item>
+            </el-submenu>
             <el-submenu index="4">
               <template slot="title">
                 <i class="iconfont">&#xe73a;</i>
@@ -58,30 +64,30 @@
                 <span slot="title">员工管理</span></template>
                 <el-menu-item index="/Personnel">员工管理</el-menu-item>
             </el-submenu>
-            <el-submenu index="8">
+            <!-- <el-submenu index="8">
               <template slot="title">
                 <i class="iconfont">&#xe62d;</i>
               <span slot="title">设备档案</span></template>
             <el-menu-item index="/EquipmentArchives">选项1</el-menu-item>
             <el-menu-item index="/EquipmentArchives">选项2</el-menu-item>
             <el-menu-item index="/EquipmentArchives">选项3</el-menu-item>
-          </el-submenu>
+          </el-submenu> -->
           <el-submenu index="9">
             <template slot="title">
               <i class="iconfont">&#xe60b;</i>
               <span slot="title">工单</span></template>
-            <el-menu-item index="/WorkOrder">选项1</el-menu-item>
-            <el-menu-item index="/WorkOrder">选项2</el-menu-item>
+            <el-menu-item index="/WorkOrder">工单列表</el-menu-item>
+            <el-menu-item index="/BreakdownOrder">故障工单详情</el-menu-item>
             <el-menu-item index="/WorkOrder">选项3</el-menu-item>
           </el-submenu>
-          <el-submenu index="10">
+          <!-- <el-submenu index="10">
             <template slot="title">
               <i class="iconfont">&#xe602;</i>
               <span slot="title">知识库</span></template>
             <el-menu-item index="/KnowledgeBase">选项1</el-menu-item>
             <el-menu-item index="/KnowledgeBase">选项2</el-menu-item>
             <el-menu-item index="/KnowledgeBase">选项3</el-menu-item>
-          </el-submenu>
+          </el-submenu> -->
           <el-submenu index="11">
             <template slot="title">
               <i class="iconfont">&#xe601;</i>
@@ -183,7 +189,7 @@ export default {
     return {
       show: true,
       isCollapse: false,
-      pictLoading:true
+      pictLoading: true
     };
   },
   methods: {
@@ -213,13 +219,13 @@ export default {
 </script>
 
  <style lang="less" >
- .el-menu-vertical-demo{
-    margin-top: 60px !important;
-    &:not(.el-menu--collapse) {
-      width: 250px;
-      min-height: 400px;
-    }
- }
+.el-menu-vertical-demo {
+  margin-top: 60px !important;
+  &:not(.el-menu--collapse) {
+    width: 250px;
+    min-height: 400px;
+  }
+}
 
 @blue: #409eff;
 @Success: #67c23a;
@@ -301,10 +307,10 @@ export default {
     min-width: 170px;
   }
 }
-.el-dialog__body{
+.el-dialog__body {
   padding: 0px !important;
 }
-.el-tabs__item{
+.el-tabs__item {
   padding: 0 7.5px;
 }
 .el-submenu__title {
