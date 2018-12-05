@@ -50,7 +50,7 @@ export default {
       manufacturer:"",
       deviceCategory:"",
       choice:"",
-      checkList: [],
+      checkList: [ ],
       state: []
     };
   },
@@ -78,6 +78,8 @@ export default {
           deviceCategory:"",
           page:1,
           size:10
+
+
         },
         // option: {
         //   enableMsg: false
