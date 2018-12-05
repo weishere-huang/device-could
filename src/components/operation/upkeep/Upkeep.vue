@@ -2,45 +2,123 @@
   <div class="turnaround-plans">
     <div class="userCase">
       <div class="top">
-        <el-button size="small" @click="toUpkeepAdd">添加</el-button>
-        <el-button size="small" @click="outerVisibleIsOk">审核</el-button>
-        <el-dialog title="审核" :visible.sync="outerVisible">
-          <el-form label-position=right label-width="120px" :model="formLabelAlign">
-          <el-form-item label="审批结果：">
-            <el-radio v-model="formLabelAlign.radio" label="0">同意</el-radio>
-            <el-radio v-model="formLabelAlign.radio" label="1">驳回</el-radio>
-          </el-form-item>
-          <el-form-item label="审批意见：">
-            <el-input type="textarea" v-model="formLabelAlign.desc"></el-input>
-          </el-form-item>
-          <div v-if="formLabelAlign.radio!=1">
-            <el-form-item label="是否终审：">
+        <el-button
+          size="small"
+          @click="toUpkeepAdd"
+        >添加</el-button>
+        <el-button
+          size="small"
+          @click="outerVisibleIsOk"
+        >审核</el-button>
+        <el-dialog
+          title="审核"
+          :visible.sync="outerVisible"
+        >
+          <el-form
+            label-position=right
+            label-width="120px"
+            :model="formLabelAlign"
+          >
+            <el-form-item label="审批结果：">
+              <el-radio
+                v-model="formLabelAlign.radio"
+                label="0"
+              >同意</el-radio>
+              <el-radio
+                v-model="formLabelAlign.radio"
+                label="1"
+              >驳回</el-radio>
+            </el-form-item>
+            <el-form-item label="审批意见：">
+              <el-input
+                type="textarea"
+                v-model="formLabelAlign.desc"
+              ></el-input>
+            </el-form-item>
+            <div v-if="formLabelAlign.radio!=1">
+              <el-form-item label="是否终审：">
                 <el-checkbox-group v-model="formLabelAlign.type">
-                    <el-checkbox label="" name="type"></el-checkbox>
+                  <el-checkbox
+                    label=""
+                    name="type"
+                  ></el-checkbox>
                 </el-checkbox-group>
-            </el-form-item>
-            <el-form-item label="下一级审批人：" v-if="formLabelAlign.type!=true">
-                <el-input v-model="formLabelAlign.name = toAudit.name" size="mini" style="width:60%"></el-input>
-                <el-button type="primary" @click="innerVisible = true" size="mini">添加审批人</el-button>
-            </el-form-item>
-          </div>
-        </el-form>
-          <el-dialog title="人员添加" :visible.sync="innerVisible" append-to-body>
+              </el-form-item>
+              <el-form-item
+                label="下一级审批人："
+                v-if="formLabelAlign.type!=true"
+              >
+                <el-input
+                  v-model="formLabelAlign.name"
+                  size="mini"
+                  style="width:60%"
+                ></el-input>
+                <el-button
+                  type="primary"
+                  @click="innerVisible = true"
+                  size="mini"
+                >添加审批人</el-button>
+              </el-form-item>
+            </div>
+          </el-form>
+          <el-dialog
+            title="人员添加"
+            :visible.sync="innerVisible"
+            append-to-body
+          >
             <personnel v-on:getPersonnel="getPersonnel"></personnel>
           </el-dialog>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="outerVisible = false" size="mini">取 消</el-button>
-            <el-button @click="submitAudit" type="primary" size="mini">提交</el-button>
+          <div
+            slot="footer"
+            class="dialog-footer"
+          >
+            <el-button
+              @click="outerVisible = false"
+              size="mini"
+            >取 消</el-button>
+            <el-button
+              @click="submitAudit"
+              type="primary"
+              size="mini"
+            >提交</el-button>
           </div>
         </el-dialog>
-        <el-button size="small" @click="stopDiscontinuation">停止</el-button>
-        <el-button size="small" @click="deleteMaintenance">删除</el-button>
+        <el-button
+          size="small"
+          @click="stopDiscontinuation"
+        >停止</el-button>
+        <el-button
+          size="small"
+          @click="deleteMaintenance"
+        >删除</el-button>
       </div>
       <div class="bottom">
         <div>
-          <v-table :row-dblclick="toAmend" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-          <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          <v-table
+            :row-dblclick="toAmend"
+            :select-all="selectALL"
+            :select-group-change="selectGroupChange"
+            is-horizontal-resize
+            column-width-drag
+            :multiple-sort="false"
+            style="width:100%;min-height:400px;"
+            :columns="columns"
+            :table-data="tableData"
+            row-hover-color="#eee"
+            row-click-color="#edf7ff"
+            @on-custom-comp="customCompFunc"
+          ></v-table>
+          <div
+            class="mt20 mb20 bold"
+            style="text-align:center;margin-top:30px;"
+          >
+            <v-pagination
+              @page-change="pageChange"
+              @page-size-change="pageSizeChange"
+              :total="pageNumber"
+              :page-size="pageSize"
+              :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
+            ></v-pagination>
           </div>
         </div>
       </div>
@@ -50,17 +128,18 @@
 <script>
 import audit from "./AuditUPkeep";
 import personnel from "./PersonnelUpkeep";
+import Vue from "vue";
 export default {
   data() {
     return {
-      arr:[],
-      toAudit:"",
-      radio:"",
+      arr: [],
+      toAudit: "",
+      radio: "",
       formLabelAlign: {
-        desc:"",
-        type:"",
+        desc: "",
+        type: "",
         radio: "",
-        name:""
+        name: ""
       },
       outerVisible: false,
       innerVisible: false,
@@ -161,11 +240,37 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
+        },
+        {
+          field: "custome-adv",
+          title: "操作",
+          width: 100,
+          titleAlign: "center",
+          columnAlign: "center",
+          componentName: "table-upkeep"
+          // isResize: true
         }
       ]
     };
   },
   methods: {
+    customCompFunc(params) {
+      console.log(params);
+
+      if (params.type === "delete") {
+        // do delete operation
+
+        this.$delete(this.tableData, params.index);
+      } else if (params.type === "edit") {
+        // do edit operation
+
+        alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
+      } else if (params.type === "stop") {
+        // do edit operation
+
+        alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
+      }
+    },
     toAmend(rowIndex, rowData, column) {
       this.$store.commit("upkeepAmend", rowData);
       this.$router.push({
@@ -235,26 +340,26 @@ export default {
     load() {
       this.Axios(
         {
-          params:{
+          params: {
             page: this.pageIndex,
             size: this.pageSize
           },
           type: "get",
-          url: "/mplan/allPlan",
+          url: "/mplan/allPlan"
         },
         this
-      ).then(response => {
+      ).then(
+        response => {
           this.pageNumber = response.data.data.totalElements;
           this.loadValue(response.data.data.content);
         },
-        ({type, info}) => {
-
-        })
+        ({ type, info }) => {}
+      );
     },
     loadValue(value) {
       let arr = new Array();
       for (let i = 0; i < value.length; i++) {
-        if (value[i].maintenanceType === 1 ) {
+        if (value[i].maintenanceType === 1) {
           arr[arr.length] = value[i];
         }
       }
@@ -306,65 +411,64 @@ export default {
     listMaintenanceLevel() {
       this.Axios(
         {
-          params:{},
+          params: {},
           type: "get",
-          url: "/mplan/listMaintenanceLevel",
+          url: "/mplan/listMaintenanceLevel"
         },
         this
-      ).then(response => {
+      ).then(
+        response => {
           this.planLevel = response.data.data;
         },
-        ({type, info}) => {
-
-        })
+        ({ type, info }) => {}
+      );
     },
     deleteMaintenance() {
-      this.$confirm('计划一旦删除将无法恢复，请确认选择', '提示')
-        .then(_ => {
-          let qs = require("qs");
-          let data = qs.stringify({maintenanceIds: this.maintenanceIds});
-          this.Axios(
-            {
-              params:data,
-              type: "post",
-              url: "/mplan/delete",
-            },
-            this
-          ).then(response => {
-              this.load();
-            },
-            ({type, info}) => {
-
-            })
-        })
-
+      this.$confirm("计划一旦删除将无法恢复，请确认选择", "提示").then(_ => {
+        let qs = require("qs");
+        let data = qs.stringify({ maintenanceIds: this.maintenanceIds });
+        this.Axios(
+          {
+            params: data,
+            type: "post",
+            url: "/mplan/delete"
+          },
+          this
+        ).then(
+          response => {
+            this.load();
+          },
+          ({ type, info }) => {}
+        );
+      });
     },
     stopDiscontinuation() {
-      this.$confirm('计划一旦停用将无法撤销，请确认选择', '提示')
-        .then(_ => {
-          let qs = require("qs");
-          let data = qs.stringify({maintenanceIds: this.maintenanceIds});
-          this.Axios(
-            {
-              params:data,
-              type: "post",
-              url: "/mplan/discontinuation",
-            },
-            this
-          ).then(response => {
-              this.load();
-            },
-            ({type, info}) => {
-
-            })
-        })
+      this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
+        let qs = require("qs");
+        let data = qs.stringify({ maintenanceIds: this.maintenanceIds });
+        this.Axios(
+          {
+            params: data,
+            type: "post",
+            url: "/mplan/discontinuation"
+          },
+          this
+        ).then(
+          response => {
+            this.load();
+          },
+          ({ type, info }) => {}
+        );
+      });
     },
     //审核操作
     submitAudit() {
-      this.formLabelAlign.type ? this.formLabelAlign.type = 0 : this.formLabelAlign.type = 1;
+      this.formLabelAlign.type
+        ? (this.formLabelAlign.type = 0)
+        : (this.formLabelAlign.type = 1);
       this.Axios(
         {
-          params:{
+          params: {
             passOrTurn: this.formLabelAlign.radio,
             maintenanceId: this.maintenanceIds,
             isEndAudit: this.formLabelAlign.type,
@@ -372,31 +476,31 @@ export default {
             nextUserId: this.toAudit.id
           },
           type: "get",
-          url: "/mplan/maintenanceAudit",
+          url: "/mplan/maintenanceAudit"
         },
         this
-      ).then(response => {
-          this.arr="";
+      ).then(
+        response => {
+          this.arr = "";
           this.load();
           this.outerVisible = false;
         },
-        ({type, info}) => {
-
-        })
+        ({ type, info }) => {}
+      );
     },
     outerVisibleIsOk() {
       if (this.arr.length === 1) {
-        this.outerVisible = true
-      } else if(this.arr.length === 0){
-        alert("请选择计划")
-      }else{
-        alert("抱歉只能计划只能单个修改")
+        this.outerVisible = true;
+      } else if (this.arr.length === 0) {
+        alert("请选择计划");
+      } else {
+        alert("抱歉只能计划只能单个修改");
       }
     },
     getPersonnel(params) {
       this.toAudit = params.person;
       this.innerVisible = params.hide;
-    },
+    }
   },
   created() {
     this.listMaintenanceLevel();
@@ -407,6 +511,40 @@ export default {
     personnel
   }
 };
+Vue.component("table-upkeep", {
+  template: `<span>
+        <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">修改</a>&nbsp;
+        <a href="" @click.stop.prevent="stop(rowData,index)" style="text-decoration: none;">停止</a>&nbsp;
+        <a href="" @click.stop.prevent="deleteRow(rowData,index)" style="text-decoration: none;">删除</a>
+        </span>`,
+  props: {
+    rowData: {
+      type: Object
+    },
+    field: {
+      type: String
+    },
+    index: {
+      type: Number
+    }
+  },
+  methods: {
+    update() {
+      // 参数根据业务场景随意构造
+      let params = { type: "edit", index: this.index, rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    },
+    deleteRow() {
+      // 参数根据业务场景随意构造
+      let params = { type: "delete", rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    },
+    stop() {
+      let params = { type: "stop", rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    }
+  }
+});
 </script>
 
 <style lang="less" scoped>

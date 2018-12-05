@@ -16,6 +16,7 @@
           type="password"
           placeholder="密码"
           v-model="password"
+          @keyup.enter.native="login"
         ></el-input>
       </p>
       <p class="proving">
@@ -23,6 +24,7 @@
           type="text"
           placeholder="验证码"
           v-model="verification"
+          @keyup.enter.native="login"
         ></el-input>
         <el-button
           type="primary"
@@ -36,6 +38,7 @@
           type="primary"
           round
           @click="login"
+          @keyup.enter.native="login"
         >登录
         </el-button>
       </p>
