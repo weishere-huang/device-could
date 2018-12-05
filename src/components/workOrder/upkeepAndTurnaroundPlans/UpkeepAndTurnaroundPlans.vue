@@ -138,27 +138,33 @@
           </el-form>
         </div>
         <div class="breakdown-details">
-          <h5>故障详情</h5>
+          <h5>计划详情</h5>
           <el-form
             label-width="120px"
             :model="formLabelAlign"
           >
-            <el-form-item label="故障编码：">
+            <el-form-item label="分类：">
               <span></span>
             </el-form-item>
-            <el-form-item label="故障等级：">
+            <el-form-item label="级别：">
               <span></span>
             </el-form-item>
-            <el-form-item label="影响范围：">
+            <el-form-item label="计划周期：">
               <span></span>
             </el-form-item>
-            <el-form-item label="故障提交人：">
+            <el-form-item label="开始时间：">
               <span></span>
             </el-form-item>
-            <el-form-item label="故障上报时间：">
+            <el-form-item label="结束时间：">
               <span></span>
             </el-form-item>
-            <el-form-item label="故障描述：">
+            <el-form-item label="执行时间：">
+              <span></span>
+            </el-form-item>
+            <el-form-item label="计划频次：">
+              <span></span>
+            </el-form-item>
+            <el-form-item label="计划内容：">
               <el-input
                 type="textarea"
                 :autosize="{ minRows: 6, maxRows: 6}"
@@ -167,41 +173,12 @@
                 style="width:94%"
               ></el-input>
             </el-form-item>
-            <el-form-item label="原因分析：">
-              <el-input
-                type="textarea"
-                :autosize="{ minRows: 6, maxRows: 6}"
-                placeholder=""
-                readonly
-                style="width:94%"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="相关照片：">
-              <span style="cursor: pointer;color:#409eff" @click="pictureDialog=true">查看照片</span>
+            <el-form-item label="计划制定人：">
+              <span></span>
             </el-form-item>
           </el-form>
         </div>
       </div>
-      <!-- 照片弹框 -->
-      <el-dialog
-        title="查看图片"
-        :visible.sync="pictureDialog"
-        width="60%"
-      >
-        <el-carousel
-          :interval="4000"
-          type="card"
-          height="400px"
-        >
-          <el-carousel-item
-            v-for="item in 6"
-            :key="item"
-          >
-            <h3>{{ item }}</h3>
-          </el-carousel-item>
-        </el-carousel>
-      </el-dialog>
-      <!-- 照片弹框结束 -->
       <div class="right">
         <div class="equipment">
           <h5>设备对象</h5>
@@ -391,7 +368,6 @@ export default {
       formLabelAlign: {
         radio: ""
       },
-      pictureDialog: false,
       dialogVisible2: false,
       dialogVisible1: false,
       outerVisible: false,

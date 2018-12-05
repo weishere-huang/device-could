@@ -78,7 +78,7 @@
               <span slot="title">工单</span></template>
             <el-menu-item index="/WorkOrder">工单列表</el-menu-item>
             <el-menu-item index="/BreakdownOrder">故障工单详情</el-menu-item>
-            <el-menu-item index="/WorkOrder">选项3</el-menu-item>
+            <el-menu-item index="/UpkeepAndTurnaroundPlans">检修&保养计划工单详情</el-menu-item>
           </el-submenu>
           <!-- <el-submenu index="10">
             <template slot="title">
@@ -208,9 +208,27 @@ export default {
     out(){
       this.Axios(
         {
-
-        }
-      )
+          url: "/user/logout",
+          type:"post",
+          option:{enableMsg:false}
+        },
+      ).then(response=>{
+        this.$confirm("您确定要退出登录吗？","Warning",{
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(()=>{
+          this.$message({
+            message: "您已退出登录",
+            type:"success"
+          })
+          sessionStorage.removeItem('token');
+          this.$router.push({
+            path: "/Login",
+            redirect: "/Login"
+          });
+        })
+      },({type,info})=>{})
 
     }
 

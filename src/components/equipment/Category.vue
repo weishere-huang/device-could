@@ -46,7 +46,7 @@
         :visible.sync="dialogVisible1"
         width="30%"
         >
-       <el-form ref="form" label-width="90px">
+       <el-form ref="form" label-width="90px" style="padding:10px;">
           <el-form-item label="类别名称：">
             <el-input v-model="nodedata.categoryName" size="mini"></el-input>
           </el-form-item>
@@ -57,10 +57,6 @@
             <el-button size="mini" @click="updateCategory">确认修改</el-button>
           </el-form-item>
         </el-form>
-        <!-- <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-        </span> -->
       </el-dialog>
     </div>
     <el-dialog
@@ -68,7 +64,7 @@
       :visible.sync="dialogVisible"
       width="30%"
       >
-      <el-form ref="form" label-width="90px">
+      <el-form ref="form" label-width="90px" style="padding:10px;">
           <el-form-item label="类别名称：">
             <el-input v-model="addname" size="mini"></el-input>
           </el-form-item>

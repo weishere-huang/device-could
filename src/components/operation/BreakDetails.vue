@@ -5,6 +5,27 @@
         <el-button size="small" @click="toback">返回</el-button>
         <el-button size="small" @click="commitAudit">提交审核</el-button>
         <el-button size="small" @click="dispel">故障消除</el-button>
+        <!-- 故障消除弹框 -->
+        <el-dialog
+          title="故障消除"
+          :visible.sync="dialogVisible"
+          width="30%"
+          >
+           <el-form label-position=right label-width="120px" :model="formLabelAlign" style="padding:10px">
+            <el-form-item label="故障持续时间：">
+              <el-input  v-model="formLabelAlign.desc" size="mini" style="width:30%"></el-input>
+              <span>小时</span>
+            </el-form-item>
+            <el-form-item label="消除原因：">
+              <el-input type="textarea" v-model="formLabelAlign.desc"></el-input>
+            </el-form-item>
+           </el-form>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+          </span>
+        </el-dialog>
+        <!-- 故障消除弹框结束 -->
       </div>
       <div class="bottom">
         <div class="left">
@@ -12,22 +33,22 @@
             <h5>故障对象</h5>
             <el-form label-width="100px">
               <el-form-item label="设备编码：">
-                <el-input v-model="companyName.deviceNo" size="mini" readonly></el-input>
+                <span>{{companyName.deviceNo}}</span>
               </el-form-item>
               <el-form-item label="设备名称：">
-                <el-input v-model="companyName.deviceName" size="mini" readonly></el-input>
+                <span>{{companyName.deviceName}}</span>
               </el-form-item>
               <el-form-item label="规格/型号：">
-                <el-input v-model="companyName.deviceSpec" size="mini" readonly></el-input>
+              <span>{{companyName.deviceSpec}}</span>
               </el-form-item>
               <el-form-item label="设备位号：">
-                <el-input v-model="companyName.locationNo" size="mini" readonly></el-input>
+                <span>{{companyName.locationNo}}</span>
               </el-form-item>
               <el-form-item label="安装位置：">
-                <el-input v-model="companyName.location" size="mini" readonly></el-input>
+                <span>{{companyName.location}}</span>
               </el-form-item>
               <el-form-item label="所属单位：">
-                <el-input v-model="companyName.organizeName" size="mini" readonly></el-input>
+                <span>{{companyName.organizeName}}</span>
               </el-form-item>
             </el-form>
           </div>
@@ -37,13 +58,13 @@
               <el-form-item label="故障持续时间：">
                 <span>{{companyName.faultDuration}}</span>
               </el-form-item>
-              <el-form-item label="取消人：">
+              <el-form-item label="消除人：">
                 <span>{{companyName.dispel}}</span>
               </el-form-item>
-              <el-form-item label="取消时间：">
+              <el-form-item label="消除时间：">
                 <span>{{companyName.dispelTime}}</span>
               </el-form-item>
-              <el-form-item label="取消原因：" style="border-bottom:1px dashed #dde2eb; height:auto; padding-bottom:5px">
+              <el-form-item label="消除原因：" style="border-bottom:1px dashed #dde2eb; height:auto; padding-bottom:5px">
                 <el-input type="textarea" v-model="companyName.dispelCause" style="width:100%;" readonly></el-input>
               </el-form-item>
               <el-form-item label="撤销人：">
@@ -63,38 +84,38 @@
             <h5>故障信息</h5>
             <el-form :inline="true" style="margin-bottom:5px" size="small" label-width="100px">
               <el-form-item label="故障编码：">
-                <el-input v-model="companyName.faultNo" style="width:150px" readonly size="mini"></el-input>
+                <span>{{companyName.faultNo}}</span>
               </el-form-item>
               <el-form-item label="故障状况：">
-                <el-input v-model="companyName.state" style="width:150px" readonly size="mini"></el-input>
+                <span>{{companyName.state}}</span>
               </el-form-item>
             </el-form>
             <el-form :inline="true" style="margin-bottom:5px" size="small" label-width="100px">
               <el-form-item label="故障等级：">
-                <el-input v-model="companyName.faultLevel" style="width:150px" readonly size="mini"></el-input>
+                <span>{{companyName.faultLevel}}</span>
               </el-form-item>
               <el-form-item label="故障来源：">
-                <el-input v-model="companyName.faultSource" style="width:150px" readonly size="mini"></el-input>
+                <span>{{companyName.faultSource}}</span>
               </el-form-item>
             </el-form>
             <el-form :inline="true" style="margin-bottom:5px" size="small" label-width="100px">
               <el-form-item label="报告人：">
-                <el-input v-model="companyName.discovery" style="width:150px" readonly size="mini"></el-input>
+                <span>{{companyName.discovery}}</span>
               </el-form-item>
               <el-form-item label="报告时间：">
                 <span>{{companyName.discoveryTime}}</span>
               </el-form-item>
             </el-form>
-            <el-form style="margin-bottom:5px" size="small" label-width="100px">
-              <el-form-item label="故障描述：" style="margin-bottom:5px;">
+            <el-form style="margin-bottom:5px;" size="small" label-width="100px" >
+              <el-form-item label="故障描述：" style="margin-bottom:5px;width:100%">
                 <el-input  type="textarea" :autosize="{ minRows: 4, maxRows: 6}" placeholder="请输入内容" v-model="companyName.faultDesc" style="width:94%"
                 >
                 </el-input>
               </el-form-item>
-              <el-form-item label="原因分析：">
+              <el-form-item label="原因分析：" style="width:100%">
                 <el-input type="textarea"  :autosize="{ minRows: 4, maxRows: 6}" placeholder="请输入内容" v-model="companyName.causeAnalysis" style="width:94%"></el-input>
               </el-form-item>
-              <el-form-item label="照片：">
+              <el-form-item label="照片：" style="width:100%">
                 <template>
                   <el-carousel trigger="click" :autoplay=false height="200px">
                     <el-carousel-item v-for="item in 6" :key="item">
@@ -115,6 +136,8 @@
     name: "",
     data() {
       return {
+        dialogVisible:false,
+        formLabelAlign:{},
         faultId:0,
         state:[],
         companyName:{
@@ -262,6 +285,7 @@
           })
       },
       dispel(){
+        this.dialogVisible=true;
         let qs = require("qs");
         let data = qs.stringify({
           faultIds:this.companyName.id,
@@ -356,6 +380,10 @@
             padding: 10px;
             border-radius: 5px;
             min-height: 698px;
+            .el-form-item{
+              width: 45%;
+            }
+            
             h5 {
               position: relative;
               top: -20px;

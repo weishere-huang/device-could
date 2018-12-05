@@ -16,7 +16,7 @@
         <div>
           <v-table :row-dblclick="modefication" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:400px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
           <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="pageNumber" :pageIndex="pageIndex"  :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </div>
         </div>
       </div>
@@ -112,6 +112,7 @@
     },
     methods: {
       search() {
+        this.pageIndex =1;
         this.Axios(
           {
             params: {condition: this.searchs},
@@ -120,13 +121,17 @@
           },
           this
         ).then(response => {
-            this.pageNumber = response.data.data.totalElements;
-            this.tableData = response.data.data.content;
-            this.searchs = "";
-            for (let i in this.tableData) {
-              this.tableData[i].state === 1 ? (this.tableData[i].state = "禁用") : (this.tableData[i].state = "启用");
+            if(this.searchs!==""){
+              this.pageNumber = response.data.data.totalElements;
+              this.tableData = response.data.data.content;
+              this.searchs = "";
+              for (let i in this.tableData) {
+                this.tableData[i].state === 1 ? (this.tableData[i].state = "禁用") : (this.tableData[i].state = "启用");
+              }
+              this.tableDate = this.tableData;
+            }else{
+              this.pageChange(1);
             }
-            this.tableDate = this.tableData;
           },
           ({type, info}) => {
           })
@@ -214,12 +219,14 @@
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
         this.getTableData();
-        this.load();
+          this.load();
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
         this.pageSize = pageSize;
-        this.load();
+        if(this.isPageOk){
+          this.load();
+        }
         this.getTableData();
       },
       sortChange(params) {

@@ -141,7 +141,6 @@
   export default {
     data() {
       return {
-        adminKey:[],
         form:{
           name:"",
           desc:""
@@ -170,6 +169,7 @@
           checkedSystem: [],
           systemList: [],
           systemKey :[],
+          adminKey:[],
           isIndeterminate: true
         },
         information: {
@@ -179,6 +179,7 @@
           checkedSystem: [],
           systemList: [],
           systemKey :[],
+          adminKey:[],
           isIndeterminate: true
         },
         equipment: {
@@ -188,6 +189,7 @@
           checkedSystem: [],
           systemList: [],
           systemKey :[],
+          adminKey:[],
           isIndeterminate: true
         },
         personnel: {
@@ -197,6 +199,7 @@
           checkedSystem: [],
           systemList: [],
           systemKey :[],
+          adminKey:[],
           isIndeterminate: true
         },
         user: {
@@ -206,6 +209,7 @@
           checkedSystem: [],
           systemList: [],
           systemKey :[],
+          adminKey:[],
           isIndeterminate: true
         },
         message: {
@@ -215,6 +219,7 @@
           checkedSystem: [],
           systemList: [],
           systemKey :[],
+          adminKey:[],
           isIndeterminate: true
         },
       };
@@ -230,6 +235,7 @@
           })
       },
       systemCheckAllChange(val) {
+        this.adminKey="";
         if(val){
           this.list(this.system.systemList,this.system.systemList,this.system.systemKey,1);
         }else{
@@ -256,11 +262,13 @@
         this.system.sShow = !this.system.sShow;
         this.system.sHide = !this.system.sHide;
       },
+
       informationCheckAllChange(val) {
+        this.adminKey="";
         if(val){
           this.list(this.information.systemList,this.information.systemList,this.information.systemKey,2);
         }else{
-          this.list(this.adminKey,this.information.systemList,this.system.systemKey,1);
+          this.list(this.adminKey,this.information.systemList,this.information.systemKey,2);
         }
         this.information.checkedSystem = val ? this.information.systemList : [];
         this.information.isIndeterminate = false;
@@ -284,11 +292,13 @@
         this.information.sShow = !this.information.sShow;
         this.information.sHide = !this.information.sHide;
       },
+
       equipmentCheckAllChange(val) {
+        this.adminKey="";
         if(val){
           this.list(this.equipment.systemList,this.equipment.systemList,this.equipment.systemKey,3);
         }else{
-          this.list(this.adminKey,this.equipment.systemList,this.system.systemKey,1);
+          this.list(this.adminKey,this.equipment.systemList,this.equipment.systemKey,3);
         }
         this.equipment.checkedSystem = val ? this.equipment.systemList : [];
         this.equipment.isIndeterminate = false;
@@ -314,10 +324,11 @@
       },
 
       personnelCheckAllChange(val) {
+        this.adminKey="";
         if(val){
           this.list(this.personnel.systemList,this.personnel.systemList,this.personnel.systemKey,4);
         }else{
-          this.list(this.adminKey,this.personnel.systemList,this.system.systemKey,1);
+          this.list(this.adminKey,this.personnel.systemList,this.personnel.systemKey,4);
         }
         this.personnel.checkedSystem = val ? this.personnel.systemList : [];
         this.personnel.isIndeterminate = false;
@@ -341,11 +352,13 @@
         this.personnel.sShow = !this.personnel.sShow;
         this.personnel.sHide = !this.personnel.sHide;
       },
+
       userCheckAllChange(val) {
+        this.adminKey="";
         if(val){
           this.list(this.user.systemList,this.user.systemList,this.user.systemKey,5);
         }else{
-          this.list(this.adminKey,this.user.systemList,this.system.systemKey,1);
+          this.list(this.adminKey,this.user.systemList,this.user.systemKey,5);
         }
         this.user.checkedSystem = val ? this.user.systemList : [];
         this.user.isIndeterminate = false;
@@ -368,11 +381,13 @@
         this.user.sShow = !this.user.sShow;
         this.user.sHide = !this.user.sHide;
       },
+
       messageCheckAllChange(val) {
+        this.adminKey="";
         if(val){
           this.list(this.message.systemList,this.message.systemList,this.message.systemKey,6);
         }else{
-          this.list(this.adminKey,this.message.systemList,this.system.systemKey,1);
+          this.list(this.adminKey,this.message.systemList,this.message.systemKey,6);
         }
         this.message.checkedSystem = val ? this.message.systemList : [];
         this.message.isIndeterminate = false;
@@ -433,36 +448,37 @@
           })
       },
       list(value,toValues,key,number){
-        this.systemID = "";
+        let toKey = "";
         for(let i in value){
           for (let j in toValues){
             if(value[i] === toValues[j]) {
-              if (this.systemID === "") {
-                this.systemID += key[j];
-              } else {
-                this.systemID += "," + key[j];
+              if (toKey === "") {
+                toKey = key[j];
+              } else if(toValues!==""){
+                toKey += "," + key[j];
               }
             }
           }
+          // console.log(toKey);
         }
         switch(number){
           case 1:
-            this.systemKeyInfo[0] = this.systemID;
+            this.system.adminKey = toKey;
             break;
           case 2:
-            this.systemKeyInfo[1] = this.systemID;
+            this.information.adminKey = toKey;
             break;
           case 3:
-            this.systemKeyInfo[2] = this.systemID;
+            this.equipment.adminKey = toKey;
             break;
           case 4:
-            this.systemKeyInfo[3]= this.systemID;
+            this.personnel.adminKey = toKey;
             break;
           case 5:
-            this.systemKeyInfo[4] = this.systemID;
+            this.user.adminKey = toKey;
             break;
           case 6:
-            this.systemKeyInfo[5] = this.systemID;
+            this.message.adminKey = toKey;
             break;
           default:
             break;
@@ -492,14 +508,12 @@
       },
       update(){
         this.systemID = "";
-        for(let i = 0;i< this.systemKeyInfo.length;i++){
-          if(this.systemID === ""){
-            this.systemID = this.systemKeyInfo[i];
-          }else if(this.systemKeyInfo[i]!==""){
-            this.systemID += ","+this.systemKeyInfo[i];
-          }
-        }
-        console.log(this.systemID);
+        this.systemID = this.system.adminKey.toString();
+        this.systemID == "" ? this.systemID = this.information.adminKey : this.information.adminKey!="" ? this.systemID +=","+this.information.adminKey:"";
+        this.systemID == "" ? this.systemID = this.equipment.adminKey : this.equipment.adminKey!="" ? this.systemID +=","+this.equipment.adminKey:"";
+        this.systemID == "" ? this.systemID = this.personnel.adminKey : this.personnel.adminKey!="" ? this.systemID +=","+this.personnel.adminKey:"";
+        this.systemID == "" ? this.systemID = this.user.adminKey : this.user.adminKey!="" ? this.systemID +=","+this.user.adminKey:"";
+        this.systemID == "" ? this.systemID = this.message.adminKey : this.message.adminKey!="" ? this.systemID +=","+this.message.adminKey:"";
         let qs = require("qs");
         let data = qs.stringify({
           id:this.roleId,
@@ -531,6 +545,12 @@
           this
         ).then(
           response => {
+            let adminKey=new Array();
+            let adminKey1=new Array();
+            let adminKey2=new Array();
+            let adminKey3=new Array();
+            let adminKey4=new Array();
+            let adminKey5=new Array();
             let arr = new Array();
             let arr1 = new Array();
             let arr2 = new Array();
@@ -540,21 +560,27 @@
             for (let i in response.data.data) {
               if (response.data.data[i].parentCode === 1) {
                 arr[arr.length] = response.data.data[i].name;
+                adminKey[adminKey.length] = response.data.data[i].id;
               }
               if (response.data.data[i].parentCode === 2) {
                 arr1[arr1.length] = response.data.data[i].name;
+                adminKey1[adminKey1.length] = response.data.data[i].id;
               }
               if (response.data.data[i].parentCode === 3) {
                 arr2[arr2.length] = response.data.data[i].name;
+                adminKey2[adminKey2.length] = response.data.data[i].id;
               }
               if (response.data.data[i].parentCode === 4) {
                 arr3[arr3.length] = response.data.data[i].name;
+                adminKey3[adminKey3.length] = response.data.data[i].id;
               }
               if (response.data.data[i].parentCode === 5) {
                 arr4[arr4.length] = response.data.data[i].name;
+                adminKey4[adminKey4.length] = response.data.data[i].id;
               }
               if (response.data.data[i].parentCode === 6) {
                 arr5[arr5.length] = response.data.data[i].name;
+                adminKey5[adminKey5.length] = response.data.data[i].id;
               }
             }
             this.system.checkedSystem = arr;
@@ -563,11 +589,19 @@
             this.personnel.checkedSystem = arr3;
             this.user.checkedSystem = arr4;
             this.message.checkedSystem = arr5;
+
+            this.system.adminKey = adminKey;
+            this.information.adminKey = adminKey1;
+            this.equipment.adminKey = adminKey2;
+            this.personnel.adminKey = adminKey3;
+            this.user.adminKey = adminKey4;
+            this.message.adminKey = adminKey5;
           },
           ({type, info}) => {
 
           })
       },
+
       PermissionsList(number){
         this.Axios(
           {

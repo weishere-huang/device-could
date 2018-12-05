@@ -3,6 +3,7 @@
     <div class="top">
       <el-button size="small" @click="toback">返回</el-button>
       <el-button size="small" @click="addPlan">保存</el-button>
+      <!--<el-button size="small" @click="test">测试</el-button>-->
     </div>
     <div class="bottom">
       <div class="left">
@@ -35,14 +36,18 @@
         </el-form>
 
         <el-form label-width="110px" v-if="companyName.planType==='周期'" v-model="companyName.planType">
+          <!--<el-form-item label="计划日期：">-->
+          <!--<el-col :span="11">-->
+          <!--<el-date-picker type="date" placeholder="选择日期" v-model="companyName.startTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>-->
+          <!--</el-col>-->
+          <!--<el-col class="line" :span="2">~</el-col>-->
+          <!--<el-col :span="11">-->
+          <!--<el-date-picker type="date" placeholder="选择日期" v-model="companyName.endTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;" size="mini"></el-date-picker>-->
+          <!--</el-col>-->
+          <!--</el-form-item>-->
           <el-form-item label="计划日期：">
-            <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.startTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
-            </el-col>
-            <el-col class="line" :span="2">~</el-col>
-            <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.endTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;" size="mini"></el-date-picker>
-            </el-col>
+            <el-date-picker v-model="timeValue" type="daterange" size="mini" align="right" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
+            </el-date-picker>
           </el-form-item>
           <el-form-item label="首次执行时间：">
             <el-col :span="11">
@@ -100,7 +105,7 @@
       <div class="right">
         <div>
           <el-button size="small" @click="eliminateAll">清空已选</el-button>
-          <el-button size="small"@click="addPlanIsShow">设备添加</el-button>
+          <el-button size="small" @click="addPlanIsShow">设备添加</el-button>
         </div>
         <h5>设备列表</h5>
         <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
@@ -198,11 +203,41 @@
         pageIndex: 1,
         pageSize: 10,
         tableData: [],
-        tableDate: []
+        tableDate: [],
+        pickerOptions2: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
+        timeValue: ''
       };
     },
     created() {},
     methods: {
+      test(){
+      },
       TurnaroundPlans() {
         this.$router.push({
           path: "/TurnaroundPlans"
@@ -218,6 +253,8 @@
       toAddPlan(){
         this.companyName.executeTime = this.date +" "+ this.times;
         this.companyName.executeTime = this.companyName.executeTime.split(".")[0];
+        this.companyName.startTime = this.timeValue[0];
+        this.companyName.endTime = this.timeValue[1];
         this.companyName.maintenanceType = 0;
         if(this.companyName.planType === "单次"){
           this.companyName.endTime =this.companyName.startTime;
