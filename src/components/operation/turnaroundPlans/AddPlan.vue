@@ -102,8 +102,19 @@
         personListValue: [],
         data2: [
           {
-            id:"",
-            categoryName:""
+            id:1,
+            categoryName:"一级",
+            children: [{
+              id: 11,
+              categoryName: '二级 1-1',
+              children: [{
+                id: 12,
+                categoryName: '三级 1-1-1'
+              }, {
+                id: 13,
+                categoryName: '三级 1-1-2'
+              }]
+            }]
           }
         ],
         defaultProps: {
@@ -187,7 +198,7 @@
           },
           this
         ).then(response => {
-            this.data2 = response.data.data;
+            // this.data2 = response.data.data;
           },
           ({type, info}) => {
 
@@ -233,11 +244,49 @@
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
-      }
+      },
+
+
+      filterArray2(data, parent) {
+        let vm = this;
+        var tree = [];
+        var temp;
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].categoryParentNo == parent) {
+            console.log(data[i]);
+            var obj = data[i];
+            temp = this.filterArray2(data, data[i].categoryName);
+            if (temp.length > 0) {
+              obj.children = temp;
+            }
+            tree.push(obj);
+          }
+        }
+        return tree;
+      },
+      findAlldeviceClassify(){
+        this.Axios({
+          params: {
+          },
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/deviceCategory/all",
+        },this)
+          .then(result => {
+            this.data2= this.filterArray2(result.data.data,0);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+
     },
     created() {
-      this.deviceType();
+      // this.deviceType();
       this.loads();
+      this.findAlldeviceClassify()
     }
   };
 </script>
