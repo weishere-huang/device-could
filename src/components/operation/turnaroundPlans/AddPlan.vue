@@ -297,6 +297,7 @@ export default {
       this.getTableData();
     },
 
+
     filterArray2(data, parent) {
       let vm = this;
       var tree = [];
@@ -314,26 +315,24 @@ export default {
       }
       return tree;
     },
-    findAlldeviceClassify() {
-      this.Axios(
-        {
-          params: {},
-          option: {
-            enableMsg: false
-          },
-          type: "get",
-          url: "/deviceCategory/all"
+    findAlldeviceClassify(){
+      this.Axios({
+        params: {
         },
-        this
-      )
+        option: {
+          enableMsg: false
+        },
+        type: "get",
+        url: "/deviceCategory/all",
+      },this)
         .then(result => {
-          this.data2 = this.filterArray2(result.data.data, 0);
+          this.data2= this.filterArray2(result.data.data,0);
         })
         .catch(err => {
           console.log(err);
         });
-    }
-  },
+    },
+    },
   created() {
     // this.deviceType();
     this.loads();

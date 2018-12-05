@@ -1,116 +1,47 @@
 <template>
   <div class="breakdown-order">
     <div class="top">
-      <el-button size="small">返回</el-button>
-      <el-button
-        size="small"
-        @click="outerVisible=true"
-      >提交审核</el-button>
+      <el-button @click="toBack" size="small">返回</el-button>
+      <el-button size="small" @click="outerVisible=true">提交审核</el-button>
       <!-- 审核弹框 -->
-      <el-dialog
-        title="审核"
-        :visible.sync="outerVisible"
-        width="600px"
-      >
-        <el-form
-          label-position=right
-          label-width="120px"
-          :model="formLabelAlign"
-          style="padding:10px"
-        >
+      <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
+        <el-form label-position=right label-width="120px" :model="formLabelAlign" style="padding:10px">
           <el-form-item label="审批结果：">
-            <el-radio
-              v-model="formLabelAlign.radio"
-              :label="0"
-            >同意</el-radio>
-            <el-radio
-              v-model="formLabelAlign.radio"
-              :label="1"
-            >驳回</el-radio>
+            <el-radio v-model="formLabelAlign.radio" :label="0">同意</el-radio>
+            <el-radio v-model="formLabelAlign.radio" :label="1">驳回</el-radio>
           </el-form-item>
           <el-form-item label="审批意见：">
-            <el-input
-              type="textarea"
-              v-model="formLabelAlign.desc"
-            ></el-input>
+            <el-input type="textarea" v-model="formLabelAlign.desc"></el-input>
           </el-form-item>
           <div v-if="formLabelAlign.radio!=1">
             <el-form-item label="是否终审：">
               <el-checkbox-group v-model="formLabelAlign.type">
-                <el-checkbox
-                  label=""
-                  name="type"
-                ></el-checkbox>
+                <el-checkbox label="" name="type"></el-checkbox>
               </el-checkbox-group>
             </el-form-item>
-            <el-form-item
-              label="下一级审批人："
-              v-if="formLabelAlign.type!=true"
-            >
-              <el-input
-                v-model="toAudit.name"
-                size="mini"
-                style="width:60%"
-              ></el-input>
-              <el-button
-                type="primary"
-                @click="innerVisible = true"
-                size="mini"
-              >添加审批人</el-button>
+            <el-form-item label="下一级审批人：" v-if="formLabelAlign.type!=true">
+              <el-input v-model="toAudit.name" size="mini" style="width:60%"></el-input>
+              <el-button type="primary" @click="innerVisible = true" size="mini">添加审批人</el-button>
             </el-form-item>
           </div>
         </el-form>
-        <el-dialog
-          title="人员添加"
-          :visible.sync="innerVisible"
-          append-to-body
-        >
+        <el-dialog title="人员添加" :visible.sync="innerVisible" append-to-body>
           <div style="padding:10px">
-            <div
-              class="search"
-              style="padding:10px 0"
-            >
-              <el-input
-                type="search"
-                size="mini"
-                v-model="key"
-                style="width:30%;"
-              ></el-input>
+            <div class="search" style="padding:10px 0">
+              <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
               <el-button size="mini">搜索</el-button>
               <span style="padding:0 10px;">最近搜索：</span>
               <span style="text-decoration: underline;"></span>
             </div>
             <div class="tableList">
-              <v-table
-                :row-dblclick="getPersonnel"
-                :select-all="selectALL"
-                :select-group-change="selectGroupChange"
-                is-horizontal-resize
-                column-width-drag
-                :multiple-sort="false"
-                style="width:100%;min-height:300px;"
-                :columns="columns"
-                :table-data="tableData"
-                row-hover-color="#eee"
-                row-click-color="#edf7ff"
-              ></v-table>
+              <v-table :row-dblclick="getPersonnel" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:300px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
             </div>
           </div>
 
         </el-dialog>
-        <div
-          slot="footer"
-          class="dialog-footer"
-        >
-          <el-button
-            @click="outerVisible = false"
-            size="mini"
-          >取 消</el-button>
-          <el-button
-            @click="outerVisible = false"
-            type="primary"
-            size="mini"
-          >提 交</el-button>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="outerVisible = false" size="mini">取 消</el-button>
+          <el-button @click="outerVisible = false" type="primary" size="mini">提 交</el-button>
         </div>
       </el-dialog>
       <!-- 审核弹框结束 -->
@@ -119,30 +50,24 @@
       <div class="left">
         <div class="msg">
           <h5>工单信息</h5>
-          <el-form
-            label-width="120px"
-            :model="formLabelAlign"
-          >
+          <el-form label-width="120px" :model="workInfo">
             <el-form-item label="工单编号：">
-              <span></span>
+              <span>{{workInfo.workNo}}</span>
             </el-form-item>
             <el-form-item label="工单类型：">
-              <span></span>
+              <span>{{workInfo.workType}}</span>
             </el-form-item>
             <el-form-item label="工单状态：">
-              <span></span>
+              <span>{{workInfo.state}}</span>
             </el-form-item>
             <el-form-item label="工单创建时间：">
-              <span></span>
+              <span>{{workInfo.gmtCreate}}</span>
             </el-form-item>
           </el-form>
         </div>
         <div class="breakdown-details">
           <h5>故障详情</h5>
-          <el-form
-            label-width="120px"
-            :model="formLabelAlign"
-          >
+          <el-form label-width="120px" :model="formLabelAlign">
             <el-form-item label="故障编码：">
               <span></span>
             </el-form-item>
@@ -159,22 +84,10 @@
               <span></span>
             </el-form-item>
             <el-form-item label="故障描述：">
-              <el-input
-                type="textarea"
-                :autosize="{ minRows: 6, maxRows: 6}"
-                placeholder=""
-                readonly
-                style="width:94%"
-              ></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 6, maxRows: 6}" placeholder="" readonly style="width:94%"></el-input>
             </el-form-item>
             <el-form-item label="原因分析：">
-              <el-input
-                type="textarea"
-                :autosize="{ minRows: 6, maxRows: 6}"
-                placeholder=""
-                readonly
-                style="width:94%"
-              ></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 6, maxRows: 6}" placeholder="" readonly style="width:94%"></el-input>
             </el-form-item>
             <el-form-item label="相关照片：">
               <span style="cursor: pointer;color:#409eff" @click="pictureDialog=true">查看照片</span>
@@ -183,20 +96,9 @@
         </div>
       </div>
       <!-- 照片弹框 -->
-      <el-dialog
-        title="查看图片"
-        :visible.sync="pictureDialog"
-        width="60%"
-      >
-        <el-carousel
-          :interval="4000"
-          type="card"
-          height="400px"
-        >
-          <el-carousel-item
-            v-for="item in 6"
-            :key="item"
-          >
+      <el-dialog title="查看图片" :visible.sync="pictureDialog" width="60%">
+        <el-carousel :interval="4000" type="card" height="400px">
+          <el-carousel-item v-for="item in 6" :key="item">
             <h3>{{ item }}</h3>
           </el-carousel-item>
         </el-carousel>
@@ -205,27 +107,11 @@
       <div class="right">
         <div class="equipment">
           <h5>设备对象</h5>
-          <v-table
-            is-horizontal-resize
-            column-width-drag
-            :multiple-sort="false"
-            style="width:100%;"
-            :columns="equipmentTable"
-            :table-data="equipmentTableData"
-            row-hover-color="#eee"
-            row-click-color="#edf7ff"
-            row-height=24
-            :height="160"
-            :row-click="checkPerson"
-          >
+          <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;" :columns="equipmentTable" :table-data="equipmentTableData" row-hover-color="#eee" row-click-color="#edf7ff" row-height=24 :height="160" :row-click="checkPerson">
           </v-table>
         </div>
         <!-- 设备对象人员查看弹框 -->
-        <el-dialog
-          title="人员列表"
-          :visible.sync="dialogVisible1"
-          width="50%"
-        >
+        <el-dialog title="人员列表" :visible.sync="dialogVisible1" width="50%">
           <div style="padding:10px">
             <v-table
               is-horizontal-resize
@@ -246,10 +132,7 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-            <el-button
-              size="mini"
-              @click="dialogVisible2=true"
-            >从物料库中添加</el-button>
+            <el-button size="mini" @click="dialogVisible2=true">从物料库中添加</el-button>
             <el-button size="mini">保存列表</el-button>
           </div>
           <v-table
@@ -268,15 +151,8 @@
           </v-table>
         </div>
         <!-- 物料添加弹窗 -->
-        <el-dialog
-          title="备品备件"
-          :visible.sync="dialogVisible2"
-          width="70%"
-        >
-          <div
-            style="padding:10px"
-            class="dialog-case"
-          >
+        <el-dialog title="备品备件" :visible.sync="dialogVisible2" width="70%">
+          <div style="padding:10px" class="dialog-case">
             <div class="spare-parts-list">
               <el-tree
                 :data="spareParts"
@@ -289,13 +165,7 @@
             </div>
             <div class="center-list">
               <div style="padding:10px;">
-                <el-input
-                  type="search"
-                  size="mini"
-                  v-model="searchPerson"
-                  style="width:50%;"
-                  placeholder="关键词：设备编号、备件名称、型号/规格"
-                ></el-input>
+                <el-input type="search" size="mini" v-model="searchPerson" style="width:50%;" placeholder="关键词：设备编号、备件名称、型号/规格"></el-input>
                 <el-button size="mini">查询</el-button>
               </div>
               <v-table
@@ -326,14 +196,8 @@
         <!-- 物料添加弹窗结束 -->
         <div class="information-receipt">
           <h5>回执信息</h5>
-          <div
-            style="overflow-y:scroll;"
-            class="case"
-          >
-            <el-form
-              label-width="100px"
-              :model="formLabelAlign"
-            >
+          <div style="overflow-y:scroll;" class="case">
+            <el-form label-width="100px" :model="formLabelAlign">
               <el-form-item label="施工人员：">
                 <span></span>
               </el-form-item>
@@ -344,14 +208,7 @@
                 <span></span>
               </el-form-item>
               <el-form-item label="处理内容：">
-                <el-input
-                  type="textarea"
-                  :autosize="{ minRows: 2, maxRows: 4}"
-                  placeholder=""
-                  readonly
-                  style="width:94%"
-                  v-model="formLabelAlign.msg"
-                ></el-input>
+                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="" readonly style="width:94%" v-model="formLabelAlign.msg"></el-input>
               </el-form-item>
             </el-form>
           </div>
@@ -388,8 +245,11 @@ export default {
       searchPerson: "",
       key: "",
       toAudit: {},
-      formLabelAlign: {
-        radio: ""
+      workInfo: {
+        workNo:"",
+        workType:"",
+        state:"",
+        gmtCreate:"",
       },
       pictureDialog: false,
       dialogVisible2: false,
@@ -644,6 +504,10 @@ export default {
     };
   },
   methods: {
+    toBack(){
+      this.$router.back(-1)
+    },
+
     // 单元格编辑回调
     cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
       this.suppliesTableData[rowIndex][field] = newValue;
@@ -686,6 +550,10 @@ export default {
       }
       return tree;
     }
+  },
+  created(){
+    this.workInfo=this.$store.state.operation.work;
+    // console.log(aaa);
   }
 };
 </script>

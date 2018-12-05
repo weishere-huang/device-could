@@ -100,13 +100,24 @@ export default {
       personListValue: [],
       data2: [
         {
-          id: 1,
-          label: "",
-        },
+          id:1,
+          categoryName:"一级",
+          children: [{
+            id: 11,
+            categoryName: '二级 1-1',
+            children: [{
+              id: 12,
+              categoryName: '三级 1-1-1'
+            }, {
+              id: 13,
+              categoryName: '三级 1-1-2'
+            }]
+          }]
+        }
       ],
       defaultProps: {
         children: "children",
-        label: "label"
+        label: "categoryName"
       }
     };
   },
@@ -170,7 +181,7 @@ export default {
         if (data[i].categoryParentNo == parent) {
           console.log(data[i]);
           var obj = data[i];
-          temp = this.filterArray2(data, data[i].categoryName);
+          temp = this.filterArray2(data, data[i].categoryNo);
           if (temp.length > 0) {
             obj.children = temp;
           }

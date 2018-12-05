@@ -307,7 +307,42 @@ export default {
         .catch(err => {
           console.log(err);
         });
+      this.Axios(
+        {
+          params: {
+            page: this.pageIndex,
+            size: this.pageSize
+          },
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/message/allNotReadMsg"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },
+        this
+      )
+        //.get(apiMsg+"/message/allNotReadMsg/",data)
+        .then(result => {
+          console.log(result.data);
+          if (result.data.data.length > 0) {
+            for (let i = 0; i < result.data.data.length; i++) {
+              if (result.data.data[i].isRead == 0) {
+                result.data.data[i].isRead = "未读";
+              } else {
+                result.data.data[i].isRead = "已读";
+              }
+            }
+            this.tableData = result.data.data;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
+
     NotReadMsgCount() {
       //查询该用户未读消息数目
       this.axios

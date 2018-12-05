@@ -30,7 +30,7 @@
                 <el-button
                   type="text"
                   size="mini"
-                  @click="toRevise"
+                  @click="() => toRevise(data.id)"
                 >
                   修改
                 </el-button>
