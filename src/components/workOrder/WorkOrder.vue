@@ -135,46 +135,6 @@ export default {
         },
         {
           field: "state",
-          title: "型号/规格",
-          width: 90,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "state",
-          title: "设备位号",
-          width: 90,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "state",
-          title: "开始时间",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "state",
-          title: "结束时间",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "state",
-          title: "计划/故障提交人",
-          width: 90,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "state",
           title: "工单创建时间",
           width: 180,
           titleAlign: "center",
@@ -212,7 +172,30 @@ export default {
     },
     details(rowIndex, rowData, column) {
       console.log(rowData);
-    }
+    },
+
+
+    load() {
+      this.Axios(
+        {
+          params: {page: this.pageIndex, size:this.pageSize},
+          type: "get",
+          url: "/employee/findEmployeeList",
+        },
+        this
+      ).then(
+        response => {
+          this.totalNub = response.data.data.totalElements;
+          this.tableData = response.data.data.content;
+          for (let i in this.tableData) {
+            this.tableData[i].state === 1 ? (this.tableData[i].state = "禁用") : (this.tableData[i].state = "启用");
+          }
+          this.tableDate = this.tableData;
+        },
+        ({type, info}) => {
+
+        })
+    },
   },
   mounted() {}
 };
