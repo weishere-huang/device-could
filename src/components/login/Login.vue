@@ -203,6 +203,7 @@ import md5 from "js-md5/src/md5.js";
 import CryptoJS from "crypto-js/crypto-js.js";
 import forgetThePassword from "./ForgetThePassword";
 export default {
+  inject:['reload'],
   name: "Login",
   data() {
     return {
@@ -288,14 +289,10 @@ export default {
       ).then(result=>{
           if (result.data.code === 200) {
             sessionStorage.token=result.data.data.tokenStr;
-            console.log(result.data.data);
+            sessionStorage.user=result.data.data.employeeName
+            this.$store.commit("user",sessionStorage.getItem("user"));
             this.$store.commit("tokenSrc",result.data.data.tokenStr);
-            console.log(sessionStorage.token);
-            console.log(this.$store.state.token.tokenNub);
-            this.$router.push({
-              path: "/Home",
-              redirect: "/Home"
-            });
+            this.$router.replace('/Home')
             location.reload()
           }else{
             this.$message({

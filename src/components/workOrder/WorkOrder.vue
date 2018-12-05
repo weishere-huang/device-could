@@ -6,7 +6,8 @@
         <el-button size="small">全部工单</el-button>
       </el-badge>
       <el-badge
-        :value="3"
+        :value="333"
+        :max="99"
         class="item"
       >
         <el-button size="small">待审核</el-button>
@@ -133,48 +134,8 @@ export default {
         },
         {
           field: "state",
-          title: "型号/规格",
-          width: 90,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "state",
-          title: "设备位号",
-          width: 90,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "state",
-          title: "开始时间",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "state",
-          title: "结束时间",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "state",
-          title: "计划/故障提交人",
-          width: 90,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "state",
           title: "工单创建时间",
-          width: 180,
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true

@@ -313,7 +313,7 @@
       },
 
       //通过
-      findall() {
+      findall(data) {
         this.keyorall = 0
         //根据用户token查询所属组织机构下设备类别
         EventBus.$on("sideBarTroggleHandle", isCollapse => {
