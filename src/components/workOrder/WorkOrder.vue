@@ -171,7 +171,30 @@ export default {
     },
     details(rowIndex, rowData, column) {
       console.log(rowData);
-    }
+    },
+
+
+    load() {
+      this.Axios(
+        {
+          params: {page: this.pageIndex, size:this.pageSize},
+          type: "get",
+          url: "/employee/findEmployeeList",
+        },
+        this
+      ).then(
+        response => {
+          this.totalNub = response.data.data.totalElements;
+          this.tableData = response.data.data.content;
+          for (let i in this.tableData) {
+            this.tableData[i].state === 1 ? (this.tableData[i].state = "禁用") : (this.tableData[i].state = "启用");
+          }
+          this.tableDate = this.tableData;
+        },
+        ({type, info}) => {
+
+        })
+    },
   },
   mounted() {}
 };

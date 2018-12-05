@@ -78,7 +78,6 @@
   export default {
     data() {
       return {
-
         arr:[],
         dialogVisible:false,
         toAuditName:"",
@@ -403,7 +402,7 @@
         this.innerVisible = params.hide;
       },
       isSubmitAudit() {
-        this.formLabelAlign.type ? this.formLabelAlign.type = 0 : this.formLabelAlign.type = 1;
+        this.formLabelAlign.type ? this.formLabelAlign.type = 1 : this.formLabelAlign.type = 0;
         if(this.formLabelAlign.radio === "0"){
           let qs = require("qs");
           let data = qs.stringify({
@@ -421,6 +420,11 @@
             },
             this
           ).then(response => {
+             this.formLabelAlign.desc = "";
+              this.formLabelAlign.type = "";
+              this.formLabelAlign.time = "";
+              this.formLabelAlign.radio = "";
+              this.formLabelAlign.name = "";
               this.arr="";
               console.log(response);
               this.load();
