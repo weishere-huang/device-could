@@ -2,7 +2,8 @@ export default {
   state: {
     upkeep: "",
     turnround:"",
-    breakList:""
+    breakList:"",
+    work:""
   },
   mutations: {
     upkeepAmend(state, data) {
@@ -13,6 +14,9 @@ export default {
     },
     breakDetails(state,data){
       state.breakList = data
+    },
+    workOrders(state,data){
+      state.work = data
     }
   }
 }

@@ -297,17 +297,21 @@ export default {
       this.getTableData();
     },
 
-    filterArray2(data, parent) {
-      let vm = this;
-      var tree = [];
-      var temp;
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].categoryParentNo == parent) {
-          console.log(data[i]);
-          var obj = data[i];
-          temp = this.filterArray2(data, data[i].categoryNo);
-          if (temp.length > 0) {
-            obj.children = temp;
+
+      filterArray2(data, parent) {
+        let vm = this;
+        var tree = [];
+        var temp;
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].categoryParentNo == parent) {
+            console.log(data[i]);
+            var obj = data[i];
+            temp = this.filterArray2(data, data[i].categoryNo);
+            if (temp.length > 0) {
+              obj.children = temp;
+            }
+            tree.push(obj);
+
           }
           tree.push(obj);
         }
