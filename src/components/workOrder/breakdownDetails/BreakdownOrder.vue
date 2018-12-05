@@ -549,11 +549,30 @@ export default {
         }
       }
       return tree;
+    },
+
+
+    workLoad(stateNum){
+      this.Axios(
+        {
+          params: {workId:stateNum},
+          type: "get",
+          url: "/maintenanceWork/findOneWork",
+        },
+        this
+      ).then(
+        response => {
+          console.log(response.data);
+        },
+        ({type, info}) => {
+
+        })
     }
   },
   created(){
-    this.workInfo=this.$store.state.operation.work;
-    // console.log(aaa);
+    let aaa=this.$store.state.operation.work.id;
+    console.log(aaa);
+    this.workLoad(aaa);
   }
 };
 </script>

@@ -1,4 +1,3 @@
-
 <template>
   <div class="work-order">
     <div class="top">
@@ -184,9 +183,21 @@ export default {
 
     load(stateNum) {
       if(stateNum === -1){
-        this.pageIsOk = false;
-      }else{
         this.pageIsOk = true;
+      }else if (stateNum === 0){
+        this.pageIsOk = false;
+      }else if (stateNum === 1){
+        this.pageIsOk = false;
+      }else if (stateNum === 2){
+        this.pageIsOk = false;
+      }else if (stateNum === 3){
+        this.pageIsOk = false;
+      }else if (stateNum === 4){
+        this.pageIsOk = false;
+      }else if (stateNum === 5){
+        this.pageIsOk = false;
+      }else if (stateNum === 6){
+        this.pageIsOk = false;
       }
       this.Axios(
         {

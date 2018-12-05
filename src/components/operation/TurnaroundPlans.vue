@@ -173,9 +173,7 @@
       toAmend(rowIndex, rowData, column) {
         // 传值给修改
         this.$store.commit("turnaroundPlans", rowData);
-        this.$router.push({
-          path: "/TurnaroundPlansAmend"
-        });
+        this.$router.push("TurnaroundPlansAmend");
       },
       toPansAdd() {
         this.$router.push({

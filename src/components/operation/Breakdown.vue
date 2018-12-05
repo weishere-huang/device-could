@@ -352,6 +352,8 @@
           dispelCause:this.formLabelAlign.desc,
           faultDuration:this.formLabelAlign.time
         });
+        this.formLabelAlign.desc = "";
+        this.formLabelAlign.time = "";
         this.Axios(
           {
             params:data,
@@ -369,7 +371,11 @@
       },
       deleteBreak(){
         if(this.arr.length === 1){
-          this.toDeleteBreak();
+          if (this.arr[0].state!=="已删除"&&this.arr[0].state!=="待审核"){
+            this.toDeleteBreak();
+          }else{
+            alert("对不起、不能删除待审核或已删除状态的数据")
+          }
         }
         if(this.arr.length >1){
           alert("抱歉、只能单个处理")
@@ -448,7 +454,6 @@
             this
           ).then(response => {
               this.arr="";
-              console.log(response);
               this.load();
               this.outerVisible = false;
             },
@@ -459,7 +464,11 @@
       },
       outerVisibleIsOk() {
         if (this.arr.length === 1) {
-          this.outerVisible = true
+          if(this.arr[0].state !== "待审核"){
+            alert("抱歉、只能选择待审核的计划")
+          }else{
+            this.outerVisible = true
+          }
         } else if(this.arr.length ===0){
           alert("请选择要处理的故障")
         }else{
