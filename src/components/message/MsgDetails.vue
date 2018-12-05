@@ -89,8 +89,18 @@ export default {
     }
   },
   created() {
-    this.axios
-      .get(apiMsg + "/message/findOneMsg/" + this.msgDetail)
+    this.Axios({
+
+      // option: {
+      //   enableMsg: false
+      // },
+      type: "get",
+      url: "/message/findOneMsg/" + this.msgDetail
+      // loadingConfig: {
+      //   target: document.querySelector(".message")
+      // }
+    },this)
+      //.get(apiMsg + "/message/findOneMsg/" + this.msgDetail)
       .then(result => {
         console.log(result.data);
         this.message = result.data.data;

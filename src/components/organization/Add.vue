@@ -131,26 +131,27 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .add {
-  width: 100vw;
-  height: 100vh;
+  // width: 100vw;
+  // height: 100vh;
 
-  background-color: rgba(0, 0, 0, 0.103);
-  position: absolute;
-  top: 0%;
-  left: 0%;
+  // background-color: rgba(0, 0, 0, 0.103);
+  // position: absolute;
+  // top: 0%;
+  // left: 0%;
   //   margin-left: -150px;
   //   margin-top: -150px;
   .addcase {
     width: 500px;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    margin-top: -150px;
-    margin-left: -150px;
-    background-color: white;
-    padding: 25px;
-    border-radius: 5px;
-    box-shadow: 4px 5px 10px @Info;
+    
+    // position: relative;
+    // top: 50%;
+    // left: 50%;
+    // margin-top: -150px;
+    // margin-left: -150px;
+    // background-color: white;
+    padding: 15px;
+    // border-radius: 5px;
+    // box-shadow: 4px 5px 10px @Info;
     li {
       margin-top: 20px;
       text-align: right;

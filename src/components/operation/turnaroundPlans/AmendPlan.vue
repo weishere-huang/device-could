@@ -151,7 +151,7 @@ export default {
       ).then(response => {
           this.tableData = response.data.data.content;
           this.tabledate = this.tableData;
-          console.log(response.data);
+          // console.log(response.data);
           this.searchs = this.key;
         },
         ({type, info}) => {

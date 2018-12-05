@@ -10,7 +10,7 @@
               <el-button type="text" size="mini" @click="dialogVisible=true" >
                 添加
               </el-button>
-              <el-button type="text" size="mini"  @click="dialogVisible1=true">
+              <el-button type="text" size="mini"  @click="dialogVisible1=true,nodeCname=data.categoryName,nodeCMsg=data.categoryMsg">
                 修改
               </el-button>
               <el-button type="text" size="mini" @click="() => deleteCategory(data.id)">
@@ -20,7 +20,7 @@
           </span>
         </el-tree>
         <div style="width:100%;text-align:center">
-          <el-button size="small" style="width:200px;margin:auto" v-if="organize===''" @click="dialogVisible3=true">添加</el-button>          
+          <el-button size="small" style="width:200px;margin:auto" v-if="organize===''" @click="dialogVisible3=true">添加</el-button>
         </div>
         <el-dialog
           title="添加根节点"
@@ -48,10 +48,10 @@
         >
        <el-form ref="form" label-width="90px" style="padding:10px;">
           <el-form-item label="类别名称：">
-            <el-input v-model="nodedata.categoryName" size="mini"></el-input>
+            <el-input v-model="nodeCname" size="mini"></el-input>
           </el-form-item>
           <el-form-item label="备注：">
-            <el-input type="textarea" v-model="nodedata.categoryMsg"></el-input>
+            <el-input type="textarea" v-model="nodeCMsg"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button size="mini" @click="updateCategory">确认修改</el-button>
@@ -79,13 +79,16 @@
   </div>
 </template>
 <script>
-let id = 1000;
 export default {
+  inject: ["reload"],
   data() {
     return {
       dialogVisible3:false,
       dialogVisible1:false,
       dialogVisible:false,
+      nodeCname:"",
+      nodeCMsg:"",
+
       organize: "",
       // data5: this.organize,
       form: {
@@ -197,8 +200,8 @@ export default {
       let qs = require("qs");
       let data = qs.stringify({
         categoryId:this.nodedata.id,
-        categoryName:this.nodedata.categoryName,
-        categoryMsg:this.nodedata.categoryMsg
+        categoryName:this.nodeCname,
+        categoryMsg:this.nodeCMsg
       });
       this.Axios({
         url: "/deviceCategory/update",
@@ -225,6 +228,8 @@ export default {
         // .catch(err => {
         //   console.log(err);
         // });
+      this.nodeCname="";
+      this.nodeCMsg="";
     },
     deleteCategory(nodeId){
       console.log(nodeId+"nodeiddd");

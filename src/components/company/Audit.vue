@@ -1,7 +1,6 @@
 <template>
   <div class="auditCase">
     <div class="audit">
-      <span class="title">企业信息</span>
       <div class="left">
 
         <ul>
@@ -141,23 +140,23 @@
   @Warning: #e6a23c;
   @Danger: #f56c6c;
   @Info: #dde2eb;
-  .auditCase {
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #8081812a;
-  }
+  // .auditCase {
+  //   width: 100vw;
+  //   height: 100vh;
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   background-color: #8081812a;
+  // }
 
   .audit {
     padding: 10px;
-    width: 800px;
+    // width: 800px;
     margin: auto;
-    margin-top: 100px;
+    // margin-top: 100px;
     border: 1px solid @Info;
     overflow: hidden;
-    background-color: white;
+    // background-color: white;
     .title {
       display: inline-block;
       width: 100%;
