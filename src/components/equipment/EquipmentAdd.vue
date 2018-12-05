@@ -89,23 +89,58 @@
         <h5>管理人员</h5>
         <el-form :inline="true"  class="demo-form-inline" label-width="100px">
           <el-form-item label="负责人员：">
-            <span>（空）</span>
+            <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='0')">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='0').content">
+                {{person.workerName}}
+              </el-tag>
+            </span>
+            <span v-else>
+              （空）
+            </span>
           </el-form-item>
           <el-form-item label="维修人员：">
-            <span>（空）</span>
+            <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='1')">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='1').content">
+                {{person.workerName}}
+              </el-tag>
+            </span>
+            <span v-else>
+              （空）
+            </span>
           </el-form-item>
         </el-form>
         <el-form :inline="true"  class="demo-form-inline" label-width="100px">
           <el-form-item label="检修人员：">
-            <span>（空）</span>
+            <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='2')">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='2').content">
+                {{person.workerName}}
+              </el-tag>
+            </span>
+            <span v-else>
+              （空）
+            </span>
           </el-form-item>
           <el-form-item label="保养人员：">
-            <span>（空）</span>
+            <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='3')">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='3').content">
+                {{person.workerName}}
+              </el-tag>
+            </span>
+            <span v-else>
+              （空）
+            </span>
           </el-form-item>
         </el-form>
         <el-form :inline="true"  class="demo-form-inline" label-width="100px">
           <el-form-item label="操作人员：">
-            <span>（空）</span>
+            <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='4')">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='4').content">
+                {{person.workerName}}
+              </el-tag>
+            </span>
+            <span v-else>
+              （空）
+            </span>
           </el-form-item>
           <el-form-item style="padding-left:20px">
             <el-button size="mini" @click="dialogVisible=true" >添加人员</el-button>
@@ -153,7 +188,7 @@
       :visible.sync="dialogVisible"
       width="80%"
       >
-      <addPerson></addPerson>
+      <addPerson :personAddHandler="personAddHandler"></addPerson>
     </el-dialog>
   </div>
 </template>
@@ -268,6 +303,8 @@
         person3:"空",
         person4:"空",
         person5:"空",
+        devicePersonnelInfoBase:[],
+        devicePersonnelInfo:[]
       };
     },
     methods: {
@@ -308,7 +345,18 @@
       },
       add1() {
         //添加设备信息接口
+        debugger
         let qs = require("qs");
+        let _devicePersonnelInfo=[];
+        this.devicePersonnelInfoBase.forEach(items => {
+            _devicePersonnelInfo=_devicePersonnelInfo.concat(items.content.map(item=>{return {
+              workerType: items.workerType,
+              workerName: item.workerName,
+              workerId: item.id,
+              workerTypeName: items.workerTypeName
+            }}));
+        });
+
         let data = qs.stringify({
           deviceNo: this.sizeForm.deviceNo,
           deviceName: this.sizeForm.deviceName,
@@ -330,32 +378,33 @@
           deviceState: this.sizeForm.deviceState,
           enterFactoryDate: this.sizeForm.enterFactoryDate,
           deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
-          devicePersonnelInfo: JSON.stringify([
-            {
-            workerType: 1,
-            workerName: "赵六",
-            workerId: 188,
-            workerTypeName: "负责人员"
-            },
-            {
-              workerType: 2,
-              workerTypeName: "维修人员",
-              workerId: 192,
-              workerName: "王五"
-            },
-            {
-              workerType: 3,
-              workerTypeName: "检修人员",
-              workerId: 147,
-              workerName: "李四"
-            },
-            {
-              workerType: 4,
-              workerTypeName: "保养人员",
-              workerId: 195,
-              workerName: "杨光"
-            }
-          ])
+          devicePersonnelInfo:JSON.stringify(_devicePersonnelInfo)
+          // devicePersonnelInfo: JSON.stringify([
+          //   {
+          //   workerType: 1,
+          //   workerName: "赵六",
+          //   workerId: 188,
+          //   workerTypeName: "负责人员"
+          //   },
+          //   {
+          //     workerType: 2,
+          //     workerTypeName: "维修人员",
+          //     workerId: 192,
+          //     workerName: "王五"
+          //   },
+          //   {
+          //     workerType: 3,
+          //     workerTypeName: "检修人员",
+          //     workerId: 147,
+          //     workerName: "李四"
+          //   },
+          //   {
+          //     workerType: 4,
+          //     workerTypeName: "保养人员",
+          //     workerId: 195,
+          //     workerName: "杨光"
+          //   }
+          // ])
           // deviceNo: this.sizeForm.deviceNo,
           // deviceName: this.sizeForm.deviceName,
           // organizeName: this.sizeForm.organizeName,
@@ -514,13 +563,16 @@
             console.log(err);
           });
       },
+      personAddHandler(data){
+        this.devicePersonnelInfoBase=data;
+        this.dialogVisible=false;
+      },
       addPerson(params){
         this.dialogVisible = params.isOk
         this.person1 =
         console.log(params);
       }
     },
-
     created() {
       //this.findDeviceState();
       this.findAlldeviceClassify();
