@@ -22,8 +22,8 @@
                 <div style="margin-top:10px;">
                     <el-checkbox-group v-model="checkList">
                         <el-checkbox label="1">在用</el-checkbox>
-                        <el-checkbox label="2">停用</el-checkbox>
-                        <el-checkbox label="3">出租</el-checkbox>
+                        <el-checkbox label="2">出租</el-checkbox>
+                        <el-checkbox label="3">停用</el-checkbox>
                         <el-checkbox label="4">封存</el-checkbox>
                         <el-checkbox label="5">报废</el-checkbox>
                     </el-checkbox-group>
