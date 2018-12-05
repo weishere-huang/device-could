@@ -53,6 +53,7 @@
 </template>
 <script>
 export default {
+  inject:['reload'],
   name: "",
   props:["chengedata"],
   data() {
@@ -122,8 +123,9 @@ export default {
         .then(result => {
           if(result.data.code === 200){
             console.log(result.data);
-            location.reload();
-            alert("修改成功");
+            // location.reload();
+            // alert("修改成功");
+            this.reload()
           }else{
             alert("修改失败");
             console.log(result.data);

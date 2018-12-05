@@ -61,6 +61,7 @@
   import {eq} from "semver";
 
   export default {
+    inject:['reload'],
     data() {
       return {
         addShow: false,

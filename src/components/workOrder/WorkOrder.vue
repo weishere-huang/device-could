@@ -65,8 +65,6 @@
     </div>
   </div>
 </template>
-
- 
 <script>
 export default {
   name: "Test",
@@ -140,7 +138,7 @@ export default {
         {
           field: "gmtCreate",
           title: "工单创建时间",
-          width: 180,
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -252,7 +250,6 @@ export default {
   mounted() {}
 };
 </script>
- 
 <style scoped lang="less">
 @blue: #409eff;
 @Success: #67c23a;
