@@ -183,7 +183,7 @@ export default {
     },
 
     load(stateNum) {
-      if(stateNum !== -1){
+      if(stateNum === -1){
         this.pageIsOk = false;
       }else{
         this.pageIsOk = true;
@@ -211,9 +211,6 @@ export default {
         })
     },
     loadValue(value){
-      this.audited="";
-      this.inAudit="";
-      this.handle="";
       for (let i in value){
         if (value[i].workType === 0){
           this.tableData[i].workType = "检修";

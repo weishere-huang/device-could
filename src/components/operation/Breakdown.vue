@@ -321,7 +321,7 @@
           },
           this
         ).then(response => {
-            if(this.faultKey===""){
+            if(this.faultKey!==""){
               this.faultKey = "";
               this.tableData = response.data.data.content;
               this.springReplacement();
