@@ -1,8 +1,8 @@
 /*
  * @Author: weisheres.huang 
  * @Date: 2018-11-28 15:31:51 
- * @Last Modified by: weishere.huang
- * @Last Modified time: 2018-11-29 11:10:11
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-12-05 10:12:21
  */
 import axios from 'axios';
 import global from './components/global/Global';
@@ -19,7 +19,7 @@ export default ({ url, type, params, config, option ,loadingConfig},vue) => {
     const loadInit = function(){
         return Loading.service(Object.assign({
             lock: true,
-            text: '玩命加载中，请稍候...',
+            text: '正加载中，请稍候...',
             spinner: 'el-icon-loading',
             background: 'rgba(255,255,255, 0.8)',
             target: document.querySelector('.mainContentWrapper'),

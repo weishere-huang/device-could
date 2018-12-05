@@ -3,8 +3,8 @@
     <div class="case">
       <div class="top">
         <el-button size="small" @click="toback">返回</el-button>
-        <el-button size="small" @click="commitAudit">提交审核</el-button>
-        <el-button size="small" @click="dispel">故障消除</el-button>
+        <!--<el-button size="small" @click="commitAudit">提交审核</el-button>-->
+        <el-button size="small" @click="dialogVisible=true">故障消除</el-button>
         <!-- 故障消除弹框 -->
         <el-dialog
           title="故障消除"
@@ -13,7 +13,7 @@
           >
            <el-form label-position=right label-width="120px" :model="formLabelAlign" style="padding:10px">
             <el-form-item label="故障持续时间：">
-              <el-input  v-model="formLabelAlign.desc" size="mini" style="width:30%"></el-input>
+              <el-input  v-model="formLabelAlign.time" size="mini" style="width:30%"></el-input>
               <span>小时</span>
             </el-form-item>
             <el-form-item label="消除原因：">
@@ -22,7 +22,7 @@
            </el-form>
           <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            <el-button type="primary" @click="dispel">确 定</el-button>
           </span>
         </el-dialog>
         <!-- 故障消除弹框结束 -->
@@ -137,7 +137,10 @@
     data() {
       return {
         dialogVisible:false,
-        formLabelAlign:{},
+        formLabelAlign:{
+          time:"",
+          desc:""
+        },
         faultId:0,
         state:[],
         companyName:{
@@ -269,7 +272,6 @@
       commitAudit(){
         let qs = require("qs");
         let data = qs.stringify({faultId:this.companyName.id});
-
         this.Axios(
           {
             params:data,
@@ -285,12 +287,14 @@
           })
       },
       dispel(){
-        this.dialogVisible=true;
         let qs = require("qs");
         let data = qs.stringify({
           faultIds:this.companyName.id,
-          dispelCause:this.companyName.revokeCause
+          dispelCause:this.formLabelAlign.desc,
+          faultDuration:this.formLabelAlign.time
         });
+        this.formLabelAlign.desc = "";
+        this.formLabelAlign.time = "";
         this.Axios(
           {
             params:data,
@@ -299,6 +303,7 @@
           },
           this
         ).then(response => {
+            this.dialogVisible = false;
             this.toPansAdd()
           },
           ({type, info}) => {
