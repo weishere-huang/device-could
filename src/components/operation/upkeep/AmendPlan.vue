@@ -1,12 +1,6 @@
 <template>
   <div class="addPerson">
     <div class="addCase">
-      <div class="top">
-        <span>添加设备</span>
-        <label>
-          <button @click="isHide">×</button>
-        </label>
-      </div>
       <div class="bottom">
         <div class="left">
           <h5>组织机构</h5>
@@ -265,38 +259,20 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .addPerson {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  background-color: #42424227;
+  // position: fixed;
+  // width: 100vw;
+  // height: 100vh;
+  // top: 0;
+  // left: 0;
+  // background-color: #42424227;
   .addCase {
-    width: 80%;
+    width: 900px;
     // min-height: 500px;
-    background-color: white;
-    margin: auto;
-    border-radius: 5px;
-    margin-top: 100px;
-    font-size: 14px;
-    .top {
-      padding: 10px;
-      border-bottom: @border;
-      label {
-        display: inline-block;
-        float: right;
-        font-size: 20px;
-        button {
-          font-size: 16px;
-          width: 18px;
-          border: none;
-          background-color: white;
-          &:active {
-            background-color: #74b6f8;
-          }
-        }
-      }
-    }
+    // background-color: white;
+    // margin: auto;
+    // border-radius: 5px;
+    // margin-top: 100px;
+    font-size: 12px;
     .bottom {
       margin-top: 20px;
       padding: 10px;

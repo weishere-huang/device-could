@@ -103,7 +103,14 @@
         </div>
       </div>
     </div>
-    <amend-plan v-show="amendPlanShow" v-on:isHide="isHide" v-on:toAdd="toAdd"></amend-plan>
+    <el-dialog
+          title="添加设备"
+          :visible.sync="amendPlanShow"
+          width="900px"
+          >
+         <amend-plan  v-on:isHide="isHide" v-on:toAdd="toAdd"></amend-plan>
+        </el-dialog>
+    
   </div>
 </template>
 <script>
@@ -400,7 +407,7 @@ export default {
     }
     .right {
       width: 640px;
-      font-size: 14px;
+      font-size: 12px;
       float: left;
       padding: 10px;
       border: @border;
