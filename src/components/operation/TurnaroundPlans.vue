@@ -25,7 +25,6 @@
         <el-form-item label="审批意见：">
           <el-input type="textarea" v-model="formLabelAlign.desc"></el-input>
         </el-form-item>
-
         <div v-if="formLabelAlign.radio!=1">
           <el-form-item label="是否终审：">
             <el-checkbox-group v-model="formLabelAlign.type">
