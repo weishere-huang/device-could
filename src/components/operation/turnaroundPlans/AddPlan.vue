@@ -255,7 +255,7 @@
           if (data[i].categoryParentNo == parent) {
             console.log(data[i]);
             var obj = data[i];
-            temp = this.filterArray2(data, data[i].categoryName);
+            temp = this.filterArray2(data, data[i].categoryNo);
             if (temp.length > 0) {
               obj.children = temp;
             }
@@ -275,6 +275,7 @@
           url: "/deviceCategory/all",
         },this)
           .then(result => {
+            console.log(result);
             this.data2= this.filterArray2(result.data.data,0);
           })
           .catch(err => {
