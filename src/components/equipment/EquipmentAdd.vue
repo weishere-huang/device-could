@@ -4,7 +4,7 @@
       <div class="top">
         <el-row>
           <el-button plain size="small" @click="tback">返回</el-button>
-          <el-button plain size="small" @click="add1">保存</el-button>
+          <el-button plain size="small" @click="addwarning">保存</el-button>
         </el-row>
       </div>
       <div class="center">
@@ -378,8 +378,6 @@
           // deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
           // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo),
         });
-
-
         this.Axios({
           url: "/device/add",
           params: data,
@@ -518,6 +516,22 @@
         this.dialogVisible = params.isOk
         this.person1 =
         console.log(params);
+      },
+
+      addwarning(){
+        this.$confirm('添加设备信息完成?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.add1();
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          });
+        });
       }
     },
 

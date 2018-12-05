@@ -212,37 +212,7 @@
             console.log(err);
           });
       },
-      oneMessage() {
-        //根据消息ID查询单个消息
-        if (this.ids.length > 1) {
-          alert("请选择单个消息")
-        } else {
-          this.axios
-            .get(apiMsg+"/message/findOneMsg/" + this.ids, )
-            .then(result => {
-              alert(result.data.data.id + "\n---标题--" + result.data.data.msgTitle + "\n--内容--" + result.data.data.msgContent);
-              console.log(result.data);
-              console.log(this.rowData);
-              if (this.rowData.isRead === 0) {
-                this.updateMessageRead();
-                this.allMsg();
-              }
-
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        };
-        //执行修改阅读状态函数
-
-      },
       allNotReadMsg() {
-        //查询该用户所有未读消息
-        let qs = require("qs");
-        let data = qs.stringify({
-          page: this.pageIndex,
-          size: this.pageSize
-        });
         this.Axios({
           params: {
             page: this.pageIndex,

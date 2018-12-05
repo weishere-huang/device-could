@@ -37,7 +37,7 @@
                 <el-button
                   type="text"
                   size="mini"
-                  @click="() => orgdelete(data.id)"
+                  @click="() => warningdelete(data.id)"
                 >
                   删除
                 </el-button>
@@ -138,7 +138,6 @@
          // .post(this.global.apiSrc + "/organize/delete/"+this.orgID,data)
           .then(result => {
             if (result.data.code == 200) {
-              alert("删除成功");
               console.log("delete");
               console.log(result.data);
               location.reload();
@@ -242,12 +241,28 @@
         }
         return tree;
       },
+
       ap() {
         this.add1 = !this.add1;
       },
       revise() {
         this.revise1 = !this.revise1;
+      },
+      warningdelete(nodeId){
+        this.$confirm('确定要删除吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.orgdelete(nodeId);
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       }
+
     },
     mounted() {
       let li = document.querySelectorAll(".left li");

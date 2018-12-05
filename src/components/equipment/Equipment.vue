@@ -56,7 +56,7 @@
         <!--<el-button size="small" > 复制</el-button>-->
         <el-button
           size="small"
-          @click="edelete"
+          @click="warningdelete"
         >删除
         </el-button>
         <div class="searchright">
@@ -310,7 +310,6 @@
           });
         }
       },
-
       //通过
       findall(deviceName,locationNo,workerName,manufacturer,deviceSates,deviceCategory,page,size,) {
         this.keyorall = 0
@@ -369,32 +368,6 @@
           //   console.log(err);
           // });
       },
-
-      //通过
-      // findDeviceState(id) {
-      //   //获取设备状况接口
-      //   let ids = id;
-      //   this.Axios({
-      //     option: {
-      //       enableMsg: false
-      //     },
-      //     type: "get",
-      //     url: "/enterprise/findByNameOrState"
-      //     // loadingConfig: {
-      //     //   target: document.querySelector("#mainContentWrapper")
-      //     // }
-      //   },this)
-      //    // .get(this.global.apiSrc + "/device/findDeviceState")
-      //     .then(result => {
-      //       let arr = new Array();
-      //       arr = result.data.data;
-      //       console.log(arr);
-      //       console.log(result.data);
-      //     })
-      //     .catch(err => {
-      //       console.log(err);
-      //     });
-      // },
       findByKeyWord() {
         this.keyorall = 1
         //根据设备编号、位号、名称查询
@@ -445,38 +418,6 @@
             console.log(err);
           });
       },
-      // getDeviceById() {
-      //   //根据员工id查询相关设备信息接口，支持分页（用于设备模块）
-      //   let qs = require("qs");
-      //   let data = qs.stringify({
-      //     page: this.pageIndex,
-      //     size: this.pageSize,
-      //     employeeId: 147
-      //   });
-      //   this.Axios({
-      //     params: Object.assign(this.searchParams, {
-      //       page: this.pageIndex,
-      //       size: this.pageSize,
-      //       employeeId: 147
-      //     }),
-      //     // option: {
-      //     //   enableMsg: false
-      //     // },
-      //     type: "get",
-      //     url: "/enterprise/findByNameOrState"
-      //     // loadingConfig: {
-      //     //   target: document.querySelector("#mainContentWrapper")
-      //     // }
-      //   },this)
-      //    // .get(this.global.apiSrc + "/employee/getDeviceById", data)
-      //     .then(result => {
-      //       alert("getDeviceById");
-      //       console.log(result.data);
-      //     })
-      //     .catch(err => {
-      //       console.log(err);
-      //     });
-      // },
       edelete() {
         let qs = require("qs");
         let data = qs.stringify({
@@ -492,8 +433,13 @@
         },this)
           //.post(this.global.apiSrc + "/device/delete", data)
           .then(result => {
+            if(result.data.data.code ===200){
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+            }
             this.findall();
-            alert("删除成功");
             console.log("delete");
             console.log(result.data);
           },
@@ -545,6 +491,22 @@
             console.log(err);
           });
       },
+
+      warningdelete(){
+        this.$confirm('确定要删除吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.edelete();
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      }
     },
     created() {
       this.findall();

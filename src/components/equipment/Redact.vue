@@ -12,7 +12,7 @@
           <el-button
             plain
             size="small"
-            @click="update"
+            @click="updatewarning"
           >保存</el-button>
         </el-row>
       </div>
@@ -569,6 +569,23 @@ export default {
       //   console.log(err);
       // });
     },
+
+    updatewarning(){
+      this.$confirm('确定要修改吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.update();
+
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+
     filterArray(data, parent) {
       let vm = this;
       var tree = [];
@@ -675,6 +692,10 @@ export default {
       // .catch(err => {
       //   console.log(err);
       // });
+    },
+
+    orgAndClass(){
+
     }
   },
   created() {
