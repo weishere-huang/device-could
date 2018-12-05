@@ -37,7 +37,7 @@
                 <el-button
                   type="text"
                   size="mini"
-                  @click="orgdelete"
+                  @click="() => orgdelete(data.id)"
                 >
                   删除
                 </el-button>
@@ -102,7 +102,6 @@
         this.nodedata = data;
         // console.log( this.nodedata);
         this.chengedata = data;
-        this.orgID = data.id;
       },
       //添加组织结构
       // append(data) {
@@ -120,15 +119,15 @@
       //   children.splice(index, 1);
       //   this.delete();
       // },
-      orgdelete() {
+      orgdelete(nodeId) {
         //删除组织机构
         let qs = require("qs");
         let data = qs.stringify({
-          organizeId: this.orgID
+          organizeId: nodeId
         });
         console.log("delete" + this.orgID);
         this.Axios({
-          url: "/organize/delete/" + this.orgID,
+          url: "/organize/delete/" + nodeId,
           params: data,
           type: "post",
           option: {
