@@ -127,7 +127,7 @@
           <el-header style="background-color:#efefef;">
             <div class="stateList">
               <ul>
-                <li>&nbsp;欢迎您：管理员</li>
+                <li>&nbsp;欢迎您：{{user}}</li>
                 <li>
                   <el-tooltip
                     class="item"
@@ -173,7 +173,7 @@
           </el-header>
         </el-header>
         <el-main class="mainContentWrapper">
-          <router-view />
+          <router-view v-if="isRouterAlive" />
         </el-main>
         <el-footer>长虹智能终端设备生产管理云平台</el-footer>
       </el-container>
@@ -184,15 +184,28 @@
 
 <script>
 export default {
+  provide(){
+    return{
+      reload:this.reload
+    }
+  },
   name: "App",
   data() {
     return {
+      user:"",
       show: true,
       isCollapse: false,
-      pictLoading: true
+      pictLoading: true,
+      isRouterAlive:true,
     };
   },
   methods: {
+    reload(){
+      this.isRouterAlive=false;
+      this.$nextTick(function () {
+        this.isRouterAlive=true;
+      })
+    },
     TroggleHandle(key, keyPath) {
       // console.log(key, keyPath);
       this.isCollapse = !this.isCollapse;
@@ -232,6 +245,9 @@ export default {
 
     }
 
+  },
+  created () {
+    this.user=sessionStorage.getItem("user");
   }
 };
 </script>

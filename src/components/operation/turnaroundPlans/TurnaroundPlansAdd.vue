@@ -36,19 +36,19 @@
         </el-form>
 
         <el-form label-width="110px" v-if="companyName.planType==='周期'" v-model="companyName.planType">
-          <!--<el-form-item label="计划日期：">-->
-          <!--<el-col :span="11">-->
-          <!--<el-date-picker type="date" placeholder="选择日期" v-model="companyName.startTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>-->
-          <!--</el-col>-->
-          <!--<el-col class="line" :span="2">~</el-col>-->
-          <!--<el-col :span="11">-->
-          <!--<el-date-picker type="date" placeholder="选择日期" v-model="companyName.endTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;" size="mini"></el-date-picker>-->
-          <!--</el-col>-->
-          <!--</el-form-item>-->
           <el-form-item label="计划日期：">
+            <el-col :span="11">
+              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.startTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+            </el-col>
+            <el-col class="line" :span="2">~</el-col>
+            <el-col :span="11">
+              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.endTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;" size="mini"></el-date-picker>
+            </el-col>
+          </el-form-item>
+          <!-- <el-form-item label="计划日期：">
             <el-date-picker v-model="timeValue" type="daterange" size="mini" align="right" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
             </el-date-picker>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="首次执行时间：">
             <el-col :span="11">
               <el-date-picker type="date" placeholder="选择日期" v-model="date" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
@@ -59,8 +59,8 @@
             </el-col>
           </el-form-item>
           <el-form-item label="计划频次：">
-            <el-input v-model="companyName.frequency" size="mini" style="width:150px"></el-input>
-            <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:150px">
+            <el-input v-model="companyName.frequency" size="mini" style="width:80px"></el-input>
+            <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:80px">
               <el-option label="天" value="1"></el-option>
               <el-option label="周" value="2"></el-option>
               <el-option label="月" value="3"></el-option>
@@ -139,8 +139,8 @@
           startTime:"",
           endTime:"",
           executeTime:"",
-          frequency:"1",
-          frequencyType:"1",
+          frequency:"",
+          frequencyType:"",
           maintenanceCc:""
         },
         columns: [
@@ -461,6 +461,9 @@
           height: 40px;
           margin-bottom: 0px;
           overflow: hidden;
+          .el-input__inner{
+            padding-right: 20px;
+          }
         }
       }
       .right {
