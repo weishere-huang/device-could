@@ -50,18 +50,18 @@
       <div class="left">
         <div class="msg">
           <h5>工单信息</h5>
-          <el-form label-width="120px" :model="formLabelAlign">
+          <el-form label-width="120px" :model="workInfo">
             <el-form-item label="工单编号：">
-              <span></span>
+              <span>{{workInfo.workNo}}</span>
             </el-form-item>
             <el-form-item label="工单类型：">
-              <span></span>
+              <span>{{workInfo.workType}}</span>
             </el-form-item>
             <el-form-item label="工单状态：">
-              <span></span>
+              <span>{{workInfo.state}}</span>
             </el-form-item>
             <el-form-item label="工单创建时间：">
-              <span></span>
+              <span>{{workInfo.gmtCreate}}</span>
             </el-form-item>
           </el-form>
         </div>
@@ -245,17 +245,20 @@ export default {
       searchPerson: "",
       key: "",
       toAudit: {},
-      formLabelAlign: {
-        radio: ""
+      workInfo: {
+        workNo:"",
+        workType:"",
+        state:"",
+        gmtCreate:"",
       },
       pictureDialog: false,
       dialogVisible2: false,
       dialogVisible1: false,
       outerVisible: false,
       innerVisible: false,
-      // formLabelAlign: {
-      //   msg: ""
-      // },
+      formLabelAlign: {
+        msg: ""
+      },
       suppliesTableData: [],
       equipmentTableData: [],
       informationData: [],
@@ -549,8 +552,8 @@ export default {
     }
   },
   created(){
-    let aaa=this.$store.state.operation.work;
-    console.log(aaa);
+    this.workInfo=this.$store.state.operation.work;
+    // console.log(aaa);
   }
 };
 </script>
