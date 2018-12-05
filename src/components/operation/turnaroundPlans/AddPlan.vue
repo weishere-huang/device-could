@@ -186,7 +186,6 @@ export default {
         this
       ).then(
         response => {
-          console.log(response);
           arrs = response.data.data.content;
           this.tableData = arrs;
           this.tabledate = this.tableData;

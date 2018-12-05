@@ -120,7 +120,6 @@
       return {
         date:"",
         times:"",
-        userId:3,
         deviceIds:1,
         amendPlanShow:false,
         time: new Date().toLocaleString(),
@@ -204,6 +203,7 @@
     created() {
       //   检修计划穿过来的值
       this.loadValue();
+      // console.log(this.$route.params.id);
       this.loadSelect();
     },
     methods: {
@@ -228,7 +228,7 @@
         this.date = this.companyName.executeTime.split(" ")[0];
         this.times = this.companyName.executeTime.split(" ")[1].split(".")[0];
         this.companyName.maintenanceClassify = this.companyName.maintenanceClassify.toString();
-        if(this.companyName.planType === 0){
+        if(this.companyName.planType === -1){
           this.companyName.planType = "单次"
         }
         if(this.companyName.planType === 1){
@@ -269,13 +269,38 @@
 
           })
       },
+      selectOne(number){
+        this.Axios(
+          {
+            params:{maintenanceId:number},
+            type: "get",
+            url: "/mplan/findOne",
+          },
+          this
+        ).then(response => {
+          console.log(response);
+            // arr = response.data.data;
+            // this.tableData = arr;
+            // this.tableDate = this.tableData;
+          },
+          ({type, info}) => {
+
+          })
+      },
       updatePlan(){
+        if(this.deviceIds!==""){
+          this.toUpdatePlan()
+        }else{
+          alert("请至少选择一个设备")
+        }
+      },
+      toUpdatePlan(){
         this.companyName.executeTime = this.date +" "+ this.times;
         this.companyName.executeTime = this.companyName.executeTime.split(".")[0].replace(/-/g,"/");
         this.companyName.startTime = this.companyName.startTime.split(" ")[0].replace(/-/g,"/");
         this.companyName.endTime = this.companyName.endTime.split(" ")[0].replace(/-/g,"/");
         if(this.companyName.planType === "单次"){
-          this.companyName.planType = 0
+          this.companyName.planType = -1
         }
         if(this.companyName.planType === "周期"){
           this.companyName.planType = 1
@@ -314,7 +339,6 @@
           },
           this
         ).then(response => {
-            this.auditId = response.data.data.id;
             this.TurnaroundPlans();
           },
           ({type, info}) => {

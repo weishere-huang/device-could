@@ -151,7 +151,7 @@ export default {
       ).then(response => {
           this.tableData = response.data.data.content;
           this.tabledate = this.tableData;
-          console.log(response.data);
+          // console.log(response.data);
           this.searchs = this.key;
         },
         ({type, info}) => {
@@ -179,7 +179,6 @@ export default {
       var temp;
       for (var i = 0; i < data.length; i++) {
         if (data[i].categoryParentNo == parent) {
-          console.log(data[i]);
           var obj = data[i];
           temp = this.filterArray2(data, data[i].categoryNo);
           if (temp.length > 0) {
