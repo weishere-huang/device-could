@@ -156,26 +156,46 @@
         let data = qs.stringify({
           ids:this.ids
         });
-        this.axios
-          .put(apiMsg+"/message/UpdateMsgState/",data)
+        this.Axios({
+          url: "/message/UpdateMsgState",
+          params: data,
+          type: "post",
+          option: {
+            enableMsg: false
+          }
+        },this)
+          //.post(apiMsg+"/message/UpdateMsgState/",data)
           .then(result => {
             this.allMsg();
             alert("成功删除!!!");
             console.log(result.data);
-          })
+          },
+            ({type, info}) => {
+              //错误类型 type=faild / error
+              //error && error(type, info);
+            }
+          )
           .catch(err => {
             console.log(err);
           });
       },
       allMsg() {
         //查询该用户所有消息
-        let qs = require("qs");
-        let data = qs.stringify({
-          page: this.pageIndex,
-          size: this.pageSize
-        });
-        this.axios
-          .get(apiMsg+"/message/allMsg/",data)
+        this.Axios({
+          params:  {
+            page: this.pageIndex,
+            size: this.pageSize
+          },
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/message/allMsg/",
+          loadingConfig: {
+            target: document.querySelector(".message")
+          }
+        },this)
+          //.get(apiMsg+"/message/allMsg/",data)
           .then(result => {
             console.log(result.data.data);
             for(let i = 0;i<result.data.data.length;i++){
@@ -223,8 +243,21 @@
           page: this.pageIndex,
           size: this.pageSize
         });
-        this.axios
-          .get(apiMsg+"/message/allNotReadMsg/",data)
+        this.Axios({
+          params: {
+            page: this.pageIndex,
+            size: this.pageSize
+          },
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/message/allNotReadMsg"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },this)
+          //.get(apiMsg+"/message/allNotReadMsg/",data)
           .then(result => {
             console.log(result.data);
             if(result.data.data.length>0) {
@@ -244,8 +277,17 @@
       },
       NotReadMsgCount() {
         //查询该用户未读消息数目
-        this.axios
-          .get(apiMsg+"/message/NotReadMsgCount/")
+        this.Axios({
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/message/NotReadMsgCount"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },this)
+        //  .get(apiMsg+"/message/NotReadMsgCount/")
           .then(result => {
             this.msgcount = result.data.data;
             console.log(result.data);
@@ -256,8 +298,17 @@
       },
       updateMessageRead() {
         //修改消息为已读
-        this.axios
-          .get(apiMsg+"/message/UpdateMsgRead/" + this.ids)
+        this.Axios({
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/message/UpdateMsgRead/" + this.ids
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },this)
+          //.get(apiMsg+"/message/UpdateMsgRead/" + this.ids)
           .then(result => {
             console.log(result.data);
           })
@@ -267,7 +318,16 @@
       },
       updateAllMessageRead(){
         //全部已阅
-        this.axios
+        this.Axios({
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/message/UpdateAllMsgRead/"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },this)
           .get(apiMsg+"/message/UpdateAllMsgRead/")
           .then(result => {
             console.log(result.data);
@@ -281,8 +341,17 @@
         this.msgDetail=rowData;
         this.detailsShow=true;
         this.ids=rowData.id;
-        this.axios
-          .get(apiMsg+"/message/findOneMsg/" + this.ids)
+        this.Axios({
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/message/findOneMsg/" + this.ids
+          // loadingConfig: {
+          //   target: document.querySelector(".message")
+          // }
+        },this)
+          //.get(apiMsg+"/message/findOneMsg/" + this.ids)
           .then(result => {
             console.log(result);
            this.msgDetail=result.data.data;

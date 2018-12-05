@@ -321,10 +321,10 @@
           }, 500);
         })
         this.Axios({
-          params: {
+          params: Object.assign({
             page: this.pageIndex,
             size: this.pageSize
-          },
+          }),
           // option: {
           //   enableMsg: false
           // },
