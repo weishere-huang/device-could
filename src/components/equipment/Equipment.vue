@@ -5,7 +5,7 @@
         <div class="classify">
           <ul>
             <h5><i class='iconfont icon-leimupinleifenleileibie'></i>&nbsp;所有分类</h5>
-            <li>├生产设备</li>
+            <li @click="findall('生产设备')">├生产设备</li>
             <li>├非生产设备</li>
             <li>├辅助生产设备</li>
             <li>├检验检测设备</li>
@@ -289,7 +289,6 @@
           this.findall();
         }else{
           this.findByKeyWord();
-
         }
       },
       pageSizeChange(pageSize) {
@@ -313,7 +312,7 @@
       },
 
       //通过
-      findall(data) {
+      findall(deviceName,locationNo,workerName,manufacturer,deviceSates,deviceCategory,page,size,) {
         this.keyorall = 0
         //根据用户token查询所属组织机构下设备类别
         EventBus.$on("sideBarTroggleHandle", isCollapse => {
