@@ -100,17 +100,63 @@ export default {
       personListValue: [],
       data2: [
         {
-          id: 1,
-          label: "",
+          id:1,
+          categoryName:"一级",
+          children: [{
+            id: 11,
+            categoryName: '二级 1-1',
+            children: [{
+              id: 12,
+              categoryName: '三级 1-1-1'
+            }, {
+              id: 13,
+              categoryName: '三级 1-1-2'
+            }]
+          }]
         }
       ],
       defaultProps: {
         children: "children",
-        label: "label"
+        label: "categoryName"
       }
     };
   },
   methods: {
+    filterArray2(data, parent) {
+      let vm = this;
+      var tree = [];
+      var temp;
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].categoryParentNo == parent) {
+          console.log(data[i]);
+          var obj = data[i];
+          temp = this.filterArray2(data, data[i].categoryNo);
+          if (temp.length > 0) {
+            obj.children = temp;
+          }
+          tree.push(obj);
+        }
+      }
+      return tree;
+    },
+    findAlldeviceClassify(){
+      this.Axios({
+        params: {
+        },
+        option: {
+          enableMsg: false
+        },
+        type: "get",
+        url: "/deviceCategory/all",
+      },this)
+        .then(result => {
+          this.data2= this.filterArray2(result.data.data,0);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
     loads() {
       let arrs = new Array();
       this.Axios(
@@ -206,6 +252,7 @@ export default {
   },
   created() {
     this.loads();
+    this.findAlldeviceClassify();
   }
 };
 </script>

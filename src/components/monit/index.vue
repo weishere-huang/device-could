@@ -53,9 +53,86 @@
           </el-collapse>
         </el-aside>
         <el-main class="monitMainContent">
+          <section class="topWrap">
+            <div>当前设备组：常减压产线组 / 数量（台）：20</div>
+            <div>
+              刷新频次：
+                <el-select v-model="refreshValue" placeholder="请选择">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+                <el-button type="primary"><i class='el-icon-refresh'></i> 立即刷新</el-button>
+            </div>
+          </section>
           <section class="pinsWrap">
             <div id='pinLeft'></div>
             <div id='pinRight'></div>
+          </section>
+          <section class='equListWrap'>
+            <div>
+              <el-row>
+                <el-col :span="6">
+                  <el-card shadow="always" class="cardItem">
+                    <div slot="header" class="clearfix">
+                      <span>
+                        <el-tooltip class="item" effect="light" content="严重警报，请立即检查设备" placement="top">
+                          <i class="iconfont red">&#xe651;</i>
+                        </el-tooltip>
+                        &nbsp;常减压装置</span>
+                      <el-button style="float: right; padding: 3px 0" type="text">运行日志</el-button>
+                    </div>
+                    <div class="text item">
+                        <p>编号：CH10002355</p>
+                        <!-- <div class="separate"></div> -->
+                        <ul>
+                          <li><i class="iconfont">&#xe658;</i>温度：<span>88℃</span></li>
+                          <li><i class="iconfont">&#xe607;</i>压力：<span>8ps</span></li>
+                          <li><i class="iconfont">&#xe628;</i>主轴转速：<span>1200转/分</span></li>
+                          <li><i class="iconfont">&#xe76a;</i>主润滑液位：<span>117.2</span></li>
+                          <li><i class="iconfont">&#xe641;</i>振动频率：<span>8Hz</span></li>
+                        </ul>
+                    </div>
+                  </el-card>
+                </el-col>
+                <el-col :span="6">
+                  <el-card shadow="always" class="cardItem">
+                    <div slot="header" class="clearfix">
+                      <span>常减压装置</span>
+                      <el-button style="float: right; padding: 3px 0" type="text">运行日志</el-button>
+                    </div>
+                    <div class="text item">
+                        <p>编号：CH10002355</p>
+                    </div>
+                  </el-card>
+                </el-col>
+                <el-col :span="6">
+                  <el-card shadow="always" class="cardItem">
+                    <div slot="header" class="clearfix">
+                      <span>常减压装置</span>
+                      <el-button style="float: right; padding: 3px 0" type="text">运行日志</el-button>
+                    </div>
+                    <div class="text item">
+                        <p>编号：CH10002355</p>
+                    </div>
+                  </el-card>
+                </el-col>
+                <el-col :span="6">
+                  <el-card shadow="always" class="cardItem">
+                    <div slot="header" class="clearfix">
+                      <span>常减压装置</span>
+                      <el-button style="float: right; padding: 3px 0" type="text">运行日志</el-button>
+                    </div>
+                    <div class="text item">
+                        <p>编号：CH10002355</p>
+                    </div>
+                  </el-card>
+                </el-col>
+              </el-row>
+            </div>
           </section>
         </el-main>
       </el-container>
@@ -109,7 +186,24 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      options: [{
+          value: '30',
+          label: '30s'
+        }, {
+          value: '60',
+          label: '60s'
+        }, {
+          value: '300',
+          label: '5分钟'
+        }, {
+          value: '600',
+          label: '10分钟'
+        }, {
+          value: '1800',
+          label: '30分钟'
+        }],
+        refreshValue:"60"
     };
   },
   created: function() {
@@ -134,7 +228,6 @@ export default {
     var chartLeft = echarts.init(document.getElementById("pinLeft"));
     var chartRight = echarts.init(document.getElementById("pinRight"));
     // 绘制图表
-
     chartLeft.setOption({
       title: {
         text: "设备基本状态",
@@ -148,7 +241,7 @@ export default {
       legend: {
         orient: "vertical",
         left: "left",
-        data: ["开机初始化", "正常运行", "故障中", "维修中", "关机"]
+        data: ["开机初始化", "正常运行", "故障待处理", "维修中", "关机中","断线"]
       },
       series: [
         {
@@ -159,9 +252,10 @@ export default {
           data: [
             { value: 1, name: "开机初始化", itemStyle: { color: "#FF00FF" } },
             { value: 8, name: "正常运行", itemStyle: { color: "#008000" } },
-            { value: 2, name: "故障中", itemStyle: { color: "#FF0000" } },
+            { value: 2, name: "故障待处理", itemStyle: { color: "#FF0000" } },
             { value: 3, name: "维修中", itemStyle: { color: "#FFD700" } },
-            { value: 6, name: "关机", itemStyle: { color: "#C0C0C0" } }
+            { value: 5, name: "关机中", itemStyle: { color: "#909090" } },
+            { value: 1, name: "断线", itemStyle: { color: "#CDC9C9" } }
           ],
           itemStyle: {
             emphasis: {
@@ -187,7 +281,7 @@ export default {
       legend: {
         orient: "vertical",
         left: "left",
-        data: ["无预警", "橙色预警", "黄色预警", "红色预警", "预警断线"]
+        data: ["正常", "橙色预警", "黄色预警", "红色预警", "断线"]
       },
       series: [
         {
@@ -200,7 +294,7 @@ export default {
             { value: 4, name: "橙色预警",itemStyle: { color: "#FF8C00" }  },
             { value: 2, name: "黄色预警",itemStyle: { color: "#CDCD00" }  },
             { value: 3, name: "红色预警" ,itemStyle: { color: "#FF0000" } },
-            { value: 3, name: "预警断线" ,itemStyle: { color: "#CDC9C9" } }
+            { value: 3, name: "断线" ,itemStyle: { color: "#CDC9C9" } }
           ],
           itemStyle: {
             emphasis: {
@@ -233,15 +327,81 @@ export default {
   }
   .monitMainContent {
     padding-top: 0;
+    .topWrap{
+      border:solid 1px #dfdfdf;
+      border-radius: 5px;
+      height: 65px;
+      margin: 0 10px 5px 10px;
+      display: flex;
+      font-size: 12px;
+      &>div:first-child {
+        flex: 1;
+        margin: 5px;
+        line-height: 50px;
+        //border: solid 1px #dfdfdf;
+      }
+      &>div:last-child {
+        flex: 3;
+        margin: 5px;
+        //border: solid 1px #dfdfdf;
+        text-align: right;
+        div{
+          margin: 5px;
+        }
+      }
+    }
   }
   .pinsWrap {
-    margin: 0 10px 10px 10px;
+    margin: 0 5px 5px 5px;
     height: 300px;
     display: flex;
     & > div {
       flex: 1;
       margin: 5px;
-      border: solid 1px #ccc;
+      border: solid 1px #dfdfdf;
+      border-radius: 5px;
+    }
+  }
+  .equListWrap{
+    //border: solid 1px #ccc;
+    margin: 0 5px 5px 5px;
+  }
+  .el-card__body{
+    padding: 10px;
+  }
+  .cardItem{
+    margin: 5px;
+    p{
+      padding-bottom: 10px;
+      font-size: 14px;
+      border-bottom: solid 3px #0e8561;
+    }
+    .separate{
+      background:  #0e8561;
+      height: 3px;
+      border-radius: 1px;
+    }
+    ul{
+      margin-top: 5px;
+      list-style-type: none;
+      display: inline-block;
+      width: 100%;
+      font-size: 12px;
+      li{
+        width: 100%;
+        line-height: 22px;
+        i{margin: 0 5px;}
+        span{
+          font-weight: bold;
+        }
+        &:hover{
+          background: #e3edf8
+        }
+      }
+    }
+    .red{
+      color:red;
+      cursor: pointer;
     }
   }
 }

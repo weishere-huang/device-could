@@ -16,6 +16,7 @@
           type="password"
           placeholder="密码"
           v-model="password"
+          @keyup.enter.native="login"
         ></el-input>
       </p>
       <p class="proving">
@@ -23,19 +24,23 @@
           type="text"
           placeholder="验证码"
           v-model="verification"
+          @keyup.enter.native="login"
         ></el-input>
         <el-button
           type="primary"
           size="small"
           plain
-        >获取验证码</el-button>
+        >获取验证码
+        </el-button>
       </p>
       <p>
         <el-button
           type="primary"
           round
           @click="login"
-        >登录</el-button>
+          @keyup.enter.native="login"
+        >登录
+        </el-button>
       </p>
       <p class="registerSkip">
         <span>忘记密码</span>
@@ -102,11 +107,13 @@
               <el-button
                 size="small"
                 type="primary"
-              >点击上传</el-button>
+              >点击上传
+              </el-button>
               <div
                 slot="tip"
                 class="el-upload__tip"
-              >只能上传jpg/png文件，且不超过500kb</div>
+              >只能上传jpg/png文件，且不超过500kb
+              </div>
             </el-upload>
           </li>
         </ul>
@@ -161,7 +168,8 @@
               type="primary"
               round
               size="small"
-            >获取验证码</el-button>
+            >获取验证码
+            </el-button>
           </li>
           <li>
             <el-checkbox v-model="checked">您已阅读<a href="">《长虹设备云用户注册协议》</a></el-checkbox>
@@ -182,7 +190,8 @@
               round
               class="registerBtn"
               v-on:click="register"
-            >注册</el-button>
+            >注册
+            </el-button>
           </li>
         </ul>
       </div>
@@ -203,10 +212,11 @@ import md5 from "js-md5/src/md5.js";
 import CryptoJS from "crypto-js/crypto-js.js";
 import forgetThePassword from "./ForgetThePassword";
 export default {
+  inject: ["reload"],
   name: "Login",
   data() {
     return {
-      dialogVisible:true,
+      dialogVisible: true,
       fileList2: [
         {
           name: "food.jpeg",
@@ -219,7 +229,6 @@ export default {
             "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
         }
       ],
-
       verification: "",
       userName: "",
       password: "",
@@ -281,30 +290,29 @@ export default {
       this.Axios(
         {
           url: "/user/login",
-          params:data,
-          type:"post"
+          params: data,
+          type: "post"
         },
         this
-      ).then(result=>{
+      ).then(
+        result => {
           if (result.data.code === 200) {
-            sessionStorage.token=result.data.data.tokenStr;
-            console.log(result.data.data);
-            this.$store.commit("tokenSrc",result.data.data.tokenStr);
-            console.log(sessionStorage.token);
-            console.log(this.$store.state.token.tokenNub);
-            this.$router.push({
-              path: "/Home",
-              redirect: "/Home"
-            });
-            location.reload()
-          }else{
+            sessionStorage.token = result.data.data.tokenStr;
+            sessionStorage.user = result.data.data.employeeName;
+            this.$store.commit("user", sessionStorage.getItem("user"));
+            this.$store.commit("tokenSrc", result.data.data.tokenStr);
+            this.$router.replace("/Home");
+            location.reload();
+          } else {
             this.$message({
               message: "账号或密码错误",
               type: "error"
-            })
-            this.$router.push({path:"/Login"})
+            });
+            this.$router.push({ path: "/Login" });
           }
-      },({type,info})=>{})
+        },
+        ({ type, info }) => {}
+      );
 
       // this.axios
       //   .post(this.global.apiSrc + "/user/login", data)
@@ -359,73 +367,88 @@ export default {
         userName: this.manager.userName,
         passWord: pass,
         phone: this.manager.phone,
-
         returnForget() {
           this.forgetShow = true;
           this.isshow = false;
         }
       });
-      // this.Axios(
-      //   {
-      //     url: "/enterprise/add",
-      //     params:data,
-      //     type:"post"
-      //   },
-      //   this
-      // ).then(result=>{
-      //
-      // },({type,info})=>{})
-
-      this.axios
-        .post(this.global.apiSrc + "/enterprise/add", data)
-        .then(result => {
-          // axios.post("/api/enterprise/add", data).then(result => {
-          console.log(result);
-          if (this.company.name == "") {
-            console.log("企业名不能为空");
-            alert("企业名不能为空");
-          }
-          if (this.company.corporation == "") {
-            console.log("法人代表不能为空");
-            alert("法人代表不能为空");
-          }
-          if (this.company.phone == "") {
-            console.log("企业电话不能为空");
-            alert("企业电话不能为空");
-          }
-          if (this.company.address == "") {
-            console.log("地址不能为空");
-            alert("地址不能为空");
-          }
-          if (
-            this.company.companyID == "" ||
-            this.company.companyID.length != 18
-          ) {
-            console.log("统一社会信用编码不能为空且必须为十八位");
-            alert(
-              "统一社会信用编码不能为空且必须为十八位，请与营业执照上的编码相同"
-            );
-          }
-          if (this.manager.userName == "") {
-            console.log("请输入企业管理员信息");
-            alert("请输入企业管理员信息");
-          }
-          if (this.manager.userPassword == "") {
-            console.log("请设置密码");
-            alert("请设置密码");
-          }
-          if (this.manager.phone == "") {
-            console.log("请输入管理员联系电话");
-            alert("请输入管理员联系电话");
-          } if(result.data.code===200) {
-            location.reload();
-            console.log(result);
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          console.log("注册失败");
+      if (this.company.name === "") {
+        this.$message({
+          message: "企业名不能为空",
+          type: "error"
         });
+      }
+      if (this.company.address === "") {
+        this.$message({
+          message: "企业地址不能为空",
+          type: "error"
+        });
+      }
+      if (this.company.phone === "") {
+        this.$message({
+          message: "企业电话不能为空",
+          type: "error"
+        });
+      }
+      if (this.company.corporation === "") {
+        this.$message({
+          message: "企业法人不能为空",
+          type: "error"
+        });
+      }
+      if (
+        this.company.companyID === "" ||
+        this.company.companyID.length !== 18
+      ) {
+        this.$message({
+          message:
+            "统一社会信用编码不能为空且必须为十八位，请与营业执照上的编码相同",
+          type: "error"
+        });
+      }
+      if (this.company.companyID === "") {
+        this.$message({
+          message: "请上传营业执照",
+          type: "error"
+        });
+      }
+      if (this.manager.userName === "") {
+        this.$message({
+          message: "请输入企业管理人信息",
+          type: "error"
+        });
+      }
+      if (pass === "") {
+        this.$message({
+          message: "请设置密码",
+          type: "error"
+        });
+      }
+      if (this.manager.phone === "") {
+        this.$message({
+          message: "请输入企业管理人电话",
+          type: "error"
+        });
+      }
+      this.Axios(
+        {
+          url: "/enterprise/add",
+          params: data,
+          type: "post"
+        },
+        this
+      ).then(
+        result => {
+          if (result.data.code === 200) {
+            this.$message({
+              message: "恭喜您注册成功",
+              type: "success"
+            });
+            location.reload();
+          }
+        },
+        ({ type, info }) => {}
+      );
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -453,7 +476,7 @@ export default {
     }
   },
   components: {
-    forgetThePassword,
+    forgetThePassword
   }
 };
 </script>
@@ -467,6 +490,7 @@ export default {
   margin: 0;
   padding: 0;
 }
+
 .login {
   text-align: center;
   width: 100%;
@@ -540,6 +564,7 @@ export default {
     }
   }
 }
+
 .adminLogin {
   width: 40%;
   height: auto;
@@ -601,6 +626,7 @@ export default {
     }
   }
 }
+
 .register {
   position: absolute;
   right: 10%;

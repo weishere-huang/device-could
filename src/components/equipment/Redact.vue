@@ -57,6 +57,7 @@
                 :show-all-levels="false"
                 v-model="qqqqq"
                 @change="handleChange"
+                style="padding:10px;"
               ></el-cascader>
               <el-button @click="dialogVisible1 = false">取 消</el-button>
               <el-button
@@ -77,6 +78,7 @@
                 v-model="sizeForm.deviceClassifyName"
                 placeholder="点击选择"
                 style="width:215px"
+                @change="classf"
               >
 
                 <el-option
@@ -110,7 +112,7 @@
                   :show-all-levels="false"
                   v-model="classfynm"
                   @change="handleChange2"
-                  style="width:215px;"
+                  style="width:215px;padding:10px;"
                 ></el-cascader>
                 <el-button @click="dialogVisible3 = false">取 消</el-button>
                 <el-button
@@ -457,7 +459,7 @@ export default {
         deviceModel: this.sizeForm.deviceModel,
         deviceState: this.sizeForm.deviceState,
         organizeCode: this.sizeForm.organizeCode,
-        enterFactoryDate: this.sizeForm.enterFactoryDate,
+       // enterFactoryDate: this.sizeForm.enterFactoryDate,
         // deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
         // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo)
         devicePersonnelInfo: JSON.stringify([
@@ -487,9 +489,6 @@ export default {
           }
         ])
       });
-      console.log(
-        this.sizeForm.devicePersonnelInfo + "this.sizeForm.devicePersonnelInfo"
-      );
       this.Axios(
         {
           url: "/device/update",
@@ -549,18 +548,18 @@ export default {
           console.log("detail");
           console.log(result.data);
           this.sizeForm = result.data.data;
-          this.aaaa.value = this.sizeForm.deviceState;
+
           this.placeholder=this.sizeForm.organizeName;
           if (this.sizeForm.buyDate != null) {
             this.sizeForm.buyDate = this.sizeForm.buyDate.replace(/-/g, "/");
           }
-          if (this.sizeForm.buyDate != null) {
+          if (this.sizeForm.enterFactoryDate != null) {
             this.sizeForm.enterFactoryDate = this.sizeForm.enterFactoryDate.replace(/-/g, "/");
           }
-          if (this.sizeForm.buyDate != null) {
+          if (this.sizeForm.outputDate != null) {
             this.sizeForm.outputDate = this.sizeForm.outputDate.replace(/-/g, "/");
           }
-          // console.log(this.sizeForm.devicePersonnelInfo);
+            //this.aaaa.value = this.sizeForm.deviceState;
         },
           ({type, info}) => {
             //错误类型 type=faild / error
@@ -667,8 +666,6 @@ export default {
           result => {
             console.log("查询设备类别");
             this.ctgoptions = this.filterArray2(result.data.data, 0);
-            console.log("类别转换");
-            console.log(this.ctgoptions);
             console.log(result.data);
           },
           ({ type, info }) => {
