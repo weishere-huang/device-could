@@ -298,46 +298,41 @@ export default {
     },
 
 
-      filterArray2(data, parent) {
-        let vm = this;
-        var tree = [];
-        var temp;
-        for (var i = 0; i < data.length; i++) {
-          if (data[i].categoryParentNo == parent) {
-            console.log(data[i]);
-            var obj = data[i];
-            temp = this.filterArray2(data, data[i].categoryNo);
-            if (temp.length > 0) {
-              obj.children = temp;
-            }
-            tree.push(obj);
-
+    filterArray2(data, parent) {
+      let vm = this;
+      var tree = [];
+      var temp;
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].categoryParentNo == parent) {
+          console.log(data[i]);
+          var obj = data[i];
+          temp = this.filterArray2(data, data[i].categoryNo);
+          if (temp.length > 0) {
+            obj.children = temp;
           }
           tree.push(obj);
         }
       }
       return tree;
     },
-    findAlldeviceClassify() {
-      this.Axios(
-        {
-          params: {},
-          option: {
-            enableMsg: false
-          },
-          type: "get",
-          url: "/deviceCategory/all"
+    findAlldeviceClassify(){
+      this.Axios({
+        params: {
         },
-        this
-      )
+        option: {
+          enableMsg: false
+        },
+        type: "get",
+        url: "/deviceCategory/all",
+      },this)
         .then(result => {
-          this.data2 = this.filterArray2(result.data.data, 0);
+          this.data2= this.filterArray2(result.data.data,0);
         })
         .catch(err => {
           console.log(err);
         });
-    }
-  },
+    },
+    },
   created() {
     // this.deviceType();
     this.loads();
