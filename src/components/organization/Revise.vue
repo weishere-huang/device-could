@@ -66,22 +66,25 @@ export default {
       // Cnode:this.chengedata,
       options: [
         {
-          value: "1",
+          value: 1,
           label: "公司"
         },
         {
-          value: "2",
+          value: 2,
           label: "工厂"
         },
         {
-          value: "3",
+          value: 3,
           label: "部门"
         },
         {
-          value: "4",
+          value: 4,
           label: "车间"
         }
       ],
+      orgname:"",
+      orgtype:"",
+      orginfo:""
     };
   },
   methods: {
@@ -90,18 +93,18 @@ export default {
     },
     update() {
       //修改组织机构
-      if (this.chengedata.organizeType == "公司"){
-        this.chengedata.organizeType = 1;
-      }
-      if (this.chengedata.organizeType == "工厂"){
-        this.chengedata.organizeType = 2;
-      }
-      if (this.chengedata.organizeType == "部门"){
-        this.chengedata.organizeType = 3;
-      }
-      if (this.chengedata.organizeType == "车间"){
-        this.chengedata.organizeType = 4;
-      }
+      // if (this.chengedata.organizeType == "公司"){
+      //   this.chengedata.organizeType = 1;
+      // }
+      // if (this.chengedata.organizeType == "工厂"){
+      //   this.chengedata.organizeType = 2;
+      // }
+      // if (this.chengedata.organizeType == "部门"){
+      //   this.chengedata.organizeType = 3;
+      // }
+      // if (this.chengedata.organizeType == "车间"){
+      //   this.chengedata.organizeType = 4;
+      // }
       console.log(this.chengedata);
       let qs = require("qs");
       let data = qs.stringify({

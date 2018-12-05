@@ -30,7 +30,7 @@
                 <el-button
                   type="text"
                   size="mini"
-                  @click="toRevise"
+                  @click="() => toRevise(data.id)"
                 >
                   修改
                 </el-button>
@@ -81,14 +81,15 @@
         //xiugai jiedian
         chengedata: "",
         //当前节点ID
-        orgID: ""
+        orgID: "",
       };
     },
     methods: {
       reviseHide(params) {
         this.reviseShow = params
       },
-      toRevise() {
+      toRevise(id) {
+        this.findOneOrganize(id);
         this.reviseShow = true;
         console.log(this.chengedata);
       },
@@ -102,7 +103,6 @@
         console.log(data);
         this.nodedata = data;
         // console.log( this.nodedata);
-        this.chengedata = data;
       },
       //添加组织结构
       // append(data) {
@@ -206,12 +206,19 @@
           //   console.log(this.userName);
           // });
       },
-      findOneOrganize() {
+      findOneOrganize(id) {
+        console.log(id+"id");
         //查询单个组织机构
-        this.axios
-          .put(this.global.apiSrc + "/organize/update", data)
+        this.Axios({
+          params: {
+            organizeId:id
+          },
+          url: "/organize/findOneOrganize/"+id,
+          type: "get",
+        },this)
+          //.post(this.global.apiSrc + "/organize/update", data)
           .then(result => {
-            alert("updata");
+            this.chengedata = result.data.data;
             console.log(result.data);
           })
           .catch(err => {
