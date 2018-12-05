@@ -65,8 +65,6 @@
     </div>
   </div>
 </template>
-
- 
 <script>
 export default {
   name: "Test",
@@ -217,7 +215,6 @@ export default {
   mounted() {}
 };
 </script>
- 
 <style scoped lang="less">
 @blue: #409eff;
 @Success: #67c23a;
