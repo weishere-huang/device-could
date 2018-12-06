@@ -182,9 +182,10 @@ export default {
     },
 
     load(stateNum) {
-      if(stateNum === -1){
+      if(stateNum === ""){
         this.pageIsOk = true;
       }else if (stateNum === 0){
+        this.audited = "";
         this.pageIsOk = false;
       }else if (stateNum === 1){
         this.pageIsOk = false;
@@ -256,7 +257,7 @@ export default {
     },
   },
   created(){
-    this.load(0);
+    this.load();
   },
   mounted() {}
 };

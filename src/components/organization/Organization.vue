@@ -37,7 +37,7 @@
                 <el-button
                   type="text"
                   size="mini"
-                  @click="() => orgdelete(data.id)"
+                  @click="() => warningdelete(data.id)"
                 >
                   删除
                 </el-button>
@@ -106,9 +106,9 @@ export default {
     reviseHide(params) {
       this.reviseShow = params;
     },
-    toRevise() {
+    toRevise(id) {
       this.reviseShow = true;
-      console.log(this.chengedata);
+      this.findOneOrganize(id);
     },
     addHide(params) {
       this.addShow = params;
@@ -160,7 +160,6 @@ export default {
         .then(
           result => {
             if (result.data.code == 200) {
-              alert("删除成功");
               console.log("delete");
               console.log(result.data);
               location.reload();
@@ -228,12 +227,19 @@ export default {
       //   console.log(this.userName);
       // });
     },
-    findOneOrganize() {
+    findOneOrganize(id) {
       //查询单个组织机构
-      this.axios
-        .put(this.global.apiSrc + "/organize/update", data)
+      this.Axios({
+        params: id,
+        type: "get",
+        url: "/organize/findOneOrganize/"+id,
+        option: {
+          enableMsg: false
+        }
+      },this)
+        //.put(this.global.apiSrc + "/organize/update", data)
         .then(result => {
-          alert("updata");
+          this.chengedata = result.data.data
           console.log(result.data);
         })
         .catch(err => {
@@ -253,10 +259,30 @@ export default {
             obj.children = temp;
           }
           tree.push(obj);
+          }
         }
-      }
-      return tree;
-    },
+        return tree;
+      },
+    ap() {
+        this.add1 = !this.add1;
+      },
+    revise() {
+        this.revise1 = !this.revise1;
+      },
+    warningdelete(nodeId){
+        this.$confirm('确定要删除吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.orgdelete(nodeId);
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
     ap() {
       this.add1 = !this.add1;
     },
