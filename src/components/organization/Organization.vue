@@ -106,9 +106,9 @@ export default {
     reviseHide(params) {
       this.reviseShow = params;
     },
-    toRevise() {
+    toRevise(id) {
       this.reviseShow = true;
-      console.log(this.chengedata);
+      this.findOneOrganize(id);
     },
     addHide(params) {
       this.addShow = params;
@@ -227,12 +227,19 @@ export default {
       //   console.log(this.userName);
       // });
     },
-    findOneOrganize() {
+    findOneOrganize(id) {
       //查询单个组织机构
-      this.axios
-        .put(this.global.apiSrc + "/organize/update", data)
+      this.Axios({
+        params: id,
+        type: "get",
+        url: "/organize/findOneOrganize/"+id,
+        option: {
+          enableMsg: false
+        }
+      },this)
+        //.put(this.global.apiSrc + "/organize/update", data)
         .then(result => {
-          alert("updata");
+          this.chengedata = result.data.data
           console.log(result.data);
         })
         .catch(err => {
@@ -256,7 +263,6 @@ export default {
         }
         return tree;
       },
-
     ap() {
         this.add1 = !this.add1;
       },
@@ -277,8 +283,6 @@ export default {
           });
         });
       },
-
-
     ap() {
       this.add1 = !this.add1;
     },
