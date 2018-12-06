@@ -129,6 +129,7 @@ export default {
   data() {
     return {
       //统一token之后删除userID
+      arr:[],
       deviceIds:1,
       auditId:0,
       date:"",
@@ -340,8 +341,15 @@ export default {
         })
     },
     eliminateAll(){
-      this.tableData = "";
-      this.deviceIds = "";
+      let aaa = new Array();
+      for (let i in this.tableData){
+        for(let j in this.arr){
+          if(this.tableData[i].id !==this.arr[j].id){
+            aaa[aaa.length] = this.tableData[i];
+          }
+        }
+      }
+      this.tableData = aaa;
     },
     Upkeep() {
       this.$router.push({
@@ -364,24 +372,12 @@ export default {
       this.$router.back(-1);
     },
     selectGroupChange(selection) {
-      this.deviceIds = "";
-      for(let i in selection){
-        if(this.deviceIds === ""){
-          this.deviceIds = selection[i].id;
-        }else{
-          this.deviceIds += ","+selection[i].id;
-        }
-      }
+      this.deviceIds = selection.map(item=>item.id).toString();
+      this.arr = selection.map(item=>item);
     },
     selectALL(selection) {
-      this.deviceIds = "";
-      for(let i in selection){
-        if(this.deviceIds === ""){
-          this.deviceIds = selection[i].id;
-        }else{
-          this.deviceIds += ","+selection[i].id;
-        }
-      }
+      this.deviceIds = selection.map(item=>item.id).toString();
+      this.arr = selection.map(item=>item);
     },
     selectChange(selection, rowData) {
       console.log("select-change", selection, rowData);

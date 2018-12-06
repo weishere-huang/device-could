@@ -297,8 +297,15 @@
           })
       },
       eliminateAll(){
-        this.tableData = "";
-        this.deviceIds = "";
+        let aaa = new Array();
+        for (let i in this.tableData){
+          for(let j in this.arr){
+            if(this.tableData[i].id !==this.arr[j].id){
+              aaa[aaa.length] = this.tableData[i];
+            }
+          }
+        }
+        this.tableData = aaa;
       },
       submitAudit(){
         this.$confirm('计划添加成功,是否立即提交审核', '提示')
@@ -361,11 +368,11 @@
         this.$router.back(-1);
       },
       selectGroupChange(selection) {
-        this.deviceIds=selection.map(item=>item.id);
+        this.deviceIds = selection.map(item=>item.id).toString();
         this.arr = selection.map(item=>item);
       },
       selectALL(selection) {
-        this.deviceIds=selection.map(item=>item.id);
+        this.deviceIds = selection.map(item=>item.id).toString();
         this.arr = selection.map(item=>item);
       },
       selectChange(selection, rowData) {

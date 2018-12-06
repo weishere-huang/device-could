@@ -251,15 +251,14 @@
         // this.personListValue = Array.from(new Set(arr));
         this.toValue = selection;
         console.log(selection);
-        const arr=selection.map(item=>item.deviceName);
-        this.personListValue
+        this.personListValue = selection.map(item=>item.deviceName);
+
         // fromor (let i = 0; i < selection.length; i++) {
         //   this.arr[this.arr.length] = selection[i].deviceName;
         // }
         // this.personListValue = Array.from(new Set(this.arr));
       },
       selectALL(selection) {
-        console.log(selection);
         this.toValue = selection;
         for (let i = 0; i < selection.length; i++) {
             this.arr[this.arr.length] = selection[i].deviceName;
