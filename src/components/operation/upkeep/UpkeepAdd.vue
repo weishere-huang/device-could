@@ -245,7 +245,9 @@ export default {
       this.companyName.maintenanceType = 1;
       if(this.companyName.planType === "单次"){
         this.companyName.endTime =this.companyName.startTime;
-        this.companyName.planType = -1
+        this.companyName.planType = 0;
+        this.companyName.frequency = -1;
+        this.companyName.frequencyType = -1;
       }
       if(this.companyName.planType === "周期"){
         this.companyName.planType = 1
