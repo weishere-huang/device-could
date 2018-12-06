@@ -59,10 +59,10 @@
                 @change="handleChange"
                 style="padding:10px;"
               ></el-cascader>
-              <el-button @click="dialogVisible1 = false">取 消</el-button>
+              <el-button @click="dialogVisible1 = false;chengeOrgCode='';chengeOrgname=''">取 消</el-button>
               <el-button
                 type="primary"
-                @click="dialogVisible1 = false"
+                @click="orgsave"
               >确 定</el-button>
 
             </el-dialog>
@@ -114,10 +114,10 @@
                   @change="handleChange2"
                   style="width:215px;padding:10px;"
                 ></el-cascader>
-                <el-button @click="dialogVisible3 = false">取 消</el-button>
+                <el-button @click="dialogVisible3 = false;chengectg='';chengectgname=''" >取 消</el-button>
                 <el-button
                   type="primary"
-                  @click="dialogVisible3 = false"
+                  @click="ctgsave"
                 >确 定</el-button>
 
               </el-dialog>
@@ -193,10 +193,24 @@
           label-width="100px"
         >
           <el-form-item label="负责人员：">
-            <span>（空）</span>
+           <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='0')">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='0').content">
+                {{person.workerName}}
+              </el-tag>
+            </span>
+            <span v-else>
+              （空）
+            </span>
           </el-form-item>
           <el-form-item label="维修人员：">
-            <span>（空）</span>
+            <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='1')">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='1').content">
+                {{person.workerName}}
+              </el-tag>
+            </span>
+            <span v-else>
+              （空）
+            </span>
           </el-form-item>
         </el-form>
         <el-form
@@ -205,10 +219,24 @@
           label-width="100px"
         >
           <el-form-item label="检修人员：">
-            <span>（空）</span>
+           <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='2')">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='2').content">
+                {{person.workerName}}
+              </el-tag>
+            </span>
+            <span v-else>
+              （空）
+            </span>
           </el-form-item>
           <el-form-item label="保养人员：">
-            <span>（空）</span>
+           <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='3')">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='3').content">
+                {{person.workerName}}
+              </el-tag>
+            </span>
+            <span v-else>
+              （空）
+            </span>
           </el-form-item>
         </el-form>
         <el-form
@@ -217,7 +245,14 @@
           label-width="100px"
         >
           <el-form-item label="操作人员：">
-            <span>（空）</span>
+            <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='4')">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='4').content">
+                {{person.workerName}}
+              </el-tag>
+            </span>
+            <span v-else>
+              （空）
+            </span>
           </el-form-item>
           <el-form-item style="padding-left:20px">
             <el-button
@@ -395,7 +430,14 @@ export default {
       ogrname: "",
       classfynm: "",
       orgoptions: [],
-      ctgoptions: []
+      ctgoptions: [],
+      //解除双向绑定
+      chengeOrgCode:"",
+      chengeOrgname:"",
+
+      chengectg:"",
+      chengectgname:"",
+      devicePersonnelInfoBase:[],
     };
   },
   components: {
@@ -407,16 +449,20 @@ export default {
       name = name[name.length - 1];
       let id = value[value.length - 1];
       console.log(id, name);
-      this.sizeForm.organizeCode = id;
-      this.sizeForm.organizeName = name;
+      this.chengeOrgCode = id;
+      this.chengeOrgname = name;
+      // this.sizeForm.organizeCode = id;
+      // this.sizeForm.organizeName =this.chengeOrgname name;
     },
     handleChange2(value) {
       let name = this.$refs["getName2"].currentLabels;
       name = name[name.length - 1];
       let id = value[value.length - 1];
       console.log(id, name);
-      this.sizeForm.deviceCategory = id;
-      this.sizeForm.deviceCategoryName = name;
+      this.chengectg=id;
+      this.chengectgname=name;
+      // this.sizeForm.deviceCategory = id;
+      // this.sizeForm.deviceCategoryName = name;
     },
     classf(value) {
       console.log(value);
@@ -439,6 +485,18 @@ export default {
     update() {
       //编辑设备信息接口
       let qs = require("qs");
+
+      let _devicePersonnelInfo=[];
+      this.devicePersonnelInfoBase.forEach(items => {
+        _devicePersonnelInfo=_devicePersonnelInfo.concat(items.content.map(item=>{
+          return {
+            workerType: items.workerType,
+            workerName: item.workerName,
+            workerId: item.id,
+            workerTypeName: items.workerTypeName
+          }}));
+      });
+
       let data = qs.stringify({
         //sizeForm: JSON.stringify(this.sizeForm),21
         id: this.urlid,
@@ -459,35 +517,10 @@ export default {
         deviceModel: this.sizeForm.deviceModel,
         deviceState: this.sizeForm.deviceState,
         organizeCode: this.sizeForm.organizeCode,
-       // enterFactoryDate: this.sizeForm.enterFactoryDate,
-        // deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
+        enterFactoryDate: this.sizeForm.enterFactoryDate,
+         deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
         // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo)
-        devicePersonnelInfo: JSON.stringify([
-          {
-            workerType: 1,
-            workerName: "赵六",
-            workerId: 188,
-            workerTypeName: "负责人员"
-          },
-          {
-            workerType: 2,
-            workerTypeName: "维修人员",
-            workerId: 192,
-            workerName: "王五"
-          },
-          {
-            workerType: 3,
-            workerTypeName: "检修人员",
-            workerId: 147,
-            workerName: "李四"
-          },
-          {
-            workerType: 4,
-            workerTypeName: "保养人员",
-            workerId: 195,
-            workerName: "杨光"
-          }
-        ])
+        devicePersonnelInfo: JSON.stringify(_devicePersonnelInfo)
       });
       this.Axios(
         {
@@ -697,7 +730,18 @@ export default {
 
     orgAndClass(){
 
-    }
+    },
+
+    orgsave(){
+      this.dialogVisible1 = false ;
+      this.sizeForm.organizeCode=this.chengeOrgCode ;
+      this.sizeForm.organizeName=this.chengeOrgname
+    },
+    ctgsave(){
+      this.dialogVisible3 = false;
+      this.sizeForm.deviceCategory=this.chengectg;
+      this.sizeForm.deviceCategoryName=this.chengectgname
+    },
   },
   created() {
     this.urlid = this.$route.params.id;

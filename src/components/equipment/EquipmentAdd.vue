@@ -204,7 +204,7 @@
           label:"name"
         },
         defaultProps2:{
-          value:"categoryNo",
+          value:"id",
           label:"categoryName"
         },
         dialogVisible:false,
@@ -307,6 +307,8 @@
         name=name[(name.length)-1]
         let id=value[(value.length)-1]
         console.log(id,name);
+        console.log(value);
+
         this.sizeForm.deviceCategory=id;
         this.sizeForm.deviceCategoryName=name;
       },
@@ -357,6 +359,27 @@
           deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
           devicePersonnelInfo:JSON.stringify(_devicePersonnelInfo)
 
+          // deviceNo: this.sizeForm.deviceNo,
+          // deviceName: this.sizeForm.deviceName,
+          // organizeName: this.sizeForm.organizeName,
+          // deviceClassify: this.sizeForm.deviceClassify,
+          // deviceClassifyName: this.sizeForm.deviceClassifyName,
+          // deviceSpec: this.sizeForm.deviceSpec,
+          // // outputDate: this.sizeForm.outputDate,
+          // manufacturer: this.sizeForm.manufacturer,
+          // location: this.sizeForm.location,
+          // locationNo: this.sizeForm.locationNo,
+          // buyPrice: this.sizeForm.buyPrice,
+          // // buyDate: this.sizeForm.buyDate,
+          // deviceCategory: this.sizeForm.deviceCategory,
+          // deviceCategoryName: this.sizeForm.deviceCategoryName,
+          // deviceModel: this.sizeForm.deviceModel,
+          // deviceState: this.sizeForm.deviceState,
+          // // gmtModified: this.sizeForm.gmtModified,
+          // organizeCode: this.sizeForm.organizeCode,
+          // // enterFactoryDate: this.sizeForm.enterFactoryDate,
+          // deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
+          // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo),
         });
         this.Axios({
           url: "/device/add",
