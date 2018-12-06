@@ -57,6 +57,7 @@
                 :show-all-levels="false"
                 v-model="qqqqq"
                 @change="handleChange"
+                style="padding:10px;"
               ></el-cascader>
               <el-button @click="dialogVisible1 = false">取 消</el-button>
               <el-button
@@ -111,7 +112,7 @@
                   :show-all-levels="false"
                   v-model="classfynm"
                   @change="handleChange2"
-                  style="width:215px;"
+                  style="width:215px;padding:10px;"
                 ></el-cascader>
                 <el-button @click="dialogVisible3 = false">取 消</el-button>
                 <el-button

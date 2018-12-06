@@ -55,11 +55,12 @@
             :select-group-change="selectGroupChange"
             :row-dblclick="details"
             row-click-color="#edf7ff"
+            @on-custom-comp="customCompFunc"
           >
           </v-table>
           <div
             class="mt20 mb20 bold"
-            style="text-align:center;margin-top:30px"
+            style="text-align:left;margin-top:20px"
           >
             <v-pagination
               @page-change="pageChange"
@@ -78,432 +79,490 @@
       v-on:advanceValue="advanceValue"
       :pageSize="pageSize"
     ></advancedsearch>
+   
+    <el-dialog
+      title="审核"
+      :visible.sync="auditShow"
+      width="800px"
+    >
     <audit
-      v-show="auditShow"
       v-on:auditByValue="auditByValue"
       :auditValue="auditValue"
       :searchData="name"
     ></audit>
-    <!-- <businessDetails
-      v-show="detailsShow"
-      v-on:childByValue="childByValue"
-      :detailsValue="detailsValue"
-    ></businessDetails> -->
+    </el-dialog>
     <el-dialog
       title="企业详情"
       :visible.sync="dialogVisible"
-      width="70%"
-      >
+      width="800px"
+    >
       <businessDetails
-      v-on:childByValue="childByValue"
-      :detailsValue="detailsValue"
+        v-on:childByValue="childByValue"
+        :detailsValue="detailsValue"
       ></businessDetails>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
     </el-dialog>
   </div>
 </template>
 <script>
-  import advancedsearch from "./AdvancedSearch";
-  import businessDetails from "./BusinessDetails";
-  import audit from "./Audit";
+import advancedsearch from "./AdvancedSearch";
+import businessDetails from "./BusinessDetails";
+import audit from "./Audit";
+import Vue from "vue";
 
-  export default {
-    data() {
-      return {
-        dialogVisible:false,
-        detailsShow: true,
-        auditShow: false,
-        detailsValue: "",
-        auditValue: "",
-        // advanceValue: "",
-        choice: "",
-        pageIndex: 1,
-        pageSize: 10,
-        name: "",
-        totalNub: "",
-        states: [],
-        tableData: [
-          {
-            name: "",
-            address: "",
-            phone: "",
-            address: "",
-            gmtCreate: "",
-            state: ""
-          }
-        ],
-        searchParams: {},
-        tableDate: [],
-        columns: [
-          {
-            width: 50,
-            titleAlign: "center",
-            columnAlign: "center",
-            type: "selection"
-          },
-          {
-            field: "name",
-            title: "企业名称",
-            width: 150,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-            //   orderBy: ""
-          },
-          {
-            field: "address",
-            title: "企业地址",
-            width: 200,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "phone",
-            title: "企业电话",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
-          },
-          {
-            field: "gmtCreate",
-            title: "申请时间",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
-          },
-          {
-            field: "state",
-            title: "状态",
-            width: 50,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
-          }
-        ]
-      };
+export default {
+  inject: ["reload"],
+  data() {
+    return {
+      dialogVisible: false,
+      detailsShow: true,
+      auditShow: false,
+      detailsValue: "",
+      auditValue: "",
+      // advanceValue: "",
+      choice: "",
+      pageIndex: 1,
+      pageSize: 10,
+      name: "",
+      totalNub: "",
+      states: [],
+      tableData: [
+        {
+          name: "",
+          address: "",
+          phone: "",
+          address: "",
+          gmtCreate: "",
+          state: ""
+        }
+      ],
+      searchParams: {},
+      tableDate: [],
+      columns: [
+        {
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          type: "selection"
+        },
+        {
+          field: "name",
+          title: "企业名称",
+          width: 150,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+          //   orderBy: ""
+        },
+        {
+          field: "address",
+          title: "企业地址",
+          width: 200,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "phone",
+          title: "企业电话",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "gmtCreate",
+          title: "申请时间",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "state",
+          title: "状态",
+          width: 50,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "custome-adv",
+          title: "操作",
+          width: 100,
+          titleAlign: "center",
+          columnAlign: "center",
+          componentName: "table-company",
+          // isResize: true
+        }
+      ]
+    };
+  },
+  components: {
+    advancedsearch,
+    businessDetails,
+    audit
+  },
+  methods: {
+    customCompFunc(params) {
+      console.log(params);
+
+      if (params.type === "delete") {
+        // do delete operation
+
+        this.$delete(this.tableData, params.index);
+      } else if (params.type === "edit") {
+        // do edit operation
+        
+        alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
+      }else if (params.type === "audit") {
+        // do edit operation
+         this.auditShow = true
+         this.auditValue=params.rowData
+        // alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
+      }
     },
-    components: {
-      advancedsearch,
-      businessDetails,
-      audit
+    advanceValue: function({ dataName, params }) {
+      this.pageIndex = 1;
+      this.tableData = dataName.content;
+      this.totalNub = dataName.totalElements;
+      this.searchParams = params;
     },
-    methods: {
-      advanceValue: function ({dataName, params}) {
-        this.pageIndex = 1;
-        this.tableData = dataName.content;
-        this.totalNub = dataName.totalElements;
-        this.searchParams = params;
-      },
-      replace() {
-        location.reload();
-      },
-      auditblock() {
-        if (this.choice.length==0||this.choice.length>1) {
-          this.$message({
-            message: "请选择一个企业进行审核",
-            type: "error"
-          });
+    replace() {
+      this.reload();
+    },
+    auditblock() {
+      if (this.choice.length == 0 || this.choice.length > 1) {
+        this.$message({
+          message: "请选择一个企业进行审核",
+          type: "error"
+        });
+      } else {
+        this.auditShow = true;
+      }
+    },
+    auditByValue: function(params) {
+      this.auditShow = params;
+    },
+    childByValue: function(params) {
+      this.dialogVisible = params;
+    },
+    details(rowIndex, rowData, column) {
+      this.dialogVisible = true;
+      this.detailsValue = rowData;
+      console.log(rowData);
+    },
+    selectGroupChange(selection) {
+      console.log("select-group-change", selection);
+      this.auditValue = selection[0];
+      this.choice = "";
+      this.states == [];
+      for (let i = 0; i < selection.length; i++) {
+        if (this.choice == "") {
+          this.choice = selection[i].id;
+          this.states[i] = selection[i].state;
+          this.auditValue == selection[0];
         } else {
-          this.auditShow = true;
+          this.choice += "," + selection[i].id;
+          // this.auditValue +=","+selection[i]
         }
-      },
-      auditByValue: function (params) {
-        this.auditShow = params;
-      },
-      childByValue: function (params) {
-        this.dialogVisible = params;
-      },
-      details(rowIndex, rowData, column) {
-        this.dialogVisible = true;
-        this.detailsValue = rowData;
-        console.log(rowData);
-      },
-      selectGroupChange(selection) {
-        console.log("select-group-change", selection);
-        this.auditValue = selection[0];
-        this.choice = "";
-        this.states == [];
-        for (let i = 0; i < selection.length; i++) {
-          if (this.choice == "") {
-            this.choice = selection[i].id;
-            this.states[i] = selection[i].state
-            this.auditValue==selection[0]
+      }
+      console.log(this.choice);
+      console.log(this.states);
+      console.log(this.auditValue);
+    },
+    selectALL(selection) {
+      this.choice = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.choice == "") {
+          this.choice = selection[i].id;
+        } else {
+          this.choice += "," + selection[i].id;
+        }
+      }
+      console.log("select-aLL", selection);
+    },
+    selectChange(selection, rowData) {
+      this.choice = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.choice === "") {
+          this.choice += selection[i].id;
+        } else {
+          this.choice += "," + selection[i].id;
+        }
+      }
+      console.log("select-change", selection, rowData);
+    },
+    getTableData() {
+      this.tableData = this.tableDate.slice(
+        (this.pageIndex - 1) * this.pageSize,
+        this.pageIndex * this.pageSize
+      );
+    },
+    pageChange(pageIndex) {
+      this.pageIndex = pageIndex;
+      this.getTableData();
+      console.log(pageIndex);
+      this.load();
+    },
+    pageSizeChange(pageSize) {
+      this.pageIndex = 1;
+      this.pageSize = pageSize;
+      this.getTableData();
+      this.load();
+    },
+    sortChange(params) {
+      if (params.height.length > 0) {
+        this.tableConfig.tableData.sort(function(a, b) {
+          if (params.height === "asc") {
+            return a.height - b.height;
+          } else if (params.height === "desc") {
+            return b.height - a.height;
           } else {
-            this.choice += "," + selection[i].id;
-            // this.auditValue +=","+selection[i]
+            return 0;
           }
-        }
-        console.log(this.choice);
-        console.log(this.states)
-        console.log(this.auditValue);
-      },
-      selectALL(selection) {
-        this.choice = "";
-        for (let i = 0; i < selection.length; i++) {
-          if (this.choice == "") {
-            this.choice = selection[i].id;
-          } else {
-            this.choice += "," + selection[i].id;
-          }
-        }
-        console.log("select-aLL", selection);
-      },
-      selectChange(selection, rowData) {
-        this.choice = "";
-        for (let i = 0; i < selection.length; i++) {
-          if (this.choice === "") {
-            this.choice += selection[i].id;
-
-          } else {
-            this.choice += "," + selection[i].id;
-          }
-        }
-        console.log("select-change", selection, rowData);
-      },
-      getTableData() {
-        this.tableData = this.tableDate.slice(
-          (this.pageIndex - 1) * this.pageSize,
-          this.pageIndex * this.pageSize
-        );
-      },
-      pageChange(pageIndex) {
-        this.pageIndex = pageIndex;
-        this.getTableData();
-        console.log(pageIndex);
-        this.load();
-      },
-      pageSizeChange(pageSize) {
-        this.pageIndex = 1;
-        this.pageSize = pageSize;
-        this.getTableData();
-        this.load();
-      },
-      sortChange(params) {
-        if (params.height.length > 0) {
-          this.tableConfig.tableData.sort(function (a, b) {
-            if (params.height === "asc") {
-              return a.height - b.height;
-            } else if (params.height === "desc") {
-              return b.height - a.height;
-            } else {
-              return 0;
-            }
-          });
-        }
-      },
-      load() {
-        EventBus.$on("sideBarTroggleHandle", isCollapse => {
-          window.setTimeout(() => {
-            this.$refs.companysTable.resize();
-          }, 500);
         });
-        const pa = Object.assign(this.searchParams, {
-          page: this.pageIndex,
-          size: this.pageSize
-        });
-        this.Axios(
-          {
-            params: Object.assign(this.searchParams, {
-              page: this.pageIndex,
-              size: this.pageSize
-            }),
-            option: {
-              enableMsg: false
-            },
-            type: "get",
-            url: "/enterprise/findByNameOrState"
-            // loadingConfig: {
-            //   target: document.querySelector("#mainContentWrapper")
-            // }
-          },
-          this
-        ).then(response => {
-            console.log(response);
-            this.totalNub = response.data.data.totalElements;
-            for (let i = 0; i < response.data.data.content.length; i++) {
-              // console.log(response.data.data.content.length)
-              if (response.data.data.content[i].state === 0) {
-                response.data.data.content[i].state = "待审核";
-              }
-              if (response.data.data.content[i].state === 1) {
-                response.data.data.content[i].state = "正常";
-              }
-              if (response.data.data.content[i].state === 2) {
-                response.data.data.content[i].state = "禁用";
-              }
-              if (response.data.data.content[i].state === 4) {
-                response.data.data.content[i].state = "审核中";
-              }
-              if (response.data.data.content[i].state === 10) {
-                response.data.data.content[i].state = "未通过";
-              }
-            }
-            this.tableData = response.data.data.content;
-          },
-          ({type, info}) => {
-            //错误类型 type=faild / error
-            //error && error(type, info);
-          }
-        )
-      },
-      findByName() {
-        this.Axios(
-          {
-            url: "/enterprise/findByNameOrState",
-            params: Object.assign(this.searchParams, {
-              enterpriseName: this.name,
-              page: 1,
-              size: this.pageSize
-            }),
-            type: "get",
-          },
-          this
-        ).then(
-          response => {
-            this.pageIndex = 1
-            this.totalNub = response.data.data.totalElements;
-            for (let i = 0; i < response.data.data.content.length; i++) {
-              if (response.data.data.content[i].state === 0) {
-                response.data.data.content[i].state = "待审核";
-              }
-              if (response.data.data.content[i].state === 1) {
-                response.data.data.content[i].state = "正常";
-              }
-              if (response.data.data.content[i].state === 2) {
-                response.data.data.content[i].state = "禁用";
-              }
-              if (response.data.data.content[i].state === 4) {
-                response.data.data.content[i].state = "审核中";
-              }
-              if (response.data.data.content[i].state === 10) {
-                response.data.data.content[i].state = "未通过";
-              }
-            }
-            this.tableData = response.data.data.content;
-            console.log(this.pageIndex)
-          },
-          ({type, info}) => {
-
-          }
-        )
-      },
-      startUseing() {
-        let qs = require("qs");
-        let data = qs.stringify({
-          enterpriseIds: this.choice
-          // state: 0
-        });
-        this.Axios(
-          {
-            url: "/enterprise/enableEnterprises/",
-            params: data,
-            type: "post",
-            option: {
-              enableMsg: false
-            }
-          },
-          this
-        ).then(response => {
-            this.$message({
-              message: '启用成功',
-              type: 'success'
-            })
-            this.load();
-          console.log("请求参数：" + data);
-        }, ({type, info}) => {
-
-        });
-      },
-      forbidden() {
-        let qs = require("qs");
-        let data = qs.stringify({
-          enterpriseIds: this.choice
-        });
-        console.log("请求参数：" + data);
-        this.Axios(
-          {
-            params: data,
-            url: "/enterprise/discontinuationEnterprises",
-            type: "post",
-            option: {
-              enableMsg: false
-            },
-          },
-          this
-        ).then(response => {
-
-            this.$message({
-              message: "禁用成功",
-              type: "success"
-            })
-            this.load()
-          }, ({type, info}) => {
-
-          }
-        )
-      },
-      adsearch() {
-        document.querySelectorAll(".adsearch")[0].style.right = 0;
       }
     },
-    created() {
-      this.load();
-    }
-  };
-</script>
-<style lang="less" scoped>
-  @blue: #409eff;
-  @Success: #67c23a;
-  @Warning: #e6a23c;
-  @Danger: #f56c6c;
-  @Info: #dde2eb;
-  .company {
-    // padding-left: 180px;
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    .userCase {
-      width: 100%;
-      padding: 10px;
-      .top {
-        height: 60px;
-        line-height: 60px;
-        border: 1px solid @Info;
-        border-radius: 5px;
-        padding-left: 10px;
-        .search {
-          float: right;
-          overflow: hidden;
-          width: 40%;
-          .el-input {
-            width: 60%;
+    load() {
+      EventBus.$on("sideBarTroggleHandle", isCollapse => {
+        window.setTimeout(() => {
+          this.$refs.companysTable.resize();
+        }, 500);
+      });
+      const pa = Object.assign(this.searchParams, {
+        page: this.pageIndex,
+        size: this.pageSize
+      });
+      this.Axios(
+        {
+          params: Object.assign(this.searchParams, {
+            page: this.pageIndex,
+            size: this.pageSize
+          }),
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/enterprise/findByNameOrState"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },
+        this
+      ).then(
+        response => {
+          console.log(response);
+          this.totalNub = response.data.data.totalElements;
+          for (let i = 0; i < response.data.data.content.length; i++) {
+            // console.log(response.data.data.content.length)
+            if (response.data.data.content[i].state === 0) {
+              response.data.data.content[i].state = "待审核";
+            }
+            if (response.data.data.content[i].state === 1) {
+              response.data.data.content[i].state = "正常";
+            }
+            if (response.data.data.content[i].state === 2) {
+              response.data.data.content[i].state = "禁用";
+            }
+            if (response.data.data.content[i].state === 4) {
+              response.data.data.content[i].state = "审核中";
+            }
+            if (response.data.data.content[i].state === 10) {
+              response.data.data.content[i].state = "未通过";
+            }
           }
-          span {
-            font-size: 12px;
-            cursor: pointer;
-          }
+          this.tableData = response.data.data.content;
+        },
+        ({ type, info }) => {
+          //错误类型 type=faild / error
+          //error && error(type, info);
         }
-      }
-      .bottom {
-        padding: 10px;
-        font-size: 12px;
-        border: 1px solid @Info;
-        margin-top: 10px;
-        min-height: 500px;
-        border-radius: 5px;
-      }
+      );
+    },
+    findByName() {
+      this.Axios(
+        {
+          url: "/enterprise/findByNameOrState",
+          params: Object.assign(this.searchParams, {
+            enterpriseName: this.name,
+            page: 1,
+            size: this.pageSize
+          }),
+          type: "get"
+        },
+        this
+      ).then(
+        response => {
+          this.pageIndex = 1;
+          this.totalNub = response.data.data.totalElements;
+          for (let i = 0; i < response.data.data.content.length; i++) {
+            if (response.data.data.content[i].state === 0) {
+              response.data.data.content[i].state = "待审核";
+            }
+            if (response.data.data.content[i].state === 1) {
+              response.data.data.content[i].state = "正常";
+            }
+            if (response.data.data.content[i].state === 2) {
+              response.data.data.content[i].state = "禁用";
+            }
+            if (response.data.data.content[i].state === 4) {
+              response.data.data.content[i].state = "审核中";
+            }
+            if (response.data.data.content[i].state === 10) {
+              response.data.data.content[i].state = "未通过";
+            }
+          }
+          this.tableData = response.data.data.content;
+          console.log(this.pageIndex);
+        },
+        ({ type, info }) => {}
+      );
+    },
+    startUseing() {
+      let qs = require("qs");
+      let data = qs.stringify({
+        enterpriseIds: this.choice
+        // state: 0
+      });
+      this.Axios(
+        {
+          url: "/enterprise/enableEnterprises/",
+          params: data,
+          type: "post",
+          option: {
+            enableMsg: false
+          }
+        },
+        this
+      ).then(
+        response => {
+          this.$message({
+            message: "启用成功",
+            type: "success"
+          });
+          this.load();
+          console.log("请求参数：" + data);
+        },
+        ({ type, info }) => {}
+      );
+    },
+    forbidden() {
+      let qs = require("qs");
+      let data = qs.stringify({
+        enterpriseIds: this.choice
+      });
+      console.log("请求参数：" + data);
+      this.Axios(
+        {
+          params: data,
+          url: "/enterprise/discontinuationEnterprises",
+          type: "post",
+          option: {
+            enableMsg: false
+          }
+        },
+        this
+      ).then(
+        response => {
+          this.$message({
+            message: "禁用成功",
+            type: "success"
+          });
+          this.load();
+        },
+        ({ type, info }) => {}
+      );
+    },
+    adsearch() {
+      document.querySelectorAll(".adsearch")[0].style.right = 0;
     }
-    .adsearch {
-      position: absolute;
-      top: 0%;
-      right: -310px;
-      transition: all 0.3s ease-in;
+  },
+  created() {
+    this.load();
+  }
+};
+Vue.component("table-company", {
+  template: `<span>
+        <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">启用</a>&nbsp;
+        <a href="" @click.stop.prevent="deleteRow(rowData,index)" style="text-decoration: none;">停用</a>&nbsp;
+        <a href="" @click.stop.prevent="audit(rowData,index)" style="text-decoration: none;">审核</a>
+        </span>`,
+  props: {
+    rowData: {
+      type: Object
+    },
+    field: {
+      type: String
+    },
+    index: {
+      type: Number
+    }
+  },
+  methods: {
+    update() {
+      // 参数根据业务场景随意构造
+      let params = { type: "edit", index: this.index, rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    },
+    deleteRow() {
+      // 参数根据业务场景随意构造
+      let params = { type: "delete", rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    },
+    audit(){
+      let params = { type: "audit", rowData: this.rowData};
+       this.$emit("on-custom-comp", params);
     }
   }
+});
+</script>
+<style lang="less" scoped>
+@blue: #409eff;
+@Success: #67c23a;
+@Warning: #e6a23c;
+@Danger: #f56c6c;
+@Info: #dde2eb;
+.company {
+  // padding-left: 180px;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  .userCase {
+    width: 100%;
+    padding: 10px;
+    .top {
+      height: 60px;
+      line-height: 60px;
+      border: 1px solid @Info;
+      border-radius: 5px;
+      padding-left: 10px;
+      .search {
+        float: right;
+        overflow: hidden;
+        width: 40%;
+        .el-input {
+          width: 60%;
+        }
+        span {
+          font-size: 12px;
+          cursor: pointer;
+        }
+      }
+    }
+    .bottom {
+      padding: 10px;
+      font-size: 12px;
+      border: 1px solid @Info;
+      margin-top: 10px;
+      min-height: 500px;
+      border-radius: 5px;
+    }
+  }
+  .adsearch {
+    position: absolute;
+    top: 0%;
+    right: -310px;
+    transition: all 0.3s ease-in;
+  }
+}
 </style>
