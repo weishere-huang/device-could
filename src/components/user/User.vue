@@ -224,10 +224,15 @@
             option: {enableMsg: false}
           },
           this
-        ).then(response => {
+        )
+        this.$confirm("您确定要删除该用户吗？", "Warning", {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(response => {
           this.load();
           this.$message({
-            message: "您已经删除该企业",
+            message: "您已经删除该用户",
             type: "success"
           })
 
