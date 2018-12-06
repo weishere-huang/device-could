@@ -50,7 +50,7 @@ export default {
       manufacturer:"",
       deviceCategory:"",
       choice:"",
-      checkList: [],
+      checkList: [ ],
       state: []
     };
   },
@@ -78,6 +78,8 @@ export default {
           deviceCategory:"",
           page:1,
           size:10
+
+
         },
         // option: {
         //   enableMsg: false
@@ -106,10 +108,10 @@ export default {
               response.data.data.content[i].deviceState = "在用";
             }
             if (response.data.data.content[i].deviceState === 2) {
-              response.data.data.content[i].deviceState = "停用";
+              response.data.data.content[i].deviceState = "出租";
             }
             if (response.data.data.content[i].deviceState === 3) {
-              response.data.data.content[i].deviceState = "出租";
+              response.data.data.content[i].deviceState = "停用";
             }
             if (response.data.data.content[i].deviceState === 4) {
               response.data.data.content[i].deviceState = "封存";

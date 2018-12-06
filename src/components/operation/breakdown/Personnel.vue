@@ -20,6 +20,7 @@
 export default {
   data() {
     return {
+      key:"",
       pageNumber:0,
       pageIndex: 1,
       pageSize: 10,
@@ -89,12 +90,13 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
+      this.load();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+      this.load();
     },
     personHide(){
         this.$emit("personHide",false)
@@ -107,18 +109,41 @@ export default {
       this.$emit("getPersonnel",jihe)
     },
     load() {
-      this.axios
-        .get(this.global.apiSrc + "/employee/findEmployeeList", {
-          params: {page: this.pageIndex, size: this.pageSize}
+      this.Axios(
+        {
+          params: {page: this.pageIndex, size: this.pageSize},
+          type: "get",
+          url: "/employee/findEmployeeList",
+        },
+        this
+      ).then(response => {
+            this.pageNumber = response.data.data.totalElements;
+            this.tableData = response.data.data.content;
+            this.tableDate = this.tableData;
+        },
+        ({type, info}) => {
         })
-        .then(response => {
-          this.pageNumber = response.data.data.totalElements;
-          this.tableData = response.data.data.content;
-          this.tableDate = this.tableData;
+    },
+    search() {
+      this.pageIndex =1;
+      this.Axios(
+        {
+          params: {condition: this.key},
+          type: "get",
+          url: "/employee/search",
+        },
+        this
+      ).then(response => {
+          if(this.key!==""){
+            this.pageNumber = response.data.data.totalElements;
+            this.tableData = response.data.data.content;
+            this.tableDate = this.tableData;
+          }else{
+            this.pageChange(1);
+          }
+        },
+        ({type, info}) => {
         })
-        .catch(function (error) {
-          console.log(error);
-        });
     },
   },
   created() {

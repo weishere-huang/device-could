@@ -57,8 +57,8 @@
                         </el-col>
                     </el-form-item>
                     <el-form-item label="计划频次：">
-                        <el-input v-model="companyName.frequency" size="mini" style="width:150px"></el-input>
-                        <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:150px">
+                        <el-input v-model="companyName.frequency" size="mini" style="width:80px"></el-input>
+                        <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:80px">
                             <el-option label="天" value="1"></el-option>
                             <el-option label="周" value="2"></el-option>
                             <el-option label="月" value="3"></el-option>
@@ -112,7 +112,14 @@
                 </div>
             </div>
         </div>
-        <add-plan v-show="addPlanShow" v-on:isHide="isHide" v-on:toAdd="toAdd"></add-plan>
+        <el-dialog
+          title="添加设备"
+          :visible.sync="addPlanShow"
+          width="900px"
+          >
+          <add-plan  v-on:isHide="isHide" v-on:toAdd="toAdd"></add-plan>
+        </el-dialog>
+        
     </div>
 </template>
 <script>
@@ -122,6 +129,7 @@ export default {
   data() {
     return {
       //统一token之后删除userID
+      arr:[],
       deviceIds:1,
       auditId:0,
       date:"",
@@ -238,7 +246,9 @@ export default {
       this.companyName.maintenanceType = 1;
       if(this.companyName.planType === "单次"){
         this.companyName.endTime =this.companyName.startTime;
-        this.companyName.planType = 0
+        this.companyName.planType = 0;
+        this.companyName.frequency = -1;
+        this.companyName.frequencyType = -1;
       }
       if(this.companyName.planType === "周期"){
         this.companyName.planType = 1
@@ -331,8 +341,15 @@ export default {
         })
     },
     eliminateAll(){
-      this.tableData = "";
-      this.deviceIds = "";
+      let aaa = new Array();
+      for (let i in this.tableData){
+        for(let j in this.arr){
+          if(this.tableData[i].id !==this.arr[j].id){
+            aaa[aaa.length] = this.tableData[i];
+          }
+        }
+      }
+      this.tableData = aaa;
     },
     Upkeep() {
       this.$router.push({
@@ -355,24 +372,12 @@ export default {
       this.$router.back(-1);
     },
     selectGroupChange(selection) {
-      this.deviceIds = "";
-      for(let i in selection){
-        if(this.deviceIds === ""){
-          this.deviceIds = selection[i].id;
-        }else{
-          this.deviceIds += ","+selection[i].id;
-        }
-      }
+      this.deviceIds = selection.map(item=>item.id).toString();
+      this.arr = selection.map(item=>item);
     },
     selectALL(selection) {
-      this.deviceIds = "";
-      for(let i in selection){
-        if(this.deviceIds === ""){
-          this.deviceIds = selection[i].id;
-        }else{
-          this.deviceIds += ","+selection[i].id;
-        }
-      }
+      this.deviceIds = selection.map(item=>item.id).toString();
+      this.arr = selection.map(item=>item);
     },
     selectChange(selection, rowData) {
       console.log("select-change", selection, rowData);
@@ -434,7 +439,7 @@ export default {
     }
     .right {
       width: 640px;
-      font-size: 14px;
+      font-size: 12px;
       float: left;
       padding: 10px;
       border: @border;

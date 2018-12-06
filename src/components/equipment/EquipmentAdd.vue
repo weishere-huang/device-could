@@ -4,7 +4,7 @@
       <div class="top">
         <el-row>
           <el-button plain size="small" @click="tback">返回</el-button>
-          <el-button plain size="small" @click="add1">保存</el-button>
+          <el-button plain size="small" @click="addwarning">保存</el-button>
         </el-row>
       </div>
       <div class="center">
@@ -89,23 +89,58 @@
         <h5>管理人员</h5>
         <el-form :inline="true"  class="demo-form-inline" label-width="100px">
           <el-form-item label="负责人员：">
-            <span>（空）</span>
+            <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='0')">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='0').content">
+                {{person.workerName}}
+              </el-tag>
+            </span>
+            <span v-else>
+              （空）
+            </span>
           </el-form-item>
           <el-form-item label="维修人员：">
-            <span>（空）</span>
+            <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='1')">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='1').content">
+                {{person.workerName}}
+              </el-tag>
+            </span>
+            <span v-else>
+              （空）
+            </span>
           </el-form-item>
         </el-form>
         <el-form :inline="true"  class="demo-form-inline" label-width="100px">
           <el-form-item label="检修人员：">
-            <span>（空）</span>
+            <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='2')">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='2').content">
+                {{person.workerName}}
+              </el-tag>
+            </span>
+            <span v-else>
+              （空）
+            </span>
           </el-form-item>
           <el-form-item label="保养人员：">
-            <span>（空）</span>
+            <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='3')">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='3').content">
+                {{person.workerName}}
+              </el-tag>
+            </span>
+            <span v-else>
+              （空）
+            </span>
           </el-form-item>
         </el-form>
         <el-form :inline="true"  class="demo-form-inline" label-width="100px">
           <el-form-item label="操作人员：">
-            <span>（空）</span>
+            <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='4')">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='4').content">
+                {{person.workerName}}
+              </el-tag>
+            </span>
+            <span v-else>
+              （空）
+            </span>
           </el-form-item>
           <el-form-item style="padding-left:20px">
             <el-button size="mini" @click="dialogVisible=true" >添加人员</el-button>
@@ -153,7 +188,7 @@
       :visible.sync="dialogVisible"
       width="80%"
       >
-      <addPerson></addPerson>
+      <addPerson :personAddHandler="personAddHandler"></addPerson>
     </el-dialog>
   </div>
 </template>
@@ -169,7 +204,7 @@
           label:"name"
         },
         defaultProps2:{
-          value:"categoryNo",
+          value:"id",
           label:"categoryName"
         },
         dialogVisible:false,
@@ -177,25 +212,6 @@
         ogrname:"",
         classfynm:"",
         sizeForm: {
-          // deviceNo: "",
-          // deviceName: "",
-          // organizeName: "",
-          // deviceClassify: "",
-          // deviceClassifyName: "超级存储",
-          // deviceSpec: "",
-          // outputDate: "",
-          // manufacturer: "",
-          // location: "",
-          // locationNo: "",
-          // buyPrice: "",
-          // buyDate: "",
-          // dataInfo: "",
-          // deviceCategory: "",
-          // deviceCategoryName: "",
-          // deviceModel: "",
-          // deviceState: "",
-          // organizeCode: "",
-          // enterFactoryDate: ""
           deviceNo: "",
           deviceName: "",
           organizeName: "",
@@ -263,11 +279,8 @@
 
         orgoptions:[],
         ctgoptions:[],
-        person1:"空",
-        person2:"空",
-        person3:"空",
-        person4:"空",
-        person5:"空",
+        devicePersonnelInfoBase:[],
+        //devicePersonnelInfo:[]
       };
     },
     methods: {
@@ -294,6 +307,8 @@
         name=name[(name.length)-1]
         let id=value[(value.length)-1]
         console.log(id,name);
+        console.log(value);
+
         this.sizeForm.deviceCategory=id;
         this.sizeForm.deviceCategoryName=name;
       },
@@ -308,7 +323,19 @@
       },
       add1() {
         //添加设备信息接口
+
         let qs = require("qs");
+        let _devicePersonnelInfo=[];
+        this.devicePersonnelInfoBase.forEach(items => {
+            _devicePersonnelInfo=_devicePersonnelInfo.concat(items.content.map(item=>{
+              return {
+              workerType: items.workerType,
+              workerName: item.workerName,
+              workerId: item.id,
+              workerTypeName: items.workerTypeName
+            }}));
+        });
+        console.log(_devicePersonnelInfo);
         let data = qs.stringify({
           deviceNo: this.sizeForm.deviceNo,
           deviceName: this.sizeForm.deviceName,
@@ -330,32 +357,8 @@
           deviceState: this.sizeForm.deviceState,
           enterFactoryDate: this.sizeForm.enterFactoryDate,
           deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
-          devicePersonnelInfo: JSON.stringify([
-            {
-            workerType: 1,
-            workerName: "赵六",
-            workerId: 188,
-            workerTypeName: "负责人员"
-            },
-            {
-              workerType: 2,
-              workerTypeName: "维修人员",
-              workerId: 192,
-              workerName: "王五"
-            },
-            {
-              workerType: 3,
-              workerTypeName: "检修人员",
-              workerId: 147,
-              workerName: "李四"
-            },
-            {
-              workerType: 4,
-              workerTypeName: "保养人员",
-              workerId: 195,
-              workerName: "杨光"
-            }
-          ])
+          devicePersonnelInfo:JSON.stringify(_devicePersonnelInfo)
+
           // deviceNo: this.sizeForm.deviceNo,
           // deviceName: this.sizeForm.deviceName,
           // organizeName: this.sizeForm.organizeName,
@@ -378,8 +381,6 @@
           // deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
           // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo),
         });
-
-
         this.Axios({
           url: "/device/add",
           params: data,
@@ -414,21 +415,7 @@
         console.log(obj.label);//我这边的name就是对应label的
         this.sizeForm.deviceState = data.value
       },
-      // findDeviceState() {
-      // 查找设备状态,暂时启用,写死状态
-      //   let qs = require("qs");
-      //   let data = qs.stringify({});
-      //   this.axios
-      //     .get(this.global.apiSrc + "/device/findDeviceState", data)
-      //     .then(result => {
-      //       this.options2 =  result;
-      //       console.log("findDeviceState");
-      //       console.log(result.data);
-      //     })
-      //     .catch(err => {
-      //       console.log(err);
-      //     });
-      // },
+
       filterArray(data, parent) {
         //编辑组织机构数据为树状结构方法
         let vm = this;
@@ -514,13 +501,32 @@
             console.log(err);
           });
       },
-      addPerson(params){
-        this.dialogVisible = params.isOk
-        this.person1 =
-        console.log(params);
+
+      personAddHandler(data){
+        this.devicePersonnelInfoBase=data;
+        this.dialogVisible=false;
+      },
+      // addPerson(params){
+      //   this.dialogVisible = params.isOk
+      //   this.person1 =
+      //   console.log(params);
+      // },
+      addwarning(){
+        this.$confirm('确认添加设备吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.add1();
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          });
+        });
       }
     },
-
     created() {
       //this.findDeviceState();
       this.findAlldeviceClassify();

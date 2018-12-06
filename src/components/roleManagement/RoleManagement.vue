@@ -139,6 +139,7 @@
 <script>
   import { MessageBox } from 'element-ui';
   export default {
+    inject:['reload'],
     data() {
       return {
         form:{
@@ -501,6 +502,8 @@
         ).then(
           response => {
             this.load();
+            console.log(response);
+            
           },
           ({type, info}) => {
 
@@ -528,7 +531,9 @@
           this
         ).then(
           response => {
-            this.load();
+            // this.load();
+            console.log(response);
+            this.reload()
           },
           ({type, info}) => {
 

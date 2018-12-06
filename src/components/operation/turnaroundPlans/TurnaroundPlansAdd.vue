@@ -36,18 +36,14 @@
         </el-form>
 
         <el-form label-width="110px" v-if="companyName.planType==='周期'" v-model="companyName.planType">
-          <!--<el-form-item label="计划日期：">-->
-          <!--<el-col :span="11">-->
-          <!--<el-date-picker type="date" placeholder="选择日期" v-model="companyName.startTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>-->
-          <!--</el-col>-->
-          <!--<el-col class="line" :span="2">~</el-col>-->
-          <!--<el-col :span="11">-->
-          <!--<el-date-picker type="date" placeholder="选择日期" v-model="companyName.endTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;" size="mini"></el-date-picker>-->
-          <!--</el-col>-->
-          <!--</el-form-item>-->
           <el-form-item label="计划日期：">
-            <el-date-picker v-model="timeValue" type="daterange" size="mini" align="right" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
-            </el-date-picker>
+            <el-col :span="11">
+              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.startTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
+            </el-col>
+            <el-col class="line" :span="2">~</el-col>
+            <el-col :span="11">
+              <el-date-picker type="date" placeholder="选择日期" v-model="companyName.endTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;" size="mini"></el-date-picker>
+            </el-col>
           </el-form-item>
           <el-form-item label="首次执行时间：">
             <el-col :span="11">
@@ -59,8 +55,8 @@
             </el-col>
           </el-form-item>
           <el-form-item label="计划频次：">
-            <el-input v-model="companyName.frequency" size="mini" style="width:150px"></el-input>
-            <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:150px">
+            <el-input v-model="companyName.frequency" size="mini" style="width:80px"></el-input>
+            <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:80px">
               <el-option label="天" value="1"></el-option>
               <el-option label="周" value="2"></el-option>
               <el-option label="月" value="3"></el-option>
@@ -104,7 +100,7 @@
       </div>
       <div class="right">
         <div>
-          <el-button size="small" @click="eliminateAll">清空已选</el-button>
+          <el-button size="small" @click="eliminateAll">清除已选</el-button>
           <el-button size="small" @click="addPlanIsShow">设备添加</el-button>
         </div>
         <h5>设备列表</h5>
@@ -114,7 +110,14 @@
         </div>
       </div>
     </div>
-    <add-plan v-show="addPlanShow" v-on:isHide="isHide" v-on:toAdd="toAdd"></add-plan>
+    <el-dialog
+      title="设备添加"
+      :visible.sync="addPlanShow"
+      width="900px"
+      >
+      <add-plan v-show="addPlanShow" v-on:isHide="isHide" v-on:toAdd="toAdd"></add-plan>
+    </el-dialog>
+    
   </div>
 </template>
 <script>
@@ -123,6 +126,7 @@
     name: "",
     data() {
       return {
+        arr:new Array(),
         auditId:0,
         deviceIds:0,
         date:"",
@@ -139,8 +143,8 @@
           startTime:"",
           endTime:"",
           executeTime:"",
-          frequency:"1",
-          frequencyType:"1",
+          frequency:"",
+          frequencyType:"",
           maintenanceCc:""
         },
         columns: [
@@ -204,39 +208,29 @@
         pageSize: 10,
         tableData: [],
         tableDate: [],
-        pickerOptions2: {
-          shortcuts: [{
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
-            }
-          }]
-        },
         timeValue: ''
       };
     },
     created() {},
     methods: {
-      test(){
+      test(){},
+      load(){
+        this.Axios(
+          {
+            params:Object.assign(this.searchParams, {
+              page: this.pageIndex,
+              size: this.pageSize
+            }),
+            type: "get",
+            url: "/device/all",
+          },
+          this
+        ).then(response => {
+            this.tableData = response.data.data.content;
+          },
+          ({type, info}) => {
+
+          })
       },
       TurnaroundPlans() {
         this.$router.push({
@@ -253,12 +247,12 @@
       toAddPlan(){
         this.companyName.executeTime = this.date +" "+ this.times;
         this.companyName.executeTime = this.companyName.executeTime.split(".")[0];
-        this.companyName.startTime = this.timeValue[0];
-        this.companyName.endTime = this.timeValue[1];
         this.companyName.maintenanceType = 0;
         if(this.companyName.planType === "单次"){
           this.companyName.endTime =this.companyName.startTime;
-          this.companyName.planType = 0
+          this.companyName.planType = 0;
+          this.companyName.frequency = -1;
+          this.companyName.frequencyType = -1;
         }
         if(this.companyName.planType === "周期"){
           this.companyName.planType = 1
@@ -303,80 +297,15 @@
           })
       },
       eliminateAll(){
-        this.tableData = "";
-        this.deviceIds = "";
-      },
-
-      isHide(params) {
-        this.addPlanShow = params;
-      },
-      toAdd(params){
-        this.tableData = params.values;
-        this.addPlanShow = params.isOk;
-      },
-      addPlanIsShow() {
-        this.addPlanShow = true;
-      },
-      toback() {
-        this.$router.back(-1);
-      },
-      selectGroupChange(selection) {
-        this.deviceIds = "";
-        for(let i in selection){
-          if(this.deviceIds === ""){
-            this.deviceIds = selection[i].id;
-          }else{
-            this.deviceIds += ","+selection[i].id;
+        let aaa = new Array();
+        for (let i in this.tableData){
+          for(let j in this.arr){
+            if(this.tableData[i].id !==this.arr[j].id){
+              aaa[aaa.length] = this.tableData[i];
+            }
           }
         }
-      },
-      selectALL(selection) {
-        this.deviceIds = "";
-        for(let i in selection){
-          if(this.deviceIds === ""){
-            this.deviceIds = selection[i].id;
-          }else{
-            this.deviceIds += ","+selection[i].id;
-          }
-        }
-        console.log("select-aLL", selection);
-      },
-      selectChange(selection, rowData) {
-        console.log("select-change", selection, rowData);
-      },
-      getTableData() {
-        this.tableData = this.tableDate.slice(
-          (this.pageIndex - 1) * this.pageSize,
-          this.pageIndex * this.pageSize
-        );
-      },
-      pageChange(pageIndex) {
-        this.pageIndex = pageIndex;
-        this.getTableData();
-        console.log(pageIndex);
-      },
-      pageSizeChange(pageSize) {
-        this.pageIndex = 1;
-        this.pageSize = pageSize;
-        this.getTableData();
-      },
-      load(){
-        this.Axios(
-          {
-            params:Object.assign(this.searchParams, {
-              page: this.pageIndex,
-              size: this.pageSize
-            }),
-            type: "get",
-            url: "/device/all",
-          },
-          this
-        ).then(response => {
-            this.tableData = response.data.data.content;
-          },
-          ({type, info}) => {
-
-          })
+        this.tableData = aaa;
       },
       submitAudit(){
         this.$confirm('计划添加成功,是否立即提交审核', '提示')
@@ -423,8 +352,48 @@
           },
           ({type, info}) => {
           })
-      }
+      },
 
+      isHide(params) {
+        this.addPlanShow = params;
+      },
+      toAdd(params){
+        this.tableData = params.values;
+        this.addPlanShow = params.isOk;
+      },
+      addPlanIsShow() {
+        this.addPlanShow = true;
+      },
+      toback() {
+        this.$router.back(-1);
+      },
+      selectGroupChange(selection) {
+        this.deviceIds = selection.map(item=>item.id).toString();
+        this.arr = selection.map(item=>item);
+      },
+      selectALL(selection) {
+        this.deviceIds = selection.map(item=>item.id).toString();
+        this.arr = selection.map(item=>item);
+      },
+      selectChange(selection, rowData) {
+        console.log("select-change", selection, rowData);
+      },
+      getTableData() {
+        this.tableData = this.tableDate.slice(
+          (this.pageIndex - 1) * this.pageSize,
+          this.pageIndex * this.pageSize
+        );
+      },
+      pageChange(pageIndex) {
+        this.pageIndex = pageIndex;
+        this.getTableData();
+        console.log(pageIndex);
+      },
+      pageSizeChange(pageSize) {
+        this.pageIndex = 1;
+        this.pageSize = pageSize;
+        this.getTableData();
+      }
     },
     components: {
       addPlan
@@ -461,6 +430,9 @@
           height: 40px;
           margin-bottom: 0px;
           overflow: hidden;
+          .el-input__inner{
+            padding-right: 20px;
+          }
         }
       }
       .right {

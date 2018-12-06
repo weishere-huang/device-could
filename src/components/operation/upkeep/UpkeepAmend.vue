@@ -57,8 +57,8 @@
             </el-col>
           </el-form-item>
           <el-form-item label="计划频次：">
-            <el-input v-model="companyName.frequency" size="mini" style="width:150px"></el-input>
-            <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:150px">
+            <el-input v-model="companyName.frequency" size="mini" style="width:80px"></el-input>
+            <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:80px">
               <el-option label="天" value="1"></el-option>
               <el-option label="周" value="2"></el-option>
               <el-option label="月" value="3"></el-option>
@@ -103,7 +103,14 @@
         </div>
       </div>
     </div>
-    <amend-plan v-show="amendPlanShow" v-on:isHide="isHide" v-on:toAdd="toAdd"></amend-plan>
+    <el-dialog
+          title="添加设备"
+          :visible.sync="amendPlanShow"
+          width="900px"
+          >
+         <amend-plan  v-on:isHide="isHide" v-on:toAdd="toAdd"></amend-plan>
+        </el-dialog>
+    
   </div>
 </template>
 <script>
@@ -114,8 +121,8 @@ export default {
     return {
       date:"",
       times:"",
-      userId:3,
       deviceIds:1,
+      arr:[],
       amendPlanShow: false,
       time: new Date().toLocaleString(),
       companyName: {
@@ -196,43 +203,43 @@ export default {
     };
   },
   created() {
-    this.loadValue();
-    this.loadSelect();
+    this.findOne(this.$route.query.id);
+    this.loadSelect(this.$route.query.id);
   },
   methods: {
-    loadValue(){
-      this.companyName = this.$store.state.operation.upkeep;
-      this.date = this.companyName.executeTime.split(" ")[0];
-      this.times = this.companyName.executeTime.split(" ")[1].split(".")[0];
+    findOne(number){
+      this.Axios(
+        {
+          type: "get",
+          url: "/mplan/findOne/"+number,
+        },
+        this
+      ).then(response => {
+          this.loadValue(response.data.data);
+          // this.companyName =response.data.data;
+          console.log(response.data.data)
+        },
+        ({type, info}) => {
+
+        })
+    },
+    loadValue(value){
+      this.companyName = value;
       this.companyName.maintenanceClassify = this.companyName.maintenanceClassify.toString();
-      if(this.companyName.planType === 0){
+      this.companyName.maintenanceLevel = this.companyName.maintenanceLevel.toString();
+      if(this.companyName.planType=== 0){
         this.companyName.planType = "单次"
-      }
-      if(this.companyName.planType === 1){
+      }if(this.companyName.planType=== 1){
         this.companyName.planType = "周期"
       }
-      if(this.companyName.maintenanceType === "维修"){
-        this.companyName.maintenanceType = 0;
-      }
-      if(this.companyName.maintenanceType === "保养"){
-        this.companyName.maintenanceType = 1;
-      }
-      if(this.companyName.maintenanceLevel === "大"){
-        this.companyName.maintenanceLevel=3;
-      }
-      if(this.companyName.maintenanceLevel === "中"){
-        this.companyName.maintenanceLevel=2;
-      }
-      if(this.companyName.maintenanceLevel === "小"){
-        this.companyName.maintenanceLevel=1;
-      }
-      this.companyName.maintenanceLevel = this.companyName.maintenanceLevel.toString();
+      this.date = this.companyName.executeTime.split(" ")[0];
+      this.times = this.companyName.executeTime.split(" ")[1].split(".")[0];
     },
-    loadSelect(){
+    loadSelect(number){
       let arr=new Array()
       this.Axios(
         {
-          params:{maintenanceId:this.companyName.id},
+          params:{maintenanceId:number},
           type: "get",
           url: "/mplan/listDevice",
         },
@@ -247,13 +254,15 @@ export default {
         })
     },
     updatePlan(){
-      console.log(this.times);
       this.companyName.executeTime = this.date +" "+ this.times;
       this.companyName.executeTime = this.companyName.executeTime.split(".")[0].replace(/-/g,"/");
       this.companyName.startTime = this.companyName.startTime.split(" ")[0].replace(/-/g,"/");
       this.companyName.endTime = this.companyName.endTime.split(" ")[0].replace(/-/g,"/");
       if(this.companyName.planType === "单次"){
-        this.companyName.planType = 0
+        this.companyName.endTime =this.companyName.startTime;
+        this.companyName.planType = 0;
+        this.companyName.frequency = -1;
+        this.companyName.frequencyType = -1;
       }
       if(this.companyName.planType === "周期"){
         this.companyName.planType = 1
@@ -318,28 +327,23 @@ export default {
       this.$router.back(-1);
     },
     selectGroupChange(selection) {
-      this.deviceIds = "";
-      for(let i in selection){
-        if(this.deviceIds === ""){
-          this.deviceIds = selection[i].id;
-        }else{
-          this.deviceIds += ","+selection[i].id;
-        }
-      }
+      this.deviceIds = selection.map(item=>item.id).toString();
+      this.arr = selection.map(item=>item);
     },
     selectALL(selection) {
-      this.deviceIds = "";
-      for(let i in selection){
-        if(this.deviceIds === ""){
-          this.deviceIds = selection[i].id;
-        }else{
-          this.deviceIds += ","+selection[i].id;
-        }
-      }
+      this.deviceIds = selection.map(item=>item.id).toString();
+      this.arr = selection.map(item=>item);
     },
     eliminateAll(){
-      this.loadSelect();
-      this.deviceIds = "";
+      let aaa = new Array();
+      for (let i in this.tableData){
+        for(let j in this.arr){
+          if(this.tableData[i].id !==this.arr[j].id){
+            aaa[aaa.length] = this.tableData[i];
+          }
+        }
+      }
+      this.tableData = aaa;
     },
     selectChange(selection, rowData) {
       console.log("select-change", selection, rowData);
@@ -400,7 +404,7 @@ export default {
     }
     .right {
       width: 640px;
-      font-size: 14px;
+      font-size: 12px;
       float: left;
       padding: 10px;
       border: @border;

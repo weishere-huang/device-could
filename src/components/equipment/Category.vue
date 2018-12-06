@@ -10,17 +10,17 @@
               <el-button type="text" size="mini" @click="dialogVisible=true" >
                 添加
               </el-button>
-              <el-button type="text" size="mini"  @click="dialogVisible1=true">
+              <el-button type="text" size="mini"  @click="dialogVisible1=true,nodeCname=data.categoryName,nodeCMsg=data.categoryMsg">
                 修改
               </el-button>
-              <el-button type="text" size="mini" @click="() => deleteCategory(data.id)">
+              <el-button type="text" size="mini" @click="() => warningdelete(data.id)">
                 删除
               </el-button>
             </span>
           </span>
         </el-tree>
         <div style="width:100%;text-align:center">
-          <el-button size="small" style="width:200px;margin:auto" v-if="organize===''" @click="dialogVisible3=true">添加</el-button>          
+          <el-button size="small" style="width:200px;margin:auto" v-if="organize===''" @click="dialogVisible3=true,addFirst">添加根类</el-button>
         </div>
         <el-dialog
           title="添加根节点"
@@ -48,10 +48,10 @@
         >
        <el-form ref="form" label-width="90px" style="padding:10px;">
           <el-form-item label="类别名称：">
-            <el-input v-model="nodedata.categoryName" size="mini"></el-input>
+            <el-input v-model="nodeCname" size="mini"></el-input>
           </el-form-item>
           <el-form-item label="备注：">
-            <el-input type="textarea" v-model="nodedata.categoryMsg"></el-input>
+            <el-input type="textarea" v-model="nodeCMsg"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button size="mini" @click="updateCategory">确认修改</el-button>
@@ -79,13 +79,16 @@
   </div>
 </template>
 <script>
-let id = 1000;
 export default {
+  inject: ["reload"],
   data() {
     return {
       dialogVisible3:false,
       dialogVisible1:false,
       dialogVisible:false,
+      nodeCname:"",
+      nodeCMsg:"",
+
       organize: "",
       // data5: this.organize,
       form: {
@@ -192,13 +195,45 @@ export default {
         //   console.log(err);
         // });
     },
+    addFirst(){
+      //添加根类
+      let qs = require("qs");
+      let data = qs.stringify({
+        categoryParentName:"根类",
+        categoryParentNo:0,
+        categoryName:this.addname,
+        categoryMsg:this.addmsg
+      });
+      this.Axios({
+        url: "/deviceCategory/add",
+        params: data,
+        type: "post",
+        option: {
+          enableMsg: false
+        }
+      },this)
+      //.post(this.global.apiSrc + "/deviceCategory/add", data)
+        .then(result => {
+            if(result.data.code === 200){
+              alert("添加成功");
+              location.reload();
+            }else {
+              alert("添加失败,请重新添加");
+            }
+            console.log("addCategory");
+            console.log(result.data);
+          },
+          ({type, info}) => {
+          }
+        );
+    },
     updateCategory(){
       //修改设备类别
       let qs = require("qs");
       let data = qs.stringify({
         categoryId:this.nodedata.id,
-        categoryName:this.nodedata.categoryName,
-        categoryMsg:this.nodedata.categoryMsg
+        categoryName:this.nodeCname,
+        categoryMsg:this.nodeCMsg
       });
       this.Axios({
         url: "/deviceCategory/update",
@@ -225,6 +260,8 @@ export default {
         // .catch(err => {
         //   console.log(err);
         // });
+      this.nodeCname="";
+      this.nodeCMsg="";
     },
     deleteCategory(nodeId){
       console.log(nodeId+"nodeiddd");
@@ -246,7 +283,10 @@ export default {
         // .post(this.global.apiSrc + "/deviceCategory/delete/"+this.nodedata.id)
         .then(result => {
           if(result.data.code === 200){
-            alert("删除成功");
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
             location.reload();
           }else{
             alert("删除失败,请重新尝试")
@@ -260,6 +300,22 @@ export default {
         // .catch(err => {
         //   console.log(err);
         // });
+    },
+
+    warningdelete(nodeId){
+      this.$confirm('确定要删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteCategory(nodeId);
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+
     }
   },
   created() {

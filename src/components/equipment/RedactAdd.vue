@@ -70,18 +70,21 @@
           </div>
         </div>
         <div class="right">
-          <el-button size="mini">清空</el-button>
-          <el-button size="mini">保存</el-button>
+          <el-button size="mini" @click="deletes">清空</el-button>
+          <el-button size="mini" @click="toAdd">保存</el-button>
           <div class="personList">
             <el-tabs type="border-card" @tab-click="getNode" v-model="editableTabsValue" :tab-position="tabPosition" style="height: 200px;">
-                <el-tab-pane :key="item.name"
-                  v-for="item in editableTabs"
-                  :label="item.title"
-                  :name="item.name">
-                  <span>{{item.content}}
-                    <label><i class="iconfont icon-cha"></i></label>
-                  </span>
-                </el-tab-pane>
+              <el-tab-pane
+                :key="item.name"
+                v-for="item in editableTabs"
+                :label="item.workerTypeName"
+                :name="item.workerType"
+              >
+                <tab-component
+                  :items="item"
+                  :deleteWorker="workerDelete"
+                ></tab-component>
+              </el-tab-pane>
               </el-tabs>
           </div>
         </div>
@@ -90,103 +93,64 @@
   </div>
 </template>
 <script>
+  import Vue from "vue";
+  var tabComponent = Vue.component("tab-component", {
+    props: {
+      items: {
+        type: Object,
+        required: true
+      },
+      deleteWorker: {
+        type: Function,
+        required: true
+      }
+    },
+    template:
+      '<ul class="workerList"><li v-for="item in items.content">{{ item.workerName }}<i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>'
+  });
 export default {
   name: "",
+  props: {
+    personAddHandler: {
+      type: Function,
+      required: true
+    }
+  },
   data() {
     return {
       editableTabs: [
         {
-          title: '负责',
-          name: '0',
-          content:''
-        }, {
-          title: '维修',
-          name: '1',
-          content: ''
-        }, {
-          title: '检修',
-          name: '2',
-          content:''
-        }, {
-          title: '保养',
-          name: '3',
-          content: ''
-        }, {
-          title: '操作',
-          name: '4',
-          content: ''
+          workerTypeName: "负责",
+          workerType: "0",
+          content: []
+        },
+        {
+          workerTypeName: "维修",
+          workerType: "1",
+          content: []
+        },
+        {
+          workerTypeName: "检修",
+          workerType: "2",
+          content: []
+        },
+        {
+          workerTypeName: "保养",
+          workerType: "3",
+          content: []
+        },
+        {
+          workerTypeName: "操作",
+          workerType: "4",
+          content: []
         }
       ],
       editableTabsValue:"0",
       tabPosition:"top",
       pageIndex: 1,
       pageSize: 10,
-      tableData: [
-        // {
-        //   name: "111",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "2222",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "3333",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "4444",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "5555",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "6666",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "7777",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "8888",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "9999",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // }
-      ],
-      tableDate: [{code:1000}],
+      tableData: [],
+      tableDate: [],
       columns: [
         {
           field: "name",
@@ -224,56 +188,7 @@ export default {
         }
       ],
       personListValue: [],
-      data2: [
-        {
-          id: 1,
-          label: "一级 1",
-          children: [
-            {
-              id: 4,
-              label: "二级 1-1",
-              children: [
-                {
-                  id: 9,
-                  label: "三级 1-1-1"
-                },
-                {
-                  id: 10,
-                  label: "三级 1-1-2"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 2,
-          label: "一级 2",
-          children: [
-            {
-              id: 5,
-              label: "二级 2-1"
-            },
-            {
-              id: 6,
-              label: "二级 2-2"
-            }
-          ]
-        },
-        {
-          id: 3,
-          label: "一级 3",
-          children: [
-            {
-              id: 7,
-              label: "二级 3-1"
-            },
-            {
-              id: 8,
-              label: "二级 3-2"
-            }
-          ]
-        }
-      ],
+      data2: [],
       defaultProps: {
         children: "children",
         label: "label"
@@ -284,7 +199,18 @@ export default {
     getRowData(a,b,c){
       console.log(b.name);
       console.log(this.editableTabs[this.editableTabsValue]);
-      this.editableTabs[this.editableTabsValue].content+=b.name+','
+      if (
+        this.editableTabs[this.editableTabsValue].content.find(
+          i => i.id === b.id
+        )
+      ) {
+        this.$message("此绑定类型不能添加重复的人员");
+      } else {
+        this.editableTabs[this.editableTabsValue].content.push({
+          workerName: b.name,
+          id: b.id
+        });
+      }
     },
     getNode(a){
       console.log(a);
@@ -374,7 +300,18 @@ export default {
         // .catch(err => {
         //   console.log(err);
         // });
-    }
+    },
+
+    toAdd() {
+      this.$props.personAddHandler(this.editableTabs);
+    },
+    deletes() {
+      this.personListValue = "";
+      this.toValue = "";
+      // let arr ="";
+      // this.selectALL(arr);
+    },
+
   },
   created() {
     this.Axios({
