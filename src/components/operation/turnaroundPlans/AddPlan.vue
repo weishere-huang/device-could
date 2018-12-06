@@ -1,7 +1,7 @@
 <template>
   <div class="addPerson">
     <div class="addCase">
-      
+
       <div class="bottom">
         <div class="left">
           <h5>设备类别</h5>
@@ -55,7 +55,7 @@
               <v-pagination
                 @page-change="pageChange"
                 @page-size-change="pageSizeChange"
-                :total="tableData.length"
+                :total="pageNumber"
                 :page-size="pageSize"
                 :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
               ></v-pagination>
@@ -87,343 +87,339 @@
   </div>
 </template>
 <script>
-export default {
-  name: "",
-  data() {
-    return {
-      clickId: 0,
-      key: "",
-      searchs: "",
-      toValue: "",
-      pageIndex: 1,
-      pageSize: 10,
-      tableData: [],
-      tableDate: [],
-      columns: [
-        {
-          width: 40,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
-        {
-          field: "deviceNo",
-          title: "设备编号",
-          width: 60,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-          // orderBy: ""
-        },
-        {
-          field: "deviceName",
-          title: "设备名称",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "deviceModel",
-          title: "型号/规格",
-          width: 130,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "location",
-          title: "设备位置",
-          width: 90,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        }
-      ],
-      personListValue: [],
-      data2: [
-        {
-          id: 1,
-          categoryName: "一级",
-          children: [
-            {
-              id: 11,
-              categoryName: "二级 1-1",
-              children: [
-                {
-                  id: 12,
-                  categoryName: "三级 1-1-1"
-                },
-                {
-                  id: 13,
-                  categoryName: "三级 1-1-2"
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      defaultProps: {
-        children: "children",
-        label: "categoryName"
-      }
-    };
-  },
-  methods: {
-    loads() {
-      let arrs = new Array();
-      this.Axios(
-        {
-          params: { page: this.pageIndex, size: this.pageSize },
-          type: "get",
-          url: "/device/all"
-        },
-        this
-      ).then(
-        response => {
-          arrs = response.data.data.content;
-          this.tableData = arrs;
-          this.tabledate = this.tableData;
-        },
-        ({ type, info }) => {}
-      );
-    },
-    toLoad() {
-      this.Axios(
-        {
-          params: { deviceCategory: this.clickId },
-          type: "get",
-          url: "/device/select"
-        },
-        this
-      ).then(
-        response => {
-          this.tableData = response.data.data.content;
-        },
-        ({ type, info }) => {}
-      );
-    },
-    search() {
-      this.Axios(
-        {
-          params: { keyWord: this.key },
-          type: "get",
-          url: "/device/findByKeyWord"
-        },
-        this
-      ).then(
-        response => {
-          this.tableData = response.data.data.content;
-          this.tabledate = this.tableData;
-          this.searchs = this.key;
-        },
-        ({ type, info }) => {}
-      );
-    },
-    isHide() {
-      this.$emit("isHide", false);
-    },
-    toAdd() {
-      let data = {
-        values: this.toValue,
-        isOk: false
-      };
-      this.$emit("toAdd", data);
-    },
-    deletes() {
-      this.personListValue = "";
-      this.toValue = "";
-    },
-    deviceType() {
-      this.Axios(
-        {
-          params: {},
-          type: "get",
-          url: "/deviceCategory/all"
-        },
-        this
-      ).then(
-        response => {
-          // this.data2 = response.data.data;
-        },
-        ({ type, info }) => {}
-      );
-    },
-
-    handleNodeClick(data) {
-      this.clickId = data.id;
-      this.toLoad();
-    },
-    selectGroupChange(selection) {
-      // console.log(selection);
-      this.toValue = selection;
-      let arr = new Array();
-      for (let i = 0; i < selection.length; i++) {
-        arr[i] = selection[i].deviceName;
-      }
-      this.personListValue = arr;
-    },
-    selectALL(selection) {
-      this.toValue = selection;
-      let arr = new Array();
-      for (let i = 0; i < selection.length; i++) {
-        arr[i] = selection[i].deviceName;
-      }
-      this.personListValue = arr;
-    },
-    selectChange(selection, rowData) {
-      // console.log("select-change", selection, rowData);
-    },
-    getTableData() {
-      this.tableData = this.tableDate.slice(
-        (this.pageIndex - 1) * this.pageSize,
-        this.pageIndex * this.pageSize
-      );
-    },
-    pageChange(pageIndex) {
-      this.pageIndex = pageIndex;
-      this.getTableData();
-      console.log(pageIndex);
-    },
-    pageSizeChange(pageSize) {
-      this.pageIndex = 1;
-      this.pageSize = pageSize;
-      this.getTableData();
-    },
-
-
-    filterArray2(data, parent) {
-      let vm = this;
-      var tree = [];
-      var temp;
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].categoryParentNo == parent) {
-          console.log(data[i]);
-          var obj = data[i];
-          temp = this.filterArray2(data, data[i].categoryNo);
-          if (temp.length > 0) {
-            obj.children = temp;
+  export default {
+    name: "",
+    data() {
+      return {
+        arr:new Array(),
+        clickId: 0,
+        key: "",
+        pageNumber:"",
+        searchs: "",
+        toValue: "",
+        pageIndex: 1,
+        pageSize: 10,
+        tableData: [],
+        tableDate: [],
+        columns: [
+          {
+            width: 40,
+            titleAlign: "center",
+            columnAlign: "center",
+            type: "selection"
+          },
+          {
+            field: "deviceNo",
+            title: "设备编号",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+            // orderBy: ""
+          },
+          {
+            field: "deviceName",
+            title: "设备名称",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "deviceModel",
+            title: "型号/规格",
+            width: 130,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "location",
+            title: "设备位置",
+            width: 90,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
           }
-          tree.push(obj);
+        ],
+        personListValue: [],
+        data2: [
+          {
+            id: 1,
+            categoryName: "一级",
+            children: [
+              {
+                id: 11,
+                categoryName: "二级 1-1",
+                children: [
+                  {
+                    id: 12,
+                    categoryName: "三级 1-1-1"
+                  },
+                  {
+                    id: 13,
+                    categoryName: "三级 1-1-2"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        defaultProps: {
+          children: "children",
+          label: "categoryName"
         }
-      }
-      return tree;
+      };
     },
-    findAlldeviceClassify(){
-      this.Axios({
-        params: {
-        },
-        option: {
-          enableMsg: false
-        },
-        type: "get",
-        url: "/deviceCategory/all",
-      },this)
-        .then(result => {
-          this.data2= this.filterArray2(result.data.data,0);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    methods: {
+      loads() {
+        let arrs = new Array();
+        this.Axios(
+          {
+            params: { page: this.pageIndex, size: this.pageSize },
+            type: "get",
+            url: "/device/all"
+          },
+          this
+        ).then(
+          response => {
+            this.pageNumber = response.data.data.totalElements;
+            arrs = response.data.data.content;
+            this.tableData = arrs;
+            this.tabledate = this.tableData;
+          },
+          ({ type, info }) => {}
+        );
+      },
+      toLoad() {
+        this.Axios(
+          {
+            params: { deviceCategory: this.clickId },
+            type: "get",
+            url: "/device/select"
+          },
+          this
+        ).then(
+          response => {
+            this.tableData = response.data.data.content;
+          },
+          ({ type, info }) => {}
+        );
+      },
+      search() {
+        this.Axios(
+          {
+            params: { keyWord: this.key },
+            type: "get",
+            url: "/device/findByKeyWord"
+          },
+          this
+        ).then(
+          response => {
+            this.tableData = response.data.data.content;
+            this.tabledate = this.tableData;
+            this.searchs = this.key;
+          },
+          ({ type, info }) => {}
+        );
+      },
+      isHide() {
+        this.$emit("isHide", false);
+      },
+      toAdd() {
+        let data = {
+          values: this.toValue,
+          isOk: false
+        };
+        this.$emit("toAdd", data);
+      },
+      deletes() {
+        this.personListValue = "";
+        this.toValue = "";
+      },
+
+      handleNodeClick(data) {
+        this.clickId = data.id;
+        this.toLoad();
+      },
+      selectGroupChange(selection) {
+        // let arr = new Array();
+        // this.toValue = selection;
+        // for (let i = 0; i < selection.length; i++) {
+        //   arr[i] = selection[i].deviceName;
+        // }
+        // this.personListValue = Array.from(new Set(arr));
+        this.toValue = selection;
+        console.log(selection);
+        const arr=selection.map(item=>item.deviceName);
+        this.personListValue
+        // fromor (let i = 0; i < selection.length; i++) {
+        //   this.arr[this.arr.length] = selection[i].deviceName;
+        // }
+        // this.personListValue = Array.from(new Set(this.arr));
+      },
+      selectALL(selection) {
+        console.log(selection);
+        this.toValue = selection;
+        for (let i = 0; i < selection.length; i++) {
+            this.arr[this.arr.length] = selection[i].deviceName;
+        }
+        this.personListValue = Array.from(new Set(this.arr));
+      },
+      selectChange(selection, rowData) {
+        // console.log("select-change", selection, rowData);
+      },
+      getTableData() {
+        this.tableData = this.tableDate.slice(
+          (this.pageIndex - 1) * this.pageSize,
+          this.pageIndex * this.pageSize
+        );
+      },
+      pageChange(pageIndex) {
+        this.pageIndex = pageIndex;
+        this.getTableData();
+        this.loads();
+      },
+      pageSizeChange(pageSize) {
+        this.pageIndex = 1;
+        this.pageSize = pageSize;
+        this.loads();
+        this.getTableData();
+      },
+
+
+      filterArray2(data, parent) {
+        let vm = this;
+        var tree = [];
+        var temp;
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].categoryParentNo == parent) {
+            var obj = data[i];
+            temp = this.filterArray2(data, data[i].categoryNo);
+            if (temp.length > 0) {
+              obj.children = temp;
+            }
+            tree.push(obj);
+          }
+        }
+        return tree;
+      },
+      findAlldeviceClassify(){
+        this.Axios({
+          params: {
+          },
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/deviceCategory/all",
+        },this)
+          .then(result => {
+            this.data2= this.filterArray2(result.data.data,0);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
     },
-    },
-  created() {
-    // this.deviceType();
-    this.loads();
-    this.findAlldeviceClassify();
-  }
-};
+    created() {
+      // this.deviceType();
+      this.loads();
+      this.findAlldeviceClassify();
+    }
+  };
 </script>
 
 <style lang="less" scoped>
-@blue: #409eff;
-@Success: #67c23a;
-@Warning: #e6a23c;
-@Danger: #f56c6c;
-@Info: #dde2eb;
-@border: 1px solid #dde2eb;
-.addPerson {
-  // position: fixed;
-  // width: 100vw;
-  // height: 100vh;
-  // top: 0;
-  // left: 0;
-  // background-color: #42424227;
-  .addCase {
-    width: 900px;
-    // min-height: 500px;
-    // background-color: white;
-    // margin: auto;
-    // border-radius: 5px;
-    // margin-top: 100px;
-    font-size: 12px;
-   
-    .bottom {
-      margin-top: 20px;
-      padding: 10px;
-      font-size: 0;
-      overflow: hidden;
-      .left {
-        width: 18%;
-        border: @border;
-        min-height: 400px;
-        position: relative;
-        float: left;
-        margin-right: 1%;
-        font-size: 12px;
-        h5 {
-          position: absolute;
-          top: -10px;
-          left: 10px;
-          font-size: 14px;
-        }
-        .treeCase {
-          margin-top: 20px;
-        }
-      }
-      .center {
-        width: 60%;
+  @blue: #409eff;
+  @Success: #67c23a;
+  @Warning: #e6a23c;
+  @Danger: #f56c6c;
+  @Info: #dde2eb;
+  @border: 1px solid #dde2eb;
+  .addPerson {
+    // position: fixed;
+    // width: 100vw;
+    // height: 100vh;
+    // top: 0;
+    // left: 0;
+    // background-color: #42424227;
+    .addCase {
+      width: 900px;
+      // min-height: 500px;
+      // background-color: white;
+      // margin: auto;
+      // border-radius: 5px;
+      // margin-top: 100px;
+      font-size: 12px;
 
-        min-height: 400px;
-        float: left;
-        margin-right: 1%;
-        font-size: 12px;
-        .search {
-          padding: 0 10px;
-        }
-        .tableList {
-          margin-top: 10px;
-          padding: 10px;
+      .bottom {
+        margin-top: 20px;
+        padding: 10px;
+        font-size: 0;
+        overflow: hidden;
+        .left {
+          width: 18%;
           border: @border;
-          border-radius: 5px;
-          max-height: 500px;
+          min-height: 400px;
+          position: relative;
+          float: left;
+          margin-right: 1%;
+          font-size: 12px;
+          h5 {
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            font-size: 14px;
+          }
+          .treeCase {
+            margin-top: 20px;
+          }
         }
-      }
-      .right {
-        width: 20%;
-        min-height: 400px;
-        float: left;
-        font-size: 12px;
-        .personList {
-          margin-top: 10px;
-          width: 100%;
-          border: @border;
-          border-radius: 5px;
-          min-height: 360px;
-          padding: 10px;
-          li {
-            list-style-type: none;
-            height: 20px;
-            line-height: 20px;
+        .center {
+          width: 60%;
+
+          min-height: 400px;
+          float: left;
+          margin-right: 1%;
+          font-size: 12px;
+          .search {
             padding: 0 10px;
-            span {
-              float: right;
-              cursor: pointer;
-              display: none;
-            }
-            &:hover {
+          }
+          .tableList {
+            margin-top: 10px;
+            padding: 10px;
+            border: @border;
+            border-radius: 5px;
+            max-height: 500px;
+          }
+        }
+        .right {
+          width: 20%;
+          min-height: 400px;
+          float: left;
+          font-size: 12px;
+          .personList {
+            margin-top: 10px;
+            width: 100%;
+            border: @border;
+            border-radius: 5px;
+            min-height: 360px;
+            padding: 10px;
+            li {
+              list-style-type: none;
+              height: 20px;
+              line-height: 20px;
+              padding: 0 10px;
               span {
-                display: block;
+                float: right;
+                cursor: pointer;
+                display: none;
+              }
+              &:hover {
+                span {
+                  display: block;
+                }
               }
             }
           }
@@ -431,5 +427,4 @@ export default {
       }
     }
   }
-}
 </style>

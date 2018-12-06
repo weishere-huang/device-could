@@ -5,13 +5,19 @@
         <div class="left">
           <h5>设备类别</h5>
           <div class="treeCase">
-            <el-tree :data="data2" @node-click="handleNodeClick" node-key="id" :default-expanded-keys="[2, 3]" :default-checked-keys="[5]" :props="defaultProps">
+            <el-tree
+              :data="data2"
+              node-key="id"
+              @node-click="handleNodeClick"
+              :default-expanded-keys="[2, 3]"
+              :default-checked-keys="[5]"
+              :props="defaultProps"
+            >
             </el-tree>
           </div>
         </div>
         <div class="center">
           <div class="search">
-
             <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
             <el-button size="mini" @click="search">搜索</el-button>
             <span style="padding:0 10px;">最近搜索：{{searchs}}</span>
@@ -20,7 +26,7 @@
           <div class="tableList">
             <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange"></v-table>
             <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-              <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+              <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
             </div>
           </div>
         </div>
@@ -49,6 +55,7 @@
         searchs: "",
         toValue: "",
         pageIndex: 1,
+        pageNumber:"",
         pageSize: 10,
         tableData: [],
         tableDate: [],
@@ -128,6 +135,7 @@
           },
           this
         ).then(response => {
+          this.pageNumber = response.data.data.totalElements;
             arrs = response.data.data.content;
             this.tableData = arrs;
             this.tabledate = this.tableData;
@@ -146,6 +154,7 @@
           this
         ).then(response => {
             this.tableData =response.data.data.content;
+            this.pageNumber = this.tableData.length;
           },
           ({type, info}) => {
 
@@ -163,6 +172,7 @@
             this.tableData = response.data.data.content;
             this.tabledate = this.tableData;
             this.searchs = this.key;
+            this.pageNumber = this.tableData.length;
           },
           ({type, info}) => {
 
@@ -181,21 +191,6 @@
       deletes() {
         this.personListValue = "";
         this.toValue = "";
-      },
-      deviceType(){
-        this.Axios(
-          {
-            params:{},
-            type: "get",
-            url: "/deviceCategory/all",
-          },
-          this
-        ).then(response => {
-            this.data2 = response.data.data;
-          },
-          ({type, info}) => {
-
-          })
       },
       handleNodeClick(data) {
         this.clickId=data.id;
@@ -247,7 +242,6 @@
         var temp;
         for (var i = 0; i < data.length; i++) {
           if (data[i].categoryParentNo == parent) {
-            console.log(data[i]);
             var obj = data[i];
             temp = this.filterArray2(data, data[i].categoryNo);
             if (temp.length > 0) {
@@ -277,8 +271,8 @@
       },
     },
     created() {
-      this.deviceType();
       this.loads();
+      this.findAlldeviceClassify();
     }
   };
 </script>

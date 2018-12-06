@@ -318,11 +318,12 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
+      this.load();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
+      this.load();
       this.getTableData();
     },
     sortChange(params) {
@@ -344,7 +345,8 @@ export default {
         {
           params: {
             page: this.pageIndex,
-            size: this.pageSize
+            size: this.pageSize,
+            maintenanceType:0
           },
           type: "get",
           url: "/mplan/allPlan"
@@ -353,6 +355,7 @@ export default {
       ).then(
         response => {
           this.pageNumber = response.data.data.totalElements;
+          // console.log(response.data.data);
           this.loadValue(response.data.data.content);
         },
         ({ type, info }) => {}
@@ -394,6 +397,9 @@ export default {
         }
         if (this.tableData[i].maintenanceType === 1) {
           this.tableData[i].maintenanceType = "保养";
+        }
+        if (this.tableData[i].frequencyType === -1) {
+          this.tableData[i].frequencyType = "单次";
         }
         if (this.tableData[i].frequencyType === 0) {
           this.tableData[i].frequencyType = "天";
