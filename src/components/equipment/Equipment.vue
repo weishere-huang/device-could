@@ -107,7 +107,7 @@
             <v-pagination
               @page-change="pageChange"
               @page-size-change="pageSizeChange"
-              :total="totalElements"
+              :total="totalnum"
               :page-size="pageSize"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
