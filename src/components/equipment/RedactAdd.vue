@@ -70,18 +70,21 @@
           </div>
         </div>
         <div class="right">
-          <el-button size="mini">清空</el-button>
-          <el-button size="mini">保存</el-button>
+          <el-button size="mini" @click="deletes">清空</el-button>
+          <el-button size="mini" @click="toAdd">保存</el-button>
           <div class="personList">
             <el-tabs type="border-card" @tab-click="getNode" v-model="editableTabsValue" :tab-position="tabPosition" style="height: 200px;">
-                <el-tab-pane :key="item.name"
-                  v-for="item in editableTabs"
-                  :label="item.title"
-                  :name="item.name">
-                  <span>{{item.content}}
-                    <label><i class="iconfont icon-cha"></i></label>
-                  </span>
-                </el-tab-pane>
+              <el-tab-pane
+                :key="item.name"
+                v-for="item in editableTabs"
+                :label="item.workerTypeName"
+                :name="item.workerType"
+              >
+                <tab-component
+                  :items="item"
+                  :deleteWorker="workerDelete"
+                ></tab-component>
+              </el-tab-pane>
               </el-tabs>
           </div>
         </div>
@@ -90,31 +93,56 @@
   </div>
 </template>
 <script>
+  import Vue from "vue";
+  var tabComponent = Vue.component("tab-component", {
+    props: {
+      items: {
+        type: Object,
+        required: true
+      },
+      deleteWorker: {
+        type: Function,
+        required: true
+      }
+    },
+    template:
+      '<ul class="workerList"><li v-for="item in items.content">{{ item.workerName }}<i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>'
+  });
 export default {
   name: "",
+  props: {
+    personAddHandler: {
+      type: Function,
+      required: true
+    }
+  },
   data() {
     return {
       editableTabs: [
         {
-          title: '负责',
-          name: '0',
-          content:''
-        }, {
-          title: '维修',
-          name: '1',
-          content: ''
-        }, {
-          title: '检修',
-          name: '2',
-          content:''
-        }, {
-          title: '保养',
-          name: '3',
-          content: ''
-        }, {
-          title: '操作',
-          name: '4',
-          content: ''
+          workerTypeName: "负责",
+          workerType: "0",
+          content: []
+        },
+        {
+          workerTypeName: "维修",
+          workerType: "1",
+          content: []
+        },
+        {
+          workerTypeName: "检修",
+          workerType: "2",
+          content: []
+        },
+        {
+          workerTypeName: "保养",
+          workerType: "3",
+          content: []
+        },
+        {
+          workerTypeName: "操作",
+          workerType: "4",
+          content: []
         }
       ],
       editableTabsValue:"0",
@@ -122,7 +150,7 @@ export default {
       pageIndex: 1,
       pageSize: 10,
       tableData: [],
-      tableDate: [{code:1000}],
+      tableDate: [],
       columns: [
         {
           field: "name",
@@ -171,7 +199,18 @@ export default {
     getRowData(a,b,c){
       console.log(b.name);
       console.log(this.editableTabs[this.editableTabsValue]);
-      this.editableTabs[this.editableTabsValue].content+=b.name+','
+      if (
+        this.editableTabs[this.editableTabsValue].content.find(
+          i => i.id === b.id
+        )
+      ) {
+        this.$message("此绑定类型不能添加重复的人员");
+      } else {
+        this.editableTabs[this.editableTabsValue].content.push({
+          workerName: b.name,
+          id: b.id
+        });
+      }
     },
     getNode(a){
       console.log(a);
@@ -261,7 +300,18 @@ export default {
         // .catch(err => {
         //   console.log(err);
         // });
-    }
+    },
+
+    toAdd() {
+      this.$props.personAddHandler(this.editableTabs);
+    },
+    deletes() {
+      this.personListValue = "";
+      this.toValue = "";
+      // let arr ="";
+      // this.selectALL(arr);
+    },
+
   },
   created() {
     this.Axios({
