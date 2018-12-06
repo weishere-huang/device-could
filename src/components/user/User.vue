@@ -63,6 +63,7 @@
 <script>
 import Vue from "vue";
 export default {
+  inject:['reload'],
   data() {
     return {
       searchParams: {},
@@ -105,9 +106,9 @@ export default {
         {
           field: "phone",
           title: "手机号",
-          width: 150,
+          width: 90,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true
         },
         {
@@ -124,7 +125,7 @@ export default {
           title: "创建时间",
           width: 80,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true
         },
         {
@@ -132,7 +133,7 @@ export default {
           title: "用户状态",
           width: 80,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true
         },
         {
@@ -153,15 +154,12 @@ export default {
 
       if (params.type === "delete") {
         // do delete operation
-
         this.$delete(this.tableData, params.index);
-      } else if (params.type === "edit") {
+      } else if (params.type === "start") {
         // do edit operation
-
         alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
       } else if (params.type === "stop") {
         // do edit operation
-
         alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
       }
     },
@@ -248,7 +246,8 @@ export default {
             message: "启用成功",
             type: "success"
           });
-          this.load();
+          // this.load();
+          this.reload()
         },
         ({ type, info }) => {}
       );
@@ -272,7 +271,8 @@ export default {
             message: "禁用成功",
             type: "success"
           });
-          this.load();
+          // this.load();
+          this.reload()
         },
         ({ type, info }) => {}
       );
@@ -374,8 +374,8 @@ export default {
 };
 Vue.component("table-user", {
   template: `<span>
-        <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">修改</a>&nbsp;
-        <a href="" @click.stop.prevent="stop(rowData,index)" style="text-decoration: none;">停止</a>&nbsp;
+        <a href="" @click.stop.prevent="startUsing(rowData,index)" style="text-decoration: none;">启用</a>&nbsp;
+        <a href="" @click.stop.prevent="stop(rowData,index)" style="text-decoration: none;">停用</a>&nbsp;
         <a href="" @click.stop.prevent="deleteRow(rowData,index)" style="text-decoration: none;">删除</a>
         </span>`,
   props: {
@@ -390,9 +390,9 @@ Vue.component("table-user", {
     }
   },
   methods: {
-    update() {
+    startUsing() {
       // 参数根据业务场景随意构造
-      let params = { type: "edit", index: this.index, rowData: this.rowData };
+      let params = { type: "start", index: this.index, rowData: this.rowData };
       this.$emit("on-custom-comp", params);
     },
     deleteRow() {

@@ -49,10 +49,7 @@
           </span>
         </el-dialog>
         <!-- 故障消除弹框结束 -->
-        <el-button
-          size="small"
-          @click="deleteBreak"
-        >删除</el-button>
+        <!--<el-button size="small" @click="deleteBreak">删除</el-button>-->
         <div class="search">
           <el-input
             type="search"
@@ -84,7 +81,7 @@
           ></v-table>
           <div
             class="mt20 mb20 bold"
-            style="text-align:center;margin-top:30px;"
+            style="text-align:left;margin-top:20px;"
           >
             <v-pagination
               @page-change="pageChange"
@@ -289,19 +286,14 @@ export default {
   },
   methods: {
     customCompFunc(params) {
-      console.log(params);
-
+      // console.log(params);
       if (params.type === "delete") {
-        // do delete operation
-
-        this.$delete(this.tableData, params.index);
+        // this.$delete(this.tableData, params.index);
+        this.toDeleteBreak(params.rowData.id);
       } else if (params.type === "edit") {
-        // do edit operation
-
-        alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
+        // alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
+        this.toDetails(params.index,params.rowData)
       } else if (params.type === "stop") {
-        // do edit operation
-
         alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
       }
     },
@@ -498,9 +490,9 @@ export default {
         ({ type, info }) => {}
       );
     },
-    deleteBreak() {
+    deleteBreak(faultIds) {
       if (this.arr.length === 1) {
-        this.toDeleteBreak();
+        this.toDeleteBreak(faultIds);
       }
       if (this.arr.length > 1) {
         alert("抱歉、只能单个处理");
@@ -509,10 +501,10 @@ export default {
         alert("请选择要处理的故障");
       }
     },
-    toDeleteBreak() {
+    toDeleteBreak(faultIds) {
       let qs = require("qs");
       let data = qs.stringify({
-        ids: this.faultIds
+        ids: faultIds
       });
       this.Axios(
         {
@@ -525,7 +517,9 @@ export default {
         response => {
           this.load();
         },
-        ({ type, info }) => {}
+        ({ type, info }) => {
+
+        }
       );
     },
     getPersonnel(params) {
@@ -610,7 +604,7 @@ export default {
 };
 Vue.component("table-breakdown", {
   template: `<span>
-        <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">修改</a>&nbsp;
+        <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">查看</a>&nbsp;
         <a href="" @click.stop.prevent="deleteRow(rowData,index)" style="text-decoration: none;">删除</a>
         </span>`,
   props: {

@@ -57,8 +57,8 @@
             </el-col>
           </el-form-item>
           <el-form-item label="计划频次：">
-            <el-input v-model="companyName.frequency" size="mini" style="width:150px"></el-input>
-            <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:150px">
+            <el-input v-model="companyName.frequency" size="mini" style="width:80px"></el-input>
+            <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:80px">
               <el-option label="天" value="1"></el-option>
               <el-option label="周" value="2"></el-option>
               <el-option label="月" value="3"></el-option>
@@ -103,7 +103,14 @@
         </div>
       </div>
     </div>
-    <amend-plan v-show="amendPlanShow" v-on:isHide="isHide" v-on:toAdd="toAdd"></amend-plan>
+    <el-dialog
+          title="添加设备"
+          :visible.sync="amendPlanShow"
+          width="900px"
+          >
+         <amend-plan  v-on:isHide="isHide" v-on:toAdd="toAdd"></amend-plan>
+        </el-dialog>
+    
   </div>
 </template>
 <script>
@@ -205,7 +212,7 @@ export default {
       this.date = this.companyName.executeTime.split(" ")[0];
       this.times = this.companyName.executeTime.split(" ")[1].split(".")[0];
       this.companyName.maintenanceClassify = this.companyName.maintenanceClassify.toString();
-      if(this.companyName.planType === 0){
+      if(this.companyName.planType === -1){
         this.companyName.planType = "单次"
       }
       if(this.companyName.planType === 1){
@@ -247,13 +254,12 @@ export default {
         })
     },
     updatePlan(){
-      console.log(this.times);
       this.companyName.executeTime = this.date +" "+ this.times;
       this.companyName.executeTime = this.companyName.executeTime.split(".")[0].replace(/-/g,"/");
       this.companyName.startTime = this.companyName.startTime.split(" ")[0].replace(/-/g,"/");
       this.companyName.endTime = this.companyName.endTime.split(" ")[0].replace(/-/g,"/");
       if(this.companyName.planType === "单次"){
-        this.companyName.planType = 0
+        this.companyName.planType = -1
       }
       if(this.companyName.planType === "周期"){
         this.companyName.planType = 1
@@ -400,7 +406,7 @@ export default {
     }
     .right {
       width: 640px;
-      font-size: 14px;
+      font-size: 12px;
       float: left;
       padding: 10px;
       border: @border;

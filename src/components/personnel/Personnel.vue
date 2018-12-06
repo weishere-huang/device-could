@@ -92,7 +92,7 @@ export default {
         {
           field: "employeeNo",
           title: "员工编号",
-          width: 90,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -157,7 +157,7 @@ export default {
         {
           field: "custome-adv",
           title: "操作",
-          width: 100,
+          width: 130,
           titleAlign: "center",
           columnAlign: "center",
           componentName: "table-person"
@@ -181,6 +181,9 @@ export default {
       } else if (params.type === "stop") {
         // do edit operation
 
+        alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
+      } else if (params.type === "start") {
+        // do edit operation
         alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
       }
     },
@@ -383,7 +386,8 @@ export default {
 Vue.component("table-person", {
   template: `<span>
         <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">修改</a>&nbsp;
-        <a href="" @click.stop.prevent="stop(rowData,index)" style="text-decoration: none;">停止</a>&nbsp;
+        <a href="" @click.stop.prevent="startUsing(rowData,index)" style="text-decoration: none;">启用</a>&nbsp;
+        <a href="" @click.stop.prevent="stop(rowData,index)" style="text-decoration: none;">停用</a>&nbsp;
         <a href="" @click.stop.prevent="deleteRow(rowData,index)" style="text-decoration: none;">删除</a>
         </span>`,
   props: {
@@ -410,6 +414,10 @@ Vue.component("table-person", {
     },
     stop() {
       let params = { type: "stop", rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    },
+    startUsing() {
+      let params = { type: "start", rowData: this.rowData };
       this.$emit("on-custom-comp", params);
     }
   }

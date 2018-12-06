@@ -304,7 +304,7 @@
         person4:"空",
         person5:"空",
         devicePersonnelInfoBase:[],
-        devicePersonnelInfo:[]
+        //devicePersonnelInfo:[]
       };
     },
     methods: {

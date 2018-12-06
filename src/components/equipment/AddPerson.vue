@@ -51,7 +51,7 @@
               :table-data="tableData"
               :row-dblclick="getRowData"
               row-hover-color="#eee"
-              row-click-color="#edf7ff"            
+              row-click-color="#edf7ff"
               :select-all="selectALL"
               :select-group-change="selectGroupChange"
             ></v-table>
@@ -95,7 +95,10 @@
                 <!-- <span>{{item.content}}
                   <label><i class="iconfont icon-cha"></i></label>
                 </span> -->
-                <tab-component :items="item" :deleteWorker="workerDelete"></tab-component>
+                <tab-component
+                  :items="item"
+                  :deleteWorker="workerDelete"
+                ></tab-component>
               </el-tab-pane>
             </el-tabs>
           </div>
@@ -110,11 +113,11 @@ var tabComponent = Vue.component("tab-component", {
   props: {
     items: {
       type: Object,
-      required: true,
+      required: true
     },
     deleteWorker: {
       type: Function,
-      required: true,
+      required: true
     }
   },
   template:
@@ -122,10 +125,10 @@ var tabComponent = Vue.component("tab-component", {
 });
 export default {
   name: "",
-  props:{
-    personAddHandler:{
+  props: {
+    personAddHandler: {
       type: Function,
-      required: true,
+      required: true
     }
   },
   data() {
@@ -365,7 +368,9 @@ export default {
     },
     workerDelete(data) {
       //debugger;
-      this.editableTabs[this.editableTabsValue].content=this.editableTabs[this.editableTabsValue].content.filter(item=>item.id!==data.id);
+      this.editableTabs[this.editableTabsValue].content = this.editableTabs[
+        this.editableTabsValue
+      ].content.filter(item => item.id !== data.id);
     }
   },
   created() {
@@ -537,11 +542,11 @@ export default {
     &:nth-child(2n-1) {
       background: #f7f7f7;
     }
-    i{
+    i {
       float: right;
       line-height: 22px;
       cursor: pointer;
-      &:hover{
+      &:hover {
         color: red;
         font-weight: bold;
       }

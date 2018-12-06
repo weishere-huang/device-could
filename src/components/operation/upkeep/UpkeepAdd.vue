@@ -112,7 +112,14 @@
                 </div>
             </div>
         </div>
-        <add-plan v-show="addPlanShow" v-on:isHide="isHide" v-on:toAdd="toAdd"></add-plan>
+        <el-dialog
+          title="添加设备"
+          :visible.sync="addPlanShow"
+          width="900px"
+          >
+          <add-plan  v-on:isHide="isHide" v-on:toAdd="toAdd"></add-plan>
+        </el-dialog>
+        
     </div>
 </template>
 <script>
@@ -238,7 +245,7 @@ export default {
       this.companyName.maintenanceType = 1;
       if(this.companyName.planType === "单次"){
         this.companyName.endTime =this.companyName.startTime;
-        this.companyName.planType = 0
+        this.companyName.planType = -1
       }
       if(this.companyName.planType === "周期"){
         this.companyName.planType = 1
@@ -434,7 +441,7 @@ export default {
     }
     .right {
       width: 640px;
-      font-size: 14px;
+      font-size: 12px;
       float: left;
       padding: 10px;
       border: @border;
