@@ -1,9 +1,11 @@
 @font-face {
-    font-family: 'iconfont';
-    /* project id 940294 */
-    src: url('//at.alicdn.com/t/font_940294_148brnff08t.eot');
-    src: url('//at.alicdn.com/t/font_940294_148brnff08t.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_940294_148brnff08t.woff') format('woff'), url('//at.alicdn.com/t/font_940294_148brnff08t.ttf') format('truetype'), url('//at.alicdn.com/t/font_940294_148brnff08t.svg#iconfont') format('svg');
-}
+    font-family: 'iconfont';  /* project id 940294 */
+    src: url('//at.alicdn.com/t/font_940294_7gg52ulqebr.eot');
+    src: url('//at.alicdn.com/t/font_940294_7gg52ulqebr.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_940294_7gg52ulqebr.woff') format('woff'),
+    url('//at.alicdn.com/t/font_940294_7gg52ulqebr.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_940294_7gg52ulqebr.svg#iconfont') format('svg');
+  }
 
 .iconfont {
     font-family: "iconfont" !important;
@@ -41,7 +43,8 @@ body {
     .el-submenu__title {
         //-webkit-transition: all 1s linear !important;
         &:hover {
-            background: linear-gradient(135deg, transparent 0%, rgb(23, 31, 39) 50%, transparent 100%)
+            cursor: pointer;
+            background: linear-gradient(135deg, transparent 0%, rgb(44, 59, 75) 50%, transparent 100%)
         }
     }
     .el-menu {
@@ -54,10 +57,13 @@ body {
     .el-menu-item {
         background: #202c36;
         &:hover {
-            background: linear-gradient(135deg, transparent 0%, rgb(38, 52, 65) 50%, transparent 100%)
+            color: rgb(233, 198, 103) !important;
+            //background: linear-gradient(135deg, transparent 0%, rgb(38, 52, 65) 50%, transparent 100%)
         }
         &.is-active {
-            background: linear-gradient(135deg, transparent 0%, rgb(38, 52, 65) 50%, transparent 100%)
+            color: rgb(255, 208, 75) !important;
+            font-weight: bold
+            //background: linear-gradient(135deg, transparent 0%, rgb(38, 52, 65) 50%, transparent 100%)
         }
     }
     .logoWrap {
@@ -126,4 +132,8 @@ body {
         color: #666 !important;
         font-size: 18px !important;
     }
+}
+
+.el-container,.mainContentWrapper{
+    height: 100%;
 }

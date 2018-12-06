@@ -51,6 +51,7 @@
               :table-data="tableData"
               row-hover-color="#eee"
               row-click-color="#edf7ff"
+              :row-dblclick="getRowData"
               :select-all="selectALL"
               :select-group-change="selectGroupChange"
             ></v-table>
@@ -69,17 +70,22 @@
           </div>
         </div>
         <div class="right">
-          <el-button size="mini">清空</el-button>
-          <el-button size="mini">保存</el-button>
+          <el-button size="mini" @click="deletes">清空</el-button>
+          <el-button size="mini" @click="toAdd">保存</el-button>
           <div class="personList">
-            <ul>
-              <li
-                v-for="(item, index) in personListValue"
-                :key="index"
-              >{{item}}
-                <span>x</span>
-              </li>
-            </ul>
+            <el-tabs type="border-card" @tab-click="getNode" v-model="editableTabsValue" :tab-position="tabPosition" style="height: 200px;">
+              <el-tab-pane
+                :key="item.name"
+                v-for="item in editableTabs"
+                :label="item.workerTypeName"
+                :name="item.workerType"
+              >
+                <tab-component
+                  :items="item"
+                  :deleteWorker="workerDelete"
+                ></tab-component>
+              </el-tab-pane>
+              </el-tabs>
           </div>
         </div>
       </div>
@@ -87,85 +93,65 @@
   </div>
 </template>
 <script>
+  import Vue from "vue";
+  var tabComponent = Vue.component("tab-component", {
+    props: {
+      items: {
+        type: Object,
+        required: true
+      },
+      deleteWorker: {
+        type: Function,
+        required: true
+      }
+    },
+    template:
+      '<ul class="workerList"><li v-for="item in items.content">{{ item.workerName }}<i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>'
+  });
 export default {
   name: "",
+  props: {
+    personAddHandler: {
+      type: Function,
+      required: true
+    }
+  },
   data() {
     return {
+      editableTabs: [
+        {
+          workerTypeName: "负责",
+          workerType: "0",
+          content: []
+        },
+        {
+          workerTypeName: "维修",
+          workerType: "1",
+          content: []
+        },
+        {
+          workerTypeName: "检修",
+          workerType: "2",
+          content: []
+        },
+        {
+          workerTypeName: "保养",
+          workerType: "3",
+          content: []
+        },
+        {
+          workerTypeName: "操作",
+          workerType: "4",
+          content: []
+        }
+      ],
+      editableTabsValue:"0",
+      tabPosition:"top",
       pageIndex: 1,
       pageSize: 10,
-      tableData: [
-        // {
-        //   name: "111",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "2222",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "3333",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "4444",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "5555",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "6666",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "7777",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "8888",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "9999",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // }
-      ],
-      tableDate: [{code:1000}],
+      tableData: [],
+      tableDate: [],
       columns: [
-        {
-          width: 40,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
         {
           field: "name",
           title: "姓名",
@@ -175,14 +161,7 @@ export default {
           isResize: true
           // orderBy: ""
         },
-        {
-          field: "gender",
-          title: "性别",
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
+
         {
           field: "position",
           title: "岗位",
@@ -196,7 +175,7 @@ export default {
           title: "手机号",
           width: 90,
           titleAlign: "center",
-          columnAlign: "center",
+          columnAlign: "left",
           isResize: true
         },
         {
@@ -204,61 +183,12 @@ export default {
           title: "分配情况",
           width: 150,
           titleAlign: "center",
-          columnAlign: "center",
+          columnAlign: "left",
           isResize: true
         }
       ],
       personListValue: [],
-      data2: [
-        {
-          id: 1,
-          label: "一级 1",
-          children: [
-            {
-              id: 4,
-              label: "二级 1-1",
-              children: [
-                {
-                  id: 9,
-                  label: "三级 1-1-1"
-                },
-                {
-                  id: 10,
-                  label: "三级 1-1-2"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 2,
-          label: "一级 2",
-          children: [
-            {
-              id: 5,
-              label: "二级 2-1"
-            },
-            {
-              id: 6,
-              label: "二级 2-2"
-            }
-          ]
-        },
-        {
-          id: 3,
-          label: "一级 3",
-          children: [
-            {
-              id: 7,
-              label: "二级 3-1"
-            },
-            {
-              id: 8,
-              label: "二级 3-2"
-            }
-          ]
-        }
-      ],
+      data2: [],
       defaultProps: {
         children: "children",
         label: "label"
@@ -266,6 +196,26 @@ export default {
     };
   },
   methods: {
+    getRowData(a,b,c){
+      console.log(b.name);
+      console.log(this.editableTabs[this.editableTabsValue]);
+      if (
+        this.editableTabs[this.editableTabsValue].content.find(
+          i => i.id === b.id
+        )
+      ) {
+        this.$message("此绑定类型不能添加重复的人员");
+      } else {
+        this.editableTabs[this.editableTabsValue].content.push({
+          workerName: b.name,
+          id: b.id
+        });
+      }
+    },
+    getNode(a){
+      console.log(a);
+      console.log(this.editableTabsValue);
+    },
     handleNodeClick(data) {
       console.log(data);
       console.log(data.code);
@@ -323,23 +273,54 @@ export default {
     },
     findpeopler(code){
       console.log("该组织机构code---"+code)
-      this.axios
-        .get(this.global.apiSrc + "/employee/findByOrganizeCode", {params:{organizeCode:code}})
+      this.Axios({
+        params: {
+          organizeCode:code
+        },
+        option: {
+          enableMsg: false
+        },
+        type: "get",
+        url: "/employee/findByOrganizeCode"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        //.get(this.global.apiSrc + "/employee/findByOrganizeCode", {params:{organizeCode:code}})
         .then(result => {
           console.log("按照组织机构编号查询人");
           console.log(result.data);
           this.tableData=result.data.data.content;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
+        },
+          ({type, info}) => {
+            //错误类型 type=faild / error
+            //error && error(type, info);
+          }
+        )
+        // .catch(err => {
+        //   console.log(err);
+        // });
+    },
+
+    toAdd() {
+      this.$props.personAddHandler(this.editableTabs);
+    },
+    deletes() {
+      this.personListValue = "";
+      this.toValue = "";
+      // let arr ="";
+      // this.selectALL(arr);
+    },
+
   },
   created() {
-    //axios
-    this.axios
-      .get(this.global.apiSrc + "/organize/allOrganize")
-      //.get("api/organize/allOrganize/321")
+    this.Axios({
+      params: {
+      },
+      type: "get",
+      url: "/organize/allOrganize"
+    },this)
+     // .get(this.global.apiSrc + "/organize/allOrganize")
       .then(result => {
         console.log("查询所有组织机构");
         console.log(result.data);
@@ -348,16 +329,22 @@ export default {
         console.log(arr);
         //this.data2 = this.filterArray(result.data.data,1000);
         this.data2 = arr;
-      })
-      .catch(err => {
-        console.log(err);
-        console.log(this.userName);
-      });
+      },
+        ({type, info}) => {
+          //错误类型 type=faild / error
+          //error && error(type, info);
+        }
+      )
+      // .catch(err => {
+      //   console.log(err);
+      //   console.log(this.userName);
+      // });
   }
 };
 </script>
 
 <style lang="less" scoped>
+ @import url("../../assets/font/font.css");
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
@@ -373,7 +360,7 @@ export default {
   // background-color: #42424227;
   .addCase {
     width: 100%;
-    min-height: 500px;
+    // min-height: 500px;
     background-color: white;
     margin: auto;
     border-radius: 5px;
@@ -421,7 +408,7 @@ export default {
         }
       }
       .center {
-        width: 60%;
+        width: 55%;
 
         min-height: 400px;
         float: left;
@@ -439,7 +426,7 @@ export default {
         }
       }
       .right {
-        width: 20%;
+        width: 25%;
         min-height: 400px;
         float: left;
         font-size: 12px;
@@ -450,21 +437,29 @@ export default {
           border-radius: 5px;
           min-height: 360px;
           padding: 10px;
-          li {
-            list-style-type: none;
-            height: 20px;
-            line-height: 20px;
-            padding: 0 10px;
-            span {
-              float: right;
-              cursor: pointer;
-              display: none;
-            }
-            &:hover {
-              span {
-                display: block;
+          .el-tab-pane{
+            span{
+              display: inline-block;
+              width: 100%;
+              label{
+                float: right;
+                display: none;
+                i{
+                  cursor: pointer;
+                  &:hover{
+                    color: #409eff;
+                  }
+                }
+              }
+              &:hover{
+                label{
+                  display: block;
+
+                }
+
               }
             }
+
           }
         }
       }

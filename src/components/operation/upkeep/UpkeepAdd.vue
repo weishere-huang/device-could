@@ -13,10 +13,13 @@
                     </el-form-item>
                     <el-form-item label="检修分类：">
                         <el-select v-model="companyName.maintenanceClassify" placeholder="请选择" size="mini">
-                            <el-option label="日常检修（DM）" value="1"></el-option>
-                            <el-option label="定期检修（TBM）" value="2"></el-option>
-                            <el-option label="改进性检修（PAM）" value="3"></el-option>
-                            <el-option label="故障检修（RTF）" value="4"></el-option>
+                          <el-option label="例行保养" value="1"></el-option>
+                          <el-option label="季节性保养" value="2"></el-option>
+                          <el-option label="换季保养" value="3"></el-option>
+                          <el-option label="磨合期保养" value="4"></el-option>
+                          <el-option label="转移保养" value="5"></el-option>
+                          <el-option label="停放保养" value="6"></el-option>
+                          <el-option label="其他" value="7"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="检修级别：">
@@ -54,8 +57,8 @@
                         </el-col>
                     </el-form-item>
                     <el-form-item label="计划频次：">
-                        <el-input v-model="companyName.frequency" size="mini" style="width:150px"></el-input>
-                        <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:150px">
+                        <el-input v-model="companyName.frequency" size="mini" style="width:80px"></el-input>
+                        <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:80px">
                             <el-option label="天" value="1"></el-option>
                             <el-option label="周" value="2"></el-option>
                             <el-option label="月" value="3"></el-option>
@@ -109,7 +112,14 @@
                 </div>
             </div>
         </div>
-        <add-plan v-show="addPlanShow" v-on:isHide="isHide" v-on:toAdd="toAdd"></add-plan>
+        <el-dialog
+          title="添加设备"
+          :visible.sync="addPlanShow"
+          width="900px"
+          >
+          <add-plan  v-on:isHide="isHide" v-on:toAdd="toAdd"></add-plan>
+        </el-dialog>
+        
     </div>
 </template>
 <script>
@@ -119,23 +129,25 @@ export default {
   data() {
     return {
       //统一token之后删除userID
-      userId:3,
+      arr:[],
       deviceIds:1,
+      auditId:0,
       date:"",
       times:"",
       addPlanShow: false,
       time: new Date().toLocaleString(),
       companyName: {
+        id:"",
         planName:"",
         maintenanceClassify:"",
         maintenanceLevel:"",
-        maintenanceType:"",
+        maintenanceType:1,
         planType:"单次",
         startTime:"",
         endTime:"",
         executeTime:"",
-        frequency:"",
-        frequencyType:"",
+        frequency:1,
+        frequencyType:"天",
         maintenanceCc:""
       },
       columns: [
@@ -204,26 +216,39 @@ export default {
   created() {},
   methods: {
     load(){
-      this.axios
-        .get(this.global.apiSrc+"/device/all",{params:{
-            page:this.pageIndex,
-            size:this.pageSize
-          }})
-        .then(response =>{
+      this.Axios(
+        {
+          params:Object.assign(this.searchParams, {
+            page: this.pageIndex,
+            size: this.pageSize
+          }),
+          type: "get",
+          url: "/device/all",
+        },
+        this
+      ).then(response => {
           this.tableData = response.data.data.content;
-          console.log(response.data.data.content);
+        },
+        ({type, info}) => {
+
         })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
     addPlan(){
+      if(this.deviceIds!==""){
+        this.toAddPlan()
+      }else{
+        alert("请至少选择一个设备")
+      }
+    },
+    toAddPlan(){
       this.companyName.executeTime = this.date +" "+ this.times;
       this.companyName.executeTime = this.companyName.executeTime.split(".")[0];
-      this.companyName.maintenanceType = 0;
+      this.companyName.maintenanceType = 1;
       if(this.companyName.planType === "单次"){
         this.companyName.endTime =this.companyName.startTime;
-        this.companyName.planType = 0
+        this.companyName.planType = 0;
+        this.companyName.frequency = -1;
+        this.companyName.frequencyType = -1;
       }
       if(this.companyName.planType === "周期"){
         this.companyName.planType = 1
@@ -239,8 +264,6 @@ export default {
       }
       let qs = require("qs");
       let data = qs.stringify({
-        //统一token之后删除userID
-        userId:this.userId,
         id:this.companyName.id,
         planName:this.companyName.planName,
         maintenanceClassify:this.companyName.maintenanceClassify,
@@ -258,27 +281,82 @@ export default {
       this.axios
         .post(this.global.apiSrc+"/mplan/add", data)
         .then(response => {
-          console.log(response.data);
+          this.auditId = response.data.data.id;
           if(response.data.msg ==="成功"){
-            alert("成功");
-            this.Upkeep()
+            alert("计划添加成功");
+            this.Upkeep();
           }else{
-            alert("失败");
+            alert("计划添加失败");
           }
         })
         .catch(function(error) {
           console.log(error);
         });
     },
+
+    submitAudit(){
+      this.$confirm('计划添加成功,是否立即提交审核', '提示')
+        .then(_=>{
+          let qs = require("qs");
+          let data = qs.stringify({
+            maintenanceId:this.auditId
+          });
+          this.Axios(
+            {
+              params:Object.assign(this.searchParams, {
+                page: this.pageIndex,
+                size: this.pageSize
+              }),
+              type: "post",
+              url: "/mplan/submitAudit",
+            },
+            this
+          ).then(response => {
+              this.TurnaroundPlans();
+            },
+            ({type, info}) => {
+
+            })
+        })
+        .catch(_=>{
+          this.TurnaroundPlans();
+        })
+    },
+    toSubmitAudit(){
+      let qs = require("qs");
+      let data = qs.stringify({
+        maintenanceId:this.auditId
+      });
+      this.Axios(
+        {
+          params:data,
+          type: "post",
+          url: "/mplan/submitAudit",
+        },
+        this
+      ).then(response => {
+          this.TurnaroundPlans();
+        },
+        ({type, info}) => {
+        })
+    },
     eliminateAll(){
-      this.tableData = "";
-      this.deviceIds = "";
+      let aaa = new Array();
+      for (let i in this.tableData){
+        for(let j in this.arr){
+          if(this.tableData[i].id !==this.arr[j].id){
+            aaa[aaa.length] = this.tableData[i];
+          }
+        }
+      }
+      this.tableData = aaa;
     },
     Upkeep() {
       this.$router.push({
         path: "/Upkeep"
       });
     },
+
 
     isHide(params) {
       this.addPlanShow = params;
@@ -294,24 +372,12 @@ export default {
       this.$router.back(-1);
     },
     selectGroupChange(selection) {
-      this.deviceIds = "";
-      for(let i in selection){
-        if(this.deviceIds === ""){
-          this.deviceIds = selection[i].id;
-        }else{
-          this.deviceIds += ","+selection[i].id;
-        }
-      }
+      this.deviceIds = selection.map(item=>item.id).toString();
+      this.arr = selection.map(item=>item);
     },
     selectALL(selection) {
-      this.deviceIds = "";
-      for(let i in selection){
-        if(this.deviceIds === ""){
-          this.deviceIds = selection[i].id;
-        }else{
-          this.deviceIds += ","+selection[i].id;
-        }
-      }
+      this.deviceIds = selection.map(item=>item.id).toString();
+      this.arr = selection.map(item=>item);
     },
     selectChange(selection, rowData) {
       console.log("select-change", selection, rowData);
@@ -373,7 +439,7 @@ export default {
     }
     .right {
       width: 640px;
-      font-size: 14px;
+      font-size: 12px;
       float: left;
       padding: 10px;
       border: @border;

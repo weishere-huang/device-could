@@ -7,6 +7,7 @@ import Information from '@/components/information/Information'
 import Company from '@/components/company/Company'
 import BusinessDetails from '@/components/company/BusinessDetails'
 import Equipment from '@/components/equipment/Equipment'
+import Monit from '@/components/monit'
 import Category from '@/components/equipment/Category'
 import EquipmentAdd from '@/components/equipment/EquipmentAdd'
 import Redact from '@/components/equipment/Redact'
@@ -28,6 +29,8 @@ import Modification from '@/components/personnel/Modification'
 import User from '@/components/user/User'
 import EquipmentArchives from '@/components/equipmentArchives/EquipmentArchives'
 import WorkOrder from '@/components/workOrder/WorkOrder'
+import BreakdownOrder from '@/components/workOrder/breakdownDetails/BreakdownOrder'
+import UpkeepAndTurnaroundPlans from '@/components/workOrder/upkeepAndTurnaroundPlans/UpkeepAndTurnaroundPlans'
 import KnowledgeBase from '@/components/knowledgeBase/KnowledgeBase'
 import Message from '@/components/message/Message'
 import System from '@/components/system/System'
@@ -116,6 +119,14 @@ const router = new Router({
       path: '/Equipment',
       name: 'Equipment',
       component: Equipment,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/Monit',
+      name: 'Monit',
+      component: Monit,
       meta: {
         requireAuth: true
       },
@@ -281,6 +292,22 @@ const router = new Router({
       },
     },
     {
+      path: '/BreakdownOrder',
+      name: 'BreakdownOrder',
+      component: BreakdownOrder,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/UpkeepAndTurnaroundPlans',
+      name: 'UpkeepAndTurnaroundPlans',
+      component: UpkeepAndTurnaroundPlans,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
       path: '/KnowledgeBase',
       name: 'KnowledgeBase',
       component: KnowledgeBase,
@@ -324,13 +351,14 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(res => res.meta.requireAuth)) { // 判断是否需要登录权限
+  if (to.meta.requireAuth) { // 判断是否需要登录权限
     if (sessionStorage.getItem('token')) { // 判断是否登录
       next()
     } else if (sessionStorage.getItem('token') === "") { // 没登录则跳转到登录界面
       next({
         path: '/Login',
         query: {
+          // redirect: "/Login"
           redirect: to.fullPath
         }
       })

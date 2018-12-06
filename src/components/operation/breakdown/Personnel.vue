@@ -1,7 +1,6 @@
 <template>
   <div class="personnel">
     <div class="personTable">
-      
       <div class="search">
         <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
         <el-button size="mini" @click="search">搜索</el-button>
@@ -9,12 +8,11 @@
         <span style="text-decoration: underline;"></span>
       </div>
       <div class="tableList">
-        <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:300px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+        <v-table  :row-dblclick="getPersonnel" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:300px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
         <div class="mt20 mb20 bold" style="text-align:center;">
-          <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="1" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -22,18 +20,15 @@
 export default {
   data() {
     return {
+      key:"",
+      pageNumber:0,
       pageIndex: 1,
       pageSize: 10,
-      tableData: [
-        {
-          faultNo: "2222",
-          state: "2222"
-        }
-      ],
+      tableData: [],
       tableDate: [],
       columns: [
         {
-          field: "faultNo",
+          field: "employeeNo",
           title: "员工编号",
           width: 80,
           titleAlign: "center",
@@ -42,7 +37,7 @@ export default {
           //   orderBy: ""
         },
         {
-          field: "state",
+          field: "name",
           title: "姓名",
           width: 80,
           titleAlign: "center",
@@ -50,7 +45,7 @@ export default {
           isResize: true
         },
         {
-          field: "deviceName",
+          field: "phone",
           title: "手机号",
           width: 80,
           titleAlign: "center",
@@ -58,7 +53,7 @@ export default {
           isResize: true
         },
         {
-          field: "deviceSpec",
+          field: "organizeName",
           title: "组织单位/部门",
           width: 100,
           titleAlign: "center",
@@ -66,7 +61,7 @@ export default {
           isResize: true
         },
         {
-          field: "faultLevel",
+          field: "position",
           title: "岗位",
           width: 100,
           titleAlign: "center",
@@ -95,18 +90,65 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
+      this.load();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+      this.load();
     },
     personHide(){
         this.$emit("personHide",false)
-    }
+    },
+    getPersonnel(rowIndex, rowData, column){
+      let jihe={
+        person:rowData,
+        hide:false
+      };
+      this.$emit("getPersonnel",jihe)
+    },
+    load() {
+      this.Axios(
+        {
+          params: {page: this.pageIndex, size: this.pageSize},
+          type: "get",
+          url: "/employee/findEmployeeList",
+        },
+        this
+      ).then(response => {
+            this.pageNumber = response.data.data.totalElements;
+            this.tableData = response.data.data.content;
+            this.tableDate = this.tableData;
+        },
+        ({type, info}) => {
+        })
+    },
+    search() {
+      this.pageIndex =1;
+      this.Axios(
+        {
+          params: {condition: this.key},
+          type: "get",
+          url: "/employee/search",
+        },
+        this
+      ).then(response => {
+          if(this.key!==""){
+            this.pageNumber = response.data.data.totalElements;
+            this.tableData = response.data.data.content;
+            this.tableDate = this.tableData;
+          }else{
+            this.pageChange(1);
+          }
+        },
+        ({type, info}) => {
+        })
+    },
   },
-  created() {},
+  created() {
+    this.load()
+  },
   mounted() {
     //   location.reload()
   }

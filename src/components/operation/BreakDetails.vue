@@ -3,8 +3,29 @@
     <div class="case">
       <div class="top">
         <el-button size="small" @click="toback">返回</el-button>
-        <el-button size="small">提交审核</el-button>
-        <el-button size="small">故障消除</el-button>
+        <!--<el-button size="small" @click="commitAudit">提交审核</el-button>-->
+        <el-button size="small" @click="dispel">故障消除</el-button>
+        <!-- 故障消除弹框 -->
+        <el-dialog
+          title="故障消除"
+          :visible.sync="dialogVisible"
+          width="30%"
+          >
+           <el-form label-position=right label-width="120px" :model="formLabelAlign" style="padding:10px">
+            <el-form-item label="故障持续时间：">
+              <el-input  v-model="formLabelAlign.time" size="mini" style="width:30%"></el-input>
+              <span>小时</span>
+            </el-form-item>
+            <el-form-item label="消除原因：">
+              <el-input type="textarea" v-model="formLabelAlign.desc"></el-input>
+            </el-form-item>
+           </el-form>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="toDispel">确 定</el-button>
+          </span>
+        </el-dialog>
+        <!-- 故障消除弹框结束 -->
       </div>
       <div class="bottom">
         <div class="left">
@@ -12,22 +33,22 @@
             <h5>故障对象</h5>
             <el-form label-width="100px">
               <el-form-item label="设备编码：">
-                <el-input v-model="companyName.name" size="mini" disabled></el-input>
+                <span>{{companyName.deviceNo}}</span>
               </el-form-item>
               <el-form-item label="设备名称：">
-                <el-input v-model="companyName.region" size="mini" disabled></el-input>
+                <span>{{companyName.deviceName}}</span>
               </el-form-item>
               <el-form-item label="规格/型号：">
-                <el-input v-model="companyName.type" size="mini" disabled></el-input>
+              <span>{{companyName.deviceSpec}}</span>
               </el-form-item>
               <el-form-item label="设备位号：">
-                <el-input v-model="companyName.type" size="mini" disabled></el-input>
+                <span>{{companyName.locationNo}}</span>
               </el-form-item>
               <el-form-item label="安装位置：">
-                <el-input v-model="companyName.type" size="mini" disabled></el-input>
+                <span>{{companyName.location}}</span>
               </el-form-item>
               <el-form-item label="所属单位：">
-                <el-input v-model="companyName.type" size="mini" disabled></el-input>
+                <span>{{companyName.organizeName}}</span>
               </el-form-item>
             </el-form>
           </div>
@@ -35,42 +56,25 @@
             <h5>故障处理</h5>
             <el-form label-width="120px">
               <el-form-item label="故障持续时间：">
-                <span></span>
+                <span>{{companyName.faultDuration}}</span>
               </el-form-item>
-              <el-form-item label="取消人：">
-                <span></span>
+              <el-form-item label="消除人：">
+                <span>{{companyName.dispel}}</span>
               </el-form-item>
-              <el-form-item label="取消时间：">
-                <span></span>
+              <el-form-item label="消除时间：">
+                <span>{{companyName.dispelTime}}</span>
               </el-form-item>
-              <el-form-item
-                label="取消原因："
-                style="border-bottom:1px dashed #dde2eb; height:auto; padding-bottom:5px"
-              >
-                <el-input
-                  type="textarea"
-                  style="width:100%;"
-                  disabled
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="是否撤销：">
-                <span></span>
+              <el-form-item label="消除原因：" style="border-bottom:1px dashed #dde2eb; height:auto; padding-bottom:5px">
+                <el-input type="textarea" v-model="companyName.dispelCause" style="width:100%;" readonly></el-input>
               </el-form-item>
               <el-form-item label="撤销人：">
-                <span></span>
+                <span>{{companyName.revokePeople}}</span>
               </el-form-item>
               <el-form-item label="撤销时间：">
-                <span></span>
+                <span>{{companyName.revokeTime}}</span>
               </el-form-item>
-              <el-form-item
-                label="撤销原因："
-                style="height:auto; padding-bottom:5px"
-              >
-                <el-input
-                  type="textarea"
-                  style="width:100%;"
-                  disabled
-                ></el-input>
+              <el-form-item label="撤销原因：" style="height:auto; padding-bottom:5px">
+                <el-input type="textarea" style="width:100%;" v-model="companyName.revokeCause" readonly></el-input>
               </el-form-item>
             </el-form>
           </div>
@@ -78,124 +82,43 @@
         <div class="right">
           <div class="msgCase">
             <h5>故障信息</h5>
-            <el-form
-              :inline="true"
-              style="margin-bottom:5px"
-              size="small"
-              label-width="100px"
-            >
+            <el-form :inline="true" style="margin-bottom:5px" size="small" label-width="100px">
               <el-form-item label="故障编码：">
-                <el-input
-                  v-model="companyName.name"
-                  style="width:150px"
-                  disabled
-                  size="mini"
-                ></el-input>
+                <span>{{companyName.faultNo}}</span>
               </el-form-item>
               <el-form-item label="故障状况：">
-                <el-input
-                  v-model="companyName.name"
-                  style="width:150px"
-                  disabled
-                  size="mini"
-                ></el-input>
+                <span>{{companyName.state}}</span>
               </el-form-item>
             </el-form>
-            <el-form
-              :inline="true"
-              style="margin-bottom:5px"
-              size="small"
-              label-width="100px"
-            >
+            <el-form :inline="true" style="margin-bottom:5px" size="small" label-width="100px">
               <el-form-item label="故障等级：">
-                <el-input
-                  v-model="companyName.name"
-                  style="width:150px"
-                  disabled
-                  size="mini"
-                ></el-input>
+                <span>{{companyName.faultLevel}}</span>
               </el-form-item>
               <el-form-item label="故障来源：">
-                <el-input
-                  v-model="companyName.name"
-                  style="width:150px"
-                  disabled
-                  size="mini"
-                ></el-input>
+                <span>{{companyName.faultSource}}</span>
               </el-form-item>
             </el-form>
-            <el-form
-              :inline="true"
-              style="margin-bottom:5px"
-              size="small"
-              label-width="100px"
-            >
+            <el-form :inline="true" style="margin-bottom:5px" size="small" label-width="100px">
               <el-form-item label="报告人：">
-                <el-input
-                  v-model="companyName.name"
-                  style="width:150px"
-                  disabled
-                  size="mini"
-                ></el-input>
+                <span>{{companyName.discovery}}</span>
               </el-form-item>
               <el-form-item label="报告时间：">
-                <span></span>
+                <span>{{companyName.discoveryTime}}</span>
               </el-form-item>
             </el-form>
-            <el-form
-              style="margin-bottom:5px"
-              size="small"
-              label-width="100px"
-            >
-              <el-form-item
-                label="故障描述："
-                style="margin-bottom:5px;"
-              >
-                <el-input
-                  type="textarea"
-                  :autosize="{ minRows: 4, maxRows: 6}"
-                  placeholder="请输入内容"
-                  v-model="companyName.textarea"
-                  style="width:94%"
+            <el-form style="margin-bottom:5px;" size="small" label-width="100px" >
+              <el-form-item label="故障描述：" style="margin-bottom:5px;width:100%">
+                <el-input  type="textarea" :autosize="{ minRows: 4, maxRows: 6}" placeholder="请输入内容" v-model="companyName.faultDesc" style="width:94%"
                 >
                 </el-input>
               </el-form-item>
-              <el-form-item label="原因分析：">
-                <el-input
-                  type="textarea"
-                  :autosize="{ minRows: 4, maxRows: 6}"
-                  placeholder="请输入内容"
-                  v-model="companyName.textarea1"
-                  style="width:94%"
-                >
-                </el-input>
+              <el-form-item label="原因分析：" style="width:100%">
+                <el-input type="textarea"  :autosize="{ minRows: 4, maxRows: 6}" placeholder="请输入内容" v-model="companyName.causeAnalysis" style="width:94%"></el-input>
               </el-form-item>
-              <el-form-item label="照片：">
-                <!-- <div class="slideshow">
-                                    <ul>
-                                        <li>1</li>
-                                        <li>2</li>
-                                        <li>3</li>
-                                        <li>4</li>
-                                        <li>5</li>
-                                        <li>6</li>
-                                        <li>7</li>
-                                        <li>8</li>
-                                        <li>9</li>
-                                    </ul>
-                                    <span class="leftButton">《</span>
-                                    <span class="rightButton">》</span>
-                                </div> -->
+              <el-form-item label="照片：" style="width:100%">
                 <template>
-                  <el-carousel
-                    trigger="click"
-                    :autoplay=false
-                    height="200px"
-                  >
-                    <el-carousel-item
-                      v-for="item in 6"
-                      :key="item"
-                    >
+                  <el-carousel trigger="click" :autoplay=false height="200px">
+                    <el-carousel-item v-for="item in 6" :key="item">
                       <h3>{{ item }}</h3>
                     </el-carousel-item>
                   </el-carousel>
@@ -209,169 +132,311 @@
   </div>
 </template>
 <script>
-export default {
-  name: "",
-  data() {
-    return {
-      companyName: {
-        textarea: "",
-        textarea1: ""
-      }
-    };
-  },
-  mounted() {
-    let i = 0;
-    $(".leftButton").click(function() {
-      i += 150;
-      if ($(".slideshow>ul")[0].style.left >= "0px") {
-        $(".slideshow>ul")[0].style.left = "-900px";
-        i = -900;
-      } else {
-        $(".slideshow>ul")[0].style.left = i + "px";
-      }
-    });
-    $(".rightButton").click(function() {
-      i -= 150;
-      if ($(".slideshow>ul")[0].style.left <= "-900px") {
-        $(".slideshow>ul")[0].style.left = "0px";
-        i = 0;
-      } else {
-        $(".slideshow>ul")[0].style.left = i + "px";
-      }
-    });
-  },
-  methods:{
-    toback(){
-      this.$router.back(-1)
+  export default {
+    name: "",
+    data() {
+      return {
+        dialogVisible:false,
+        formLabelAlign:{
+          time:"",
+          desc:""
+        },
+        faultId:0,
+        state:[],
+        companyName:{
+          img:"",
+          revokeId:"",
+          faultLevel:"",
+          deviceId:"",
+          faultNo:"",
+          deviceName:"",
+          revokeTime:"",
+          discovery:"",
+          discoveryTime:"",
+          dispelCause:"",
+          id:0,
+          state:0,
+          discoveryId:"",
+          organizeCode:"",
+          incidence:"",
+          dispelTime:"",
+          revokePeople:"",
+          organizeName:"",
+          faultDuration:"",
+          dispel:"",
+          deviceSpec:"",
+          locationNo:"",
+          revokeCause:"",
+          faultSource:"",
+          faultDesc:"",
+          deviceNo:"",
+          deviceModel:"",
+          location:"",
+          causeAnalysis:"",
+          dispelId:"",
+        },
+        tableData:[],
+      };
+    },
+    mounted() {
+      let i = 0;
+      $(".leftButton").click(function() {
+        i += 150;
+        if ($(".slideshow>ul")[0].style.left >= "0px") {
+          $(".slideshow>ul")[0].style.left = "-900px";
+          i = -900;
+        } else {
+          $(".slideshow>ul")[0].style.left = i + "px";
+        }
+      });
+      $(".rightButton").click(function() {
+        i -= 150;
+        if ($(".slideshow>ul")[0].style.left <= "-900px") {
+          $(".slideshow>ul")[0].style.left = "0px";
+          i = 0;
+        } else {
+          $(".slideshow>ul")[0].style.left = i + "px";
+        }
+      });
+    },
+    methods: {
+      toPansAdd() {
+        this.$router.push({
+          path: "/Breakdown"
+        });
+      },
+      toback() {
+        this.$router.back(-1)
+      },
+      toValue(value) {
+        if (value.state === 0) {
+          this.companyName.state = "待审核";
+        }
+        if (value.state === 1) {
+          this.companyName.state = "审核通过";
+        }
+        if (value.state === 2) {
+          this.companyName.state = "禁用";
+        }
+        if (value.state === 3) {
+          this.companyName.state = "已删除";
+        }
+        if (value.state === 4) {
+          this.companyName.state = "审核中";
+        }
+        if (value.state === 5) {
+          this.companyName.state = "待处理";
+        }
+        if (value.state === 6) {
+          this.companyName.state = "已消除";
+        }
+        if (value.state === 7) {
+          this.companyName.state = "已撤销";
+        }
+        if (value.state === 10) {
+          this.companyName.state = "已驳回";
+        }
+        if(value.faultLevel===1){
+          this.companyName.faultLevel = "小";
+        }
+        if(value.faultLevel===2){
+          this.companyName.faultLevel = "中";
+        }
+        if(value.faultLevel===3){
+          this.companyName.faultLevel = "大";
+        }
+        if(value.faultSource === "0"){
+          this.companyName.faultSource = "人工提交";
+        }
+        if(value.faultSource === "1"){
+          this.companyName.faultSource = "设备自检";
+        }
+      },
+      load() {
+        this.Axios(
+          {
+            params:{faultId: this.faultId},
+            type: "get",
+            url: "/fault/detail",
+          },
+          this
+        ).then(response => {
+            this.tableData = response.data.data;
+            this.companyName = this.tableData;
+            this.toValue(response.data.data);
+          },
+          ({type, info}) => {
+
+          })
+      },
+      dispel(){
+        if (this.companyName.state !=="已删除"&&this.companyName.state!=="待审核"){
+          this.dialogVisible=true;
+        }else{
+          alert("对不起、不能删除待审核或已删除状态的数据")
+        }
+      },
+      toDispel(){
+        let qs = require("qs");
+        let data = qs.stringify({
+          faultIds:this.companyName.id,
+          dispelCause:this.formLabelAlign.desc,
+          faultDuration:this.formLabelAlign.time
+        });
+        this.formLabelAlign.desc = "";
+        this.formLabelAlign.time = "";
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/fault/dispel",
+          },
+          this
+        ).then(response => {
+            this.dialogVisible = false;
+            this.toPansAdd()
+          },
+          ({type, info}) => {
+
+          })
+      },
+    },
+    created(){
+      this.faultId = this.$store.state.operation.breakList.id;
+      this.load();
     }
-  }
-};
+  };
 </script>
 <style lang="less" scoped>
-@blue: #409eff;
-@Success: #67c23a;
-@Warning: #e6a23c;
-@Danger: #f56c6c;
-@Info: #dde2eb;
-@border: 1px solid #dde2eb;
-.breakDetails {
-  padding-left: 180px;
-  .case {
-    width: 100%;
-    padding: 10px;
-    .top {
-      padding: 10px;
-    }
-    .bottom {
+  @blue: #409eff;
+  @Success: #67c23a;
+  @Warning: #e6a23c;
+  @Danger: #f56c6c;
+  @Info: #dde2eb;
+  @border: 1px solid #dde2eb;
+  .breakDetails {
+    // padding-left: 180px;
+    .case {
       width: 100%;
-      overflow: hidden;
-      .left {
+      padding: 10px;
+      .top {
         padding: 10px;
-        float: left;
-        .fault-top {
-          width: 350px;
-          border: @border;
-          padding: 10px;
-          border-radius: 5px;
-          h5 {
-            position: relative;
-            top: -20px;
-            left: 10px;
-          }
-          .el-form-item {
-            height: 40px;
-            margin-bottom: 0px;
-          }
-        }
-        .fault-bottom {
-          width: 350px;
-          border: @border;
-          padding: 10px;
-          border-radius: 5px;
-          margin-top: 20px;
-          h5 {
-            position: relative;
-            top: -20px;
-            left: 10px;
-          }
-          .el-form-item {
-            height: 40px;
-            margin-bottom: 0px;
-            span {
-              display: inline-block;
-              width: 80px;
-              height: auto;
-            }
-          }
-        }
       }
-      .right {
-        padding: 10px;
-        width: 680px;
-        float: left;
-
-        .msgCase {
-          border: @border;
+      .bottom {
+        width: 100%;
+        overflow: hidden;
+        .left {
           padding: 10px;
-          border-radius: 5px;
-          min-height: 698px;
-          h5 {
-            position: relative;
-            top: -20px;
-            left: 10px;
-          }
-          .el-form-item {
-            margin-bottom: 10px;
-          }
-          .slideshow {
-            width: 94%;
-            height: 200px;
+          float: left;
+          .fault-top {
+            width: 350px;
             border: @border;
-            margin-top: 5px;
+            padding: 10px;
             border-radius: 5px;
-            overflow: hidden;
-            position: relative;
-            padding: 0 24px;
-            ul {
-              width: 1900px;
+            h5 {
               position: relative;
-              transition: all 0.3s ease-in-out;
-              li {
-                list-style-type: none;
-                float: left;
-                height: 198px;
-                width: 150px;
-                border: 1px solid @blue;
+              top: -20px;
+              left: 10px;
+            }
+            .el-form-item {
+              height: 40px;
+              margin-bottom: 0px;
+            }
+          }
+          .fault-bottom {
+            width: 350px;
+            border: @border;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            h5 {
+              position: relative;
+              top: -20px;
+              left: 10px;
+            }
+            .el-form-item {
+              height: 40px;
+              margin-bottom: 0px;
+              span {
+                display: inline-block;
+                width: 80px;
+                height: auto;
               }
             }
-            .leftButton {
-              display: block;
-              height: 200px;
-              line-height: 180px;
-              position: absolute;
-              left: 0;
-              transition: all 0.3s ease-in-out;
-              text-align: center;
-              cursor: pointer;
-              padding: 0 5px;
-              z-index: 10;
-              &:hover {
-                background-color: #5d5f611e;
-              }
+          }
+        }
+        .right {
+          padding: 10px;
+          width: 650px;
+          float: left;
+
+          .msgCase {
+            border: @border;
+            padding: 10px;
+            border-radius: 5px;
+            min-height: 698px;
+            .el-form-item{
+              width: 45%;
             }
-            .rightButton {
-              display: block;
+            
+            h5 {
+              position: relative;
+              top: -20px;
+              left: 10px;
+            }
+            .el-form-item {
+              margin-bottom: 10px;
+            }
+            .slideshow {
+              width: 94%;
               height: 200px;
-              line-height: 180px;
-              position: absolute;
-              right: 0;
-              transition: all 0.3s ease-in-out;
-              cursor: pointer;
-              text-align: center;
-              padding: 0 5px;
-              z-index: 10;
-              &:hover {
-                background-color: #5d5f611e;
+              border: @border;
+              margin-top: 5px;
+              border-radius: 5px;
+              overflow: hidden;
+              position: relative;
+              padding: 0 24px;
+              ul {
+                width: 1900px;
+                position: relative;
+                transition: all 0.3s ease-in-out;
+                li {
+                  list-style-type: none;
+                  float: left;
+                  height: 198px;
+                  width: 150px;
+                  border: 1px solid @blue;
+                }
+              }
+              .leftButton {
+                display: block;
+                height: 200px;
+                line-height: 180px;
+                position: absolute;
+                left: 0;
+                transition: all 0.3s ease-in-out;
+                text-align: center;
+                cursor: pointer;
+                padding: 0 5px;
+                z-index: 10;
+                &:hover {
+                  background-color: #5d5f611e;
+                }
+              }
+              .rightButton {
+                display: block;
+                height: 200px;
+                line-height: 180px;
+                position: absolute;
+                right: 0;
+                transition: all 0.3s ease-in-out;
+                cursor: pointer;
+                text-align: center;
+                padding: 0 5px;
+                z-index: 10;
+                &:hover {
+                  background-color: #5d5f611e;
+                }
               }
             }
           }
@@ -379,20 +444,19 @@ export default {
       }
     }
   }
-}
-.el-carousel__item h3 {
-  color: #475669;
-  font-size: 14px;
-  opacity: 0.75;
-  line-height: 200px;
-  margin: 0;
-}
+  .el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 200px;
+    margin: 0;
+  }
 
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
 
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
+  .el-carousel__item:nth-child(2n + 1) {
+    background-color: #d3dce6;
+  }
 </style>

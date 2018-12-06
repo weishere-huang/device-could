@@ -7,59 +7,88 @@
           <span class="custom-tree-node" slot-scope="{ node, data }">
             <span>{{ data.categoryName}}</span>
             <span class="addCase">
-              <el-button type="text" size="mini" @click="dialogVisible=true">
+              <el-button type="text" size="mini" @click="dialogVisible=true" >
                 添加
               </el-button>
-              <el-button type="text" size="mini" >
+              <el-button type="text" size="mini"  @click="dialogVisible1=true,nodeCname=data.categoryName,nodeCMsg=data.categoryMsg">
                 修改
               </el-button>
-              <el-button type="text" size="mini" @click="deleteCategory">
+              <el-button type="text" size="mini" @click="() => warningdelete(data.id)">
                 删除
               </el-button>
             </span>
           </span>
         </el-tree>
+        <div style="width:100%;text-align:center">
+          <el-button size="small" style="width:200px;margin:auto" v-if="organize===''" @click="dialogVisible3=true,addFirst">添加根类</el-button>
+        </div>
+        <el-dialog
+          title="添加根节点"
+          :visible.sync="dialogVisible3"
+          width="30%"
+          >
+          <el-form ref="form" label-width="90px" style="padding:10px">
+            <el-form-item label="类别名称：">
+              <el-input v-model="nodedata.categoryName" size="mini"></el-input>
+            </el-form-item>
+            <el-form-item label="备注：">
+              <el-input type="textarea" v-model="nodedata.categoryMsg"></el-input>
+            </el-form-item>
+          </el-form>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible3 = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible3 = false">确 定</el-button>
+          </span>
+        </el-dialog>
       </div>
-      <div class="remark">
-        <h5>备注</h5>
-        <el-form ref="form" label-width="90px">
+      <el-dialog
+        title="修改"
+        :visible.sync="dialogVisible1"
+        width="30%"
+        >
+       <el-form ref="form" label-width="90px" style="padding:10px;">
           <el-form-item label="类别名称：">
-            <el-input v-model="nodedata.categoryName" size="mini"></el-input>
+            <el-input v-model="nodeCname" size="mini"></el-input>
           </el-form-item>
           <el-form-item label="备注：">
-            <el-input type="textarea" v-model="nodedata.categoryMsg"></el-input>
+            <el-input type="textarea" v-model="nodeCMsg"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button size="mini" @click="updateCategory">保存</el-button>
+            <el-button size="mini" @click="updateCategory">确认修改</el-button>
           </el-form-item>
         </el-form>
-      </div>
+      </el-dialog>
     </div>
     <el-dialog
       title="添加"
       :visible.sync="dialogVisible"
       width="30%"
       >
-      <el-form ref="form" label-width="90px">
+      <el-form ref="form" label-width="90px" style="padding:10px;">
           <el-form-item label="类别名称：">
-            <el-input v-model="form.name" size="mini"></el-input>
+            <el-input v-model="addname" size="mini"></el-input>
           </el-form-item>
           <el-form-item label="备注：">
-            <el-input type="textarea" v-model="form.desc"></el-input>
+            <el-input type="textarea" v-model="addmsg"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button size="mini">保存</el-button>
+            <el-button size="mini" @click="addCategory">保存</el-button>
           </el-form-item>
         </el-form>
     </el-dialog>
   </div>
 </template>
 <script>
-let id = 1000;
 export default {
+  inject: ["reload"],
   data() {
     return {
+      dialogVisible3:false,
+      dialogVisible1:false,
       dialogVisible:false,
+      nodeCname:"",
+      nodeCMsg:"",
+
       organize: "",
       // data5: this.organize,
       form: {
@@ -70,7 +99,9 @@ export default {
         children: "children",
         label: "name"
       },
-      nodedata:""
+      nodedata:"",
+      addname:"",
+      addmsg:""
     };
   },
   methods: {
@@ -108,72 +139,184 @@ export default {
       return tree;
     },
     findAlldeviceClassify(){
-      let qs = require("qs");
-      let data = qs.stringify({
-      });
-      this.axios
-        .get(this.global.apiSrc + "/deviceCategory/all", data)
+      this.Axios({
+        params: {
+        },
+        type: "get",
+        url: "/deviceCategory/all"
+      },this)
+        // .get(this.global.apiSrc + "/deviceCategory/all", data)
         .then(result => {
           this.organize= this.filterArray(result.data.data,0);
           console.log(this.organize);
           console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        },
+          ({type, info}) => {
+            //错误类型 type=faild / error
+            //error && error(type, info);
+          }
+        )
+        // .catch(err => {
+        //   console.log(err);
+        // });
     },
     addCategory(){
       //添加设备类别
       let qs = require("qs");
       let data = qs.stringify({
-        categoryParentName:"测试类别跟节点1",
-        categoryParentNo:"101",
-        categoryName:"添加测试节点",
-        categoryMsg:"添加测试2.0"
+        categoryParentName:this.nodedata.categoryName,
+        categoryParentNo:this.nodedata.categoryNo,
+        categoryName:this.addname,
+        categoryMsg:this.addmsg
       });
-      this.axios
-        .post(this.global.apiSrc + "/deviceCategory/add", data)
+      this.Axios({
+        url: "/deviceCategory/add",
+        params: data,
+        type: "post",
+        option: {
+          enableMsg: false
+        }
+      },this)
+        //.post(this.global.apiSrc + "/deviceCategory/add", data)
         .then(result => {
+          if(result.data.code === 200){
+            alert("添加成功");
+            location.reload();
+          }else {
+            alert("添加失败,请重新添加");
+          }
           console.log("addCategory");
           console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        },
+          ({type, info}) => {
+          }
+        );
+        // .catch(err => {
+        //   console.log(err);
+        // });
+    },
+    addFirst(){
+      //添加根类
+      let qs = require("qs");
+      let data = qs.stringify({
+        categoryParentName:"根类",
+        categoryParentNo:0,
+        categoryName:this.addname,
+        categoryMsg:this.addmsg
+      });
+      this.Axios({
+        url: "/deviceCategory/add",
+        params: data,
+        type: "post",
+        option: {
+          enableMsg: false
+        }
+      },this)
+      //.post(this.global.apiSrc + "/deviceCategory/add", data)
+        .then(result => {
+            if(result.data.code === 200){
+              alert("添加成功");
+              location.reload();
+            }else {
+              alert("添加失败,请重新添加");
+            }
+            console.log("addCategory");
+            console.log(result.data);
+          },
+          ({type, info}) => {
+          }
+        );
     },
     updateCategory(){
       //修改设备类别
       let qs = require("qs");
       let data = qs.stringify({
         categoryId:this.nodedata.id,
-        categoryName:this.nodedata.categoryName,
-        categoryMsg:this.nodedata.categoryMsg
+        categoryName:this.nodeCname,
+        categoryMsg:this.nodeCMsg
       });
-      this.axios
-        .post(this.global.apiSrc + "/deviceCategory/update", data)
+      this.Axios({
+        url: "/deviceCategory/update",
+        params: data,
+        type: "post",
+        option: {
+          enableMsg: false
+        }
+      },this)
+        // .post(this.global.apiSrc + "/deviceCategory/update", data)
         .then(result => {
+          if(result.data.code === 200){
+            alert("修改成功");
+            location.reload();
+          }else{
+            alert("修改失败,请重新尝试")
+          }
           console.log("修改设备类别");
           console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        },
+          ({type, info}) => {
+          }
+        )
+        // .catch(err => {
+        //   console.log(err);
+        // });
+      this.nodeCname="";
+      this.nodeCMsg="";
     },
-    deleteCategory(){
-      //删除设备类别
+    deleteCategory(nodeId){
+      console.log(nodeId+"nodeiddd");
+
+    //  删除设备类别
+      console.log(this.nodedata.id);
       let qs = require("qs");
       let data = qs.stringify({
-        categoryId:this.nodedata.id,
+        categoryId:nodeId,
       });
-      this.axios
-        .post(this.global.apiSrc + "/deviceCategory/delete/"+this.nodedata.id)
+      this.Axios({
+        url: "/deviceCategory/delete/"+nodeId,
+        params: data,
+        type: "post",
+        option: {
+          enableMsg: false
+        }
+      },this)
+        // .post(this.global.apiSrc + "/deviceCategory/delete/"+this.nodedata.id)
         .then(result => {
+          if(result.data.code === 200){
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+            location.reload();
+          }else{
+            alert("删除失败,请重新尝试")
+          }
           console.log("删除设备类别");
           console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });}
+        },
+          ({type, info}) => {
+          }
+        )
+        // .catch(err => {
+        //   console.log(err);
+        // });
+    },
+
+    warningdelete(nodeId){
+      this.$confirm('确定要删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteCategory(nodeId);
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+
+    }
   },
   created() {
     this.findAlldeviceClassify();

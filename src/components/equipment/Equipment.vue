@@ -5,11 +5,11 @@
         <div class="classify">
           <ul>
             <h5><i class='iconfont icon-leimupinleifenleileibie'></i>&nbsp;所有分类</h5>
-            <li>├生产设备</li>
-            <li>├非生产设备</li>
-            <li>├辅助生产设备</li>
-            <li>├检验检测设备</li>
-            <li>├其他设备</li>
+            <li @click="leftcontro(1,'','')">├生产设备</li>
+            <li @click="leftcontro(2,'','')">├非生产设备</li>
+            <li @click="leftcontro(3,'','')">├辅助生产设备</li>
+            <li @click="leftcontro(4,'','')">├检验检测设备</li>
+            <li @click="leftcontro(5,'','')">├其他设备</li>
           </ul>
         </div>
         <div class="category">
@@ -32,21 +32,34 @@
         <div class="tone">
           <h5><i class='iconfont icon-shebeiguanli'></i>&nbsp;设备状况</h5>
           <ul>
-            <li>├使用</li>
-            <li style="color:#FF990E">├闲置</li>
-            <li style="color:#00990C">├封存</li>
-            <li style="color:#0C99FD">├租赁</li>
-            <li style="color:#993202">├报废</li>
+            <li  @click="leftcontro('','',1)">├在用</li>
+            <li style="color:#FF990E"  @click="leftcontro('','',2)">├出租</li>
+            <li style="color:#00990C"  @click="leftcontro('','',3)">├停用</li>
+            <li style="color:#0C99FD"  @click="leftcontro('','',4)">├封存</li>
+            <li style="color:#993202"  @click="leftcontro('','',5)">├报废</li>
           </ul>
         </div>
       </div>
     </div>
     <div class="content">
       <div class="search">
-        <el-button size="small" @click="toAdd">添加</el-button>
-        <el-button size="small" @click="editShow">修改</el-button>
+        <el-button
+          size="small"
+          @click="toAdd"
+        >添加
+        </el-button>
+        <el-button
+          size="small"
+          @click="editShow"
+          disabled
+        >修改
+        </el-button>
         <!--<el-button size="small" > 复制</el-button>-->
-        <el-button size="small" @click="edelete">删除</el-button>
+        <el-button
+          size="small"
+          @click="warningdelete"
+        >删除
+        </el-button>
         <div class="searchright">
           <span>关键字：</span>
 
@@ -59,7 +72,8 @@
           <el-button
             size="small"
             @click="findByKeyWord"
-          >搜索</el-button>
+          >搜索
+          </el-button>
           <span
             style="color:#409eff;font-size:12px;cursor: pointer;"
             @click="adsearch"
@@ -75,7 +89,7 @@
             :vertical-resize-offset='100'
             column-width-drag
             :multiple-sort="false"
-            style="width:100%;min-height:400px;"
+            style="width:100%;"
             :columns="columns"
             :table-data="tableData"
             row-hover-color="#eee"
@@ -83,15 +97,17 @@
             :select-all="selectALL"
             :select-group-change="selectGroupChange"
             :row-dblclick="redactShow"
+            ref="equipmentTable"
+            @on-custom-comp="customCompFunc"
           ></v-table>
           <div
             class="mt20 mb20 bold"
-            style="text-align:center;margin-top:30px"
+            style="text-align:left;margin-top:20px"
           >
             <v-pagination
               @page-change="pageChange"
               @page-size-change="pageSizeChange"
-              :total="totalElements"
+              :total="totalnum"
               :page-size="pageSize"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
@@ -108,11 +124,13 @@
 </template>
 <script>
 import advanced from "./Advanced";
+import Vue from "vue";
 export default {
   name: "equipment",
   data() {
     return {
       organiza: "",
+      totalnum: "",
       defaultProps: "",
       keyWord: "",
       deviceId: "",
@@ -120,11 +138,8 @@ export default {
       pageSize: 10,
       ids: "",
       edbt: "",
-      tableData: [{
-        deviceNo:"",
-      }],
+      tableData: [{}],
       tableDate: [],
-      totalElements:"",
       columns: [
         {
           width: 40,
@@ -144,7 +159,7 @@ export default {
         {
           field: "deviceName",
           title: "设备名称",
-          width: 100,
+          width: 120,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -152,7 +167,7 @@ export default {
         {
           field: "deviceState",
           title: "设备状况",
-          width: 80,
+          width: 70,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -160,7 +175,7 @@ export default {
         {
           field: "organizeName",
           title: "所属部门",
-          width: 90,
+          width: 140,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -168,7 +183,7 @@ export default {
         {
           field: "location",
           title: "安装位置",
-          width: 80,
+          width: 70,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -176,7 +191,7 @@ export default {
         {
           field: "locationNo",
           title: "设备位号",
-          width: 80,
+          width: 70,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -184,7 +199,7 @@ export default {
         {
           field: "deviceCategoryName",
           title: "设备类别",
-          width: 80,
+          width: 70,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -192,25 +207,65 @@ export default {
         {
           field: "deviceModel",
           title: "设备型号",
-          width: 80,
+          width: 70,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
         },
         {
           field: "workerNames",
-          title: "设备负责人",
-          width: 80,
+          title: "负责人",
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
+        },
+        {
+          field: "custome-adv",
+          title: "操作",
+          width: 70,
+          titleAlign: "center",
+          columnAlign: "center",
+          componentName: "table-equipment",
+          // isResize: true
         }
-      ]
+      ],
+      //监控为条件或高级搜索或左侧搜索栏
+      keyorall: 0,
+      //左侧搜索栏
+      leftclass:"",
+      leftcate:"",
+      leftstate:"",
     };
   },
   methods: {
+    customCompFunc(params) {
+      console.log(params);
+
+      if (params.type === "delete") {
+        // do delete operation
+         this.ids =params.rowData.id
+         this.warningdelete();
+         this.ids="";
+        this.$delete(this.tableData, params.index);
+      } else if (params.type === "edit") {
+        // do edit operation
+        this.$router.push("/Redact/" + params.rowData.id);
+        //alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
+      }else if (params.type === "audit") {
+        // do edit operation
+
+        alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
+      }
+    },
     handleNodeClick(data) {
+      this.leftcate = data.id;
+      this.leftstate = "";
+      this.leftclass = "";
+      this.keyorall=2;
+      this.pageIndex=1;
       console.log(data);
+      this.leftfind();
     },
     advanceValue(params) {
       this.tableData = params;
@@ -225,8 +280,8 @@ export default {
       this.$router.push("/EquipmentAdd");
     },
     editShow() {
-      if (this.ids.length == 1) {
-        this.$router.push("/Redact/" + this.edbt.id);
+      if (this.edbt.length == 1) {
+        this.$router.push("/Redact/" + this.edbt[0].id);
         this.$store.commit("equipmentRedact", this.edbt);
       } else {
         alert("只能选择选择一行数据!!!");
@@ -267,13 +322,25 @@ export default {
       this.getTableData();
       console.log(pageIndex);
       console.log(this.pageSize);
-      this.findall();
+      if (this.keyorall === 0) {
+        this.findall();
+      } else if(this.keyorall === 1){
+        this.findByKeyWord();
+      }else{
+        this.leftfind();
+      }
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
-      // this.findall();
+      if (this.keyorall === 0) {
+        this.findall();
+      } else if(this.keyorall === 1){
+        this.findByKeyWord();
+      }else{
+        this.leftfind();
+      }
     },
     sortChange(params) {
       if (params.height.length > 0) {
@@ -288,74 +355,93 @@ export default {
         });
       }
     },
-
-    //通过
     findall() {
+      this.keyorall = 0;
       //根据用户token查询所属组织机构下设备类别
-      let qs = require("qs");
-      let data = qs.stringify({
-        page: this.pageIndex,
-        size: this.pageSize
+      EventBus.$on("sideBarTroggleHandle", isCollapse => {
+        window.setTimeout(() => {
+          this.$refs.equipmentTable.resize();
+        }, 500);
       });
-      this.axios
-        //axios
-        .get(this.global.apiSrc + "/device/all", data)
-        // .get("api/device/all", data)
-        .then(result => {
-          this.tableData = result.data.data.content;
-          for (let i = 0; i < this.tableData.length; i++) {
-            if (this.tableData[i].deviceState === 1) {
-              this.tableData[i].deviceState = "在用";
+      this.Axios(
+        {
+          params: {
+            page: this.pageIndex,
+            size: this.pageSize
+          },
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/device/select"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },
+        this
+      )
+        //.get(this.global.apiSrc + "/device/select", {params:{ page: this.pageIndex,size: this.pageSize}})
+        .then(
+          result => {
+            this.totalnum = result.data.data.totalElements;
+            console.log("++++");
+            console.log(result.data);
+            this.tableData = result.data.data.content;
+            for (let i = 0; i < this.tableData.length; i++) {
+              if (this.tableData[i].deviceState === 1) {
+                this.tableData[i].deviceState = "在用";
+              }
+              if (this.tableData[i].deviceState === 2) {
+                this.tableData[i].deviceState = "出租";
+              }
+              if (this.tableData[i].deviceState === 3) {
+                this.tableData[i].deviceState = "停用";
+              }
+              if (this.tableData[i].deviceState === 4) {
+                this.tableData[i].deviceState = "封存";
+              }
+              if (this.tableData[i].deviceState === 5) {
+                this.tableData[i].deviceState = "报废";
+              }
             }
-            if (this.tableData[i].deviceState === 2) {
-              this.tableData[i].deviceState = "出租";
-            }
-            if (this.tableData[i].deviceState === 3) {
-              this.tableData[i].deviceState = "停用";
-            }
-            if (this.tableData[i].deviceState === 4) {
-              this.tableData[i].deviceState = "封存";
-            }
-            if (this.tableData[i].deviceState === 5) {
-              this.tableData[i].deviceState = "报废";
-            }
+            console.log(result.data);
+          },
+          ({ type, info }) => {
+            //错误类型 type=faild / error
+            //error && error(type, info);
           }
-          console.log(result.data);
-          this.totalElements=result.data.data.totalElements
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    //通过
-    findDeviceState(id) {
-      //获取设备状况接口
-      let ids = id;
-      this.axios
-        //axios
-        //.get("api/device/findDeviceState",{params:{deviceId:ids}})
-        .get(this.global.apiSrc + "/device/findDeviceState")
-        .then(result => {
-          let arr = new Array();
-          arr = result.data.data;
-          console.log(arr);
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        );
+      // .catch(err => {
+      //   console.log(err);
+      // });
     },
     findByKeyWord() {
-      //根据设备编号、位号、名称查询
-      this.axios
-        //axios
-        .get(this.global.apiSrc + "/device/findByKeyWord", {
+        this.keyorall = 1;
+        //根据设备编号、位号、名称查询
+        this.Axios({
           params: {
             page: this.pageIndex,
             size: this.pageSize,
             keyWord: this.keyWord
-          }
-        })
+          },
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/device/findByKeyWord"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },
+        this
+      )
+        // .get(this.global.apiSrc + "/device/findByKeyWord", {
+        //   params: {
+        //     page: this.pageIndex,
+        //     size: this.pageSize,
+        //     keyWord: this.keyWord
+        //   }
+        // })
         .then(result => {
           this.tableData = result.data.data.content;
           for (let i = 0; i < this.tableData.length; i++) {
@@ -375,70 +461,46 @@ export default {
               this.tableData[i].deviceState = "报废";
             }
           }
-          console.log(result.data.data.content);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    findByOrganizeCode() {
-      //根据组织代码查询所有员工数据，支持分页（用于设备模块）
-      let qs = require("qs");
-      let data = qs.stringify({
-        organizeCode: ""
-      });
-      this.axios
-        .get(this.global.apiSrc + "/employee/findByOrganizeCode", {
-          params: {
-            page: this.pageIndex,
-            size: this.pageSize,
-            organizeCode: "1000"
-          }
-        })
-        .then(result => {
-          alert("findByKeyWord");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    getDeviceById() {
-      //根据员工id查询相关设备信息接口，支持分页（用于设备模块）
-      let qs = require("qs");
-      let data = qs.stringify({
-        page: this.pageIndex,
-        size: this.pageSize,
-        employeeId: 147
-      });
-      this.axios
-        //axios
-        // .get("api/employee/getDeviceById", data)
-        .get(this.global.apiSrc + "/employee/getDeviceById", data)
-        .then(result => {
-          alert("getDeviceById");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
+            console.log(result.data.data.content);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
     edelete() {
       let qs = require("qs");
       let data = qs.stringify({
         deviceIds: this.ids
       });
-      this.axios
-        .post(this.global.apiSrc + "/device/delete", data)
-        .then(result => {
-          this.findall();
-          alert("删除成功");
-          console.log("delete");
-          console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      this.Axios(
+        {
+          url: "/device/delete",
+          params: data,
+          type: "post",
+          option: {
+            enableMsg: false
+          }
+        },
+        this
+      )
+        //.post(this.global.apiSrc + "/device/delete", data)
+        .then(
+          result => {
+            if(result.data.data.code ===200){
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+            }
+            this.findall();
+            console.log("delete");
+            console.log(result.data);
+          },
+          ({ type, info }) => {}
+        );
+      // .catch(err => {
+      //   console.log(err);
+      // });
     },
     filterArray(data, parent) {
       let vm = this;
@@ -456,14 +518,27 @@ export default {
       }
       return tree;
     },
-    findAlldeviceClassify(){
-      let qs = require("qs");
-      let data = qs.stringify({
-      });
-      this.axios
-        .get(this.global.apiSrc + "/deviceCategory/all", data)
+    findAlldeviceClassify() {
+      this.Axios(
+        {
+          params: {
+            page: this.pageIndex,
+            size: this.pageSize
+          },
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/deviceCategory/all"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },
+        this
+      )
+        // .get(this.global.apiSrc + "/deviceCategory/all", data)
         .then(result => {
-          this.organiza= this.filterArray(result.data.data,0);
+          this.organiza = this.filterArray(result.data.data, 0);
           console.log("查找全部设备类别");
           console.log(result.data);
         })
@@ -471,16 +546,125 @@ export default {
           console.log(err);
         });
     },
+    warningdelete(){
+      this.$confirm('确定要删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.edelete();
+
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+
+    leftcontro(a,b,c){
+      this.keyorall=2;
+      this.leftclass=a;
+      this.leftcate=b;
+      this.leftstate=c;
+      this.pageIndex=1;
+
+       this.leftfind();
+    },
+    leftfind(){
+      this.Axios(
+        {
+          params: {
+            classify:this.leftclass,
+            deviceCategory:this.leftcate,
+            deviceSates:this.leftstate,
+            page: this.pageIndex,
+            size: this.pageSize
+          },
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/device/select"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },
+        this
+      )
+      //.get(this.global.apiSrc + "/device/select", {params:{ page: this.pageIndex,size: this.pageSize}})
+        .then(
+          result => {
+            this.totalnum = result.data.data.totalElements;
+            console.log("++++");
+            console.log(result.data);
+            this.tableData = result.data.data.content;
+            for (let i = 0; i < this.tableData.length; i++) {
+              if (this.tableData[i].deviceState === 1) {
+                this.tableData[i].deviceState = "在用";
+              }
+              if (this.tableData[i].deviceState === 2) {
+                this.tableData[i].deviceState = "出租";
+              }
+              if (this.tableData[i].deviceState === 3) {
+                this.tableData[i].deviceState = "停用";
+              }
+              if (this.tableData[i].deviceState === 4) {
+                this.tableData[i].deviceState = "封存";
+              }
+              if (this.tableData[i].deviceState === 5) {
+                this.tableData[i].deviceState = "报废";
+              }
+            }
+            console.log(result.data);
+          },
+          ({ type, info }) => {
+            //错误类型 type=faild / error
+            //error && error(type, info);
+          }
+        );
+    }
   },
-  created() {
+     created() {
     this.findall();
-    this.findDeviceState();
+    //this.findDeviceState();
     this.findAlldeviceClassify();
   },
   components: {
     advanced
   }
 };
+Vue.component("table-equipment", {
+  template: `<span>
+        <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">修改</a>&nbsp;
+        <a href="" @click.stop.prevent="deleteRow(rowData,index)" style="text-decoration: none;">删除</a>
+        </span>`,
+  props: {
+    rowData: {
+      type: Object
+    },
+    field: {
+      type: String
+    },
+    index: {
+      type: Number
+    }
+  },
+  methods: {
+    update() {
+      // 参数根据业务场景随意构造
+      let params = { type: "edit", index: this.index, rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    },
+    deleteRow() {
+      // 参数根据业务场景随意构造
+
+      let params = { type: "delete", rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+
+    }
+  }
+});
 </script>
 <style lang="less" scoped>
 @import url("../../assets/font/font.css");
@@ -556,7 +740,7 @@ export default {
       padding: 10px;
       border: 1px solid @Info;
       border-radius: 5px;
-      min-height: 500px;
+      // min-height: 500px;
     }
   }
 }
@@ -565,10 +749,12 @@ export default {
   //   width: 150px !important;
   display: inline !important;
 }
+
 .el-input {
   width: auto !important;
   padding: 0 !important;
 }
+
 .adsearch {
   position: absolute;
   right: -310px;

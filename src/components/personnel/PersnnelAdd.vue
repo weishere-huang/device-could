@@ -39,7 +39,9 @@
               </li>
               <li>
                 <label for="">入职时间：</label>
-                <el-input type="date" size="small" v-model="persnneladd.entryTime"></el-input>
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.entryTime"
+                              size="small"  ></el-date-picker>
+                <!-- <el-input type="date" size="small" v-model="persnneladd.entryTime"></el-input> -->
               </li>
             </ul>
           </div>
@@ -58,7 +60,9 @@
               </li>
               <li>
                 <label for="">出生日期：</label>
-                <el-input type="date" size="small" v-model="persnneladd.birthday"></el-input>
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.birthday"
+                              size="small"  ></el-date-picker>
+                <!-- <el-input type="date" size="small" v-model="persnneladd.birthday"></el-input> -->
               </li>
               <li>
                 <label for="">岗位：</label>
@@ -179,15 +183,19 @@
         this.$router.back(-1)
       },
       organize(){
-        this.axios
-          .get(this.global.apiSrc+"/organize/allOrganize")
-          .then(response => {
+        this.Axios(
+          {
+            params:{},
+            type: "get",
+            url: "/organize/allOrganize",
+          },
+          this
+        ).then(response => {
             this.options = response.data.data;
-            console.log(response.data.data)
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       codeToName(organizeCode){
         for (let i =0;i<this.options.length;i++){
@@ -226,19 +234,18 @@
           qualificationInfo:this.persnneladd.qualificationInfo,
           roleId:this.persnneladd.roleId
         });
-        this.axios
-          .post(this.global.apiSrc+"/employee/add", data)
-          .then(response => {
-            if (response.data.msg ==="成功"){
-              alert("成功");
-              this.Personnel();
-            }else{
-              alert("失败");
-            }
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/employee/add",
+          },
+          this
+        ).then(response => {
+            this.Personnel();
+          },
+          ({type, info}) => {
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       Personnel() {
         this.$router.push({
@@ -270,7 +277,6 @@
                 action === "cancel" ? "放弃保存并离开页面" : "停留在当前页面"
             });
           });
-        console.log(this.persnneladd.organizationName);
       },
       testValue(){
         // let regEmail=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/;
@@ -302,7 +308,7 @@
           return false;
         }
         if(this.persnneladd.birthday == ""){
-          alert("请输入出生日期");
+          alert("请选择出生日期");
           return false;
         }
         if(this.persnneladd.organizationName == " "){
@@ -324,15 +330,19 @@
     },
     created() {
       this.organize();
-      this.axios
-        .get(this.global.apiSrc + "/role/listAllRole")
-        .then(response => {
+      this.Axios(
+        {
+          params:{},
+          type: "get",
+          url: "/role/listAllRole",
+        },
+        this
+      ).then(response => {
           this.role = response.data.data;
           this.persnneladd.entryTime = this.date
+        },
+        ({type, info}) => {
         })
-        .catch(function(error) {
-          console.log(error);
-        });
     }
   };
 </script>

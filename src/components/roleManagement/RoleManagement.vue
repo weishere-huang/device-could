@@ -7,14 +7,14 @@
       </div>
       <div class="left">
         <h6>角色列表</h6>
-        <ul @click="getName" >
-          <li v-for="item in role" :label="item.id" :key="item.id" ><span @click="listPermissionByRoleId">{{item.name}}</span> <span><i class='iconfont icon-shanchu1' @click="expurgate"></i></span></li>
+        <ul @click="getName($event)">
+          <li v-for="item in role" :label="item.id" :key="item.id" ><span :label="item.id">{{item.name}}</span> <span @click="expurgate" :label="item.id"><i class='iconfont icon-shanchu1'></i></span></li>
         </ul>
       </div>
       <div class="right">
         <div class="roleName">
           <h6>权限分配</h6>
-          
+
         </div>
         <div>
           <div class="system">
@@ -137,8 +137,9 @@
   </div>
 </template>
 <script>
-import { MessageBox } from 'element-ui';
+  import { MessageBox } from 'element-ui';
   export default {
+    inject:['reload'],
     data() {
       return {
         form:{
@@ -169,6 +170,7 @@ import { MessageBox } from 'element-ui';
           checkedSystem: [],
           systemList: [],
           systemKey :[],
+          adminKey:[],
           isIndeterminate: true
         },
         information: {
@@ -178,6 +180,7 @@ import { MessageBox } from 'element-ui';
           checkedSystem: [],
           systemList: [],
           systemKey :[],
+          adminKey:[],
           isIndeterminate: true
         },
         equipment: {
@@ -187,6 +190,7 @@ import { MessageBox } from 'element-ui';
           checkedSystem: [],
           systemList: [],
           systemKey :[],
+          adminKey:[],
           isIndeterminate: true
         },
         personnel: {
@@ -196,6 +200,7 @@ import { MessageBox } from 'element-ui';
           checkedSystem: [],
           systemList: [],
           systemKey :[],
+          adminKey:[],
           isIndeterminate: true
         },
         user: {
@@ -205,6 +210,7 @@ import { MessageBox } from 'element-ui';
           checkedSystem: [],
           systemList: [],
           systemKey :[],
+          adminKey:[],
           isIndeterminate: true
         },
         message: {
@@ -214,16 +220,28 @@ import { MessageBox } from 'element-ui';
           checkedSystem: [],
           systemList: [],
           systemKey :[],
+          adminKey:[],
           isIndeterminate: true
         },
       };
     },
     methods: {
-      expurgate(){
+      expurgate(event){
         this.$confirm('此操作将删除该角色, 是否继续?', '提示')
+          .then(_=>{
+            this.deleteRole(event.target.parentNode.attributes.label.textContent);
+          })
+          .catch(_=>{
+            console.log("stop")
+          })
       },
       systemCheckAllChange(val) {
-        this.list(this.system.systemList,this.system.systemList,this.system.systemKey,1);
+        this.adminKey="";
+        if(val){
+          this.list(this.system.systemList,this.system.systemList,this.system.systemKey,1);
+        }else{
+          this.list(this.adminKey,this.system.systemList,this.system.systemKey,1);
+        }
         this.system.checkedSystem = val ? this.system.systemList : [];
         this.system.isIndeterminate = false;
       },
@@ -245,8 +263,14 @@ import { MessageBox } from 'element-ui';
         this.system.sShow = !this.system.sShow;
         this.system.sHide = !this.system.sHide;
       },
+
       informationCheckAllChange(val) {
-        this.list(this.information.systemList,this.information.systemList,this.information.systemKey,2);
+        this.adminKey="";
+        if(val){
+          this.list(this.information.systemList,this.information.systemList,this.information.systemKey,2);
+        }else{
+          this.list(this.adminKey,this.information.systemList,this.information.systemKey,2);
+        }
         this.information.checkedSystem = val ? this.information.systemList : [];
         this.information.isIndeterminate = false;
       },
@@ -269,8 +293,14 @@ import { MessageBox } from 'element-ui';
         this.information.sShow = !this.information.sShow;
         this.information.sHide = !this.information.sHide;
       },
+
       equipmentCheckAllChange(val) {
-        this.list(this.equipment.systemList,this.equipment.systemList,this.equipment.systemKey,3);
+        this.adminKey="";
+        if(val){
+          this.list(this.equipment.systemList,this.equipment.systemList,this.equipment.systemKey,3);
+        }else{
+          this.list(this.adminKey,this.equipment.systemList,this.equipment.systemKey,3);
+        }
         this.equipment.checkedSystem = val ? this.equipment.systemList : [];
         this.equipment.isIndeterminate = false;
       },
@@ -295,7 +325,12 @@ import { MessageBox } from 'element-ui';
       },
 
       personnelCheckAllChange(val) {
-        this.list(this.personnel.systemList,this.personnel.systemList,this.personnel.systemKey,4);
+        this.adminKey="";
+        if(val){
+          this.list(this.personnel.systemList,this.personnel.systemList,this.personnel.systemKey,4);
+        }else{
+          this.list(this.adminKey,this.personnel.systemList,this.personnel.systemKey,4);
+        }
         this.personnel.checkedSystem = val ? this.personnel.systemList : [];
         this.personnel.isIndeterminate = false;
       },
@@ -318,8 +353,14 @@ import { MessageBox } from 'element-ui';
         this.personnel.sShow = !this.personnel.sShow;
         this.personnel.sHide = !this.personnel.sHide;
       },
+
       userCheckAllChange(val) {
-        this.list(this.user.systemList,this.user.systemList,this.user.systemKey,5);
+        this.adminKey="";
+        if(val){
+          this.list(this.user.systemList,this.user.systemList,this.user.systemKey,5);
+        }else{
+          this.list(this.adminKey,this.user.systemList,this.user.systemKey,5);
+        }
         this.user.checkedSystem = val ? this.user.systemList : [];
         this.user.isIndeterminate = false;
       },
@@ -341,8 +382,14 @@ import { MessageBox } from 'element-ui';
         this.user.sShow = !this.user.sShow;
         this.user.sHide = !this.user.sHide;
       },
+
       messageCheckAllChange(val) {
-        this.list(this.message.systemList,this.message.systemList,this.message.systemKey,6);
+        this.adminKey="";
+        if(val){
+          this.list(this.message.systemList,this.message.systemList,this.message.systemKey,6);
+        }else{
+          this.list(this.adminKey,this.message.systemList,this.message.systemKey,6);
+        }
         this.message.checkedSystem = val ? this.message.systemList : [];
         this.message.isIndeterminate = false;
       },
@@ -368,63 +415,71 @@ import { MessageBox } from 'element-ui';
       roleAdd(){
         if (this.form.name === ""){
           alert("请输入角色名称");
-        } else{
-          this.axios
-            .get(this.global.apiSrc+"/role/findOnlyByRoleName",{params:{roleName:this.form.name}})
-            .then(response => {
-              if (response.data.data){
-                this.toRoleAdd()
-                this.form=""
-              }else{
-                alert("角色名以存在，请重新输入角色名称！")
-              }
+        }else{
+          this.Axios(
+            {
+              params: {roleName:this.form.name},
+              type: "get",
+              url: "/role/findOnlyByRoleName",
+            },
+            this
+          ).then(
+            response => {
+              this.toRoleAdd();
+            },
+            ({type, info}) => {
+
             })
-            .catch(function(error) {
-              console.log(error);
-            });
         }
       },
       load(){
-        this.axios
-          .get(this.global.apiSrc+"/role/listAllRole")
-          .then(response => {
+        this.Axios(
+          {
+            params: {},
+            type: "get",
+            url: "/role/listAllRole",
+          },
+          this
+        ).then(
+          response => {
             this.role = response.data.data;
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       list(value,toValues,key,number){
-        this.systemID = "";
+        let toKey = "";
         for(let i in value){
           for (let j in toValues){
             if(value[i] === toValues[j]) {
-              if (this.systemID === "") {
-                this.systemID += key[j];
-              } else {
-                this.systemID += "," + key[j];
+              if (toKey === "") {
+                toKey = key[j];
+              } else if(toValues!==""){
+                toKey += "," + key[j];
               }
             }
           }
+          // console.log(toKey);
         }
         switch(number){
           case 1:
-            this.systemKeyInfo[0] = this.systemID;
+            this.system.adminKey = toKey;
             break;
           case 2:
-            this.systemKeyInfo[1] = this.systemID;
+            this.information.adminKey = toKey;
             break;
           case 3:
-            this.systemKeyInfo[2] = this.systemID;
+            this.equipment.adminKey = toKey;
             break;
           case 4:
-            this.systemKeyInfo[3]= this.systemID;
+            this.personnel.adminKey = toKey;
             break;
           case 5:
-            this.systemKeyInfo[4] = this.systemID;
+            this.user.adminKey = toKey;
             break;
           case 6:
-            this.systemKeyInfo[5] = this.systemID;
+            this.message.adminKey = toKey;
             break;
           default:
             break;
@@ -437,55 +492,70 @@ import { MessageBox } from 'element-ui';
           name:this.form.name,
           description:this.form.desc
         });
-        this.axios
-          .post(this.global.apiSrc+"/role/add",data)
-          .then(response =>{
-            if (response.data.msg ==="成功") {
-              alert("角色创建成功，请记得分配相关权限");
-              this.load();
-            }else{
-              alert("系统繁忙，请稍后再试");
-            }
+        this.Axios(
+          {
+            params:data ,
+            type: "post",
+            url: "/role/add",
+          },
+          this
+        ).then(
+          response => {
+            this.load();
+            console.log(response);
+            
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       update(){
-        console.log(this.roleId);
         this.systemID = "";
-        for(let i = 0;i< this.systemKeyInfo.length;i++){
-          if(this.systemID === ""){
-            this.systemID = this.systemKeyInfo[i];
-          }else if(this.systemKeyInfo[i]!==""){
-            this.systemID += ","+this.systemKeyInfo[i];
-          }
-        }
-        console.log(this.systemID);
+        this.systemID = this.system.adminKey.toString();
+        this.systemID == "" ? this.systemID = this.information.adminKey : this.information.adminKey!="" ? this.systemID +=","+this.information.adminKey:"";
+        this.systemID == "" ? this.systemID = this.equipment.adminKey : this.equipment.adminKey!="" ? this.systemID +=","+this.equipment.adminKey:"";
+        this.systemID == "" ? this.systemID = this.personnel.adminKey : this.personnel.adminKey!="" ? this.systemID +=","+this.personnel.adminKey:"";
+        this.systemID == "" ? this.systemID = this.user.adminKey : this.user.adminKey!="" ? this.systemID +=","+this.user.adminKey:"";
+        this.systemID == "" ? this.systemID = this.message.adminKey : this.message.adminKey!="" ? this.systemID +=","+this.message.adminKey:"";
         let qs = require("qs");
         let data = qs.stringify({
           id:this.roleId,
-          name:this.roleName,
           permissionIds:this.systemID
         });
-        this.axios
-          .post(this.global.apiSrc+"/role/update",data)
-          .then(response =>{
-            if (response.data.msg ==="成功") {
-              alert("成功");
-              this.load();
-            }else{
-              alert("失败");
-            }
+        this.Axios(
+          {
+            params:data ,
+            type: "post",
+            url: "/role/update",
+          },
+          this
+        ).then(
+          response => {
+            // this.load();
+            console.log(response);
+            this.reload()
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       listPermissionByRoleId(value){
-        this.axios
-          .get(this.global.apiSrc+"/role/listPermissionByRole",{params: {roleId:value}})
-          .then(response =>{
+
+        this.Axios(
+          {
+            params:{roleId:value} ,
+            type: "get",
+            url: "/role/listPermissionByRole",
+          },
+          this
+        ).then(
+          response => {
+            let adminKey=new Array();
+            let adminKey1=new Array();
+            let adminKey2=new Array();
+            let adminKey3=new Array();
+            let adminKey4=new Array();
+            let adminKey5=new Array();
             let arr = new Array();
             let arr1 = new Array();
             let arr2 = new Array();
@@ -495,21 +565,27 @@ import { MessageBox } from 'element-ui';
             for (let i in response.data.data) {
               if (response.data.data[i].parentCode === 1) {
                 arr[arr.length] = response.data.data[i].name;
+                adminKey[adminKey.length] = response.data.data[i].id;
               }
               if (response.data.data[i].parentCode === 2) {
                 arr1[arr1.length] = response.data.data[i].name;
+                adminKey1[adminKey1.length] = response.data.data[i].id;
               }
               if (response.data.data[i].parentCode === 3) {
                 arr2[arr2.length] = response.data.data[i].name;
+                adminKey2[adminKey2.length] = response.data.data[i].id;
               }
               if (response.data.data[i].parentCode === 4) {
                 arr3[arr3.length] = response.data.data[i].name;
+                adminKey3[adminKey3.length] = response.data.data[i].id;
               }
               if (response.data.data[i].parentCode === 5) {
                 arr4[arr4.length] = response.data.data[i].name;
+                adminKey4[adminKey4.length] = response.data.data[i].id;
               }
               if (response.data.data[i].parentCode === 6) {
                 arr5[arr5.length] = response.data.data[i].name;
+                adminKey5[adminKey5.length] = response.data.data[i].id;
               }
             }
             this.system.checkedSystem = arr;
@@ -518,15 +594,29 @@ import { MessageBox } from 'element-ui';
             this.personnel.checkedSystem = arr3;
             this.user.checkedSystem = arr4;
             this.message.checkedSystem = arr5;
+
+            this.system.adminKey = adminKey;
+            this.information.adminKey = adminKey1;
+            this.equipment.adminKey = adminKey2;
+            this.personnel.adminKey = adminKey3;
+            this.user.adminKey = adminKey4;
+            this.message.adminKey = adminKey5;
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
+
       PermissionsList(number){
-        this.axios
-          .get(this.global.apiSrc+"/permission/listAllPermission")
-          .then(response =>{
+        this.Axios(
+          {
+            params: {},
+            type: "get",
+            url: "/permission/listAllPermission",
+          },
+          this
+        ).then(
+          response => {
             let arr = new Array();
             let k = new Array();
             for (let i in response.data.data) {
@@ -563,10 +653,10 @@ import { MessageBox } from 'element-ui';
                 }
               }
             }
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       getName(event){
         this.roleName = event.target.innerHTML;
@@ -577,13 +667,30 @@ import { MessageBox } from 'element-ui';
           }
         }
       },
-      deleteRole(){
+      deleteRole(value){
+        let qs = require("qs");
+        let data = qs.stringify({
+          roleId:value
+        });
+        this.Axios(
+          {
+            params:data ,
+            type: "post",
+            url: "/role/delete",
+          },
+          this
+        ).then(
+          response => {
+            this.load();
+          },
+          ({type, info}) => {
 
-      }
+          })
+      },
     },
     mounted() {
-      $(".left").click(event=> {
-        $(event.target).addClass("fontColor").siblings().removeClass("fontColor");
+      $(".left").on('click',"li",function(event) {
+        $(this).addClass("fontColor").siblings().removeClass("fontColor");
       });
     },
     created() {

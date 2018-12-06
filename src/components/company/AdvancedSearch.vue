@@ -24,6 +24,7 @@
 <script>
   export default {
     name: "",
+    props:["pageSize"],
     data() {
       return {
         dataName: "",
@@ -46,24 +47,20 @@
             this.choice += "," + this.checkList[i];
           }
         }
-
-        this.axios
-          .get(this.global.apiSrc + "/enterprise/findByNameOrState", {
-            params: {
-              page: 1,
-              enterpriseName: this.companyName,
-              state: this.choice,
-              // page: this.pageIndex, size: this.pageSize
-            }
-          })
+        this.Axios(
+          {
+            params: Object.assign({page: 1,size:this.pageSize, enterpriseName: this.companyName, state: this.choice}),
+            type: "get",
+            url: "/enterprise/findByNameOrState",
+          },
+          this
+        )
           .then(response => {
             console.log(response);
             document.querySelectorAll(".adsearch")[0].style.right = "-310px";
             for (let i = 0; i < response.data.data.content.length; i++) {
               console.log(this.dataName);
               console.log(this.checkList)
-              response.data.data.content[i].gmtCreate = response.data.data.content[i].gmtCreate.split("T")[0];
-
               if (response.data.data.content[i].state === 0) {
                 response.data.data.content[i].state = "待审核";
               }
@@ -81,19 +78,18 @@
             this.dataName = response.data.data
             console.log(this.dataName);
             this.$emit("advanceValue", {
-              dataName:this.dataName,
-              params:{
+              dataName: this.dataName,
+              params: {
                 enterpriseName: this.companyName,
-                state: this.choice
+                state: this.choice,
               }
             });
+          }, ({type, info}) => {
           })
-          .catch(function (error) {
-            console.log(error);
-          });
-      }
+
+      },
     }
-  };
+  }
 </script>
 
 <style lang="less" scoped>

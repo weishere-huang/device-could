@@ -8,19 +8,65 @@
         >添加</el-button>
         <el-button
           size="small"
-          @click="outerVisible = true"
+          @click="outerVisibleIsOk"
         >审核</el-button>
         <el-dialog
           title="审核"
           :visible.sync="outerVisible"
         >
-          <audit></audit>
+          <el-form
+            label-position=right
+            label-width="120px"
+            :model="formLabelAlign"
+          >
+            <el-form-item label="审批结果：">
+              <el-radio
+                v-model="formLabelAlign.radio"
+                label="0"
+              >同意</el-radio>
+              <el-radio
+                v-model="formLabelAlign.radio"
+                label="1"
+              >驳回</el-radio>
+            </el-form-item>
+            <el-form-item label="审批意见：">
+              <el-input
+                type="textarea"
+                v-model="formLabelAlign.desc"
+              ></el-input>
+            </el-form-item>
+            <div v-if="formLabelAlign.radio!=1">
+              <el-form-item label="是否终审：">
+                <el-checkbox-group v-model="formLabelAlign.type">
+                  <el-checkbox
+                    label=""
+                    name="type"
+                  ></el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+              <el-form-item
+                label="下一级审批人："
+                v-if="formLabelAlign.type!=true"
+              >
+                <el-input
+                  v-model="toAudit.name"
+                  size="mini"
+                  style="width:60%"
+                ></el-input>
+                <el-button
+                  type="primary"
+                  @click="innerVisible = true"
+                  size="mini"
+                >添加审批人</el-button>
+              </el-form-item>
+            </div>
+          </el-form>
           <el-dialog
             title="人员添加"
             :visible.sync="innerVisible"
             append-to-body
           >
-            <personnel></personnel>
+            <personnel v-on:getPersonnel="getPersonnel"></personnel>
           </el-dialog>
           <div
             slot="footer"
@@ -31,19 +77,16 @@
               size="mini"
             >取 消</el-button>
             <el-button
+              @click="submitAudit"
               type="primary"
               size="mini"
             >提交</el-button>
-            <el-button
-              type="primary"
-              @click="innerVisible = true"
-              size="mini"
-            >添加下一级审批人</el-button>
           </div>
         </el-dialog>
         <el-button
           size="small"
           @click="stopDiscontinuation"
+          style="margin-left: 10px;"
         >停止</el-button>
         <el-button
           size="small"
@@ -59,20 +102,21 @@
             is-horizontal-resize
             column-width-drag
             :multiple-sort="false"
-            style="width:100%;min-height:400px;"
+            style="width:100%;"
             :columns="columns"
             :table-data="tableData"
             row-hover-color="#eee"
             row-click-color="#edf7ff"
+            @on-custom-comp="customCompFunc"
           ></v-table>
           <div
             class="mt20 mb20 bold"
-            style="text-align:center;margin-top:30px;"
+            style="text-align:left;margin-top:20px;"
           >
             <v-pagination
               @page-change="pageChange"
               @page-size-change="pageSizeChange"
-              :total="tableData.length"
+              :total="pageNumber"
               :page-size="pageSize"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
@@ -85,23 +129,30 @@
 <script>
 import audit from "./AuditUPkeep";
 import personnel from "./PersonnelUpkeep";
+import Vue from "vue";
 export default {
   data() {
     return {
+      arr: [],
+      toAudit: "",
+      radio: "",
+      formLabelAlign: {
+        desc: "",
+        type: "",
+        radio: "",
+        name: ""
+      },
       outerVisible: false,
       innerVisible: false,
       pageNumber: 0,
       pageIndex: 1,
       pageSize: 10,
-      userId: 3,
       maintenanceIds: "",
       //保养分类
       planType: [],
       //保养级别
       planLevel: [],
-      tableData: [{
-        field:"111"
-      }],
+      tableData: [],
       tableDate: [],
       columns: [
         {
@@ -190,16 +241,40 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
+        },
+        {
+          field: "custome-adv",
+          title: "操作",
+          width: 100,
+          titleAlign: "center",
+          columnAlign: "center",
+          componentName: "table-upkeep"
+          // isResize: true
         }
       ]
     };
   },
   methods: {
+    customCompFunc(params) {
+      // console.log(params);
+
+      if (params.type === "delete") {
+        // do delete operation
+        this.deleteMaintenanceOne(params.rowData["id"]);
+        // this.$delete(this.tableData, params.index);
+      } else if (params.type === "edit") {
+        // do edit operation
+        this.toAmend(params.index,params.rowData);
+        // alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
+      } else if (params.type === "stop") {
+        // do edit operation
+        this.stopDiscontinuationOne(params.rowData["id"],params.rowData["state"]);
+        // alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
+      }
+    },
     toAmend(rowIndex, rowData, column) {
       this.$store.commit("upkeepAmend", rowData);
-      this.$router.push({
-        path: "/UpkeepAmend"
-      });
+      this.$router.push("/UpkeepAmend?id="+rowData.id);
     },
     toUpkeepAdd() {
       this.$router.push({
@@ -207,6 +282,7 @@ export default {
       });
     },
     selectGroupChange(selection) {
+      this.arr = selection;
       this.maintenanceIds = "";
       for (let i in selection) {
         if (this.maintenanceIds === "") {
@@ -217,6 +293,7 @@ export default {
       }
     },
     selectALL(selection) {
+      this.arr = selection;
       this.maintenanceIds = "";
       for (let i in selection) {
         if (this.maintenanceIds === "") {
@@ -238,12 +315,13 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
+      this.load();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+      this.load();
     },
     sortChange(params) {
       if (params.height.length > 0) {
@@ -260,125 +338,216 @@ export default {
     },
 
     load() {
-      this.axios
-        .get(this.global.apiSrc + "/mplan/allPlan", {
+      this.Axios(
+        {
           params: {
-            userId: this.userId,
             page: this.pageIndex,
-            size: this.pageSize
+            size: this.pageSize,
+            maintenanceType:1
+          },
+          type: "get",
+          url: "/mplan/allPlan"
+        },
+        this
+      ).then(
+        response => {
+          this.pageNumber = response.data.data.totalElements;
+          this.loadValue(response.data.data.content);
+        },
+        ({ type, info }) => {}
+      );
+    },
+    loadValue(value) {
+      let arr = new Array();
+      for (let i = 0; i < value.length; i++) {
+        if (value[i].maintenanceType === 1) {
+          arr[arr.length] = value[i];
+        }
+      }
+      this.tableData = arr;
+      for (let i = 0; i < this.tableData.length; i++) {
+        if (this.tableData[i].state === 0) {
+          this.tableData[i].state = "待审核";
+        }
+        if (this.tableData[i].state === 1) {
+          this.tableData[i].state = "已通过";
+        }
+        if (this.tableData[i].state === 2) {
+          this.tableData[i].state = "已禁用";
+        }
+        if (this.tableData[i].state === 3) {
+          this.tableData[i].state = "已删除";
+        }
+        if (this.tableData[i].state === 4) {
+          this.tableData[i].state = "审核中";
+        }
+        if (this.tableData[i].state === 12) {
+          this.tableData[i].state = "停用";
+        }
+        if (this.tableData[i].state === 10) {
+          this.tableData[i].state = "已驳回";
+        }
+        if (this.tableData[i].maintenanceType === 0) {
+          this.tableData[i].maintenanceType = "维修";
+        }
+        if (this.tableData[i].maintenanceType === 1) {
+          this.tableData[i].maintenanceType = "保养";
+        }
+        if (this.tableData[i].frequencyType === -1) {
+          this.tableData[i].frequencyType = "单次";
+        }
+        if (this.tableData[i].frequencyType === 0) {
+          this.tableData[i].frequencyType = "天";
+        }
+        if (this.tableData[i].frequencyType === 1) {
+          this.tableData[i].frequencyType = "周";
+        }
+        if (this.tableData[i].frequencyType === 2) {
+          this.tableData[i].frequencyType = "月";
+        }
+        for (let j in this.planLevel) {
+          if (this.tableData[i].maintenanceLevel === this.planLevel[j].id) {
+            this.tableData[i].maintenanceLevel = this.planLevel[j].levelDesc;
           }
-        })
-        .then(response => {
-          let arr = new Array();
-          for (let i = 0; i < response.data.data.content.length; i++) {
-            if (response.data.data.content[i].maintenanceType === 1) {
-              arr[arr.length] = response.data.data.content[i];
-            }
-          }
-          this.tableData = arr;
-          this.pageNumber = this.tableData.length;
-          for (let i in this.tableData) {
-            if (this.tableData[i].state === 0) {
-              this.tableData[i].state = "待审核";
-            }
-            if (this.tableData[i].state === 1) {
-              this.tableData[i].state = "已通过";
-            }
-            if (this.tableData[i].state === 2) {
-              this.tableData[i].state = "已禁用";
-            }
-            if (this.tableData[i].state === 3) {
-              this.tableData[i].state = "已删除";
-            }
-            if (this.tableData[i].state === 4) {
-              this.tableData[i].state = "审核中";
-            }
-            if (this.tableData[i].state === 5) {
-              this.tableData[i].state = "停用";
-            }
-            if (this.tableData[i].maintenanceType === 0) {
-              this.tableData[i].maintenanceType = "维修";
-            }
-            if (this.tableData[i].maintenanceType === 1) {
-              this.tableData[i].maintenanceType = "保养";
-            }
-            if (this.tableData[i].frequencyType === 0) {
-              this.tableData[i].frequencyType = "天";
-            }
-            if (this.tableData[i].frequencyType === 1) {
-              this.tableData[i].frequencyType = "周";
-            }
-            if (this.tableData[i].frequencyType === 2) {
-              this.tableData[i].frequencyType = "月";
-            }
-            this.tableData[i].endTime = this.tableData[i].endTime.replace(
-              /T/g,
-              " "
-            );
-            this.tableData[i].executeTime = this.tableData[
-              i
-            ].executeTime.replace(/T/g, " ");
-            this.tableData[i].startTime = this.tableData[i].startTime.replace(
-              /T/g,
-              " "
-            );
-            for (let j in this.planLevel) {
-              if (this.tableData[i].maintenanceLevel === this.planLevel[j].id) {
-                this.tableData[i].maintenanceLevel = this.planLevel[
-                  j
-                ].levelDesc;
-              }
-            }
-          }
-          this.pageNumber = this.tableData.length;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+        }
+      }
     },
     listMaintenanceLevel() {
-      this.axios
-        .get(this.global.apiSrc + "/mplan/listMaintenanceLevel")
-        .then(response => {
+      this.Axios(
+        {
+          params: {},
+          type: "get",
+          url: "/mplan/listMaintenanceLevel"
+        },
+        this
+      ).then(
+        response => {
           this.planLevel = response.data.data;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+        },
+        ({ type, info }) => {}
+      );
     },
     deleteMaintenance() {
-      let qs = require("qs");
-      let data = qs.stringify({ maintenanceIds: this.maintenanceIds });
-      this.axios
-        .post(this.global.apiSrc + "/mplan/delete", data)
-        .then(response => {
-          if (response.data.msg === "成功") {
-            alert("成功");
+      this.$confirm("计划一旦删除将无法恢复，请确认选择", "提示").then(_ => {
+        let qs = require("qs");
+        let data = qs.stringify({ maintenanceIds: this.maintenanceIds });
+        this.Axios(
+          {
+            params: data,
+            type: "post",
+            url: "/mplan/delete"
+          },
+          this
+        ).then(
+          response => {
             this.load();
-          } else {
-            alert("失败");
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+          },
+          ({ type, info }) => {}
+        );
+      });
+    },
+    deleteMaintenanceOne(maintenanceId){
+      this.$confirm("计划一旦删除将无法恢复，请确认选择", "提示").then(_ => {
+        let qs = require("qs");
+        let data = qs.stringify({ maintenanceIds:maintenanceId });
+        this.Axios(
+          {
+            params: data,
+            type: "post",
+            url: "/mplan/delete"
+          },
+          this
+        ).then(
+          response => {
+            this.load();
+          },
+          ({ type, info }) => {}
+        );
+      });
     },
     stopDiscontinuation() {
-      let qs = require("qs");
-      let data = qs.stringify({ maintenanceIds: this.maintenanceIds });
-      this.axios
-        .post(this.global.apiSrc + "/mplan/discontinuation", data)
-        .then(response => {
-          if (response.data.msg === "成功") {
-            alert("成功");
+      this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
+        let qs = require("qs");
+        let data = qs.stringify({ maintenanceIds: this.maintenanceIds });
+        this.Axios(
+          {
+            params: data,
+            type: "post",
+            url: "/mplan/discontinuation"
+          },
+          this
+        ).then(
+          response => {
             this.load();
-          } else {
-            alert("失败");
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
+          },
+          ({ type, info }) => {}
+        );
+      });
+    },
+    stopDiscontinuationOne(maintenanceId,state){
+      if(state!=="待审核"){
+        this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
+          let qs = require("qs");
+          let data = qs.stringify({ maintenanceIds:maintenanceId});
+          this.Axios(
+            {
+              params: data,
+              type: "post",
+              url: "/mplan/discontinuation"
+            },
+            this
+          ).then(
+            response => {
+              this.load();
+            },
+            ({ type, info }) => {}
+          );
         });
+      }else if(state==="停用"){
+        alert("该计划已经停用")
+      }else {
+        alert("不能停用待审核状态的计划")
+      }
+    },
+    //审核操作
+    submitAudit() {
+      this.formLabelAlign.type
+        ? (this.formLabelAlign.type = 0)
+        : (this.formLabelAlign.type = 1);
+      this.Axios(
+        {
+          params: {
+            passOrTurn: this.formLabelAlign.radio,
+            maintenanceId: this.maintenanceIds,
+            isEndAudit: this.formLabelAlign.type,
+            auditOpinion: this.formLabelAlign.desc,
+            nextUserId: this.toAudit.id
+          },
+          type: "get",
+          url: "/mplan/maintenanceAudit"
+        },
+        this
+      ).then(
+        response => {
+          this.arr = "";
+          this.load();
+          this.outerVisible = false;
+        },
+        ({ type, info }) => {}
+      );
+    },
+    outerVisibleIsOk() {
+      if (this.arr.length === 1) {
+        this.outerVisible = true;
+      } else if (this.arr.length === 0) {
+        alert("请选择计划");
+      } else {
+        alert("抱歉只能计划只能单个修改");
+      }
+    },
+    getPersonnel(params) {
+      this.toAudit = params.person;
+      this.innerVisible = params.hide;
     }
   },
   created() {
@@ -390,6 +559,40 @@ export default {
     personnel
   }
 };
+Vue.component("table-upkeep", {
+  template: `<span>
+        <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">修改</a>&nbsp;
+        <a href="" @click.stop.prevent="stop(rowData,index)" style="text-decoration: none;">停止</a>&nbsp;
+        <a href="" @click.stop.prevent="deleteRow(rowData,index)" style="text-decoration: none;">删除</a>
+        </span>`,
+  props: {
+    rowData: {
+      type: Object
+    },
+    field: {
+      type: String
+    },
+    index: {
+      type: Number
+    }
+  },
+  methods: {
+    update() {
+      // 参数根据业务场景随意构造
+      let params = { type: "edit", index: this.index, rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    },
+    deleteRow() {
+      // 参数根据业务场景随意构造
+      let params = { type: "delete", rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    },
+    stop() {
+      let params = { type: "stop", rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    }
+  }
+});
 </script>
 
 <style lang="less" scoped>

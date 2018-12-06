@@ -22,8 +22,8 @@
                 <div style="margin-top:10px;">
                     <el-checkbox-group v-model="checkList">
                         <el-checkbox label="1">在用</el-checkbox>
-                        <el-checkbox label="2">停用</el-checkbox>
-                        <el-checkbox label="3">出租</el-checkbox>
+                        <el-checkbox label="2">出租</el-checkbox>
+                        <el-checkbox label="3">停用</el-checkbox>
                         <el-checkbox label="4">封存</el-checkbox>
                         <el-checkbox label="5">报废</el-checkbox>
                     </el-checkbox-group>
@@ -50,7 +50,7 @@ export default {
       manufacturer:"",
       deviceCategory:"",
       choice:"",
-      checkList: [],
+      checkList: [ ],
       state: []
     };
   },
@@ -68,27 +68,50 @@ export default {
         }
       }
       console.log(this.choice);
-      this.axios
-        .get(this.global.apiSrc+"/device/select", {
-          params: {
-            deviceName:this.deviceName,
-            locationNo:this.locationNo,
-            workerName:this.workerName,
-            manufacturer:this.manufacturer,
-            deviceSates:this.choice,
-            deviceCategory:""
-          }
-        })
+      this.Axios({
+        params: {
+          deviceName:this.deviceName,
+          locationNo:this.locationNo,
+          workerName:this.workerName,
+          manufacturer:this.manufacturer,
+          deviceSates:this.choice,
+          deviceCategory:"",
+          page:1,
+          size:10
+
+
+        },
+        // option: {
+        //   enableMsg: false
+        // },
+        type: "get",
+        url: "/device/select"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        // .get(this.global.apiSrc+"/device/select", {
+        //   params: {
+        //     deviceName:this.deviceName,
+        //     locationNo:this.locationNo,
+        //     workerName:this.workerName,
+        //     manufacturer:this.manufacturer,
+        //     deviceSates:this.choice,
+        //     deviceCategory:"",
+        //     page:1,
+        //     size:10
+        //   }
+        // })
         .then(response => {
           for (let i = 0; i < response.data.data.content.length; i++) {
             if (response.data.data.content[i].deviceState === 1) {
               response.data.data.content[i].deviceState = "在用";
             }
             if (response.data.data.content[i].deviceState === 2) {
-              response.data.data.content[i].deviceState = "停用";
+              response.data.data.content[i].deviceState = "出租";
             }
             if (response.data.data.content[i].deviceState === 3) {
-              response.data.data.content[i].deviceState = "出租";
+              response.data.data.content[i].deviceState = "停用";
             }
             if (response.data.data.content[i].deviceState === 4) {
               response.data.data.content[i].deviceState = "封存";
@@ -102,10 +125,15 @@ export default {
           this.dataName = response.data.data.content;
           console.log(this.dataName);
           this.$emit("advanceValue", this.dataName);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+        },
+          ({type, info}) => {
+            //错误类型 type=faild / error
+            //error && error(type, info);
+          }
+        )
+        // .catch(function(error) {
+        //   console.log(error);
+        // });
     }
   }
 };

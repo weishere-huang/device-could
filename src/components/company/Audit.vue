@@ -1,7 +1,6 @@
 <template>
   <div class="auditCase">
     <div class="audit">
-      <span class="title">企业信息</span>
       <div class="left">
 
         <ul>
@@ -58,7 +57,6 @@
         img: "",
         block: false,
         enterpriseIds: "",
-
         company: {
           name: "",
           address: "",
@@ -82,39 +80,55 @@
         let qs = require("qs");
         let data = qs.stringify({
           enterpriseId: this.auditValue.id,
-          passOrTurn:1
-          // userId:2
+          passOrTurn: 1
         })
-        console.log(data)
-        this.axios.post(this.global.apiSrc + "/enterprise/auditEnterprise/", data)
-          .then(response => {
-            location.reload();
-            alert("通过审核")
-            console.log(data)
-            console.log(response)
-          }).catch(function (error) {
-          console.log(error)
+        this.Axios(
+          {
+            url: "/enterprise/auditEnterprise/",
+            params: data,
+            type: "post",
+            option: {
+              enableMsg: false
+            },
+          }
+        ).then(response => {
+          this.$message({
+            message: "您已通过该企业的审核",
+            type: "success"
+          })
+          location.reload();
+        }, ({type, info}) => {
         })
       },
       reject() {
         let qs = require("qs");
         let data = qs.stringify({
           enterpriseId: this.auditValue.id,
-          passOrTurn:0,
+          passOrTurn: 0,
           // userId:2,
           opinion: this.auditValue.opinion,
         })
-        console.log(data.auditOpinion)
-        this.axios.post(this.global.apiSrc + "/enterprise/auditEnterprise/", data)
-          .then(response => {
-            if (response.data.data)
-              alert("审核被驳回")
-
-            location.reload();
-            console.log(response)
-          }).catch(function (error) {
-          console.log(error)
-
+        this.Axios(
+          {
+            url: "/enterprise/auditEnterprise/",
+            params: data,
+            type: "post",
+            option: {enableMsg: false}
+          },
+          this
+        ).then(respose => {
+          if (respose.data.code === 200) {
+            this.$message({
+              message: "您已驳回该企业的审核",
+              type: "success"
+            })
+            location.reload()
+          }
+        }, ({type,info}) => {
+          this.$message({
+            message: "操作失败，请检查是否填写驳回原因",
+            type: "error"
+          })
         })
       }
     }
@@ -126,23 +140,23 @@
   @Warning: #e6a23c;
   @Danger: #f56c6c;
   @Info: #dde2eb;
-  .auditCase {
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #8081812a;
-  }
+  // .auditCase {
+  //   width: 100vw;
+  //   height: 100vh;
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   background-color: #8081812a;
+  // }
 
   .audit {
     padding: 10px;
-    width: 800px;
+    // width: 800px;
     margin: auto;
-    margin-top: 100px;
+    // margin-top: 100px;
     border: 1px solid @Info;
     overflow: hidden;
-    background-color: white;
+    // background-color: white;
     .title {
       display: inline-block;
       width: 100%;

@@ -3,6 +3,7 @@
     <div class="top">
       <el-button size="small" @click="toback">返回</el-button>
       <el-button size="small" @click="addPlan">保存</el-button>
+      <!--<el-button size="small" @click="test">测试</el-button>-->
     </div>
     <div class="bottom">
       <div class="left">
@@ -54,8 +55,8 @@
             </el-col>
           </el-form-item>
           <el-form-item label="计划频次：">
-            <el-input v-model="companyName.frequency" size="mini" style="width:150px"></el-input>
-            <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:150px">
+            <el-input v-model="companyName.frequency" size="mini" style="width:80px"></el-input>
+            <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:80px">
               <el-option label="天" value="1"></el-option>
               <el-option label="周" value="2"></el-option>
               <el-option label="月" value="3"></el-option>
@@ -99,8 +100,8 @@
       </div>
       <div class="right">
         <div>
-          <el-button size="small" @click="eliminateAll">清空已选</el-button>
-          <el-button size="small"@click="addPlanIsShow">设备添加</el-button>
+          <el-button size="small" @click="eliminateAll">清除已选</el-button>
+          <el-button size="small" @click="addPlanIsShow">设备添加</el-button>
         </div>
         <h5>设备列表</h5>
         <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
@@ -109,7 +110,14 @@
         </div>
       </div>
     </div>
-    <add-plan v-show="addPlanShow" v-on:isHide="isHide" v-on:toAdd="toAdd"></add-plan>
+    <el-dialog
+      title="设备添加"
+      :visible.sync="addPlanShow"
+      width="900px"
+      >
+      <add-plan v-show="addPlanShow" v-on:isHide="isHide" v-on:toAdd="toAdd"></add-plan>
+    </el-dialog>
+    
   </div>
 </template>
 <script>
@@ -118,8 +126,8 @@
     name: "",
     data() {
       return {
-        //统一token之后删除userID
-        userId:3,
+        arr:new Array(),
+        auditId:0,
         deviceIds:0,
         date:"",
         times:"",
@@ -130,13 +138,13 @@
           planName:"",
           maintenanceClassify:"",
           maintenanceLevel:"",
-          maintenanceType:"1",
+          maintenanceType:0,
           planType:"",
           startTime:"",
           endTime:"",
           executeTime:"",
-          frequency:"1",
-          frequencyType:"1",
+          frequency:"",
+          frequencyType:"",
           maintenanceCc:""
         },
         columns: [
@@ -199,23 +207,52 @@
         pageIndex: 1,
         pageSize: 10,
         tableData: [],
-        tableDate: []
+        tableDate: [],
+        timeValue: ''
       };
     },
     created() {},
     methods: {
+      test(){},
+      load(){
+        this.Axios(
+          {
+            params:Object.assign(this.searchParams, {
+              page: this.pageIndex,
+              size: this.pageSize
+            }),
+            type: "get",
+            url: "/device/all",
+          },
+          this
+        ).then(response => {
+            this.tableData = response.data.data.content;
+          },
+          ({type, info}) => {
+
+          })
+      },
       TurnaroundPlans() {
         this.$router.push({
           path: "/TurnaroundPlans"
         });
       },
       addPlan(){
+        if(this.deviceIds!==""){
+          this.toAddPlan()
+        }else{
+          alert("请至少选择一个设备")
+        }
+      },
+      toAddPlan(){
         this.companyName.executeTime = this.date +" "+ this.times;
         this.companyName.executeTime = this.companyName.executeTime.split(".")[0];
         this.companyName.maintenanceType = 0;
         if(this.companyName.planType === "单次"){
           this.companyName.endTime =this.companyName.startTime;
-          this.companyName.planType = 0
+          this.companyName.planType = 0;
+          this.companyName.frequency = -1;
+          this.companyName.frequencyType = -1;
         }
         if(this.companyName.planType === "周期"){
           this.companyName.planType = 1
@@ -231,9 +268,6 @@
         }
         let qs = require("qs");
         let data = qs.stringify({
-          //统一token之后删除userID
-          userId:this.userId,
-          id:this.companyName.id,
           planName:this.companyName.planName,
           maintenanceClassify:this.companyName.maintenanceClassify,
           maintenanceLevel:this.companyName.maintenanceLevel,
@@ -247,22 +281,77 @@
           maintenanceCc:this.companyName.maintenanceCc,
           deviceIds : this.deviceIds,
         });
-        this.axios
-          .post(this.global.apiSrc+"/mplan/add",data)
-          .then(response => {
-            if(response.data.msg ==="成功"){
-              this.TurnaroundPlans();
-            }else{
-              alert("系统繁忙请稍后再试！");
-            }
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/mplan/add",
+          },
+          this
+        ).then(response => {
+            this.auditId = response.data.data.id;
+            this.submitAudit();
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       eliminateAll(){
-        this.tableData = "";
-        this.deviceIds = "";
+        let aaa = new Array();
+        for (let i in this.tableData){
+          for(let j in this.arr){
+            if(this.tableData[i].id !==this.arr[j].id){
+              aaa[aaa.length] = this.tableData[i];
+            }
+          }
+        }
+        this.tableData = aaa;
+      },
+      submitAudit(){
+        this.$confirm('计划添加成功,是否立即提交审核', '提示')
+          .then(_=>{
+            let qs = require("qs");
+            let data = qs.stringify({
+              maintenanceId:this.auditId
+            });
+            this.Axios(
+              {
+                params:Object.assign(this.searchParams, {
+                  page: this.pageIndex,
+                  size: this.pageSize
+                }),
+                type: "post",
+                url: "/mplan/submitAudit",
+              },
+              this
+            ).then(response => {
+                this.TurnaroundPlans();
+              },
+              ({type, info}) => {
+
+              })
+          })
+          .catch(_=>{
+            this.TurnaroundPlans();
+          })
+      },
+      toSubmitAudit(){
+        let qs = require("qs");
+        let data = qs.stringify({
+          maintenanceId:this.auditId
+        });
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/mplan/submitAudit",
+          },
+          this
+        ).then(response => {
+            this.TurnaroundPlans();
+          },
+          ({type, info}) => {
+          })
       },
 
       isHide(params) {
@@ -279,25 +368,12 @@
         this.$router.back(-1);
       },
       selectGroupChange(selection) {
-        this.deviceIds = "";
-        for(let i in selection){
-          if(this.deviceIds === ""){
-            this.deviceIds = selection[i].id;
-          }else{
-            this.deviceIds += ","+selection[i].id;
-          }
-        }
+        this.deviceIds = selection.map(item=>item.id).toString();
+        this.arr = selection.map(item=>item);
       },
       selectALL(selection) {
-        this.deviceIds = "";
-        for(let i in selection){
-          if(this.deviceIds === ""){
-            this.deviceIds = selection[i].id;
-          }else{
-            this.deviceIds += ","+selection[i].id;
-          }
-        }
-        console.log("select-aLL", selection);
+        this.deviceIds = selection.map(item=>item.id).toString();
+        this.arr = selection.map(item=>item);
       },
       selectChange(selection, rowData) {
         console.log("select-change", selection, rowData);
@@ -317,20 +393,6 @@
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
-      },
-      load(){
-        this.axios
-          .get(this.global.apiSrc+"/device/all",{params:{
-              page:this.pageIndex,
-              size:this.pageSize
-            }})
-          .then(response =>{
-            this.tableData = response.data.data.content;
-            console.log(response.data.data.content);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
       }
     },
     components: {
@@ -349,15 +411,15 @@
   .turnaroundPlansAdd {
     // padding-left: 180px;
     .top {
-      padding: 10px 20px;
+      padding: 10px 0px;
     }
     .bottom {
-      padding: 10px 20px;
+      padding: 10px 0px;
       .left {
         padding: 10px;
         border: @border;
         border-radius: 5px;
-        width: 450px;
+        width: 400px;
         float: left;
         h5 {
           position: relative;
@@ -368,10 +430,13 @@
           height: 40px;
           margin-bottom: 0px;
           overflow: hidden;
+          .el-input__inner{
+            padding-right: 20px;
+          }
         }
       }
       .right {
-        width: 650px;
+        width: 640px;
         font-size: 14px;
         float: left;
         padding: 10px;

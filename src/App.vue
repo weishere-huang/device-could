@@ -38,6 +38,12 @@
               <el-menu-item index="/Equipment">设备列表</el-menu-item>
               <el-menu-item index="/Category">类别管理</el-menu-item>
             </el-submenu>
+            <el-submenu index="monit">
+            <template slot="title">
+              <i class="iconfont">&#xe6a0;</i>
+              <span slot="title">设备监控</span></template>
+              <el-menu-item index="/Monit">设备实时状态</el-menu-item>
+            </el-submenu>
             <el-submenu index="4">
               <template slot="title">
                 <i class="iconfont">&#xe73a;</i>
@@ -58,30 +64,30 @@
                 <span slot="title">员工管理</span></template>
                 <el-menu-item index="/Personnel">员工管理</el-menu-item>
             </el-submenu>
-            <el-submenu index="8">
+            <!-- <el-submenu index="8">
               <template slot="title">
                 <i class="iconfont">&#xe62d;</i>
               <span slot="title">设备档案</span></template>
             <el-menu-item index="/EquipmentArchives">选项1</el-menu-item>
             <el-menu-item index="/EquipmentArchives">选项2</el-menu-item>
             <el-menu-item index="/EquipmentArchives">选项3</el-menu-item>
-          </el-submenu>
+          </el-submenu> -->
           <el-submenu index="9">
             <template slot="title">
               <i class="iconfont">&#xe60b;</i>
               <span slot="title">工单</span></template>
-            <el-menu-item index="/WorkOrder">选项1</el-menu-item>
-            <el-menu-item index="/WorkOrder">选项2</el-menu-item>
-            <el-menu-item index="/WorkOrder">选项3</el-menu-item>
+            <el-menu-item index="/WorkOrder">工单列表</el-menu-item>
+            <el-menu-item index="/BreakdownOrder">故障工单详情</el-menu-item>
+            <el-menu-item index="/UpkeepAndTurnaroundPlans">检修&保养计划工单详情</el-menu-item>
           </el-submenu>
-          <el-submenu index="10">
+          <!-- <el-submenu index="10">
             <template slot="title">
               <i class="iconfont">&#xe602;</i>
               <span slot="title">知识库</span></template>
             <el-menu-item index="/KnowledgeBase">选项1</el-menu-item>
             <el-menu-item index="/KnowledgeBase">选项2</el-menu-item>
             <el-menu-item index="/KnowledgeBase">选项3</el-menu-item>
-          </el-submenu>
+          </el-submenu> -->
           <el-submenu index="11">
             <template slot="title">
               <i class="iconfont">&#xe601;</i>
@@ -121,7 +127,7 @@
           <el-header style="background-color:#efefef;">
             <div class="stateList">
               <ul>
-                <li>&nbsp;欢迎您：管理员</li>
+                <li>&nbsp;欢迎您：{{user}}</li>
                 <li>
                   <el-tooltip
                     class="item"
@@ -159,7 +165,7 @@
                     content="退出"
                     placement="bottom-end"
                   >
-                    <i class="iconfont">&#xe6af;</i>
+                    <i class="iconfont" @click="out">&#xe6af;</i>
                   </el-tooltip>
                 </li>
               </ul>
@@ -167,7 +173,7 @@
           </el-header>
         </el-header>
         <el-main class="mainContentWrapper">
-          <router-view />
+          <router-view v-if="isRouterAlive" />
         </el-main>
         <el-footer>长虹智能终端设备生产管理云平台</el-footer>
       </el-container>
@@ -178,38 +184,82 @@
 
 <script>
 export default {
+  provide(){
+    return{
+      reload:this.reload
+    }
+  },
   name: "App",
   data() {
     return {
+      user:"",
       show: true,
       isCollapse: false,
-      pictLoading:true
+      pictLoading: true,
+      isRouterAlive:true,
     };
   },
   methods: {
+    reload(){
+      this.isRouterAlive=false;
+      this.$nextTick(function () {
+        this.isRouterAlive=true;
+      })
+    },
     TroggleHandle(key, keyPath) {
       // console.log(key, keyPath);
       this.isCollapse = !this.isCollapse;
       EventBus.$emit('sideBarTroggleHandle', this.isCollapse);
-    }
+    },
     // handleOpen(key, keyPath) {
     //   console.log(key, keyPath);
     // },
     // handleClose(key, keyPath) {
     //   console.log(key, keyPath);
     // }
+
+    out(){
+      this.Axios(
+        {
+          url: "/user/logout",
+          type:"post",
+          option:{enableMsg:false}
+        },
+      ).then(response=>{
+        this.$confirm("您确定要退出登录吗？","？？？",{
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(()=>{
+          this.$message({
+            message: "您已退出登录",
+            type:"success"
+          })
+          sessionStorage.removeItem('token');
+          this.$router.push({
+            path: "/Login",
+            redirect: "/Login"
+          });
+        })
+      },({type,info})=>{})
+
+    }
+
+  },
+  created () {
+    this.user=sessionStorage.getItem("user");
   }
 };
 </script>
 
  <style lang="less" >
- .el-menu-vertical-demo{
-    margin-top: 60px !important;
-    &:not(.el-menu--collapse) {
-      width: 250px;
-      min-height: 400px;
-    }
- }
+.el-menu-vertical-demo {
+  margin-top: 60px !important;
+  &:not(.el-menu--collapse) {
+    width: 250px;
+    min-height: 400px;
+  }
+}
 
 @blue: #409eff;
 @Success: #67c23a;
@@ -291,7 +341,12 @@ export default {
     min-width: 170px;
   }
 }
-
+.el-dialog__body {
+  padding: 0px !important;
+}
+.el-tabs__item {
+  padding: 0 7.5px;
+}
 .el-submenu__title {
   height: 50px !important;
   line-height: 50px !important;
@@ -314,7 +369,7 @@ export default {
   //-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 } /*定义滚动条轨道 内阴影+圆角*/
 ::-webkit-scrollbar-thumb {
-  background-color: #333;
+  background-color: #999999;
   border-radius: 3px;
   //-webkit-box-shadow: inset 0 0 6px rgba(7, 7, 7, 0.3);
 } /*定义滑块 内阴影+圆角*/

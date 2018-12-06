@@ -23,7 +23,7 @@
               </li>
               <li>
                 <label for="">员工编号：</label>
-                <el-input type="text" size="small" v-model="persnneladd.employeeNo"></el-input>
+                <el-input type="text" size="small" v-model="persnneladd.employeeNo" readonly></el-input>
               </li>
               <li>
                 <label for="">手机号码：</label>
@@ -38,7 +38,8 @@
               </li>
               <li>
                 <label for="">入职时间：</label>
-                <el-input type="date" size="small" v-model="persnneladd.entryTime"></el-input>
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.entryTime"
+                                size="small"  ></el-date-picker>
               </li>
             </ul>
           </div>
@@ -62,7 +63,9 @@
               </li>
               <li>
                 <label for="">出生日期：</label>
-                <el-input type="date" size="small" v-model="persnneladd.birthday"></el-input>
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.birthday"
+                                size="small"  ></el-date-picker>
+                <!-- <el-input type="date" size="small" v-model="persnneladd.birthday"></el-input> -->
               </li>
               <li>
                 <label for="">岗位：</label>
@@ -141,7 +144,6 @@
     name: "",
     data() {
       return {
-        role:[],
         persnneladd: {
           id:"",
           employeeNo: "",
@@ -177,15 +179,30 @@
     },
     methods: {
       organize(){
-        this.axios
-          .get(this.global.apiSrc+"/organize/allOrganize")
-          .then(response => {
+        this.Axios(
+          {
+            params:{},
+            type: "get",
+            url: "/organize/allOrganize",
+          },
+          this
+        ).then(response => {
             this.options = response.data.data;
-            console.log(response.data.data)
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
+
+
+        // this.axios
+        //   .get(this.global.apiSrc+"/organize/allOrganize")
+        //   .then(response => {
+        //     this.options = response.data.data;
+        //     console.log(response.data.data)
+        //   })
+        //   .catch(function(error) {
+        //     console.log(error);
+        //   });
       },
       codeToName(organizeCode){
         for (let i =0;i<this.options.length;i++){
@@ -228,21 +245,24 @@
           });
       },
       selectOne(employeeId,userName){
-        // console.log(employeeId);
-        this.axios
-          .get(this.global.apiSrc+"/employee/selectOne",{params:{employeeId:employeeId}})
-          .then(response => {
+        this.Axios(
+          {
+            params:{employeeId:employeeId},
+            type: "get",
+            url: "/employee/selectOne",
+          },
+          this
+        ).then(response => {
             this.persnneladd = response.data.data;
             this.persnneladd.gender = response.data.data.gender.toString();
             this.persnneladd.userName= userName;
             if (this.persnneladd.marital!=null){
               this.persnneladd.marital = response.data.data.marital.toString();
             }
-            // console.log(response.data.data.entryTime);
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
       },
       updateEmployee(){
         this.codeToName(this.persnneladd.organizeCode);
@@ -276,50 +296,38 @@
           qualificationInfo: this.persnneladd.qualificationInfo,
           roleId: this.persnneladd.roleId
         });
-        this.axios
-          .post(this.global.apiSrc+"/employee/update",data)
-          .then(response => {
-            if (response.data.msg ==="成功"){
-              alert("成功");
-              this.Personnel();
-            }else{
-              alert("失败");
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      },
-      stopEmployee(){
-        let qs = require("qs");
-        let data = qs.stringify({
-          employeeIds: this.persnneladd.id,
-          enableOrDisable: 0
-        });
-        // console.log(data);
-        this.axios
-          .post(this.global.apiSrc+"/employee/enableOrDisable", data)
-          .then(response => {
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/employee/update",
+          },
+          this
+        ).then(response => {
             this.Personnel();
-            console.log(response.data.msg)
+          },
+          ({type, info}) => {
+
           })
-          .catch(function(error) {
-            console.log(error);
-          });
-      }
+      },
     },
     created() {
       this.organize();
       let aaa=this.$store.state.personnel.imId;
       this.selectOne(aaa.id,aaa.userName);
-      this.axios
-        .get(this.global.apiSrc+"/role/listAllRole")
-        .then(response => {
+      this.Axios(
+        {
+          params:{},
+          type: "get",
+          url: "/role/listAllRole",
+        },
+        this
+      ).then(response => {
           this.role = response.data.data;
+        },
+        ({type, info}) => {
+
         })
-        .catch(function(error) {
-          console.log(error);
-        });
     }
   };
 </script>
