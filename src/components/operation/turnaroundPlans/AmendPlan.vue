@@ -253,6 +253,25 @@ export default {
           console.log(err);
         });
     },
+    toLoad(number) {
+      this.Axios(
+        {
+          params:{deviceCategory:number},
+          type: "get",
+          url: "/device/select",
+        },
+        this
+      ).then(response => {
+          this.tableData =response.data.data.content;
+          this.pageNumber = this.tableData.length;
+        },
+        ({type, info}) => {
+
+        })
+    },
+    handleNodeClick(data) {
+      this.toLoad(data.id);
+    },
 
     selectGroupChange(selection) {
       this.toValue = selection;
