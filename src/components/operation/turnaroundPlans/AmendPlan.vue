@@ -280,8 +280,6 @@ export default {
         arr[i] = selection[i].deviceName;
       }
       this.personListValue = arr;
-      console.log(this.toValue);
-      console.log(arr);
     },
     selectALL(selection) {
       this.toValue = selection;
@@ -290,8 +288,6 @@ export default {
         arr[i] = selection[i].deviceName;
       }
       this.personListValue = arr;
-      console.log(this.toValue);
-      console.log(arr);
       // console.log("select-aLL", selection);
     },
     selectChange(selection, rowData) {
