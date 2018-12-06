@@ -255,7 +255,6 @@ export default {
   },
   methods: {
     customCompFunc(params) {
-      console.log(params);
 
       if (params.type === "delete") {
         this.deleteOne(params.rowData["id"]);
@@ -264,7 +263,7 @@ export default {
           this.toAmend(params.index,params.rowData);
         // alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
       } else if (params.type === "stop") {
-        this.stopDiscontinuationOne(params.rowData["id"]);
+        this.stopDiscontinuationOne(params.rowData["id"],params.rowData["state"]);
         // alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
       }
     },
@@ -274,10 +273,8 @@ export default {
     },
     toAmend(rowIndex, rowData, column) {
       // 传值给修改
+      this.$router.push("/TurnaroundPlansAmend?id="+rowData.id);
       this.$store.commit("turnaroundPlans", rowData);
-      this.$router.push({
-        path: "/TurnaroundPlansAmend"
-      });
     },
     toPansAdd() {
       this.$router.push({
@@ -318,11 +315,12 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
+      this.load();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
+      this.load();
       this.getTableData();
     },
     sortChange(params) {
@@ -344,7 +342,8 @@ export default {
         {
           params: {
             page: this.pageIndex,
-            size: this.pageSize
+            size: this.pageSize,
+            maintenanceType:0
           },
           type: "get",
           url: "/mplan/allPlan"
@@ -353,6 +352,7 @@ export default {
       ).then(
         response => {
           this.pageNumber = response.data.data.totalElements;
+          // console.log(response.data.data);
           this.loadValue(response.data.data.content);
         },
         ({ type, info }) => {}
@@ -394,6 +394,9 @@ export default {
         }
         if (this.tableData[i].maintenanceType === 1) {
           this.tableData[i].maintenanceType = "保养";
+        }
+        if (this.tableData[i].frequencyType === -1) {
+          this.tableData[i].frequencyType = "单次";
         }
         if (this.tableData[i].frequencyType === 0) {
           this.tableData[i].frequencyType = "天";
@@ -483,24 +486,28 @@ export default {
         );
       });
     },
-    stopDiscontinuationOne(maintenanceId){
-      this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
-        let qs = require("qs");
-        let data = qs.stringify({ maintenanceIds:maintenanceId});
-        this.Axios(
-          {
-            params: data,
-            type: "post",
-            url: "/mplan/discontinuation"
-          },
-          this
-        ).then(
-          response => {
-            this.load();
-          },
-          ({ type, info }) => {}
-        );
-      });
+    stopDiscontinuationOne(maintenanceId,state){
+     if(state!=="待审核" && state!=="停用"){
+       this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
+         let qs = require("qs");
+         let data = qs.stringify({ maintenanceIds:maintenanceId});
+         this.Axios(
+           {
+             params: data,
+             type: "post",
+             url: "/mplan/discontinuation"
+           },
+           this
+         ).then(
+           response => {
+             this.load();
+           },
+           ({ type, info }) => {}
+         );
+       });
+     }else {
+       alert("对不起、该计划不能执行停用操作")
+     }
     },
     //审核操作
     submitAudit() {

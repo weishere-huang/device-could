@@ -121,71 +121,7 @@ export default {
       tabPosition:"top",
       pageIndex: 1,
       pageSize: 10,
-      tableData: [
-        // {
-        //   name: "111",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "2222",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "3333",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "4444",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "5555",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "6666",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "7777",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "8888",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // },
-        // {
-        //   name: "9999",
-        //   gender: "1111",
-        //   position: "1111",
-        //   phone: "111",
-        //   details: "111"
-        // }
-      ],
+      tableData: [],
       tableDate: [{code:1000}],
       columns: [
         {
@@ -224,56 +160,7 @@ export default {
         }
       ],
       personListValue: [],
-      data2: [
-        {
-          id: 1,
-          label: "一级 1",
-          children: [
-            {
-              id: 4,
-              label: "二级 1-1",
-              children: [
-                {
-                  id: 9,
-                  label: "三级 1-1-1"
-                },
-                {
-                  id: 10,
-                  label: "三级 1-1-2"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 2,
-          label: "一级 2",
-          children: [
-            {
-              id: 5,
-              label: "二级 2-1"
-            },
-            {
-              id: 6,
-              label: "二级 2-2"
-            }
-          ]
-        },
-        {
-          id: 3,
-          label: "一级 3",
-          children: [
-            {
-              id: 7,
-              label: "二级 3-1"
-            },
-            {
-              id: 8,
-              label: "二级 3-2"
-            }
-          ]
-        }
-      ],
+      data2: [],
       defaultProps: {
         children: "children",
         label: "label"

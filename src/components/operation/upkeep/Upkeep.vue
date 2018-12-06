@@ -49,7 +49,7 @@
                 v-if="formLabelAlign.type!=true"
               >
                 <el-input
-                  v-model="formLabelAlign.name"
+                  v-model="toAudit.name"
                   size="mini"
                   style="width:60%"
                 ></el-input>
@@ -268,15 +268,13 @@ export default {
         // alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
       } else if (params.type === "stop") {
         // do edit operation
-        this.stopDiscontinuationOne(params.rowData["id"]);
+        this.stopDiscontinuationOne(params.rowData["id"],params.rowData["state"]);
         // alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
       }
     },
     toAmend(rowIndex, rowData, column) {
       this.$store.commit("upkeepAmend", rowData);
-      this.$router.push({
-        path: "/UpkeepAmend"
-      });
+      this.$router.push("/UpkeepAmend?id="+rowData.id);
     },
     toUpkeepAdd() {
       this.$router.push({
@@ -317,12 +315,13 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
+      this.load();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+      this.load();
     },
     sortChange(params) {
       if (params.height.length > 0) {
@@ -343,7 +342,8 @@ export default {
         {
           params: {
             page: this.pageIndex,
-            size: this.pageSize
+            size: this.pageSize,
+            maintenanceType:1
           },
           type: "get",
           url: "/mplan/allPlan"
@@ -392,6 +392,9 @@ export default {
         }
         if (this.tableData[i].maintenanceType === 1) {
           this.tableData[i].maintenanceType = "保养";
+        }
+        if (this.tableData[i].frequencyType === -1) {
+          this.tableData[i].frequencyType = "单次";
         }
         if (this.tableData[i].frequencyType === 0) {
           this.tableData[i].frequencyType = "天";
@@ -481,24 +484,30 @@ export default {
         );
       });
     },
-    stopDiscontinuationOne(maintenanceId){
-      this.$confirm("计划一旦删除将无法恢复，请确认选择", "提示").then(_ => {
-        let qs = require("qs");
-        let data = qs.stringify({ maintenanceIds:maintenanceId });
-        this.Axios(
-          {
-            params: data,
-            type: "post",
-            url: "/mplan/discontinuation"
-          },
-          this
-        ).then(
-          response => {
-            this.load();
-          },
-          ({ type, info }) => {}
-        );
-      });
+    stopDiscontinuationOne(maintenanceId,state){
+      if(state!=="待审核"){
+        this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
+          let qs = require("qs");
+          let data = qs.stringify({ maintenanceIds:maintenanceId});
+          this.Axios(
+            {
+              params: data,
+              type: "post",
+              url: "/mplan/discontinuation"
+            },
+            this
+          ).then(
+            response => {
+              this.load();
+            },
+            ({ type, info }) => {}
+          );
+        });
+      }else if(state==="停用"){
+        alert("该计划已经停用")
+      }else {
+        alert("不能停用待审核状态的计划")
+      }
     },
     //审核操作
     submitAudit() {
