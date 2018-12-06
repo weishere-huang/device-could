@@ -294,7 +294,7 @@ export default {
         response => {
           this.load();
           this.$message({
-            message: "您已经删除该企业",
+            message: "您已经删除该用户",
             type: "success"
           });
         },
