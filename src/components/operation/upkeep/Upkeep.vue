@@ -317,12 +317,13 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
+      this.load();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+      this.load();
     },
     sortChange(params) {
       if (params.height.length > 0) {
@@ -343,7 +344,8 @@ export default {
         {
           params: {
             page: this.pageIndex,
-            size: this.pageSize
+            size: this.pageSize,
+            maintenanceType:1
           },
           type: "get",
           url: "/mplan/allPlan"
@@ -392,6 +394,9 @@ export default {
         }
         if (this.tableData[i].maintenanceType === 1) {
           this.tableData[i].maintenanceType = "保养";
+        }
+        if (this.tableData[i].frequencyType === -1) {
+          this.tableData[i].frequencyType = "单次";
         }
         if (this.tableData[i].frequencyType === 0) {
           this.tableData[i].frequencyType = "天";

@@ -100,7 +100,7 @@
       </div>
       <div class="right">
         <div>
-          <el-button size="small" @click="eliminateAll">清空已选</el-button>
+          <el-button size="small" @click="eliminateAll">清除已选</el-button>
           <el-button size="small" @click="addPlanIsShow">设备添加</el-button>
         </div>
         <h5>设备列表</h5>
@@ -126,6 +126,7 @@
     name: "",
     data() {
       return {
+        arr:new Array(),
         auditId:0,
         deviceIds:0,
         date:"",
@@ -207,33 +208,6 @@
         pageSize: 10,
         tableData: [],
         tableDate: [],
-        pickerOptions2: {
-          shortcuts: [{
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
-            }
-          }]
-        },
         timeValue: ''
       };
     },
@@ -276,7 +250,9 @@
         this.companyName.maintenanceType = 0;
         if(this.companyName.planType === "单次"){
           this.companyName.endTime =this.companyName.startTime;
-          this.companyName.planType = -1
+          this.companyName.planType = 0;
+          this.companyName.frequency = -1;
+          this.companyName.frequencyType = -1;
         }
         if(this.companyName.planType === "周期"){
           this.companyName.planType = 1
@@ -385,25 +361,12 @@
         this.$router.back(-1);
       },
       selectGroupChange(selection) {
-        this.deviceIds = "";
-        for(let i in selection){
-          if(this.deviceIds === ""){
-            this.deviceIds = selection[i].id;
-          }else{
-            this.deviceIds += ","+selection[i].id;
-          }
-        }
+        this.deviceIds=selection.map(item=>item.id);
+        this.arr = selection.map(item=>item);
       },
       selectALL(selection) {
-        this.deviceIds = "";
-        for(let i in selection){
-          if(this.deviceIds === ""){
-            this.deviceIds = selection[i].id;
-          }else{
-            this.deviceIds += ","+selection[i].id;
-          }
-        }
-        console.log("select-aLL", selection);
+        this.deviceIds=selection.map(item=>item.id);
+        this.arr = selection.map(item=>item);
       },
       selectChange(selection, rowData) {
         console.log("select-change", selection, rowData);

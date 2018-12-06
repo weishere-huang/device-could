@@ -212,7 +212,7 @@ export default {
       this.date = this.companyName.executeTime.split(" ")[0];
       this.times = this.companyName.executeTime.split(" ")[1].split(".")[0];
       this.companyName.maintenanceClassify = this.companyName.maintenanceClassify.toString();
-      if(this.companyName.planType === -1){
+      if(this.companyName.planType === 0){
         this.companyName.planType = "单次"
       }
       if(this.companyName.planType === 1){
@@ -259,7 +259,10 @@ export default {
       this.companyName.startTime = this.companyName.startTime.split(" ")[0].replace(/-/g,"/");
       this.companyName.endTime = this.companyName.endTime.split(" ")[0].replace(/-/g,"/");
       if(this.companyName.planType === "单次"){
-        this.companyName.planType = -1
+        this.companyName.endTime =this.companyName.startTime;
+        this.companyName.planType = 0;
+        this.companyName.frequency = -1;
+        this.companyName.frequencyType = -1;
       }
       if(this.companyName.planType === "周期"){
         this.companyName.planType = 1
