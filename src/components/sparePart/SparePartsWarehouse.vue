@@ -70,8 +70,18 @@
               icon="el-icon-search"
             ></el-button>
           </el-input>
-          <div>
-              
+          <div style="width:100%">
+            <v-table
+              :row-dblclick="toDetails"
+              is-horizontal-resize
+              column-width-drag
+              :multiple-sort="false"
+              style="width:100%;height:300px"
+              :columns="columns"
+              :table-data="tableData"
+              row-hover-color="#eee"
+              row-click-color="#edf7ff"
+            ></v-table>
           </div>
         </div>
         <div style="float:left;font-size:20px">
@@ -95,10 +105,98 @@ export default {
       defaultProps2: {
         value: "categoryNo",
         label: "categoryName"
-      }
+      },
+      columns: [
+        {
+          field: "faultNo",
+          title: "备件编号",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true,
+          overflowTitle: true
+        },
+        {
+          field: "faultNo",
+          title: "备件名称",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true,
+          overflowTitle: true
+        },
+        {
+          field: "faultNo",
+          title: "备件型号",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true,
+          overflowTitle: true
+        },
+        {
+          field: "faultNo",
+          title: "设备规格",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true,
+          overflowTitle: true
+        }
+      ],
+      tableData: [
+        {
+          faultNo: "222"
+        },
+        {
+          faultNo: "222"
+        },
+        {
+          faultNo: "222"
+        },
+        {
+          faultNo: "222"
+        },
+        {
+          faultNo: "222"
+        },
+        {
+          faultNo: "222"
+        },
+        {
+          faultNo: "222"
+        },
+        {
+          faultNo: "222"
+        },
+        {
+          faultNo: "222"
+        },
+        {
+          faultNo: "222"
+        },
+        {
+          faultNo: "222"
+        },
+        {
+          faultNo: "222"
+        },
+        {
+          faultNo: "222"
+        },
+        {
+          faultNo: "222"
+        },
+        {
+          faultNo: "222"
+        },
+      ]
     };
   },
   methods: {
+    toDetails(rowIndex, rowData, column) {
+      console.log(rowData);
+    },
     handleChange2(value) {
       let name = this.$refs["getName2"].currentLabels;
       name = name[name.length - 1];
