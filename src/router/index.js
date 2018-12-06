@@ -39,8 +39,10 @@ import AdvancedSearch from '@/components/company/AdvancedSearch'
 import Audit from '@/components/company/Audit'
 import MsgDetails from '@/components/message/MsgDetails'
 import SparePart from '@/components/sparePart/SparePart'
+import SparePartsWarehouse from '@/components/sparePart/SparePartsWarehouse'
+import SparePartAdd from '@/components/sparePart/addAndAmend/SparePartAdd'
+import SparePartAmend from '@/components/sparePart/addAndAmend/SparePartAmend'
 Vue.use(Router)
-
 const router = new Router({
   mode: 'history',
   routes: [{
@@ -355,7 +357,31 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
-    }
+    },
+    {
+      path: '/SparePartAdd',
+      name: 'SparePartAdd',
+      component: SparePartAdd,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/SparePartAmend',
+      name: 'SparePartAmend',
+      component: SparePartAmend,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/SparePartsWarehouse',
+      name: 'SparePartsWarehouse',
+      component: SparePartsWarehouse,
+      meta: {
+        requireAuth: true
+      },
+    },
   ]
 })
 

@@ -1,7 +1,10 @@
 <template>
   <div class="spare-part">
     <div class="top">
-      <el-button size="small">添加</el-button>
+      <el-button
+        size="small"
+        @click="toAdd"
+      >添加</el-button>
       <el-button size="small">删除</el-button>
       <div class="search">
         <span>关键字：</span>
@@ -66,7 +69,7 @@ export default {
         {
           field: "faultNo",
           title: "备件编号",
-          width: 80,
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -75,7 +78,7 @@ export default {
         {
           field: "state",
           title: "备件名称",
-          width: 80,
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -83,7 +86,7 @@ export default {
         {
           field: "deviceName",
           title: "型号/规格",
-          width: 80,
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -91,7 +94,7 @@ export default {
         {
           field: "deviceSpec",
           title: "备件级别",
-          width: 100,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -107,7 +110,7 @@ export default {
         {
           field: "faultSource",
           title: "库存总量",
-          width: 100,
+          width: 80,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -123,7 +126,7 @@ export default {
         {
           field: "causeAnalysis",
           title: "库存下限",
-          width: 100,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -131,7 +134,7 @@ export default {
         {
           field: "causeAnalysis",
           title: "计量单位",
-          width: 100,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -139,7 +142,7 @@ export default {
         {
           field: "causeAnalysis",
           title: "备注",
-          width: 100,
+          width: 150,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -157,12 +160,17 @@ export default {
     };
   },
   methods: {
+      toAdd(){
+          this.$router.push({
+              path:"/SparePartAdd"
+          })
+      },
     customCompFunc(params) {
       // console.log(params);
       if (params.type === "delete") {
         // this.$delete(this.tableData, params.index);
         this.toDeleteBreak(params.rowData.id);
-      }else if (params.type === "update") {
+      } else if (params.type === "update") {
         // this.$delete(this.tableData, params.index);
         this.toDeleteBreak(params.rowData.id);
       }
@@ -218,11 +226,12 @@ Vue.component("table-sparePart", {
       // 参数根据业务场景随意构造
       let params = { type: "delete", rowData: this.rowData };
       this.$emit("on-custom-comp", params);
-    },update() {
+    },
+    update() {
       // 参数根据业务场景随意构造
       let params = { type: "edit", index: this.index, rowData: this.rowData };
       this.$emit("on-custom-comp", params);
-    },
+    }
   }
 });
 </script>
