@@ -20,7 +20,7 @@
         :value="handle"
         class="item"
       >
-        <el-button  size="small">待处理</el-button>
+        <el-button @click="load(5)" size="small">待处理</el-button>
       </el-badge>
       <el-badge class="item">
         <el-button  size="small">已撤销</el-button>
