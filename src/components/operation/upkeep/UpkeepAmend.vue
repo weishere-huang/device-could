@@ -232,6 +232,7 @@ export default {
       }if(this.companyName.planType=== 1){
         this.companyName.planType = "周期"
       }
+      this.companyName.frequencyType=this.companyName.frequencyType.toString();
       this.date = this.companyName.executeTime.split(" ")[0];
       this.times = this.companyName.executeTime.split(" ")[1].split(".")[0];
     },
@@ -268,13 +269,13 @@ export default {
         this.companyName.planType = 1
       }
       if(this.companyName.frequencyType ==="天" ){
-        this.companyName.frequencyType = 0
-      }
-      if(this.companyName.frequencyType ==="周" ){
         this.companyName.frequencyType = 1
       }
-      if(this.companyName.frequencyType ==="月" ){
+      if(this.companyName.frequencyType ==="周" ){
         this.companyName.frequencyType = 2
+      }
+      if(this.companyName.frequencyType ==="月" ){
+        this.companyName.frequencyType = 3
       }
       let qs = require("qs");
       let data = qs.stringify({
