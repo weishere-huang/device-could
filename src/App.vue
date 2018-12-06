@@ -226,7 +226,7 @@ export default {
           option:{enableMsg:false}
         },
       ).then(response=>{
-        this.$confirm("您确定要退出登录吗？","？？？",{
+        this.$confirm("您确定要退出登录吗？","Warning",{
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
