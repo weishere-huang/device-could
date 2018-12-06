@@ -5,11 +5,11 @@
         <div class="classify">
           <ul>
             <h5><i class='iconfont icon-leimupinleifenleileibie'></i>&nbsp;所有分类</h5>
-            <li @click="findall('生产设备')">├生产设备</li>
-            <li>├非生产设备</li>
-            <li>├辅助生产设备</li>
-            <li>├检验检测设备</li>
-            <li>├其他设备</li>
+            <li @click="leftcontro(1,'','')">├生产设备</li>
+            <li @click="leftcontro(2,'','')">├非生产设备</li>
+            <li @click="leftcontro(3,'','')">├辅助生产设备</li>
+            <li @click="leftcontro(4,'','')">├检验检测设备</li>
+            <li @click="leftcontro(5,'','')">├其他设备</li>
           </ul>
         </div>
         <div class="category">
@@ -32,11 +32,11 @@
         <div class="tone">
           <h5><i class='iconfont icon-shebeiguanli'></i>&nbsp;设备状况</h5>
           <ul>
-            <li>├使用</li>
-            <li style="color:#FF990E">├闲置</li>
-            <li style="color:#00990C">├封存</li>
-            <li style="color:#0C99FD">├租赁</li>
-            <li style="color:#993202">├报废</li>
+            <li  @click="leftcontro('','',1)">├在用</li>
+            <li style="color:#FF990E"  @click="leftcontro('','',2)">├出租</li>
+            <li style="color:#00990C"  @click="leftcontro('','',3)">├停用</li>
+            <li style="color:#0C99FD"  @click="leftcontro('','',4)">├封存</li>
+            <li style="color:#993202"  @click="leftcontro('','',5)">├报废</li>
           </ul>
         </div>
       </div>
@@ -107,7 +107,7 @@
             <v-pagination
               @page-change="pageChange"
               @page-size-change="pageSizeChange"
-              :total="totalnum"
+              :total="totalElements"
               :page-size="pageSize"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
@@ -140,7 +140,6 @@ export default {
       edbt: "",
       tableData: [{}],
       tableDate: [],
-      totalElements: "",
       columns: [
         {
           width: 40,
@@ -231,8 +230,12 @@ export default {
           // isResize: true
         }
       ],
-      //监控为条件或高级搜索
-      keyorall: 0
+      //监控为条件或高级搜索或左侧搜索栏
+      keyorall: 0,
+      //左侧搜索栏
+      leftclass:"",
+      leftcate:"",
+      leftstate:"",
     };
   },
   methods: {
@@ -241,12 +244,14 @@ export default {
 
       if (params.type === "delete") {
         // do delete operation
-
+         this.ids =params.rowData.id
+         this.warningdelete();
+         this.ids="";
         this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
         // do edit operation
-
-        alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
+        this.$router.push("/Redact/" + params.rowData.id);
+        //alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
       }else if (params.type === "audit") {
         // do edit operation
 
@@ -254,7 +259,13 @@ export default {
       }
     },
     handleNodeClick(data) {
+      this.leftcate = data.id;
+      this.leftstate = "";
+      this.leftclass = "";
+      this.keyorall=2;
+      this.pageIndex=1;
       console.log(data);
+      this.leftfind();
     },
     advanceValue(params) {
       this.tableData = params;
@@ -313,15 +324,23 @@ export default {
       console.log(this.pageSize);
       if (this.keyorall === 0) {
         this.findall();
-      } else {
+      } else if(this.keyorall === 1){
         this.findByKeyWord();
+      }else{
+        this.leftfind();
       }
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
-      this.findall();
+      if (this.keyorall === 0) {
+        this.findall();
+      } else if(this.keyorall === 1){
+        this.findByKeyWord();
+      }else{
+        this.leftfind();
+      }
     },
     sortChange(params) {
       if (params.height.length > 0) {
@@ -336,7 +355,7 @@ export default {
         });
       }
     },
-    findall(deviceName, locationNo, workerName, manufacturer, deviceSates, deviceCategory, page, size) {
+    findall() {
       this.keyorall = 0;
       //根据用户token查询所属组织机构下设备类别
       EventBus.$on("sideBarTroggleHandle", isCollapse => {
@@ -386,7 +405,6 @@ export default {
               }
             }
             console.log(result.data);
-            this.totalElements = result.data.data.totalElements;
           },
           ({ type, info }) => {
             //错误类型 type=faild / error
@@ -449,8 +467,6 @@ export default {
             console.log(err);
           });
       },
-
-
     edelete() {
       let qs = require("qs");
       let data = qs.stringify({
@@ -544,6 +560,69 @@ export default {
           message: '已取消删除'
         });
       });
+    },
+
+    leftcontro(a,b,c){
+      this.keyorall=2;
+      this.leftclass=a;
+      this.leftcate=b;
+      this.leftstate=c;
+      this.pageIndex=1;
+
+       this.leftfind();
+    },
+    leftfind(){
+      this.Axios(
+        {
+          params: {
+            classify:this.leftclass,
+            deviceCategory:this.leftcate,
+            deviceSates:this.leftstate,
+            page: this.pageIndex,
+            size: this.pageSize
+          },
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/device/select"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },
+        this
+      )
+      //.get(this.global.apiSrc + "/device/select", {params:{ page: this.pageIndex,size: this.pageSize}})
+        .then(
+          result => {
+            this.totalnum = result.data.data.totalElements;
+            console.log("++++");
+            console.log(result.data);
+            this.tableData = result.data.data.content;
+            for (let i = 0; i < this.tableData.length; i++) {
+              if (this.tableData[i].deviceState === 1) {
+                this.tableData[i].deviceState = "在用";
+              }
+              if (this.tableData[i].deviceState === 2) {
+                this.tableData[i].deviceState = "出租";
+              }
+              if (this.tableData[i].deviceState === 3) {
+                this.tableData[i].deviceState = "停用";
+              }
+              if (this.tableData[i].deviceState === 4) {
+                this.tableData[i].deviceState = "封存";
+              }
+              if (this.tableData[i].deviceState === 5) {
+                this.tableData[i].deviceState = "报废";
+              }
+            }
+            console.log(result.data);
+          },
+          ({ type, info }) => {
+            //错误类型 type=faild / error
+            //error && error(type, info);
+          }
+        );
     }
   },
      created() {
@@ -579,8 +658,10 @@ Vue.component("table-equipment", {
     },
     deleteRow() {
       // 参数根据业务场景随意构造
+
       let params = { type: "delete", rowData: this.rowData };
       this.$emit("on-custom-comp", params);
+
     }
   }
 });
