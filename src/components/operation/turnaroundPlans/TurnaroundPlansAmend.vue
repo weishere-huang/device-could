@@ -54,8 +54,8 @@
             </el-col>
           </el-form-item>
           <el-form-item label="计划频次：">
-            <el-input v-model="companyName.frequency" size="mini" style="width:150px"></el-input>
-            <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:150px">
+            <el-input v-model="companyName.frequency" size="mini" style="width:80px"></el-input>
+            <el-select v-model="companyName.frequencyType" placeholder="请选择" size="mini" style="width:80px">
               <el-option label="天" value="1"></el-option>
               <el-option label="周" value="2"></el-option>
               <el-option label="月" value="3"></el-option>
