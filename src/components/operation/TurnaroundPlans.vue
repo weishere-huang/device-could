@@ -255,7 +255,6 @@ export default {
   },
   methods: {
     customCompFunc(params) {
-      console.log(params);
 
       if (params.type === "delete") {
         this.deleteOne(params.rowData["id"]);
@@ -264,7 +263,7 @@ export default {
           this.toAmend(params.index,params.rowData);
         // alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
       } else if (params.type === "stop") {
-        this.stopDiscontinuationOne(params.rowData["id"]);
+        this.stopDiscontinuationOne(params.rowData["id"],params.rowData["state"]);
         // alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
       }
     },
@@ -274,10 +273,8 @@ export default {
     },
     toAmend(rowIndex, rowData, column) {
       // 传值给修改
+      this.$router.push("/TurnaroundPlansAmend?id="+rowData.id);
       this.$store.commit("turnaroundPlans", rowData);
-      this.$router.push({
-        path: "/TurnaroundPlansAmend"
-      });
     },
     toPansAdd() {
       this.$router.push({
@@ -489,24 +486,28 @@ export default {
         );
       });
     },
-    stopDiscontinuationOne(maintenanceId){
-      this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
-        let qs = require("qs");
-        let data = qs.stringify({ maintenanceIds:maintenanceId});
-        this.Axios(
-          {
-            params: data,
-            type: "post",
-            url: "/mplan/discontinuation"
-          },
-          this
-        ).then(
-          response => {
-            this.load();
-          },
-          ({ type, info }) => {}
-        );
-      });
+    stopDiscontinuationOne(maintenanceId,state){
+     if(state!=="待审核" && state!=="停用"){
+       this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
+         let qs = require("qs");
+         let data = qs.stringify({ maintenanceIds:maintenanceId});
+         this.Axios(
+           {
+             params: data,
+             type: "post",
+             url: "/mplan/discontinuation"
+           },
+           this
+         ).then(
+           response => {
+             this.load();
+           },
+           ({ type, info }) => {}
+         );
+       });
+     }else {
+       alert("对不起、该计划不能执行停用操作")
+     }
     },
     //审核操作
     submitAudit() {
