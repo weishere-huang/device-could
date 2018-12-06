@@ -152,8 +152,7 @@ export default {
       name = name[name.length - 1];
       let id = value[value.length - 1];
       console.log(id, name);
-      this.sizeForm.deviceCategory = id;
-      this.sizeForm.deviceCategoryName = name;
+      
     }
   }
 };

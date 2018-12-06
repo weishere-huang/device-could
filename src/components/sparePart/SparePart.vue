@@ -72,7 +72,8 @@ export default {
           width: 100,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
           //   orderBy: ""
         },
         {
@@ -81,7 +82,8 @@ export default {
           width: 100,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "deviceName",
@@ -89,7 +91,8 @@ export default {
           width: 100,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "deviceSpec",
@@ -97,7 +100,8 @@ export default {
           width: 60,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "faultLevel",
@@ -105,7 +109,8 @@ export default {
           width: 100,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "faultSource",
@@ -113,7 +118,8 @@ export default {
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "faultDesc",
@@ -121,7 +127,8 @@ export default {
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "causeAnalysis",
@@ -145,7 +152,8 @@ export default {
           width: 150,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "custome-adv",
@@ -160,11 +168,11 @@ export default {
     };
   },
   methods: {
-      toAdd(){
-          this.$router.push({
-              path:"/SparePartAdd"
-          })
-      },
+    toAdd() {
+      this.$router.push({
+        path: "/SparePartAdd"
+      });
+    },
     customCompFunc(params) {
       // console.log(params);
       if (params.type === "delete") {
