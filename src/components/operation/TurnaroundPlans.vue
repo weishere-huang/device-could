@@ -258,17 +258,14 @@ export default {
       console.log(params);
 
       if (params.type === "delete") {
-        // do delete operation
-
-        this.$delete(this.tableData, params.index);
+        this.deleteOne(params.rowData["id"]);
+        // this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
-        // do edit operation
-
-        alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
+          this.toAmend(params.index,params.rowData);
+        // alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
       } else if (params.type === "stop") {
-        // do edit operation
-
-        alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
+        this.stopDiscontinuationOne(params.rowData["id"]);
+        // alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
       }
     },
     getPersonnel(params) {
@@ -386,7 +383,7 @@ export default {
         if (this.tableData[i].state === 4) {
           this.tableData[i].state = "审核中";
         }
-        if (this.tableData[i].state === 5) {
+        if (this.tableData[i].state === 12) {
           this.tableData[i].state = "停用";
         }
         if (this.tableData[i].state === 10) {
@@ -448,10 +445,48 @@ export default {
         );
       });
     },
+    deleteOne(maintenanceId){
+      this.$confirm("计划一旦删除将无法恢复，请确认选择", "提示").then(_ => {
+        let qs = require("qs");
+        let data = qs.stringify({ maintenanceIds:maintenanceId });
+        this.Axios(
+          {
+            params: data,
+            type: "post",
+            url: "/mplan/delete"
+          },
+          this
+        ).then(
+          response => {
+            this.load();
+          },
+          ({ type, info }) => {}
+        );
+      });
+    },
     stopDiscontinuation() {
       this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
         let qs = require("qs");
         let data = qs.stringify({ maintenanceIds: this.maintenanceIds });
+        this.Axios(
+          {
+            params: data,
+            type: "post",
+            url: "/mplan/discontinuation"
+          },
+          this
+        ).then(
+          response => {
+            this.load();
+          },
+          ({ type, info }) => {}
+        );
+      });
+    },
+    stopDiscontinuationOne(maintenanceId){
+      this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
+        let qs = require("qs");
+        let data = qs.stringify({ maintenanceIds:maintenanceId});
         this.Axios(
           {
             params: data,

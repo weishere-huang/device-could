@@ -45,10 +45,6 @@
               <el-date-picker type="date" placeholder="选择日期" v-model="companyName.endTime" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;" size="mini"></el-date-picker>
             </el-col>
           </el-form-item>
-          <!-- <el-form-item label="计划日期：">
-            <el-date-picker v-model="timeValue" type="daterange" size="mini" align="right" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
-            </el-date-picker>
-          </el-form-item> -->
           <el-form-item label="首次执行时间：">
             <el-col :span="11">
               <el-date-picker type="date" placeholder="选择日期" v-model="date" format="yyyy/MM/dd" value-format="yyyy/MM/dd" style="width: 100%;padding-right:5px;" size="mini"></el-date-picker>
@@ -243,7 +239,24 @@
     },
     created() {},
     methods: {
-      test(){
+      test(){},
+      load(){
+        this.Axios(
+          {
+            params:Object.assign(this.searchParams, {
+              page: this.pageIndex,
+              size: this.pageSize
+            }),
+            type: "get",
+            url: "/device/all",
+          },
+          this
+        ).then(response => {
+            this.tableData = response.data.data.content;
+          },
+          ({type, info}) => {
+
+          })
       },
       TurnaroundPlans() {
         this.$router.push({
@@ -260,12 +273,10 @@
       toAddPlan(){
         this.companyName.executeTime = this.date +" "+ this.times;
         this.companyName.executeTime = this.companyName.executeTime.split(".")[0];
-        this.companyName.startTime = this.timeValue[0];
-        this.companyName.endTime = this.timeValue[1];
         this.companyName.maintenanceType = 0;
         if(this.companyName.planType === "单次"){
           this.companyName.endTime =this.companyName.startTime;
-          this.companyName.planType = 0
+          this.companyName.planType = -1
         }
         if(this.companyName.planType === "周期"){
           this.companyName.planType = 1
@@ -312,6 +323,52 @@
       eliminateAll(){
         this.tableData = "";
         this.deviceIds = "";
+      },
+      submitAudit(){
+        this.$confirm('计划添加成功,是否立即提交审核', '提示')
+          .then(_=>{
+            let qs = require("qs");
+            let data = qs.stringify({
+              maintenanceId:this.auditId
+            });
+            this.Axios(
+              {
+                params:Object.assign(this.searchParams, {
+                  page: this.pageIndex,
+                  size: this.pageSize
+                }),
+                type: "post",
+                url: "/mplan/submitAudit",
+              },
+              this
+            ).then(response => {
+                this.TurnaroundPlans();
+              },
+              ({type, info}) => {
+
+              })
+          })
+          .catch(_=>{
+            this.TurnaroundPlans();
+          })
+      },
+      toSubmitAudit(){
+        let qs = require("qs");
+        let data = qs.stringify({
+          maintenanceId:this.auditId
+        });
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/mplan/submitAudit",
+          },
+          this
+        ).then(response => {
+            this.TurnaroundPlans();
+          },
+          ({type, info}) => {
+          })
       },
 
       isHide(params) {
@@ -366,72 +423,7 @@
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
-      },
-      load(){
-        this.Axios(
-          {
-            params:Object.assign(this.searchParams, {
-              page: this.pageIndex,
-              size: this.pageSize
-            }),
-            type: "get",
-            url: "/device/all",
-          },
-          this
-        ).then(response => {
-            this.tableData = response.data.data.content;
-          },
-          ({type, info}) => {
-
-          })
-      },
-      submitAudit(){
-        this.$confirm('计划添加成功,是否立即提交审核', '提示')
-          .then(_=>{
-            let qs = require("qs");
-            let data = qs.stringify({
-              maintenanceId:this.auditId
-            });
-            this.Axios(
-              {
-                params:Object.assign(this.searchParams, {
-                  page: this.pageIndex,
-                  size: this.pageSize
-                }),
-                type: "post",
-                url: "/mplan/submitAudit",
-              },
-              this
-            ).then(response => {
-                this.TurnaroundPlans();
-              },
-              ({type, info}) => {
-
-              })
-          })
-          .catch(_=>{
-            this.TurnaroundPlans();
-          })
-      },
-      toSubmitAudit(){
-        let qs = require("qs");
-        let data = qs.stringify({
-          maintenanceId:this.auditId
-        });
-        this.Axios(
-          {
-            params:data,
-            type: "post",
-            url: "/mplan/submitAudit",
-          },
-          this
-        ).then(response => {
-            this.TurnaroundPlans();
-          },
-          ({type, info}) => {
-          })
       }
-
     },
     components: {
       addPlan
