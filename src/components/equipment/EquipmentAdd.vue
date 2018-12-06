@@ -4,7 +4,7 @@
       <div class="top">
         <el-row>
           <el-button plain size="small" @click="tback">返回</el-button>
-          <el-button plain size="small" @click="add1">保存</el-button>
+          <el-button plain size="small" @click="addwarning">保存</el-button>
         </el-row>
       </div>
       <div class="center">
@@ -212,25 +212,6 @@
         ogrname:"",
         classfynm:"",
         sizeForm: {
-          // deviceNo: "",
-          // deviceName: "",
-          // organizeName: "",
-          // deviceClassify: "",
-          // deviceClassifyName: "超级存储",
-          // deviceSpec: "",
-          // outputDate: "",
-          // manufacturer: "",
-          // location: "",
-          // locationNo: "",
-          // buyPrice: "",
-          // buyDate: "",
-          // dataInfo: "",
-          // deviceCategory: "",
-          // deviceCategoryName: "",
-          // deviceModel: "",
-          // deviceState: "",
-          // organizeCode: "",
-          // enterFactoryDate: ""
           deviceNo: "",
           deviceName: "",
           organizeName: "",
@@ -298,11 +279,6 @@
 
         orgoptions:[],
         ctgoptions:[],
-        person1:"空",
-        person2:"空",
-        person3:"空",
-        person4:"空",
-        person5:"空",
         devicePersonnelInfoBase:[],
         //devicePersonnelInfo:[]
       };
@@ -345,18 +321,19 @@
       },
       add1() {
         //添加设备信息接口
-        debugger
+
         let qs = require("qs");
         let _devicePersonnelInfo=[];
         this.devicePersonnelInfoBase.forEach(items => {
-            _devicePersonnelInfo=_devicePersonnelInfo.concat(items.content.map(item=>{return {
+            _devicePersonnelInfo=_devicePersonnelInfo.concat(items.content.map(item=>{
+              return {
               workerType: items.workerType,
               workerName: item.workerName,
               workerId: item.id,
               workerTypeName: items.workerTypeName
             }}));
         });
-
+        console.log(_devicePersonnelInfo);
         let data = qs.stringify({
           deviceNo: this.sizeForm.deviceNo,
           deviceName: this.sizeForm.deviceName,
@@ -379,56 +356,8 @@
           enterFactoryDate: this.sizeForm.enterFactoryDate,
           deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
           devicePersonnelInfo:JSON.stringify(_devicePersonnelInfo)
-          // devicePersonnelInfo: JSON.stringify([
-          //   {
-          //   workerType: 1,
-          //   workerName: "赵六",
-          //   workerId: 188,
-          //   workerTypeName: "负责人员"
-          //   },
-          //   {
-          //     workerType: 2,
-          //     workerTypeName: "维修人员",
-          //     workerId: 192,
-          //     workerName: "王五"
-          //   },
-          //   {
-          //     workerType: 3,
-          //     workerTypeName: "检修人员",
-          //     workerId: 147,
-          //     workerName: "李四"
-          //   },
-          //   {
-          //     workerType: 4,
-          //     workerTypeName: "保养人员",
-          //     workerId: 195,
-          //     workerName: "杨光"
-          //   }
-          // ])
-          // deviceNo: this.sizeForm.deviceNo,
-          // deviceName: this.sizeForm.deviceName,
-          // organizeName: this.sizeForm.organizeName,
-          // deviceClassify: this.sizeForm.deviceClassify,
-          // deviceClassifyName: this.sizeForm.deviceClassifyName,
-          // deviceSpec: this.sizeForm.deviceSpec,
-          // // outputDate: this.sizeForm.outputDate,
-          // manufacturer: this.sizeForm.manufacturer,
-          // location: this.sizeForm.location,
-          // locationNo: this.sizeForm.locationNo,
-          // buyPrice: this.sizeForm.buyPrice,
-          // // buyDate: this.sizeForm.buyDate,
-          // deviceCategory: this.sizeForm.deviceCategory,
-          // deviceCategoryName: this.sizeForm.deviceCategoryName,
-          // deviceModel: this.sizeForm.deviceModel,
-          // deviceState: this.sizeForm.deviceState,
-          // // gmtModified: this.sizeForm.gmtModified,
-          // organizeCode: this.sizeForm.organizeCode,
-          // // enterFactoryDate: this.sizeForm.enterFactoryDate,
-          // deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
-          // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo),
+
         });
-
-
         this.Axios({
           url: "/device/add",
           params: data,
@@ -463,21 +392,7 @@
         console.log(obj.label);//我这边的name就是对应label的
         this.sizeForm.deviceState = data.value
       },
-      // findDeviceState() {
-      // 查找设备状态,暂时启用,写死状态
-      //   let qs = require("qs");
-      //   let data = qs.stringify({});
-      //   this.axios
-      //     .get(this.global.apiSrc + "/device/findDeviceState", data)
-      //     .then(result => {
-      //       this.options2 =  result;
-      //       console.log("findDeviceState");
-      //       console.log(result.data);
-      //     })
-      //     .catch(err => {
-      //       console.log(err);
-      //     });
-      // },
+
       filterArray(data, parent) {
         //编辑组织机构数据为树状结构方法
         let vm = this;
@@ -563,14 +478,30 @@
             console.log(err);
           });
       },
+
       personAddHandler(data){
         this.devicePersonnelInfoBase=data;
         this.dialogVisible=false;
       },
-      addPerson(params){
-        this.dialogVisible = params.isOk
-        this.person1 =
-        console.log(params);
+      // addPerson(params){
+      //   this.dialogVisible = params.isOk
+      //   this.person1 =
+      //   console.log(params);
+      // },
+      addwarning(){
+        this.$confirm('确认添加设备吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.add1();
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          });
+        });
       }
     },
     created() {
