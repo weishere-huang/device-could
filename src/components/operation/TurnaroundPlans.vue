@@ -37,7 +37,7 @@
           ></v-table>
           <div
             class="mt20 mb20 bold"
-            style="text-align:center;margin-top:30px;"
+            style="text-align:left;margin-top:20px;"
           >
             <v-pagination
               @page-change="pageChange"

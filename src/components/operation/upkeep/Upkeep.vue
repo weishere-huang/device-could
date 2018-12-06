@@ -86,6 +86,7 @@
         <el-button
           size="small"
           @click="stopDiscontinuation"
+          style="margin-left: 10px;"
         >停止</el-button>
         <el-button
           size="small"
@@ -101,7 +102,7 @@
             is-horizontal-resize
             column-width-drag
             :multiple-sort="false"
-            style="width:100%;min-height:400px;"
+            style="width:100%;"
             :columns="columns"
             :table-data="tableData"
             row-hover-color="#eee"
@@ -110,7 +111,7 @@
           ></v-table>
           <div
             class="mt20 mb20 bold"
-            style="text-align:center;margin-top:30px;"
+            style="text-align:left;margin-top:20px;"
           >
             <v-pagination
               @page-change="pageChange"
