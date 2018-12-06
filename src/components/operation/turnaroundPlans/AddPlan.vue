@@ -46,7 +46,7 @@
               row-hover-color="#eee"
               row-click-color="#edf7ff"
               :select-all="selectALL"
-              :select-group-change="selectGroupChange"
+              :select-change="selectChange"
             ></v-table>
             <div
               class="mt20 mb20 bold"
@@ -76,7 +76,7 @@
               <li
                 v-for="(item, index) in personListValue"
                 :key="index"
-              >{{item}}
+              >{{item.deviceName}}
                 <span>x</span>
               </li>
             </ul>
@@ -87,6 +87,7 @@
   </div>
 </template>
 <script>
+import clone from 'clone';
   export default {
     name: "",
     data() {
@@ -178,13 +179,19 @@
           {
             params: { page: this.pageIndex, size: this.pageSize },
             type: "get",
-            url: "/device/all"
+            url: "/device/select",
+            loadingConfig:{
+              target:document.querySelector('.el-dialog')
+            }
           },
           this
         ).then(
           response => {
             this.pageNumber = response.data.data.totalElements;
             arrs = response.data.data.content;
+            arrs.forEach(item=>{
+              if(this.personListValue.find((i,index)=>i.id===item.id)) item._checked=true;
+            })
             this.tableData = arrs;
             this.tabledate = this.tableData;
           },
@@ -242,31 +249,59 @@
         this.clickId = data.id;
         this.toLoad();
       },
-      selectGroupChange(selection) {
-        // let arr = new Array();
+      selectChange(selection,rowData){
+        if(selection.find(item=>item.id===rowData.id)){
+          this.personListValue.push(rowData);
+        }else{
+            this.personListValue = this.personListValue.filter(item=>item.id!==rowData.id);
+        }
+        
+        // _personListValue = _personListValue.filter(item=>item.id!==sitem.id);
+        // let _personListValue=clone(this.personListValue);
+        //   this.tableData.forEach(sitem => {
+        //     _personListValue = _personListValue.filter(item=>item.id!==sitem.id);
+        //   });
+        //   this.personListValue = _personListValue;
+      },
+      // selectGroupChange(selection) {
+      //   debugger
+      //   // let arr = new Array();
+      //   // this.toValue = selection;
+      //   // for (let i = 0; i < selection.length; i++) {
+      //   //   arr[i] = selection[i].deviceName;
+      //   // }
+      //   // this.personListValue = Array.from(new Set(arr));
+      //   this.toValue = selection;
+      //   console.log(selection);
+      //   const arr=selection.map(item=>item.deviceName);
+      //   this.personListValue
+      //   // fromor (let i = 0; i < selection.length; i++) {
+      //   //   this.arr[this.arr.length] = selection[i].deviceName;
+      //   // }
+      //   // this.personListValue = Array.from(new Set(this.arr));
+      // },
+      selectALL(selection) {
+        let _personListValue=clone(this.personListValue);
+        if(selection.length===0){
+          //全不选
+          this.tableData.forEach(sitem => {
+            _personListValue = _personListValue.filter(item=>item.id!==sitem.id);
+          });
+        }else{
+          //全选
+          selection.forEach(sitem=>{
+            if(!_personListValue.find(item=>item.id===sitem.id)){
+              _personListValue.push(sitem);
+            }
+          });
+        }
+        this.personListValue = _personListValue;
+        // console.log(selection);
         // this.toValue = selection;
         // for (let i = 0; i < selection.length; i++) {
-        //   arr[i] = selection[i].deviceName;
-        // }
-        // this.personListValue = Array.from(new Set(arr));
-        this.toValue = selection;
-        console.log(selection);
-        this.personListValue = selection.map(item=>item.deviceName);
-
-        // fromor (let i = 0; i < selection.length; i++) {
-        //   this.arr[this.arr.length] = selection[i].deviceName;
+        //     this.arr[this.arr.length] = selection[i].deviceName;
         // }
         // this.personListValue = Array.from(new Set(this.arr));
-      },
-      selectALL(selection) {
-        this.toValue = selection;
-        for (let i = 0; i < selection.length; i++) {
-            this.arr[this.arr.length] = selection[i].deviceName;
-        }
-        this.personListValue = Array.from(new Set(this.arr));
-      },
-      selectChange(selection, rowData) {
-        // console.log("select-change", selection, rowData);
       },
       getTableData() {
         this.tableData = this.tableDate.slice(

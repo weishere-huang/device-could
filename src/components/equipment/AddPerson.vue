@@ -204,11 +204,6 @@ export default {
         }
       ],
       tablenum: 1,
-      personListValue1: "",
-      personListValue2: "",
-      personListValue3: "",
-      personListValue4: "",
-      personListValue5: "",
       data2: [{ code: "1000" }],
       defaultProps: {
         children: "children",
