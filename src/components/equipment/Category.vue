@@ -88,7 +88,6 @@ export default {
       dialogVisible:false,
       nodeCname:"",
       nodeCMsg:"",
-
       organize: "",
       // data5: this.organize,
       form: {
