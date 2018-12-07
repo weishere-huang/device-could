@@ -265,8 +265,7 @@ export default {
     },
     deleteCategory(nodeId){
       console.log(nodeId+"nodeiddd");
-
-    //  删除设备类别
+      //  删除设备类别
       console.log(this.nodedata.id);
       let qs = require("qs");
       let data = qs.stringify({
@@ -287,7 +286,7 @@ export default {
               type: 'success',
               message: '删除成功!'
             });
-            location.reload();
+            this.reload();
           }else{
             alert("删除失败,请重新尝试")
           }
@@ -301,7 +300,6 @@ export default {
         //   console.log(err);
         // });
     },
-
     warningdelete(nodeId){
       this.$confirm('确定要删除吗?', '提示', {
         confirmButtonText: '确定',
