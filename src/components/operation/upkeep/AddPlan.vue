@@ -46,6 +46,7 @@
   </div>
 </template>
 <script>
+  import clone from 'clone';
   export default {
     name: "",
     data() {
