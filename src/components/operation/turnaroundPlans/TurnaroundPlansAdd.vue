@@ -142,8 +142,8 @@
           startTime:"",
           endTime:"",
           executeTime:"",
-          frequency:"",
-          frequencyType:"",
+          frequency:"1",
+          frequencyType:"1",
           maintenanceCc:""
         },
         columns: [
