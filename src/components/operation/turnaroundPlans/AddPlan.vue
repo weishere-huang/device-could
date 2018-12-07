@@ -251,6 +251,7 @@
         this.loads();
       },
       getId(event){
+        let arr = this.tableData;
         let deleteId = event.target.attributes.label.value;
         this.personListValue = this.personListValue.filter(item=>item.id!=deleteId);
         this.loads();
