@@ -349,10 +349,7 @@ export default {
 
     },
     deletes() {
-      this.personListValue = "";
-      this.toValue = "";
-      // let arr ="";
-      // this.selectALL(arr);
+      this.editableTabs[this.editableTabsValue].content=[];
     },
     workerDelete(data) {
       //debugger;
