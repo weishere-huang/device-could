@@ -475,6 +475,8 @@ export default {
         dispelCause: this.formLabelAlign.desc,
         faultDuration: this.formLabelAlign.time
       });
+      this.formLabelAlign.desc = "";
+      this.formLabelAlign.time="";
       this.Axios(
         {
           params: data,
@@ -486,8 +488,11 @@ export default {
         response => {
           this.load();
           this.dialogVisible = false;
+
         },
-        ({ type, info }) => {}
+        ({ type, info }) => {
+          this.dialogVisible = false;
+        }
       );
     },
     deleteBreak(faultIds) {

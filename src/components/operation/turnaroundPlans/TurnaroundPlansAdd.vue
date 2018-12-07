@@ -213,6 +213,7 @@
         }
       },
       toAddPlan(){
+        this.deviceIds = this.tableData.map(item=>item.id).toString();
         this.companyName.executeTime = this.date +" "+ this.times;
         this.companyName.executeTime = this.companyName.executeTime.split(".")[0];
         this.companyName.maintenanceType = 0;
@@ -273,10 +274,7 @@
             });
             this.Axios(
               {
-                params:Object.assign(this.searchParams, {
-                  page: this.pageIndex,
-                  size: this.pageSize
-                }),
+                params:data,
                 type: "post",
                 url: "/mplan/submitAudit",
               },

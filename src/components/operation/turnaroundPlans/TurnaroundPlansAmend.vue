@@ -270,10 +270,9 @@
           },
           this
         ).then(response => {
-          console.log(response.data.data)
-            // arr = response.data.data;
-            // this.tableData = arr;
-            // this.tableDate = this.tableData;
+            arr = response.data.data;
+            this.tableData = arr;
+            this.tableDate = this.tableData;
           },
           ({type, info}) => {
 
@@ -288,6 +287,7 @@
         }
       },
       toUpdatePlan(){
+        this.deviceIds = this.tableData.map(item=>item.id).toString();
         this.companyName.executeTime = this.date +" "+ this.times;
         this.companyName.executeTime = this.companyName.executeTime.split(".")[0].replace(/-/g,"/");
         this.companyName.startTime = this.companyName.startTime.split(" ")[0].replace(/-/g,"/");
