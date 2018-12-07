@@ -210,7 +210,10 @@ export default {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
-    }
+    },
+
+    //备品备件接口
+
   }
 };
 Vue.component("table-sparePart", {
