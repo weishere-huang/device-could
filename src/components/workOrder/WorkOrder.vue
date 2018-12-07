@@ -2,7 +2,7 @@
   <div class="work-order">
     <div class="top">
       <el-badge class="item">
-        <el-button @click="load(-1)" size="small">全部工单</el-button>
+        <el-button @click="load(toNull)" size="small">全部工单</el-button>
       </el-badge>
       <el-badge
         :value="audited"
@@ -23,13 +23,13 @@
         <el-button @click="load(5)" size="small">待处理</el-button>
       </el-badge>
       <el-badge class="item">
-        <el-button  size="small">已撤销</el-button>
+        <el-button @click="load(7)" size="small">已撤销</el-button>
       </el-badge>
       <el-badge class="item">
         <el-button @click="load(10)" size="small">已驳回</el-button>
       </el-badge>
       <el-badge class="item">
-        <el-button size="small">已完成</el-button>
+        <el-button @click="load(13)" size="small">已完成</el-button>
       </el-badge>
     </div>
     <div class="bottom">
@@ -44,7 +44,7 @@
         row-hover-color="#eee"
         :select-all="selectALL"
         :select-group-change="selectGroupChange"
-        :row-dblclick="details"
+        :row-dblclick="Jump"
         row-click-color="#edf7ff"
       >
       </v-table>
@@ -69,6 +69,7 @@ export default {
   name: "Test",
   data() {
     return {
+      toNull:"",
       audited:"",
       inAudit:"",
       handle:"",
@@ -174,16 +175,20 @@ export default {
         this.load(-1);
       }
     },
-    details(rowIndex, rowData, column) {
-      this.$router.push({
-        path: "/BreakdownOrder"
-      });
-      this.$store.commit("workOrders", rowData);
+    Jump(rowIndex, rowData, column) {
+      if(rowData.workType==="故障"){
+        this.$router.push("/BreakdownOrder?id="+rowData.id);
+      }else{
+        this.$router.push("/UpkeepAndTurnaroundPlans?id="+rowData.id);
+      }
     },
 
     load(stateNum) {
-      if(stateNum === ""){
+      if(stateNum ===""){
         this.pageIsOk = true;
+        this.audited = "";
+        this.inAudit = "";
+        this.handle = "";
       }else if (stateNum === 0){
         this.audited = "";
         this.pageIsOk = false;
@@ -197,6 +202,7 @@ export default {
         this.pageIsOk = false;
       }else if (stateNum === 5){
         this.pageIsOk = false;
+        this.handle++
       }else if (stateNum === 6){
         this.pageIsOk = false;
       }
@@ -230,6 +236,9 @@ export default {
         if (value[i].workType === 1){
           this.tableData[i].workType = "保养";
         }
+        if (value[i].workType === 2){
+          this.tableData[i].workType = "故障";
+        }
         if (value[i].state === 0) {
           this.tableData[i].state = "待审核";
           this.audited++;
@@ -248,10 +257,22 @@ export default {
           this.inAudit++;
         }
         if (value[i].state === 5) {
-          this.tableData[i].state = "停用";
+          this.tableData[i].state = "待处理";
+        }
+        if (value[i].state === 6) {
+          this.tableData[i].state = "已消除";
+        }
+        if (value[i].state === 7) {
+          this.tableData[i].state = "已撤销";
         }
         if (value[i].state === 10) {
           this.tableData[i].state = "已驳回";
+        }
+        if (value[i].state === 12) {
+          this.tableData[i].state = "已停止";
+        }
+        if (value[i].state === 13) {
+          this.tableData[i].state = "已完成";
         }
       }
     },
