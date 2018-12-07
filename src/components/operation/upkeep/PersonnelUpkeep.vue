@@ -93,25 +93,29 @@
       },
 
       search() {
-        this.pageIndex =1;
-        this.Axios(
-          {
-            params: {condition: this.key},
-            type: "get",
-            url: "/employee/search",
-          },
-          this
-        ).then(response => {
-            if(this.key!==""){
-              this.pageNumber = response.data.data.totalElements;
-              this.tableData = response.data.data.content;
-              this.tableDate = this.tableData;
-            }else{
-              this.pageChange(1);
-            }
-          },
-          ({type, info}) => {
-          })
+        if(!(/^1[345789]\d{9}$/.test(this.key))){
+          alert("手机号码有误，请重填");
+        }else{
+          this.pageIndex =1;
+          this.Axios(
+            {
+              params: {condition: this.key},
+              type: "get",
+              url: "/employee/search",
+            },
+            this
+          ).then(response => {
+              if(this.key!==""){
+                this.pageNumber = response.data.data.totalElements;
+                this.tableData = response.data.data.content;
+                this.tableDate = this.tableData;
+              }else{
+                this.pageChange(1);
+              }
+            },
+            ({type, info}) => {
+            })
+        }
       },
       selectGroupChange(selection) {
         console.log("select-group-change", selection);
