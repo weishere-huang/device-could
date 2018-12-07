@@ -335,16 +335,26 @@ export default {
     }
   }
   .classification {
+    .custom-tree-node {
+      width: 100%;
+      overflow: hidden;
+    }
     .content {
       display: inline-block;
-      width: 50%;
-      .addCase{
+      width: 500px;
+      border: @border;
+      .addCase {
         //   float: right;
+        display: inline-block;
+        margin-left: 30px;
       }
     }
     .content-remarks {
       display: inline-block;
-      width: 50%;
+      width: 400px;
+      border: @border;
+      height: 100%;
+      float: right;
     }
   }
 }
