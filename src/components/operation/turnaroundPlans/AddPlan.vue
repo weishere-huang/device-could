@@ -63,21 +63,13 @@
           </div>
         </div>
         <div class="right">
-          <el-button
-            size="mini"
-            @click="deletes"
-          >清空</el-button>
-          <el-button
-            size="mini"
-            @click="toAdd"
-          >保存</el-button>
+          <el-button size="mini" @click="deletes">清空</el-button>
+          <el-button size="mini" @click="toAdd">保存</el-button>
           <div class="personList">
-            <ul>
-              <li
-                v-for="(item, index) in personListValue"
-                :key="index"
-              >{{item.deviceName}}
-                <span>x</span>
+            <ul @click="getId">
+              <li v-for="(item, index) in personListValue" :key="index">
+                {{item.deviceName}}
+                <span :label="item.id">x</span>
               </li>
             </ul>
           </div>
@@ -87,17 +79,17 @@
   </div>
 </template>
 <script>
-import clone from 'clone';
+  import clone from 'clone';
   export default {
     name: "",
     data() {
       return {
+        pageIsOk:true,
         arr:new Array(),
         clickId: 0,
         key: "",
         pageNumber:"",
         searchs: "",
-        toValue: "",
         pageIndex: 1,
         pageSize: 10,
         tableData: [],
@@ -191,7 +183,7 @@ import clone from 'clone';
             arrs = response.data.data.content;
             arrs.forEach(item=>{
               if(this.personListValue.find((i,index)=>i.id===item.id)) item._checked=true;
-            })
+            });
             this.tableData = arrs;
             this.tabledate = this.tableData;
           },
@@ -201,7 +193,7 @@ import clone from 'clone';
       toLoad() {
         this.Axios(
           {
-            params: { deviceCategory: this.clickId },
+            params: { deviceCategory: this.clickId},
             type: "get",
             url: "/device/select"
           },
@@ -209,11 +201,24 @@ import clone from 'clone';
         ).then(
           response => {
             this.tableData = response.data.data.content;
+            this.tableData.forEach(item=>{
+              if(this.personListValue.find((i,index)=>i.id===item.id)) item._checked=true;
+            });
+            this.pageNumber = this.tableData.length;
           },
           ({ type, info }) => {}
         );
       },
       search() {
+        if(this.key!==""){
+          this.toSearch();
+          this.pageIsOk = false;
+        }else{
+          this.pageIsOk = true;
+          this.pageChange(1);
+        }
+      },
+      toSearch(){
         this.Axios(
           {
             params: { keyWord: this.key },
@@ -223,6 +228,7 @@ import clone from 'clone';
           this
         ).then(
           response => {
+            this.pageNumber = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             this.tabledate = this.tableData;
             this.searchs = this.key;
@@ -235,14 +241,19 @@ import clone from 'clone';
       },
       toAdd() {
         let data = {
-          values: this.toValue,
+          values: this.personListValue,
           isOk: false
         };
         this.$emit("toAdd", data);
       },
       deletes() {
-        this.personListValue = "";
-        this.toValue = "";
+        this.personListValue = [];
+        this.loads();
+      },
+      getId(event){
+        let deleteId = event.target.attributes.label.value;
+        this.personListValue = this.personListValue.filter(item=>item.id!=deleteId);
+        this.loads();
       },
 
       handleNodeClick(data) {
@@ -253,33 +264,9 @@ import clone from 'clone';
         if(selection.find(item=>item.id===rowData.id)){
           this.personListValue.push(rowData);
         }else{
-            this.personListValue = this.personListValue.filter(item=>item.id!==rowData.id);
+          this.personListValue = this.personListValue.filter(item=>item.id!==rowData.id);
         }
-        
-        // _personListValue = _personListValue.filter(item=>item.id!==sitem.id);
-        // let _personListValue=clone(this.personListValue);
-        //   this.tableData.forEach(sitem => {
-        //     _personListValue = _personListValue.filter(item=>item.id!==sitem.id);
-        //   });
-        //   this.personListValue = _personListValue;
       },
-      // selectGroupChange(selection) {
-      //   debugger
-      //   // let arr = new Array();
-      //   // this.toValue = selection;
-      //   // for (let i = 0; i < selection.length; i++) {
-      //   //   arr[i] = selection[i].deviceName;
-      //   // }
-      //   // this.personListValue = Array.from(new Set(arr));
-      //   this.toValue = selection;
-      //   console.log(selection);
-      //   const arr=selection.map(item=>item.deviceName);
-      //   this.personListValue
-      //   // fromor (let i = 0; i < selection.length; i++) {
-      //   //   this.arr[this.arr.length] = selection[i].deviceName;
-      //   // }
-      //   // this.personListValue = Array.from(new Set(this.arr));
-      // },
       selectALL(selection) {
         let _personListValue=clone(this.personListValue);
         if(selection.length===0){
@@ -296,12 +283,6 @@ import clone from 'clone';
           });
         }
         this.personListValue = _personListValue;
-        // console.log(selection);
-        // this.toValue = selection;
-        // for (let i = 0; i < selection.length; i++) {
-        //     this.arr[this.arr.length] = selection[i].deviceName;
-        // }
-        // this.personListValue = Array.from(new Set(this.arr));
       },
       getTableData() {
         this.tableData = this.tableDate.slice(
@@ -312,12 +293,16 @@ import clone from 'clone';
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
         this.getTableData();
-        this.loads();
+        if(this.pageIsOk){
+          this.loads();
+        }
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
         this.pageSize = pageSize;
-        this.loads();
+        if(this.pageIsOk){
+          this.loads();
+        }
         this.getTableData();
       },
 
@@ -357,7 +342,6 @@ import clone from 'clone';
       },
     },
     created() {
-      // this.deviceType();
       this.loads();
       this.findAlldeviceClassify();
     }

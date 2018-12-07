@@ -149,6 +149,7 @@ export default {
       tabPosition:"top",
       pageIndex: 1,
       pageSize: 10,
+      toValue:"",
       tableData: [],
       tableDate: [],
       columns: [
@@ -312,6 +313,12 @@ export default {
       // this.selectALL(arr);
     },
 
+    workerDelete(data) {
+      //debugger;
+      this.editableTabs[this.editableTabsValue].content = this.editableTabs[
+        this.editableTabsValue
+        ].content.filter(item => item.id !== data.id);
+    },
   },
   created() {
     this.Axios({
@@ -466,4 +473,23 @@ export default {
     }
   }
 }
+ .workerList {
+   list-style-type: none;
+   li {
+     line-height: 22px !important;
+     padding: 3px;
+     &:nth-child(2n-1) {
+       background: #f7f7f7;
+     }
+     i {
+       float: right;
+       line-height: 22px;
+       cursor: pointer;
+       &:hover {
+         color: red;
+         font-weight: bold;
+       }
+     }
+   }
+ }
 </style>
