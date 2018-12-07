@@ -504,6 +504,7 @@
 
       personAddHandler(data){
         this.devicePersonnelInfoBase=data;
+        console.log(this.devicePersonnelInfoBase);
         this.dialogVisible=false;
       },
       // addPerson(params){
