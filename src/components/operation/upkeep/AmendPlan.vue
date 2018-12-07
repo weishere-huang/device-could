@@ -3,33 +3,72 @@
     <div class="addCase">
       <div class="bottom">
         <div class="left">
-          <h5>组织机构</h5>
+          <h5>设备类别</h5>
           <div class="treeCase">
-            <el-tree :data="data2" @node-click="handleNodeClick" node-key="id" :default-expanded-keys="[2, 3]" :default-checked-keys="[5]" :props="defaultProps">
+            <el-tree
+              :data="data2"
+              node-key="id"
+              @node-click="handleNodeClick"
+              :default-expanded-keys="[2, 3]"
+              :default-checked-keys="[5]"
+              :props="defaultProps"
+              default-expand-all
+            >
             </el-tree>
           </div>
         </div>
         <div class="center">
           <div class="search">
-            <el-input type="search" size="mini" style="width:30%;" v-model="key"></el-input>
-            <el-button size="mini" @click="search">搜索</el-button>
+            <el-input
+              type="search"
+              size="mini"
+              style="width:30%;"
+              v-model="key"
+            ></el-input>
+            <el-button
+              size="mini"
+              @click="search"
+            >搜索</el-button>
             <span style="padding:0 10px;">最近搜索：{{searchs}}</span>
             <span style="text-decoration: underline;"></span>
           </div>
           <div class="tableList">
-            <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;min-height:250px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange"></v-table>
-            <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-              <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-table
+              is-vertical-resize
+              is-horizontal-resize
+              :vertical-resize-offset='100'
+              column-width-drag
+              :multiple-sort="false"
+              style="width:100%;"
+              :columns="columns"
+              :table-data="tableData"
+              row-hover-color="#eee"
+              row-click-color="#edf7ff"
+              :select-all="selectALL"
+              :select-change="selectChange"
+            ></v-table>
+            <div
+              class="mt20 mb20 bold"
+              style="text-align:left;margin-top:10px"
+            >
+              <v-pagination
+                @page-change="pageChange"
+                @page-size-change="pageSizeChange"
+                :total="pageNumber"
+                :page-size="pageSize"
+                :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
+              ></v-pagination>
             </div>
           </div>
         </div>
         <div class="right">
           <el-button size="mini" @click="deletes">清空</el-button>
-          <el-button size="mini" @click="toAdd">保存</el-button>
+          <el-button size="mini" @click="toAdd">确定</el-button>
           <div class="personList">
-            <ul>
-              <li v-for="(item, index) in personListValue" :key="index">{{item}}
-                <span>x</span>
+            <ul @click="getId">
+              <li v-for="(item, index) in personListValue" :key="index">
+                {{item.deviceName}}
+                <span :label="item.id">x</span>
               </li>
             </ul>
           </div>
@@ -39,14 +78,18 @@
   </div>
 </template>
 <script>
+  import clone from 'clone';
   export default {
     name: "",
     data() {
       return {
-        pageNumber:"",
+        pageIsOk:true,
+        arr:new Array(),
         key: "",
         searchs: "",
+        clickId:"",
         pageIndex: 1,
+        pageNumber:"",
         pageSize: 10,
         toValue: "",
         tableData: [],
@@ -95,19 +138,24 @@
         personListValue: [],
         data2: [
           {
-            id:1,
-            categoryName:"一级",
-            children: [{
-              id: 11,
-              categoryName: '二级 1-1',
-              children: [{
-                id: 12,
-                categoryName: '三级 1-1-1'
-              }, {
-                id: 13,
-                categoryName: '三级 1-1-2'
-              }]
-            }]
+            id: 1,
+            categoryName: "一级",
+            children: [
+              {
+                id: 11,
+                categoryName: "二级 1-1",
+                children: [
+                  {
+                    id: 12,
+                    categoryName: "三级 1-1-1"
+                  },
+                  {
+                    id: 13,
+                    categoryName: "三级 1-1-2"
+                  }
+                ]
+              }
+            ]
           }
         ],
         defaultProps: {
@@ -117,6 +165,78 @@
       };
     },
     methods: {
+      getId(event){
+        let deleteId = event.target.attributes.label.value;
+        this.personListValue = this.personListValue.filter(item=>item.id!=deleteId);
+        this.loads();
+      },
+      loads() {
+        let arrs = new Array();
+        this.Axios(
+          {
+            params: { page: this.pageIndex, size: this.pageSize },
+            type: "get",
+            url: "/device/select",
+            loadingConfig:{
+              target:document.querySelector('.el-dialog')
+            }
+          },
+          this
+        ).then(
+          response => {
+            this.pageNumber = response.data.data.totalElements;
+            arrs = response.data.data.content;
+            arrs.forEach(item=>{
+              if(this.personListValue.find((i,index)=>i.id===item.id)) item._checked=true;
+            })
+            this.tableData = arrs;
+            this.tabledate = this.tableData;
+          },
+          ({ type, info }) => {}
+        );
+      },
+      search() {
+        if(this.key!==""){
+          this.toSearch();
+          this.pageIsOk = false;
+        }else{
+          this.pageIsOk = true;
+          this.pageChange(1);
+        }
+      },
+      toSearch(){
+        this.Axios(
+          {
+            params: { keyWord: this.key },
+            type: "get",
+            url: "/device/findByKeyWord"
+          },
+          this
+        ).then(
+          response => {
+            this.pageNumber = response.data.data.totalElements;
+            this.tableData = response.data.data.content;
+            this.tabledate = this.tableData;
+            this.searchs = this.key;
+          },
+          ({ type, info }) => {}
+        );
+      },
+      deletes() {
+        this.personListValue = [];
+        this.loads();
+      },
+      isHide() {
+        this.$emit("isHide", false);
+        this.deletes();
+      },
+      toAdd() {
+        let data = {
+          values: this.personListValue,
+          isOk: false
+        };
+        this.$emit("toAdd", data);
+      },
       filterArray2(data, parent) {
         let vm = this;
         var tree = [];
@@ -133,121 +253,72 @@
         }
         return tree;
       },
-      findAlldeviceClassify(){
-        this.Axios({
-          params: {
+      findAlldeviceClassify() {
+        this.Axios(
+          {
+            params: {},
+            option: {
+              enableMsg: false
+            },
+            type: "get",
+            url: "/deviceCategory/all"
           },
-          option: {
-            enableMsg: false
-          },
-          type: "get",
-          url: "/deviceCategory/all",
-        },this)
+          this
+        )
           .then(result => {
-            this.data2= this.filterArray2(result.data.data,0);
+            this.data2 = this.filterArray2(result.data.data, 0);
           })
           .catch(err => {
             console.log(err);
           });
       },
-
-
-      loads() {
-        let arrs = new Array();
+      toLoad() {
         this.Axios(
           {
-            params:{page: this.pageIndex, size: this.pageSize},
+            params: { deviceCategory: this.clickId},
             type: "get",
-            url: "/device/all",
+            url: "/device/select"
           },
           this
-        ).then(response => {
-            this.pageNumber = response.data.data.totalElements;
-            arrs = response.data.data.content;
-            this.tableData = arrs;
-            this.tabledate = this.tableData;
-          },
-          ({type, info}) => {
-
-          })
-      },
-      toLoad(number) {
-        this.Axios(
-          {
-            params:{deviceCategory:number},
-            type: "get",
-            url: "/device/select",
-          },
-          this
-        ).then(response => {
-            this.tableData =response.data.data.content;
+        ).then(
+          response => {
+            this.tableData = response.data.data.content;
+            this.tableData.forEach(item=>{
+              if(this.personListValue.find((i,index)=>i.id===item.id)) item._checked=true;
+            });
             this.pageNumber = this.tableData.length;
           },
-          ({type, info}) => {
-
-          })
+          ({ type, info }) => {}
+        );
       },
       handleNodeClick(data) {
-        this.toLoad(data.id);
-      },
-      search() {
-        this.Axios(
-          {
-            params:{ keyWord: this.key ,page:this.pageIndex,size:this.pageSize},
-            type: "get",
-            url: "/device/findByKeyWord",
-          },
-          this
-        ).then(response => {
-            this.tableData = response.data.data.content;
-            this.tabledate = this.tableData;
-            this.searchs = this.key;
-
-          },
-          ({type, info}) => {
-
-          });
-      },
-      deletes() {
-        this.personListValue = "";
-        this.toValue = "";
-      },
-      isHide() {
-        this.$emit("isHide", false);
-        this.deletes();
-      },
-      toAdd() {
-        let data = {
-          values: this.toValue,
-          isOk: false
-        };
-        this.$emit("toAdd", data);
+        this.clickId = data.id;
+        this.toLoad();
       },
 
-
-      selectGroupChange(selection) {
-        this.toValue = selection;
-        let arr = new Array();
-        for (let i = 0; i < selection.length; i++) {
-          arr[i] = selection[i].deviceName;
+      selectChange(selection,rowData){
+        if(selection.find(item=>item.id===rowData.id)){
+          this.personListValue.push(rowData);
+        }else{
+          this.personListValue = this.personListValue.filter(item=>item.id!==rowData.id);
         }
-        this.personListValue = arr;
-        // console.log(this.toValue);
-        // console.log(arr);
       },
       selectALL(selection) {
-        this.toValue = selection;
-        let arr = new Array();
-        for (let i = 0; i < selection.length; i++) {
-          arr[i] = selection[i].deviceName;
+        let _personListValue=clone(this.personListValue);
+        if(selection.length===0){
+          //全不选
+          this.tableData.forEach(sitem => {
+            _personListValue = _personListValue.filter(item=>item.id!==sitem.id);
+          });
+        }else{
+          //全选
+          selection.forEach(sitem=>{
+            if(!_personListValue.find(item=>item.id===sitem.id)){
+              _personListValue.push(sitem);
+            }
+          });
         }
-        this.personListValue = arr;
-        // console.log(this.toValue);
-        // console.log(arr);
-        // console.log("select-aLL", selection);
-      },
-      selectChange(selection, rowData) {
-        console.log("select-change", selection, rowData);
+        this.personListValue = _personListValue;
       },
       getTableData() {
         this.tableData = this.tableDate.slice(
@@ -258,13 +329,16 @@
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
         this.getTableData();
-        this.loads();
-        console.log(pageIndex);
+        if(this.pageIsOk){
+          this.loads();
+        }
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
         this.pageSize = pageSize;
-        this.loads();
+        if(this.pageIsOk){
+          this.loads();
+        }
         this.getTableData();
       }
     },
@@ -297,12 +371,12 @@
       // border-radius: 5px;
       // margin-top: 100px;
       font-size: 12px;
+
       .bottom {
         margin-top: 20px;
         padding: 10px;
         font-size: 0;
         overflow: hidden;
-
         .left {
           width: 18%;
           border: @border;
@@ -323,6 +397,7 @@
         }
         .center {
           width: 60%;
+
           min-height: 400px;
           float: left;
           margin-right: 1%;

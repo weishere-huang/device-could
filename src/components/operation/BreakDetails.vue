@@ -141,7 +141,6 @@
           time:"",
           desc:""
         },
-        faultId:0,
         state:[],
         companyName:{
           img:"",
@@ -252,10 +251,10 @@
           this.companyName.faultSource = "设备自检";
         }
       },
-      load() {
+      load(number) {
         this.Axios(
           {
-            params:{faultId: this.faultId},
+            params:{faultId: number},
             type: "get",
             url: "/fault/detail",
           },
@@ -302,8 +301,7 @@
       },
     },
     created(){
-      this.faultId = this.$store.state.operation.breakList.id;
-      this.load();
+      this.load(this.$route.query.id);
     }
   };
 </script>
