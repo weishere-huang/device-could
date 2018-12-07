@@ -69,25 +69,25 @@
           <h5>故障详情</h5>
           <el-form label-width="120px" :model="formLabelAlign">
             <el-form-item label="故障编码：">
-              <span></span>
+              <span>{{formLabelAlign.faultNo}}</span>
             </el-form-item>
             <el-form-item label="故障等级：">
-              <span></span>
+              <span>{{formLabelAlign.faultLevel}}</span>
             </el-form-item>
             <el-form-item label="影响范围：">
-              <span></span>
+              <span>{{formLabelAlign.incidence}}</span>
             </el-form-item>
             <el-form-item label="故障提交人：">
-              <span></span>
+              <span>{{formLabelAlign.discovery}}</span>
             </el-form-item>
             <el-form-item label="故障上报时间：">
-              <span></span>
+              <span>{{formLabelAlign.discoveryTime}}</span>
             </el-form-item>
             <el-form-item label="故障描述：">
-              <el-input type="textarea" :autosize="{ minRows: 6, maxRows: 6}" placeholder="" readonly style="width:94%"></el-input>
+              <el-input type="textarea" v-model="formLabelAlign.faultDesc" :autosize="{ minRows: 6, maxRows: 6}" placeholder="" readonly style="width:94%"></el-input>
             </el-form-item>
             <el-form-item label="原因分析：">
-              <el-input type="textarea" :autosize="{ minRows: 6, maxRows: 6}" placeholder="" readonly style="width:94%"></el-input>
+              <el-input type="textarea" v-model="formLabelAlign.causeAnalysis" :autosize="{ minRows: 6, maxRows: 6}" placeholder="" readonly style="width:94%"></el-input>
             </el-form-item>
             <el-form-item label="相关照片：">
               <span style="cursor: pointer;color:#409eff" @click="pictureDialog=true">查看照片</span>
@@ -106,7 +106,7 @@
       <!-- 照片弹框结束 -->
       <div class="right">
         <div class="equipment">
-          <h5>设备对象</h5>
+          <h5>设备信息</h5>
           <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;" :columns="equipmentTable" :table-data="equipmentTableData" row-hover-color="#eee" row-click-color="#edf7ff" row-height=24 :height="160" :row-click="checkPerson">
           </v-table>
         </div>
@@ -197,18 +197,18 @@
         <div class="information-receipt">
           <h5>回执信息</h5>
           <div style="overflow-y:scroll;" class="case">
-            <el-form label-width="100px" :model="formLabelAlign">
+            <el-form label-width="100px" :model="workReceiptInfo">
               <el-form-item label="施工人员：">
-                <span></span>
+                <span>{{workReceiptInfo.builder}}</span>
               </el-form-item>
               <el-form-item label="处理状态：">
-                <span></span>
+                <span>{{workReceiptInfo.dealState}}</span>
               </el-form-item>
               <el-form-item label="处理时间：">
-                <span></span>
+                <span>{{workReceiptInfo.dealTime}}</span>
               </el-form-item>
               <el-form-item label="处理内容：">
-                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="" readonly style="width:94%" v-model="formLabelAlign.msg"></el-input>
+                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="" readonly style="width:94%" v-model="workReceiptInfo.dealContent"></el-input>
               </el-form-item>
             </el-form>
           </div>
@@ -234,490 +234,602 @@
   </div>
 </template>
 <script>
-export default {
-  data() {
-    return {
-      spareParts: [],
-      defaultProps: {
-        children: "",
-        label: ""
-      },
-      searchPerson: "",
-      key: "",
-      toAudit: {},
-      workInfo: {
-        workNo:"",
-        workType:"",
-        state:"",
-        gmtCreate:"",
-      },
-      pictureDialog: false,
-      dialogVisible2: false,
-      dialogVisible1: false,
-      outerVisible: false,
-      innerVisible: false,
-      formLabelAlign: {
-        msg: ""
-      },
-      suppliesTableData: [],
-      equipmentTableData: [],
-      informationData: [],
-      equipmentTable: [
-        {
-          field: "name",
-          title: "设备编号",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
+  export default {
+    data() {
+      return {
+        spareParts: [],
+        defaultProps: {
+          children: "",
+          label: ""
         },
-        {
-          field: "address",
-          title: "设备名称",
-          width: 140,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
+        searchPerson: "",
+        key: "",
+        toAudit: {},
+        workInfo: {
+          workNo:"",
+          workType:"",
+          state:"",
+          gmtCreate:"",
         },
-        {
-          field: "phone",
-          title: "型号/规格",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
+        pictureDialog: false,
+        dialogVisible2: false,
+        dialogVisible1: false,
+        outerVisible: false,
+        innerVisible: false,
+        formLabelAlign: {
+          img:"",
+          revokeId:"",
+          faultLevel:"",
+          deviceId:"",
+          faultNo:"",
+          deviceName:"",
+          revokeTime:"",
+          discovery:"",
+          discoveryTime:"",
+          dispelCause:"",
+          id:0,
+          state:0,
+          discoveryId:"",
+          organizeCode:"",
+          incidence:"",
+          dispelTime:"",
+          revokePeople:"",
+          organizeName:"",
+          faultDuration:"",
+          dispel:"",
+          deviceSpec:"",
+          locationNo:"",
+          revokeCause:"",
+          faultSource:"",
+          faultDesc:"",
+          deviceNo:"",
+          deviceModel:"",
+          location:"",
+          causeAnalysis:"",
+          dispelId:"",
         },
-        {
-          field: "gmtCreate",
-          title: "设备位号",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
+        workReceiptInfo:{
+          id:"",
+          workId:"",
+          builderId:"",
+          builder:"",
+          dealState:"",
+          dealTime:"",
+          dealContent:"",
+          gmtCreate:"",
+          gmtModified:"",
+          state:"",
         },
-        {
-          field: "state",
-          title: "设备位置",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "state",
-          title: "设备负责人",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "state",
-          title: "维修人员",
-          width: 90,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        }
-      ],
-      suppliesTable: [
-        {
-          field: "name",
-          title: "备件编号",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "address",
-          title: "名称",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "phone",
-          title: "型号/规格",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "gmtCreate",
-          title: "计划数量",
-          width: 70,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true,
-          isEdit: true
-        },
-        {
-          field: "state",
-          title: "实际数量",
-          width: 70,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true,
-          isEdit: true
-        },
-        {
-          field: "state",
-          title: "计量单位",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "state",
-          title: "操作",
-          width: 90,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        }
-      ],
-      informationTable: [
-        {
-          field: "name",
-          title: "工单进度",
-          width: 200,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "address",
-          title: "处理时间",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        }
-      ],
-      personTable: [
-        {
-          field: "name",
-          title: "备件编号",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "name",
-          title: "备件名称",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "name",
-          title: "型号/规格",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "name",
-          title: "备件级别",
-          width: 60,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "name",
-          title: "备件分类",
-          width: 70,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "name",
-          title: "库存",
-          width: 60,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "name",
-          title: "计量单位",
-          width: 60,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        }
-      ],
-      personData: [],
-      tableData: [],
-      columns: [
-        {
-          field: "employeeNo",
-          title: "员工编号",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-          //   orderBy: ""
-        },
-        {
-          field: "name",
-          title: "姓名",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "phone",
-          title: "手机号",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "organizeName",
-          title: "组织单位/部门",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "position",
-          title: "岗位",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        }
-      ]
-    };
-  },
-  methods: {
-    toBack(){
-      this.$router.back(-1)
-    },
-
-    // 单元格编辑回调
-    cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
-      this.suppliesTableData[rowIndex][field] = newValue;
-
-      // 接下来处理你的业务逻辑，数据持久化等...
-    },
-    selectGroupChange(selection) {
-      console.log("select-group-change", selection);
-    },
-    selectALL(selection) {
-      console.log("select-aLL", selection);
-    },
-    selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
-    },
-    getPersonnel(rowIndex, rowData, column) {
-      console.log(rowData);
-    },
-    checkPerson(rowIndex, rowData, column) {
-      console.log(rowData);
-      this.dialogVisible1 = true;
-    },
-    handleNodeClick(data) {
-      this.clickId = data.id;
-      this.toLoad();
-    },
-    filterArray(data, parent) {
-      let vm = this;
-      var tree = [];
-      var temp;
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].parentCode == parent) {
-          var obj = data[i];
-          temp = this.filterArray(data, data[i].code);
-          if (temp.length > 0) {
-            obj.children = temp;
+        suppliesTableData: [],
+        equipmentTableData: [],
+        informationData: [],
+        equipmentTable: [
+          {
+            field: "deviceNo",
+            title: "设备编号",
+            width: 100,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "deviceName",
+            title: "设备名称",
+            width: 140,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "deviceModel",
+            title: "型号/规格",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "locationNo",
+            title: "设备位号",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "location",
+            title: "设备位置",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "charges",
+            title: "设备负责人",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "repairs",
+            title: "维修人员",
+            width: 90,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
           }
-          tree.push(obj);
-        }
-      }
-      return tree;
+        ],
+        suppliesTable: [
+          {
+            field: "materielNo",
+            title: "备件编号",
+            width: 100,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "materielName",
+            title: "名称",
+            width: 100,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "materielModel",
+            title: "型号/规格",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "planCount",
+            title: "计划数量",
+            width: 70,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            isEdit: true
+          },
+          {
+            field: "actualCount",
+            title: "实际数量",
+            width: 70,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            isEdit: true
+          },
+          {
+            field: "state",
+            title: "计量单位",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "unit",
+            title: "操作",
+            width: 90,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          }
+        ],
+        informationTable: [
+          {
+            field: "operateDesc",
+            title: "工单进度",
+            width: 200,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "gmtModified",
+            title: "处理时间",
+            width: 100,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          }
+        ],
+        personTable: [
+          {
+            field: "name",
+            title: "备件编号",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "name",
+            title: "备件名称",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "name",
+            title: "型号/规格",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "name",
+            title: "备件级别",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "name",
+            title: "备件分类",
+            width: 70,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "name",
+            title: "库存",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "name",
+            title: "计量单位",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          }
+        ],
+        personData: [],
+        tableData: [],
+        columns: [
+          {
+            field: "employeeNo",
+            title: "员工编号",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+            //   orderBy: ""
+          },
+          {
+            field: "name",
+            title: "姓名",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "phone",
+            title: "手机号",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "organizeName",
+            title: "组织单位/部门",
+            width: 100,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "position",
+            title: "岗位",
+            width: 100,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          }
+        ]
+      };
     },
+    methods: {
+      toBack(){
+        this.$router.back(-1)
+      },
+
+      // 单元格编辑回调
+      cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
+        this.suppliesTableData[rowIndex][field] = newValue;
+
+        // 接下来处理你的业务逻辑，数据持久化等...
+      },
+      selectGroupChange(selection) {
+        console.log("select-group-change", selection);
+      },
+      selectALL(selection) {
+        console.log("select-aLL", selection);
+      },
+      selectChange(selection, rowData) {
+        console.log("select-change", selection, rowData);
+      },
+      getPersonnel(rowIndex, rowData, column) {
+        console.log(rowData);
+      },
+      checkPerson(rowIndex, rowData, column) {
+        console.log(rowData);
+        this.dialogVisible1 = true;
+      },
+      handleNodeClick(data) {
+        this.clickId = data.id;
+        this.toLoad();
+      },
+      filterArray(data, parent) {
+        let vm = this;
+        var tree = [];
+        var temp;
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].parentCode == parent) {
+            var obj = data[i];
+            temp = this.filterArray(data, data[i].code);
+            if (temp.length > 0) {
+              obj.children = temp;
+            }
+            tree.push(obj);
+          }
+        }
+        return tree;
+      },
 
 
-    workLoad(stateNum){
-      this.Axios(
-        {
-          params: {workId:stateNum},
-          type: "get",
-          url: "/maintenanceWork/findOneWork",
-        },
-        this
-      ).then(
-        response => {
-          console.log(response.data);
-        },
-        ({type, info}) => {
+      workLoad(stateNum){
+        this.Axios(
+          {
+            params: {workId:stateNum},
+            type: "get",
+            url: "/maintenanceWork/findOneWork",
+          },
+          this
+        ).then(
+          response => {
+            console.log(response.data.data);
+            this.workInfoValue(response.data.data.work);
+            this.formLabelAlignValue(response.data.data.fault);
+            this.equipmentTableDataValue(response.data.data.devices);
+            this.suppliesTableDataValue(response.data.data.workSheetMaterial);
+            this.workReceiptInfoValue(response.data.data.workReceiptInfo);
+            this.informationDataValue(response.data.data.sysLog);
+          },
+          ({type, info}) => {
 
-        })
+          })
+      },
+
+      workInfoValue(value){
+        this.workInfo = value;
+        if (value.workType ===2){
+          this.workInfo.workType = "故障"
+        }else{
+          this.workInfo.workType = "系统错误"
+        }
+        if (value.state === 0) {
+          this.workInfo.state = "待审核";
+        }
+        if (value.state === 1) {
+          this.workInfo.state = "已通过";
+        }
+        if (value.state === 2) {
+          this.workInfo.state = "已禁用";
+        }
+        if (value.state === 3) {
+          this.workInfo.state = "已删除";
+        }
+        if (value.state === 4) {
+          this.workInfo.state = "审核中";
+        }
+        if (value.state === 5) {
+          this.workInfo.state = "待处理";
+        }
+        if (value.state === 6) {
+          this.workInfo.state = "已消除";
+        }
+        if (value.state === 7) {
+          this.workInfo.state = "已撤销";
+        }
+        if (value.state === 10) {
+          this.workInfo.state = "已驳回";
+        }
+        if (value.state === 12) {
+          this.workInfo.state = "已停止";
+        }
+        if (value.state === 13) {
+          this.workInfo.state = "已完成";
+        }
+      },
+      formLabelAlignValue(value){
+        this.formLabelAlign = value;
+        if (this.formLabelAlign.faultLevel === 1) {
+          this.formLabelAlign.faultLevel = "低";
+        }
+        if (this.formLabelAlign.faultLevel === 2) {
+          this.formLabelAlign.faultLevel = "中";
+        }
+        if (this.formLabelAlign.faultLevel === 3) {
+          this.formLabelAlign.faultLevel = "高";
+        }
+      },
+      equipmentTableDataValue(value){
+        let arr = value;
+        this.equipmentTableData = arr;
+      },
+      suppliesTableDataValue(value){
+        this.suppliesTableData = value;
+      },
+      workReceiptInfoValue(value){
+        this.workReceiptInfo = value;
+      },
+      informationDataValue(value){
+        this.informationData = value;
+      }
+    },
+    created(){
+      this.workLoad(this.$route.query.id);
     }
-  },
-  created(){
-    let aaa=this.$store.state.operation.work.id;
-    console.log(aaa);
-    this.workLoad(aaa);
-  }
-};
+  };
 </script>
 
 <style lang="less" scoped>
-@blue: #409eff;
-@Success: #67c23a;
-@Warning: #e6a23c;
-@Danger: #f56c6c;
-@Info: #dde2eb;
-@border: 1px solid #dde2eb;
-.breakdown-order {
-  font-size: 14px;
-  h5 {
-    position: relative;
-    top: -18px;
-    left: 10px;
-    background-color: white;
-    display: inline-block;
-  }
-  .el-form-item {
-    margin-bottom: 0px;
-  }
-  .top {
-    padding: 10px;
-    border: @border;
-    border-radius: 5px;
-  }
-  .bottom {
-    margin-top: 10px;
-    //   border: @border;
-    width: 100%;
-    overflow: hidden;
-    .left {
-      float: left;
-      width: 25%;
-      //   border: @border;
-      .msg {
-        padding: 10px;
-        border: @border;
-        border-radius: 5px;
-        margin-top: 20px;
-      }
-      .breakdown-details {
-        padding: 10px;
-        border: @border;
-        border-radius: 5px;
-        margin-top: 20px;
-      }
+  @blue: #409eff;
+  @Success: #67c23a;
+  @Warning: #e6a23c;
+  @Danger: #f56c6c;
+  @Info: #dde2eb;
+  @border: 1px solid #dde2eb;
+  .breakdown-order {
+    font-size: 14px;
+    h5 {
+      position: relative;
+      top: -18px;
+      left: 10px;
+      background-color: white;
+      display: inline-block;
     }
-    .right {
-      float: left;
+    .el-form-item {
+      margin-bottom: 0px;
+    }
+    .top {
+      padding: 10px;
+      border: @border;
+      border-radius: 5px;
+    }
+    .bottom {
+      margin-top: 10px;
       //   border: @border;
-      width: 70%;
-      margin-left: 10px;
-      .equipment {
-        border: @border;
-        border-radius: 5px;
-        margin-top: 20px;
-        padding: 10px;
-        height: 198px;
-      }
-      .supplies {
-        border: @border;
-        border-radius: 5px;
-        margin-top: 20px;
-        padding: 10px;
-        height: 220px;
-      }
-      .information-receipt {
-        border: @border;
-        border-radius: 5px;
-        margin-top: 20px;
-        padding: 10px;
-        width: 40%;
+      width: 100%;
+      overflow: hidden;
+      .left {
         float: left;
-        .case {
+        width: 25%;
+        //   border: @border;
+        .msg {
+          padding: 10px;
+          border: @border;
+          border-radius: 5px;
+          margin-top: 20px;
+        }
+        .breakdown-details {
+          padding: 10px;
+          border: @border;
+          border-radius: 5px;
+          margin-top: 20px;
+        }
+      }
+      .right {
+        float: left;
+        //   border: @border;
+        width: 70%;
+        margin-left: 10px;
+        .equipment {
+          border: @border;
+          border-radius: 5px;
+          margin-top: 20px;
+          padding: 10px;
+          height: 198px;
+        }
+        .supplies {
+          border: @border;
+          border-radius: 5px;
+          margin-top: 20px;
+          padding: 10px;
           height: 220px;
         }
-        .el-form {
-          border-bottom: 1px dashed #dde2eb;
-          padding-bottom: 10px;
+        .information-receipt {
+          border: @border;
+          border-radius: 5px;
+          margin-top: 20px;
+          padding: 10px;
+          width: 40%;
+          float: left;
+          .case {
+            height: 220px;
+          }
+          .el-form {
+            border-bottom: 1px dashed #dde2eb;
+            padding-bottom: 10px;
+          }
+        }
+        .information-flow {
+          border: @border;
+          border-radius: 5px;
+          margin-top: 20px;
+          margin-left: 10px;
+          padding: 10px;
+          width: 58%;
+          float: left;
         }
       }
-      .information-flow {
-        border: @border;
-        border-radius: 5px;
-        margin-top: 20px;
-        margin-left: 10px;
-        padding: 10px;
-        width: 58%;
-        float: left;
+    }
+  }
+  .dialog-case {
+    overflow: hidden;
+    .spare-parts-list {
+      float: left;
+      width: 20%;
+      border: @border;
+      border-radius: 5px;
+      margin-right: 5px;
+      padding: 10px;
+    }
+    .center-list {
+      width: 60%;
+      float: left;
+      border: @border;
+      margin-right: 5px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .add {
+      width: 18%;
+      float: left;
+      border: @border;
+      padding: 10px;
+      border-radius: 5px;
+      ul {
+        margin-top: 10px;
+        li {
+          list-style-type: none;
+          height: 24px;
+          line-height: 24px;
+          width: 100%;
+          padding: 0 5px;
+        }
       }
     }
   }
-}
-.dialog-case {
-  overflow: hidden;
-  .spare-parts-list {
-    float: left;
-    width: 20%;
-    border: @border;
-    border-radius: 5px;
-    margin-right: 5px;
-    padding: 10px;
+  .el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 200px;
+    margin: 0;
   }
-  .center-list {
-    width: 60%;
-    float: left;
-    border: @border;
-    margin-right: 5px;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  .add {
-    width: 18%;
-    float: left;
-    border: @border;
-    padding: 10px;
-    border-radius: 5px;
-    ul {
-      margin-top: 10px;
-      li {
-        list-style-type: none;
-        height: 24px;
-        line-height: 24px;
-        width: 100%;
-        padding: 0 5px;
-      }
-    }
-  }
-}
-.el-carousel__item h3 {
-  color: #475669;
-  font-size: 14px;
-  opacity: 0.75;
-  line-height: 200px;
-  margin: 0;
-}
 
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
 
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
+  .el-carousel__item:nth-child(2n + 1) {
+    background-color: #d3dce6;
+  }
 </style>
