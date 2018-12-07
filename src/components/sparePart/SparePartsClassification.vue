@@ -1,51 +1,155 @@
 <template>
   <div class="spare-parts-classification">
-    <div class="classify-title">
-      <h5 class="classify-name">分类名称</h5>
-      <h5 class="remarks">备注</h5>
-    </div>
-    <div class="classification">
-      <el-tree
-        :data="organize"
-        :props="defaultProps"
-        @node-click="handleNodeClick"
-        node-key="id"
-        default-expand-all
-        :expand-on-click-node="false"
-      >
-        <span
-          class="custom-tree-node"
-          slot-scope="{ node, data }"
+    <div style="width:900px;">
+      <div class="classify-title">
+        <h5 class="classify-name">分类名称</h5>
+        <h5 class="remarks">备注</h5>
+      </div>
+      <div class="classification">
+        <el-tree
+          :data="organize"
+          :props="defaultProps"
+          @node-click="handleNodeClick"
+          node-key="id"
+          default-expand-all
+          :expand-on-click-node="false"
         >
-          <span class="content">{{ data.categoryName}}
-            <span class="addCase">
-              <el-button
-                type="text"
-                size="mini"
-                @click="dialogVisible=true"
-              >
-                添加
-              </el-button>
-              <el-button
-                type="text"
-                size="mini"
-                @click="dialogVisible1=true,nodeCname=data.categoryName,nodeCMsg=data.categoryMsg"
-              >
-                修改
-              </el-button>
-              <el-button
-                type="text"
-                size="mini"
-                @click="() => warningdelete(data.id)"
-              >
-                删除
-              </el-button>
+          <span
+            class="custom-tree-node"
+            slot-scope="{ node, data }"
+          >
+            <span class="content">{{ data.categoryName}}
+              <span class="addCase">
+                <el-button
+                  type="text"
+                  size="mini"
+                  @click="dialogVisible=true"
+                >
+                  添加
+                </el-button>
+                <el-button
+                  type="text"
+                  size="mini"
+                  @click="dialogVisible1=true,nodeCname=data.categoryName,nodeCMsg=data.categoryMsg"
+                >
+                  修改
+                </el-button>
+                <el-button
+                  type="text"
+                  size="mini"
+                  @click="() => warningdelete(data.id)"
+                >
+                  删除
+                </el-button>
+              </span>
             </span>
+            <span class="content-remarks">{{data.organizeName}}</span>
           </span>
-          <span class="content-remarks">11122</span>
-        </span>
-      </el-tree>
+        </el-tree>
+        <div style="width:100%;text-align:center">
+          <el-button
+            size="small"
+            style="width:200px;margin:auto"
+            v-if="organize===''"
+            @click="dialogVisible3=true,addFirst"
+          >添加初始类别</el-button>
+        </div>
+        <el-dialog
+          title="添加初始类别"
+          :visible.sync="dialogVisible3"
+          width="30%"
+        >
+          <el-form
+            ref="form"
+            label-width="90px"
+            style="padding:10px"
+          >
+            <el-form-item label="类别名称：">
+              <el-input
+                v-model="nodedata.categoryName"
+                size="mini"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="备注：">
+              <el-input
+                type="textarea"
+                v-model="nodedata.categoryMsg"
+              ></el-input>
+            </el-form-item>
+          </el-form>
+          <span
+            slot="footer"
+            class="dialog-footer"
+          >
+            <el-button @click="dialogVisible3 = false">取 消</el-button>
+            <el-button
+              type="primary"
+              @click="dialogVisible3 = false"
+            >确 定</el-button>
+          </span>
+        </el-dialog>
+      </div>
     </div>
+    <el-dialog
+      title="修改"
+      :visible.sync="dialogVisible1"
+      width="30%"
+    >
+      <el-form
+        ref="form"
+        label-width="90px"
+        style="padding:10px;"
+      >
+        <el-form-item label="类别名称：">
+          <el-input
+            v-model="nodeCname"
+            size="mini"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="备注：">
+          <el-input
+            type="textarea"
+            v-model="nodeCMsg"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            size="mini"
+            @click="updateCategory"
+          >确认修改</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+    <el-dialog
+      title="添加"
+      :visible.sync="dialogVisible"
+      width="30%"
+    >
+      <el-form
+        ref="form"
+        label-width="90px"
+        style="padding:10px;"
+      >
+        <el-form-item label="类别名称：">
+          <el-input
+            v-model="addname"
+            size="mini"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="备注：">
+          <el-input
+            type="textarea"
+            v-model="addmsg"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            size="mini"
+            @click="addCategory"
+          >保存</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -317,44 +421,58 @@ export default {
 .spare-parts-classification {
   border: @border;
   font-size: 12px;
-  //   overflow: hidden;
+  max-height: 500px;
+  overflow: scroll;
+  padding-bottom: 10px;
   .classify-title {
     line-height: 40px;
     overflow: hidden;
     .classify-name {
       float: left;
-      width: 50%;
+      width: 40%;
       padding: 0 20px;
-      border-bottom: 1px solid #dde2eb;
+    //   border-bottom: 1px solid #dde2eb;
     }
     .remarks {
       float: right;
-      width: 50%;
+      width: 400px;
       padding: 0 20px;
-      border-bottom: 1px solid #dde2eb;
+    //   border-bottom: 1px solid #dde2eb;
     }
   }
   .classification {
     .custom-tree-node {
       width: 100%;
       overflow: hidden;
+      position: relative;
     }
     .content {
       display: inline-block;
-      width: 500px;
-      border: @border;
+      width: 40%;
+      //   border: @border;
       .addCase {
-        //   float: right;
         display: inline-block;
-        margin-left: 30px;
+        // display: none;
+        opacity: 0;
+        margin-left: 40px;
+        position: relative;
+        z-index: -10;
+      }
+      &:hover {
+        .addCase {
+          z-index: 10;
+          opacity: 1;
+        }
       }
     }
     .content-remarks {
       display: inline-block;
       width: 400px;
-      border: @border;
+      //   border: @border;
+      line-height: 28px;
       height: 100%;
-      float: right;
+      position: absolute;
+      right: 0%;
     }
   }
 }
