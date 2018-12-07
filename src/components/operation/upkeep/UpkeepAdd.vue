@@ -145,7 +145,7 @@ export default {
         endTime:"",
         executeTime:"",
         frequency:1,
-        frequencyType:"天",
+        frequencyType:"1",
         maintenanceCc:""
       },
       columns: [
