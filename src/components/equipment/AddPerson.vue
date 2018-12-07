@@ -331,7 +331,7 @@ export default {
             console.log("按照组织机构编号查询人");
             console.log(result.data);
             this.tableData = result.data.data.content;
-            this.tablenum = result.data.totalElements;
+            this.tablenum = result.data.data.totalElements;
           }
         },
         ({ type, info }) => {
@@ -387,6 +387,9 @@ export default {
           console.log(arr);
           //this.data2 = this.filterArray(result.data.data,1000);
           this.data2 = arr;
+
+          this.orgcode=result.data.data[0].code;
+          this.findpeopler();
         },
         ({ type, info }) => {
           //错误类型 type=faild / error
