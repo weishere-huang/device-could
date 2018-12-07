@@ -259,7 +259,7 @@ export default {
       }
     },
     handleNodeClick(data) {
-      this.leftcate = data.id;
+      this.leftcate = data.categoryNo;
       this.leftstate = "";
       this.leftclass = "";
       this.keyorall=2;
@@ -443,6 +443,7 @@ export default {
         //   }
         // })
         .then(result => {
+          this.totalnum = result.data.data.totalElements;
           this.tableData = result.data.data.content;
           for (let i = 0; i < this.tableData.length; i++) {
             if (this.tableData[i].deviceState === 1) {
@@ -616,7 +617,6 @@ export default {
                 this.tableData[i].deviceState = "报废";
               }
             }
-            console.log(result.data);
           },
           ({ type, info }) => {
             //错误类型 type=faild / error

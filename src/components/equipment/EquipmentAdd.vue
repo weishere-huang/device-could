@@ -204,7 +204,7 @@
           label:"name"
         },
         defaultProps2:{
-          value:"id",
+          value:"categoryNo",
           label:"categoryName"
         },
         dialogVisible:false,
