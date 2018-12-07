@@ -194,7 +194,7 @@
         >
           <el-form-item label="负责人员：">
            <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='0')">
-              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType===0).content">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='0').content">
                 {{person.workerName}}
               </el-tag>
             </span>
@@ -205,7 +205,7 @@
           <el-form-item label="维修人员：">
 
             <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='1')">
-              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType===1).content">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='1').content">
                 {{person.workerName}}
               </el-tag>
             </span>
@@ -221,7 +221,7 @@
         >
           <el-form-item label="检修人员：">
            <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='2')">
-              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType===2).content">
+              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='2').content">
                 {{person.workerName}}
               </el-tag>
             </span>
@@ -248,9 +248,6 @@
           <el-form-item label="操作人员：">
             <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='4')">
               <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='4').content">
-                {{person.workerName}}
-              </el-tag>
-              <el-tag :style="{ margin: '0 5px' }" key='person.id' v-for="person in devicePersonnelInfoBase.find(item=>item.workerType==='4')">
                 {{person.workerName}}
               </el-tag>
             </span>
@@ -442,6 +439,34 @@ export default {
       chengectg:"",
       chengectgname:"",
       devicePersonnelInfoBase:[],
+
+      editableTabs: [
+        {
+          workerTypeName: "负责人员",
+          workerType: '0',
+          content: []
+        },
+        {
+          workerTypeName: "维修人员",
+          workerType: '1',
+          content: []
+        },
+        {
+          workerTypeName: "检修人员",
+          workerType: '2',
+          content: []
+        },
+        {
+          workerTypeName: "保养人员",
+          workerType: '3',
+          content: []
+        },
+        {
+          workerTypeName: "操作人员",
+          workerType: '4',
+          content: []
+        }
+      ],
     };
   },
   components: {
@@ -639,82 +664,54 @@ export default {
       // return newarrr;
       // // this.arrrrrrr(jsonArr);
     },
-    lfy(list){
-      var myArray=new Array()
-      var myArray2=new Array()
-      for(var i=0;i<list.length;i++){
-        if(myArray.indexOf(list[i].workerType)===0){
-          myArray.push(list[i].id);
-          myArray2.push({"id":list[i].id,"users":[]});
-        }
-        myArray2[myArray.indexOf(list[i].id)].users.push({"user":list[i].user})
-      }
-      return myArray2;
-    },
     arrrrrrr(data){
-      let newarrr = new Array();
-      console.log(data.length);
+      let newarrr= new Array();
+      newarrr =this.editableTabs;
       for(let i=0;i<data.length;i++){
-          console.log(i);
         if(data[i].workerType === 0){
-          newarrr.push(
+          newarrr[0].content.push(
             {
-              workerTypeName: "负责人员",
-              workerType: "0",
-              content: [{
-                workerID:data[i].workerId,
-                workerName:data[i].workerName
-              }]
+              id:data[i].workerId,
+              workerName:data[i].workerName
             }
-          )}
+          )
+        }
         if(data[i].workerType === 1){
-          newarrr.push(
+          newarrr[1].content.push(
             {
-              workerTypeName: "维修",
-              workerType: "1",
-              content: [{
-                workerID:data[i].workerId,
-                workerName:data[i].workerName
-              }]
+              id:data[i].workerId,
+              workerName:data[i].workerName
             }
-          )}
+          )
+        }
         if(data[i].workerType === 2){
-          newarrr.push(
+          newarrr[2].content.push(
             {
-              workerTypeName: "检修",
-              workerType: "2",
-              content: [{
-                workerID:data[i].workerId,
-                workerName:data[i].workerName
-              }]
+              id:data[i].workerId,
+              workerName:data[i].workerName
             }
-          )}
+          )
+        }
         if(data[i].workerType === 3){
-          newarrr.push(
+          newarrr[3].content.push(
             {
-              workerTypeName: "保养",
-              workerType: "3",
-              content: [{
-                workerID:data[i].workerId,
-                workerName:data[i].workerName
-              }]
+              id:data[i].workerId,
+              workerName:data[i].workerName
             }
-          )}
+          )
+        }
         if(data[i].workerType === 4){
-          newarrr.push(
+          newarrr[4].content.push(
             {
-              workerTypeName: "操作",
-              workerType: "4",
-              content: [{
-                workerID:data[i].workerId,
-                workerName:data[i].workerName
-              }]
+              id:data[i].workerId,
+              workerName:data[i].workerName
             }
-          )}
+          )
+        }
       }
       console.log(newarrr);
       console.log("newarrr");
-      this.devicePersonnelInfoBase=newarrr;
+      this.devicePersonnelInfoBase = newarrr ;
     },
 
     detail(id) {
@@ -758,7 +755,6 @@ export default {
             //this.aaaa.value = this.sizeForm.deviceState;
           console.log(this.devicePersonnelInfoBase);
           console.log("---------------");
-          debugger
         },
           ({type, info}) => {
             //错误类型 type=faild / error
@@ -771,8 +767,10 @@ export default {
     },
 
     personAddHandler(data){
+      console.log(data);
       this.devicePersonnelInfoBase=data;
       this.dialogVisible=false;
+      console.log(data);
     },
     updatewarning(){
       this.$confirm('确定要修改吗?', '提示', {
