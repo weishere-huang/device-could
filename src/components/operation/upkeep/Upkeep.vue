@@ -396,13 +396,13 @@ export default {
         if (this.tableData[i].frequencyType === -1) {
           this.tableData[i].frequencyType = "单次";
         }
-        if (this.tableData[i].frequencyType === 0) {
+        if (this.tableData[i].frequencyType === 1) {
           this.tableData[i].frequencyType = "天";
         }
-        if (this.tableData[i].frequencyType === 1) {
+        if (this.tableData[i].frequencyType === 2) {
           this.tableData[i].frequencyType = "周";
         }
-        if (this.tableData[i].frequencyType === 2) {
+        if (this.tableData[i].frequencyType === 3) {
           this.tableData[i].frequencyType = "月";
         }
         for (let j in this.planLevel) {

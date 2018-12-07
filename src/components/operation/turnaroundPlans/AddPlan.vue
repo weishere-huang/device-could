@@ -252,18 +252,9 @@
         this.loads();
       },
       getId(event){
-        this.listArr = clone(this.tableData);
-        console.log(this.tableData);
-        let _personListValue=clone(this.personListValue);
-        console.log(_personListValue);
         let deleteId = event.target.attributes.label.value;
-        _personListValue= _personListValue.filter(item=>item.id!=deleteId);
-        this.listArr.forEach(item=>{
-          if(_personListValue.find((i,index)=>i.id===item.id)) item._checked=true;
-        });
-        console.log(_personListValue);
-        this.tableData = this.listArr;
-        this.personListValue = _personListValue;
+        this.personListValue = this.personListValue.filter(item=>item.id!=deleteId);
+        this.loads();
       },
 
       handleNodeClick(data) {
