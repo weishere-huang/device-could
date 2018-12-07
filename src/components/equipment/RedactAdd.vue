@@ -62,7 +62,7 @@
               <v-pagination
                 @page-change="pageChange"
                 @page-size-change="pageSizeChange"
-                :total="50"
+                :total="tablenum"
                 :page-size="pageSize"
                 :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
               ></v-pagination>
@@ -193,7 +193,10 @@ export default {
       defaultProps: {
         children: "children",
         label: "label"
-      }
+      },
+      orgcode:"",
+      //分页total
+      tablenum:""
     };
   },
   methods: {
@@ -220,7 +223,8 @@ export default {
     handleNodeClick(data) {
       console.log(data);
       console.log(data.code);
-      this.findpeopler(data.code);
+      this.orgcode = data.code;
+      this.findpeopler();
     },
     isHide() {
       this.$emit("isHide", false);
@@ -250,11 +254,13 @@ export default {
       this.pageIndex = pageIndex;
       this.getTableData();
       console.log(pageIndex);
+      this.findpeopler();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+      this.findpeopler();
     },
     filterArray(data, parent) {
       let vm = this;
@@ -272,11 +278,10 @@ export default {
       }
       return tree;
     },
-    findpeopler(code){
-      console.log("该组织机构code---"+code)
+    findpeopler(){
       this.Axios({
         params: {
-          organizeCode:code
+          organizeCode:this.orgcode
         },
         option: {
           enableMsg: false
@@ -289,9 +294,14 @@ export default {
       },this)
         //.get(this.global.apiSrc + "/employee/findByOrganizeCode", {params:{organizeCode:code}})
         .then(result => {
-          console.log("按照组织机构编号查询人");
-          console.log(result.data);
-          this.tableData=result.data.data.content;
+            if (result.data.code === 204) {
+              this.tableData = [];
+            } else {
+              console.log("按照组织机构编号查询人");
+              console.log(result.data);
+              this.tableData = result.data.data.content;
+              this.tablenum = result.data.totalElements;
+            }
         },
           ({type, info}) => {
             //错误类型 type=faild / error
@@ -307,10 +317,7 @@ export default {
       this.$props.personAddHandler(this.editableTabs);
     },
     deletes() {
-      this.personListValue = "";
-      this.toValue = "";
-      // let arr ="";
-      // this.selectALL(arr);
+      this.editableTabs[this.editableTabsValue].content=[];
     },
 
     workerDelete(data) {
