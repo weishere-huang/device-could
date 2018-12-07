@@ -63,7 +63,7 @@
         </div>
         <div class="right">
           <el-button size="mini" @click="deletes">清空</el-button>
-          <el-button size="mini" @click="toAdd">保存</el-button>
+          <el-button size="mini" @click="toAdd">确定</el-button>
           <div class="personList">
             <ul @click="getId">
               <li v-for="(item, index) in personListValue" :key="index">
@@ -203,6 +203,24 @@
           this.pageIsOk = true;
           this.pageChange(1);
         }
+      },
+      toSearch(){
+        this.Axios(
+          {
+            params: { keyWord: this.key },
+            type: "get",
+            url: "/device/findByKeyWord"
+          },
+          this
+        ).then(
+          response => {
+            this.pageNumber = response.data.data.totalElements;
+            this.tableData = response.data.data.content;
+            this.tabledate = this.tableData;
+            this.searchs = this.key;
+          },
+          ({ type, info }) => {}
+        );
       },
       deletes() {
         this.personListValue = [];
