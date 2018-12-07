@@ -251,9 +251,13 @@
         this.loads();
       },
       getId(event){
+        let arr = this.tableData;
         let deleteId = event.target.attributes.label.value;
         this.personListValue = this.personListValue.filter(item=>item.id!=deleteId);
-        this.loads();
+        arr.forEach(item=>{
+          if(this.personListValue.find((i,index)=>i.id===item.id)) item._checked=true;
+        });
+        this.tableData = arr;
       },
 
       handleNodeClick(data) {
