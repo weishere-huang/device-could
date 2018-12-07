@@ -42,6 +42,8 @@ import SparePart from '@/components/sparePart/SparePart'
 import SparePartsWarehouse from '@/components/sparePart/SparePartsWarehouse'
 import SparePartAdd from '@/components/sparePart/addAndAmend/SparePartAdd'
 import SparePartAmend from '@/components/sparePart/addAndAmend/SparePartAmend'
+import WarehousingDetail from '@/components/sparePart/WarehousingDetail'
+import OutboundDetails from '@/components/sparePart/OutboundDetails'
 Vue.use(Router)
 const router = new Router({
   mode: 'history',
@@ -378,6 +380,22 @@ const router = new Router({
       path: '/SparePartsWarehouse',
       name: 'SparePartsWarehouse',
       component: SparePartsWarehouse,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/WarehousingDetail',
+      name: 'WarehousingDetail',
+      component: WarehousingDetail,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/OutboundDetails',
+      name: 'OutboundDetails',
+      component: OutboundDetails,
       meta: {
         requireAuth: true
       },

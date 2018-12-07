@@ -20,10 +20,10 @@
           </span>
         </el-tree>
         <div style="width:100%;text-align:center">
-          <el-button size="small" style="width:200px;margin:auto" v-if="organize===''" @click="dialogVisible3=true,addFirst">添加根类</el-button>
+          <el-button size="small" style="width:200px;margin:auto" v-if="organize===''" @click="dialogVisible3=true,addFirst">添加初始类别</el-button>
         </div>
         <el-dialog
-          title="添加根节点"
+          title="添加初始类别"
           :visible.sync="dialogVisible3"
           width="30%"
           >

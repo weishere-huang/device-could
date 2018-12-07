@@ -758,7 +758,6 @@ export default {
             //this.aaaa.value = this.sizeForm.deviceState;
           console.log(this.devicePersonnelInfoBase);
           console.log("---------------");
-          debugger
         },
           ({type, info}) => {
             //错误类型 type=faild / error
@@ -769,7 +768,6 @@ export default {
       //   console.log(err);
       // });
     },
-
     personAddHandler(data){
       this.devicePersonnelInfoBase=data;
       this.dialogVisible=false;

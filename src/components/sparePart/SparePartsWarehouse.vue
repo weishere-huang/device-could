@@ -80,7 +80,7 @@
               style="width:100%;height:280px"
               :min-height='280'
               :columns="columns"
-              :table-data="tableData1"
+              :table-data="tableData"
               row-hover-color="#eee"
               row-click-color="#edf7ff"
             ></v-table>
@@ -107,7 +107,7 @@
               style="width:100%;height:364px"
               :min-height='364'
               :columns="columns1"
-              :table-data="tableData"
+              :table-data="tableData1"
               row-hover-color="#eee"
               row-click-color="#edf7ff"
               :cell-edit-done="cellEditDone"
@@ -202,7 +202,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "faultNo",
+          field: "faultNo1",
           title: "*数量",
           width: 80,
           titleAlign: "center",
@@ -280,13 +280,30 @@ export default {
           // isResize: true
         }
       ],
-      tableData: [],
-      tableData1: []
+      tableData: [
+        {
+          faultNo: "1111"
+        }
+      ],
+      tableData1: [
+        {
+          faultNo: "1111",
+          faultNo1: "22222"
+        },
+        {
+          faultNo: "1111",
+          faultNo1: "22222"
+        },
+        {
+          faultNo: "1111",
+          faultNo1: "22222"
+        }
+      ]
     };
   },
   methods: {
     cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
-      this.tableData[rowIndex][field] = newValue;
+      this.tableData1[rowIndex][field] = newValue;
       // 接下来处理你的业务逻辑，数据持久化等...
     },
     customCompFunc(params) {

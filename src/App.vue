@@ -85,9 +85,10 @@
               <i class="iconfont">&#xe60b;</i>
               <span slot="title">备品备件</span></template>
             <el-menu-item index="/SparePart">备件基础信息</el-menu-item>
-            <el-menu-item index="/SparePartAdd">添加</el-menu-item>
+            <el-menu-item index="/OutboundDetails">出库明细</el-menu-item>
             <el-menu-item index="/SparePartAmend">修改</el-menu-item>
             <el-menu-item index="/SparePartsWarehouse">备件入库</el-menu-item>
+            <el-menu-item index="/WarehousingDetail">入库明细</el-menu-item>
           </el-submenu>
           <!-- <el-submenu index="10">
             <template slot="title">
