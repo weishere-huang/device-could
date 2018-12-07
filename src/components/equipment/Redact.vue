@@ -765,7 +765,6 @@ export default {
       //   console.log(err);
       // });
     },
-
     personAddHandler(data){
       console.log(data);
       this.devicePersonnelInfoBase=data;

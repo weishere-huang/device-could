@@ -80,6 +80,16 @@
             <el-menu-item index="/BreakdownOrder">故障工单详情</el-menu-item>
             <el-menu-item index="/UpkeepAndTurnaroundPlans">检修&保养计划工单详情</el-menu-item>
           </el-submenu>
+          <el-submenu index="14">
+            <template slot="title">
+              <i class="iconfont">&#xe60b;</i>
+              <span slot="title">备品备件</span></template>
+            <el-menu-item index="/SparePart">备件基础信息</el-menu-item>
+            <el-menu-item index="/OutboundDetails">出库明细</el-menu-item>
+            <el-menu-item index="/SparePartAmend">修改</el-menu-item>
+            <el-menu-item index="/SparePartsWarehouse">备件入库</el-menu-item>
+            <el-menu-item index="/WarehousingDetail">入库明细</el-menu-item>
+          </el-submenu>
           <!-- <el-submenu index="10">
             <template slot="title">
               <i class="iconfont">&#xe602;</i>
@@ -145,7 +155,9 @@
                     content="我的消息"
                     placement="bottom-end"
                   >
-                    <i class="iconfont">&#xe601;</i>
+                    <el-badge :value="0" :max="99" class="item">
+                      <i class="iconfont">&#xe601;</i>
+                    </el-badge>
                   </el-tooltip>
                 </li>
                 <li>
@@ -269,6 +281,7 @@ export default {
 * {
   margin: 0;
   padding: 0;
+  font-family: '微软雅黑';
 }
 .el-header {
   overflow: hidden;

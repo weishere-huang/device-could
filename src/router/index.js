@@ -38,18 +38,23 @@ import RoleManagement from '@/components/roleManagement/RoleManagement'
 import AdvancedSearch from '@/components/company/AdvancedSearch'
 import Audit from '@/components/company/Audit'
 import MsgDetails from '@/components/message/MsgDetails'
+import SparePart from '@/components/sparePart/SparePart'
+import SparePartsWarehouse from '@/components/sparePart/SparePartsWarehouse'
+import SparePartAdd from '@/components/sparePart/addAndAmend/SparePartAdd'
+import SparePartAmend from '@/components/sparePart/addAndAmend/SparePartAmend'
+import WarehousingDetail from '@/components/sparePart/WarehousingDetail'
+import OutboundDetails from '@/components/sparePart/OutboundDetails'
 Vue.use(Router)
-
 const router = new Router({
   mode: 'history',
   routes: [{
       path: '/',
-      redirect: '/Login'
+      redirect: '/Login',
     },
     {
       path: '/Login',
       name: 'Login',
-      component: Login
+      component: Login,
     },
     {
       path: '/Home',
@@ -346,7 +351,55 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
-    }
+    },
+    {
+      path: '/SparePart',
+      name: 'SparePart',
+      component: SparePart,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/SparePartAdd',
+      name: 'SparePartAdd',
+      component: SparePartAdd,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/SparePartAmend',
+      name: 'SparePartAmend',
+      component: SparePartAmend,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/SparePartsWarehouse',
+      name: 'SparePartsWarehouse',
+      component: SparePartsWarehouse,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/WarehousingDetail',
+      name: 'WarehousingDetail',
+      component: WarehousingDetail,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/OutboundDetails',
+      name: 'OutboundDetails',
+      component: OutboundDetails,
+      meta: {
+        requireAuth: true
+      },
+    },
   ]
 })
 
@@ -356,7 +409,7 @@ router.beforeEach((to, from, next) => {
       next()
     } else if (sessionStorage.getItem('token') === "") { // 没登录则跳转到登录界面
       next({
-        path: '/Login',
+        path: '/',
         query: {
           // redirect: "/Login"
           redirect: to.fullPath
