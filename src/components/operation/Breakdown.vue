@@ -299,7 +299,7 @@ export default {
     },
     toDetails(rowIndex, rowData, column) {
       this.$store.commit("breakDetails", rowData);
-      this.$router.push({ path: "/BreakDetails" });
+      this.$router.push("/BreakDetails?id="+rowData.id);
     },
     auditHide(params) {
       this.auditShow = params;
