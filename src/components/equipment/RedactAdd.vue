@@ -317,10 +317,7 @@ export default {
       this.$props.personAddHandler(this.editableTabs);
     },
     deletes() {
-      this.personListValue = "";
-      this.toValue = "";
-      // let arr ="";
-      // this.selectALL(arr);
+      this.editableTabs[this.editableTabsValue].content=[];
     },
 
     workerDelete(data) {
