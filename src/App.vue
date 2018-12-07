@@ -86,7 +86,7 @@
               <span slot="title">备品备件</span></template>
             <el-menu-item index="/SparePart">备件基础信息</el-menu-item>
             <el-menu-item index="/OutboundDetails">出库明细</el-menu-item>
-            <el-menu-item index="/SparePartAmend">修改</el-menu-item>
+            <el-menu-item index="/SparePartsClassification">备件分类</el-menu-item>
             <el-menu-item index="/SparePartsWarehouse">备件入库</el-menu-item>
             <el-menu-item index="/WarehousingDetail">入库明细</el-menu-item>
           </el-submenu>

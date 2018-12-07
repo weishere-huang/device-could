@@ -1,5 +1,5 @@
 <template>
-  <div class="category">
+  <div class="spare-parts-classification">
     <div style="width:900px;">
       <div class="classify-title">
         <h5 class="classify-name">分类名称</h5>
@@ -11,6 +11,7 @@
           :props="defaultProps"
           @node-click="handleNodeClick"
           node-key="id"
+          default-expand-all
           :expand-on-click-node="false"
         >
           <span
@@ -417,7 +418,7 @@ export default {
 @Danger: #f56c6c;
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
-.category {
+.spare-parts-classification {
   border: @border;
   font-size: 12px;
   max-height: 500px;

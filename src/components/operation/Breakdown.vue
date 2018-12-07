@@ -41,7 +41,7 @@
             slot="footer"
             class="dialog-footer"
           >
-            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button @click="cancel">取 消</el-button>
             <el-button
               type="primary"
               @click="toDispel"
@@ -157,7 +157,7 @@
         class="dialog-footer"
       >
         <el-button
-          @click="outerVisible = false"
+          @click="cancel"
           size="mini"
         >取 消</el-button>
         <el-button
@@ -286,6 +286,13 @@
       };
     },
     methods: {
+      cancel(){
+        this.dialogVisible = false;
+        this.outerVisible = false;
+        this.formLabelAlign.time="";
+        this.formLabelAlign.radio = "";
+        this.formLabelAlign.desc="";
+      },
       customCompFunc(params) {
         // console.log(params);
         if (params.type === "delete") {
@@ -351,7 +358,6 @@
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
-        console.log(this.pageIsOk);
         if(this.pageIsOk){
           this.load();
         }
