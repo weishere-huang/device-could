@@ -24,9 +24,9 @@
           </el-form-item>
           <el-form-item label="保养级别：">
             <el-select v-model="companyName.maintenanceLevel" placeholder="请选择" size="mini">
-              <el-option label="大" value="1"></el-option>
+              <el-option label="大" value="3"></el-option>
               <el-option label="中" value="2"></el-option>
-              <el-option label="小" value="3"></el-option>
+              <el-option label="小" value="1"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="计划类型：">
@@ -93,14 +93,13 @@
       </div>
       <div class="right">
         <div>
-          <el-button size="small" @click="eliminateAll">清空已选</el-button>
           <el-button size="small" @click="amendPlanIsShow">设备添加</el-button>
         </div>
         <h5>设备列表</h5>
         <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-        <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-          <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
-        </div>
+        <!--<div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">-->
+          <!--<v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>-->
+        <!--</div>-->
       </div>
     </div>
     <el-dialog
@@ -140,12 +139,6 @@ export default {
         maintenanceCc:""
       },
       columns: [
-        {
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
         {
           field: "deviceNo",
           title: "设备编号",
@@ -187,14 +180,6 @@ export default {
           columnAlign: "center",
           isResize: true
         },
-        {
-          field: "starTime",
-          title: "操作",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        }
       ],
       pageIndex: 1,
       pageSize: 10,
@@ -217,7 +202,7 @@ export default {
       ).then(response => {
           this.loadValue(response.data.data);
           // this.companyName =response.data.data;
-          console.log(response.data.data)
+          // console.log(response.data.data)
         },
         ({type, info}) => {
 
@@ -255,6 +240,7 @@ export default {
         })
     },
     updatePlan(){
+      this.deviceIds = this.tableData.map(item=>item.id).toString();
       this.companyName.executeTime = this.date +" "+ this.times;
       this.companyName.executeTime = this.companyName.executeTime.split(".")[0].replace(/-/g,"/");
       this.companyName.startTime = this.companyName.startTime.split(" ")[0].replace(/-/g,"/");

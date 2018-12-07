@@ -1,6 +1,7 @@
 <template>
   <div class="addPerson">
     <div class="addCase">
+
       <div class="bottom">
         <div class="left">
           <h5>设备类别</h5>
@@ -18,25 +19,57 @@
         </div>
         <div class="center">
           <div class="search">
-            <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
-            <el-button size="mini" @click="search">搜索</el-button>
+
+            <el-input
+              type="search"
+              size="mini"
+              v-model="key"
+              style="width:30%;"
+            ></el-input>
+            <el-button
+              size="mini"
+              @click="search"
+            >搜索</el-button>
             <span style="padding:0 10px;">最近搜索：{{searchs}}</span>
             <span style="text-decoration: underline;"></span>
           </div>
           <div class="tableList">
-            <v-table is-vertical-resize is-horizontal-resize :vertical-resize-offset='100' column-width-drag :multiple-sort="false" style="width:100%;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff" :select-all="selectALL" :select-group-change="selectGroupChange"></v-table>
-            <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px">
-              <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+            <v-table
+              is-vertical-resize
+              is-horizontal-resize
+              :vertical-resize-offset='100'
+              column-width-drag
+              :multiple-sort="false"
+              style="width:100%;"
+              :columns="columns"
+              :table-data="tableData"
+              row-hover-color="#eee"
+              row-click-color="#edf7ff"
+              :select-all="selectALL"
+              :select-change="selectChange"
+            ></v-table>
+            <div
+              class="mt20 mb20 bold"
+              style="text-align:left;margin-top:10px"
+            >
+              <v-pagination
+                @page-change="pageChange"
+                @page-size-change="pageSizeChange"
+                :total="pageNumber"
+                :page-size="pageSize"
+                :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
+              ></v-pagination>
             </div>
           </div>
         </div>
         <div class="right">
           <el-button size="mini" @click="deletes">清空</el-button>
-          <el-button size="mini" @click="toAdd">保存</el-button>
+          <el-button size="mini" @click="toAdd">确定</el-button>
           <div class="personList">
-            <ul>
-              <li v-for="(item, index) in personListValue" :key="index">{{item}}
-                <span>x</span>
+            <ul @click="getId">
+              <li v-for="(item, index) in personListValue" :key="index">
+                {{item.deviceName}}
+                <span :label="item.id">x</span>
               </li>
             </ul>
           </div>
@@ -51,12 +84,13 @@
     name: "",
     data() {
       return {
-        clickId:0,
+        pageIsOk:true,
+        arr:new Array(),
+        clickId: 0,
         key: "",
-        searchs: "",
-        toValue: "",
-        pageIndex: 1,
         pageNumber:"",
+        searchs: "",
+        pageIndex: 1,
         pageSize: 10,
         tableData: [],
         tableDate: [],
@@ -104,19 +138,24 @@
         personListValue: [],
         data2: [
           {
-            id:1,
-            categoryName:"一级",
-            children: [{
-              id: 11,
-              categoryName: '二级 1-1',
-              children: [{
-                id: 12,
-                categoryName: '三级 1-1-1'
-              }, {
-                id: 13,
-                categoryName: '三级 1-1-2'
-              }]
-            }]
+            id: 1,
+            categoryName: "一级",
+            children: [
+              {
+                id: 11,
+                categoryName: "二级 1-1",
+                children: [
+                  {
+                    id: 12,
+                    categoryName: "三级 1-1-1"
+                  },
+                  {
+                    id: 13,
+                    categoryName: "三级 1-1-2"
+                  }
+                ]
+              }
+            ]
           }
         ],
         defaultProps: {
@@ -130,95 +169,120 @@
         let arrs = new Array();
         this.Axios(
           {
-            params:{page: this.pageIndex, size: this.pageSize},
+            params: { page: this.pageIndex, size: this.pageSize },
             type: "get",
-            url: "/device/all",
+            url: "/device/select",
+            loadingConfig:{
+              target:document.querySelector('.el-dialog')
+            }
           },
           this
-        ).then(response => {
-          this.pageNumber = response.data.data.totalElements;
+        ).then(
+          response => {
+            this.pageNumber = response.data.data.totalElements;
             arrs = response.data.data.content;
+            arrs.forEach(item=>{
+              if(this.personListValue.find((i,index)=>i.id===item.id)) item._checked=true;
+            });
             this.tableData = arrs;
             this.tabledate = this.tableData;
           },
-          ({type, info}) => {
-
-          })
+          ({ type, info }) => {}
+        );
       },
       toLoad() {
         this.Axios(
           {
-            params:{deviceCategory:this.clickId},
+            params: { deviceCategory: this.clickId},
             type: "get",
-            url: "/device/select",
+            url: "/device/select"
           },
           this
-        ).then(response => {
-            this.tableData =response.data.data.content;
+        ).then(
+          response => {
+            this.tableData = response.data.data.content;
+            this.tableData.forEach(item=>{
+              if(this.personListValue.find((i,index)=>i.id===item.id)) item._checked=true;
+            });
             this.pageNumber = this.tableData.length;
           },
-          ({type, info}) => {
-
-          })
+          ({ type, info }) => {}
+        );
       },
       search() {
+        if(this.key!==""){
+          this.toSearch();
+          this.pageIsOk = false;
+        }else{
+          this.pageIsOk = true;
+          this.pageChange(1);
+        }
+      },
+      toSearch(){
         this.Axios(
           {
-            params:{ keyWord: this.key },
+            params: { keyWord: this.key },
             type: "get",
-            url: "/device/findByKeyWord",
+            url: "/device/findByKeyWord"
           },
           this
-        ).then(response => {
+        ).then(
+          response => {
+            this.pageNumber = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             this.tabledate = this.tableData;
             this.searchs = this.key;
-            this.pageNumber = this.tableData.length;
           },
-          ({type, info}) => {
-
-          })
+          ({ type, info }) => {}
+        );
       },
       isHide() {
         this.$emit("isHide", false);
       },
       toAdd() {
         let data = {
-          values: this.toValue,
+          values: this.personListValue,
           isOk: false
         };
         this.$emit("toAdd", data);
       },
       deletes() {
-        this.personListValue = "";
-        this.toValue = "";
+        this.personListValue = [];
+        this.loads();
       },
-      handleNodeClick(data) {
-        this.clickId=data.id;
-        this.toLoad();
+      getId(event){
+        let deleteId = event.target.attributes.label.value;
+        this.personListValue = this.personListValue.filter(item=>item.id!=deleteId);
+        this.loads();
       },
 
-      selectGroupChange(selection) {
-        this.toValue = selection;
-        let arr = new Array();
-        for (let i = 0; i < selection.length; i++) {
-          arr[i] = selection[i].deviceName;
+      handleNodeClick(data) {
+        this.clickId = data.id;
+        this.toLoad();
+      },
+      selectChange(selection,rowData){
+        if(selection.find(item=>item.id===rowData.id)){
+          this.personListValue.push(rowData);
+        }else{
+          this.personListValue = this.personListValue.filter(item=>item.id!==rowData.id);
         }
-        this.personListValue = arr;
-        // console.log(arr);
-        // console.log("select-group-change", selection);
       },
       selectALL(selection) {
-        this.toValue = selection;
-        let arr = new Array();
-        for (let i = 0; i < selection.length; i++) {
-          arr[i] = selection[i].deviceName;
+        let _personListValue=clone(this.personListValue);
+        if(selection.length===0){
+          //全不选
+          this.tableData.forEach(sitem => {
+            _personListValue = _personListValue.filter(item=>item.id!==sitem.id);
+          });
+        }else{
+          //全选
+          selection.forEach(sitem=>{
+            if(!_personListValue.find(item=>item.id===sitem.id)){
+              _personListValue.push(sitem);
+            }
+          });
         }
-        this.personListValue = arr;
-        // console.log("select-aLL", selection);
-      },
-      selectChange(selection, rowData) {
-        // console.log("select-change", selection, rowData);
+        this.personListValue = _personListValue;
       },
       getTableData() {
         this.tableData = this.tableDate.slice(
@@ -229,13 +293,19 @@
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
         this.getTableData();
-        console.log(pageIndex);
+        if(this.pageIsOk){
+          this.loads();
+        }
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
         this.pageSize = pageSize;
+        if(this.pageIsOk){
+          this.loads();
+        }
         this.getTableData();
       },
+
 
       filterArray2(data, parent) {
         let vm = this;
@@ -300,7 +370,7 @@
       // border-radius: 5px;
       // margin-top: 100px;
       font-size: 12px;
-    
+
       .bottom {
         margin-top: 20px;
         padding: 10px;

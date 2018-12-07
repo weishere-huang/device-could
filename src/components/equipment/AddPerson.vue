@@ -62,7 +62,7 @@
               <v-pagination
                 @page-change="pageChange"
                 @page-size-change="pageSizeChange"
-                :total="50"
+                :total="tablenum"
                 :page-size="pageSize"
                 :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
               ></v-pagination>
@@ -203,13 +203,14 @@ export default {
           isResize: true
         }
       ],
-      tablenum: 1,
+      tablenum: 0,
       data2: [{ code: "1000" }],
       defaultProps: {
         children: "children",
         label: "label"
       },
-      value: ""
+      value: "",
+      orgcode:""
     };
   },
   methods: {
@@ -236,7 +237,8 @@ export default {
     },
     handleNodeClick(data) {
       console.log(data);
-      this.findpeopler(data.code);
+      this.orgcode=data.code
+      this.findpeopler();
     },
     isHide() {
       this.$emit("isHide", false);
@@ -278,11 +280,13 @@ export default {
       this.pageIndex = pageIndex;
       this.getTableData();
       console.log(pageIndex);
+      this.findpeopler();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+      this.findpeopler();
     },
     filterArray(data, parent) {
       let vm = this;
@@ -300,12 +304,13 @@ export default {
       }
       return tree;
     },
-    findpeopler(code) {
-      console.log("该组织机构code---" + code);
+    findpeopler() {
       this.Axios(
         {
           params: {
-            organizeCode: code
+            organizeCode: this.orgcode,
+            page:this.pageIndex,
+            size:this.pageSize,
           },
           option: {
             enableMsg: true
@@ -326,6 +331,7 @@ export default {
             console.log("按照组织机构编号查询人");
             console.log(result.data);
             this.tableData = result.data.data.content;
+            this.tablenum = result.data.totalElements;
           }
         },
         ({ type, info }) => {

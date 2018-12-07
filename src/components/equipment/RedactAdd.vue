@@ -193,7 +193,8 @@ export default {
       defaultProps: {
         children: "children",
         label: "label"
-      }
+      },
+      orgcode:""
     };
   },
   methods: {
@@ -220,7 +221,7 @@ export default {
     handleNodeClick(data) {
       console.log(data);
       console.log(data.code);
-      this.findpeopler(data.code);
+      this.orgcode = data.code;
     },
     isHide() {
       this.$emit("isHide", false);
@@ -250,11 +251,13 @@ export default {
       this.pageIndex = pageIndex;
       this.getTableData();
       console.log(pageIndex);
+      this.findpeopler();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+      this.findpeopler();
     },
     filterArray(data, parent) {
       let vm = this;
@@ -272,11 +275,10 @@ export default {
       }
       return tree;
     },
-    findpeopler(code){
-      console.log("该组织机构code---"+code)
+    findpeopler(){
       this.Axios({
         params: {
-          organizeCode:code
+          organizeCode:this.orgcode
         },
         option: {
           enableMsg: false

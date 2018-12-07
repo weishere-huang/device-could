@@ -64,7 +64,7 @@
         </div>
         <div class="right">
           <el-button size="mini" @click="deletes">清空</el-button>
-          <el-button size="mini" @click="toAdd">保存</el-button>
+          <el-button size="mini" @click="toAdd">确定</el-button>
           <div class="personList">
             <ul @click="getId">
               <li v-for="(item, index) in personListValue" :key="index">
@@ -251,6 +251,7 @@
         this.loads();
       },
       getId(event){
+        let arr = this.tableData;
         let deleteId = event.target.attributes.label.value;
         this.personListValue = this.personListValue.filter(item=>item.id!=deleteId);
         this.loads();
