@@ -16,7 +16,7 @@
                   highlight-current
                   default-expand-all
                   node-key="id"
-                  empty-text="数据加载中..."
+                  :empty-text="organizationEmptytTxt"
                   :expand-on-click-node="false"
                   @node-click="treeNodeClick">
                 </el-tree>
@@ -31,13 +31,13 @@
                   highlight-current
                   default-expand-all
                   node-key="id"
-                  empty-text="数据加载中..."
+                  :empty-text="equTypeEmptytTxt"
                   :expand-on-click-node="false"
                   @node-click="treeNodeClick">
                 </el-tree>
               </div>
             </el-collapse-item>
-            <el-collapse-item title="设备状态" name="3">
+            <!-- <el-collapse-item title="设备状态" name="3">
               <el-tree 
                   ref='tree2'
                   :data="equStatusTreeData" 
@@ -49,7 +49,7 @@
                   :expand-on-click-node="false"
                   @node-click="treeNodeClick">
                 </el-tree>
-            </el-collapse-item>
+            </el-collapse-item> -->
           </el-collapse>
         </el-aside>
         <el-main class="monitMainContent">
@@ -57,7 +57,7 @@
             <div>当前设备组：常减压产线组 / 数量（台）：20</div>
             <div>
               刷新频次：
-                <el-select v-model="refreshValue" placeholder="请选择">
+                <el-select v-model="refreshValue" size="small" placeholder="请选择" style="width:100px">
                   <el-option
                     v-for="item in options"
                     :key="item.value"
@@ -65,7 +65,7 @@
                     :value="item.value">
                   </el-option>
                 </el-select>
-                <el-button type="primary"><i class='el-icon-refresh'></i> 立即刷新</el-button>
+                <el-button size="small" type="primary"><i class='el-icon-refresh'></i> 立即刷新</el-button>
             </div>
           </section>
           <section class="pinsWrap">
@@ -78,12 +78,12 @@
                 <el-col :span="6">
                   <el-card shadow="always" class="cardItem">
                     <div slot="header" class="clearfix">
-                      <span>
+                      <span class="cardItem-header">
                         <el-tooltip class="item" effect="light" content="严重警报，请立即检查设备" placement="top">
-                          <i class="iconfont red">&#xe651;</i>
+                          <i class="iconfont c-red">&#xe651;</i>
                         </el-tooltip>
                         &nbsp;常减压装置</span>
-                      <el-button style="float: right; padding: 3px 0" type="text">运行日志</el-button>
+                      <router-link :class="'g-link f14'" style="float: right; padding: 3px 0" to="/Monit/12">运行日志</router-link>
                     </div>
                     <div class="text item">
                         <p>编号：CH10002355</p>
@@ -167,7 +167,9 @@ export default {
     return {
       activeNames: ["1", "2", "3"],
       organizationTreeData: [],
+      organizationEmptytTxt:'数据加载中...',
       equTypeTreeData: [],
+      equTypeEmptytTxt:'数据加载中...',
       equStatusTreeData: [
         {
           label: "设备状态",
@@ -216,8 +218,17 @@ export default {
       this
     ).then(
       ([res1, res2]) => {
-        this.organizationTreeData = initTreeDataForOrganization(res1.data.data,"0");
-        this.equTypeTreeData = initTreeDataForEquType(res2.data.data, "0");
+        debugger
+        if(res1.data.data.length)
+          this.organizationTreeData = initTreeDataForOrganization(res1.data.data,"0");
+        else
+          this.organizationEmptytTxt='暂无数据';
+
+        if(res2.data.data.length)
+          this.equTypeTreeData = initTreeDataForEquType(res2.data.data, "0");
+        else
+          this.equTypeEmptytTxt='暂无数据';
+        
         //window.setTimeout(() => {this.$refs.tree.setCurrentKey("1024");}, 1000);
       },
       () => {}
@@ -330,14 +341,14 @@ export default {
     .topWrap{
       border:solid 1px #dfdfdf;
       border-radius: 5px;
-      height: 65px;
+      height: 55px;
       margin: 0 10px 5px 10px;
       display: flex;
       font-size: 12px;
       &>div:first-child {
         flex: 1;
         margin: 5px;
-        line-height: 50px;
+        line-height: 40px;
         //border: solid 1px #dfdfdf;
       }
       &>div:last-child {
@@ -371,6 +382,9 @@ export default {
   }
   .cardItem{
     margin: 5px;
+    .cardItem-header{
+      font-size: 16px;
+    }
     p{
       padding-bottom: 10px;
       font-size: 14px;
@@ -400,7 +414,6 @@ export default {
       }
     }
     .red{
-      color:red;
       cursor: pointer;
     }
   }

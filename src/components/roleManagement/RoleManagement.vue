@@ -430,6 +430,7 @@
             ({type, info}) => {
 
             })
+
         }
       },
       load(){
@@ -502,8 +503,8 @@
         ).then(
           response => {
             this.load();
-            console.log(response);
-            
+            this.form.name = "";
+            this.form.desc = "";
           },
           ({type, info}) => {
 
@@ -601,9 +602,15 @@
             this.personnel.adminKey = adminKey3;
             this.user.adminKey = adminKey4;
             this.message.adminKey = adminKey5;
+
           },
           ({type, info}) => {
-
+            this.system.checkedSystem="";
+            this.information.checkedSystem="";
+            this.equipment.checkedSystem="";
+            this.personnel.checkedSystem="";
+            this.user.checkedSystem="";
+            this.message.checkedSystem="";
           })
       },
 
