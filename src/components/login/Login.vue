@@ -87,48 +87,64 @@
       <div v-show="backshow">
         <h2>企业注册</h2>
         <div class="titleText">（企业注册信息填写）</div>
-        <el-form>
-          
-        </el-form>
-        <ul>
-          <li>
-            <label for="">企业名称：</label>
+        <el-form
+          :label-position="labelPosition"
+          label-width="160px"
+          :model="company"
+          :rules="registerRules"
+          ref="company"
+        >
+          <el-form-item
+            label="企业名称："
+            prop="name"
+          >
             <el-input
               size="small"
               v-model="company.name"
+              style="width:80%"
             ></el-input>
-          </li>
-          <li>
-            <label for="">法人代表：</label>
+          </el-form-item>
+          <el-form-item
+            label="法人代表："
+            prop="corporation"
+          >
             <el-input
               size="small"
               v-model="company.corporation"
+              style="width:80%"
             ></el-input>
-          </li>
-          <li>
-            <label for="">联系电话：</label>
+          </el-form-item>
+          <el-form-item
+            label="联系电话："
+            prop="phone"
+          >
             <el-input
               size="small"
               v-model="company.phone"
+              style="width:80%"
             ></el-input>
-          </li>
-          <li>
-            <label for="">企业地址：</label>
+          </el-form-item>
+          <el-form-item
+            label="企业地址："
+            prop="address"
+          >
             <el-input
               size="small"
               v-model="company.address"
+              style="width:80%"
             ></el-input>
-          </li>
-
-          <li>
-            <label for="">统一社会信用代码：</label>
+          </el-form-item>
+          <el-form-item
+            label="统一社会信用代码："
+            prop="companyID"
+          >
             <el-input
               size="small"
               v-model="company.companyID"
+              style="width:80%"
             ></el-input>
-          </li>
-          <li>
-            <label for="">营业执照：</label>
+          </el-form-item>
+          <el-form-item label="营业执照：">
             <el-upload
               action="https://jsonplaceholder.typicode.com/posts/"
               list-type="picture-card"
@@ -144,16 +160,14 @@
                 alt=""
               >
             </el-dialog>
-          </li>
-        </ul>
+          </el-form-item>
+        </el-form>
         <div class="next">
           <el-button
             type="primary"
             size="small"
-            round
             class="registerBtn"
-            v-on:click="function(){nextshow=!nextshow
-           backshow=!backshow}"
+            @click="registerNext('company')"
           >下一步
           </el-button>
         </div>
@@ -163,68 +177,70 @@
         style="margin-top:20px"
       >
         <div class="titleText">（管理员信息登记）</div>
-        <ul>
-          <li>
-            <label for="">用户名：</label>
+        <el-form
+          :label-position="labelPosition"
+          label-width="160px"
+          :model="manager"
+          :rules="managerRules"
+          ref="manager"
+        >
+          <el-form-item label="用户名：" prop="userName">
             <el-input
               size="small"
               v-model="manager.userName"
+              style="width:80%"
             ></el-input>
-          </li>
-          <li>
-            <label for="">密码：</label>
+          </el-form-item>
+          <el-form-item label="密码：" prop="userPassword">
             <el-input
               size="small"
-              type="password"
               v-model="manager.userPassword"
+              style="width:80%"
             ></el-input>
-          </li>
-          <li>
-            <label for="">手机号：</label>
+          </el-form-item>
+          <el-form-item label="手机号：" prop="phone">
             <el-input
               size="small"
               v-model="manager.phone"
+              style="width:80%"
             ></el-input>
-          </li>
-          <li>
-            <label for="">验证码：</label>
+          </el-form-item>
+          <el-form-item label="验证码：" prop="validate">
             <el-input
-              class="validate"
-              size="small"
+              type="text"
               v-model="manager.validate"
-            ></el-input>
+              size="small"
+              style="width:40%"
+            >
+            </el-input>
             <el-button
               type="primary"
-              round
-              size="small"
-            >获取验证码
-            </el-button>
-          </li>
-          <li>
+              plain
+              style="width:38%;height:32px;"
+            >获取验证码</el-button>
+          </el-form-item>
+          <el-form-item label="">
             <el-checkbox v-model="checked">您已阅读<a href="">《长虹设备云用户注册协议》</a></el-checkbox>
-          </li>
-          <li>
-            <el-button
-              type="primary"
-              size="small"
-              round
-              class="registerBtn"
-              v-on:click="function(){nextshow=!nextshow
+          </el-form-item>
+        </el-form>
+        <el-button
+          type="primary"
+          size="small"
+          class="registerBtn"
+          style="width:30%;height:32px"
+          v-on:click="function(){nextshow=!nextshow
            backshow=!backshow}"
-            >上一步
-            </el-button>
-            <el-button
-              type="primary"
-              size="small"
-              round
-              class="registerBtn"
-              v-on:click="register"
-            >注册
-            </el-button>
-          </li>
-        </ul>
+        >上一步
+        </el-button>
+        <el-button
+          type="primary"
+          size="small"
+          class="registerBtn"
+          @click="registerInfo('manager')"
+          style="width:30%;height:32px"
+        >注册
+        </el-button>
       </div>
-
       <div
         class="loginSkip"
         v-on:click="function(){
@@ -245,6 +261,7 @@ export default {
   name: "Login",
   data() {
     return {
+      labelPosition: "right",
       dialogImageUrl: "",
       dialogVisible: false,
       fileList2: [
@@ -279,6 +296,30 @@ export default {
         verification: [
           { required: false, message: "验证码不能为空", trigger: "blur" }
         ]
+      },
+      registerRules: {
+        name: [{ required: true, message: "企业名不能为空", trigger: "blur" }],
+        address: [{ required: true, message: "地址不能为空", trigger: "blur" }],
+        phone: [{ required: true, message: "电话不能为空", trigger: "blur" }],
+        corporation: [
+          { required: true, message: "法人代表不能为空", trigger: "blur" }
+        ],
+        companyID: [
+          {
+            required: true,
+            message: "统一社会信用代码不能为空",
+            trigger: "blur"
+          },
+          { min: 18, max: 18, message: "统一社会信用代码必须为18为", trigger: "blur" }
+        ]
+      },
+      managerRules: {
+        userName: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
+        userPassword: [{ required: true, message: "密码不能为空", trigger: "blur" }],
+        phone: [{ required: true, message: "电话不能为空", trigger: "blur" }],
+        validate: [
+          { required: false, message: "验证码不能为空", trigger: "blur" }
+        ],
       },
       fileList: [
         {
@@ -321,6 +362,29 @@ export default {
           this.login();
         } else {
           console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    registerNext(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          // alert("submit!");
+          this.nextshow = !this.nextshow;
+          this.backshow = !this.backshow;
+        } else {
+          this.$message.error("请完善信息");
+          return false;
+        }
+      });
+    },
+    registerInfo(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          // alert("submit!");
+          this.register();
+        } else {
+          this.$message.error("请填写完信息")
           return false;
         }
       });
@@ -711,6 +775,14 @@ export default {
     font-weight: 500;
     padding: 10px 0;
   }
+  .el-form-item {
+    text-align: left;
+    margin-bottom: 16px;
+    .el-upload--picture-card {
+      width: 80px;
+      height: 80px;
+    }
+  }
   ul {
     li {
       list-style-type: none;
@@ -751,7 +823,8 @@ export default {
     padding: 0;
   }
   .registerBtn {
-    width: 30%;
+    width: 75%;
+    height: 32px;
   }
   .loginSkip {
     padding-right: 40px;
