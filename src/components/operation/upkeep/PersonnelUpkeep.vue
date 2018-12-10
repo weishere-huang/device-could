@@ -4,7 +4,7 @@
 
       <div class="search">
         <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
-        <el-button size="mini">搜索</el-button>
+        <el-button size="mini" @click="search">搜索</el-button>
         <span style="padding:0 10px;">最近搜索：{{searchs}}</span>
         <span style="text-decoration: underline;"></span>
       </div>
@@ -91,25 +91,32 @@
 
           })
       },
+
       search() {
-        this.Axios(
-          {
-            params:{condition: this.key},
-            type: "get",
-            url: "/employee/search",
-          },
-          this
-        ).then(response => {
-            this.pageNumber = response.data.data.totalElements;
-            this.tableData = response.data.data.content;
-            this.searchs = this.key;
-            this.tableDate = this.tableData;
-          },
-          ({type, info}) => {
-
-          })
+        if(!(/^1[345789]\d{9}$/.test(this.key))){
+          alert("手机号码有误，请重填");
+        }else{
+          this.pageIndex =1;
+          this.Axios(
+            {
+              params: {condition: this.key},
+              type: "get",
+              url: "/employee/search",
+            },
+            this
+          ).then(response => {
+              if(this.key!==""){
+                this.pageNumber = response.data.data.totalElements;
+                this.tableData = response.data.data.content;
+                this.tableDate = this.tableData;
+              }else{
+                this.pageChange(1);
+              }
+            },
+            ({type, info}) => {
+            })
+        }
       },
-
       selectGroupChange(selection) {
         console.log("select-group-change", selection);
       },
@@ -128,7 +135,7 @@
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
         this.getTableData();
-        console.log(pageIndex);
+        this.load();
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;

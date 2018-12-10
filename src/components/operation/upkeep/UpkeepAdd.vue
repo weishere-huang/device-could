@@ -24,9 +24,9 @@
                     </el-form-item>
                     <el-form-item label="检修级别：">
                         <el-select v-model="companyName.maintenanceLevel" placeholder="请选择" size="mini">
-                            <el-option label="大" value="1"></el-option>
+                            <el-option label="大" value="3"></el-option>
                             <el-option label="中" value="2"></el-option>
-                            <el-option label="小" value="3"></el-option>
+                            <el-option label="小" value="1"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="计划类型：">
@@ -67,12 +67,12 @@
                     <el-form-item label="检修内容：" style="height:auto;">
                         <el-input type="textarea" v-model="companyName.maintenanceCc" style="width:100%;"></el-input>
                     </el-form-item>
-                    <el-form-item label="分布详情：" style="height:auto;margin:5px 0;">
-                        <tr class="tableTime">
-                            <td>111</td>
-                            <td>2</td>
-                        </tr>
-                    </el-form-item>
+                    <!--<el-form-item label="分布详情：" style="height:auto;margin:5px 0;">-->
+                        <!--<tr class="tableTime">-->
+                            <!--<td>111</td>-->
+                            <!--<td>2</td>-->
+                        <!--</tr>-->
+                    <!--</el-form-item>-->
                 </el-form>
                 <!-- 单次执行 -->
                 <el-form label-width="110px" v-if="companyName.planType==='单次'" v-model="companyName.planType">
@@ -102,14 +102,13 @@
             </div>
             <div class="right">
                 <div>
-                    <el-button size="small" @click="eliminateAll">清空已选</el-button>
                     <el-button size="small" @click="addPlanIsShow">设备添加</el-button>
                 </div>
                 <h5>设备列表</h5>
                 <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-                <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-                    <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
-                </div>
+                <!--<div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">-->
+                    <!--<v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>-->
+                <!--</div>-->
             </div>
         </div>
         <el-dialog
@@ -128,7 +127,6 @@ export default {
   name: "",
   data() {
     return {
-      //统一token之后删除userID
       arr:[],
       deviceIds:1,
       auditId:0,
@@ -147,16 +145,10 @@ export default {
         endTime:"",
         executeTime:"",
         frequency:1,
-        frequencyType:"天",
+        frequencyType:"1",
         maintenanceCc:""
       },
       columns: [
-        {
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
         {
           field: "deviceNo",
           title: "设备编号",
@@ -198,14 +190,6 @@ export default {
           columnAlign: "center",
           isResize: true
         },
-        {
-          field: "starTime",
-          title: "操作",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        }
       ],
       pageIndex: 1,
       pageSize: 10,
@@ -234,6 +218,7 @@ export default {
         })
     },
     addPlan(){
+      this.deviceIds = this.tableData.map(item=>item.id).toString();
       if(this.deviceIds!==""){
         this.toAddPlan()
       }else{
@@ -241,6 +226,7 @@ export default {
       }
     },
     toAddPlan(){
+      this.deviceIds = this.tableData.map(item=>item.id).toString();
       this.companyName.executeTime = this.date +" "+ this.times;
       this.companyName.executeTime = this.companyName.executeTime.split(".")[0];
       this.companyName.maintenanceType = 1;
@@ -264,7 +250,6 @@ export default {
       }
       let qs = require("qs");
       let data = qs.stringify({
-        id:this.companyName.id,
         planName:this.companyName.planName,
         maintenanceClassify:this.companyName.maintenanceClassify,
         maintenanceLevel:this.companyName.maintenanceLevel,
@@ -278,20 +263,20 @@ export default {
         maintenanceCc:this.companyName.maintenanceCc,
         deviceIds : this.deviceIds,
       });
-      this.axios
-        .post(this.global.apiSrc+"/mplan/add", data)
-        .then(response => {
+      this.Axios(
+        {
+          params:data,
+          type: "post",
+          url: "/mplan/add",
+        },
+        this
+      ).then(response => {
           this.auditId = response.data.data.id;
-          if(response.data.msg ==="成功"){
-            alert("计划添加成功");
-            this.Upkeep();
-          }else{
-            alert("计划添加失败");
-          }
+          this.submitAudit();
+        },
+        ({type, info}) => {
+
         })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
 
     submitAudit(){
@@ -303,23 +288,20 @@ export default {
           });
           this.Axios(
             {
-              params:Object.assign(this.searchParams, {
-                page: this.pageIndex,
-                size: this.pageSize
-              }),
+              params:data,
               type: "post",
               url: "/mplan/submitAudit",
             },
             this
           ).then(response => {
-              this.TurnaroundPlans();
+              this.Upkeep();
             },
             ({type, info}) => {
 
             })
         })
         .catch(_=>{
-          this.TurnaroundPlans();
+          this.Upkeep();
         })
     },
     toSubmitAudit(){
@@ -335,21 +317,10 @@ export default {
         },
         this
       ).then(response => {
-          this.TurnaroundPlans();
+          this.Upkeep();
         },
         ({type, info}) => {
         })
-    },
-    eliminateAll(){
-      let aaa = new Array();
-      for (let i in this.tableData){
-        for(let j in this.arr){
-          if(this.tableData[i].id !==this.arr[j].id){
-            aaa[aaa.length] = this.tableData[i];
-          }
-        }
-      }
-      this.tableData = aaa;
     },
     Upkeep() {
       this.$router.push({

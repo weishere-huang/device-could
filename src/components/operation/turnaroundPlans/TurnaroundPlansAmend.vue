@@ -64,12 +64,12 @@
           <el-form-item label="检修内容：" style="height:auto;">
             <el-input type="textarea" v-model="companyName.maintenanceCc" style="width:100%;"></el-input>
           </el-form-item>
-          <el-form-item label="分布详情：" style="height:auto;margin:5px 0;">
-            <tr class="tableTime">
-              <td>111</td>
-              <td>2</td>
-            </tr>
-          </el-form-item>
+          <!--<el-form-item label="分布详情：" style="height:auto;margin:5px 0;">-->
+            <!--<tr class="tableTime">-->
+              <!--<td>111</td>-->
+              <!--<td>2</td>-->
+            <!--</tr>-->
+          <!--</el-form-item>-->
         </el-form>
         <!-- 单次执行 -->
         <el-form label-width="110px" v-if="companyName.planType==='单次'" v-model="companyName.planType">
@@ -99,13 +99,13 @@
       </div>
       <div class="right">
         <div>
-          <el-button size="small" @click="eliminateAll">清空已选</el-button>
+          <!--<el-button size="small" @click="eliminateAll">清空已选</el-button>-->
           <el-button size="small" @click="amendPlanIsShow">设备添加</el-button>
         </div>
         <h5>设备列表</h5>
         <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
         <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-          <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+          <!--<v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>-->
         </div>
       </div>
     </div>
@@ -125,10 +125,11 @@
     name: "",
     data() {
       return {
-        arr:[],
+        arr:new Array(),
+        auditId:0,
+        deviceIds:0,
         date:"",
         times:"",
-        deviceIds:1,
         amendPlanShow:false,
         time: new Date().toLocaleString(),
         companyName: {
@@ -146,12 +147,12 @@
           maintenanceCc:""
         },
         columns: [
-          {
-            width: 50,
-            titleAlign: "center",
-            columnAlign: "center",
-            type: "selection"
-          },
+          // {
+          //   width: 50,
+          //   titleAlign: "center",
+          //   columnAlign: "center",
+          //   type: "selection"
+          // },
           {
             field: "deviceNo",
             title: "设备编号",
@@ -193,19 +194,20 @@
             columnAlign: "center",
             isResize: true
           },
-          {
-            field: "starTime",
-            title: "操作",
-            width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
-          }
+          // {
+          //   field: "starTime",
+          //   title: "操作",
+          //   width: 100,
+          //   titleAlign: "center",
+          //   columnAlign: "center",
+          //   isResize: true
+          // }
         ],
         pageIndex: 1,
         pageSize: 10,
         tableData: [],
-        tableDate: []
+        tableDate: [],
+        timeValue: ""
       };
     },
     created() {
@@ -248,6 +250,7 @@
         }if(this.companyName.planType=== 1){
           this.companyName.planType = "周期"
         }
+        this.companyName.frequencyType = this.companyName.frequencyType.toString();
         this.date = this.companyName.executeTime.split(" ")[0];
         this.times = this.companyName.executeTime.split(" ")[1].split(".")[0];
       },
@@ -276,6 +279,7 @@
           })
       },
       updatePlan(){
+        this.deviceIds = this.tableData.map(item=>item.id).toString();
         if(this.deviceIds!==""){
           this.toUpdatePlan()
         }else{
@@ -283,6 +287,7 @@
         }
       },
       toUpdatePlan(){
+        this.deviceIds = this.tableData.map(item=>item.id).toString();
         this.companyName.executeTime = this.date +" "+ this.times;
         this.companyName.executeTime = this.companyName.executeTime.split(".")[0].replace(/-/g,"/");
         this.companyName.startTime = this.companyName.startTime.split(" ")[0].replace(/-/g,"/");
@@ -338,25 +343,14 @@
       toback() {
         this.$router.back(-1);
       },
-      selectGroupChange(selection) {
-        this.deviceIds=selection.map(item=>item.id).toString();
-        this.arr = selection.map(item=>item);
-      },
-      selectALL(selection) {
-        this.deviceIds=selection.map(item=>item.id).toString();
-        this.arr = selection.map(item=>item);
-      },
-      eliminateAll(){
-        let aaa = new Array();
-        for (let i in this.tableData){
-          for(let j in this.arr){
-            if(this.tableData[i].id !==this.arr[j].id){
-              aaa[aaa.length] = this.tableData[i];
-            }
-          }
-        }
-        this.tableData = aaa;
-      },
+      // selectGroupChange(selection) {
+      //   this.deviceIds=selection.map(item=>item.id).toString();
+      //   this.arr = selection.map(item=>item);
+      // },
+      // selectALL(selection) {
+      //   this.deviceIds=selection.map(item=>item.id).toString();
+      //   this.arr = selection.map(item=>item);
+      // },
       selectChange(selection, rowData) {
         console.log("select-change", selection, rowData);
       },

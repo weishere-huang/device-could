@@ -62,7 +62,7 @@
               <v-pagination
                 @page-change="pageChange"
                 @page-size-change="pageSizeChange"
-                :total="50"
+                :total="tablenum"
                 :page-size="pageSize"
                 :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
               ></v-pagination>
@@ -70,18 +70,21 @@
           </div>
         </div>
         <div class="right">
-          <el-button size="mini">清空</el-button>
-          <el-button size="mini">保存</el-button>
+          <el-button size="mini" @click="deletes">清空</el-button>
+          <el-button size="mini" @click="toAdd">保存</el-button>
           <div class="personList">
             <el-tabs type="border-card" @tab-click="getNode" v-model="editableTabsValue" :tab-position="tabPosition" style="height: 200px;">
-                <el-tab-pane :key="item.name"
-                  v-for="item in editableTabs"
-                  :label="item.title"
-                  :name="item.name">
-                  <span>{{item.content}}
-                    <label><i class="iconfont icon-cha"></i></label>
-                  </span>
-                </el-tab-pane>
+              <el-tab-pane
+                :key="item.name"
+                v-for="item in editableTabs"
+                :label="item.workerTypeName"
+                :name="item.workerType"
+              >
+                <tab-component
+                  :items="item"
+                  :deleteWorker="workerDelete"
+                ></tab-component>
+              </el-tab-pane>
               </el-tabs>
           </div>
         </div>
@@ -90,39 +93,65 @@
   </div>
 </template>
 <script>
+  import Vue from "vue";
+  var tabComponent = Vue.component("tab-component", {
+    props: {
+      items: {
+        type: Object,
+        required: true
+      },
+      deleteWorker: {
+        type: Function,
+        required: true
+      }
+    },
+    template:
+      '<ul class="workerList"><li v-for="item in items.content">{{ item.workerName }}<i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>'
+  });
 export default {
   name: "",
+  props: {
+    personAddHandler: {
+      type: Function,
+      required: true
+    }
+  },
   data() {
     return {
       editableTabs: [
         {
-          title: '负责',
-          name: '0',
-          content:''
-        }, {
-          title: '维修',
-          name: '1',
-          content: ''
-        }, {
-          title: '检修',
-          name: '2',
-          content:''
-        }, {
-          title: '保养',
-          name: '3',
-          content: ''
-        }, {
-          title: '操作',
-          name: '4',
-          content: ''
+          workerTypeName: "负责",
+          workerType: "0",
+          content: []
+        },
+        {
+          workerTypeName: "维修",
+          workerType: "1",
+          content: []
+        },
+        {
+          workerTypeName: "检修",
+          workerType: "2",
+          content: []
+        },
+        {
+          workerTypeName: "保养",
+          workerType: "3",
+          content: []
+        },
+        {
+          workerTypeName: "操作",
+          workerType: "4",
+          content: []
         }
       ],
       editableTabsValue:"0",
       tabPosition:"top",
       pageIndex: 1,
       pageSize: 10,
+      toValue:"",
       tableData: [],
-      tableDate: [{code:1000}],
+      tableDate: [],
       columns: [
         {
           field: "name",
@@ -164,14 +193,28 @@ export default {
       defaultProps: {
         children: "children",
         label: "label"
-      }
+      },
+      orgcode:"",
+      //分页total
+      tablenum:""
     };
   },
   methods: {
     getRowData(a,b,c){
       console.log(b.name);
       console.log(this.editableTabs[this.editableTabsValue]);
-      this.editableTabs[this.editableTabsValue].content+=b.name+','
+      if (
+        this.editableTabs[this.editableTabsValue].content.find(
+          i => i.id === b.id
+        )
+      ) {
+        this.$message("此绑定类型不能添加重复的人员");
+      } else {
+        this.editableTabs[this.editableTabsValue].content.push({
+          workerName: b.name,
+          id: b.id
+        });
+      }
     },
     getNode(a){
       console.log(a);
@@ -180,7 +223,8 @@ export default {
     handleNodeClick(data) {
       console.log(data);
       console.log(data.code);
-      this.findpeopler(data.code);
+      this.orgcode = data.code;
+      this.findpeopler();
     },
     isHide() {
       this.$emit("isHide", false);
@@ -210,11 +254,13 @@ export default {
       this.pageIndex = pageIndex;
       this.getTableData();
       console.log(pageIndex);
+      this.findpeopler();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+      this.findpeopler();
     },
     filterArray(data, parent) {
       let vm = this;
@@ -232,11 +278,10 @@ export default {
       }
       return tree;
     },
-    findpeopler(code){
-      console.log("该组织机构code---"+code)
+    findpeopler(){
       this.Axios({
         params: {
-          organizeCode:code
+          organizeCode:this.orgcode
         },
         option: {
           enableMsg: false
@@ -249,9 +294,14 @@ export default {
       },this)
         //.get(this.global.apiSrc + "/employee/findByOrganizeCode", {params:{organizeCode:code}})
         .then(result => {
-          console.log("按照组织机构编号查询人");
-          console.log(result.data);
-          this.tableData=result.data.data.content;
+            if (result.data.code === 204) {
+              this.tableData = [];
+            } else {
+              console.log("按照组织机构编号查询人");
+              console.log(result.data);
+              this.tableData = result.data.data.content;
+              this.tablenum = result.data.data.totalElements;
+            }
         },
           ({type, info}) => {
             //错误类型 type=faild / error
@@ -261,7 +311,21 @@ export default {
         // .catch(err => {
         //   console.log(err);
         // });
-    }
+    },
+
+    toAdd() {
+      this.$props.personAddHandler(this.editableTabs);
+    },
+    deletes() {
+      this.editableTabs[this.editableTabsValue].content=[];
+    },
+
+    workerDelete(data) {
+      //debugger;
+      this.editableTabs[this.editableTabsValue].content = this.editableTabs[
+        this.editableTabsValue
+        ].content.filter(item => item.id !== data.id);
+    },
   },
   created() {
     this.Axios({
@@ -279,6 +343,8 @@ export default {
         console.log(arr);
         //this.data2 = this.filterArray(result.data.data,1000);
         this.data2 = arr;
+        this.orgcode=result.data.data[0].code;
+        this.findpeopler();
       },
         ({type, info}) => {
           //错误类型 type=faild / error
@@ -416,4 +482,23 @@ export default {
     }
   }
 }
+ .workerList {
+   list-style-type: none;
+   li {
+     line-height: 22px !important;
+     padding: 3px;
+     &:nth-child(2n-1) {
+       background: #f7f7f7;
+     }
+     i {
+       float: right;
+       line-height: 22px;
+       cursor: pointer;
+       &:hover {
+         color: red;
+         font-weight: bold;
+       }
+     }
+   }
+ }
 </style>

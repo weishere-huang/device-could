@@ -2,10 +2,10 @@
   <div class="organization">
     <div class="content">
       <div class="left">
-        <h5>企业名称</h5>
+        <h5 class="componet-name">企业名称</h5>
         <div style="float:right;">
-          <h5>备注</h5>
-          <h5>类别</h5>
+          <h5 class="classify">类别</h5>
+          <h5 class="remarks">备注</h5>
         </div>
         <el-tree
           :data="data"
@@ -54,21 +54,21 @@
       :visible.sync="addShow"
       width="500px"
     >
-     <add
-      v-on:addHide="addHide"
-      :nodedata="nodedata"
-    ></add>
+      <add
+        v-on:addHide="addHide"
+        :nodedata="nodedata"
+      ></add>
     </el-dialog>
     <el-dialog
       title="修改"
       :visible.sync="reviseShow"
       width="500px"
     >
-    <revise
-      v-show="reviseShow"
-      v-on:reviseHide="reviseHide"
-      :chengedata="chengedata"
-    ></revise>
+      <revise
+        v-show="reviseShow"
+        v-on:reviseHide="reviseHide"
+        :chengedata="chengedata"
+      ></revise>
     </el-dialog>
   </div>
 
@@ -229,17 +229,20 @@ export default {
     },
     findOneOrganize(id) {
       //查询单个组织机构
-      this.Axios({
-        params: id,
-        type: "get",
-        url: "/organize/findOneOrganize/"+id,
-        option: {
-          enableMsg: false
-        }
-      },this)
+      this.Axios(
+        {
+          params: id,
+          type: "get",
+          url: "/organize/findOneOrganize/" + id,
+          option: {
+            enableMsg: false
+          }
+        },
+        this
+      )
         //.put(this.global.apiSrc + "/organize/update", data)
         .then(result => {
-          this.chengedata = result.data.data
+          this.chengedata = result.data.data;
           console.log(result.data);
         })
         .catch(err => {
@@ -259,30 +262,32 @@ export default {
             obj.children = temp;
           }
           tree.push(obj);
-          }
         }
-        return tree;
-      },
+      }
+      return tree;
+    },
     ap() {
-        this.add1 = !this.add1;
-      },
+      this.add1 = !this.add1;
+    },
     revise() {
-        this.revise1 = !this.revise1;
-      },
-    warningdelete(nodeId){
-        this.$confirm('确定要删除吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+      this.revise1 = !this.revise1;
+    },
+    warningdelete(nodeId) {
+      this.$confirm("确定要删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
           this.orgdelete(nodeId);
-        }).catch(() => {
+        })
+        .catch(() => {
           this.$message({
-            type: 'info',
-            message: '已取消删除'
+            type: "info",
+            message: "已取消删除"
           });
         });
-      },
+    },
     ap() {
       this.add1 = !this.add1;
     },
@@ -336,48 +341,50 @@ export default {
     left: 50%;
   }
   .content {
-    padding: 10px;
-    overflow: hidden;
-    // border: @border;
+    overflow: scroll;
+    border: @border;
+    border-radius: 5px;
+    max-height: 500px;
     .left {
-      width: 900px;
-      padding: 10px;
+      width: 1000px;
+      // padding: 10px;
       overflow: hidden;
       float: left;
       // text-align: center;
-      border: @border;
-      h5 {
-        font-size: 14px;
-        height: 30px;
+      // border: @border;
+      .componet-name {
         line-height: 30px;
-        // border-bottom: @border;
-        display: inline-block;
-        width: 300px;
-        text-align: center;
-      }
-      h5:nth-child(2) {
-        width: 100px;
+        width: 500px;
+        // border: @border;
+        padding-left: 30px;
         float: left;
       }
-      h5:nth-child(3) {
-        padding-right: 10px;
-        width: 300px;
-        // float: right;
+      .remarks {
+        width: 400px;
+        float: left;
+        // border: @border;
+        line-height: 30px;
+        text-align: center;
       }
-      // .el-tree {
-      //   width: 100%;
-      // }
+      .classify {
+        padding-right: 10px;
+        width: 100px;
+        // border: @border;
+        float: left;
+        line-height: 30px;
+        text-align: center;
+      }
     }
   }
 }
 
 .el-tree {
-  width: 900px;
-  padding: 10px;
+  width: 100%;
+
   overflow: hidden;
 
   .custom-tree-node {
-    width: 900px;
+    width: 100%;
     text-align: right;
     // height: 40px;
     .listcontent {
@@ -385,28 +392,33 @@ export default {
       float: left;
       text-align: left;
       width: 400px;
-      // border: @border;
+      position: relative;
       .addCase {
-        float: right;
-        // display: inline-block;
-        display: none;
+        position: relative;
+        display: inline-block;
+        margin-left: 30px;
+        opacity: 0;
+        z-index: -10;
       }
       &:hover {
         .addCase {
-          display: block;
+          opacity: 1;
+          z-index: 10;
         }
       }
     }
     .state {
       display: inline-block;
-      width: 80px;
+      width: 100px;
+      line-height: 28px;
       text-align: center;
       // border: @border;
     }
     .organizeInfo {
       display: inline-block;
       text-align: center;
-      width: 300px;
+      width: 400px;
+      line-height: 28px;
       // border: @border;
     }
 

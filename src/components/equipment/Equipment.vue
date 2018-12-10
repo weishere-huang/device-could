@@ -107,7 +107,7 @@
             <v-pagination
               @page-change="pageChange"
               @page-size-change="pageSizeChange"
-              :total="totalElements"
+              :total="totalnum"
               :page-size="pageSize"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
@@ -236,6 +236,12 @@ export default {
       leftclass:"",
       leftcate:"",
       leftstate:"",
+      //高级搜索
+      deviceName:"",
+      locationNo:"",
+      workerName:"",
+      manufacturer:"",
+      deviceSates:"",
     };
   },
   methods: {
@@ -259,7 +265,7 @@ export default {
       }
     },
     handleNodeClick(data) {
-      this.leftcate = data.id;
+      this.leftcate = data.categoryNo;
       this.leftstate = "";
       this.leftclass = "";
       this.keyorall=2;
@@ -268,7 +274,14 @@ export default {
       this.leftfind();
     },
     advanceValue(params) {
-      this.tableData = params;
+      // this.tableData = params;
+      this.deviceName=params.deviceName,
+      this.locationNo=params.locationNo,
+      this.workerName=params.workerName,
+      this.manufacturer=params.manufacturer,
+      this.deviceSates=params.deviceSates,
+      this.pageIndex=1
+      console.log(params);
     },
     adsearch() {
       $(".adsearch")[0].style.right = 0;
@@ -367,7 +380,12 @@ export default {
         {
           params: {
             page: this.pageIndex,
-            size: this.pageSize
+            size: this.pageSize,
+            // deviceName:this.deviceName,
+            // locationNo:this.locationNo,
+            // workerName:this.workerName,
+            // manufacturer:this.manufacturer,
+            // deviceSates:this.choice,
           },
           // option: {
           //   enableMsg: false
@@ -384,7 +402,7 @@ export default {
         .then(
           result => {
             this.totalnum = result.data.data.totalElements;
-            console.log("++++");
+            console.log("查找设备");
             console.log(result.data);
             this.tableData = result.data.data.content;
             for (let i = 0; i < this.tableData.length; i++) {
@@ -443,6 +461,7 @@ export default {
         //   }
         // })
         .then(result => {
+          this.totalnum = result.data.data.totalElements;
           this.tableData = result.data.data.content;
           for (let i = 0; i < this.tableData.length; i++) {
             if (this.tableData[i].deviceState === 1) {
@@ -616,7 +635,6 @@ export default {
                 this.tableData[i].deviceState = "报废";
               }
             }
-            console.log(result.data);
           },
           ({ type, info }) => {
             //错误类型 type=faild / error
