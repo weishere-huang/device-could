@@ -2,39 +2,59 @@
   <div class="work-order">
     <div class="top">
       <el-badge class="item">
-        <el-button @click="load(toNull)" size="small">全部工单</el-button>
+        <el-button
+          @click="load(toNull)"
+          size="small"
+        >全部工单</el-button>
       </el-badge>
       <el-badge
         :value="audited"
         class="item"
       >
-        <el-button @click="load(0)" size="small">待审核</el-button>
+        <el-button
+          @click="load(0)"
+          size="small"
+        >待审核</el-button>
       </el-badge>
       <el-badge
         :value="inAudit"
         class="item"
       >
-        <el-button @click="load(4)" size="small">审核中</el-button>
+        <el-button
+          @click="load(4)"
+          size="small"
+        >审核中</el-button>
       </el-badge>
       <el-badge
         :value="handle"
         class="item"
       >
-        <el-button @click="load(5)" size="small">待处理</el-button>
+        <el-button
+          @click="load(5)"
+          size="small"
+        >待处理</el-button>
       </el-badge>
       <el-badge class="item">
-        <el-button @click="load(7)" size="small">已撤销</el-button>
+        <el-button
+          @click="load(7)"
+          size="small"
+        >已撤销</el-button>
       </el-badge>
       <el-badge class="item">
-        <el-button @click="load(10)" size="small">已驳回</el-button>
+        <el-button
+          @click="load(10)"
+          size="small"
+        >已驳回</el-button>
       </el-badge>
       <el-badge class="item">
-        <el-button @click="load(13)" size="small">已完成</el-button>
+        <el-button
+          @click="load(13)"
+          size="small"
+        >已完成</el-button>
       </el-badge>
     </div>
     <div class="bottom">
       <v-table
-        ref="companysTable"
         is-horizontal-resize
         column-width-drag
         :multiple-sort="false"
@@ -46,11 +66,12 @@
         :select-group-change="selectGroupChange"
         :row-dblclick="Jump"
         row-click-color="#edf7ff"
+        ref="workOrderTable"
       >
       </v-table>
       <div
         class="mt20 mb20 bold"
-        style="text-align:center;margin-top:30px"
+        style="text-align:left;margin-top:20px"
       >
         <v-pagination
           @page-change="pageChange"
@@ -69,11 +90,11 @@ export default {
   name: "Test",
   data() {
     return {
-      toNull:"",
-      audited:"",
-      inAudit:"",
-      handle:"",
-      pageIsOk:true,
+      toNull: "",
+      audited: "",
+      inAudit: "",
+      handle: "",
+      pageIsOk: true,
       pageIndex: 1,
       pageSize: 10,
       totalNub: "",
@@ -92,7 +113,8 @@ export default {
           width: 80,
           titleAlign: "center",
           columnAlign: "left",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
           //   orderBy: ""
         },
         {
@@ -101,7 +123,8 @@ export default {
           width: 70,
           titleAlign: "center",
           columnAlign: "left",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "workType",
@@ -109,7 +132,8 @@ export default {
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "workDesc",
@@ -117,7 +141,8 @@ export default {
           width: 200,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "workCauseAnalysis",
@@ -125,7 +150,8 @@ export default {
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "deviceNames",
@@ -133,7 +159,8 @@ export default {
           width: 120,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "gmtCreate",
@@ -141,7 +168,8 @@ export default {
           width: 100,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         }
       ]
     };
@@ -171,50 +199,55 @@ export default {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
-      if(this.pageIsOk){
+      if (this.pageIsOk) {
         this.load(-1);
       }
     },
     Jump(rowIndex, rowData, column) {
-      if(rowData.workType==="故障"){
-        this.$router.push("/BreakdownOrder?id="+rowData.id);
-      }else{
-        this.$router.push("/UpkeepAndTurnaroundPlans?id="+rowData.id);
+      if (rowData.workType === "故障") {
+        this.$router.push("/BreakdownOrder?id=" + rowData.id);
+      } else {
+        this.$router.push("/UpkeepAndTurnaroundPlans?id=" + rowData.id);
       }
     },
 
     load(stateNum) {
-      if(stateNum ===""){
+      EventBus.$on("sideBarTroggleHandle", isCollapse => {
+        window.setTimeout(() => {
+          this.$refs.workOrderTable.resize();
+        }, 500);
+      });
+      if (stateNum === "") {
         this.pageIsOk = true;
         this.audited = "";
         this.inAudit = "";
         this.handle = "";
-      }else if (stateNum === 0){
+      } else if (stateNum === 0) {
         this.audited = "";
         this.pageIsOk = false;
-      }else if (stateNum === 1){
+      } else if (stateNum === 1) {
         this.pageIsOk = false;
-      }else if (stateNum === 2){
+      } else if (stateNum === 2) {
         this.pageIsOk = false;
-      }else if (stateNum === 3){
+      } else if (stateNum === 3) {
         this.pageIsOk = false;
-      }else if (stateNum === 4){
+      } else if (stateNum === 4) {
         this.pageIsOk = false;
-      }else if (stateNum === 5){
+      } else if (stateNum === 5) {
         this.pageIsOk = false;
-        this.handle++
-      }else if (stateNum === 6){
+        this.handle++;
+      } else if (stateNum === 6) {
         this.pageIsOk = false;
       }
       this.Axios(
         {
           params: {
-            state:stateNum,
+            state: stateNum,
             page: this.pageIndex,
-            size:this.pageSize
+            size: this.pageSize
           },
           type: "get",
-          url: "/maintenanceWork/workList",
+          url: "/maintenanceWork/workList"
         },
         this
       ).then(
@@ -224,19 +257,18 @@ export default {
           this.loadValue(response.data.data.content);
           this.tableDate = this.tableData;
         },
-        ({type, info}) => {
-
-        })
+        ({ type, info }) => {}
+      );
     },
-    loadValue(value){
-      for (let i in value){
-        if (value[i].workType === 0){
+    loadValue(value) {
+      for (let i in value) {
+        if (value[i].workType === 0) {
           this.tableData[i].workType = "检修";
         }
-        if (value[i].workType === 1){
+        if (value[i].workType === 1) {
           this.tableData[i].workType = "保养";
         }
-        if (value[i].workType === 2){
+        if (value[i].workType === 2) {
           this.tableData[i].workType = "故障";
         }
         if (value[i].state === 0) {
@@ -275,9 +307,9 @@ export default {
           this.tableData[i].state = "已完成";
         }
       }
-    },
+    }
   },
-  created(){
+  created() {
     this.load();
   },
   mounted() {}
@@ -291,7 +323,7 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .work-order {
-  font-size: 14px;
+  font-size: 12px;
   .top {
     border: @border;
     padding: 10px;
@@ -299,6 +331,12 @@ export default {
     .el-badge:not(:last-child) {
       margin-right: 20px;
     }
+  }
+  .bottom {
+    margin-top: 10px;
+    padding: 10px;
+    border: @border;
+    border-radius: 5px;
   }
 }
 </style>

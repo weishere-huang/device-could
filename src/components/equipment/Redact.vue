@@ -343,6 +343,7 @@
 <script>
 import addperson from "./RedactAdd";
 export default {
+  inject: ["reload"],
   data() {
     return {
       qqqqq: "",
@@ -599,70 +600,6 @@ export default {
       console.log("jsontoarr");
 
       this.arrrrrrr(jsonArr);
-      // let newarrr = new Array();
-      // for(let i;i<jsonArr.length;i++){
-      //   console.log(i);
-      //   if(jsonArr[i].workerType === 0){
-      //       newarrr.push(
-      //         {
-      //           workerTypeName: "负责人员",
-      //           workerType: "0",
-      //           content: [{
-      //             workerID:data[i].workerId,
-      //             workerName:data[i].workerName
-      //           }]
-      //         }
-      //       )
-      //     }
-      //   if(jsonArr[i].workerType === 1){
-      //     newarrr.push(
-      //       {
-      //         workerTypeName: "维修",
-      //         workerType: "1",
-      //         content: [{
-      //           workerID:data[i].workerId,
-      //           workerName:data[i].workerName
-      //         }]
-      //       }
-      //     )}
-      //   if(jsonArr[i].workerType === 2){
-      //     newarrr.push(
-      //       {
-      //         workerTypeName: "检修",
-      //         workerType: "2",
-      //         content: [{
-      //           workerID:data[i].workerId,
-      //           workerName:data[i].workerName
-      //         }]
-      //       }
-      //     )}
-      //   if(jsonArr[i].workerType === 3){
-      //     newarrr.push(
-      //       {
-      //         workerTypeName: "保养",
-      //         workerType: "3",
-      //         content: [{
-      //           workerID:data[i].workerId,
-      //           workerName:data[i].workerName
-      //         }]
-      //       }
-      //     )}
-      //   if(jsonArr[i].workerType === 4){
-      //     newarrr.push(
-      //       {
-      //         workerTypeName: "操作",
-      //         workerType: "4",
-      //         content: [{
-      //           workerID:data[i].workerId,
-      //           workerName:data[i].workerName
-      //         }]
-      //       }
-      //     )}
-      // }
-      // console.log(newarrr);
-      // console.log("newarrr");
-      // return newarrr;
-      // // this.arrrrrrr(jsonArr);
     },
     arrrrrrr(data){
       let newarrr= new Array();

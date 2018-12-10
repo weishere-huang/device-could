@@ -124,6 +124,7 @@ var tabComponent = Vue.component("tab-component", {
     '<ul class="workerList"><li v-for="item in items.content">{{ item.workerName }}<i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>'
 });
 export default {
+  inject: ["reload"],
   name: "",
   props: {
     personAddHandler: {

@@ -18,7 +18,7 @@
             class="custom-tree-node"
             slot-scope="{ node, data }"
           >
-            <span class="content">{{ data.categoryName}}
+            <span class="content">{{ data.name}}
               <span class="addCase">
                 <el-button
                   type="text"
@@ -43,14 +43,13 @@
                 </el-button>
               </span>
             </span>
-            <span class="content-remarks">{{data.organizeName}}</span>
+            <span class="content-remarks">{{data.remarks}}</span>
           </span>
         </el-tree>
         <div style="width:100%;text-align:center">
           <el-button
             size="small"
             style="width:200px;margin:auto"
-            v-if="organize===''"
             @click="dialogVisible3=true"
           >添加初始类别</el-button>
         </div>
@@ -81,10 +80,10 @@
             slot="footer"
             class="dialog-footer"
           >
-            <el-button @click="dialogVisible3 = false">取 消</el-button>
+            <el-button @click="dialogVisible3 = false,addname='',addmsg=''">取 消</el-button>
             <el-button
               type="primary"
-              @click="addFirst,dialogVisible3 = false"
+              @click="addFirst"
             >确 定</el-button>
           </span>
         </el-dialog>
@@ -184,27 +183,14 @@ export default {
       console.log(data);
       this.nodedata = data;
     },
-    append(data) {
-      const newChild = { id: id++, label: "testtest", children: [] };
-      if (!data.children) {
-        this.$set(data, "children", []);
-      }
-      data.children.push(newChild);
-    },
-    remove(node, data) {
-      const parent = node.parent;
-      const children = parent.data.children || parent.data;
-      const index = children.findIndex(d => d.id === data.id);
-      children.splice(index, 1);
-    },
     filterArray(data, parent) {
       let vm = this;
       var tree = [];
       var temp;
       for (var i = 0; i < data.length; i++) {
-        if (data[i].categoryParentNo == parent) {
+        if (data[i].parentCode == parent) {
           var obj = data[i];
-          temp = this.filterArray(data, data[i].categoryNo);
+          temp = this.filterArray(data, data[i].code);
           if (temp.length > 0) {
             obj.children = temp;
           }
@@ -213,7 +199,6 @@ export default {
       }
       return tree;
     },
-
     Sgetlist(){
       //获取备品备件分类数据接口1
       this.Axios({
@@ -228,12 +213,9 @@ export default {
       },this)
         .then(
           result => {
-            this.organize=this.filterArray(result,0);
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
-            console.log("请求参数：" + data);
+            console.log(result.data);
+            console.log(result.data.data);
+            this.organize=this.filterArray(result.data.data,0);
           },
           ({type, info}) => {
           }
@@ -261,12 +243,7 @@ export default {
       },this)
         .then(
           result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
-            location.reload();
-            console.log("请求参数：" + data);
+            this.reload();
           },
           ({type, info}) => {
           }
@@ -294,12 +271,11 @@ export default {
         .then(
           result => {
             if (result.data.code === 200) {
-              alert("修改成功");
-              location.reload();
+              this.reload();
             } else {
               alert("修改失败,请重新尝试");
             }
-            console.log("修改设备类别");
+            console.log("修改备品备件类别");
             console.log(result.data);
             console.log("请求参数：" + data);
           },
@@ -327,10 +303,6 @@ export default {
         .then(
           result => {
             if (result.data.code === 200) {
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
               this.reload();
             } else {
               alert("删除失败,请重新尝试");
@@ -379,141 +351,21 @@ export default {
         },
         this
       )
-      //.post(this.global.apiSrc + "/deviceCategory/add", data)
         .then(
           result => {
             if (result.data.code === 200) {
               alert("添加成功");
-              location.reload();
-            } else {
-              alert("添加失败,请重新添加");
-            }
-            console.log("addCategory");
-            console.log(result.data);
-          },
-          ({ type, info }) => {}
-        );
-    },
-
-
-    addCategory() {
-      //添加设备类别
-      let qs = require("qs");
-      let data = qs.stringify({
-        categoryParentName: this.nodedata.categoryName,
-        categoryParentNo: this.nodedata.categoryNo,
-        categoryName: this.addname,
-        categoryMsg: this.addmsg
-      });
-      this.Axios(
-        {
-          url: "/deviceCategory/add",
-          params: data,
-          type: "post",
-          option: {
-            enableMsg: false
-          }
-        },
-        this
-      )
-        //.post(this.global.apiSrc + "/deviceCategory/add", data)
-        .then(
-          result => {
-            if (result.data.code === 200) {
-              alert("添加成功");
-              location.reload();
-            } else {
-              alert("添加失败,请重新添加");
-            }
-            console.log("addCategory");
-            console.log(result.data);
-          },
-          ({ type, info }) => {}
-        );
-      // .catch(err => {
-      //   console.log(err);
-      // });
-    },
-    updateCategory() {
-      //修改设备类别
-      let qs = require("qs");
-      let data = qs.stringify({
-        categoryId: this.nodedata.id,
-        categoryName: this.nodeCname,
-        categoryMsg: this.nodeCMsg
-      });
-      this.Axios(
-        {
-          url: "/deviceCategory/update",
-          params: data,
-          type: "post",
-          option: {
-            enableMsg: false
-          }
-        },
-        this
-      )
-        // .post(this.global.apiSrc + "/deviceCategory/update", data)
-        .then(
-          result => {
-            if (result.data.code === 200) {
-              alert("修改成功");
-              location.reload();
-            } else {
-              alert("修改失败,请重新尝试");
-            }
-            console.log("修改设备类别");
-            console.log(result.data);
-          },
-          ({ type, info }) => {}
-        );
-      // .catch(err => {
-      //   console.log(err);
-      // });
-      this.nodeCname = "";
-      this.nodeCMsg = "";
-    },
-    deleteCategory(nodeId) {
-      console.log(nodeId + "nodeiddd");
-      //  删除设备类别
-      console.log(this.nodedata.id);
-      let qs = require("qs");
-      let data = qs.stringify({
-        categoryId: nodeId
-      });
-      this.Axios(
-        {
-          url: "/deviceCategory/delete/" + nodeId,
-          params: data,
-          type: "post",
-          option: {
-            enableMsg: false
-          }
-        },
-        this
-      )
-        // .post(this.global.apiSrc + "/deviceCategory/delete/"+this.nodedata.id)
-        .then(
-          result => {
-            if (result.data.code === 200) {
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
+              this.dialogVisible3 = false
               this.reload();
             } else {
-              alert("删除失败,请重新尝试");
+              alert("添加失败,请重新添加");
             }
-            console.log("删除设备类别");
+            console.log("添加根类");
             console.log(result.data);
           },
           ({ type, info }) => {}
         );
-      // .catch(err => {
-      //   console.log(err);
-      // });
     },
-
   },
   created() {
     this.Sgetlist();

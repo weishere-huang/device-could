@@ -379,26 +379,7 @@
         pageNumber:0,
         personListValue: [],
         data2: [
-          {
-            id: 1,
-            name: "一级",
-            children: [
-              {
-                id: 11,
-                name: "二级 1-1",
-                children: [
-                  {
-                    id: 12,
-                    name: "三级 1-1-1"
-                  },
-                  {
-                    id: 13,
-                    name: "三级 1-1-2"
-                  }
-                ]
-              }
-            ]
-          }
+         
         ],
         defaultProps: {
           children: "children",

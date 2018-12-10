@@ -71,7 +71,7 @@
             :props="defaultProps2"
             change-on-select
             :show-all-levels="false"
-            v-model="formInline.partClassify"
+            v-model="classfy"
             @change="handleChange2"
             style="width:200px;"
             size="small"
@@ -157,9 +157,10 @@ export default {
         }
       ],
       defaultProps2: {
-        value: "categoryNo",
-        label: "categoryName"
+        value: "id",
+        label: "name"
       },
+      classfy:"",
 
     };
   },
@@ -172,7 +173,8 @@ export default {
       name = name[name.length - 1];
       let id = value[value.length - 1];
       console.log(id, name);
-
+      this.formInline.partClassify=id;
+      this.formInline.partClassifyName=name;
     },
     //新增
     Saddbaseinfo(){
@@ -186,24 +188,24 @@ export default {
         partClassify:this.formInline.partClassify,
         partClassifyName:this.formInline.partClassifyName,
         //
-        partQuality:this.formInline.partQuality,
-        partUnit:this.formInline.partUnit,
-        inventory:this.formInline.inventory,
-        freeze:this.formInline.freeze,
-        price:this.formInline.price,
-        storageTime:this.formInline.storageTime,
-        partSource:this.formInline.partSource,
-        company:this.formInline.company,
-        manufactor:this.formInline.manufactor,
-        remarks:this.formInline.remarks,
-        img:this.formInline.img
+        // partQuality:this.formInline.partQuality,
+        // partUnit:this.formInline.partUnit,
+        // inventory:this.formInline.inventory,
+        // freeze:this.formInline.freeze,
+        // price:this.formInline.price,
+        // storageTime:this.formInline.storageTime,
+        // partSource:this.formInline.partSource,
+        // company:this.formInline.company,
+        // manufactor:this.formInline.manufactor,
+        // remarks:this.formInline.remarks,
+        // img:this.formInline.img
 
       });
       this.Axios({
         params: data,
-        option: {
-          enableMsg: false
-        },
+        // option: {
+        //   enableMsg: false
+        // },
         type: "post",
         url: "/part/addBasicInfo"
         // loadingConfig: {
@@ -212,10 +214,12 @@ export default {
       },this)
         .then(
           result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
+            if(result.data.code ===200){
+              alert("添加成功");
+              this.$router.push("/SparePart");
+            }
+            debugger
+
             console.log("请求参数：" + data);
           },
           ({type, info}) => {
@@ -238,7 +242,49 @@ export default {
         });
       });
     },
+    filterArray(data, parent) {
+      let vm = this;
+      var tree = [];
+      var temp;
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].parentCode == parent) {
+          var obj = data[i];
+          temp = this.filterArray(data, data[i].code);
+          if (temp.length > 0) {
+            obj.children = temp;
+          }
+          tree.push(obj);
+        }
+      }
+      return tree;
+    },
+    Sgetlist(){
+      //获取备品备件分类数据接口1
+      this.Axios({
+        // option: {
+        //   enableMsg: false
+        // },
+        type: "get",
+        url: "/part/list"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        .then(
+          result => {
+            console.log(result.data);
+            console.log(result.data.data);
+            this.ctgoptions=this.filterArray(result.data.data,0);
+          },
+          ({type, info}) => {
+          }
+        );
 
+    },
+
+  },
+  created(){
+    this.Sgetlist();
   }
 };
 </script>
