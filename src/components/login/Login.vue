@@ -5,34 +5,75 @@
       v-show="isshow"
     >
       <h1>长虹智能终端设备生产管理云平台</h1>
-      <p>
-        <el-input
-          placeholder="用户名/手机号"
-          v-model="userName"
-        ></el-input>
-      </p>
-      <p>
-        <el-input
-          type="password"
-          placeholder="密码"
-          v-model="password"
-          @keyup.enter.native="login"
-        ></el-input>
-      </p>
-      <p class="proving">
-        <el-input
-          type="text"
-          placeholder="验证码"
-          v-model="verification"
-          @keyup.enter.native="login"
-        ></el-input>
-        <el-button
-          type="primary"
-          size="small"
-          plain
-        >获取验证码
-        </el-button>
-      </p>
+      <el-form
+        style="width:60%;margin-top:10px;"
+      >
+        <el-form-item
+          label=""
+          style="margin-bottom: 20px;"
+          prop="userName"
+          :rules="[
+          { required: true, message: '请输入用户名或手机号', trigger: 'blur' }
+        ]"
+        >
+          <el-input
+            placeholder="用户名/手机号"
+            v-model="userName"
+          >
+            <i
+              class='iconfont icon-fonts-user'
+              slot="suffix"
+            >
+            </i></el-input>
+        </el-form-item>
+        <el-form-item
+          label=""
+          style="margin-bottom: 20px;"
+          prop="password"
+          :rules="[
+          { required: true, message: '密码不能为空', trigger: 'blur' }
+        ]"
+        >
+          <el-input
+            type="password"
+            placeholder="密码"
+            v-model="password"
+            @keyup.enter.native="login"
+          >
+           <i
+              class='iconfont icon-password'
+              slot="suffix"
+            >
+            </i></el-input>
+        </el-form-item>
+      </el-form>
+      <el-form
+        :inline="true"
+        class="proving1"
+      >
+        <el-form-item
+          label=""
+          style="width:60%;margin-bottom: 20px;"
+          prop="verification"
+          :rules="[
+          { required: true, message: '验证码不能为空', trigger: 'blur' }
+        ]"
+        >
+          <el-input
+            type="text"
+            placeholder="验证码"
+            v-model="verification"
+            @keyup.enter.native="login"
+          ></el-input>
+        </el-form-item>
+        <el-form-item style="width:30%;">
+          <el-button
+            type="primary"
+            plain
+          >获取验证码
+          </el-button>
+        </el-form-item>
+      </el-form>
       <p>
         <el-button
           type="primary"
@@ -236,6 +277,12 @@ export default {
       ishide: false,
       nextshow: false,
       backshow: true,
+      loginRules: {
+        userName: [
+          { required: true, message: "请输入用户名或手机号", trigger: "blur" },
+          { min: 1, max: 20, message: "长度在20个字符内", trigger: "blur" }
+        ]
+      },
       fileList: [
         {
           name: "",
@@ -481,6 +528,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@import url("../../assets/font/font.css");
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
@@ -526,6 +574,9 @@ export default {
       color: @blue;
       font-size: 120%;
     }
+    // .el-form-item {
+    //   margin-bottom: 20px;
+    // }
     p {
       width: 60%;
       padding: 10px 0;
@@ -546,13 +597,14 @@ export default {
         }
       }
     }
-    .proving {
+    .proving1 {
       text-align: left;
+      width: 60%;
       .el-input {
-        width: 58%;
+        width: 120%;
       }
       .el-button {
-        width: 40%;
+        width: 160%;
         height: 38px;
       }
       span {
