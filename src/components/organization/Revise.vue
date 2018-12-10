@@ -128,7 +128,7 @@ export default {
             console.log(result.data);
             // location.reload();
             // alert("修改成功");
-            this.reload()
+            this.reload();
           }else{
             alert("修改失败");
             console.log(result.data);

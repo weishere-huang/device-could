@@ -162,7 +162,7 @@ export default {
             if (result.data.code == 200) {
               console.log("delete");
               console.log(result.data);
-              location.reload();
+              this.reload();
             } else {
               alert("删除失败");
               console.log(result.data);

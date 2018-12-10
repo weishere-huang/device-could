@@ -260,7 +260,7 @@ export default {
           result => {
             if (result.data.code === 200) {
               alert("添加成功");
-              location.reload();
+              this.reload();
             } else {
               alert("添加失败,请重新添加");
             }
@@ -300,7 +300,7 @@ export default {
           result => {
             if (result.data.code === 200) {
               alert("添加成功");
-              location.reload();
+              this.reload();
             } else {
               alert("添加失败,请重新添加");
             }
@@ -334,7 +334,7 @@ export default {
           result => {
             if (result.data.code === 200) {
               alert("修改成功");
-              location.reload();
+              this.reload();
             } else {
               alert("修改失败,请重新尝试");
             }

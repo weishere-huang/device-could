@@ -126,17 +126,17 @@ export default {
       ctgoptions: [],
       options2: [
         {
-          value: "普通",
+          value: 0,
           label: "普通"
         },
         {
-          value: "关键",
+          value: 1,
           label: "关键"
         }
       ],
       defaultProps2: {
-        value: "categoryNo",
-        label: "categoryName"
+        value: "id",
+        label: "name"
       }
     };
   },
@@ -212,9 +212,49 @@ export default {
         });
       });
     },
+
+    filterArray(data, parent) {
+      let vm = this;
+      var tree = [];
+      var temp;
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].parentCode == parent) {
+          var obj = data[i];
+          temp = this.filterArray(data, data[i].code);
+          if (temp.length > 0) {
+            obj.children = temp;
+          }
+          tree.push(obj);
+        }
+      }
+      return tree;
+    },
+    Sgetlist(){
+      //获取备品备件分类数据接口1
+      this.Axios({
+        // option: {
+        //   enableMsg: false
+        // },
+        type: "get",
+        url: "/part/list"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        .then(
+          result => {
+            console.log(result.data);
+            console.log(result.data.data);
+            this.ctgoptions=this.filterArray(result.data.data,0);
+          },
+          ({type, info}) => {
+          }
+        );
+
+    },
   },
   created(){
-
+    this.Sgetlist();
   }
 };
 </script>
