@@ -211,30 +211,31 @@ export default {
       }
       return tree;
     },
-    findAlldeviceClassify() {
-      this.Axios(
-        {
-          params: {},
-          type: "get",
-          url: "/deviceCategory/all"
-        },
-        this
-      )
-        // .get(this.global.apiSrc + "/deviceCategory/all", data)
+    Sgetlist(){
+      //获取备品备件分类数据接口1
+      this.Axios({
+        // option: {
+        //   enableMsg: false
+        // },
+        type: "get",
+        url: "/part/list"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
         .then(
           result => {
-            this.organize = this.filterArray(result.data.data, 0);
-            console.log(this.organize);
-            console.log(result.data);
+            this.tabledate=this.filterArray(result,0);
+            this.$message({
+              message: "启用成功",
+              type: "success"
+            });
+            console.log("请求参数：" + data);
           },
-          ({ type, info }) => {
-            //错误类型 type=faild / error
-            //error && error(type, info);
+          ({type, info}) => {
           }
         );
-      // .catch(err => {
-      //   console.log(err);
-      // });
+
     },
     addCategory() {
       //添加设备类别
@@ -406,7 +407,7 @@ export default {
     }
   },
   created() {
-    this.findAlldeviceClassify();
+    this.Sgetlist();
   }
 };
 </script>
