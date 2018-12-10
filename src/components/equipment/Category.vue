@@ -42,7 +42,7 @@
                 </el-button>
               </span>
             </span>
-            <span class="content-remarks">{{data.organizeName}}</span>
+            <span class="content-remarks">{{data.categoryMsg}}</span>
           </span>
         </el-tree>
         <div style="width:100%;text-align:center">
@@ -50,7 +50,7 @@
             size="small"
             style="width:200px;margin:auto"
             v-if="organize===''"
-            @click="dialogVisible3=true,addFirst"
+            @click="dialogVisible3=true"
           >添加初始类别</el-button>
         </div>
         <el-dialog
@@ -65,14 +65,14 @@
           >
             <el-form-item label="类别名称：">
               <el-input
-                v-model="nodedata.categoryName"
+                v-model="addname"
                 size="mini"
               ></el-input>
             </el-form-item>
             <el-form-item label="备注：">
               <el-input
                 type="textarea"
-                v-model="nodedata.categoryMsg"
+                v-model="addmsg"
               ></el-input>
             </el-form-item>
           </el-form>
@@ -83,7 +83,7 @@
             <el-button @click="dialogVisible3 = false">取 消</el-button>
             <el-button
               type="primary"
-              @click="dialogVisible3 = false"
+              @click="addFirst"
             >确 定</el-button>
           </span>
         </el-dialog>
@@ -282,6 +282,8 @@ export default {
         categoryName: this.addname,
         categoryMsg: this.addmsg
       });
+      console.log("添加根类");
+      console.log(data);
       this.Axios(
         {
           url: "/deviceCategory/add",

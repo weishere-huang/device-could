@@ -12,8 +12,9 @@
           type="search"
           placeholder="如编号，名称，型号/规格"
           size="small"
+          v-model="basekeyword"
         ></el-input>
-        <el-button size="small">搜索</el-button>
+        <el-button size="small" @click="basesearch">搜索</el-button>
       </div>
     </div>
     <div class="bottom">
@@ -164,7 +165,10 @@ export default {
           componentName: "table-sparePart"
           // isResize: true
         }
-      ]
+      ],
+      //条件查询
+      basekeyword:"",
+
     };
   },
   methods: {
@@ -203,7 +207,7 @@ export default {
     },
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
-      this.load();
+
       this.getTableData();
     },
     pageSizeChange(pageSize) {
@@ -213,196 +217,8 @@ export default {
     },
 
     //备品备件接口
-    Sadd(){
-      //备品备件添加1
-      let qs = require("qs");
-      let data = qs.stringify({
-        parentCode:"",
-        name:"",
-        remarks:"",
-      });
-      this.Axios({
-        params: data,
-        option: {
-          enableMsg: false
-        },
-        type: "post",
-        url: "/part/add"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
-            this.load();
-            console.log("请求参数：" + data);
-          },
-          ({type, info}) => {
-          }
-        );
-    },
-    Supdate(){
-      //备品备件修改1
-      let qs = require("qs");
-      let data = qs.stringify({
-        id:"",
-        name:"",
-        remarks:""
-      });
-      this.Axios({
-        params:data,
-        option: {
-          enableMsg: false
-        },
-        type: "post",
-        url: "/part/update"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
-            this.load();
-            console.log("请求参数：" + data);
-          },
-          ({type, info}) => {
-          }
-        );
-    },
-    Sdelete(){
-      //备品备件删除1
-      let qs = require("qs");
-      let data = qs.stringify({
-        partId:""
-      });
-      this.Axios({
-        params: data,
-        option: {
-          enableMsg: false
-        },
-        type: "post",
-        url: "/part/delete"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
-            this.load();
-            console.log("请求参数：" + data);
-          },
-          ({type, info}) => {
-          }
-        );
 
-    },
 
-    Saddbaseinfo(){
-    //新增备件基础信息接口1
-      let qs = require("qs");
-      let data = qs.stringify({
-        partNo:"",
-        partName:"",
-        partModel:"",
-        partCategory:"",
-        partClassify:"",
-        partClassifyName:"",
-        partQuality:"",
-        partUnit:"",
-        inventory:"",
-        freeze:"",
-        price:"",
-        storageTime:"",
-        partSource:"",
-        company:"",
-        manufactor:"",
-        remarks:"",
-        img:""
-      });
-      this.Axios({
-        params: data,
-        option: {
-          enableMsg: false
-        },
-        type: "post",
-        url: "/part/addBasicInfo"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
-            this.load();
-            console.log("请求参数：" + data);
-          },
-          ({type, info}) => {
-          }
-        );
-
-    },
-    baseadd(){
-    //编辑备件基础信息接口1
-      let qs = require("qs");
-      let data = qs.stringify({
-        id:"",
-        partNo:"",
-        partName:"",
-        partModel:"",
-        partCategory:"",
-        partClassify:"",
-        partClassifyName:"",
-        partQuality:"",
-        partUnit:"",
-        inventory:"",
-        freeze:"",
-        price:"",
-        storageTime:"",
-        partSource:"",
-        company:"",
-        manufactor:"",
-        remarks:"",
-        img:""
-      });
-      this.Axios({
-        params: data,
-        option: {
-          enableMsg: false
-        },
-        type: "post",
-        url: "/part/updateBasicInfo"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
-            this.load();
-            console.log("请求参数：" + data);
-          },
-          ({type, info}) => {
-          }
-        );
-    },
     basedelete(){
       //批量删除备件基础信息接口1
       let qs = require("qs");
@@ -427,7 +243,7 @@ export default {
               message: "启用成功",
               type: "success"
             });
-            this.load();
+
             console.log("请求参数：" + data);
           },
           ({type, info}) => {
@@ -440,7 +256,8 @@ export default {
       this.Axios({
         params: {
           page: this.pageIndex,
-          size: this.pageSize
+          size: this.pageSize,
+          //keywords:this.basekeyword
         },
         // option: {
         //   enableMsg: false
@@ -466,15 +283,12 @@ export default {
     },
     basesearch(){
       //模糊搜索备品备件接口1
-      let qs = require("qs");
-      let data = qs.stringify({
-        enterpriseIds: this.choice
-      });
+      //届时弃用
       this.Axios({
         params: {
           page: this.pageIndex,
           size: this.pageSize,
-          keywords:"",
+          keywords:this.basekeyword,
         },
         option: {
           enableMsg: false
@@ -491,14 +305,14 @@ export default {
               message: "启用成功",
               type: "success"
             });
-            this.load();
+
             console.log("请求参数：" + data);
           },
           ({type, info}) => {
           }
         );
     },
-    listbybase(){
+    findbyclassifyId(){
       //根据备件分类查询备件列表1
 
       this.Axios({
@@ -522,7 +336,7 @@ export default {
               message: "启用成功",
               type: "success"
             });
-            this.load();
+
             console.log("请求参数：" + data);
           },
           ({type, info}) => {
@@ -564,7 +378,7 @@ export default {
               message: "启用成功",
               type: "success"
             });
-            this.load();
+
             console.log("请求参数：" + data);
           },
           ({type, info}) => {
@@ -597,7 +411,7 @@ export default {
               message: "启用成功",
               type: "success"
             });
-            this.load();
+
             console.log("请求参数：" + data);
           },
           ({type, info}) => {
@@ -626,18 +440,34 @@ export default {
               message: "启用成功",
               type: "success"
             });
-            this.load();
+
             console.log("请求参数：" + data);
           },
           ({type, info}) => {
           }
         );
+    },
+    //确认按钮
+    btisok(){
+      this.$confirm('确定删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+         this.basedelete();
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消操作'
+        });
+      });
     }
 
   },
   created(){
     //默认加载
     this.baselist();
+
   }
 };
 Vue.component("table-sparePart", {
