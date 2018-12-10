@@ -34,8 +34,9 @@
               type="search"
               size="mini"
               style="width:30%;"
+              v-model="pkeyword"
             ></el-input>
-            <el-button size="mini">搜索</el-button>
+            <el-button size="mini" @click="psearch">搜索</el-button>
             <span style="padding:0 10px;">最近搜索：</span>
             <span style="text-decoration: underline;"></span>
           </div>
@@ -52,8 +53,7 @@
               :row-dblclick="getRowData"
               row-hover-color="#eee"
               row-click-color="#edf7ff"
-              :select-all="selectALL"
-              :select-group-change="selectGroupChange"
+
             ></v-table>
             <div
               class="mt20 mb20 bold"
@@ -133,6 +133,8 @@ export default {
   },
   data() {
     return {
+      //搜索
+      pkeyword:"",
       editableTabs: [
         {
           workerTypeName: "负责",
@@ -163,7 +165,7 @@ export default {
       editableTabsValue: "0",
       tabPosition: "top",
       pageIndex: 1,
-      pageSize: 10,
+      pageSize: 4,
       toValue: "",
       tableData: [],
       tableDate: [],
@@ -242,12 +244,6 @@ export default {
     },
     isHide() {
       this.$emit("isHide", false);
-    },
-
-    addfun(data, plist) {
-      for (let i = 0; i < data.length; i++) {
-        plist += data[i].name + "   ";
-      }
     },
     // selectGroupChange(selection) {
     //   this.toValue = selection;
@@ -356,10 +352,27 @@ export default {
       this.editableTabs[this.editableTabsValue].content = this.editableTabs[
         this.editableTabsValue
       ].content.filter(item => item.id !== data.id);
+    },
+
+    psearch(){
+      //条件模糊查询,前端控制
+      // this.pkeyword =""
+      console.log(this.tableData);
+      console.log("---");
+      let newarr = new Array();
+      for(let i=0;i<this.tableData.length;i++){
+        // this.tableData = this.tableData[i]
+        //   .filter(item => item.name.indexOf(this.pkeyword) >= 0  && item.phone.indexOf(this.pkeyword) >= 0 && item.position.indexOf(this.pkeyword) >= 0);
+        if(this.tableData[i].name.indexOf(this.pkeyword) >= 0 || this.tableData[i].phone.indexOf(this.pkeyword) >= 0 || this.tableData[i].position.indexOf(this.pkeyword) >= 0){
+          newarr.push(this.tableData[i]);
+        }
+      }
+      this.tableData = newarr;
+      console.log(this.tableData);
     }
+
   },
   created() {
-    //axios
     this.Axios(
       {
         params: {
