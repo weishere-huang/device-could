@@ -196,6 +196,7 @@
   import addPerson from "./AddPerson";
 
   export default {
+    inject: ["reload"],
     name: "",
     data() {
       return {

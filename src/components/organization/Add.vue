@@ -35,6 +35,7 @@
 </template>
 <script>
 export default {
+  inject: ["reload"],
   name: "",
   props:["nodedata"],
   data() {
@@ -104,12 +105,11 @@ export default {
         //.post(this.global.apiSrc + "/organize/add", data)
         .then(result => {
           if(result.data.code === 200){
-            alert("添加成功");
             console.log(result.data);
             this.orgname=""
             this.value=""
             this.orgInfo=""
-            location.reload();
+            this.reload();
           }else{
             alert("添加失败");
             console.log(result.data);
@@ -142,7 +142,7 @@ export default {
   //   margin-top: -150px;
   .addcase {
     width: 500px;
-    
+
     // position: relative;
     // top: 50%;
     // left: 50%;
