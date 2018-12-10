@@ -442,24 +442,12 @@ export default {
             size: this.pageSize,
             keyWord: this.keyWord
           },
-          // option: {
-          //   enableMsg: false
-          // },
           type: "get",
           url: "/device/findByKeyWord"
-          // loadingConfig: {
-          //   target: document.querySelector("#mainContentWrapper")
-          // }
+
         },
         this
       )
-        // .get(this.global.apiSrc + "/device/findByKeyWord", {
-        //   params: {
-        //     page: this.pageIndex,
-        //     size: this.pageSize,
-        //     keyWord: this.keyWord
-        //   }
-        // })
         .then(result => {
           this.totalnum = result.data.data.totalElements;
           this.tableData = result.data.data.content;
@@ -481,10 +469,10 @@ export default {
             }
           }
             console.log(result.data.data.content);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+          },
+          ({ type, info }) => {}
+          )
+
       },
     edelete() {
       let qs = require("qs");
@@ -560,10 +548,9 @@ export default {
           this.organiza = this.filterArray(result.data.data, 0);
           console.log("查找全部设备类别");
           console.log(result.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        },
+          ({ type, info }) => {}
+        )
     },
     warningdelete(){
       this.$confirm('确定要删除吗?', '提示', {

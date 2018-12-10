@@ -5,7 +5,7 @@
         size="small"
         @click="toBack"
       >返回</el-button>
-      <el-button size="small">保存</el-button>
+      <el-button size="small" @click="btisok">保存</el-button>
     </div>
     <div class="basic-information">
       <h5>备件基本信息</h5>
@@ -17,7 +17,7 @@
       >
         <el-form-item label="备件编号：">
           <el-input
-            v-model="formInline.user"
+            v-model="formInline.partNo"
             placeholder=""
             size="small"
             style="width:200px"
@@ -25,7 +25,7 @@
         </el-form-item>
         <el-form-item label="备件名称：">
           <el-input
-            v-model="formInline.user"
+            v-model="formInline.partName"
             placeholder=""
             size="small"
             style="width:514px"
@@ -40,7 +40,7 @@
       >
         <el-form-item label="型号/规格：">
           <el-input
-            v-model="formInline.user"
+            v-model="formInline.partModel"
             placeholder=""
             size="small"
             style="width:200px"
@@ -48,7 +48,7 @@
         </el-form-item>
         <el-form-item label="备件级别：">
           <el-select
-            v-model="formInline.user"
+            v-model="formInline.partCategory"
             placeholder="点击选择"
             size="small"
             style="width:200px"
@@ -71,7 +71,7 @@
             :props="defaultProps2"
             change-on-select
             :show-all-levels="false"
-            v-model="formInline.user"
+            v-model="formInline.partClassify"
             @change="handleChange2"
             style="width:200px;"
             size="small"
@@ -86,7 +86,7 @@
       >
         <el-form-item label="计量单位：">
           <el-input
-            v-model="formInline.user"
+            v-model="formInline.partUnit"
             placeholder=""
             size="small"
             style="width:200px"
@@ -110,7 +110,7 @@
         <el-form-item label="备注：">
           <el-input
             type="textarea"
-            v-model="formInline.user"
+            v-model="formInline.remarks"
             placeholder=""
             style="width:824px"
             :autosize="{ minRows: 4, maxRows: 10}"
@@ -125,22 +125,42 @@ export default {
   name: "",
   data() {
     return {
-      formInline: {},
+      formInline: {
+        partNo:"",
+        partName:"",
+        partModel:"",
+        partCategory:"",
+        partClassify:"",
+        partClassifyName:"",
+        //以下可空
+        partQuality:"",
+        partUnit:"",
+        inventory:"",
+        freeze:"",
+        price:"",
+        storageTime:"",
+        partSource:"",
+        company:"",
+        manufactor:"",
+        remarks:"",
+        img:"",
+      },
       ctgoptions: [],
       options2: [
         {
-          value: "普通",
+          value: 0,
           label: "普通"
         },
         {
-          value: "关键",
+          value: 1,
           label: "关键"
         }
       ],
       defaultProps2: {
         value: "categoryNo",
         label: "categoryName"
-      }
+      },
+
     };
   },
   methods: {
@@ -152,8 +172,73 @@ export default {
       name = name[name.length - 1];
       let id = value[value.length - 1];
       console.log(id, name);
-      
-    }
+
+    },
+    //新增
+    Saddbaseinfo(){
+      //新增备件基础信息接口1
+      let qs = require("qs");
+      let data = qs.stringify({
+        partNo:this.formInline.partNo,
+        partName:this.formInline.partName,
+        partModel:this.formInline.partModel,
+        partCategory:this.formInline.partCategory,
+        partClassify:this.formInline.partClassify,
+        partClassifyName:this.formInline.partClassifyName,
+        //
+        partQuality:this.formInline.partQuality,
+        partUnit:this.formInline.partUnit,
+        inventory:this.formInline.inventory,
+        freeze:this.formInline.freeze,
+        price:this.formInline.price,
+        storageTime:this.formInline.storageTime,
+        partSource:this.formInline.partSource,
+        company:this.formInline.company,
+        manufactor:this.formInline.manufactor,
+        remarks:this.formInline.remarks,
+        img:this.formInline.img
+
+      });
+      this.Axios({
+        params: data,
+        option: {
+          enableMsg: false
+        },
+        type: "post",
+        url: "/part/addBasicInfo"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        .then(
+          result => {
+            this.$message({
+              message: "启用成功",
+              type: "success"
+            });
+            console.log("请求参数：" + data);
+          },
+          ({type, info}) => {
+          }
+        );
+
+    },
+    //按钮控制
+    btisok(){
+      this.$confirm('确定完成操作吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.Saddbaseinfo();
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消操作'
+        });
+      });
+    },
+
   }
 };
 </script>
