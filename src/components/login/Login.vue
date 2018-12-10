@@ -6,19 +6,19 @@
     >
       <h1>长虹智能终端设备生产管理云平台</h1>
       <el-form
+        :model="loginList"
+        :rules="loginRules"
         style="width:60%;margin-top:10px;"
+        ref="loginList"
       >
         <el-form-item
           label=""
           style="margin-bottom: 20px;"
           prop="userName"
-          :rules="[
-          { required: true, message: '请输入用户名或手机号', trigger: 'blur' }
-        ]"
         >
           <el-input
             placeholder="用户名/手机号"
-            v-model="userName"
+            v-model="loginList.userName"
           >
             <i
               class='iconfont icon-fonts-user'
@@ -30,55 +30,44 @@
           label=""
           style="margin-bottom: 20px;"
           prop="password"
-          :rules="[
-          { required: true, message: '密码不能为空', trigger: 'blur' }
-        ]"
         >
           <el-input
             type="password"
             placeholder="密码"
-            v-model="password"
+            v-model="loginList.password"
             @keyup.enter.native="login"
           >
-           <i
+            <i
               class='iconfont icon-password'
               slot="suffix"
             >
             </i></el-input>
         </el-form-item>
-      </el-form>
-      <el-form
-        :inline="true"
-        class="proving1"
-      >
         <el-form-item
           label=""
-          style="width:60%;margin-bottom: 20px;"
+          style="width:100%;margin-bottom: 20px;"
           prop="verification"
-          :rules="[
-          { required: true, message: '验证码不能为空', trigger: 'blur' }
-        ]"
+          :inline="true"
         >
           <el-input
             type="text"
             placeholder="验证码"
-            v-model="verification"
+            v-model="loginList.verification"
             @keyup.enter.native="login"
-          ></el-input>
-        </el-form-item>
-        <el-form-item style="width:30%;">
+            style="width:60%"
+          >
+          </el-input>
           <el-button
             type="primary"
             plain
-          >获取验证码
-          </el-button>
+            style="width:38%;height:40px;"
+          >获取验证码</el-button>
         </el-form-item>
       </el-form>
       <p>
         <el-button
           type="primary"
-          round
-          @click="login"
+          @click="submitForm('loginList')"
           @keyup.enter.native="login"
         >登录
         </el-button>
@@ -137,25 +126,21 @@
           </li>
           <li>
             <label for="">营业执照：</label>
-            <el-upload
-              class="upload-demo"
+            <!-- <el-upload
               action="https://jsonplaceholder.typicode.com/posts/"
-              :on-preview="handlePreview"
+              list-type="picture-card"
+              :on-preview="handlePictureCardPreview"
               :on-remove="handleRemove"
-              :file-list="fileList2"
-              list-type="picture"
             >
-              <el-button
-                size="small"
-                type="primary"
-              >点击上传
-              </el-button>
-              <div
-                slot="tip"
-                class="el-upload__tip"
-              >只能上传jpg/png文件，且不超过500kb
-              </div>
+              <i class="el-icon-plus"></i>
             </el-upload>
+            <el-dialog :visible.sync="dialogVisible">
+              <img
+                width="100%"
+                :src="dialogImageUrl"
+                alt=""
+              >
+            </el-dialog> -->
           </li>
         </ul>
         <div class="next">
@@ -257,7 +242,8 @@ export default {
   name: "Login",
   data() {
     return {
-      dialogVisible: true,
+      dialogImageUrl: "",
+      dialogVisible: false,
       fileList2: [
         {
           name: "food.jpeg",
@@ -270,9 +256,11 @@ export default {
             "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
         }
       ],
-      verification: "",
-      userName: "",
-      password: "",
+      loginList: {
+        verification: "",
+        userName: "",
+        password: ""
+      },
       isshow: true,
       ishide: false,
       nextshow: false,
@@ -281,6 +269,12 @@ export default {
         userName: [
           { required: true, message: "请输入用户名或手机号", trigger: "blur" },
           { min: 1, max: 20, message: "长度在20个字符内", trigger: "blur" }
+        ],
+        password: [
+          { required: true, message: "密码不能为空", trigger: "blur" }
+        ],
+        verification: [
+          { required: false, message: "验证码不能为空", trigger: "blur" }
         ]
       },
       fileList: [
@@ -307,10 +301,27 @@ export default {
     };
   },
   methods: {
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
     // let instance = axios.create({
     //   headers: { "content-type": "application/x-www-form-urlencoded" }
     // });
-
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          // alert("submit!");
+          this.login();
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
     encryptByDES(message, key) {
       // const keyHex = CryptoJS.enc.Utf8.parse(key);
       const keyHex = CryptoJS.enc.Utf8.parse(key);
@@ -322,8 +333,9 @@ export default {
     },
 
     login() {
-      let pass = this.password;
-      pass = md5(this.password);
+      // this.submitForm('loginList')
+      let pass = this.loginList.password;
+      pass = md5(pass);
       console.log(this.password);
       let key = "*chang_hong_device_cloud";
       let a = pass;
@@ -331,7 +343,7 @@ export default {
       // console.log(this.password);
       let qs = require("qs");
       let data = qs.stringify({
-        phoneOrName: this.userName,
+        phoneOrName: this.loginList.userName,
         passWord: pass
       });
       this.Axios(
@@ -579,9 +591,10 @@ export default {
     // }
     p {
       width: 60%;
-      padding: 10px 0;
+      padding: 0 0 10px 0;
       button {
         width: 100%;
+        height: 40px;
       }
     }
     .registerSkip {
