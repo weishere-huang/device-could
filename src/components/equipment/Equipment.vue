@@ -154,7 +154,8 @@ export default {
           width: 90,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+           overflowTitle: true
           // orderBy: ""
         },
         {
@@ -163,7 +164,8 @@ export default {
           width: 120,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+           overflowTitle: true
         },
         {
           field: "deviceState",
@@ -171,7 +173,8 @@ export default {
           width: 70,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+           overflowTitle: true
         },
         {
           field: "organizeName",
@@ -179,7 +182,8 @@ export default {
           width: 140,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+           overflowTitle: true
         },
         {
           field: "location",
@@ -187,7 +191,8 @@ export default {
           width: 70,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+           overflowTitle: true
         },
         {
           field: "locationNo",
@@ -195,7 +200,8 @@ export default {
           width: 70,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+           overflowTitle: true
         },
         {
           field: "deviceCategoryName",
@@ -203,7 +209,8 @@ export default {
           width: 70,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+           overflowTitle: true
         },
         {
           field: "deviceModel",
@@ -211,7 +218,8 @@ export default {
           width: 70,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+           overflowTitle: true
         },
         {
           field: "workerNames",
@@ -219,7 +227,8 @@ export default {
           width: 60,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+           overflowTitle: true
         },
         {
           field: "custome-adv",

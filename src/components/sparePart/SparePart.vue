@@ -252,7 +252,6 @@ export default {
     },
     baselist(){
       //备品备件列表接口1
-
       this.Axios({
         params: {
           page: this.pageIndex,

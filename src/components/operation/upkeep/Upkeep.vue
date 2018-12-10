@@ -108,6 +108,7 @@
             row-hover-color="#eee"
             row-click-color="#edf7ff"
             @on-custom-comp="customCompFunc"
+            ref="upkeepTable"
           ></v-table>
           <div
             class="mt20 mb20 bold"
@@ -167,7 +168,8 @@ export default {
           width: 150,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
           //   orderBy: ""
         },
         {
@@ -176,7 +178,8 @@ export default {
           width: 60,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "maintenanceType",
@@ -184,7 +187,8 @@ export default {
           width: 60,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "maintenanceLevel",
@@ -192,7 +196,8 @@ export default {
           width: 60,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "startTime",
@@ -200,7 +205,8 @@ export default {
           width: 70,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "endTime",
@@ -208,7 +214,8 @@ export default {
           width: 70,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "executeTime",
@@ -216,7 +223,8 @@ export default {
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "frequencyType",
@@ -224,7 +232,8 @@ export default {
           width: 60,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "maintenanceCc",
@@ -232,7 +241,8 @@ export default {
           width: 200,
           titleAlign: "center",
           columnAlign: "left",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "creator",
@@ -240,7 +250,8 @@ export default {
           width: 60,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "custome-adv",
@@ -264,17 +275,20 @@ export default {
         // this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
         // do edit operation
-        this.toAmend(params.index,params.rowData);
+        this.toAmend(params.index, params.rowData);
         // alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
       } else if (params.type === "stop") {
         // do edit operation
-        this.stopDiscontinuationOne(params.rowData["id"],params.rowData["state"]);
+        this.stopDiscontinuationOne(
+          params.rowData["id"],
+          params.rowData["state"]
+        );
         // alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
       }
     },
     toAmend(rowIndex, rowData, column) {
       this.$store.commit("upkeepAmend", rowData);
-      this.$router.push("/UpkeepAmend?id="+rowData.id);
+      this.$router.push("/UpkeepAmend?id=" + rowData.id);
     },
     toUpkeepAdd() {
       this.$router.push({
@@ -338,12 +352,17 @@ export default {
     },
 
     load() {
+      EventBus.$on("sideBarTroggleHandle", isCollapse => {
+        window.setTimeout(() => {
+          this.$refs.upkeepTable.resize();
+        }, 500);
+      });
       this.Axios(
         {
           params: {
             page: this.pageIndex,
             size: this.pageSize,
-            maintenanceType:1
+            maintenanceType: 1
           },
           type: "get",
           url: "/mplan/allPlan"
@@ -446,10 +465,10 @@ export default {
         );
       });
     },
-    deleteMaintenanceOne(maintenanceId){
+    deleteMaintenanceOne(maintenanceId) {
       this.$confirm("计划一旦删除将无法恢复，请确认选择", "提示").then(_ => {
         let qs = require("qs");
-        let data = qs.stringify({ maintenanceIds:maintenanceId });
+        let data = qs.stringify({ maintenanceIds: maintenanceId });
         this.Axios(
           {
             params: data,
@@ -484,11 +503,11 @@ export default {
         );
       });
     },
-    stopDiscontinuationOne(maintenanceId,state){
-      if(state!=="待审核"){
+    stopDiscontinuationOne(maintenanceId, state) {
+      if (state !== "待审核") {
         this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
           let qs = require("qs");
-          let data = qs.stringify({ maintenanceIds:maintenanceId});
+          let data = qs.stringify({ maintenanceIds: maintenanceId });
           this.Axios(
             {
               params: data,
@@ -503,15 +522,17 @@ export default {
             ({ type, info }) => {}
           );
         });
-      }else if(state==="停用"){
-        alert("该计划已经停用")
-      }else {
-        alert("不能停用待审核状态的计划")
+      } else if (state === "停用") {
+        alert("该计划已经停用");
+      } else {
+        alert("不能停用待审核状态的计划");
       }
     },
     //审核操作
     submitAudit() {
-      this.formLabelAlign.type ? (this.formLabelAlign.type = 0) : (this.formLabelAlign.type = 1);
+      this.formLabelAlign.type
+        ? (this.formLabelAlign.type = 0)
+        : (this.formLabelAlign.type = 1);
       this.Axios(
         {
           params: {

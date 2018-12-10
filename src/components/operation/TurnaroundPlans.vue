@@ -34,6 +34,7 @@
             row-hover-color="#eee"
             row-click-color="#edf7ff"
             @on-custom-comp="customCompFunc"
+            ref="turnaroundPlansTable"
           ></v-table>
           <div
             class="mt20 mb20 bold"
@@ -166,7 +167,8 @@ export default {
           width: 150,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
           //   orderBy: ""
         },
         {
@@ -175,7 +177,8 @@ export default {
           width: 60,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "maintenanceType",
@@ -183,7 +186,8 @@ export default {
           width: 60,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "maintenanceLevel",
@@ -191,7 +195,8 @@ export default {
           width: 60,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "startTime",
@@ -199,7 +204,8 @@ export default {
           width: 70,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "endTime",
@@ -207,7 +213,8 @@ export default {
           width: 70,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "executeTime",
@@ -215,7 +222,8 @@ export default {
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "frequencyType",
@@ -223,7 +231,8 @@ export default {
           width: 60,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "maintenanceCc",
@@ -231,7 +240,8 @@ export default {
           width: 200,
           titleAlign: "center",
           columnAlign: "left",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "creator",
@@ -239,7 +249,8 @@ export default {
           width: 60,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "custome-adv",
@@ -255,15 +266,17 @@ export default {
   },
   methods: {
     customCompFunc(params) {
-
       if (params.type === "delete") {
         this.deleteOne(params.rowData["id"]);
         // this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
-          this.toAmend(params.index,params.rowData);
+        this.toAmend(params.index, params.rowData);
         // alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
       } else if (params.type === "stop") {
-        this.stopDiscontinuationOne(params.rowData["id"],params.rowData["state"]);
+        this.stopDiscontinuationOne(
+          params.rowData["id"],
+          params.rowData["state"]
+        );
         // alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
       }
     },
@@ -273,7 +286,7 @@ export default {
     },
     toAmend(rowIndex, rowData, column) {
       // 传值给修改
-      this.$router.push("/TurnaroundPlansAmend?id="+rowData.id);
+      this.$router.push("/TurnaroundPlansAmend?id=" + rowData.id);
       this.$store.commit("turnaroundPlans", rowData);
     },
     toPansAdd() {
@@ -338,12 +351,17 @@ export default {
     },
 
     load() {
+      EventBus.$on("sideBarTroggleHandle", isCollapse => {
+        window.setTimeout(() => {
+          this.$refs.turnaroundPlansTable.resize();
+        }, 500);
+      });
       this.Axios(
         {
           params: {
             page: this.pageIndex,
             size: this.pageSize,
-            maintenanceType:0
+            maintenanceType: 0
           },
           type: "get",
           url: "/mplan/allPlan"
@@ -448,10 +466,10 @@ export default {
         );
       });
     },
-    deleteOne(maintenanceId){
+    deleteOne(maintenanceId) {
       this.$confirm("计划一旦删除将无法恢复，请确认选择", "提示").then(_ => {
         let qs = require("qs");
-        let data = qs.stringify({ maintenanceIds:maintenanceId });
+        let data = qs.stringify({ maintenanceIds: maintenanceId });
         this.Axios(
           {
             params: data,
@@ -486,28 +504,28 @@ export default {
         );
       });
     },
-    stopDiscontinuationOne(maintenanceId,state){
-     if(state!=="待审核" && state!=="停用"){
-       this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
-         let qs = require("qs");
-         let data = qs.stringify({ maintenanceIds:maintenanceId});
-         this.Axios(
-           {
-             params: data,
-             type: "post",
-             url: "/mplan/discontinuation"
-           },
-           this
-         ).then(
-           response => {
-             this.load();
-           },
-           ({ type, info }) => {}
-         );
-       });
-     }else {
-       alert("对不起、该计划不能执行停用操作")
-     }
+    stopDiscontinuationOne(maintenanceId, state) {
+      if (state !== "待审核" && state !== "停用") {
+        this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
+          let qs = require("qs");
+          let data = qs.stringify({ maintenanceIds: maintenanceId });
+          this.Axios(
+            {
+              params: data,
+              type: "post",
+              url: "/mplan/discontinuation"
+            },
+            this
+          ).then(
+            response => {
+              this.load();
+            },
+            ({ type, info }) => {}
+          );
+        });
+      } else {
+        alert("对不起、该计划不能执行停用操作");
+      }
     },
     //审核操作
     submitAudit() {
@@ -583,7 +601,7 @@ Vue.component("table-turnaroundPlans", {
       let params = { type: "delete", rowData: this.rowData };
       this.$emit("on-custom-comp", params);
     },
-    stop(){
+    stop() {
       let params = { type: "stop", rowData: this.rowData };
       this.$emit("on-custom-comp", params);
     }

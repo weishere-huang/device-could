@@ -50,10 +50,11 @@
             row-hover-color="#eee"
             row-click-color="#edf7ff"
             @on-custom-comp="customCompFunc"
+            ref="personnelTable"
           ></v-table>
           <div
             class="mt20 mb20 bold"
-            style="text-align:center;margin-top:30px"
+            style="text-align:left;margin-top:20px"
           >
             <v-pagination
               @page-change="pageChange"
@@ -95,7 +96,8 @@ export default {
           width: 60,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
           //   orderBy: ""
         },
         {
@@ -104,7 +106,8 @@ export default {
           width: 80,
           titleAlign: "center",
           columnAlign: "left",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "phone",
@@ -112,7 +115,8 @@ export default {
           width: 80,
           titleAlign: "center",
           columnAlign: "left",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "userName",
@@ -120,7 +124,8 @@ export default {
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "organizeName",
@@ -128,7 +133,8 @@ export default {
           width: 250,
           titleAlign: "center",
           columnAlign: "left",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "position",
@@ -136,7 +142,8 @@ export default {
           width: 80,
           titleAlign: "center",
           columnAlign: "left",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "entryTime",
@@ -144,7 +151,8 @@ export default {
           width: 80,
           titleAlign: "center",
           columnAlign: "left",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "state",
@@ -152,7 +160,8 @@ export default {
           width: 80,
           titleAlign: "center",
           columnAlign: "left",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "custome-adv",
@@ -221,7 +230,7 @@ export default {
       });
     },
     modefication(rowIndex, rowData, column) {
-      this.$router.push("/Modification?id="+rowData.id);
+      this.$router.push("/Modification?id=" + rowData.id);
       this.$store.commit("personnel", rowData);
     },
     disable() {
@@ -323,6 +332,11 @@ export default {
     },
 
     load() {
+      EventBus.$on("sideBarTroggleHandle", isCollapse => {
+        window.setTimeout(() => {
+          this.$refs.personnelTable.resize();
+        }, 500);
+      });
       this.Axios(
         {
           params: { page: this.pageIndex, size: this.pageSize },
@@ -367,7 +381,7 @@ export default {
     },
     updateEmployee() {
       if (this.values.length === 1) {
-        this.$router.push("/Modification?id="+this.values[0].id);
+        this.$router.push("/Modification?id=" + this.values[0].id);
         // this.$store.commit("personnel", this.values[0]);
       } else {
         alert("抱歉、只能单个修改");
