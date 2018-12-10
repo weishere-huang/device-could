@@ -160,6 +160,7 @@ export default {
       dialogVisible3: false,
       dialogVisible1: false,
       dialogVisible: false,
+      //修改节点
       nodeCname: "",
       nodeCMsg: "",
       organize: "",
@@ -173,6 +174,7 @@ export default {
         label: "name"
       },
       nodedata: "",
+      //添加数据
       addname: "",
       addmsg: ""
     };
@@ -211,6 +213,7 @@ export default {
       }
       return tree;
     },
+
     Sgetlist(){
       //获取备品备件分类数据接口1
       this.Axios({
@@ -237,6 +240,162 @@ export default {
         );
 
     },
+    Sadd(){
+      //备品备件分类添加1
+      let qs = require("qs");
+      let data = qs.stringify({
+        parentCode:"",
+        name:"",
+        remarks:"",
+      });
+      this.Axios({
+        params: data,
+        option: {
+          enableMsg: false
+        },
+        type: "post",
+        url: "/part/add"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        .then(
+          result => {
+            this.$message({
+              message: "启用成功",
+              type: "success"
+            });
+
+            console.log("请求参数：" + data);
+          },
+          ({type, info}) => {
+          }
+        );
+    },
+    Supdate(){
+      //备品备件分类修改1
+      let qs = require("qs");
+      let data = qs.stringify({
+        id:"",
+        name:"",
+        remarks:""
+      });
+      this.Axios({
+        params:data,
+        option: {
+          enableMsg: false
+        },
+        type: "post",
+        url: "/part/update"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        .then(
+          result => {
+            if (result.data.code === 200) {
+              alert("修改成功");
+              location.reload();
+            } else {
+              alert("修改失败,请重新尝试");
+            }
+            console.log("修改设备类别");
+            console.log(result.data);
+            console.log("请求参数：" + data);
+          },
+          ({type, info}) => {
+          }
+        );
+    },
+    Sdelete(nodeId){
+      //备品备件分类删除1
+      let qs = require("qs");
+      let data = qs.stringify({
+        partId:nodeId
+      });
+      this.Axios({
+        params: data,
+        option: {
+          enableMsg: false
+        },
+        type: "post",
+        url: "/part/delete"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        .then(
+          result => {
+            if (result.data.code === 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.reload();
+            } else {
+              alert("删除失败,请重新尝试");
+            }
+            console.log("删除备品备件类别");
+            console.log(result.data);
+            console.log("请求参数：" + data);
+          },
+          ({type, info}) => {
+          }
+        );
+
+    },
+    warningdelete(nodeId) {
+      this.$confirm("确定要删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.Sdelete(nodeId);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    addFirst() {
+      //添加根类
+      let qs = require("qs");
+      let data = qs.stringify({
+        parentCode: 0,
+        name: this.addname,
+        remarks: this.addmsg
+      });
+      this.Axios(
+        {
+          url: "/part/add",
+          params: data,
+          type: "post",
+          option: {
+            enableMsg: false
+          }
+        },
+        this
+      )
+      //.post(this.global.apiSrc + "/deviceCategory/add", data)
+        .then(
+          result => {
+            if (result.data.code === 200) {
+              alert("添加成功");
+              location.reload();
+            } else {
+              alert("添加失败,请重新添加");
+            }
+            console.log("addCategory");
+            console.log(result.data);
+          },
+          ({ type, info }) => {}
+        );
+    },
+
+
     addCategory() {
       //添加设备类别
       let qs = require("qs");
@@ -274,41 +433,6 @@ export default {
       // .catch(err => {
       //   console.log(err);
       // });
-    },
-    addFirst() {
-      //添加根类
-      let qs = require("qs");
-      let data = qs.stringify({
-        categoryParentName: "根类",
-        categoryParentNo: 0,
-        categoryName: this.addname,
-        categoryMsg: this.addmsg
-      });
-      this.Axios(
-        {
-          url: "/deviceCategory/add",
-          params: data,
-          type: "post",
-          option: {
-            enableMsg: false
-          }
-        },
-        this
-      )
-        //.post(this.global.apiSrc + "/deviceCategory/add", data)
-        .then(
-          result => {
-            if (result.data.code === 200) {
-              alert("添加成功");
-              location.reload();
-            } else {
-              alert("添加失败,请重新添加");
-            }
-            console.log("addCategory");
-            console.log(result.data);
-          },
-          ({ type, info }) => {}
-        );
     },
     updateCategory() {
       //修改设备类别
@@ -389,22 +513,7 @@ export default {
       //   console.log(err);
       // });
     },
-    warningdelete(nodeId) {
-      this.$confirm("确定要删除吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.deleteCategory(nodeId);
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    }
+
   },
   created() {
     this.Sgetlist();
