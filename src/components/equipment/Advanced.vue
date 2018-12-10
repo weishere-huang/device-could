@@ -31,7 +31,7 @@
             </div>
             <div style="width:100%;text-align:center;margin-top:20px;">
                 <el-button size="small" @click="isHide">取消</el-button>
-                <el-button size="small" v-on:click="search">搜索</el-button>
+                <el-button size="small" v-on:click="givevalue">搜索</el-button>
             </div>
         </div>
     </div>
@@ -134,6 +134,27 @@ export default {
         // .catch(function(error) {
         //   console.log(error);
         // });
+    },
+    //把值给到主页面
+    givevalue(){
+      this.choice = "";
+      for(let i= 0 ;i<this.checkList.length; i++){
+        if(this.choice ==""){
+          this.choice = this.checkList[i];
+        }else{
+          this.choice += ","+this.checkList[i];
+        }
+      };
+      this.dataName ={
+        deviceName:this.deviceName,
+        locationNo:this.locationNo,
+        workerName:this.workerName,
+        manufacturer:this.manufacturer,
+        deviceSates:this.choice,
+        page:1,
+      };
+      document.querySelectorAll(".adsearch")[0].style.right ="-310px";
+      this.$emit("advanceValue", this.dataName);
     }
   }
 };

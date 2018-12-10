@@ -67,7 +67,7 @@ export default {
           type: "selection"
         },
         {
-          field: "faultNo",
+          field: "partNo",
           title: "备件编号",
           width: 100,
           titleAlign: "center",
@@ -77,7 +77,7 @@ export default {
           //   orderBy: ""
         },
         {
-          field: "state",
+          field: "partName",
           title: "备件名称",
           width: 100,
           titleAlign: "center",
@@ -86,7 +86,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "deviceName",
+          field: "partModel",
           title: "型号/规格",
           width: 100,
           titleAlign: "center",
@@ -95,7 +95,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "deviceSpec",
+          field: "partCategory",
           title: "备件级别",
           width: 60,
           titleAlign: "center",
@@ -104,7 +104,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "faultLevel",
+          field: "partClassify",
           title: "备件分类",
           width: 100,
           titleAlign: "center",
@@ -113,7 +113,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "faultSource",
+          field: "inventory",
           title: "库存总量",
           width: 80,
           titleAlign: "center",
@@ -139,7 +139,7 @@ export default {
           isResize: true
         },
         {
-          field: "causeAnalysis",
+          field: "partUnit",
           title: "计量单位",
           width: 60,
           titleAlign: "center",
@@ -147,7 +147,7 @@ export default {
           isResize: true
         },
         {
-          field: "causeAnalysis",
+          field: "remarks",
           title: "备注",
           width: 150,
           titleAlign: "center",
@@ -308,32 +308,7 @@ export default {
         );
 
     },
-    Sgetlist(){
-      //获取备品备件分类数据接口1
-      this.Axios({
-        // option: {
-        //   enableMsg: false
-        // },
-        type: "get",
-        url: "/part/list"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
-            this.load();
-            console.log("请求参数：" + data);
-          },
-          ({type, info}) => {
-          }
-        );
 
-    },
     Saddbaseinfo(){
     //新增备件基础信息接口1
       let qs = require("qs");
@@ -460,32 +435,29 @@ export default {
         );
     },
     baselist(){
-      //备品备件列表接口
-      let qs = require("qs");
-      let data = qs.stringify({
-        enterpriseIds: this.choice
-      });
+      //备品备件列表接口1
+
       this.Axios({
-        params: Object.assign(this.searchParams, {
+        params: {
           page: this.pageIndex,
           size: this.pageSize
-        }),
-        option: {
-          enableMsg: false
         },
-        type: "get",
-        url: "/enterprise/findByNameOrState"
+        // option: {
+        //   enableMsg: false
+        // },
+        type:"get",
+        url: "/part/listBasicInfo"
         // loadingConfig: {
         //   target: document.querySelector("#mainContentWrapper")
         // }
       },this)
         .then(
           result => {
+            this.tableData=result.data.data
             this.$message({
               message: "启用成功",
               type: "success"
             });
-            this.load();
             console.log("请求参数：" + data);
           },
           ({type, info}) => {
@@ -493,21 +465,22 @@ export default {
         );
     },
     basesearch(){
-      //模糊搜索备品备件接口
+      //模糊搜索备品备件接口1
       let qs = require("qs");
       let data = qs.stringify({
         enterpriseIds: this.choice
       });
       this.Axios({
-        params: Object.assign(this.searchParams, {
+        params: {
           page: this.pageIndex,
-          size: this.pageSize
-        }),
+          size: this.pageSize,
+          keywords:"",
+        },
         option: {
           enableMsg: false
         },
         type: "get",
-        url: "/enterprise/findByNameOrState"
+        url: "/part/searchBasicInfo"
         // loadingConfig: {
         //   target: document.querySelector("#mainContentWrapper")
         // }
@@ -526,21 +499,19 @@ export default {
         );
     },
     listbybase(){
-      //根据备件分类查询备件列表
-      let qs = require("qs");
-      let data = qs.stringify({
-        enterpriseIds: this.choice
-      });
+      //根据备件分类查询备件列表1
+
       this.Axios({
-        params: Object.assign(this.searchParams, {
+        params: {
           page: this.pageIndex,
-          size: this.pageSize
-        }),
+          size: this.pageSize,
+          classifyId:"",
+        },
         option: {
           enableMsg: false
         },
         type: "get",
-        url: "/enterprise/findByNameOrState"
+        url: "/part/listInfoByClassifyId"
         // loadingConfig: {
         //   target: document.querySelector("#mainContentWrapper")
         // }
@@ -559,21 +530,30 @@ export default {
         );
     },
     Sinsert(){
-      //备件入库接口
+      //备件入库接口1
       let qs = require("qs");
       let data = qs.stringify({
-        enterpriseIds: this.choice
+        godownEntryNo:"",
+        godownEntryTime:"",
+        partInfoListJsonStr:{
+          partId:"",
+          entryPrice:"",
+          entryCount:"",
+          subtotal:"",
+          batchNumberId:"",
+          batchNumber:"",
+          supplierName:"",
+          saveLocation:"",
+          remarks:""
+        }
       });
       this.Axios({
-        params: Object.assign(this.searchParams, {
-          page: this.pageIndex,
-          size: this.pageSize
-        }),
+        params: data,
         option: {
           enableMsg: false
         },
-        type: "get",
-        url: "/enterprise/findByNameOrState"
+        type: "post",
+        url: "/part/insertPartEntry"
         // loadingConfig: {
         //   target: document.querySelector("#mainContentWrapper")
         // }
@@ -592,16 +572,16 @@ export default {
         );
     },
     listsearch(){
-      //入库明细列表以及模糊搜索接口
-      let qs = require("qs");
-      let data = qs.stringify({
-        enterpriseIds: this.choice
-      });
+      //入库明细列表以及模糊搜索接口1
+
       this.Axios({
-        params: Object.assign(this.searchParams, {
+        params: {
           page: this.pageIndex,
-          size: this.pageSize
-        }),
+          size: this.pageSize,
+          startTime:"",
+          endTime:"",
+          keywords:"",
+        },
         option: {
           enableMsg: false
         },
@@ -626,20 +606,16 @@ export default {
     },
     getuserbatch(){
       //获取最近使用批次接口
-      let qs = require("qs");
-      let data = qs.stringify({
-        enterpriseIds: this.choice
-      });
+
       this.Axios({
-        params: Object.assign(this.searchParams, {
-          page: this.pageIndex,
-          size: this.pageSize
-        }),
+        params: {
+          partId:""
+        },
         option: {
           enableMsg: false
         },
         type: "get",
-        url: "/enterprise/findByNameOrState"
+        url: "/part/listRecentlyUsedBatch"
         // loadingConfig: {
         //   target: document.querySelector("#mainContentWrapper")
         // }
@@ -661,6 +637,7 @@ export default {
   },
   created(){
     //默认加载
+    this.baselist();
   }
 };
 Vue.component("table-sparePart", {
