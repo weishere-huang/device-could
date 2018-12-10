@@ -87,6 +87,9 @@
       <div v-show="backshow">
         <h2>企业注册</h2>
         <div class="titleText">（企业注册信息填写）</div>
+        <el-form>
+
+        </el-form>
         <ul>
           <li>
             <label for="">企业名称：</label>
@@ -126,7 +129,7 @@
           </li>
           <li>
             <label for="">营业执照：</label>
-            <!-- <el-upload
+            <el-upload
               action="https://jsonplaceholder.typicode.com/posts/"
               list-type="picture-card"
               :on-preview="handlePictureCardPreview"
@@ -140,7 +143,7 @@
                 :src="dialogImageUrl"
                 alt=""
               >
-            </el-dialog> -->
+            </el-dialog>
           </li>
         </ul>
         <div class="next">
@@ -753,4 +756,5 @@ export default {
     cursor: pointer;
   }
 }
+ 
 </style>
