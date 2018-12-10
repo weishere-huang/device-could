@@ -49,7 +49,6 @@
           <el-button
             size="small"
             style="width:200px;margin:auto"
-            v-if="organize===''"
             @click="dialogVisible3=true"
           >添加初始类别</el-button>
         </div>
