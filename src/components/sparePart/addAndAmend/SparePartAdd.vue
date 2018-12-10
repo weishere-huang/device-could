@@ -188,24 +188,24 @@ export default {
         partClassify:this.formInline.partClassify,
         partClassifyName:this.formInline.partClassifyName,
         //
-        partQuality:this.formInline.partQuality,
-        partUnit:this.formInline.partUnit,
-        inventory:this.formInline.inventory,
-        freeze:this.formInline.freeze,
-        price:this.formInline.price,
-        storageTime:this.formInline.storageTime,
-        partSource:this.formInline.partSource,
-        company:this.formInline.company,
-        manufactor:this.formInline.manufactor,
-        remarks:this.formInline.remarks,
-        img:this.formInline.img
+        // partQuality:this.formInline.partQuality,
+        // partUnit:this.formInline.partUnit,
+        // inventory:this.formInline.inventory,
+        // freeze:this.formInline.freeze,
+        // price:this.formInline.price,
+        // storageTime:this.formInline.storageTime,
+        // partSource:this.formInline.partSource,
+        // company:this.formInline.company,
+        // manufactor:this.formInline.manufactor,
+        // remarks:this.formInline.remarks,
+        // img:this.formInline.img
 
       });
       this.Axios({
         params: data,
-        option: {
-          enableMsg: false
-        },
+        // option: {
+        //   enableMsg: false
+        // },
         type: "post",
         url: "/part/addBasicInfo"
         // loadingConfig: {
@@ -214,10 +214,12 @@ export default {
       },this)
         .then(
           result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
+            if(result.data.code ===200){
+              alert("添加成功");
+              this.$router.push("/SparePart");
+            }
+            debugger
+
             console.log("请求参数：" + data);
           },
           ({type, info}) => {
