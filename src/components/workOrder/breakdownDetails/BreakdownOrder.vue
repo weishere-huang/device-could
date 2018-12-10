@@ -237,6 +237,7 @@
   export default {
     data() {
       return {
+        clickId:"",
         spareParts: [],
         defaultProps: {
           children: "",
@@ -615,7 +616,7 @@
 
           })
       },
-
+      //工单信息
       workInfoValue(value){
         this.workInfo = value;
         if (value.workType ===2){
@@ -657,6 +658,7 @@
           this.workInfo.state = "已完成";
         }
       },
+      //故障详情
       formLabelAlignValue(value){
         this.formLabelAlign = value;
         if (this.formLabelAlign.faultLevel === 1) {
@@ -669,16 +671,20 @@
           this.formLabelAlign.faultLevel = "高";
         }
       },
+
       equipmentTableDataValue(value){
         let arr = value;
         this.equipmentTableData = arr;
       },
+
       suppliesTableDataValue(value){
         this.suppliesTableData = value;
       },
+
       workReceiptInfoValue(value){
         this.workReceiptInfo = value;
       },
+      //回执信息
       informationDataValue(value){
         this.informationData = value;
       }
