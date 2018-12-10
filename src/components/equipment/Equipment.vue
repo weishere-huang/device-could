@@ -126,6 +126,7 @@
 import advanced from "./Advanced";
 import Vue from "vue";
 export default {
+  inject: ["reload"],
   name: "equipment",
   data() {
     return {

@@ -38,6 +38,7 @@
 </template>
 <script>
 export default {
+  inject: ["reload"],
   name: "",
   data() {
     return {

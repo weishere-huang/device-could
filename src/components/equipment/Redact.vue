@@ -343,6 +343,7 @@
 <script>
 import addperson from "./RedactAdd";
 export default {
+  inject: ["reload"],
   data() {
     return {
       qqqqq: "",
