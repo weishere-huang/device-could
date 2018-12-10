@@ -8,6 +8,7 @@ import Company from '@/components/company/Company'
 import BusinessDetails from '@/components/company/BusinessDetails'
 import Equipment from '@/components/equipment/Equipment'
 import Monit from '@/components/monit'
+import MonitSingle from '@/components/monit/single'
 import Category from '@/components/equipment/Category'
 import EquipmentAdd from '@/components/equipment/EquipmentAdd'
 import Redact from '@/components/equipment/Redact'
@@ -119,6 +120,14 @@ const router = new Router({
       path: '/Equipment',
       name: 'Equipment',
       component: Equipment,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/Monit/:deviceId',
+      name: 'MonitSingle',
+      component: MonitSingle,
       meta: {
         requireAuth: true
       },
