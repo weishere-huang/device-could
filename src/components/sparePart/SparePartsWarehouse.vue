@@ -321,7 +321,124 @@ export default {
       name = name[name.length - 1];
       let id = value[value.length - 1];
       console.log(id, name);
-    }
+    },
+
+    findbyclassifyId(){
+      //根据备件分类查询备件列表1
+      this.Axios({
+        params: {
+          page: this.pageIndex,
+          size: this.pageSize,
+          classifyId:this.ctgoptions.id,
+        },
+        option: {
+          enableMsg: false
+        },
+        type: "get",
+        url: "/part/listInfoByClassifyId"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        .then(
+          result => {
+            this.$message({
+              message: "启用成功",
+              type: "success"
+            });
+
+            console.log("请求参数：" + data);
+          },
+          ({type, info}) => {
+          }
+        );
+    },
+    Sinsert(){
+      //备件入库接口1
+      let qs = require("qs");
+      let data = qs.stringify({
+        godownEntryNo:"",
+        godownEntryTime:"",
+        partInfoListJsonStr:{
+          partId:"",
+          entryPrice:"",
+          entryCount:"",
+          subtotal:"",
+          batchNumberId:"",
+          batchNumber:"",
+          supplierName:"",
+          saveLocation:"",
+          remarks:""
+        }
+      });
+      this.Axios({
+        params: data,
+        option: {
+          enableMsg: false
+        },
+        type: "post",
+        url: "/part/insertPartEntry"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        .then(
+          result => {
+            this.$message({
+              message: "启用成功",
+              type: "success"
+            });
+
+            console.log("请求参数：" + data);
+          },
+          ({type, info}) => {
+          }
+        );
+    },
+
+    //查询类别
+    filterArray(data, parent) {
+      let vm = this;
+      var tree = [];
+      var temp;
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].parentCode == parent) {
+          var obj = data[i];
+          temp = this.filterArray(data, data[i].code);
+          if (temp.length > 0) {
+            obj.children = temp;
+          }
+          tree.push(obj);
+        }
+      }
+      return tree;
+    },
+    Sgetlist(){
+      //获取备品备件分类数据接口1
+      this.Axios({
+        // option: {
+        //   enableMsg: false
+        // },
+        type: "get",
+        url: "/part/list"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        .then(
+          result => {
+            console.log(result.data);
+            console.log(result.data.data);
+            this.ctgoptions=this.filterArray(result.data.data,0);
+          },
+          ({type, info}) => {
+          }
+        );
+
+    },
+  },
+  created(){
+    this.Sgetlist();
   }
 };
 Vue.component("table-warehouse", {
