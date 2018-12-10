@@ -88,7 +88,7 @@
         <h2>企业注册</h2>
         <div class="titleText">（企业注册信息填写）</div>
         <el-form>
-
+          
         </el-form>
         <ul>
           <li>
@@ -715,6 +715,11 @@ export default {
     li {
       list-style-type: none;
       margin-bottom: 5px;
+      .el-upload {
+        width: 80px !important;
+        height: 80px !important;
+        overflow: hidden;
+      }
       label {
         display: inline-block;
         width: 31%;
@@ -756,5 +761,4 @@ export default {
     cursor: pointer;
   }
 }
- 
 </style>
