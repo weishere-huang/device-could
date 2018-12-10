@@ -8,6 +8,7 @@ import Company from '@/components/company/Company'
 import BusinessDetails from '@/components/company/BusinessDetails'
 import Equipment from '@/components/equipment/Equipment'
 import Monit from '@/components/monit'
+import MonitSingle from '@/components/monit/single'
 import Category from '@/components/equipment/Category'
 import EquipmentAdd from '@/components/equipment/EquipmentAdd'
 import Redact from '@/components/equipment/Redact'
@@ -44,6 +45,7 @@ import SparePartAdd from '@/components/sparePart/addAndAmend/SparePartAdd'
 import SparePartAmend from '@/components/sparePart/addAndAmend/SparePartAmend'
 import WarehousingDetail from '@/components/sparePart/WarehousingDetail'
 import OutboundDetails from '@/components/sparePart/OutboundDetails'
+import SparePartsClassification from '@/components/sparePart/SparePartsClassification'
 Vue.use(Router)
 const router = new Router({
   mode: 'history',
@@ -124,6 +126,14 @@ const router = new Router({
       path: '/Equipment',
       name: 'Equipment',
       component: Equipment,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/Monit/:deviceId',
+      name: 'MonitSingle',
+      component: MonitSingle,
       meta: {
         requireAuth: true
       },
@@ -396,6 +406,14 @@ const router = new Router({
       path: '/OutboundDetails',
       name: 'OutboundDetails',
       component: OutboundDetails,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/SparePartsClassification',
+      name: 'SparePartsClassification',
+      component: SparePartsClassification,
       meta: {
         requireAuth: true
       },
