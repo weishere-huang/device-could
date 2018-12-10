@@ -349,7 +349,7 @@ Vue.component("table-warehouse", {
 });
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;

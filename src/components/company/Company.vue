@@ -160,7 +160,7 @@ export default {
           titleAlign: "center",
           columnAlign: "left",
           isResize: true,
-          overflowTitle: true
+          overflowTitle: true,
         },
         {
           field: "phone",
@@ -521,7 +521,7 @@ Vue.component("table-company", {
   }
 });
 </script>
-<style lang="less" scoped>
+<style lang="less" >
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
