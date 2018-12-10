@@ -226,7 +226,7 @@
           <div style="padding-bottom:10px;">
             <el-button
               size="mini"
-              @click="dialogVisible2=true"
+              @click="listBasicInfo"
             >从物料库中添加</el-button>
             <el-button size="mini">保存列表</el-button>
           </div>
@@ -281,14 +281,26 @@
                 column-width-drag
                 :multiple-sort="false"
                 style="width:100%; min-height:300px;max-height:400px"
-                :columns="personTable"
-                :table-data="personData"
+                :columns="materielTable"
+                :table-data="materielData"
                 row-hover-color="#eee"
                 row-click-color="#edf7ff"
                 :cell-edit-done="cellEditDone"
                 row-height=24
                 :height="230"
               ></v-table>
+              <div
+                class="mt20 mb20 bold"
+                style="text-align:left;margin-top:20px;"
+              >
+                <v-pagination
+                  @page-change="pageChange"
+                  @page-size-change="pageSizeChange"
+                  :total="pageNumber"
+                  :page-size="pageSize"
+                  :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
+                ></v-pagination>
+              </div>
             </div>
             <div class="add">
               <div style="text-align:center">
@@ -358,6 +370,9 @@
   export default {
     data() {
       return {
+        pageIndex:1,
+        pageSize:10,
+        pageNumber:0,
         spareParts: [],
         defaultProps: {
           children: "",
@@ -557,7 +572,7 @@
         ],
         personTable: [
           {
-            field: "name",
+            field: "workTypeName",
             title: "职责",
             width: 80,
             titleAlign: "center",
@@ -573,7 +588,7 @@
             isResize: true
           },
           {
-            field: "name",
+            field: "phone",
             title: "手机号",
             width: 80,
             titleAlign: "center",
@@ -581,7 +596,7 @@
             isResize: true
           },
           {
-            field: "name",
+            field: "organizeName",
             title: "组织单位/部门",
             width: 80,
             titleAlign: "center",
@@ -589,7 +604,7 @@
             isResize: true
           },
           {
-            field: "name",
+            field: "position",
             title: "岗位",
             width: 60,
             titleAlign: "center",
@@ -597,6 +612,65 @@
             isResize: true
           },
         ],
+        materielTable:[
+          {
+            field: "partNo",
+            title: "备件编号",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "partName",
+            title: "备件名称",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "partModel",
+            title: "型号/规格",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "partCategory",
+            title: "备件级别",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "partClassify",
+            title: "备件分类",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "inventory",
+            title: "库存",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "partUnit",
+            title: "计量单位",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          }
+        ],
+        materielData:[],
         personData: [],
         tableData: [],
         columns: [
@@ -648,7 +722,11 @@
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
         this.suppliesTableData[rowIndex][field] = newValue;
-
+        console.log(newValue);
+        console.log(oldValue);
+        console.log(rowIndex);
+        console.log(rowData);
+        console.log(field);
         // 接下来处理你的业务逻辑，数据持久化等...
       },
       selectGroupChange(selection) {
@@ -664,8 +742,8 @@
         console.log(rowData);
       },
       checkPerson(rowIndex, rowData, column) {
-        console.log(rowData.id);
         this.dialogVisible1 = true;
+        this.findByDeviceId(rowData.id);
       },
       handleNodeClick(data) {
         this.clickId = data.id;
@@ -700,7 +778,6 @@
           this
         ).then(
           response => {
-            console.log(response.data.data);
             this.workInfoValue(response.data.data.work);
             this.maintenancePlanValue(response.data.data.maintenancePlan);
             this.devicesTableDataValue(response.data.data.devices);
@@ -713,6 +790,43 @@
           })
       },
       //通过设备ID查找相关负责人员
+      findByDeviceId(deviceId){
+        this.Axios(
+          {
+            params: {deviceId:deviceId},
+            type: "get",
+            url: "/device/findDeviceWorker",
+          },
+          this
+        ).then(
+          response => {
+            // console.log(response.data.data);
+            this.personData = response.data.data;
+          },
+          ({type, info}) => {
+
+          })
+      },
+      //备品备件信息
+      listBasicInfo(){
+        this.dialogVisible2=true;
+        this.Axios(
+          {
+            params: {page:this.pageIndex,size:this.pageSize},
+            type: "get",
+            url: "/part/listBasicInfo",
+          },
+          this
+        ).then(
+          response => {
+            console.log(response.data.data);
+            // this.personData = response.data.data;
+          },
+          ({type, info}) => {
+
+          })
+      },
+
 
 
 

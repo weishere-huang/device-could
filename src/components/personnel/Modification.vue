@@ -313,8 +313,7 @@
     },
     created() {
       this.organize();
-      let aaa=this.$store.state.personnel.imId;
-      this.selectOne(aaa.id,aaa.userName);
+      this.selectOne(this.$route.query.id);
       this.Axios(
         {
           params:{},
