@@ -1,8 +1,8 @@
 <template>
   <div class="spare-part-amend">
     <div class="top">
-      <el-button size="small">返回</el-button>
-      <el-button size="small">保存</el-button>
+      <el-button size="small" @click="toBack">返回</el-button>
+      <el-button size="small" @click="btisok">保存</el-button>
     </div>
     <div class="basic-information">
       <h5>备件基本信息</h5>
@@ -141,6 +141,9 @@ export default {
     };
   },
   methods: {
+    toBack() {
+      this.$router.back(-1);
+    },
     handleChange2(value) {
       let name = this.$refs["getName2"].currentLabels;
       name = name[name.length - 1];
@@ -148,7 +151,70 @@ export default {
       console.log(id, name);
       this.sizeForm.deviceCategory = id;
       this.sizeForm.deviceCategoryName = name;
-    }
+    },
+    baseupdate(){
+      //编辑备件基础信息接口1
+      let qs = require("qs");
+      let data = qs.stringify({
+        id:"",
+        partNo:"",
+        partName:"",
+        partModel:"",
+        partCategory:"",
+        partClassify:"",
+        partClassifyName:"",
+        partQuality:"",
+        partUnit:"",
+        inventory:"",
+        freeze:"",
+        price:"",
+        storageTime:"",
+        partSource:"",
+        company:"",
+        manufactor:"",
+        remarks:"",
+        img:""
+      });
+      this.Axios({
+        params: data,
+        option: {
+          enableMsg: false
+        },
+        type: "post",
+        url: "/part/updateBasicInfo"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        .then(
+          result => {
+            this.$message({
+              message: "启用成功",
+              type: "success"
+            });
+            console.log("请求参数：" + data);
+          },
+          ({type, info}) => {
+          }
+        );
+    },
+    btisok(){
+      this.$confirm('确定完成修改吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.baseupdate();
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消操作'
+        });
+      });
+    },
+  },
+  created(){
+
   }
 };
 </script>
