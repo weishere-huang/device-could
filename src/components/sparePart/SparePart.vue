@@ -5,7 +5,7 @@
         size="small"
         @click="toAdd"
       >添加</el-button>
-      <el-button size="small">删除</el-button>
+      <el-button size="small" @click="btisok">删除</el-button>
       <div class="search">
         <span>关键字：</span>
         <el-input
@@ -55,7 +55,7 @@ export default {
   name: "",
   data() {
     return {
-      pageNumber: "",
+      pageNumber: 50,
       pageIndex: 1,
       pageSize: 10,
       tableData: [],
@@ -105,7 +105,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "partClassify",
+          field: "partClassifyName",
           title: "备件分类",
           width: 100,
           titleAlign: "center",
@@ -168,6 +168,7 @@ export default {
       ],
       //条件查询
       basekeyword:"",
+
 
     };
   },
@@ -272,11 +273,9 @@ export default {
       },this)
         .then(
           result => {
-            this.tableData=result.data.data
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
+            console.log(result.data);
+            this.tableData=result.data.data.content;
+            this.pageNumber = result.data.data.totalElements;
             console.log("请求参数：" + data);
           },
           ({type, info}) => {
