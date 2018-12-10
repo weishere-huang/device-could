@@ -30,7 +30,7 @@
                 <el-button
                   type="text"
                   size="mini"
-                  @click="dialogVisible1=true,nodeCname=data.categoryName,nodeCMsg=data.categoryMsg"
+                  @click="dialogVisible1=true,nodeCname=data.name,nodeCMsg=data.remarks"
                 >
                   修改
                 </el-button>
@@ -51,7 +51,7 @@
             size="small"
             style="width:200px;margin:auto"
             v-if="organize===''"
-            @click="dialogVisible3=true,addFirst"
+            @click="dialogVisible3=true"
           >添加初始类别</el-button>
         </div>
         <el-dialog
@@ -66,14 +66,14 @@
           >
             <el-form-item label="类别名称：">
               <el-input
-                v-model="nodedata.categoryName"
+                v-model="addname"
                 size="mini"
               ></el-input>
             </el-form-item>
             <el-form-item label="备注：">
               <el-input
                 type="textarea"
-                v-model="nodedata.categoryMsg"
+                v-model="addmsg"
               ></el-input>
             </el-form-item>
           </el-form>
@@ -84,7 +84,7 @@
             <el-button @click="dialogVisible3 = false">取 消</el-button>
             <el-button
               type="primary"
-              @click="dialogVisible3 = false"
+              @click="addFirst,dialogVisible3 = false"
             >确 定</el-button>
           </span>
         </el-dialog>
@@ -115,7 +115,7 @@
         <el-form-item>
           <el-button
             size="mini"
-            @click="updateCategory"
+            @click="Supdate"
           >确认修改</el-button>
         </el-form-item>
       </el-form>
@@ -145,7 +145,7 @@
         <el-form-item>
           <el-button
             size="mini"
-            @click="addCategory"
+            @click="Sadd"
           >保存</el-button>
         </el-form-item>
       </el-form>
@@ -228,7 +228,7 @@ export default {
       },this)
         .then(
           result => {
-            this.tabledate=this.filterArray(result,0);
+            this.organize=this.filterArray(result,0);
             this.$message({
               message: "启用成功",
               type: "success"
@@ -244,9 +244,9 @@ export default {
       //备品备件分类添加1
       let qs = require("qs");
       let data = qs.stringify({
-        parentCode:"",
-        name:"",
-        remarks:"",
+        parentCode:this.nodedata.code,
+        name:this.addname,
+        remarks:this.addmsg,
       });
       this.Axios({
         params: data,
@@ -265,7 +265,7 @@ export default {
               message: "启用成功",
               type: "success"
             });
-
+            location.reload();
             console.log("请求参数：" + data);
           },
           ({type, info}) => {
@@ -276,9 +276,9 @@ export default {
       //备品备件分类修改1
       let qs = require("qs");
       let data = qs.stringify({
-        id:"",
-        name:"",
-        remarks:""
+        id:this.nodedata.id,
+        name:this.nodeCname,
+        remarks:this.nodeCMsg
       });
       this.Axios({
         params:data,
