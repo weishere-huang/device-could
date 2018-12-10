@@ -42,7 +42,7 @@
                 </el-button>
               </span>
             </span>
-            <span class="content-remarks">{{data.organizeName}}</span>
+            <span class="content-remarks">{{data.categoryMsg}}</span>
           </span>
         </el-tree>
         <div style="width:100%;text-align:center">
@@ -284,7 +284,6 @@ export default {
       });
       console.log("添加根类");
       console.log(data);
-      debugger
       this.Axios(
         {
           url: "/deviceCategory/add",
