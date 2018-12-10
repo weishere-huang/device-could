@@ -511,9 +511,7 @@ export default {
     },
     //审核操作
     submitAudit() {
-      this.formLabelAlign.type
-        ? (this.formLabelAlign.type = 0)
-        : (this.formLabelAlign.type = 1);
+      this.formLabelAlign.type ? (this.formLabelAlign.type = 0) : (this.formLabelAlign.type = 1);
       this.Axios(
         {
           params: {
