@@ -29,7 +29,7 @@
               value-format="yyyy/MM/dd"
             >
             </el-date-picker>
-            <el-button size="small">查询</el-button>
+            <el-button size="small" @click="listsearch">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -39,8 +39,9 @@
           type="search"
           placeholder="如编号，名称，型号/规格"
           size="small"
+          v-model="rkeyword"
         ></el-input>
-        <el-button size="small">搜索</el-button>
+        <el-button size="small" @click="listsearch">搜索</el-button>
       </div>
     </div>
     <div class="bottom">
@@ -88,7 +89,7 @@ export default {
       tableDate: [],
       columns: [
         {
-          field: "faultNo",
+          field: "godownEntryNo",
           title: "入库单号",
           width: 120,
           titleAlign: "center",
@@ -98,7 +99,7 @@ export default {
           //   orderBy: ""
         },
         {
-          field: "state",
+          field: "godownEntryTime",
           title: "入库日期",
           width: 120,
           titleAlign: "center",
@@ -107,7 +108,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "deviceName",
+          field: "partName",
           title: "备件名称",
           width: 120,
           titleAlign: "center",
@@ -116,7 +117,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "deviceSpec",
+          field: "partNo",
           title: "备件编号",
           width: 100,
           titleAlign: "center",
@@ -125,7 +126,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "faultLevel",
+          field: "partModel",
           title: "型号/规格",
           width: 80,
           titleAlign: "center",
@@ -134,7 +135,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "faultSource",
+          field: "entryCount",
           title: "数量",
           width: 60,
           titleAlign: "center",
@@ -143,7 +144,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "faultDesc",
+          field: "entryPrice",
           title: "单价",
           width: 60,
           titleAlign: "center",
@@ -160,7 +161,7 @@ export default {
           isResize: true
         },
         {
-          field: "causeAnalysis",
+          field: "supplierName",
           title: "供货商",
           width: 80,
           titleAlign: "center",
@@ -168,7 +169,7 @@ export default {
           isResize: true
         },
         {
-          field: "causeAnalysis",
+          field: "saveLocation",
           title: "放置位置",
           width: 80,
           titleAlign: "center",
@@ -177,7 +178,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "causeAnalysis",
+          field: "remarks",
           title: "备注",
           width: 150,
           titleAlign: "center",
@@ -185,7 +186,9 @@ export default {
           isResize: true,
           overflowTitle: true
         }
-      ]
+      ],
+      //入库keyword
+      rkeyword:""
     };
   },
   methods: {
@@ -213,7 +216,39 @@ export default {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
-    }
+    },
+    //
+    listsearch(){
+      //入库明细列表以及模糊搜索接口1
+      this.Axios({
+        params: {
+          page: this.pageIndex,
+          size: this.pageSize,
+          startTime:this.startTime,
+          endTime:this.endTime,
+          keywords:this.rkeyword,
+        },
+        option: {
+          enableMsg: false
+        },
+        type: "get",
+        url: "/part/listGodownEntryInfo"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        .then(
+          result => {
+            this.tableData=result.data.data;
+            console.log(result.data);
+          },
+          ({type, info}) => {
+          }
+        );
+    },
+  },
+  created(){
+    this.listsearch();
   }
 };
 </script>

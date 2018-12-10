@@ -188,9 +188,19 @@ export default {
       }
     },
     toDetails(rowIndex, rowData, column) {
+      this.$router.push("/SparePartAmend/" + rowData.id);
+      // this.$store.commit("equipmentRedact", rowData);
       console.log(rowData);
     },
     selectGroupChange(selection) {
+      this.ids = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.ids != "") {
+          this.ids += "," + selection[i].id;
+        } else {
+          this.ids += selection[i].id;
+        }
+      }
       console.log(selection);
     },
     selectALL(selection) {
@@ -217,17 +227,10 @@ export default {
     },
 
     //备品备件接口
-
-
     basedelete(){
       //批量删除备件基础信息接口1
-      let qs = require("qs");
-      let data = qs.stringify({
-        ids:""
-        //用,分割   可以
-      });
       this.Axios({
-        params: data,
+        params: {ids:this.ids},
         option: {
           enableMsg: false
         },
@@ -243,7 +246,7 @@ export default {
               message: "启用成功",
               type: "success"
             });
-
+            this.ids=""
             console.log("请求参数：" + data);
           },
           ({type, info}) => {
@@ -311,112 +314,8 @@ export default {
           }
         );
     },
-    findbyclassifyId(){
-      //根据备件分类查询备件列表1
 
-      this.Axios({
-        params: {
-          page: this.pageIndex,
-          size: this.pageSize,
-          classifyId:"",
-        },
-        option: {
-          enableMsg: false
-        },
-        type: "get",
-        url: "/part/listInfoByClassifyId"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
 
-            console.log("请求参数：" + data);
-          },
-          ({type, info}) => {
-          }
-        );
-    },
-    Sinsert(){
-      //备件入库接口1
-      let qs = require("qs");
-      let data = qs.stringify({
-        godownEntryNo:"",
-        godownEntryTime:"",
-        partInfoListJsonStr:{
-          partId:"",
-          entryPrice:"",
-          entryCount:"",
-          subtotal:"",
-          batchNumberId:"",
-          batchNumber:"",
-          supplierName:"",
-          saveLocation:"",
-          remarks:""
-        }
-      });
-      this.Axios({
-        params: data,
-        option: {
-          enableMsg: false
-        },
-        type: "post",
-        url: "/part/insertPartEntry"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
-
-            console.log("请求参数：" + data);
-          },
-          ({type, info}) => {
-          }
-        );
-    },
-    listsearch(){
-      //入库明细列表以及模糊搜索接口1
-
-      this.Axios({
-        params: {
-          page: this.pageIndex,
-          size: this.pageSize,
-          startTime:"",
-          endTime:"",
-          keywords:"",
-        },
-        option: {
-          enableMsg: false
-        },
-        type: "get",
-        url: "/enterprise/findByNameOrState"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
-
-            console.log("请求参数：" + data);
-          },
-          ({type, info}) => {
-          }
-        );
-    },
     getuserbatch(){
       //获取最近使用批次接口
 
