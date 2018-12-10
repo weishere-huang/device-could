@@ -188,7 +188,12 @@ export default {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
-    }
+    },
+
+
+  },
+  created(){
+
   }
 };
 </script>

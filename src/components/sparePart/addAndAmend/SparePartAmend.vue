@@ -14,7 +14,7 @@
       >
         <el-form-item label="备件编号：">
           <el-input
-            v-model="formInline.user"
+            v-model="formInline.partNo"
             placeholder=""
             size="small"
             style="width:200px"
@@ -22,7 +22,7 @@
         </el-form-item>
         <el-form-item label="备件名称：">
           <el-input
-            v-model="formInline.user"
+            v-model="formInline.partName"
             placeholder=""
             size="small"
             style="width:514px"
@@ -37,7 +37,7 @@
       >
         <el-form-item label="型号/规格：">
           <el-input
-            v-model="formInline.user"
+            v-model="formInline.partModel"
             placeholder=""
             size="small"
             style="width:200px"
@@ -45,7 +45,7 @@
         </el-form-item>
         <el-form-item label="备件级别：">
           <el-select
-            v-model="formInline.user"
+            v-model="formInline.partCategory"
             placeholder="点击选择"
             size="small"
             style="width:200px"
@@ -68,7 +68,7 @@
             :props="defaultProps2"
             change-on-select
             :show-all-levels="false"
-            v-model="formInline.user"
+            v-model="formInline.partClassifyName"
             @change="handleChange2"
             style="width:200px;"
             size="small"
@@ -83,7 +83,7 @@
       >
         <el-form-item label="计量单位：">
           <el-input
-            v-model="formInline.user"
+            v-model="formInline.partUnit"
             placeholder=""
             size="small"
             style="width:200px"
@@ -107,7 +107,7 @@
         <el-form-item label="备注：">
           <el-input
             type="textarea"
-            v-model="formInline.user"
+            v-model="formInline.remarks"
             placeholder=""
             style="width:824px"
             :autosize="{ minRows: 4, maxRows: 10}"
@@ -137,7 +137,8 @@ export default {
       defaultProps2: {
         value: "id",
         label: "name"
-      }
+      },
+      urlid:""
     };
   },
   methods: {
@@ -156,24 +157,25 @@ export default {
       //编辑备件基础信息接口1
       let qs = require("qs");
       let data = qs.stringify({
-        id:"",
-        partNo:"",
-        partName:"",
-        partModel:"",
-        partCategory:"",
-        partClassify:"",
-        partClassifyName:"",
-        partQuality:"",
-        partUnit:"",
-        inventory:"",
-        freeze:"",
-        price:"",
-        storageTime:"",
-        partSource:"",
-        company:"",
-        manufactor:"",
-        remarks:"",
-        img:""
+        id:this.urlid,
+        partNo:this.formInline.partNo,
+        partName:this.formInline.partName,
+        partModel:this.formInline.partModel,
+        partCategory:this.formInline.partCategory,
+        partClassify:this.formInline.partClassify,
+        partClassifyName:this.formInline.partClassifyName,
+        //
+        partQuality:this.formInline.partQuality,
+        partUnit:this.formInline.partUnit,
+        inventory:this.formInline.inventory,
+        freeze:this.formInline.freeze,
+        price:this.formInline.price,
+        storageTime:this.formInline.storageTime,
+        partSource:this.formInline.partSource,
+        company:this.formInline.company,
+        manufactor:this.formInline.manufactor,
+        remarks:this.formInline.remarks,
+        img:this.formInline.img
       });
       this.Axios({
         params: data,
@@ -252,8 +254,35 @@ export default {
         );
 
     },
+
+    getinfobyId(id){
+      this.Axios({
+        params: {
+          id:id
+        },
+        option: {
+          enableMsg: false
+        },
+        type: "get",
+        url: "/part/getBasicInfo"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        .then(
+          result => {
+            this.formInline = result.data.data;
+            console.log(resule.data.data);
+          },
+          ({type, info}) => {
+          }
+        );
+    }
   },
   created(){
+    this.urlid = this.$route.params.id;
+    this.getinfobyId(this.urlid);
+    console.log("letid:" + this.urlid);
     this.Sgetlist();
   }
 };
