@@ -221,9 +221,7 @@ export default {
       });
     },
     modefication(rowIndex, rowData, column) {
-      this.$router.push({
-        path: "/Modification"
-      });
+      this.$router.push("/Modification?id="+rowData.id);
       this.$store.commit("personnel", rowData);
     },
     disable() {
@@ -322,7 +320,6 @@ export default {
           }
         });
       }
-      console.log("ok");
     },
 
     load() {
@@ -370,10 +367,8 @@ export default {
     },
     updateEmployee() {
       if (this.values.length === 1) {
-        this.$router.push({
-          path: "/Modification"
-        });
-        this.$store.commit("personnel", this.values[0]);
+        this.$router.push("/Modification?id="+this.values[0].id);
+        // this.$store.commit("personnel", this.values[0]);
       } else {
         alert("抱歉、只能单个修改");
       }
