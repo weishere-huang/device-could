@@ -83,6 +83,7 @@
               :table-data="tableData"
               row-hover-color="#eee"
               row-click-color="#edf7ff"
+              ref="classifyTable"
             ></v-table>
           </div>
         </div>
@@ -112,6 +113,8 @@
               row-click-color="#edf7ff"
               :cell-edit-done="cellEditDone"
               @on-custom-comp="customCompFunc"
+              :column-cell-class-name="columnCellClass"
+              ref="inventoryListTable"
             ></v-table>
           </div>
           <div style="color:#e6a23c;line-height:20px">
@@ -209,26 +212,31 @@ export default {
           columnAlign: "center",
           isResize: true,
           overflowTitle: true,
-          isEdit: true
+          isEdit: true,
+          titleCellClassName: "title-cell-class-name"
         },
         {
-          field: "faultNo",
+          field: "faultNo2",
           title: "*单价（元）",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
           overflowTitle: true,
-          isEdit: true
+          isEdit: true,
+          titleCellClassName: "title-cell-class-name"
         },
         {
-          field: "faultNo",
+          field: "faultNo4",
           title: "金额",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-          overflowTitle: true
+          overflowTitle: true,
+          formatter:function (rowData,rowIndex,pagingIndex,field) {
+            return rowData.faultNo1*rowData.faultNo2
+          }
         },
         {
           field: "faultNo",
@@ -238,7 +246,8 @@ export default {
           columnAlign: "center",
           isResize: true,
           overflowTitle: true,
-          isEdit: true
+          isEdit: true,
+          titleCellClassName: "title-cell-class-name"
         },
         {
           field: "faultNo",
@@ -248,7 +257,8 @@ export default {
           columnAlign: "center",
           isResize: true,
           overflowTitle: true,
-          isEdit: true
+          isEdit: true,
+          titleCellClassName: "title-cell-class-name"
         },
         {
           field: "faultNo",
@@ -258,7 +268,8 @@ export default {
           columnAlign: "center",
           isResize: true,
           overflowTitle: true,
-          isEdit: true
+          isEdit: true,
+          titleCellClassName: "title-cell-class-name"
         },
         {
           field: "faultNo",
@@ -268,7 +279,8 @@ export default {
           columnAlign: "center",
           isResize: true,
           overflowTitle: true,
-          isEdit: true
+          isEdit: true,
+          titleCellClassName: "title-cell-class-name"
         },
         {
           field: "custome-adv",
@@ -288,20 +300,30 @@ export default {
       tableData1: [
         {
           faultNo: "1111",
-          faultNo1: "22222"
+          faultNo1: "22222",
+          faultNo2:"3",
         },
         {
           faultNo: "1111",
-          faultNo1: "22222"
+          faultNo1: "22222",
+          faultNo2:"3",
         },
         {
           faultNo: "1111",
-          faultNo1: "22222"
+          faultNo1: "22222",
+          faultNo2:"3",
         }
       ]
     };
   },
   methods: {
+    columnCellClass(rowIndex, columnName, rowData) {
+      // 给三行column为‘Parts1Material’和‘Parts2Material’的列设置className
+      /*根据你自己的cloumn设置*/
+      if (columnName === "faultNo1" || columnName === "Parts2Material") {
+        return "column-cell-class-name-cailiao"; //这是你的css名字
+      }
+    },
     cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
       this.tableData1[rowIndex][field] = newValue;
       // 接下来处理你的业务逻辑，数据持久化等...
@@ -323,77 +345,79 @@ export default {
       console.log(id, name);
     },
 
-    findbyclassifyId(){
+    findbyclassifyId() {
       //根据备件分类查询备件列表1
-      this.Axios({
-        params: {
-          page: this.pageIndex,
-          size: this.pageSize,
-          classifyId:this.ctgoptions.id,
-        },
-        option: {
-          enableMsg: false
-        },
-        type: "get",
-        url: "/part/listInfoByClassifyId"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
-
-            console.log("请求参数：" + data);
+      this.Axios(
+        {
+          params: {
+            page: this.pageIndex,
+            size: this.pageSize,
+            classifyId: this.ctgoptions.id
           },
-          ({type, info}) => {
-          }
-        );
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/part/listInfoByClassifyId"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },
+        this
+      ).then(
+        result => {
+          this.$message({
+            message: "启用成功",
+            type: "success"
+          });
+
+          console.log("请求参数：" + data);
+        },
+        ({ type, info }) => {}
+      );
     },
-    Sinsert(){
+    Sinsert() {
       //备件入库接口1
       let qs = require("qs");
       let data = qs.stringify({
-        godownEntryNo:"",
-        godownEntryTime:"",
-        partInfoListJsonStr:{
-          partId:"",
-          entryPrice:"",
-          entryCount:"",
-          subtotal:"",
-          batchNumberId:"",
-          batchNumber:"",
-          supplierName:"",
-          saveLocation:"",
-          remarks:""
+        godownEntryNo: "",
+        godownEntryTime: "",
+        partInfoListJsonStr: {
+          partId: "",
+          entryPrice: "",
+          entryCount: "",
+          subtotal: "",
+          batchNumberId: "",
+          batchNumber: "",
+          supplierName: "",
+          saveLocation: "",
+          remarks: ""
         }
       });
-      this.Axios({
-        params: data,
-        option: {
-          enableMsg: false
-        },
-        type: "post",
-        url: "/part/insertPartEntry"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
-
-            console.log("请求参数：" + data);
+      this.Axios(
+        {
+          params: data,
+          option: {
+            enableMsg: false
           },
-          ({type, info}) => {
-          }
-        );
+          type: "post",
+          url: "/part/insertPartEntry"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },
+        this
+      ).then(
+        result => {
+          this.$message({
+            message: "启用成功",
+            type: "success"
+          });
+
+          console.log("请求参数：" + data);
+        },
+        ({ type, info }) => {}
+      );
     },
 
     //查询类别
@@ -413,32 +437,38 @@ export default {
       }
       return tree;
     },
-    Sgetlist(){
+    Sgetlist() {
       //获取备品备件分类数据接口1
-      this.Axios({
-        // option: {
-        //   enableMsg: false
-        // },
-        type: "get",
-        url: "/part/list"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            console.log(result.data);
-            console.log(result.data.data);
-            this.ctgoptions=this.filterArray(result.data.data,0);
-          },
-          ({type, info}) => {
-          }
-        );
-
-    },
+      this.Axios(
+        {
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/part/list"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },
+        this
+      ).then(
+        result => {
+          console.log(result.data);
+          console.log(result.data.data);
+          this.ctgoptions = this.filterArray(result.data.data, 0);
+        },
+        ({ type, info }) => {}
+      );
+    }
   },
-  created(){
+  created() {
     this.Sgetlist();
+    EventBus.$on("sideBarTroggleHandle", isCollapse => {
+      window.setTimeout(() => {
+        this.$refs.inventoryListTable.resize();
+        this.$refs.classifyTable.resize();
+      }, 500);
+    });
   }
 };
 Vue.component("table-warehouse", {
@@ -507,5 +537,12 @@ Vue.component("table-warehouse", {
       }
     }
   }
+}
+.column-cell-class-name-cailiao {
+  background-color: #ccd19c;
+  color: #141314;
+}
+.title-cell-class-name {
+  color: #e6a23c;
 }
 </style>
