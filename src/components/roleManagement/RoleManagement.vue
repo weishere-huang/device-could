@@ -605,12 +605,12 @@
 
           },
           ({type, info}) => {
-            this.system.checkedSystem="";
-            this.information.checkedSystem="";
-            this.equipment.checkedSystem="";
-            this.personnel.checkedSystem="";
-            this.user.checkedSystem="";
-            this.message.checkedSystem="";
+            this.system.checkedSystem=[];
+            this.information.checkedSystem=[];
+            this.equipment.checkedSystem=[];
+            this.personnel.checkedSystem=[];
+            this.user.checkedSystem=[];
+            this.message.checkedSystem=[];
           })
       },
 
