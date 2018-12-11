@@ -25,22 +25,10 @@
             </el-form-item>
           </div>
         </el-form>
-        <el-dialog
-          title="人员添加"
-          :visible.sync="innerVisible"
-          append-to-body
-        >
+        <el-dialog title="人员添加" :visible.sync="innerVisible" append-to-body>
           <div style="padding:10px">
-            <div
-              class="search"
-              style="padding:10px 0"
-            >
-              <el-input
-                type="search"
-                size="mini"
-                v-model="key"
-                style="width:30%;"
-              ></el-input>
+            <div class="search" style="padding:10px 0">
+              <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
               <el-button size="mini">搜索</el-button>
               <span style="padding:0 10px;">最近搜索：</span>
               <span style="text-decoration: underline;"></span>
@@ -77,7 +65,7 @@
 
         </el-dialog>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="outerVisible = false" size="mini">取 消</el-button>
+          <el-button @click="goExit" size="mini">取 消</el-button>
           <el-button @click="examineUp" type="primary" size="mini">提 交</el-button>
         </div>
       </el-dialog>
@@ -192,10 +180,7 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-            <el-button
-              size="mini"
-              @click="listBasicInfo"
-            >从物料库中添加</el-button>
+            <el-button size="mini" @click="listBasicInfo">从物料库中添加</el-button>
             <el-button @click="insertPart" size="mini">保存列表</el-button>
           </div>
           <v-table
@@ -214,15 +199,8 @@
           </v-table>
         </div>
         <!-- 物料添加弹窗 -->
-        <el-dialog
-          title="备品备件"
-          :visible.sync="dialogVisible2"
-          width="70%"
-        >
-          <div
-            style="padding:10px"
-            class="dialog-case"
-          >
+        <el-dialog title="备品备件" :visible.sync="dialogVisible2" width="70%">
+          <div style="padding:10px" class="dialog-case">
             <div class="spare-parts-list">
               <el-tree
                 :data="data2"
@@ -276,7 +254,7 @@
                 <el-button @click="deleteBasic" size="mini">提交</el-button>
               </div>
               <ul>
-                <h5>已选择</h5>
+                <h6>已选择</h6>
                 <li v-model="personListValue" v-for="value in personListValue">
                   {{value.partName}}
                   <span :id="value.id" @click="basicAdd($event)">X</span>
@@ -319,7 +297,7 @@
           </div>
         </div>
         <div class="information-flow">
-          <h5>流程信息</h5>
+          <h6>流程信息</h6>
           <v-table
             is-horizontal-resize
             column-width-drag
@@ -495,6 +473,7 @@
             width: 70,
             titleAlign: "center",
             columnAlign: "center",
+
             isResize: true,
             isEdit: true
           },
@@ -688,7 +667,7 @@
           }
         ],
         toExamine:{
-          id:"",
+          userId:"",
           name:"",
         },
         examine:{
@@ -696,13 +675,13 @@
           type:"",
           radio:0,
           msg: ""
-        }
+        },
       };
     },
     methods: {
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
-        this.suppliesTableData[rowIndex][field] = newValue;
+        this.workSheetMaterialTableData[rowIndex][field] = newValue;
         // 接下来处理你的业务逻辑，数据持久化等...
       },
       selectGroupChange(selection) {
@@ -739,7 +718,7 @@
         this.pageSize = pageSize;
       },
       handleNodeClick(data) {
-        this.findBasicInfoByTypeId(data.id);
+        this.findBasicInfoByTypeId(data.categoryNo);
       },
       filterArray(data, parent) {
         let vm = this;
@@ -761,6 +740,7 @@
         this.personListValue.push(rowData);
         this.personListValue = Array.from(new Set(this.personListValue));
       },
+
 
       //回退
       toBack(){
@@ -790,7 +770,7 @@
         this.Axios(
           {
             params: {
-              nextUserId: this.toExamine.id,
+              nextUserId: this.toExamine.userId,
               workId:this.workInfo.id,
               auditOpinion:this.examine.desc,
               passOrTurn:this.examine.radio
@@ -805,9 +785,20 @@
             this.outerVisible = false;
             this.pageIndex = 1;
             this.pageSize = 10;
+            this.examine.desc = "";
+            this.examine.radio = 0;
           },
           ({ type, info }) => {}
         );
+      },
+      //取消审核
+      goExit(){
+        this.pageNumber = "";
+        this.outerVisible = false;
+        this.pageIndex = 1;
+        this.pageSize = 10;
+        this.examine.desc = "";
+        this.examine.radio = 0;
       },
       //工单信息加载
       overhaulLoad(stateNum){
@@ -959,6 +950,15 @@
       },
       //保存工单物料到数据库
       insertPart(){
+        for (let i in this.workSheetMaterialTableData) {
+          if(this.workSheetMaterialTableData[i].partCategory === "普通件"){
+            this.workSheetMaterialTableData[i].partCategory = 1;
+          }
+          if(this.workSheetMaterialTableData[i].partCategory === "关键件"){
+            this.workSheetMaterialTableData[i].partCategory = 2;
+          }
+        }
+        console.log(JSON.stringify(this.workSheetMaterialTableData));
         let qs = require("qs");
         let data = qs.stringify({
           workId:this.workInfo.id,
