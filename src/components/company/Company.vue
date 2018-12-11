@@ -189,15 +189,6 @@ export default {
           columnAlign: "center",
           isResize: true,
           componentName: "switch-component"
-          // formatter: function(rowData, rowIndex, pagingIndex, field) {
-          //   return rowData.state === 0
-          //     ? "待审核"
-          //     : rowData.state === 1
-          //     ? "正常"
-          //     : rowData.state === 2
-          //     ? "禁用"
-          //     : "驳回";
-          // }
         },
         {
           field: "custome-adv",
@@ -225,7 +216,7 @@ export default {
           this.choice = params.rowData.id;
           this.startUseing();
           this.choice = "";
-        } else if (params.rowData.state === "2") {
+        } else {
           this.choice = params.rowData.id;
           this.forbidden();
           this.choice = "";
@@ -251,6 +242,9 @@ export default {
     advanceValue: function({ dataName, params }) {
       this.pageIndex = 1;
       this.tableData = dataName.content;
+      for (let i = 0; i < this.tableData.length; i++) {
+        this.tableData[i].state = String(this.tableData[i].state);
+      }
       this.totalNub = dataName.totalElements;
       this.searchParams = params;
     },
@@ -408,6 +402,9 @@ export default {
           this.pageIndex = 1;
           this.totalNub = response.data.data.totalElements;
           this.tableData = response.data.data.content;
+          for (let i = 0; i < this.tableData.length; i++) {
+            this.tableData[i].state = String(this.tableData[i].state);
+          }
           console.log(this.pageIndex);
         },
         ({ type, info }) => {}
@@ -474,42 +471,23 @@ export default {
   }
 };
 Vue.component("switch-component", {
-  template: `<div>
-        <span v-if="rowData.state === '0'">
+  template: `<span v-if="rowData.state === '0'">
           待审核
         </span>
-        <span v-else-if="rowData.state ==='1'">
+        <span v-else-if="rowData.state ==='1'||rowData.state === '2'">
           <el-switch
             v-model="rowData.state"
             active-color="#13ce66"
             inactive-color="#ff4949"
             active-value="1"
             inactive-value="2"
-            @change="changeValue(rowData,index)"
-            >
-          </el-switch>
-        </span>
-        <span v-else-if="rowData.state === '2'">
-          <el-switch
-            v-model="rowData.state"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-value="1"
-            inactive-value="2"
-            @change="changeValue(rowData,index)"
-            >
+            @change="changeValue(rowData,index)">
           </el-switch>
         </span>
         <span v-else-if="rowData.state === '10'">
           驳回
-        </span>
-        </div>`,
+        </span>`,
   props: ["rowData", "rowIndex", "pagingIndex", "field"],
-  data() {
-    return {
-      value6: "1"
-    };
-  },
   methods: {
     changeValue() {
       let params = { type: "change", rowData: this.rowData };
@@ -519,7 +497,7 @@ Vue.component("switch-component", {
 });
 Vue.component("table-company", {
   template: `<span>
-          <el-button size= "mini" @click.stop.prevent="audit(rowData,index)">审核</el-button>
+          <el-button size="mini" @click.stop.prevent="audit(rowData,index)">审核</el-button>
         </span>`,
   props: {
     rowData: {

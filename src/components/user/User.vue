@@ -355,11 +355,9 @@ export default {
           this.pageIndex = 1;
           this.totalNub = response.data.data.totalElements;
           this.tableData = response.data.data.content;
-          // for (let i = 0; i < response.data.data.content.length; i++) {
-          //   this.tableData[i].state === 0
-          //     ? (this.tableData[i].state = "正常")
-          //     : (this.tableData[i].state = "停用");
-          // }
+          for (let i = 0; i < this.tableData.length; i++) {
+            this.tableData[i].state =String(this.tableData[i].state)
+          }
           console.log(this.pageIndex);
           console.log(response);
         },

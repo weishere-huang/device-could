@@ -687,17 +687,18 @@ Vue.component("table-equipment", {
 .equipment {
   position: relative;
   overflow: hidden;
+  min-height: 550px;
 
   .equipmentContent {
     font-size: 12px;
     color: #666666;
     width: 200px;
-    overflow: hidden;
+    // overflow: hidden;
     float: left;
     font-size: 12px;
     .classifylist {
       width: 170px;
-      overflow: hidden;
+      // overflow: hidden;
       margin: 10px;
       float: left;
       border: 1px solid @Info;
