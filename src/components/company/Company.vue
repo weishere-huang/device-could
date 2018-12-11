@@ -108,6 +108,7 @@ import advancedsearch from "./AdvancedSearch";
 import businessDetails from "./BusinessDetails";
 import audit from "./Audit";
 import Vue from "vue";
+import { create } from 'domain';
 export default {
   inject: ["reload"],
   data() {
@@ -188,16 +189,16 @@ export default {
           columnAlign: "center",
           isResize: true,
           overflowTitle: true,
-          componentName:'',
-          formatter: function(rowData, rowIndex, pagingIndex, field) {
-            return rowData.state === 0
-              ? "待审核"
-              : rowData.state === 1
-              ? "正常"
-              : rowData.state === 2
-              ? "禁用"
-              : "驳回";
-          }
+          componentName:'switch-component',
+          // formatter: function(rowData, rowIndex, pagingIndex, field) {
+          //   return rowData.state === 0
+          //     ? "待审核"
+          //     : rowData.state === 1
+          //     ? "正常"
+          //     : rowData.state === 2
+          //     ? "禁用"
+          //     : "驳回";
+          // }
         },
         {
           field: "custome-adv",
@@ -464,6 +465,39 @@ export default {
     this.load();
   }
 };
+Vue.component("switch-component", {
+  template: `<div>
+        <span v-if="rowData.state === 0">
+          待审核
+        </span>
+        <span v-else-if="rowData.state === 1">
+          <el-switch
+            v-model="rowData.state"
+            inactive-value="1"
+            active-value="2">
+          </el-switch>
+        </span>
+        <span v-else>
+          <el-switch
+            v-model="rowData.state"
+            inactive-value="2"
+            active-value="1">
+          </el-switch>
+        </span>
+        </div>`,
+  props: ['rowData', 'rowIndex', 'pagingIndex', 'field'],
+  data() {
+    return {
+      value6: "1"
+    };
+  },
+  methods: {
+    changeValue(){
+      let params={ type: "change", rowData: this.rowData }
+      this.$emit("on-custom-comp", params);
+    }
+  }
+});
 Vue.component("table-company", {
   template: `<span>
         <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">启用</a>&nbsp;
@@ -494,39 +528,6 @@ Vue.component("table-company", {
     },
     audit() {
       let params = { type: "audit", rowData: this.rowData };
-      this.$emit("on-custom-comp", params);
-    }
-  }
-});
-Vue.component("switch-company", {
-  template: `<span>
-      <el-switch
-        v-model="rowData"
-        active-value="1"
-        inactive-value="2"
-        @change="changeValue()"
-        >
-      </el-switch>
-  </span>`,
-  props: {
-    rowData: {
-      type: Object
-    },
-    field: {
-      type: String
-    },
-    index: {
-      type: Number
-    }
-  },
-  data() {
-    return {
-      value6: "1"
-    };
-  },
-  methods: {
-    changeValue(){
-      let params={ type: "change", rowData: this.rowData }
       this.$emit("on-custom-comp", params);
     }
   }

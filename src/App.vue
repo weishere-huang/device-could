@@ -43,6 +43,7 @@
               <i class="iconfont">&#xe6a0;</i>
               <span slot="title">设备监控</span></template>
               <el-menu-item index="/Monit">设备实时状态</el-menu-item>
+              <el-menu-item index="/Oee">设备OEE分析</el-menu-item>
             </el-submenu>
             <el-submenu index="4">
               <template slot="title">
@@ -135,6 +136,9 @@
       <el-container>
         <el-header>
           <el-header style="background-color:#efefef;">
+            <div class="breadcrumbWrap">
+              <breadCrumb></breadCrumb>
+            </div>
             <div class="stateList">
               <ul>
                 <li>&nbsp;欢迎您：{{user}}</li>
@@ -195,6 +199,7 @@
 </template>
 
 <script>
+import breadCrumb from './BreadCrumb.vue'
 export default {
   provide(){
     return{
@@ -260,7 +265,10 @@ export default {
   },
   created () {
     this.user=sessionStorage.getItem("user");
-  }
+  },
+  components: {
+    breadCrumb
+    }
 };
 </script>
 
@@ -287,6 +295,14 @@ export default {
   overflow: hidden;
   position: relative;
   font-size: 12px;
+}
+.breadcrumbWrap{
+  position: absolute;
+  left: 20px;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+  height: 25px;
 }
 .stateList {
   position: absolute;
