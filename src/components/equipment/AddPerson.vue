@@ -34,9 +34,9 @@
               type="search"
               size="mini"
               style="width:30%;"
-              v-model="pkeyword"
+              v-model="condition"
             ></el-input>
-            <el-button size="mini" @click="psearch">搜索</el-button>
+            <el-button size="mini" @click="findpeopler">搜索</el-button>
             <span style="padding:0 10px;">最近搜索：</span>
             <span style="text-decoration: underline;"></span>
           </div>
@@ -213,7 +213,8 @@ export default {
         label: "label"
       },
       value: "",
-      orgcode:""
+      orgcode:"",
+      condition:""
     };
   },
   methods: {
@@ -308,6 +309,7 @@ export default {
             organizeCode: this.orgcode,
             page:this.pageIndex,
             size:this.pageSize,
+            condition:this.condition,
           },
           option: {
             enableMsg: true

@@ -34,8 +34,9 @@
               type="search"
               size="mini"
               style="width:30%;"
+              v-model="condition"
             ></el-input>
-            <el-button size="mini">搜索</el-button>
+            <el-button size="mini" @click="findpeopler">搜索</el-button>
             <span style="padding:0 10px;">最近搜索：</span>
             <span style="text-decoration: underline;"></span>
           </div>
@@ -119,6 +120,7 @@ export default {
   },
   data() {
     return {
+      condition:"",
       editableTabs: [
         {
           workerTypeName: "负责",
@@ -149,7 +151,7 @@ export default {
       editableTabsValue:"0",
       tabPosition:"top",
       pageIndex: 1,
-      pageSize: 10,
+      pageSize: 4,
       toValue:"",
       tableData: [],
       tableDate: [],
@@ -282,7 +284,10 @@ export default {
     findpeopler(){
       this.Axios({
         params: {
-          organizeCode:this.orgcode
+          organizeCode:this.orgcode,
+          condition:this.condition,
+          page:this.pageIndex,
+          size:this.pageSize,
         },
         option: {
           enableMsg: false
