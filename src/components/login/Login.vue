@@ -355,8 +355,11 @@ export default {
           { required: true, message: "密码不能为空", trigger: "blur" },
           {
             validator: (rule, value, callback) => {
-              if (/^[1][0-9]{10}$/.test(value) == false) {
-                callback(new Error("您输入的手机号有误，请重新输入"));
+              if (
+                /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/.test(value) ==
+                false
+              ) {
+                callback(new Error("密码不能全是数字，字母，不能少于6位"));
               } else {
                 callback();
               }
@@ -368,11 +371,8 @@ export default {
           { required: true, message: "电话不能为空", trigger: "blur" },
           {
             validator: (rule, value, callback) => {
-              if (
-                /(?!^\\d+$)(?!^[a-zA-Z]+$)(?!^[_#@]+$).{6,30}/.test(value) ==
-                false
-              ) {
-                callback(new Error("密码不能全是数字，字母，不能少于6位"));
+              if (/^[1][0-9]{10}$/.test(value) == false) {
+                callback(new Error("您输入的手机号有误，请重新输入"));
               } else {
                 callback();
               }

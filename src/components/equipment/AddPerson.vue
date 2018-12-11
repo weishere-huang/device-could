@@ -18,6 +18,7 @@
               @node-click="handleNodeClick"
               :expand-on-click-node="false"
               :props="defaultProps"
+              style="height:350px;overflow: scroll;"
             >
               <span
                 class="custom-tree-node"
@@ -84,7 +85,7 @@
               @tab-click="getNode"
               v-model="editableTabsValue"
               :tab-position="tabPosition"
-              style="height: 200px;"
+              style="height: 350px;"
             >
               <el-tab-pane
                 :key="item.name"
@@ -466,13 +467,15 @@ export default {
       font-size: 0;
       overflow: hidden;
       .left {
-        width: 18%;
+        width: 25%;
         border: @border;
         min-height: 400px;
         position: relative;
         float: left;
         margin-right: 1%;
         font-size: 12px;
+        // height: 350px;
+        // overflow: scroll;
         h5 {
           position: absolute;
           top: -10px;
@@ -484,7 +487,7 @@ export default {
         }
       }
       .center {
-        width: 55%;
+        width: 48%;
         min-height: 400px;
         float: left;
         margin-right: 1%;
