@@ -77,6 +77,7 @@
 <script>
 import Vue from "vue";
 export default {
+  inject: ["reload"],
   name: "",
   data() {
     return {

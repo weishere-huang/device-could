@@ -52,6 +52,7 @@
 <script>
 import Vue from "vue";
 export default {
+  inject: ["reload"],
   name: "",
   data() {
     return {
@@ -132,7 +133,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "causeAnalysis",
+          field: "lower",
           title: "库存下限",
           width: 60,
           titleAlign: "center",
@@ -179,13 +180,15 @@ export default {
       });
     },
     customCompFunc(params) {
-      // console.log(params);
+       console.log(params);
       if (params.type === "delete") {
+        this.ids =params.rowData.id
+        this.btisok();
+        console.log(this.ids);
         // this.$delete(this.tableData, params.index);
-        this.toDeleteBreak(params.rowData.id);
-      } else if (params.type === "update") {
+      } else if (params.type === "edit") {
+        this.$router.push("/SparePartAmend/" + params.rowData.id);
         // this.$delete(this.tableData, params.index);
-        this.toDeleteBreak(params.rowData.id);
       }
     },
     toDetails(rowIndex, rowData, column) {
@@ -230,12 +233,16 @@ export default {
     //备品备件接口
     basedelete(){
       //批量删除备件基础信息接口1
+      let qs = require("qs");
+      let data = qs.stringify({
+        ids: this.ids
+      });
       this.Axios({
-        params: {ids:this.ids},
+        params: data,
         option: {
           enableMsg: false
         },
-        type: "get",
+        type: "post",
         url: "/part/deleteBasicInfo"
         // loadingConfig: {
         //   target: document.querySelector("#mainContentWrapper")
@@ -243,12 +250,8 @@ export default {
       },this)
         .then(
           result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
-            this.ids=""
-            console.log("请求参数：" + data);
+            console.log(result.data);
+            this.reload();
           },
           ({type, info}) => {
           }
@@ -260,13 +263,13 @@ export default {
         params: {
           page: this.pageIndex,
           size: this.pageSize,
-          //keywords:this.basekeyword
+          keywords:this.basekeyword,
         },
         // option: {
         //   enableMsg: false
         // },
         type:"get",
-        url: "/part/listBasicInfo"
+        url: "/part/searchBasicInfo"
         // loadingConfig: {
         //   target: document.querySelector("#mainContentWrapper")
         // }
@@ -275,45 +278,19 @@ export default {
           result => {
             console.log(result.data);
             this.tableData=result.data.data.content;
+            for (let i = 0; i < this.tableData.length; i++) {
+              if (this.tableData[i].partCategory === 2) {
+                this.tableData[i].partCategory = "关键";
+              }else{
+                this.tableData[i].partCategory = "普通"
+              }
+            }
             this.pageNumber = result.data.data.totalElements;
-            console.log("请求参数：" + data);
           },
           ({type, info}) => {
           }
         );
     },
-    basesearch(){
-      //模糊搜索备品备件接口1
-      //届时弃用
-      this.Axios({
-        params: {
-          page: this.pageIndex,
-          size: this.pageSize,
-          keywords:this.basekeyword,
-        },
-        option: {
-          enableMsg: false
-        },
-        type: "get",
-        url: "/part/searchBasicInfo"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
-
-            console.log("请求参数：" + data);
-          },
-          ({type, info}) => {
-          }
-        );
-    },
-
 
     getuserbatch(){
       //获取最近使用批次接口
