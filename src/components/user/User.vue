@@ -20,7 +20,7 @@
         <div class="search">
           <el-input
             type="search"
-            placeholder="如岗位，姓名，手机，部门"
+            placeholder="如企业名称，用户名，手机号"
             size="small"
             v-model="keyWord"
           ></el-input>
