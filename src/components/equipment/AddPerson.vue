@@ -35,6 +35,7 @@
               type="search"
               size="mini"
               style="width:30%;"
+              placeholder="如姓名，电话"
               v-model="condition"
             ></el-input>
             <el-button size="mini" @click="findpeopler">搜索</el-button>

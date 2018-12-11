@@ -189,7 +189,9 @@
           </el-header>
         </el-header>
         <el-main class="mainContentWrapper">
-          <router-view v-if="isRouterAlive" />
+          <transition>
+            <router-view v-if="isRouterAlive" />
+          </transition>
         </el-main>
         <el-footer>长虹智能终端设备生产管理云平台</el-footer>
       </el-container>
