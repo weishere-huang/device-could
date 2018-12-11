@@ -68,7 +68,7 @@
             :props="defaultProps2"
             change-on-select
             :show-all-levels="false"
-            v-model="formInline.partClassifyName"
+            v-model="classfy"
             @change="handleChange2"
             style="width:200px;"
             size="small"
@@ -91,7 +91,7 @@
         </el-form-item>
         <el-form-item label="库存下限：">
           <el-input
-            v-model="formInline.user"
+            v-model="formInline.lower"
             placeholder=""
             size="small"
             style="width:200px"
@@ -118,203 +118,204 @@
   </div>
 </template>
 <script>
-export default {
-  name: "",
-  data() {
-    return {
-      formInline: {},
-      ctgoptions: [],
-      options2: [
-        {
-          value: 0,
-          label: "普通"
+  export default {
+    inject: ["reload"],
+    name: "",
+    data() {
+      return {
+        formInline: {},
+        ctgoptions: {
+          value:"id",
+          label:"partClassifyName"
         },
-        {
-          value: 1,
-          label: "关键"
-        }
-      ],
-      defaultProps2: {
-        value: "id",
-        label: "name"
+        options2: [
+            {
+              value: 1,
+              label: "普通"
+            },
+            {
+              value: 2,
+              label: "关键"
+            }
+          ],
+        defaultProps2:  {
+            value: "id",
+            label: "name"
+          },
+        urlid: "",
+        classfy:""
+      };
+    },
+    methods: {
+      toBack() {
+        this.$router.back(-1);
       },
-      urlid:""
-    };
-  },
-  methods: {
-    toBack() {
-      this.$router.back(-1);
-    },
-    handleChange2(value) {
-      let name = this.$refs["getName2"].currentLabels;
-      name = name[name.length - 1];
-      let id = value[value.length - 1];
-      console.log(id, name);
-      this.sizeForm.deviceCategory = id;
-      this.sizeForm.deviceCategoryName = name;
-    },
-    baseupdate(){
-      //编辑备件基础信息接口1
-      let qs = require("qs");
-      let data = qs.stringify({
-        id:this.urlid,
-        partNo:this.formInline.partNo,
-        partName:this.formInline.partName,
-        partModel:this.formInline.partModel,
-        partCategory:this.formInline.partCategory,
-        partClassify:this.formInline.partClassify,
-        partClassifyName:this.formInline.partClassifyName,
-        //
-        partQuality:this.formInline.partQuality,
-        partUnit:this.formInline.partUnit,
-        inventory:this.formInline.inventory,
-        freeze:this.formInline.freeze,
-        price:this.formInline.price,
-        storageTime:this.formInline.storageTime,
-        partSource:this.formInline.partSource,
-        company:this.formInline.company,
-        manufactor:this.formInline.manufactor,
-        remarks:this.formInline.remarks,
-        img:this.formInline.img
-      });
-      this.Axios({
-        params: data,
-        option: {
-          enableMsg: false
-        },
-        type: "post",
-        url: "/part/updateBasicInfo"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
-            console.log("请求参数：" + data);
-          },
-          ({type, info}) => {
-          }
-        );
-    },
-    btisok(){
-      this.$confirm('确定完成修改吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.baseupdate();
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消操作'
+      handleChange2(value) {
+        let name = this.$refs["getName2"].currentLabels;
+        name = name[name.length - 1];
+        let id = value[value.length - 1];
+        console.log(id, name);
+        this.formInline.partClassify=id;
+        this.formInline.partClassifyName=name;
+      },
+      baseupdate() {
+        //编辑备件基础信息接口1
+        let qs = require("qs");
+        let data = qs.stringify({
+          id: this.urlid,
+          partNo: this.formInline.partNo,
+          partName: this.formInline.partName,
+          partModel: this.formInline.partModel,
+          partCategory: this.formInline.partCategory,
+          partClassify: this.formInline.partClassify,
+          partClassifyName: this.formInline.partClassifyName,
+          lower: this.formInline.lower,
+          remarks: this.formInline.remarks,
+          partUnit: this.formInline.partUnit,
+          //
         });
-      });
-    },
+        this.Axios({
+          params: data,
+          option: {
+            enableMsg: false
+          },
+          type: "post",
+          url: "/part/updateBasicInfo"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        }, this)
+          .then(
+            result => {
+              if (result.data.code == 200) {
+                alert("修改成功");
+                console.log(result);
+                console.log("update");
+                console.log(result.data);
+                this.$router.push("/SparePart");
+              } else if (result.data.code == 410) {
+                alert("该设备编号以存在,请修改!!!");
+              }
+              console.log("请求参数：" + data);
+            },
+            ({type, info}) => {
+            }
+          );
+      },
+      btisok() {
+        this.$confirm('确定完成修改吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.baseupdate();
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消操作'
+          });
+        });
+      },
 
-    filterArray(data, parent) {
-      let vm = this;
-      var tree = [];
-      var temp;
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].parentCode == parent) {
-          var obj = data[i];
-          temp = this.filterArray(data, data[i].code);
-          if (temp.length > 0) {
-            obj.children = temp;
+      filterArray(data, parent) {
+        let vm = this;
+        var tree = [];
+        var temp;
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].parentCode == parent) {
+            var obj = data[i];
+            temp = this.filterArray(data, data[i].code);
+            if (temp.length > 0) {
+              obj.children = temp;
+            }
+            tree.push(obj);
           }
-          tree.push(obj);
         }
+        return tree;
+      },
+      Sgetlist() {
+        //获取备品备件分类数据接口1
+        this.Axios({
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/part/list"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        }, this)
+          .then(
+            result => {
+              console.log(result.data);
+              console.log(result.data.data);
+              this.ctgoptions = this.filterArray(result.data.data, 0);
+            },
+            ({type, info}) => {
+            }
+          );
+      },
+      getinfobyId(id) {
+        this.Axios({
+          params: {
+            id: id
+          },
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/part/getBasicInfo"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        }, this)
+          .then(
+            result => {
+              this.formInline = result.data.data;
+              console.log(resule.data.data);
+            },
+            ({type, info}) => {
+            }
+          );
       }
-      return tree;
     },
-    Sgetlist(){
-      //获取备品备件分类数据接口1
-      this.Axios({
-        // option: {
-        //   enableMsg: false
-        // },
-        type: "get",
-        url: "/part/list"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            console.log(result.data);
-            console.log(result.data.data);
-            this.ctgoptions=this.filterArray(result.data.data,0);
-          },
-          ({type, info}) => {
-          }
-        );
-
-    },
-
-    getinfobyId(id){
-      this.Axios({
-        params: {
-          id:id
-        },
-        option: {
-          enableMsg: false
-        },
-        type: "get",
-        url: "/part/getBasicInfo"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            this.formInline = result.data.data;
-            console.log(resule.data.data);
-          },
-          ({type, info}) => {
-          }
-        );
+    created() {
+      this.urlid = this.$route.params.id;
+      this.getinfobyId(this.urlid);
+      console.log("letid:" + this.urlid);
+      this.Sgetlist();
     }
-  },
-  created(){
-    this.urlid = this.$route.params.id;
-    this.getinfobyId(this.urlid);
-    console.log("letid:" + this.urlid);
-    this.Sgetlist();
   }
-};
+  ;
 </script>
 <style lang="less" scoped>
-@blue: #409eff;
-@Success: #67c23a;
-@Warning: #e6a23c;
-@Danger: #f56c6c;
-@Info: #dde2eb;
-@border: 1px solid #dde2eb;
-.spare-part-amend {
-  font-size: 12px;
-  .top {
-    padding: 10px;
-    border: @border;
-    border-radius: 5px;
-    padding: 10px;
-  }
-  .basic-information {
-    border: @border;
-    border-radius: 5px;
-    padding: 10px;
-    margin-top: 10px;
-    padding: 10px;
-    h5 {
-      position: relative;
-      top: -15px;
-      left: 10px;
-      background-color: white;
-      display: inline-block;
+  @blue: #409eff;
+  @Success: #67c23a;
+  @Warning: #e6a23c;
+  @Danger: #f56c6c;
+  @Info: #dde2eb;
+  @border: 1px solid #dde2eb;
+  .spare-part-amend {
+    font-size: 12px;
+    .top {
+      padding: 10px;
+      border: @border;
+      border-radius: 5px;
+      padding: 10px;
+    }
+    .basic-information {
+      border: @border;
+      border-radius: 5px;
+      padding: 10px;
+      margin-top: 10px;
+      padding: 10px;
+      h5 {
+        position: relative;
+        top: -15px;
+        left: 10px;
+        background-color: white;
+        display: inline-block;
+      }
     }
   }
-}
 </style>
