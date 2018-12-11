@@ -58,22 +58,6 @@
           .then(response => {
             console.log(response);
             document.querySelectorAll(".adsearch")[0].style.right = "-310px";
-            for (let i = 0; i < response.data.data.content.length; i++) {
-              console.log(this.dataName);
-              console.log(this.checkList)
-              if (response.data.data.content[i].state === 0) {
-                response.data.data.content[i].state = "待审核";
-              }
-              if (response.data.data.content[i].state === 1) {
-                response.data.data.content[i].state = "正常";
-              }
-              if (response.data.data.content[i].state === 2) {
-                response.data.data.content[i].state = "禁用";
-              }
-              if (response.data.data.content[i].state === 10) {
-                response.data.data.content[i].state = "未通过"
-              }
-            }
             console.log(this.choice)
             this.dataName = response.data.data
             console.log(this.dataName);
