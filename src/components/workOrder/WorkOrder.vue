@@ -8,7 +8,7 @@
         >全部工单</el-button>
       </el-badge>
       <el-badge
-        :value="audited"
+        :value="audited1"
         class="item"
       >
         <el-button
@@ -17,7 +17,7 @@
         >待审核</el-button>
       </el-badge>
       <el-badge
-        :value="inAudit"
+        :value="inAudit1"
         class="item"
       >
         <el-button
@@ -26,7 +26,7 @@
         >审核中</el-button>
       </el-badge>
       <el-badge
-        :value="handle"
+        :value="handle1"
         class="item"
       >
         <el-button
@@ -94,6 +94,11 @@ export default {
       audited: "",
       inAudit: "",
       handle: "",
+      //之后删除后三个变量
+      audited1: "",
+      inAudit1: "",
+      handle1: "",
+     //结束
       pageIsOk: true,
       pageIndex: 1,
       pageSize: 10,
@@ -193,14 +198,22 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
+      if (this.pageIsOk) {
+        this.audited = "";
+        this.inAudit = "";
+        this.handle = "";
+        this.load();
+      }
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
       if (this.pageIsOk) {
-        this.load(-1);
+        this.audited = "";
+        this.inAudit = "";
+        this.handle = "";
+        this.load();
       }
     },
     Jump(rowIndex, rowData, column) {
@@ -217,7 +230,7 @@ export default {
           this.$refs.workOrderTable.resize();
         }, 500);
       });
-      if (stateNum === "") {
+      if (stateNum == "") {
         this.pageIsOk = true;
         this.audited = "";
         this.inAudit = "";
@@ -232,10 +245,11 @@ export default {
       } else if (stateNum === 3) {
         this.pageIsOk = false;
       } else if (stateNum === 4) {
+        this.inAudit = "";
         this.pageIsOk = false;
       } else if (stateNum === 5) {
+        this.handle = "";
         this.pageIsOk = false;
-        this.handle++;
       } else if (stateNum === 6) {
         this.pageIsOk = false;
       }
@@ -290,6 +304,7 @@ export default {
         }
         if (value[i].state === 5) {
           this.tableData[i].state = "待处理";
+          this.handle++;
         }
         if (value[i].state === 6) {
           this.tableData[i].state = "已消除";
