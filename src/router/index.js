@@ -379,7 +379,7 @@ const router = new Router({
       },
     },
     {
-      path: '/SparePartAmend',
+      path: '/SparePartAmend/:id/',
       name: 'SparePartAmend',
       component: SparePartAmend,
       meta: {

@@ -260,9 +260,8 @@ export default {
 
       if (params.type === "delete") {
         // do delete operation
-         this.ids =params.rowData.id
-         this.warningdelete();
-         this.ids="";
+        this.ids =params.rowData.id
+        this.warningdelete();
         this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
         // do edit operation
@@ -501,18 +500,11 @@ export default {
         },
         this
       )
-        //.post(this.global.apiSrc + "/device/delete", data)
         .then(
           result => {
-            if(result.data.data.code ===200){
-              this.$message({
-                type: 'success',
-                message: '删除成功!'
-              });
-            }
-            this.findall();
             console.log("delete");
-            console.log(result.data);
+            console.log(result);
+              this.reload();
           },
           ({ type, info }) => {}
         );

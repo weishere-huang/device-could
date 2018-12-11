@@ -122,6 +122,7 @@
 </template>
 <script>
 export default {
+  inject: ["reload"],
   name: "",
   data() {
     return {
@@ -149,11 +150,11 @@ export default {
       ctgoptions: [],
       options2: [
         {
-          value: 0,
+          value: 1,
           label: "普通"
         },
         {
-          value: 1,
+          value: 2,
           label: "关键"
         }
       ],
@@ -190,9 +191,9 @@ export default {
         partClassifyName:this.formInline.partClassifyName,
         lower:this.formInline.lower,
         remarks:this.formInline.remarks,
+        partUnit:this.formInline.partUnit,
 
         // partQuality:this.formInline.partQuality,
-        // partUnit:this.formInline.partUnit,
         // inventory:this.formInline.inventory,
         // freeze:this.formInline.freeze,
         // price:this.formInline.price,
