@@ -3,7 +3,8 @@
         <span>Equipment{{showInfo}}</span>
         <button @click="clickDemo" :class="showInfo">点击</button>
     </div> -->
-    <div class="monitWrap">
+    <div>
+    <div v-bind:class="activeClass">
       <el-container>
         <el-aside width="200px" class="equTypeListBar">
           <el-collapse v-model="activeNames" @change="collapseItemChange">
@@ -137,6 +138,10 @@
         </el-main>
       </el-container>
     </div>
+    <div v-if="this.$route.params.deviceId!==undefined">
+      <router-view></router-view>
+    </div>
+    </div>
 </template>
 
 <script>
@@ -164,7 +169,9 @@ const initTreeDataForEquType = function(nodeData, parentCode) {
 };
 export default {
   data() {
+    
     return {
+      activeClass:`monitWrap`,
       activeNames: ["1", "2", "3"],
       organizationTreeData: [],
       organizationEmptytTxt:'数据加载中...',
@@ -208,6 +215,11 @@ export default {
         refreshValue:"60"
     };
   },
+  watch: {
+      $route() {
+          this.activeClass=`monitWrap ${this.$route.params.deviceId!==undefined?'hide':'show'}`;
+      }
+  },
   created: function() {
     this.Axios(
       {
@@ -218,7 +230,6 @@ export default {
       this
     ).then(
       ([res1, res2]) => {
-        debugger
         if(res1.data.data.length)
           this.organizationTreeData = initTreeDataForOrganization(res1.data.data,"0");
         else

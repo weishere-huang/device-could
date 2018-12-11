@@ -86,6 +86,7 @@ const router = new Router({
     {
       path: '/Company',
       name: 'Company',
+      props:{title:'企业管理'},
       component: Company,
       meta: {
         requireAuth: true
@@ -95,6 +96,7 @@ const router = new Router({
       path: '/Audit',
       name: 'Audit',
       component: Audit,
+
       meta: {
         requireAuth: true
       },
@@ -126,15 +128,8 @@ const router = new Router({
     {
       path: '/Equipment',
       name: 'Equipment',
+      props:{title:'设备列表'},
       component: Equipment,
-      meta: {
-        requireAuth: true
-      },
-    },
-    {
-      path: '/Monit/:deviceId',
-      name: 'MonitSingle',
-      component: MonitSingle,
       meta: {
         requireAuth: true
       },
@@ -143,14 +138,21 @@ const router = new Router({
       path: '/Monit',
       name: 'Monit',
       component: Monit,
-      meta: {
-        requireAuth: true
-      },
+      props:{title:'设备监控'},
+      children:[
+        {
+          path: ':deviceId',
+          name: 'MonitSingle',
+          component: MonitSingle,
+          props:{title:'设备详细数据'}
+        }
+      ]
     },
     {
       path: '/Oee',
       name: 'Oee',
       component: Oee,
+      props:{title:'OEE分析'},
       meta: {
         requireAuth: true
       },
@@ -158,6 +160,7 @@ const router = new Router({
     {
       path: '/EquipmentAdd',
       name: 'EquipmentAdd',
+      props:{title:'设备添加'},
       component: EquipmentAdd,
       meta: {
         requireAuth: true
@@ -183,6 +186,7 @@ const router = new Router({
       path: '/Redact/:id/',
       name: 'Redact',
       component: Redact,
+      props:{title:'设备详情'},
       meta: {
         requireAuth: true
       },
@@ -255,6 +259,7 @@ const router = new Router({
       path: '/Organization',
       name: 'Organization',
       component: Organization,
+      props:{title:'组织机构'},
       meta: {
         requireAuth: true
       },
@@ -271,6 +276,7 @@ const router = new Router({
       path: '/Personnel',
       name: 'Personnel',
       component: Personnel,
+      props:{title:'员工管理'},
       meta: {
         requireAuth: true
       },
@@ -278,6 +284,7 @@ const router = new Router({
     {
       path: '/PersnnelAdd',
       name: 'PersnnelAdd',
+      props:{title:'员工添加'},
       component: PersnnelAdd,
       meta: {
         requireAuth: true
