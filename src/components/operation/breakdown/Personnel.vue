@@ -2,15 +2,45 @@
   <div class="personnel">
     <div class="personTable">
       <div class="search">
-        <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
-        <el-button size="mini" @click="search">搜索</el-button>
+        <el-input
+          type="search"
+          size="mini"
+          v-model="key"
+          style="width:30%;"
+          placeholder="请输入姓名或手机号"
+        ></el-input>
+        <el-button
+          size="mini"
+          @click="search"
+        >搜索</el-button>
         <span style="padding:0 10px;">最近搜索：{{searchs}}</span>
         <span style="text-decoration: underline;"></span>
       </div>
       <div class="tableList">
-        <v-table  :row-dblclick="getPersonnel" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:300px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-        <div class="mt20 mb20 bold" style="text-align:center;">
-          <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
+        <v-table
+          :row-dblclick="getPersonnel"
+          :select-all="selectALL"
+          :select-group-change="selectGroupChange"
+          is-horizontal-resize
+          column-width-drag
+          :multiple-sort="false"
+          style="width:100%;min-height:300px;"
+          :columns="columns"
+          :table-data="tableData"
+          row-hover-color="#eee"
+          row-click-color="#edf7ff"
+        ></v-table>
+        <div
+          class="mt20 mb20 bold"
+          style="text-align:center;"
+        >
+          <v-pagination
+            @page-change="pageChange"
+            @page-size-change="pageSizeChange"
+            :total="pageNumber"
+            :page-size="pageSize"
+            :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
+          ></v-pagination>
         </div>
       </div>
     </div>
@@ -20,8 +50,8 @@
 export default {
   data() {
     return {
-      key:"",
-      pageNumber:0,
+      key: "",
+      pageNumber: 0,
       pageIndex: 1,
       pageSize: 10,
       tableData: [],
@@ -98,60 +128,62 @@ export default {
       this.getTableData();
       this.load();
     },
-    personHide(){
-        this.$emit("personHide",false)
+    personHide() {
+      this.$emit("personHide", false);
     },
-    getPersonnel(rowIndex, rowData, column){
-      let jihe={
-        person:rowData,
-        hide:false
+    getPersonnel(rowIndex, rowData, column) {
+      let jihe = {
+        person: rowData,
+        hide: false
       };
-      this.$emit("getPersonnel",jihe)
+      this.$emit("getPersonnel", jihe);
     },
     load() {
       this.Axios(
         {
-          params: {page: this.pageIndex, size: this.pageSize},
+          params: { page: this.pageIndex, size: this.pageSize },
           type: "get",
-          url: "/employee/findEmployeeList",
+          url: "/employee/findEmployeeList"
         },
         this
-      ).then(response => {
-            this.pageNumber = response.data.data.totalElements;
-            this.tableData = response.data.data.content;
-            this.tableDate = this.tableData;
+      ).then(
+        response => {
+          this.pageNumber = response.data.data.totalElements;
+          this.tableData = response.data.data.content;
+          this.tableDate = this.tableData;
         },
-        ({type, info}) => {
-        })
+        ({ type, info }) => {}
+      );
     },
     search() {
-      if(!(/^1[345789]\d{9}$/.test(this.key))){
+      if (!/^1[345789]\d{9}$/.test(this.key)) {
         alert("手机号码有误，请重填");
-      }else{
-        this.pageIndex =1;
+      } else {
+        this.pageIndex = 1;
         this.Axios(
           {
-            params: {condition: this.key},
+            params: { condition: this.key },
             type: "get",
-            url: "/employee/search",
+            url: "/employee/search"
           },
           this
-        ).then(response => {
-            if(this.key!==""){
+        ).then(
+          response => {
+            if (this.key !== "") {
               this.pageNumber = response.data.data.totalElements;
               this.tableData = response.data.data.content;
               this.tableDate = this.tableData;
-            }else{
+            } else {
               this.pageChange(1);
             }
           },
-          ({type, info}) => {
-          })
+          ({ type, info }) => {}
+        );
       }
-    },
+    }
   },
   created() {
-    this.load()
+    this.load();
   },
   mounted() {
     //   location.reload()

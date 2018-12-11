@@ -53,7 +53,7 @@
         <div class="search">
           <el-input
             type="search"
-            placeholder="如故障编码，设备名称，位号，描述"
+            placeholder="如故障编码，设备名称，位置，描述"
             size="small"
             v-model="faultKey"
           ></el-input>
@@ -690,7 +690,7 @@ Vue.component("table-breakdown", {
         width: 40%;
         font-size: 12px;
         .el-input {
-          width: 60%;
+          width: 70%;
         }
         span {
           cursor: pointer;
