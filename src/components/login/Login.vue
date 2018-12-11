@@ -184,28 +184,41 @@
           :rules="managerRules"
           ref="manager"
         >
-          <el-form-item label="用户名：" prop="userName">
+          <el-form-item
+            label="用户名："
+            prop="userName"
+          >
             <el-input
               size="small"
               v-model="manager.userName"
               style="width:80%"
             ></el-input>
           </el-form-item>
-          <el-form-item label="密码：" prop="userPassword">
+          <el-form-item
+            label="密码："
+            prop="userPassword"
+          >
             <el-input
               size="small"
+              type="password"
               v-model="manager.userPassword"
               style="width:80%"
             ></el-input>
           </el-form-item>
-          <el-form-item label="手机号：" prop="phone">
+          <el-form-item
+            label="手机号："
+            prop="phone"
+          >
             <el-input
               size="small"
               v-model="manager.phone"
               style="width:80%"
             ></el-input>
           </el-form-item>
-          <el-form-item label="验证码：" prop="validate">
+          <el-form-item
+            label="验证码："
+            prop="validate"
+          >
             <el-input
               type="text"
               v-model="manager.validate"
@@ -310,16 +323,66 @@ export default {
             message: "统一社会信用代码不能为空",
             trigger: "blur"
           },
-          { min: 18, max: 18, message: "统一社会信用代码必须为18为", trigger: "blur" }
+          {
+            min: 18,
+            max: 18,
+            message: "统一社会信用代码必须为18位",
+            trigger: "blur"
+          }
         ]
       },
       managerRules: {
-        userName: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
-        userPassword: [{ required: true, message: "密码不能为空", trigger: "blur" }],
-        phone: [{ required: true, message: "电话不能为空", trigger: "blur" }],
+        userName: [
+          { required: true, message: "用户名不能为空", trigger: "blur" },
+          {
+            validator: (rule, value, callback) => {
+              if (/^\d+$/.test(value) == false) {
+                callback(new Error("用户名不能输入汉字"));
+              } else {
+                callback();
+              }
+            },
+            trigger: "blur"
+          },
+          {
+            min: 6,
+            max: 20,
+            message: "请输入6到20位的字母和数字",
+            trigger: "blur"
+          }
+        ],
+        userPassword: [
+          { required: true, message: "密码不能为空", trigger: "blur" },
+          {
+            validator: (rule, value, callback) => {
+              if (/^[1][0-9]{10}$/.test(value) == false) {
+                callback(new Error("您输入的手机号有误，请重新输入"));
+              } else {
+                callback();
+              }
+            },
+            trigger: "blur"
+          }
+        ],
+        phone: [
+          { required: true, message: "电话不能为空", trigger: "blur" },
+          {
+            validator: (rule, value, callback) => {
+              if (
+                /(?!^\\d+$)(?!^[a-zA-Z]+$)(?!^[_#@]+$).{6,30}/.test(value) ==
+                false
+              ) {
+                callback(new Error("密码不能全是数字，字母，不能少于6位"));
+              } else {
+                callback();
+              }
+            },
+            trigger: "blur"
+          }
+        ],
         validate: [
           { required: false, message: "验证码不能为空", trigger: "blur" }
-        ],
+        ]
       },
       fileList: [
         {
@@ -345,6 +408,16 @@ export default {
     };
   },
   methods: {
+    checkData(rule, value, callback) {
+      if (value) {
+        if (/[\u4E00-\u9FA5]/g.test(value)) {
+          callback(new Error("编码不能输入汉字!"));
+        } else {
+          callback();
+        }
+      }
+      callback();
+    },
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
@@ -384,7 +457,7 @@ export default {
           // alert("submit!");
           this.register();
         } else {
-          this.$message.error("请填写完信息")
+          this.$message.error("请填写完信息");
           return false;
         }
       });
