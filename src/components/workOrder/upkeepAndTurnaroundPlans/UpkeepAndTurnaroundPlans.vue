@@ -274,7 +274,7 @@
                   style="width:50%;"
                   placeholder="关键词：设备编号、备件名称、型号/规格"
                 ></el-input>
-                <el-button size="mini">查询</el-button>
+                <el-button @click="goDownEntryInfo" size="mini">查询</el-button>
               </div>
               <v-table
                 is-horizontal-resize
@@ -305,11 +305,14 @@
             </div>
             <div class="add">
               <div style="text-align:center">
-                <el-button size="mini">提交</el-button>
+                <el-button @click="deleteBasic" size="mini">提交</el-button>
               </div>
-              <ul>
-                <h6>已选择</h6>
-                <li></li>
+              <ul  @click="basicAdd($event)">
+                <h5>已选择</h5>
+                <li v-model="personListValue" v-for="value in personListValue" :id="value.id">
+                  {{value.partName}}
+                  <span :id="value.id">X</span>
+                </li>
               </ul>
             </div>
           </div>
@@ -374,6 +377,7 @@
         pageIndex:1,
         pageSize:10,
         pageNumber:0,
+        personListValue: [],
         data2: [
          
         ],
@@ -748,9 +752,15 @@
         this.dialogVisible1 = true;
         this.findByDeviceId(rowData.id);
       },
+      pageChange(pageIndex) {
+        this.pageIndex = pageIndex;
+      },
+      pageSizeChange(pageSize) {
+        this.pageIndex = 1;
+        this.pageSize = pageSize;
+      },
       handleNodeClick(data) {
-        console.log(data);
-        this.toLoad();
+       this.findBasicInfoByTypeId(data.id);
       },
       filterArray(data, parent) {
         let vm = this;
@@ -769,7 +779,8 @@
         return tree;
       },
       basicInfo(rowIndex, rowData, column){
-        console.log(rowData.id);
+        this.personListValue.push(rowData);
+        this.personListValue = Array.from(new Set(this.personListValue));
       },
 
 
@@ -867,9 +878,60 @@
       },
       //通过备品类别ID查询相关备品
       findBasicInfoByTypeId(typeID){
-
+        this.Axios(
+          {
+            params: {
+              classifyId:typeID,
+              page:this.pageIndex,
+              size:this.pageSize
+            },
+            type: "get",
+            url: "/part/listInfoByClassifyId",
+          },
+          this
+        ).then(
+          response => {
+            this.pageNumber = response.data.data.totalElements;
+            this.addMaterielValue(response.data.data.content);
+          },
+          ({type, info}) => {
+            this.addMaterielValue();
+          })
       },
-
+      //备品模糊查询
+      goDownEntryInfo(){
+        // searchPerson
+        this.Axios(
+          {
+            params: {
+              keywords:this.searchPerson,
+              page:this.pageIndex,
+              size:this.pageSize
+            },
+            type: "get",
+            url: "/part/searchBasicInfo",
+          },
+          this
+        ).then(
+          response => {
+            this.pageNumber = response.data.data.totalElements;
+            this.addMaterielValue(response.data.data.content);
+          },
+          ({type, info}) => {
+            this.addMaterielValue();
+          })
+      },
+      //双击删除指定的备品备件
+      basicAdd(event){
+        this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id);
+      },
+      //关闭备品备件页面
+      deleteBasic(){
+        this.dialogVisible2 = false;
+        for (let i in this.personListValue){
+          // this.workSheetMaterialTableData = this.personListValue;
+        }
+      },
 
 
       //工单信息
@@ -1099,6 +1161,16 @@
           line-height: 24px;
           width: 100%;
           padding: 0 5px;
+          span {
+            float: right;
+            cursor: pointer;
+            display: none;
+          }
+          &:hover {
+            span {
+              display: block;
+            }
+          }
         }
       }
     }

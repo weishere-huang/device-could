@@ -177,23 +177,19 @@ export default {
   },
   methods: {
     customCompFunc(params) {
-      console.log(params);
-
+      this.userIds = params.rowData["id"];
       if (params.type === "delete") {
-        // do delete operation
-
+       this.deleteEmployee();
         this.$delete(this.tableData, params.index);
+
       } else if (params.type === "edit") {
-        // do edit operation
 
-        alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
+        this.$router.push("/Modification?id="+this.userIds);
+
       } else if (params.type === "stop") {
-        // do edit operation
-
-        alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
+        this.enable();
       } else if (params.type === "start") {
-        // do edit operation
-        alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
+        this.disable();
       }
     },
     search() {
