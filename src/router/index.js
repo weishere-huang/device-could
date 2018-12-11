@@ -9,6 +9,7 @@ import BusinessDetails from '@/components/company/BusinessDetails'
 import Equipment from '@/components/equipment/Equipment'
 import Monit from '@/components/monit'
 import MonitSingle from '@/components/monit/single'
+import Oee from '@/components/oee/'
 import Category from '@/components/equipment/Category'
 import EquipmentAdd from '@/components/equipment/EquipmentAdd'
 import Redact from '@/components/equipment/Redact'
@@ -142,6 +143,14 @@ const router = new Router({
       path: '/Monit',
       name: 'Monit',
       component: Monit,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/Oee',
+      name: 'Oee',
+      component: Oee,
       meta: {
         requireAuth: true
       },
@@ -379,7 +388,7 @@ const router = new Router({
       },
     },
     {
-      path: '/SparePartAmend',
+      path: '/SparePartAmend/:id/',
       name: 'SparePartAmend',
       component: SparePartAmend,
       meta: {

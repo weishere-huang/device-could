@@ -32,11 +32,11 @@
         <div class="tone">
           <h5><i class='iconfont icon-shebeiguanli'></i>&nbsp;设备状况</h5>
           <ul>
-            <li  @click="leftcontro('','',1)">├在用</li>
-            <li style="color:#FF990E"  @click="leftcontro('','',2)">├出租</li>
-            <li style="color:#00990C"  @click="leftcontro('','',3)">├停用</li>
-            <li style="color:#0C99FD"  @click="leftcontro('','',4)">├封存</li>
-            <li style="color:#993202"  @click="leftcontro('','',5)">├报废</li>
+            <li  @click="leftcontro('','','1')">├在用</li>
+            <li style="color:#FF990E"  @click="leftcontro('','','2')">├出租</li>
+            <li style="color:#00990C"  @click="leftcontro('','','3')">├停用</li>
+            <li style="color:#0C99FD"  @click="leftcontro('','','4')">├封存</li>
+            <li style="color:#993202"  @click="leftcontro('','','5')">├报废</li>
           </ul>
         </div>
       </div>
@@ -260,9 +260,8 @@ export default {
 
       if (params.type === "delete") {
         // do delete operation
-         this.ids =params.rowData.id
-         this.warningdelete();
-         this.ids="";
+        this.ids =params.rowData.id
+        this.warningdelete();
         this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
         // do edit operation
@@ -277,7 +276,7 @@ export default {
     handleNodeClick(data) {
       this.leftcate = data.categoryNo;
       this.leftstate = "";
-      this.leftclass = "";
+      this.leftclass = null;
       this.keyorall=2;
       this.pageIndex=1;
       console.log(data);
@@ -290,7 +289,8 @@ export default {
       this.workerName=params.workerName,
       this.manufacturer=params.manufacturer,
       this.deviceSates=params.deviceSates,
-      this.pageIndex=1
+      this.pageIndex=1,
+      this.findall();
       console.log(params);
     },
     adsearch() {
@@ -391,11 +391,11 @@ export default {
           params: {
             page: this.pageIndex,
             size: this.pageSize,
-            // deviceName:this.deviceName,
-            // locationNo:this.locationNo,
-            // workerName:this.workerName,
-            // manufacturer:this.manufacturer,
-            // deviceSates:this.choice,
+            deviceName:this.deviceName,
+            locationNo:this.locationNo,
+            workerName:this.workerName,
+            manufacturer:this.manufacturer,
+            deviceSates:this.deviceSates,
           },
           // option: {
           //   enableMsg: false
@@ -500,18 +500,11 @@ export default {
         },
         this
       )
-        //.post(this.global.apiSrc + "/device/delete", data)
         .then(
           result => {
-            if(result.data.data.code ===200){
-              this.$message({
-                type: 'success',
-                message: '删除成功!'
-              });
-            }
-            this.findall();
             console.log("delete");
-            console.log(result.data);
+            console.log(result);
+              this.reload();
           },
           ({ type, info }) => {}
         );
@@ -580,8 +573,10 @@ export default {
 
     leftcontro(a,b,c){
       this.keyorall=2;
-      this.leftclass=a;
-      this.leftcate=b;
+      if(c === ""){
+        this.leftclass=a;
+      }
+      this.leftcate="";
       this.leftstate=c;
       this.pageIndex=1;
 

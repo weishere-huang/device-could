@@ -94,7 +94,7 @@
         </el-form-item>
         <el-form-item label="库存下限：">
           <el-input
-            v-model="formInline.user"
+            v-model="formInline.lower"
             placeholder=""
             size="small"
             style="width:200px"
@@ -122,6 +122,7 @@
 </template>
 <script>
 export default {
+  inject: ["reload"],
   name: "",
   data() {
     return {
@@ -132,6 +133,7 @@ export default {
         partCategory:"",
         partClassify:"",
         partClassifyName:"",
+        lower:"",
         //以下可空
         partQuality:"",
         partUnit:"",
@@ -148,11 +150,11 @@ export default {
       ctgoptions: [],
       options2: [
         {
-          value: 0,
+          value: 1,
           label: "普通"
         },
         {
-          value: 1,
+          value: 2,
           label: "关键"
         }
       ],
@@ -187,9 +189,11 @@ export default {
         partCategory:this.formInline.partCategory,
         partClassify:this.formInline.partClassify,
         partClassifyName:this.formInline.partClassifyName,
-        //
+        lower:this.formInline.lower,
+        remarks:this.formInline.remarks,
+        partUnit:this.formInline.partUnit,
+
         // partQuality:this.formInline.partQuality,
-        // partUnit:this.formInline.partUnit,
         // inventory:this.formInline.inventory,
         // freeze:this.formInline.freeze,
         // price:this.formInline.price,
@@ -197,7 +201,7 @@ export default {
         // partSource:this.formInline.partSource,
         // company:this.formInline.company,
         // manufactor:this.formInline.manufactor,
-        // remarks:this.formInline.remarks,
+
         // img:this.formInline.img
 
       });
@@ -218,7 +222,6 @@ export default {
               alert("添加成功");
               this.$router.push("/SparePart");
             }
-            debugger
 
             console.log("请求参数：" + data);
           },

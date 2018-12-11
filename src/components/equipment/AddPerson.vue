@@ -18,6 +18,7 @@
               @node-click="handleNodeClick"
               :expand-on-click-node="false"
               :props="defaultProps"
+              style="height:350px;overflow: scroll;"
             >
               <span
                 class="custom-tree-node"
@@ -34,9 +35,9 @@
               type="search"
               size="mini"
               style="width:30%;"
-              v-model="pkeyword"
+              v-model="condition"
             ></el-input>
-            <el-button size="mini" @click="psearch">搜索</el-button>
+            <el-button size="mini" @click="findpeopler">搜索</el-button>
             <span style="padding:0 10px;">最近搜索：</span>
             <span style="text-decoration: underline;"></span>
           </div>
@@ -84,7 +85,7 @@
               @tab-click="getNode"
               v-model="editableTabsValue"
               :tab-position="tabPosition"
-              style="height: 200px;"
+              style="height: 350px;"
             >
               <el-tab-pane
                 :key="item.name"
@@ -213,7 +214,8 @@ export default {
         label: "label"
       },
       value: "",
-      orgcode:""
+      orgcode:"",
+      condition:""
     };
   },
   methods: {
@@ -308,6 +310,7 @@ export default {
             organizeCode: this.orgcode,
             page:this.pageIndex,
             size:this.pageSize,
+            condition:this.condition,
           },
           option: {
             enableMsg: true
@@ -464,13 +467,15 @@ export default {
       font-size: 0;
       overflow: hidden;
       .left {
-        width: 18%;
+        width: 25%;
         border: @border;
         min-height: 400px;
         position: relative;
         float: left;
         margin-right: 1%;
         font-size: 12px;
+        // height: 350px;
+        // overflow: scroll;
         h5 {
           position: absolute;
           top: -10px;
@@ -482,7 +487,7 @@ export default {
         }
       }
       .center {
-        width: 55%;
+        width: 48%;
         min-height: 400px;
         float: left;
         margin-right: 1%;

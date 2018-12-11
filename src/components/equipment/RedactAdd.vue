@@ -18,6 +18,7 @@
               @node-click="handleNodeClick"
               :expand-on-click-node="false"
               :props="defaultProps"
+              style="height:350px;overflow: scroll;"
             >
               <span
                 class="custom-tree-node"
@@ -34,8 +35,12 @@
               type="search"
               size="mini"
               style="width:30%;"
+              v-model="condition"
             ></el-input>
-            <el-button size="mini">搜索</el-button>
+            <el-button
+              size="mini"
+              @click="findpeopler"
+            >搜索</el-button>
             <span style="padding:0 10px;">最近搜索：</span>
             <span style="text-decoration: underline;"></span>
           </div>
@@ -70,10 +75,22 @@
           </div>
         </div>
         <div class="right">
-          <el-button size="mini" @click="deletes">清空</el-button>
-          <el-button size="mini" @click="toAdd">保存</el-button>
+          <el-button
+            size="mini"
+            @click="deletes"
+          >清空</el-button>
+          <el-button
+            size="mini"
+            @click="toAdd"
+          >保存</el-button>
           <div class="personList">
-            <el-tabs type="border-card" @tab-click="getNode" v-model="editableTabsValue" :tab-position="tabPosition" style="height: 200px;">
+            <el-tabs
+              type="border-card"
+              @tab-click="getNode"
+              v-model="editableTabsValue"
+              :tab-position="tabPosition"
+              style="height: 350px;"
+            >
               <el-tab-pane
                 :key="item.name"
                 v-for="item in editableTabs"
@@ -85,7 +102,7 @@
                   :deleteWorker="workerDelete"
                 ></tab-component>
               </el-tab-pane>
-              </el-tabs>
+            </el-tabs>
           </div>
         </div>
       </div>
@@ -93,21 +110,21 @@
   </div>
 </template>
 <script>
-  import Vue from "vue";
-  var tabComponent = Vue.component("tab-component", {
-    props: {
-      items: {
-        type: Object,
-        required: true
-      },
-      deleteWorker: {
-        type: Function,
-        required: true
-      }
+import Vue from "vue";
+var tabComponent = Vue.component("tab-component", {
+  props: {
+    items: {
+      type: Object,
+      required: true
     },
-    template:
-      '<ul class="workerList"><li v-for="item in items.content">{{ item.workerName }}<i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>'
-  });
+    deleteWorker: {
+      type: Function,
+      required: true
+    }
+  },
+  template:
+    '<ul class="workerList"><li v-for="item in items.content">{{ item.workerName }}<i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>'
+});
 export default {
   inject: ["reload"],
   name: "",
@@ -119,6 +136,7 @@ export default {
   },
   data() {
     return {
+      condition: "",
       editableTabs: [
         {
           workerTypeName: "负责",
@@ -146,11 +164,11 @@ export default {
           content: []
         }
       ],
-      editableTabsValue:"0",
-      tabPosition:"top",
+      editableTabsValue: "0",
+      tabPosition: "top",
       pageIndex: 1,
-      pageSize: 10,
-      toValue:"",
+      pageSize: 4,
+      toValue: "",
       tableData: [],
       tableDate: [],
       columns: [
@@ -195,13 +213,13 @@ export default {
         children: "children",
         label: "label"
       },
-      orgcode:"",
+      orgcode: "",
       //分页total
-      tablenum:""
+      tablenum: ""
     };
   },
   methods: {
-    getRowData(a,b,c){
+    getRowData(a, b, c) {
       console.log(b.name);
       console.log(this.editableTabs[this.editableTabsValue]);
       if (
@@ -217,7 +235,7 @@ export default {
         });
       }
     },
-    getNode(a){
+    getNode(a) {
       console.log(a);
       console.log(this.editableTabsValue);
     },
@@ -279,22 +297,29 @@ export default {
       }
       return tree;
     },
-    findpeopler(){
-      this.Axios({
-        params: {
-          organizeCode:this.orgcode
+    findpeopler() {
+      this.Axios(
+        {
+          params: {
+            organizeCode: this.orgcode,
+            condition: this.condition,
+            page: this.pageIndex,
+            size: this.pageSize
+          },
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/employee/findByOrganizeCode"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
         },
-        option: {
-          enableMsg: false
-        },
-        type: "get",
-        url: "/employee/findByOrganizeCode"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
+        this
+      )
         //.get(this.global.apiSrc + "/employee/findByOrganizeCode", {params:{organizeCode:code}})
-        .then(result => {
+        .then(
+          result => {
             if (result.data.code === 204) {
               this.tableData = [];
             } else {
@@ -303,65 +328,68 @@ export default {
               this.tableData = result.data.data.content;
               this.tablenum = result.data.data.totalElements;
             }
-        },
-          ({type, info}) => {
+          },
+          ({ type, info }) => {
             //错误类型 type=faild / error
             //error && error(type, info);
           }
-        )
-        // .catch(err => {
-        //   console.log(err);
-        // });
+        );
+      // .catch(err => {
+      //   console.log(err);
+      // });
     },
 
     toAdd() {
       this.$props.personAddHandler(this.editableTabs);
     },
     deletes() {
-      this.editableTabs[this.editableTabsValue].content=[];
+      this.editableTabs[this.editableTabsValue].content = [];
     },
 
     workerDelete(data) {
       //debugger;
       this.editableTabs[this.editableTabsValue].content = this.editableTabs[
         this.editableTabsValue
-        ].content.filter(item => item.id !== data.id);
-    },
+      ].content.filter(item => item.id !== data.id);
+    }
   },
   created() {
-    this.Axios({
-      params: {
+    this.Axios(
+      {
+        params: {},
+        type: "get",
+        url: "/organize/allOrganize"
       },
-      type: "get",
-      url: "/organize/allOrganize"
-    },this)
-     // .get(this.global.apiSrc + "/organize/allOrganize")
-      .then(result => {
-        console.log("查询所有组织机构");
-        console.log(result.data);
-        console.log(result.data.data);
-        let arr = this.filterArray(result.data.data, 0);
-        console.log(arr);
-        //this.data2 = this.filterArray(result.data.data,1000);
-        this.data2 = arr;
-        this.orgcode=result.data.data[0].code;
-        this.findpeopler();
-      },
-        ({type, info}) => {
+      this
+    )
+      // .get(this.global.apiSrc + "/organize/allOrganize")
+      .then(
+        result => {
+          console.log("查询所有组织机构");
+          console.log(result.data);
+          console.log(result.data.data);
+          let arr = this.filterArray(result.data.data, 0);
+          console.log(arr);
+          //this.data2 = this.filterArray(result.data.data,1000);
+          this.data2 = arr;
+          this.orgcode = result.data.data[0].code;
+          this.findpeopler();
+        },
+        ({ type, info }) => {
           //错误类型 type=faild / error
           //error && error(type, info);
         }
-      )
-      // .catch(err => {
-      //   console.log(err);
-      //   console.log(this.userName);
-      // });
+      );
+    // .catch(err => {
+    //   console.log(err);
+    //   console.log(this.userName);
+    // });
   }
 };
 </script>
 
-<style lang="less" scoped>
- @import url("../../assets/font/font.css");
+<style lang="less">
+@import url("../../assets/font/font.css");
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
@@ -407,7 +435,7 @@ export default {
       font-size: 0;
       overflow: hidden;
       .left {
-        width: 18%;
+        width: 25%;
         border: @border;
         min-height: 400px;
         position: relative;
@@ -425,8 +453,7 @@ export default {
         }
       }
       .center {
-        width: 55%;
-
+        width: 48%;
         min-height: 400px;
         float: left;
         margin-right: 1%;
@@ -454,52 +481,49 @@ export default {
           border-radius: 5px;
           min-height: 360px;
           padding: 10px;
-          .el-tab-pane{
-            span{
+          .el-tab-pane {
+            span {
               display: inline-block;
               width: 100%;
-              label{
+              label {
                 float: right;
                 display: none;
-                i{
+                i {
                   cursor: pointer;
-                  &:hover{
+                  &:hover {
                     color: #409eff;
                   }
                 }
               }
-              &:hover{
-                label{
+              &:hover {
+                label {
                   display: block;
-
                 }
-
               }
             }
-
           }
         }
       }
     }
   }
 }
- .workerList {
-   list-style-type: none;
-   li {
-     line-height: 22px !important;
-     padding: 3px;
-     &:nth-child(2n-1) {
-       background: #f7f7f7;
-     }
-     i {
-       float: right;
-       line-height: 22px;
-       cursor: pointer;
-       &:hover {
-         color: red;
-         font-weight: bold;
-       }
-     }
-   }
- }
+.workerList {
+  list-style-type: none;
+  li {
+    line-height: 22px !important;
+    padding: 3px;
+    &:nth-child(2n-1) {
+      background: #f7f7f7;
+    }
+    i {
+      float: right;
+      line-height: 22px;
+      cursor: pointer;
+      &:hover {
+        color: red;
+        font-weight: bold;
+      }
+    }
+  }
+}
 </style>

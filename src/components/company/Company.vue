@@ -108,6 +108,7 @@ import advancedsearch from "./AdvancedSearch";
 import businessDetails from "./BusinessDetails";
 import audit from "./Audit";
 import Vue from "vue";
+import { create } from 'domain';
 export default {
   inject: ["reload"],
   data() {
@@ -160,7 +161,7 @@ export default {
           titleAlign: "center",
           columnAlign: "left",
           isResize: true,
-          overflowTitle: true,
+          overflowTitle: true
         },
         {
           field: "phone",
@@ -187,7 +188,17 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-          overflowTitle: true
+          overflowTitle: true,
+          componentName:'switch-component',
+          // formatter: function(rowData, rowIndex, pagingIndex, field) {
+          //   return rowData.state === 0
+          //     ? "待审核"
+          //     : rowData.state === 1
+          //     ? "正常"
+          //     : rowData.state === 2
+          //     ? "禁用"
+          //     : "驳回";
+          // }
         },
         {
           field: "custome-adv",
@@ -210,7 +221,9 @@ export default {
     customCompFunc(params) {
       console.log("params");
       console.log(params);
-
+      if (params.type==="change") {
+        console.log("ok");
+      }
       if (params.type === "delete") {
         // do delete operation
         this.choice = params.rowData.id;
@@ -361,25 +374,8 @@ export default {
         response => {
           console.log(response);
           this.totalNub = response.data.data.totalElements;
-          for (let i = 0; i < response.data.data.content.length; i++) {
-            // console.log(response.data.data.content.length)
-            if (response.data.data.content[i].state === 0) {
-              response.data.data.content[i].state = "待审核";
-            }
-            if (response.data.data.content[i].state === 1) {
-              response.data.data.content[i].state = "正常";
-            }
-            if (response.data.data.content[i].state === 2) {
-              response.data.data.content[i].state = "禁用";
-            }
-            if (response.data.data.content[i].state === 4) {
-              response.data.data.content[i].state = "审核中";
-            }
-            if (response.data.data.content[i].state === 10) {
-              response.data.data.content[i].state = "未通过";
-            }
-          }
           this.tableData = response.data.data.content;
+          console.log(typeof this.tableData[0].state);
         },
         ({ type, info }) => {
           //错误类型 type=faild / error
@@ -403,23 +399,6 @@ export default {
         response => {
           this.pageIndex = 1;
           this.totalNub = response.data.data.totalElements;
-          for (let i = 0; i < response.data.data.content.length; i++) {
-            if (response.data.data.content[i].state === 0) {
-              response.data.data.content[i].state = "待审核";
-            }
-            if (response.data.data.content[i].state === 1) {
-              response.data.data.content[i].state = "正常";
-            }
-            if (response.data.data.content[i].state === 2) {
-              response.data.data.content[i].state = "禁用";
-            }
-            if (response.data.data.content[i].state === 4) {
-              response.data.data.content[i].state = "审核中";
-            }
-            if (response.data.data.content[i].state === 10) {
-              response.data.data.content[i].state = "未通过";
-            }
-          }
           this.tableData = response.data.data.content;
           console.log(this.pageIndex);
         },
@@ -486,6 +465,39 @@ export default {
     this.load();
   }
 };
+Vue.component("switch-component", {
+  template: `<div>
+        <span v-if="rowData.state === 0">
+          待审核
+        </span>
+        <span v-else-if="rowData.state === 1">
+          <el-switch
+            v-model="rowData.state"
+            inactive-value="1"
+            active-value="2">
+          </el-switch>
+        </span>
+        <span v-else>
+          <el-switch
+            v-model="rowData.state"
+            inactive-value="2"
+            active-value="1">
+          </el-switch>
+        </span>
+        </div>`,
+  props: ['rowData', 'rowIndex', 'pagingIndex', 'field'],
+  data() {
+    return {
+      value6: "1"
+    };
+  },
+  methods: {
+    changeValue(){
+      let params={ type: "change", rowData: this.rowData }
+      this.$emit("on-custom-comp", params);
+    }
+  }
+});
 Vue.component("table-company", {
   template: `<span>
         <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">启用</a>&nbsp;
