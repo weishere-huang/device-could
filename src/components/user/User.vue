@@ -146,7 +146,13 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-          overflowTitle: true
+          overflowTitle: true,
+          formatter: function(rowData, rowIndex, pagingIndex, field) {
+            return rowData.state === 0
+              ? "正常"
+              : "禁用"
+          }
+          // componentName: "switch-company"
         },
         {
           field: "custome-adv",
@@ -163,7 +169,9 @@ export default {
   methods: {
     customCompFunc(params) {
       console.log(params);
-
+      if (params.type==="change") {
+        console.log(params);
+      }
       if (params.type === "delete") {
         this.choice = params.rowData.id;
         this.deleteUser();
@@ -340,11 +348,11 @@ export default {
           this.pageIndex = 1;
           this.totalNub = response.data.data.totalElements;
           this.tableData = response.data.data.content;
-          for (let i = 0; i < response.data.data.content.length; i++) {
-            this.tableData[i].state === 0
-              ? (this.tableData[i].state = "正常")
-              : (this.tableData[i].state = "停用");
-          }
+          // for (let i = 0; i < response.data.data.content.length; i++) {
+          //   this.tableData[i].state === 0
+          //     ? (this.tableData[i].state = "正常")
+          //     : (this.tableData[i].state = "停用");
+          // }
           console.log(this.pageIndex);
           console.log(response);
         },
@@ -379,11 +387,11 @@ export default {
           this.totalNub = response.data.data.totalElements;
           this.tableData = response.data.data.content;
 
-          for (let i = 0; i < response.data.data.content.length; i++) {
-            this.tableData[i].state === 0
-              ? (this.tableData[i].state = "正常")
-              : (this.tableData[i].state = "停用");
-          }
+          // for (let i = 0; i < response.data.data.content.length; i++) {
+          //   this.tableData[i].state === 0
+          //     ? (this.tableData[i].state = "正常")
+          //     : (this.tableData[i].state = "停用");
+          // }
           console.log(this.tableDate);
         },
         ({ type, info }) => {}
@@ -428,6 +436,35 @@ Vue.component("table-user", {
     }
   }
 });
+// Vue.component("switch-company", {
+//   template: `<span>
+//       <el-switch
+//         v-model="value"
+//         active-value="0"
+//         inactive-value="1"
+//         @change="changeValue(rowData,index)"
+//         >
+//       </el-switch>
+//   </span>`,
+//   props: {
+//     rowData: {
+//       type: Object
+//     },
+//     field: {
+//       type: String
+//     },
+//     index: {
+//       type: Number
+//     },
+//     value:{}
+//   },
+//   methods: {
+//     changeValue(){
+//       let params={ type: "change", rowData: this.rowData ,value:this.value}
+//       this.$emit("on-custom-comp", params);
+//     }
+//   }
+// });
 </script>
 <style lang="less" scoped>
 @blue: #409eff;
@@ -455,7 +492,7 @@ Vue.component("table-user", {
         }
       }
     }
-    .bottom{
+    .bottom {
       border: 1px solid @Info;
       border-radius: 5px;
       padding: 10px;

@@ -188,6 +188,7 @@ export default {
           columnAlign: "center",
           isResize: true,
           overflowTitle: true,
+          componentName:'',
           formatter: function(rowData, rowIndex, pagingIndex, field) {
             return rowData.state === 0
               ? "待审核"
@@ -195,8 +196,6 @@ export default {
               ? "正常"
               : rowData.state === 2
               ? "禁用"
-              : rowData.state === 0
-              ? "待审核"
               : "驳回";
           }
         },
@@ -221,7 +220,9 @@ export default {
     customCompFunc(params) {
       console.log("params");
       console.log(params);
-
+      if (params.type==="change") {
+        console.log("ok");
+      }
       if (params.type === "delete") {
         // do delete operation
         this.choice = params.rowData.id;
@@ -493,6 +494,39 @@ Vue.component("table-company", {
     },
     audit() {
       let params = { type: "audit", rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    }
+  }
+});
+Vue.component("switch-company", {
+  template: `<span>
+      <el-switch
+        v-model="rowData"
+        active-value="1"
+        inactive-value="2"
+        @change="changeValue()"
+        >
+      </el-switch>
+  </span>`,
+  props: {
+    rowData: {
+      type: Object
+    },
+    field: {
+      type: String
+    },
+    index: {
+      type: Number
+    }
+  },
+  data() {
+    return {
+      value6: "1"
+    };
+  },
+  methods: {
+    changeValue(){
+      let params={ type: "change", rowData: this.rowData }
       this.$emit("on-custom-comp", params);
     }
   }
