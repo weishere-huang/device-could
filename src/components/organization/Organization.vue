@@ -31,6 +31,7 @@
                   type="text"
                   size="mini"
                   @click="() => toRevise(data.id)"
+                  v-if="data.organizeType!='企业'"
                 >
                   修改
                 </el-button>
@@ -38,6 +39,7 @@
                   type="text"
                   size="mini"
                   @click="() => warningdelete(data.id)"
+                  v-if="data.organizeType!='企业'"
                 >
                   删除
                 </el-button>
