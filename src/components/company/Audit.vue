@@ -49,6 +49,7 @@
 </template>
 <script>
   export default {
+    inject:['reload'],
     name: "",
     props: ["auditValue"],
     data() {
@@ -96,7 +97,7 @@
             message: "您已通过该企业的审核",
             type: "success"
           })
-          location.reload();
+          this.reload();
         }, ({type, info}) => {
         })
       },

@@ -25,7 +25,7 @@
         <div class="search">
           <el-input
             type="search"
-            placeholder="如员工编号，姓名，手机，部门，岗位"
+            placeholder="如员工姓名，手机，部门，岗位"
             size="small"
             v-model="searchs"
           ></el-input>
