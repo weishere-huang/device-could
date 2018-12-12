@@ -1140,7 +1140,7 @@
 
     },
     created(){
-      this.workId = this.$route.query.id;
+      this.workId = this.$route.params.id;
       this.overhaulLoad(this.workId);
     }
   };

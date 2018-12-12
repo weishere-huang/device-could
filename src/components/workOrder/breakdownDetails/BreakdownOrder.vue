@@ -1125,7 +1125,7 @@
       }
     },
     created(){
-      this.workLoad(this.$route.query.id);
+      this.workLoad(this.$route.params.id);
     }
   };
 </script>

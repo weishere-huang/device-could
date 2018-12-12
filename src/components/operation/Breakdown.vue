@@ -321,7 +321,7 @@ export default {
     },
     toDetails(rowIndex, rowData, column) {
       this.$store.commit("breakDetails", rowData);
-      this.$router.push("/BreakDetails?id=" + rowData.id);
+      this.$router.push("/BreakDetails" + rowData.id);
     },
     auditHide(params) {
       this.auditShow = params;

@@ -301,7 +301,7 @@
       },
     },
     created(){
-      this.load(this.$route.query.id);
+      this.load(this.$route.params.id);
     }
   };
 </script>

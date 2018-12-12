@@ -182,8 +182,9 @@ const router = new Router({
       },
     },
     {
-      path: '/UpkeepAmend',
+      path: '/UpkeepAmend/:id/',
       name: 'UpkeepAmend',
+      props:{title:'保养计划修改'},
       component: UpkeepAmend,
       meta: {
         requireAuth: true
@@ -217,6 +218,7 @@ const router = new Router({
     {
       path: '/Upkeep',
       name: 'Upkeep',
+      props:{title:'保养计划列表'},
       component: Upkeep,
       meta: {
         requireAuth: true
@@ -225,6 +227,7 @@ const router = new Router({
     {
       path: '/UpkeepAdd',
       name: 'UpkeepAdd',
+      props:{title:'新增保养计划'},
       component: UpkeepAdd,
       meta: {
         requireAuth: true
@@ -233,14 +236,16 @@ const router = new Router({
     {
       path: '/TurnaroundPlansAdd',
       name: 'TurnaroundPlansAdd',
+      props:{title:'新增检修计划'},
       component: TurnaroundPlansAdd,
       meta: {
         requireAuth: true
       },
     },
     {
-      path: '/TurnaroundPlansAmend',
+      path: '/TurnaroundPlansAmend/:id/',
       name: 'TurnaroundPlansAmend',
+      props:{title:'检修计划修改'},
       component: TurnaroundPlansAmend,
       meta: {
         requireAuth: true
@@ -249,6 +254,7 @@ const router = new Router({
     {
       path: '/BreakDetails',
       name: 'BreakDetails',
+      props:{title:'故障详情'},
       component: BreakDetails,
       meta: {
         requireAuth: true
@@ -257,6 +263,7 @@ const router = new Router({
     {
       path: '/Breakdown',
       name: 'Breakdown',
+      props:{title:'设备故障列表'},
       component: Breakdown,
       meta: {
         requireAuth: true
@@ -265,6 +272,7 @@ const router = new Router({
     {
       path: '/TurnaroundPlans',
       name: 'TurnaroundPlans',
+      props:{title:'检修计划列表'},
       component: TurnaroundPlans,
       meta: {
         requireAuth: true
@@ -306,8 +314,9 @@ const router = new Router({
       },
     },
     {
-      path: '/Modification',
+      path: '/Modification/:id/',
       name: 'Modification',
+      props:{title:'员工修改'},
       component: Modification,
       meta: {
         requireAuth: true
@@ -333,22 +342,25 @@ const router = new Router({
     {
       path: '/WorkOrder',
       name: 'WorkOrder',
+      props:{title:'工单列表'},
       component: WorkOrder,
       meta: {
         requireAuth: true
       },
     },
     {
-      path: '/BreakdownOrder',
+      path: '/BreakdownOrder/:id/',
       name: 'BreakdownOrder',
+      props:{title:'故障工单详情'},
       component: BreakdownOrder,
       meta: {
         requireAuth: true
       },
     },
     {
-      path: '/UpkeepAndTurnaroundPlans',
+      path: '/UpkeepAndTurnaroundPlans/:id/',
       name: 'UpkeepAndTurnaroundPlans',
+      props:{title:'检修&保养计划工单详情'},
       component: UpkeepAndTurnaroundPlans,
       meta: {
         requireAuth: true
@@ -381,6 +393,7 @@ const router = new Router({
     {
       path: '/RoleManagement',
       name: 'RoleManagement',
+      props:{title:'角色管理'},
       component: RoleManagement,
       meta: {
         requireAuth: true

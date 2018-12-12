@@ -197,16 +197,6 @@
 
           })
 
-
-        // this.axios
-        //   .get(this.global.apiSrc+"/organize/allOrganize")
-        //   .then(response => {
-        //     this.options = response.data.data;
-        //     console.log(response.data.data)
-        //   })
-        //   .catch(function(error) {
-        //     console.log(error);
-        //   });
       },
       codeToName(organizeCode){
         for (let i =0;i<this.options.length;i++){
@@ -317,7 +307,8 @@
     },
     created() {
       this.organize();
-      this.selectOne(this.$route.query.id);
+      console.log(this.$route.params.id);
+      this.selectOne(this.$route.params.id);
       this.Axios(
         {
           params:{},

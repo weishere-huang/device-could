@@ -293,7 +293,7 @@ export default {
     },
     toAmend(rowIndex, rowData, column) {
       this.$store.commit("upkeepAmend", rowData);
-      this.$router.push("/UpkeepAmend?id=" + rowData.id);
+      this.$router.push("/UpkeepAmend/" + rowData.id);
     },
     toUpkeepAdd() {
       this.$router.push({
