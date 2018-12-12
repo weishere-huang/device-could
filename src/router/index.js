@@ -304,6 +304,7 @@ const router = new Router({
       path: '/User',
       name: 'User',
       component: User,
+      props:{title:'用户管理'},
       meta: {
         requireAuth: true
       },
