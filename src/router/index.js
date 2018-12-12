@@ -65,6 +65,9 @@ const router = new Router({
       path: '/Home',
       name: 'Home',
       component: Home,
+      props: {
+        title: '默认工作台'
+      },
       meta: {
         requireAuth: true
       },
@@ -98,7 +101,6 @@ const router = new Router({
       path: '/Audit',
       name: 'Audit',
       component: Audit,
-
       meta: {
         requireAuth: true
       },
@@ -315,6 +317,7 @@ const router = new Router({
       path: '/User',
       name: 'User',
       component: User,
+      props:{title:'用户管理'},
       meta: {
         requireAuth: true
       },

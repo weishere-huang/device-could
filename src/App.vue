@@ -78,8 +78,8 @@
               <i class="iconfont">&#xe60b;</i>
               <span slot="title">工单</span></template>
             <el-menu-item index="/WorkOrder">工单列表</el-menu-item>
-            <el-menu-item index="/BreakdownOrder">故障工单详情</el-menu-item>
-            <el-menu-item index="/UpkeepAndTurnaroundPlans">检修&保养计划工单详情</el-menu-item>
+            <!-- <el-menu-item index="/BreakdownOrder">故障工单详情</el-menu-item> -->
+            <!-- <el-menu-item index="/UpkeepAndTurnaroundPlans">检修&保养计划工单详情</el-menu-item> -->
           </el-submenu>
           <el-submenu index="14">
             <template slot="title">
@@ -188,7 +188,7 @@
             </div>
           </el-header>
         </el-header>
-        <el-main class="mainContentWrapper">
+        <el-main class="mainContentWrapper" style="padding:8px;">
           <transition>
             <router-view v-if="isRouterAlive" />
           </transition>
@@ -404,4 +404,5 @@ export default {
   border-radius: 3px;
   //-webkit-box-shadow: inset 0 0 6px rgba(7, 7, 7, 0.3);
 } /*定义滑块 内阴影+圆角*/
+
 </style>

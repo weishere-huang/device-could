@@ -4,18 +4,22 @@
       <div class="top">
         <el-button
           size="small"
+          type="primary"
           @click="toPansAdd"
         >添加</el-button>
         <el-button
           size="small"
+          type="primary"
           @click="outerVisibleIsOk"
         >审核</el-button>
         <el-button
           size="small"
+          type="primary"
           @click="stopDiscontinuation"
         >停止</el-button>
         <el-button
           size="small"
+          type="primary"
           @click="deleteMaintenance"
         >删除</el-button>
       </div>

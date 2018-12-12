@@ -1,8 +1,8 @@
 <template>
   <div class="turnaroundPlansAdd">
     <div class="top">
-      <el-button size="small" @click="toback">返回</el-button>
-      <el-button size="small" @click="addPlan">保存</el-button>
+      <el-button size="small" type="primary" @click="toback">返回</el-button>
+      <el-button size="small" type="primary" @click="addPlan">保存</el-button>
       <!--<el-button size="small" @click="test">测试</el-button>-->
     </div>
     <div class="bottom">
@@ -65,12 +65,6 @@
           <el-form-item label="检修内容：" style="height:auto;">
             <el-input type="textarea" v-model="companyName.maintenanceCc" style="width:100%;"></el-input>
           </el-form-item>
-          <!--<el-form-item label="分布详情：" style="height:auto;margin:5px 0;">-->
-          <!--<tr class="tableTime">-->
-          <!--<td>111</td>-->
-          <!--<td>2</td>-->
-          <!--</tr>-->
-          <!--</el-form-item>-->
         </el-form>
         <!-- 单次执行 -->
         <el-form label-width="110px" v-if="companyName.planType==='单次'" v-model="companyName.planType">
@@ -93,14 +87,14 @@
           </el-form-item>
         </el-form>
         <el-form>
-          <el-form-item label="计划添加时间：" style="height:auto;">
-            <span>{{time}}</span>
-          </el-form-item>
+          <!--<el-form-item label="计划添加时间：" style="height:auto;">-->
+            <!--<span>{{time}}</span>-->
+          <!--</el-form-item>-->
         </el-form>
       </div>
       <div class="right">
         <div>
-          <el-button size="small" @click="addPlanIsShow">设备添加</el-button>
+          <el-button size="small" type="primary" @click="addPlanIsShow">设备添加</el-button>
         </div>
         <h5>设备列表</h5>
         <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>

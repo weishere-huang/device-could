@@ -1,8 +1,8 @@
 @font-face {
   font-family: 'iconfont';
   /* project id 940294 */
-  src: url('//at.alicdn.com/t/font_940294_148brnff08t.eot');
-  src: url('//at.alicdn.com/t/font_940294_148brnff08t.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_940294_148brnff08t.woff') format('woff'), url('//at.alicdn.com/t/font_940294_148brnff08t.ttf') format('truetype'), url('//at.alicdn.com/t/font_940294_148brnff08t.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_940294_7gg52ulqebr.eot');
+  src: url('//at.alicdn.com/t/font_940294_7gg52ulqebr.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_940294_7gg52ulqebr.woff') format('woff'), url('//at.alicdn.com/t/font_940294_7gg52ulqebr.ttf') format('truetype'), url('//at.alicdn.com/t/font_940294_7gg52ulqebr.svg#iconfont') format('svg');
 }
 .iconfont {
   font-family: "iconfont" !important;
@@ -13,7 +13,53 @@
 }
 html,
 body {
+  font-size: 12px;
   height: 100%;
+}
+.g-link {
+  text-decoration: none;
+  color: #409EFF;
+}
+.g-link:hover {
+  color: #2474c5;
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hide {
+  display: none !important;
+}
+.f12 {
+  font-size: 12px;
+}
+.f14 {
+  font-size: 14px;
+}
+.f16 {
+  font-size: 16px;
+}
+.f18 {
+  font-size: 18px;
+}
+.f20 {
+  font-size: 20px;
+}
+.c-red {
+  color: red;
+}
+.c-orange {
+  color: orange;
+}
+.c-yellow {
+  color: yellow;
+}
+.c-darkgray {
+  color: darkgray;
+}
+.c-blue {
+  color: blue;
 }
 #app,
 .mainWrapper {
@@ -34,7 +80,8 @@ body {
   background: linear-gradient(135deg, #2F4050 0%, #3a4753 100%) !important;
 }
 .siderWrapper .el-submenu__title:hover {
-  background: linear-gradient(135deg, transparent 0%, #171f27 50%, transparent 100%);
+  cursor: pointer;
+  background: linear-gradient(135deg, transparent 0%, #2c3b4b 50%, transparent 100%);
 }
 .siderWrapper .el-menu {
   border-right: 0;
@@ -47,10 +94,11 @@ body {
   background: #202c36;
 }
 .siderWrapper .el-menu-item:hover {
-  background: linear-gradient(135deg, transparent 0%, #263441 50%, transparent 100%);
+  color: #e9c667 !important;
 }
 .siderWrapper .el-menu-item.is-active {
-  background: linear-gradient(135deg, transparent 0%, #263441 50%, transparent 100%);
+  color: #ffd04b !important;
+  font-weight: bold;
 }
 .siderWrapper .logoWrap {
   width: 218px;
@@ -98,4 +146,37 @@ body {
   text-align: right;
   font-size: 12px;
   color: #666;
+}
+.e-message {
+  min-height: 22px;
+  padding: 5px 25px;
+  top: 0;
+  font-size: 12px;
+  min-width: auto;
+}
+.loadingStyle p,
+.loadingStyle i {
+  color: #666 !important;
+  font-size: 18px !important;
+}
+.el-container,
+.mainContentWrapper {
+  height: 100%;
+}
+.el-dialog__header {
+  background: -webkit-gradient(linear, 0 0, 0 bottom, from(#fcf6d3), to(rgba(125, 125, 150, 0.5)));
+  padding: 10px;
+}
+.el-dialog__header .el-dialog__headerbtn {
+  top: 14px;
+}
+.el-upload--picture-card {
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+}
+.el-upload-list--picture-card .el-upload-list__item {
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
 }
