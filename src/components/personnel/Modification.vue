@@ -2,8 +2,10 @@
   <div class="persnnel-add">
     <div class="add-case">
       <div class="topbtn">
-        <el-button size="small" @click="tback">返回</el-button>
-        <el-button size="small" @click="updateEmployee">保存</el-button>
+        <el-button size="small"
+                   type="primary" @click="tback">返回</el-button>
+        <el-button size="small"
+                   type="primary" @click="updateEmployee">保存</el-button>
       </div>
       <div class="botton">
         <div class="essential">
@@ -127,11 +129,13 @@
             <li>
               <label for="" style="letter-spacing: 8px;">照片：</label>
               <el-input type="text" size="small" placeholder="1寸照片电子版" style="width:30%"></el-input>
-              <el-button size="small">点击上传</el-button>
+              <el-button
+                type="primary" size="small">点击上传</el-button>
             </li>
             <li>
               <label for="" style="letter-spacing: 8px;">资质：</label>
-              <el-button size="small" @click="open6()">点击上传</el-button>
+              <el-button
+                type="primary" size="small" @click="open6()">点击上传</el-button>
             </li>
           </ul>
         </div>

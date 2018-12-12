@@ -4,10 +4,12 @@
       <div class="top">
         <el-button
           size="small"
+          type="primary"
           @click="outerVisibleIsOk"
         >审核</el-button>
         <el-button
           size="small"
+          type="primary"
           @click="dispel"
         >故障消除</el-button>
         <!-- 故障消除弹框 -->
@@ -41,8 +43,9 @@
             slot="footer"
             class="dialog-footer"
           >
-            <el-button @click="cancel">取 消</el-button>
+            <el-button type="primary" @click="cancel">取 消</el-button>
             <el-button
+
               type="primary"
               @click="toDispel"
             >确 定</el-button>
@@ -60,6 +63,7 @@
           <el-button
             size="small"
             @click="search"
+            type="primary"
           >搜索</el-button>
         </div>
       </div>
@@ -158,6 +162,7 @@
         class="dialog-footer"
       >
         <el-button
+          type="primary"
           @click="cancel"
           size="mini"
         >取 消</el-button>

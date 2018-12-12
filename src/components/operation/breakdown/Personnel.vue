@@ -11,6 +11,7 @@
         ></el-input>
         <el-button
           size="mini"
+          type="primary"
           @click="search"
         >搜索</el-button>
         <span style="padding:0 10px;">最近搜索：{{searchs}}</span>
