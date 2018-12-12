@@ -422,7 +422,7 @@ export default {
           this.tableData[i].state = "待审核";
         }
         if (this.tableData[i].state === 1) {
-          this.tableData[i].state = "审核通过";
+          this.tableData[i].state = "已通过";
         }
         if (this.tableData[i].state === 2) {
           this.tableData[i].state = "禁用";
