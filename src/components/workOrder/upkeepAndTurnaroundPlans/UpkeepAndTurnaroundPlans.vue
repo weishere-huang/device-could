@@ -1,82 +1,35 @@
 <template>
   <div class="breakdown-order">
     <div class="top">
-      <el-button size="small">返回</el-button>
-      <el-button
-        size="small"
-        @click="outerVisible=true"
-      >提交审核</el-button>
+      <el-button size="small" type="primary" @click="toBack">返回</el-button>
+      <el-button size="small" type="primary" @click="outerVisible=true">提交审核</el-button>
       <!-- 审核弹框 -->
-      <el-dialog
-        title="审核"
-        :visible.sync="outerVisible"
-        width="600px"
-      >
-        <el-form
-          label-position=right
-          label-width="120px"
-          :model="formLabelAlign"
-          style="padding:10px"
-        >
+      <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
+        <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
           <el-form-item label="审批结果：">
-            <el-radio
-              v-model="formLabelAlign.radio"
-              :label="0"
-            >同意</el-radio>
-            <el-radio
-              v-model="formLabelAlign.radio"
-              :label="1"
-            >驳回</el-radio>
+            <el-radio v-model="examine.radio" :label="0">同意</el-radio>
+            <el-radio v-model="examine.radio" :label="1">驳回</el-radio>
           </el-form-item>
           <el-form-item label="审批意见：">
-            <el-input
-              type="textarea"
-              v-model="formLabelAlign.desc"
-            ></el-input>
+            <el-input type="textarea" v-model="examine.desc"></el-input>
           </el-form-item>
-          <div v-if="formLabelAlign.radio!=1">
+          <div v-if="examine.radio!=1">
             <el-form-item label="是否终审：">
-              <el-checkbox-group v-model="formLabelAlign.type">
-                <el-checkbox
-                  label=""
-                  name="type"
-                ></el-checkbox>
+              <el-checkbox-group v-model="examine.type">
+                <el-checkbox label="" name="type"></el-checkbox>
               </el-checkbox-group>
             </el-form-item>
-            <el-form-item
-              label="下一级审批人："
-              v-if="formLabelAlign.type!=true"
-            >
-              <el-input
-                v-model="toAudit.name"
-                size="mini"
-                style="width:60%"
-              ></el-input>
-              <el-button
-                type="primary"
-                @click="innerVisible = true"
-                size="mini"
-              >添加审批人</el-button>
+            <el-form-item label="下一级审批人：" v-if="examine.type!=true">
+              <el-input v-model="toExamine.name" size="mini" style="width:60%"></el-input>
+              <el-button type="primary" @click="personLoad" size="mini">添加审批人</el-button>
             </el-form-item>
           </div>
         </el-form>
-        <el-dialog
-          title="人员添加"
-          :visible.sync="innerVisible"
-          append-to-body
-        >
+        <el-dialog title="人员添加" :visible.sync="innerVisible" append-to-body>
           <div style="padding:10px">
-            <div
-              class="search"
-              style="padding:10px 0"
-            >
-              <el-input
-                type="search"
-                size="mini"
-                v-model="key"
-                style="width:30%;"
-              ></el-input>
-              <el-button size="mini">搜索</el-button>
+            <div class="search" style="padding:10px 0">
+              <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
+              <el-button type="primary" size="mini" @click="search">搜索</el-button>
               <span style="padding:0 10px;">最近搜索：</span>
               <span style="text-decoration: underline;"></span>
             </div>
@@ -94,23 +47,26 @@
                 row-hover-color="#eee"
                 row-click-color="#edf7ff"
               ></v-table>
+              <div
+                class="mt20 mb20 bold"
+                style="text-align:left;margin-top:20px;"
+              >
+                <v-pagination
+                  @page-change="personPageChange"
+                  @page-size-change="personPageSizeChange"
+                  :total="pageNumber"
+                  :page-size="pageSize"
+                  :page-index="pageIndex"
+                  :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
+                ></v-pagination>
+              </div>
             </div>
           </div>
 
         </el-dialog>
-        <div
-          slot="footer"
-          class="dialog-footer"
-        >
-          <el-button
-            @click="outerVisible = false"
-            size="mini"
-          >取 消</el-button>
-          <el-button
-            @click="outerVisible = false"
-            type="primary"
-            size="mini"
-          >提 交</el-button>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="goExit" size="mini">取 消</el-button>
+          <el-button @click="examineUp" type="primary" size="mini">提 交</el-button>
         </div>
       </el-dialog>
       <!-- 审核弹框结束 -->
@@ -224,11 +180,8 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-            <el-button
-              size="mini"
-              @click="listBasicInfo"
-            >从物料库中添加</el-button>
-            <el-button size="mini">保存列表</el-button>
+            <el-button  type="primary" size="mini" @click="listBasicInfo">从物料库中添加</el-button>
+            <el-button  type="primary" @click="insertPart" size="mini">保存列表</el-button>
           </div>
           <v-table
             is-horizontal-resize
@@ -246,15 +199,8 @@
           </v-table>
         </div>
         <!-- 物料添加弹窗 -->
-        <el-dialog
-          title="备品备件"
-          :visible.sync="dialogVisible2"
-          width="70%"
-        >
-          <div
-            style="padding:10px"
-            class="dialog-case"
-          >
+        <el-dialog title="备品备件" :visible.sync="dialogVisible2" width="70%">
+          <div style="padding:10px" class="dialog-case">
             <div class="spare-parts-list">
               <el-tree
                 :data="data2"
@@ -274,7 +220,7 @@
                   style="width:50%;"
                   placeholder="关键词：设备编号、备件名称、型号/规格"
                 ></el-input>
-                <el-button @click="goDownEntryInfo" size="mini">查询</el-button>
+                <el-button type="primary" @click="goDownEntryInfo" size="mini">查询</el-button>
               </div>
               <v-table
                 is-horizontal-resize
@@ -305,13 +251,13 @@
             </div>
             <div class="add">
               <div style="text-align:center">
-                <el-button @click="deleteBasic" size="mini">提交</el-button>
+                <el-button type="primary" @click="deleteBasic" size="mini">提交</el-button>
               </div>
-              <ul  @click="basicAdd($event)">
-                <h5>已选择</h5>
-                <li v-model="personListValue" v-for="value in personListValue" :id="value.id">
+              <ul>
+                <h6>已选择</h6>
+                <li v-model="personListValue" v-for="value in personListValue">
                   {{value.partName}}
-                  <span :id="value.id">X</span>
+                  <span :id="value.id" @click="basicAdd($event)">X</span>
                 </li>
               </ul>
             </div>
@@ -351,7 +297,7 @@
           </div>
         </div>
         <div class="information-flow">
-          <h5>流程信息</h5>
+          <h6>流程信息</h6>
           <v-table
             is-horizontal-resize
             column-width-drag
@@ -374,13 +320,12 @@
   export default {
     data() {
       return {
+        workId:0,
         pageIndex:1,
         pageSize:10,
         pageNumber:0,
         personListValue: [],
-        data2: [
-         
-        ],
+        data2: [],
         defaultProps: {
           children: "children",
           label: "name"
@@ -389,6 +334,7 @@
         key: "",
         toAudit: {},
         workInfo: {
+          id:"",
           workNo:"",
           workType:"",
           state:"",
@@ -434,9 +380,6 @@
           gmtCreate:"",
           gmtModified:"",
           state:"",
-        },
-        formLabelAlign: {
-          msg: ""
         },
         workSheetMaterialTableData: [],
         devicesTableData: [],
@@ -501,7 +444,7 @@
         ],
         workSheetMaterialTable: [
           {
-            field: "materielNo",
+            field: "partNo",
             title: "备件编号",
             width: 100,
             titleAlign: "center",
@@ -509,7 +452,7 @@
             isResize: true
           },
           {
-            field: "materielName",
+            field: "partName",
             title: "名称",
             width: 100,
             titleAlign: "center",
@@ -517,7 +460,7 @@
             isResize: true
           },
           {
-            field: "materielModel",
+            field: "partModel",
             title: "型号/规格",
             width: 80,
             titleAlign: "center",
@@ -530,6 +473,7 @@
             width: 70,
             titleAlign: "center",
             columnAlign: "center",
+
             isResize: true,
             isEdit: true
           },
@@ -540,10 +484,9 @@
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
-            isEdit: true
           },
           {
-            field: "unit",
+            field: "partUnit",
             title: "计量单位",
             width: 80,
             titleAlign: "center",
@@ -551,7 +494,7 @@
             isResize: true
           },
           {
-            field: "state",
+            field: "isOk",
             title: "操作",
             width: 90,
             titleAlign: "center",
@@ -653,7 +596,7 @@
             isResize: true
           },
           {
-            field: "partClassify",
+            field: "partClassifyName",
             title: "备件分类",
             width: 60,
             titleAlign: "center",
@@ -722,18 +665,23 @@
             columnAlign: "center",
             isResize: true
           }
-        ]
+        ],
+        toExamine:{
+          userId:"",
+          name:"",
+        },
+        examine:{
+          desc:"",
+          type:"",
+          radio:0,
+          msg: ""
+        },
       };
     },
     methods: {
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
-        this.suppliesTableData[rowIndex][field] = newValue;
-        // console.log(newValue);
-        // console.log(oldValue);
-        // console.log(rowIndex);
-        // console.log(rowData);
-        // console.log(field);
+        this.workSheetMaterialTableData[rowIndex][field] = newValue;
         // 接下来处理你的业务逻辑，数据持久化等...
       },
       selectGroupChange(selection) {
@@ -746,7 +694,8 @@
         console.log("select-change", selection, rowData);
       },
       getPersonnel(rowIndex, rowData, column) {
-        console.log(rowData);
+        this.toExamine = rowData;
+        this.innerVisible = false;
       },
       checkPerson(rowIndex, rowData, column) {
         this.dialogVisible1 = true;
@@ -754,13 +703,22 @@
       },
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
+        this.listBasicInfo();
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
         this.pageSize = pageSize;
+        this.listBasicInfo();
+      },
+      personPageChange(pageIndex) {
+        this.pageIndex = pageIndex;
+      },
+      personPageSizeChange(pageSize) {
+        this.pageIndex = 1;
+        this.pageSize = pageSize;
       },
       handleNodeClick(data) {
-       this.findBasicInfoByTypeId(data.id);
+        this.findBasicInfoByTypeId(data.categoryNo);
       },
       filterArray(data, parent) {
         let vm = this;
@@ -784,7 +742,95 @@
       },
 
 
+      //回退
+      toBack(){
+        this.$router.back(-1)
+      },
+      //添加审核人员
+      personLoad(){
+        this.innerVisible = true;
+        this.Axios(
+          {
+            params: { page: this.pageIndex, size: this.pageSize },
+            type: "get",
+            url: "/employee/findEmployeeList"
+          },
+          this
+        ).then(
+          response => {
+            this.pageNumber = response.data.data.totalElements;
+            this.tableData = response.data.data.content;
+            this.tableDate = this.tableData;
+          },
+          ({ type, info }) => {}
+        );
+      },
+      //通过手机号姓名搜索员工
+      search() {
+        if(/^1\d{10}$/ .test(this.key)) {
+          if (!(/^1[345789]\d{9}$/.test(this.key))) {
+            alert("手机号码有误，请重填");
+          }
+        }if(this.key===""){
+          this.load();
+        }else{
+          this.pageIndex =1;
+          this.Axios(
+            {
+              params: {condition: this.key},
+              type: "get",
+              url: "/employee/search",
+            },
+            this
+          ).then(response => {
+              if(this.key!==""){
+                this.pageNumber = response.data.data.totalElements;
+                this.tableData = response.data.data.content;
+                this.tableDate = this.tableData;
+              }else{
+                this.pageChange(1);
+              }
+            },
+            ({type, info}) => {
+            })
+        }
 
+      },
+      //执行审核
+      examineUp(){
+        this.Axios(
+          {
+            params: {
+              nextUserId: this.toExamine.userId,
+              workId:this.workInfo.id,
+              auditOpinion:this.examine.desc,
+              passOrTurn:this.examine.radio
+            },
+            type: "get",
+            url: "/maintenanceWork/workAudit"
+          },
+          this
+        ).then(
+          response => {
+            this.pageNumber = "";
+            this.outerVisible = false;
+            this.pageIndex = 1;
+            this.pageSize = 10;
+            this.examine.desc = "";
+            this.examine.radio = 0;
+          },
+          ({ type, info }) => {}
+        );
+      },
+      //取消审核
+      goExit(){
+        this.pageNumber = "";
+        this.outerVisible = false;
+        this.pageIndex = 1;
+        this.pageSize = 10;
+        this.examine.desc = "";
+        this.examine.radio = 0;
+      },
       //工单信息加载
       overhaulLoad(stateNum){
         this.Axios(
@@ -869,7 +915,6 @@
           url: "/part/list",
         },this)
           .then(result => {
-            console.log(result.data.data);
             this.data2= this.filterArray2(result.data.data,0);
           })
           .catch(err => {
@@ -900,39 +945,71 @@
       },
       //备品模糊查询
       goDownEntryInfo(){
-        // searchPerson
-        this.Axios(
-          {
-            params: {
-              keywords:this.searchPerson,
-              page:this.pageIndex,
-              size:this.pageSize
+        //searchPerson
+        if(this.searchPerson===""){
+          this.listBasicInfo();
+        }else{
+          this.Axios(
+            {
+              params: {
+                keywords:this.searchPerson,
+                page:this.pageIndex,
+                size:this.pageSize
+              },
+              type: "get",
+              url: "/part/searchBasicInfo",
             },
-            type: "get",
-            url: "/part/searchBasicInfo",
-          },
-          this
-        ).then(
-          response => {
-            this.pageNumber = response.data.data.totalElements;
-            this.addMaterielValue(response.data.data.content);
-          },
-          ({type, info}) => {
-            this.addMaterielValue();
-          })
+            this
+          ).then(
+            response => {
+              this.pageNumber = response.data.data.totalElements;
+              this.addMaterielValue(response.data.data.content);
+            },
+            ({type, info}) => {
+              this.addMaterielValue();
+            })
+        }
       },
       //双击删除指定的备品备件
       basicAdd(event){
         this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id);
       },
-      //关闭备品备件页面
+      //关闭备品备件页面并传值到详情页
       deleteBasic(){
         this.dialogVisible2 = false;
-        for (let i in this.personListValue){
-          // this.workSheetMaterialTableData = this.personListValue;
-        }
+        this.workSheetMaterialTableData = this.personListValue;
       },
-
+      //保存工单物料到数据库
+      insertPart(){
+        for (let i in this.workSheetMaterialTableData) {
+          if(this.workSheetMaterialTableData[i].partCategory === "普通件"){
+            this.workSheetMaterialTableData[i].partCategory = 1;
+          }
+          if(this.workSheetMaterialTableData[i].partCategory === "关键件"){
+            this.workSheetMaterialTableData[i].partCategory = 2;
+          }
+        }
+        console.log(JSON.stringify(this.workSheetMaterialTableData));
+        let qs = require("qs");
+        let data = qs.stringify({
+          workId:this.workInfo.id,
+          workSheetMaterialDTOS:JSON.stringify(this.workSheetMaterialTableData)
+        });
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/maintenanceWork/insertPart",
+          },
+          this
+        ).then(
+          response => {
+            console.log(response.data);
+          },
+          ({type, info}) => {
+            this.addMaterielValue();
+          })
+      },
 
       //工单信息
       workInfoValue(value){
@@ -1016,6 +1093,8 @@
           }
           if(value[i].partCategory === 2){
             this.materielData[i].partCategory ="关键件";
+          }else{
+            this.materielData[i].partCategory ="普通件";
           }
         }
       },
@@ -1025,14 +1104,13 @@
       },
       //流程信息
       flowInfo(value){
-      this.flowInfoData = value;
+        this.flowInfoData = value;
       },
-
-
 
     },
     created(){
-      this.overhaulLoad(this.$route.query.id);
+      this.workId = this.$route.query.id;
+      this.overhaulLoad(this.workId);
     }
   };
 </script>

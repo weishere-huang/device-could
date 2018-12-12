@@ -2,8 +2,8 @@
   <div class="roleManagement">
     <div class="case">
       <div class="top">
-        <el-button size="small" @click="dialogFormVisible = true">添加角色</el-button>
-        <el-button size="small" @click="update">保存</el-button>
+        <el-button size="small" type="primary" @click="dialogFormVisible=true">添加角色</el-button>
+        <el-button size="small" type="primary" @click="update">保存</el-button>
       </div>
       <div class="left">
         <h6>角色列表</h6>
@@ -120,7 +120,7 @@
         </div>
       </div>
     </div>
-    <el-dialog title="角色添加" :visible.sync="dialogFormVisible" width="40%">
+    <el-dialog title="角色添加" :visible.sync="dialogFormVisible" width="40%" :beforeClose="toCancel">
       <el-form :model="form">
         <el-form-item label="角色名称" label-width="120px">
           <el-input v-model="form.name" autocomplete="off"></el-input>
@@ -130,7 +130,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
+        <el-button @click="toCancel" size="small">取 消</el-button>
         <el-button type="primary" @click="roleAdd" size="small">保 存</el-button>
       </div>
     </el-dialog>
@@ -412,6 +412,7 @@
         this.message.sHide = !this.message.sHide;
       },
 
+
       roleAdd(){
         if (this.form.name === ""){
           alert("请输入角色名称");
@@ -613,7 +614,11 @@
             this.message.checkedSystem=[];
           })
       },
-
+      toCancel(){
+        this.dialogFormVisible = false;
+        this.form.name = "";
+        this.form.desc = "";
+      },
       PermissionsList(number){
         this.Axios(
           {

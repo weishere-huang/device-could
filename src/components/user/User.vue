@@ -20,7 +20,7 @@
         <div class="search">
           <el-input
             type="search"
-            placeholder="如员工编号，姓名，手机"
+            placeholder="如企业名称，用户名，手机号"
             size="small"
             v-model="keyWord"
           ></el-input>
@@ -146,13 +146,12 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-          overflowTitle: true,
-          formatter: function(rowData, rowIndex, pagingIndex, field) {
-            return rowData.state === 0
-              ? "正常"
-              : "禁用"
-          }
-          // componentName: "switch-company"
+          // formatter: function(rowData, rowIndex, pagingIndex, field) {
+          //   return rowData.state === 0
+          //     ? "正常"
+          //     : "禁用"
+          // }
+          componentName: "switch-company"
         },
         {
           field: "custome-adv",
@@ -168,9 +167,17 @@ export default {
   },
   methods: {
     customCompFunc(params) {
-      console.log(params);
-      if (params.type==="change") {
+      if (params.type === "change") {
         console.log(params);
+        if (params.rowData.state === "1") {
+          this.choice = params.rowData.id;
+          this.prohibit();
+          this.choice = "";
+        } else if (params.rowData.state === "0") {
+          this.choice = params.rowData.id;
+          this.enable();
+          this.choice = "";
+        }
       }
       if (params.type === "delete") {
         this.choice = params.rowData.id;
@@ -274,7 +281,7 @@ export default {
             type: "success"
           });
           // this.load();
-          this.reload();
+          this.load();
         },
         ({ type, info }) => {}
       );
@@ -299,7 +306,7 @@ export default {
             type: "success"
           });
           // this.load();
-          this.reload();
+          this.load();
         },
         ({ type, info }) => {}
       );
@@ -316,13 +323,13 @@ export default {
         option: { enableMsg: false }
       });
       this;
-      this.$confirm("您确定要删除该用户吗？", "Warning", {
+      this.$confirm("您确定要删除该用户吗？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(
         response => {
-          this.load();
+          this.reload();
           this.$message({
             message: "您已经删除该用户",
             type: "success"
@@ -348,11 +355,9 @@ export default {
           this.pageIndex = 1;
           this.totalNub = response.data.data.totalElements;
           this.tableData = response.data.data.content;
-          // for (let i = 0; i < response.data.data.content.length; i++) {
-          //   this.tableData[i].state === 0
-          //     ? (this.tableData[i].state = "正常")
-          //     : (this.tableData[i].state = "停用");
-          // }
+          for (let i = 0; i < this.tableData.length; i++) {
+            this.tableData[i].state =String(this.tableData[i].state)
+          }
           console.log(this.pageIndex);
           console.log(response);
         },
@@ -387,11 +392,9 @@ export default {
           this.totalNub = response.data.data.totalElements;
           this.tableData = response.data.data.content;
 
-          // for (let i = 0; i < response.data.data.content.length; i++) {
-          //   this.tableData[i].state === 0
-          //     ? (this.tableData[i].state = "正常")
-          //     : (this.tableData[i].state = "停用");
-          // }
+          for (let i = 0; i < this.tableData.length; i++) {
+            this.tableData[i].state =String(this.tableData[i].state)
+          }
           console.log(this.tableDate);
         },
         ({ type, info }) => {}
@@ -404,9 +407,7 @@ export default {
 };
 Vue.component("table-user", {
   template: `<span>
-        <a href="" @click.stop.prevent="startUsing(rowData,index)" style="text-decoration: none;">启用</a>&nbsp;
-        <a href="" @click.stop.prevent="stop(rowData,index)" style="text-decoration: none;">停用</a>&nbsp;
-        <a href="" @click.stop.prevent="deleteRow(rowData,index)" style="text-decoration: none;">删除</a>
+        <el-button size= "mini" @click.stop.prevent="deleteRow(rowData,index)">删除</el-button>
         </span>`,
   props: {
     rowData: {
@@ -436,35 +437,36 @@ Vue.component("table-user", {
     }
   }
 });
-// Vue.component("switch-company", {
-//   template: `<span>
-//       <el-switch
-//         v-model="value"
-//         active-value="0"
-//         inactive-value="1"
-//         @change="changeValue(rowData,index)"
-//         >
-//       </el-switch>
-//   </span>`,
-//   props: {
-//     rowData: {
-//       type: Object
-//     },
-//     field: {
-//       type: String
-//     },
-//     index: {
-//       type: Number
-//     },
-//     value:{}
-//   },
-//   methods: {
-//     changeValue(){
-//       let params={ type: "change", rowData: this.rowData ,value:this.value}
-//       this.$emit("on-custom-comp", params);
-//     }
-//   }
-// });
+Vue.component("switch-company", {
+  template: `<span>
+      <el-switch
+        v-model="rowData.state"
+        active-value="0"
+        inactive-value="1"
+        active-color="#13ce66"
+        inactive-color="#ff4949"
+        @change="changeValue(rowData,index)"
+        >
+      </el-switch>
+  </span>`,
+  props: {
+    rowData: {
+      type: Object
+    },
+    field: {
+      type: String
+    },
+    index: {
+      type: Number
+    }
+  },
+  methods: {
+    changeValue() {
+      let params = { type: "change", rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    }
+  }
+});
 </script>
 <style lang="less" scoped>
 @blue: #409eff;

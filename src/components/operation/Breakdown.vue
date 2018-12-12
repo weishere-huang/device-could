@@ -4,10 +4,12 @@
       <div class="top">
         <el-button
           size="small"
+          type="primary"
           @click="outerVisibleIsOk"
         >审核</el-button>
         <el-button
           size="small"
+          type="primary"
           @click="dispel"
         >故障消除</el-button>
         <!-- 故障消除弹框 -->
@@ -41,8 +43,9 @@
             slot="footer"
             class="dialog-footer"
           >
-            <el-button @click="cancel">取 消</el-button>
+            <el-button type="primary" @click="cancel">取 消</el-button>
             <el-button
+
               type="primary"
               @click="toDispel"
             >确 定</el-button>
@@ -53,13 +56,14 @@
         <div class="search">
           <el-input
             type="search"
-            placeholder="如故障编码，设备名称，位号，描述"
+            placeholder="如故障编码，设备名称，位置，描述"
             size="small"
             v-model="faultKey"
           ></el-input>
           <el-button
             size="small"
             @click="search"
+            type="primary"
           >搜索</el-button>
         </div>
       </div>
@@ -158,6 +162,7 @@
         class="dialog-footer"
       >
         <el-button
+          type="primary"
           @click="cancel"
           size="mini"
         >取 消</el-button>
@@ -690,7 +695,7 @@ Vue.component("table-breakdown", {
         width: 40%;
         font-size: 12px;
         .el-input {
-          width: 60%;
+          width: 70%;
         }
         span {
           cursor: pointer;

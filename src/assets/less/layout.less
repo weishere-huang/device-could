@@ -1,11 +1,9 @@
 @font-face {
-    font-family: 'iconfont';  /* project id 940294 */
+    font-family: 'iconfont';
+    /* project id 940294 */
     src: url('//at.alicdn.com/t/font_940294_7gg52ulqebr.eot');
-    src: url('//at.alicdn.com/t/font_940294_7gg52ulqebr.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_940294_7gg52ulqebr.woff') format('woff'),
-    url('//at.alicdn.com/t/font_940294_7gg52ulqebr.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_940294_7gg52ulqebr.svg#iconfont') format('svg');
-  }
+    src: url('//at.alicdn.com/t/font_940294_7gg52ulqebr.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_940294_7gg52ulqebr.woff') format('woff'), url('//at.alicdn.com/t/font_940294_7gg52ulqebr.ttf') format('truetype'), url('//at.alicdn.com/t/font_940294_7gg52ulqebr.svg#iconfont') format('svg');
+}
 
 .iconfont {
     font-family: "iconfont" !important;
@@ -20,29 +18,64 @@ body {
     font-size: 12px;
     height: 100%;
 }
-.g-link{
+
+.g-link {
     text-decoration: none;
-    color:#409EFF;
-    &:hover{
+    color: #409EFF;
+    &:hover {
         color: rgb(36, 116, 197)
     }
 }
-.ellipsis{
+
+.ellipsis {
     overflow: hidden;
-    text-overflow:ellipsis;
+    text-overflow: ellipsis;
     white-space: nowrap;
 }
-.f12{font-size: 12px}
-.f14{font-size: 14px}
-.f16{font-size: 16px}
-.f18{font-size: 18px}
-.f20{font-size: 20px}
 
-.c-red{color:red }
-.c-orange{color:orange }
-.c-yellow{color: yellow }
-.c-darkgray{color: darkgray}
-.c-blue{color: blue}
+.hide {
+    display: none !important
+}
+
+.f12 {
+    font-size: 12px
+}
+
+.f14 {
+    font-size: 14px
+}
+
+.f16 {
+    font-size: 16px
+}
+
+.f18 {
+    font-size: 18px
+}
+
+.f20 {
+    font-size: 20px
+}
+
+.c-red {
+    color: red
+}
+
+.c-orange {
+    color: orange
+}
+
+.c-yellow {
+    color: yellow
+}
+
+.c-darkgray {
+    color: darkgray
+}
+
+.c-blue {
+    color: blue
+}
 
 #app,
 .mainWrapper {
@@ -81,13 +114,11 @@ body {
     .el-menu-item {
         background: #202c36;
         &:hover {
-            color: rgb(233, 198, 103) !important;
-            //background: linear-gradient(135deg, transparent 0%, rgb(38, 52, 65) 50%, transparent 100%)
+            color: rgb(233, 198, 103) !important; //background: linear-gradient(135deg, transparent 0%, rgb(38, 52, 65) 50%, transparent 100%)
         }
         &.is-active {
             color: rgb(255, 208, 75) !important;
-            font-weight: bold
-            //background: linear-gradient(135deg, transparent 0%, rgb(38, 52, 65) 50%, transparent 100%)
+            font-weight: bold //background: linear-gradient(135deg, transparent 0%, rgb(38, 52, 65) 50%, transparent 100%)
         }
     }
     .logoWrap {
@@ -145,19 +176,31 @@ body {
     color: #666;
 }
 
-.e-message{
-    height: 15px;
-    padding: 10px 25px;
-    top:0;
+.e-message {
+    min-height: 22px;
+    padding: 5px 25px;
+    top: 0;
     font-size: 12px;
+    min-width: auto;
 }
-.loadingStyle{
-    p,i{
+
+.loadingStyle {
+    p,
+    i {
         color: #666 !important;
         font-size: 18px !important;
     }
 }
 
-.el-container,.mainContentWrapper{
+.el-container,
+.mainContentWrapper {
     height: 100%;
+}
+
+.el-dialog__header {
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#fcf6d3), to(rgba(125, 125, 150, 0.5)));
+    padding: 10px;
+    .el-dialog__headerbtn {
+        top: 14px;
+    }
 }

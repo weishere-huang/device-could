@@ -43,6 +43,7 @@
               <i class="iconfont">&#xe6a0;</i>
               <span slot="title">设备监控</span></template>
               <el-menu-item index="/Monit">设备实时状态</el-menu-item>
+              <el-menu-item index="/Oee">设备OEE分析</el-menu-item>
             </el-submenu>
             <el-submenu index="4">
               <template slot="title">
@@ -135,6 +136,9 @@
       <el-container>
         <el-header>
           <el-header style="background-color:#efefef;">
+            <div class="breadcrumbWrap">
+              <breadCrumb></breadCrumb>
+            </div>
             <div class="stateList">
               <ul>
                 <li>&nbsp;欢迎您：{{user}}</li>
@@ -184,8 +188,10 @@
             </div>
           </el-header>
         </el-header>
-        <el-main class="mainContentWrapper">
-          <router-view v-if="isRouterAlive" />
+        <el-main class="mainContentWrapper" style="padding:8px;">
+          <transition>
+            <router-view v-if="isRouterAlive" />
+          </transition>
         </el-main>
         <el-footer>长虹智能终端设备生产管理云平台</el-footer>
       </el-container>
@@ -195,6 +201,7 @@
 </template>
 
 <script>
+import breadCrumb from './BreadCrumb.vue'
 export default {
   provide(){
     return{
@@ -260,7 +267,10 @@ export default {
   },
   created () {
     this.user=sessionStorage.getItem("user");
-  }
+  },
+  components: {
+    breadCrumb
+    }
 };
 </script>
 
@@ -287,6 +297,14 @@ export default {
   overflow: hidden;
   position: relative;
   font-size: 12px;
+}
+.breadcrumbWrap{
+  position: absolute;
+  left: 20px;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+  height: 25px;
 }
 .stateList {
   position: absolute;
@@ -386,4 +404,5 @@ export default {
   border-radius: 3px;
   //-webkit-box-shadow: inset 0 0 6px rgba(7, 7, 7, 0.3);
 } /*定义滑块 内阴影+圆角*/
+
 </style>

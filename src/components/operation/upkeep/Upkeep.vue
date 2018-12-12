@@ -4,10 +4,12 @@
       <div class="top">
         <el-button
           size="small"
+          type="primary"
           @click="toUpkeepAdd"
         >添加</el-button>
         <el-button
           size="small"
+          type="primary"
           @click="outerVisibleIsOk"
         >审核</el-button>
         <el-dialog
@@ -74,6 +76,7 @@
           >
             <el-button
               @click="outerVisible = false"
+              type="primary"
               size="mini"
             >取 消</el-button>
             <el-button
@@ -85,11 +88,13 @@
         </el-dialog>
         <el-button
           size="small"
+          type="primary"
           @click="stopDiscontinuation"
           style="margin-left: 10px;"
         >停止</el-button>
         <el-button
           size="small"
+          type="primary"
           @click="deleteMaintenance"
         >删除</el-button>
       </div>

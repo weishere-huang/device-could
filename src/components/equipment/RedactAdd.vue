@@ -36,6 +36,7 @@
               size="mini"
               style="width:30%;"
               v-model="condition"
+              placeholder="如姓名，电话"
             ></el-input>
             <el-button
               size="mini"

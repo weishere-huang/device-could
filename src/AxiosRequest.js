@@ -58,6 +58,7 @@ export default ({ url, type, params, config, option ,loadingConfig},vue) => {
         return new Promise((resolve, reject)=>{
             window.setTimeout(()=>{
                 Promise.all(runAsync).then(function(results){
+                    option.enableMsg && Message.success({message:"数据请求完成~", customClass:'e-message', duration:2000});
                     resolve(results);
                 });
             },10);
@@ -76,7 +77,8 @@ export default ({ url, type, params, config, option ,loadingConfig},vue) => {
                     axios[type||'post'](url, type==='get'?{params:params}:params, config || {}).then(res => {
                         if (res.status === 200 && res.data.code === 200) {
                             //success && success(res.data);
-                            option.enableMsg && Message.success({message:option.successMsg, customClass:'e-message', duration:1500});
+                            option.enableMsg && Message.success({message:"数据请求完成~", customClass:'e-message', duration:2000});
+                            //option.enableMsg && Message.success({message:option.successMsg, customClass:'e-message', duration:1500});
                             resolve(res);
                         } else {
                             //faild && faild(res.data);

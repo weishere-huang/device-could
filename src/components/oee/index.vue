@@ -3,8 +3,7 @@
         <span>Equipment{{showInfo}}</span>
         <button @click="clickDemo" :class="showInfo">点击</button>
     </div> -->
-    <div>
-    <div v-bind:class="activeClass">
+    <div class="monitWrap">
       <el-container>
         <el-aside width="200px" class="equTypeListBar">
           <el-collapse v-model="activeNames" @change="collapseItemChange">
@@ -53,7 +52,7 @@
             </el-collapse-item> -->
           </el-collapse>
         </el-aside>
-        <el-main class="monitMainContent">
+        <el-main class="monitMainContent2">
           <section class="topWrap">
             <div>当前设备组：常减压产线组 / 数量（台）：20</div>
             <div>
@@ -70,8 +69,7 @@
             </div>
           </section>
           <section class="pinsWrap">
-            <div id='pinLeft'></div>
-            <div id='pinRight'></div>
+            
           </section>
           <section class='equListWrap'>
             <div>
@@ -138,10 +136,6 @@
         </el-main>
       </el-container>
     </div>
-    <div v-if="this.$route.params.deviceId!==undefined">
-      <router-view></router-view>
-    </div>
-    </div>
 </template>
 
 <script>
@@ -169,165 +163,15 @@ const initTreeDataForEquType = function(nodeData, parentCode) {
 };
 export default {
   data() {
-    
     return {
-      activeClass:`monitWrap`,
-      activeNames: ["1", "2", "3"],
-      organizationTreeData: [],
-      organizationEmptytTxt:'数据加载中...',
-      equTypeTreeData: [],
-      equTypeEmptytTxt:'数据加载中...',
-      equStatusTreeData: [
-        {
-          label: "设备状态",
-          children: [
-            {
-              label: "开机",
-              id: "1"
-            },
-            {
-              label: "关机",
-              id: "2"
-            },
-            {
-              label: "故障",
-              id: "3"
-            }
-          ]
-        }
-      ],
-      options: [{
-          value: '30',
-          label: '30s'
-        }, {
-          value: '60',
-          label: '60s'
-        }, {
-          value: '300',
-          label: '5分钟'
-        }, {
-          value: '600',
-          label: '10分钟'
-        }, {
-          value: '1800',
-          label: '30分钟'
-        }],
-        refreshValue:"60"
+      
     };
   },
-  watch: {
-      $route() {
-          this.activeClass=`monitWrap ${this.$route.params.deviceId!==undefined?'hide':'show'}`;
-      }
-  },
   created: function() {
-    this.Axios(
-      {
-        url: ["/organize/allOrganize", "/deviceCategory/all"],
-        type: ["get","get"],
-        params:[{},{}]
-      },
-      this
-    ).then(
-      ([res1, res2]) => {
-        if(res1.data.data.length)
-          this.organizationTreeData = initTreeDataForOrganization(res1.data.data,"0");
-        else
-          this.organizationEmptytTxt='暂无数据';
-
-        if(res2.data.data.length)
-          this.equTypeTreeData = initTreeDataForEquType(res2.data.data, "0");
-        else
-          this.equTypeEmptytTxt='暂无数据';
-        
-        //window.setTimeout(() => {this.$refs.tree.setCurrentKey("1024");}, 1000);
-      },
-      () => {}
-    );
+    
   },
   mounted: function() {
-    // 基于准备好的dom，初始化echarts实例
-    var chartLeft = echarts.init(document.getElementById("pinLeft"));
-    var chartRight = echarts.init(document.getElementById("pinRight"));
-    // 绘制图表
-    chartLeft.setOption({
-      title: {
-        text: "设备基本状态",
-        subtext: "统计设备量：20",
-        x: "center"
-      },
-      tooltip: {
-        trigger: "item",
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-      },
-      legend: {
-        orient: "vertical",
-        left: "left",
-        data: ["开机初始化", "正常运行", "故障待处理", "维修中", "关机中","断线"]
-      },
-      series: [
-        {
-          name: "设备状态",
-          type: "pie",
-          radius: "55%",
-          center: ["50%", "60%"],
-          data: [
-            { value: 1, name: "开机初始化", itemStyle: { color: "#FF00FF" } },
-            { value: 8, name: "正常运行", itemStyle: { color: "#008000" } },
-            { value: 2, name: "故障待处理", itemStyle: { color: "#FF0000" } },
-            { value: 3, name: "维修中", itemStyle: { color: "#FFD700" } },
-            { value: 5, name: "关机中", itemStyle: { color: "#909090" } },
-            { value: 1, name: "断线", itemStyle: { color: "#CDC9C9" } }
-          ],
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: "rgba(0, 0, 0, 0.5)"
-            }
-          }
-        }
-      ]
-    });
 
-    chartRight.setOption({
-      title: {
-        text: "设备预警状态",
-        subtext: "统计设备量：20",
-        x: "center"
-      },
-      tooltip: {
-        trigger: "item",
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-      },
-      legend: {
-        orient: "vertical",
-        left: "left",
-        data: ["正常", "橙色预警", "黄色预警", "红色预警", "断线"]
-      },
-      series: [
-        {
-          name: "设备状态",
-          type: "pie",
-          radius: "55%",
-          center: ["50%", "60%"],
-          data: [
-            { value: 8, name: "正常",itemStyle: { color: "#008000" }  },
-            { value: 4, name: "橙色预警",itemStyle: { color: "#FF8C00" }  },
-            { value: 2, name: "黄色预警",itemStyle: { color: "#CDCD00" }  },
-            { value: 3, name: "红色预警" ,itemStyle: { color: "#FF0000" } },
-            { value: 3, name: "断线" ,itemStyle: { color: "#CDC9C9" } }
-          ],
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: "rgba(0, 0, 0, 0.5)"
-            }
-          }
-        }
-      ]
-    });
   },
   methods: {
     collapseItemChange(val) {
@@ -347,7 +191,7 @@ export default {
     border-right: solid 1px #eee;
     padding: 10px;
   }
-  .monitMainContent {
+  .monitMainContent2 {
     padding-top: 0;
     .topWrap{
       border:solid 1px #dfdfdf;

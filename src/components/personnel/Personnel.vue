@@ -4,33 +4,39 @@
       <div class="top">
         <el-button
           size="small"
+          type="primary"
           @click="PersnnelAdd"
         >添加</el-button>
         <el-button
           size="small"
+          type="primary"
           @click="updateEmployee"
         >修改</el-button>
         <el-button
           size="small"
+          type="primary"
           @click="disable"
         >启用</el-button>
         <el-button
           size="small"
+          type="primary"
           @click="enable"
         >禁用</el-button>
         <el-button
           size="small"
+          type="primary"
           @click="deleteEmployee"
         >删除</el-button>
         <div class="search">
           <el-input
             type="search"
-            placeholder="如员工编号，姓名，手机，部门，岗位"
+            placeholder="如员工姓名，手机，部门，岗位"
             size="small"
             v-model="searchs"
           ></el-input>
           <el-button
             size="small"
+            type="primary"
             @click="search"
           >搜索</el-button>
         </div>

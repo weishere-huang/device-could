@@ -3,51 +3,58 @@
     <div class="top">
       <el-badge class="item">
         <el-button
+          type="primary"
           @click="load(toNull)"
           size="small"
         >全部工单</el-button>
       </el-badge>
       <el-badge
-        :value="audited"
+        :value="audited1"
         class="item"
       >
         <el-button
+          type="primary"
           @click="load(0)"
           size="small"
         >待审核</el-button>
       </el-badge>
       <el-badge
-        :value="inAudit"
+        :value="inAudit1"
         class="item"
       >
         <el-button
+          type="primary"
           @click="load(4)"
           size="small"
         >审核中</el-button>
       </el-badge>
       <el-badge
-        :value="handle"
+        :value="handle1"
         class="item"
       >
         <el-button
+          type="primary"
           @click="load(5)"
           size="small"
         >待处理</el-button>
       </el-badge>
       <el-badge class="item">
         <el-button
+          type="primary"
           @click="load(7)"
           size="small"
         >已撤销</el-button>
       </el-badge>
       <el-badge class="item">
         <el-button
+          type="primary"
           @click="load(10)"
           size="small"
         >已驳回</el-button>
       </el-badge>
       <el-badge class="item">
         <el-button
+          type="primary"
           @click="load(13)"
           size="small"
         >已完成</el-button>
@@ -94,6 +101,11 @@ export default {
       audited: "",
       inAudit: "",
       handle: "",
+      //之后删除后三个变量
+      audited1: "",
+      inAudit1: "",
+      handle1: "",
+     //结束
       pageIsOk: true,
       pageIndex: 1,
       pageSize: 10,
@@ -193,14 +205,22 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
+      if (this.pageIsOk) {
+        this.audited = "";
+        this.inAudit = "";
+        this.handle = "";
+        this.load();
+      }
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
       if (this.pageIsOk) {
-        this.load(-1);
+        this.audited = "";
+        this.inAudit = "";
+        this.handle = "";
+        this.load();
       }
     },
     Jump(rowIndex, rowData, column) {
@@ -217,7 +237,7 @@ export default {
           this.$refs.workOrderTable.resize();
         }, 500);
       });
-      if (stateNum === "") {
+      if (stateNum == "") {
         this.pageIsOk = true;
         this.audited = "";
         this.inAudit = "";
@@ -232,10 +252,11 @@ export default {
       } else if (stateNum === 3) {
         this.pageIsOk = false;
       } else if (stateNum === 4) {
+        this.inAudit = "";
         this.pageIsOk = false;
       } else if (stateNum === 5) {
+        this.handle = "";
         this.pageIsOk = false;
-        this.handle++;
       } else if (stateNum === 6) {
         this.pageIsOk = false;
       }
@@ -290,6 +311,7 @@ export default {
         }
         if (value[i].state === 5) {
           this.tableData[i].state = "待处理";
+          this.handle++;
         }
         if (value[i].state === 6) {
           this.tableData[i].state = "已消除";
