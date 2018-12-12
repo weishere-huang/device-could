@@ -13,7 +13,6 @@
                 <el-tree 
                   ref='tree'
                   :data="organizationTreeData" 
-                  :props="defaultProps" 
                   highlight-current
                   default-expand-all
                   node-key="id"
@@ -28,7 +27,6 @@
                 <el-tree 
                   ref='tree2'
                   :data="equTypeTreeData" 
-                  :props="defaultProps" 
                   highlight-current
                   default-expand-all
                   node-key="id"
