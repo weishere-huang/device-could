@@ -159,7 +159,10 @@ export default {
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          formatter:function (rowData,rowIndex,pagingIndex,field) {
+            return rowData.entryCount*rowData.entryPrice
+          }
         },
         {
           field: "supplierName",
@@ -212,11 +215,13 @@ export default {
       this.pageIndex = pageIndex;
       this.load();
       this.getTableData();
+      this.listsearch();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+      this.listsearch();
     },
     //
     listsearch(){
@@ -240,7 +245,8 @@ export default {
       },this)
         .then(
           result => {
-            this.tableData=result.data.data;
+            this.tableData=result.data.data.content;
+            this.pageNumber=result.data.data.totalElements;
             console.log(result.data);
           },
           ({type, info}) => {
