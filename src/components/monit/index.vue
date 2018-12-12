@@ -358,13 +358,13 @@ export default {
       font-size: 12px;
       &>div:first-child {
         flex: 1;
-        margin: 5px;
+        margin: 5px 10px;
         line-height: 40px;
         //border: solid 1px #dfdfdf;
       }
       &>div:last-child {
-        flex: 3;
-        margin: 5px;
+        flex: 1;
+        margin: 5px 10px;
         //border: solid 1px #dfdfdf;
         text-align: right;
         div{
