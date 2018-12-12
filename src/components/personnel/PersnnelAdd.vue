@@ -83,8 +83,8 @@
         </div>
         <div class="more-msg">
           <p class="title">更多信息（选填）</p>
-          <ul>
-            <li>
+          <ul class="msg-box">
+            <li class="detalis">
               <span>
                 <label for="">工作年限：</label>
                 <el-input type="text" size="small" style="width:80px" v-model="persnneladd.workingYears"></el-input>
@@ -96,7 +96,7 @@
                 CM
               </span>
             </li>
-            <li>
+            <li class="detalis">
               <span>
                 <label for="" style="letter-spacing:8px;">籍贯：</label>
                 <el-input type="text" size="small" style="width:200px" v-model="persnneladd.nativePlace"></el-input>
@@ -107,15 +107,15 @@
                 <el-input type="text" size="small" style="width:80px" v-model="persnneladd.nationality"></el-input>
               </span>
             </li>
-            <li>
+            <li class="detalis">
               <label for="">电子邮箱：</label>
               <el-input type="email"  size="small" style="width:200px" v-model="persnneladd.email"></el-input>
             </li>
-            <li>
+            <li class="detalis">
               <label for="">通讯地址：</label>
               <el-input type="text" size="small" style="width:200px" v-model="persnneladd.postalAddress"></el-input>
             </li>
-            <li>
+            <li class="detalis">
               <span>
                 <label for="">毕业学校：</label>
                 <el-input type="text" size="small" style="width:200px" v-model="persnneladd.graduateSchool"></el-input>
@@ -125,14 +125,37 @@
                 <el-input type="text" size="small" style="width:80px" v-model="persnneladd.degree"></el-input>
               </span>
             </li>
-            <li>
+            <li style="height:auto ;margin-top:10px;" class="detalis">
               <label for="" style="letter-spacing: 8px;">照片：</label>
-              <el-input type="text" size="small" placeholder="1寸照片电子版" style="width:30%"></el-input>
-              <el-button size="small"  type="primary">点击上传</el-button>
+              <el-upload
+                style="display:inline-block;vertical-align:top"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                list-type="picture-card"
+                :limit="1"
+                :on-preview="handlePictureCardPreview"
+                :on-remove="handleRemove">
+                <i class="el-icon-plus"></i>
+              </el-upload>
+              <el-dialog :visible.sync="dialogVisible">
+                <img width="100%" :src="dialogImageUrl" alt="">
+              </el-dialog>
             </li>
-            <li>
-              <label for="" style="letter-spacing: 8px;">资质：</label>
-              <el-button size="small" type="primary" @click="open6()">点击上传</el-button>
+            <li style="height:auto;margin-top:20px;line-height:40px;" class="detalis">
+              <label for="" style="letter-spacing: 8px;display:inline-block">资质：</label>
+              <el-upload
+                style="display:inline-block;line-height:30px;vertical-align:top"
+                class="upload-demo"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :on-preview="handlePreview1"
+                :on-remove="handleRemove1"
+                :before-remove="beforeRemove1"
+                multiple
+                :limit="10"
+                :on-exceed="handleExceed1"
+                :file-list="fileList">
+                <el-button size="mini" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">只能上传不超过1M的文件,且不能超过10个文件</div>
+              </el-upload>
             </li>
           </ul>
         </div>
@@ -147,6 +170,18 @@
     name: "",
     data() {
       return {
+        fileList: [
+          {
+            name: 'food.jpeg', 
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          },
+          {
+            name: 'food2.jpeg',
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          }
+        ],
+        dialogImageUrl: '',
+        dialogVisible: false,
         date:new Date().toLocaleString().split(" ")[0].replace(/\//g, "-"),
         nameAndImg:[{name:"", img:""}],
         persnneladd: {
@@ -181,6 +216,25 @@
 
     },
     methods: {
+      handleRemove1(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview1(file) {
+        console.log(file);
+      },
+      handleExceed1(files, fileList) {
+        this.$message.warning(`当前限制选择 10 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
+      beforeRemove1(file, fileList) {
+        return this.$confirm(`确定移除 ${ file.name }？`);
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      },
       tback(){
         this.$router.back(-1)
       },
@@ -254,32 +308,7 @@
           path: "/Personnel"
         });
       },
-      open6() {
-        let str = `<div>
-            <input type="text">文件名
-            <input type="file":v-model="persnneladd.img">
-        </div>`;
-        this.$confirm(str, "确认信息", {
-          distinguishCancelAndClose: true,
-          confirmButtonText: "保存",
-          cancelButtonText: "放弃修改",
-          dangerouslyUseHTMLString: true
-        })
-
-          .then(() => {
-            this.$message({
-              type: "info",
-              message: "保存修改"
-            });
-          })
-          .catch(action => {
-            this.$message({
-              type: "info",
-              message:
-                action === "cancel" ? "放弃保存并离开页面" : "停留在当前页面"
-            });
-          });
-      },
+     
       testValue(){
         // let regEmail=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/;
         // if(this.persnneladd.email.test(" ")){
@@ -349,7 +378,7 @@
   };
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
   @blue: #409eff;
   @Success: #67c23a;
   @Warning: #e6a23c;
@@ -383,8 +412,8 @@
             width: auto;
             position: absolute;
             text-align: center;
-            top: 0%;
-            left: 2.5%;
+            top: 3px;
+            left: 32px;
             background-color: white;
           }
           .left {
@@ -404,7 +433,7 @@
             width: 45%;
             text-align: right;
             float: left;
-            padding-top: 60px;
+            padding-top: 45px;
             padding-left: 20px;
             //   border: 1px solid red;
 
@@ -422,29 +451,41 @@
           width: 600px;
           border: 1px solid @Info;
           border-radius: 5px;
-          overflow: hidden;
+          // overflow: hidden;
           margin-top: 30px;
           padding-left: 20px;
+          padding-bottom: 20px;
           .title {
             display: inline-block;
             width: auto;
             text-align: center;
-            position: absolute;
-            top: 48%;
-            left: 2.5%;
+            position: relative;
+            top: -7px;
+            left: 0px;
             background-color: white;
           }
-          li {
-            list-style-type: none;
-            height: 60px;
-            line-height: 60px;
-            .el-input {
-              width: 70%;
+          .msg-box{
+            
+            .detalis {
+              list-style-type: none;
+              height: 60px;
+              line-height: 60px;
+              .el-input {
+                width: 70%;
+              }
+              .el-upload{
+                // line-height: 30px;
+                ul{
+                  display: inline-block;
+                }
+              }
             }
           }
+          
         }
       }
     }
   }
+  
 </style>
 

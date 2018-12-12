@@ -59,7 +59,9 @@
           </el-select>
         </el-form-item>
         <el-form-item label="备件分类：">
-          <el-cascader
+          <span style="display:inline-block;width:110px;"></span>
+          <el-button type="primary" size="mini" @click="dialogVisible=true">点击修改</el-button>
+          <!-- <el-cascader
             placeholder="搜索"
             :options="ctgoptions"
             filterable
@@ -72,8 +74,35 @@
             @change="handleChange2"
             style="width:200px;"
             size="small"
-          ></el-cascader>
+          ></el-cascader> -->
         </el-form-item>
+        <el-dialog
+          title="备件类别"
+          :visible.sync="dialogVisible"
+          width="20%"
+          :before-close="handleClose">
+          <div style="width:100%;text-align:center;padding:20px 0;">
+            <el-cascader
+            placeholder="搜索"
+            :options="ctgoptions"
+            filterable
+            ref="getName2"
+            expand-trigger="hover"
+            :props="defaultProps2"
+            change-on-select
+            :show-all-levels="false"
+            v-model="classfy"
+            @change="handleChange2"
+            style="width:80%;"
+            size="small"
+            ></el-cascader>
+          </div>
+          
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false" size="mini">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false" size="mini">确 定</el-button>
+          </span>
+        </el-dialog>
       </el-form>
       <el-form
         :inline="true"
@@ -123,6 +152,7 @@
     name: "",
     data() {
       return {
+        dialogVisible:false,
         formInline: {},
         ctgoptions: {
           value:"id",
