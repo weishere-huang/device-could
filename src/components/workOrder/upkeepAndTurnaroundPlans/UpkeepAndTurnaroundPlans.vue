@@ -1,8 +1,8 @@
 <template>
   <div class="breakdown-order">
     <div class="top">
-      <el-button size="small" @click="toBack">返回</el-button>
-      <el-button size="small" @click="outerVisible=true">提交审核</el-button>
+      <el-button size="small" type="primary" @click="toBack">返回</el-button>
+      <el-button size="small" type="primary" @click="outerVisible=true">提交审核</el-button>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
         <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
@@ -29,7 +29,7 @@
           <div style="padding:10px">
             <div class="search" style="padding:10px 0">
               <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
-              <el-button size="mini">搜索</el-button>
+              <el-button type="primary" size="mini" @click="search">搜索</el-button>
               <span style="padding:0 10px;">最近搜索：</span>
               <span style="text-decoration: underline;"></span>
             </div>
@@ -65,7 +65,7 @@
 
         </el-dialog>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="goExit" size="mini">取 消</el-button>
+          <el-button type="primary" @click="goExit" size="mini">取 消</el-button>
           <el-button @click="examineUp" type="primary" size="mini">提 交</el-button>
         </div>
       </el-dialog>
@@ -180,8 +180,8 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-            <el-button size="mini" @click="listBasicInfo">从物料库中添加</el-button>
-            <el-button @click="insertPart" size="mini">保存列表</el-button>
+            <el-button  type="primary" size="mini" @click="listBasicInfo">从物料库中添加</el-button>
+            <el-button  type="primary" @click="insertPart" size="mini">保存列表</el-button>
           </div>
           <v-table
             is-horizontal-resize
@@ -220,7 +220,7 @@
                   style="width:50%;"
                   placeholder="关键词：设备编号、备件名称、型号/规格"
                 ></el-input>
-                <el-button @click="goDownEntryInfo" size="mini">查询</el-button>
+                <el-button type="primary" @click="goDownEntryInfo" size="mini">查询</el-button>
               </div>
               <v-table
                 is-horizontal-resize
@@ -251,7 +251,7 @@
             </div>
             <div class="add">
               <div style="text-align:center">
-                <el-button @click="deleteBasic" size="mini">提交</el-button>
+                <el-button type="primary" @click="deleteBasic" size="mini">提交</el-button>
               </div>
               <ul>
                 <h6>已选择</h6>
@@ -764,6 +764,37 @@
           },
           ({ type, info }) => {}
         );
+      },
+      //通过手机号姓名搜索员工
+      search() {
+        if(/^1\d{10}$/ .test(this.key)) {
+          if (!(/^1[345789]\d{9}$/.test(this.key))) {
+            alert("手机号码有误，请重填");
+          }
+        }if(this.key===""){
+          this.load();
+        }else{
+          this.pageIndex =1;
+          this.Axios(
+            {
+              params: {condition: this.key},
+              type: "get",
+              url: "/employee/search",
+            },
+            this
+          ).then(response => {
+              if(this.key!==""){
+                this.pageNumber = response.data.data.totalElements;
+                this.tableData = response.data.data.content;
+                this.tableDate = this.tableData;
+              }else{
+                this.pageChange(1);
+              }
+            },
+            ({type, info}) => {
+            })
+        }
+
       },
       //执行审核
       examineUp(){

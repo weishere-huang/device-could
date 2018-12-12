@@ -2,9 +2,9 @@
   <div class="breakDetails">
     <div class="case">
       <div class="top">
-        <el-button size="small" @click="toback">返回</el-button>
+        <el-button size="small" type="primary" @click="toback">返回</el-button>
         <!--<el-button size="small" @click="commitAudit">提交审核</el-button>-->
-        <el-button size="small" @click="dispel">故障消除</el-button>
+        <el-button size="small" type="primary" @click="dispel">故障消除</el-button>
         <!-- 故障消除弹框 -->
         <el-dialog
           title="故障消除"
@@ -21,7 +21,7 @@
             </el-form-item>
            </el-form>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button @click="dialogVisible = false" type="primary">取 消</el-button>
             <el-button type="primary" @click="toDispel">确 定</el-button>
           </span>
         </el-dialog>
