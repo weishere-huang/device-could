@@ -3,6 +3,7 @@
     <div class="top">
       <el-badge class="item">
         <el-button
+          type="primary"
           @click="load(toNull)"
           size="small"
         >全部工单</el-button>
@@ -12,6 +13,7 @@
         class="item"
       >
         <el-button
+          type="primary"
           @click="load(0)"
           size="small"
         >待审核</el-button>
@@ -21,6 +23,7 @@
         class="item"
       >
         <el-button
+          type="primary"
           @click="load(4)"
           size="small"
         >审核中</el-button>
@@ -30,24 +33,28 @@
         class="item"
       >
         <el-button
+          type="primary"
           @click="load(5)"
           size="small"
         >待处理</el-button>
       </el-badge>
       <el-badge class="item">
         <el-button
+          type="primary"
           @click="load(7)"
           size="small"
         >已撤销</el-button>
       </el-badge>
       <el-badge class="item">
         <el-button
+          type="primary"
           @click="load(10)"
           size="small"
         >已驳回</el-button>
       </el-badge>
       <el-badge class="item">
         <el-button
+          type="primary"
           @click="load(13)"
           size="small"
         >已完成</el-button>

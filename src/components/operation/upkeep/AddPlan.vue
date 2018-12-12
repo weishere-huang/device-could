@@ -29,6 +29,7 @@
             ></el-input>
             <el-button
               size="mini"
+              type="primary"
               @click="search"
             >搜索</el-button>
             <span style="padding:0 10px;">最近搜索：{{searchs}}</span>
@@ -64,8 +65,8 @@
           </div>
         </div>
         <div class="right">
-          <el-button size="mini" @click="deletes">清空</el-button>
-          <el-button size="mini" @click="toAdd">确定</el-button>
+          <el-button size="mini" type="primary" @click="deletes">清空</el-button>
+          <el-button size="mini" type="primary" @click="toAdd">确定</el-button>
           <div class="personList">
             <ul @click="getId">
               <li v-for="(item, index) in personListValue" :key="index">

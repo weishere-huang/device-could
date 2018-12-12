@@ -2,8 +2,10 @@
   <div class="persnnel-add">
     <div class="add-case">
       <div class="topbtn">
-        <el-button size="small" @click="tback">返回</el-button>
-        <el-button size="small" @click="employeeAdd">保存</el-button>
+        <el-button size="small"
+                   type="primary" @click="tback">返回</el-button>
+        <el-button size="small"
+                   type="primary" @click="employeeAdd">保存</el-button>
       </div>
       <div class="botton">
         <div class="essential">

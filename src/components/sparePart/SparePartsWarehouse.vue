@@ -1,7 +1,7 @@
 <template>
   <div class="spare-parts-warehouse">
     <div class="top">
-      <el-button size="small">保存</el-button>
+      <el-button size="small" @click="Sinsert">保存</el-button>
     </div>
     <div class="warehouse">
       <h1>备件入库</h1>
@@ -17,7 +17,7 @@
             style="margin-bottom:0px;"
           >
             <el-input
-              v-model="formInline.user"
+              v-model="godownEntryNo"
               placeholder=""
               size="small"
               style="width:200px"
@@ -32,6 +32,7 @@
               placeholder=""
               size="small"
               style="width:200px"
+              readonly
             ></el-input>
           </el-form-item>
         </el-form>
@@ -64,10 +65,12 @@
             class="input-with-select"
             size="small"
             style="margin-top:10px"
+            v-model="basekeyword"
           >
             <el-button
               slot="append"
               icon="el-icon-search"
+              @click="baselist"
             ></el-button>
           </el-input>
           <div style="width:100%;margin-top:10px">
@@ -100,7 +103,7 @@
           </el-form>
           <div>
             <v-table
-              :row-dblclick="toDetails"
+              :row-dblclick="toDetails2"
               is-horizontal-resize
               is-vertical-resize
               column-width-drag
@@ -134,14 +137,16 @@ export default {
       formInline: {
         time: new Date().toLocaleDateString()
       },
+      //入库单号
+      godownEntryNo:"",
       ctgoptions: [],
       defaultProps2: {
-        value: "categoryNo",
-        label: "categoryName"
+        value: "id",
+        label: "name"
       },
       columns: [
         {
-          field: "faultNo",
+          field: "partNo",
           title: "备件编号",
           width: 80,
           titleAlign: "center",
@@ -150,7 +155,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "faultNo",
+          field: "partName",
           title: "备件名称",
           width: 80,
           titleAlign: "center",
@@ -159,8 +164,8 @@ export default {
           overflowTitle: true
         },
         {
-          field: "faultNo",
-          title: "备件型号",
+          field: "partModel",
+          title: "备件型号/规格",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
@@ -168,8 +173,8 @@ export default {
           overflowTitle: true
         },
         {
-          field: "faultNo",
-          title: "设备规格",
+          field: "partCategory",
+          title: "备件级别",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
@@ -179,7 +184,7 @@ export default {
       ],
       columns1: [
         {
-          field: "faultNo",
+          field: "partName",
           title: "备件名称",
           width: 80,
           titleAlign: "center",
@@ -188,7 +193,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "faultNo",
+          field: "partNo",
           title: "备件编号",
           width: 80,
           titleAlign: "center",
@@ -197,7 +202,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "faultNo",
+          field: "partModel",
           title: "备件型号",
           width: 80,
           titleAlign: "center",
@@ -206,7 +211,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "faultNo1",
+          field: "entryCount",
           title: "*数量",
           width: 80,
           titleAlign: "center",
@@ -217,7 +222,7 @@ export default {
           titleCellClassName: "title-cell-class-name"
         },
         {
-          field: "faultNo2",
+          field: "entryPrice",
           title: "*单价（元）",
           width: 80,
           titleAlign: "center",
@@ -236,11 +241,11 @@ export default {
           isResize: true,
           overflowTitle: true,
           formatter:function (rowData,rowIndex,pagingIndex,field) {
-            return rowData.faultNo1*rowData.faultNo2
+            return rowData.entryCount*rowData.entryPrice
           }
         },
         {
-          field: "faultNo",
+          field: "supplierName",
           title: "*供应商",
           width: 80,
           titleAlign: "center",
@@ -251,7 +256,7 @@ export default {
           titleCellClassName: "title-cell-class-name"
         },
         {
-          field: "faultNo",
+          field: "batchNumber",
           title: "*批次",
           width: 80,
           titleAlign: "center",
@@ -262,7 +267,7 @@ export default {
           titleCellClassName: "title-cell-class-name"
         },
         {
-          field: "faultNo",
+          field: "saveLocation",
           title: "*存放位置",
           width: 80,
           titleAlign: "center",
@@ -273,7 +278,7 @@ export default {
           titleCellClassName: "title-cell-class-name"
         },
         {
-          field: "faultNo",
+          field: "remarks",
           title: "*备注",
           width: 80,
           titleAlign: "center",
@@ -293,28 +298,12 @@ export default {
           // isResize: true
         }
       ],
-      tableData: [
-        {
-          faultNo: "1111"
-        }
-      ],
+      tableData: [],
       tableData1: [
-        {
-          faultNo: "1111",
-          faultNo1: "22222",
-          faultNo2:"3",
-        },
-        {
-          faultNo: "1111",
-          faultNo1: "22222",
-          faultNo2:"3",
-        },
-        {
-          faultNo: "1111",
-          faultNo1: "22222",
-          faultNo2:"3",
-        }
-      ]
+      ],
+      classifyId:"",
+      //搜索关键字
+      basekeyword:""
     };
   },
   methods: {
@@ -338,22 +327,50 @@ export default {
     },
     toDetails(rowIndex, rowData, column) {
       console.log(rowData);
+      //this.getuserbatch(rowData.id);
+      if(this.tableData1.find(i => i.partId === rowData.id)){
+        this.$message("不能添加重复的配件");
+      }else{
+        this.tableData1.push({
+          partId:rowData.id,
+          partName:rowData.partName,
+          partNo:rowData.partNo,
+          partModel:rowData.partModel,
+          entryCount:"",
+          entryPrice:"",
+          supplierName:"",
+          //批次ID
+          //batchNumberId:"",
+          batchNumber:"",
+          saveLocation:"",
+          remarks:"",
+        });
+      }
+
+    },
+    toDetails2(rowIndex, rowData, column){
+      console.log(rowData);
+      this.tableData1 = this.tableData1.filter(item => item.partId !== rowData.partId);
     },
     handleChange2(value) {
       let name = this.$refs["getName2"].currentLabels;
       name = name[name.length - 1];
       let id = value[value.length - 1];
       console.log(id, name);
+      this.classifyId = id;
+      this.findbyclassifyId()
     },
-
+    gezhongconso(){
+      console.log(this.tableData1);
+    },
     findbyclassifyId() {
       //根据备件分类查询备件列表1
       this.Axios(
         {
           params: {
-            page: this.pageIndex,
-            size: this.pageSize,
-            classifyId: this.ctgoptions.id
+            // page: this.pageIndex,
+            // size: this.pageSize,
+            classifyId: this.classifyId
           },
           option: {
             enableMsg: false
@@ -367,12 +384,15 @@ export default {
         this
       ).then(
         result => {
-          this.$message({
-            message: "启用成功",
-            type: "success"
-          });
-
-          console.log("请求参数：" + data);
+          console.log(result.data);
+          this.tableData=result.data.data.content;
+          for (let i = 0; i < this.tableData.length; i++) {
+            if (this.tableData[i].partCategory === 2) {
+              this.tableData[i].partCategory = "关键";
+            }else{
+              this.tableData[i].partCategory = "普通"
+            }
+          }
         },
         ({ type, info }) => {}
       );
@@ -381,19 +401,12 @@ export default {
       //备件入库接口1
       let qs = require("qs");
       let data = qs.stringify({
-        godownEntryNo: "",
-        godownEntryTime: "",
-        partInfoListJsonStr: {
-          partId: "",
-          entryPrice: "",
-          entryCount: "",
-          subtotal: "",
-          batchNumberId: "",
-          batchNumber: "",
-          supplierName: "",
-          saveLocation: "",
-          remarks: ""
-        }
+        godownEntryNo: this.godownEntryNo,
+        godownEntryTime: this.formInline.time,
+        partInfoListJsonStr: JSON.stringify(
+          this.tableData1
+
+        )
       });
       this.Axios(
         {
@@ -410,15 +423,44 @@ export default {
         this
       ).then(
         result => {
-          this.$message({
-            message: "启用成功",
-            type: "success"
-          });
-
-          console.log("请求参数：" + data);
+          console.log(result);
+          console.log(result.data);
         },
         ({ type, info }) => {}
       );
+    },
+    baselist(){
+      //备品备件列表接口1
+      this.Axios({
+        params: {
+          page: this.pageIndex,
+          size: this.pageSize,
+          keywords:this.basekeyword,
+        },
+        // option: {
+        //   enableMsg: false
+        // },
+        type:"get",
+        url: "/part/searchBasicInfo"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        .then(
+          result => {
+            console.log(result.data);
+            this.tableData=result.data.data.content;
+            for (let i = 0; i < this.tableData.length; i++) {
+              if (this.tableData[i].partCategory === 2) {
+                this.tableData[i].partCategory = "关键";
+              }else{
+                this.tableData[i].partCategory = "普通"
+              }
+            }
+          },
+          ({type, info}) => {
+          }
+        );
     },
 
     //查询类别
@@ -457,13 +499,39 @@ export default {
           console.log(result.data);
           console.log(result.data.data);
           this.ctgoptions = this.filterArray(result.data.data, 0);
+          console.log(this.ctgoptions);
         },
         ({ type, info }) => {}
       );
-    }
+    },
+    //获取批次
+    getuserbatch(id){
+      //获取最近使用批次接口
+      this.Axios({
+        params: {
+          partId:id
+        },
+        option: {
+          enableMsg: false
+        },
+        type: "get",
+        url: "/part/listRecentlyUsedBatch"
+        // loadingConfig: {
+        //   target: document.querySelector("#mainContentWrapper")
+        // }
+      },this)
+        .then(
+          result => {
+            console.log(result.data);
+          },
+          ({type, info}) => {
+          }
+        );
+    },
   },
   created() {
     this.Sgetlist();
+
     EventBus.$on("sideBarTroggleHandle", isCollapse => {
       window.setTimeout(() => {
         this.$refs.inventoryListTable.resize();

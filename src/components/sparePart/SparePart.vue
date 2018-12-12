@@ -292,35 +292,7 @@ export default {
         );
     },
 
-    getuserbatch(){
-      //获取最近使用批次接口
 
-      this.Axios({
-        params: {
-          partId:""
-        },
-        option: {
-          enableMsg: false
-        },
-        type: "get",
-        url: "/part/listRecentlyUsedBatch"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            this.$message({
-              message: "启用成功",
-              type: "success"
-            });
-
-            console.log("请求参数：" + data);
-          },
-          ({type, info}) => {
-          }
-        );
-    },
     //确认按钮
     btisok(){
       this.$confirm('确定删除吗?', '提示', {
