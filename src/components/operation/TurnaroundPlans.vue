@@ -290,7 +290,7 @@ export default {
     },
     toAmend(rowIndex, rowData, column) {
       // 传值给修改
-      this.$router.push("/TurnaroundPlansAmend?id=" + rowData.id);
+      this.$router.push("/TurnaroundPlansAmend/" + rowData.id);
       this.$store.commit("turnaroundPlans", rowData);
     },
     toPansAdd() {
