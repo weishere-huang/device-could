@@ -487,7 +487,7 @@ Vue.component("switch-component", {
         <span v-else-if="rowData.state === '10'">
           驳回
         </span>`,
-  props: ["rowData", "rowIndex", "pagingIndex", "field"],
+  props: ["rowData", "index", "pagingIndex", "field"],
   methods: {
     changeValue() {
       let params = { type: "change", rowData: this.rowData };

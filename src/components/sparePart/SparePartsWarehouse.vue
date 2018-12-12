@@ -540,7 +540,7 @@ Vue.component("table-warehouse", {
   }
 }
 .column-cell-class-name-cailiao {
-  background-color: #ccd19c;
+  background-color: #e1fbfb;
   color: #141314;
 }
 .title-cell-class-name {
