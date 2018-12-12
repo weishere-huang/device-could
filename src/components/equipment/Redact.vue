@@ -8,10 +8,12 @@
             plain
             size="small"
             @click="tback"
+            type="primary"
           >返回</el-button>
           <el-button
             plain
             size="small"
+            type="primary"
             @click="updatewarning"
           >保存</el-button>
         </el-row>
@@ -39,6 +41,7 @@
             <span>{{sizeForm.organizeName}}</span>
             <el-button
               size="mini"
+              type="primary"
               @click="dialogVisible1=true"
             >点击修改</el-button>
             <el-dialog
@@ -94,6 +97,7 @@
               <span>{{sizeForm.deviceCategoryName}}</span>
               <el-button
                 size="mini"
+                type="primary"
                 @click="dialogVisible3=true"
               >点击修改</el-button>
               <el-dialog
@@ -258,6 +262,7 @@
           <el-form-item style="padding-left:20px">
             <el-button
               size="mini"
+              type="primary"
               @click="dialogVisible=true"
             >添加人员</el-button>
           </el-form-item>
