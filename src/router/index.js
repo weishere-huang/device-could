@@ -10,6 +10,8 @@ import Equipment from '@/components/equipment/Equipment'
 import Monit from '@/components/monit'
 import MonitSingle from '@/components/monit/single'
 import Oee from '@/components/oee/'
+import OeeList from '@/components/oee/list'
+import OeeAdd from '@/components/oee/add'
 import Category from '@/components/equipment/Category'
 import EquipmentAdd from '@/components/equipment/EquipmentAdd'
 import Redact from '@/components/equipment/Redact'
@@ -152,10 +154,21 @@ const router = new Router({
       path: '/Oee',
       name: 'Oee',
       component: Oee,
-      props:{title:'OEE分析'},
-      meta: {
-        requireAuth: true
-      },
+      props:{title:'OEE'},
+      children:[
+        // {
+        //   path: 'List',
+        //   name: 'OeeList',
+        //   component: OeeList,
+        //   props:{title:'任务列表'}
+        // },
+        {
+          path: 'Add',
+          name: 'OeeAdd',
+          component: OeeAdd,
+          props:{title:'任务新增'}
+        }
+      ]
     },
     {
       path: '/EquipmentAdd',

@@ -65,7 +65,6 @@
           </section>
         </el-main>
       </el-container>
-      <router-view></router-view>
     </div>
 </template>
 

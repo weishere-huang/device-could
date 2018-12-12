@@ -777,13 +777,18 @@
         min-height: 500px;
         margin-left: 30px;
         padding: 10px;
+        
+        &>div{
+          margin: 10px 0;
+        }
         .roleName {
+          margin: auto;
           height: 10px;
           padding-left: 10px;
           position: relative;
           h6 {
             position: absolute;
-            top: -15px;
+            top: -17px;
             left: 30px;
           }
         }
@@ -966,6 +971,9 @@
   }
   .fontColor {
     color: #409eff;
+  }
+  .icon-jia,.icon-jian{
+    font-size: 14px !important;
   }
 </style>
 
