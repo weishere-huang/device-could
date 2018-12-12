@@ -225,9 +225,9 @@ export default {
     },
     Jump(rowIndex, rowData, column) {
       if (rowData.workType === "故障") {
-        this.$router.push("/BreakdownOrder?id=" + rowData.id);
+        this.$router.push("/BreakdownOrder/" + rowData.id);
       } else {
-        this.$router.push("/UpkeepAndTurnaroundPlans?id=" + rowData.id);
+        this.$router.push("/UpkeepAndTurnaroundPlans/" + rowData.id);
       }
     },
 

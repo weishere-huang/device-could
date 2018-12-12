@@ -211,8 +211,8 @@
       };
     },
     created() {
-      this.findOne(this.$route.query.id);
-      this.loadSelect(this.$route.query.id);
+      this.findOne(this.$route.params.id);
+      this.loadSelect(this.$route.params.id);
     },
     methods: {
       isHide(params) {

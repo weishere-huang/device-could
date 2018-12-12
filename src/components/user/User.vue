@@ -3,16 +3,19 @@
     <div class="userCase">
       <div class="top">
         <el-button
+          type="primary"
           size="small"
           @click="enable"
         >启用
         </el-button>
         <el-button
+          type="primary"
           size="small"
           @click="prohibit"
         >停用
         </el-button>
         <el-button
+          type="primary"
           size="small"
           @click="deleteUser"
         >删除

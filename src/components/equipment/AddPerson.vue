@@ -223,8 +223,8 @@ export default {
   },
   methods: {
     getRowData(a, b, c) {
-      console.log(b.name);
-      console.log(this.editableTabs[this.editableTabsValue]);
+      //console.log(b.name);
+      //console.log(this.editableTabs[this.editableTabsValue]);
       //this.editableTabs[this.editableTabsValue].content += b.name + ",";
       if (
         this.editableTabs[this.editableTabsValue].content.find(
