@@ -232,7 +232,7 @@ export default {
       });
     },
     modefication(rowIndex, rowData, column) {
-      this.$router.push("/Modification?id=" + rowData.id);
+      this.$router.push("/Modification/" + rowData.id);
       this.$store.commit("personnel", rowData);
     },
     disable() {
