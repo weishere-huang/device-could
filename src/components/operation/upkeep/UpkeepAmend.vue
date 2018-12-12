@@ -213,7 +213,9 @@ export default {
       this.companyName.maintenanceClassify = this.companyName.maintenanceClassify.toString();
       this.companyName.maintenanceLevel = this.companyName.maintenanceLevel.toString();
       if(this.companyName.planType=== 0){
-        this.companyName.planType = "单次"
+        this.companyName.planType = "单次";
+        this.companyName.frequency = 1;
+        this.companyName.frequencyType = 1;
       }if(this.companyName.planType=== 1){
         this.companyName.planType = "周期"
       }

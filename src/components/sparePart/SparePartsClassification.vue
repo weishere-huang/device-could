@@ -61,12 +61,13 @@
           <el-form
             ref="form"
             label-width="90px"
-            style="padding:10px"
+            style="padding:20px 30px 0;"
           >
             <el-form-item label="类别名称：">
               <el-input
                 v-model="addname"
                 size="mini"
+                
               ></el-input>
             </el-form-item>
             <el-form-item label="备注：">
@@ -76,16 +77,18 @@
               ></el-input>
             </el-form-item>
           </el-form>
-          <span
+          <div
             slot="footer"
             class="dialog-footer"
+            style="text-align:center"
           >
-            <el-button @click="dialogVisible3 = false,addname='',addmsg=''">取 消</el-button>
+            <el-button @click="dialogVisible3 = false,addname='',addmsg=''" size="small">取 消</el-button>
             <el-button
               type="primary"
               @click="addFirst"
+              size="small"
             >确 定</el-button>
-          </span>
+          </div>
         </el-dialog>
       </div>
     </div>
@@ -113,7 +116,12 @@
         </el-form-item>
         <el-form-item>
           <el-button
-            size="mini"
+            size="small"
+            @click="dialogVisible1=false"
+          >取消</el-button>
+          <el-button
+            size="small"
+            type="primary"
             @click="Supdate"
           >确认修改</el-button>
         </el-form-item>
@@ -143,8 +151,13 @@
         </el-form-item>
         <el-form-item>
           <el-button
-            size="mini"
+            size="small"
+            @click="dialogVisible=false"
+          >取消</el-button>
+          <el-button
+            size="small"
             @click="Sadd"
+            type="primary"
           >保存</el-button>
         </el-form-item>
       </el-form>

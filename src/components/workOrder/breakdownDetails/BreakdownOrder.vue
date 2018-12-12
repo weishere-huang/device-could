@@ -640,7 +640,9 @@
             columnAlign: "center",
             isResize: true
           }
-        ]
+        ],
+        personPageIsOk:true,
+        basicInfoPageIsOk:true,
       };
     },
     methods: {
@@ -695,19 +697,41 @@
       },
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
-        this.listBasicInfo();
+        if(this.basicInfoPageIsOk){
+          this.pageBasicInfo();
+        }
+        if(this.searchPerson!==""){
+          this.goDownEntryInfo();
+        }
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
         this.pageSize = pageSize;
-        this.listBasicInfo();
+        if(this.basicInfoPageIsOk){
+          this.pageBasicInfo();
+        }
+        if(this.searchPerson!==""){
+          this.goDownEntryInfo();
+        }
       },
       personPageChange(pageIndex) {
         this.pageIndex = pageIndex;
+        if(this.personPageIsOk){
+          this.personLoad();
+        }
+        if(this.key!==""){
+          this.search();
+        }
       },
       personPageSizeChange(pageSize) {
         this.pageIndex = 1;
         this.pageSize = pageSize;
+        if(this.personPageIsOk){
+          this.personLoad();
+        }
+        if(this.key!==""){
+          this.search();
+        }
       },
 
       //执行审核
@@ -774,12 +798,18 @@
             alert("手机号码有误，请重填");
           }
         }if(this.key===""){
-          this.load();
+          this.personPageIsOk=true;
+          this.personLoad();
         }else{
+          this.personPageIsOk=false;
           this.pageIndex =1;
           this.Axios(
             {
-              params: {condition: this.key},
+              params: {
+                condition: this.key,
+                page:this.pageIndex,
+                size:this.pageSize
+              },
               type: "get",
               url: "/employee/search",
             },
@@ -894,6 +924,24 @@
 
           })
       },
+      //备品备件信息分页处理
+      pageBasicInfo(){
+        this.Axios(
+          {
+            params: {page:this.pageIndex,size:this.pageSize},
+            type: "get",
+            url: "/part/listBasicInfo",
+          },
+          this
+        ).then(
+          response => {
+            this.addMaterielValue(response.data.data.content);
+            this.pageNumber = response.data.data.totalElements;
+          },
+          ({type, info}) => {
+
+          })
+      },
 
       //备件类别转树状结构
       filterArray2(data, parent) {
@@ -962,10 +1010,11 @@
 
       //备品模糊查询
       goDownEntryInfo(){
-        //searchPerson
         if(this.searchPerson===""){
+          this.basicInfoPageIsOk = true;
           this.listBasicInfo();
         }else{
+          this.basicInfoPageIsOk = false;
           this.Axios(
             {
               params: {
