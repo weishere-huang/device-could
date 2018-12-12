@@ -243,12 +243,12 @@ export default {
       line-height: 50px;
       & > div:first-child {
         flex: 1;
-        margin: 5px;
+        margin: 5px 0 5px 12px;
         //border: solid 1px #dfdfdf;
       }
       & > div:last-child {
         flex: 3;
-        margin: 5px;
+        margin:5px 12px 5px 0;
         //border: solid 1px #dfdfdf;
         text-align: right;
       }
