@@ -253,7 +253,8 @@
           this
         ).then(response => {
             this.auditId = response.data.data.id;
-            this.submitAudit();
+            this.TurnaroundPlans();
+            // this.submitAudit();
           },
           ({type, info}) => {
 

@@ -42,7 +42,7 @@
               <li>
                 <label for="">入职时间：</label>
                 <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.entryTime"
-                              size="small"  ></el-date-picker>
+                                size="small"  ></el-date-picker>
                 <!-- <el-input type="date" size="small" v-model="persnneladd.entryTime"></el-input> -->
               </li>
             </ul>
@@ -63,7 +63,7 @@
               <li>
                 <label for="">出生日期：</label>
                 <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.birthday"
-                              size="small"  ></el-date-picker>
+                                size="small"  ></el-date-picker>
                 <!-- <el-input type="date" size="small" v-model="persnneladd.birthday"></el-input> -->
               </li>
               <li>
@@ -129,7 +129,7 @@
               <label for="" style="letter-spacing: 8px;">照片：</label>
               <el-upload
                 style="display:inline-block;vertical-align:top"
-                action="https://jsonplaceholder.typicode.com/posts/"
+                action="http://192.168.1.148:8081/upload"
                 list-type="picture-card"
                 :limit="1"
                 :on-preview="handlePictureCardPreview"
@@ -145,7 +145,7 @@
               <el-upload
                 style="display:inline-block;line-height:30px;vertical-align:top"
                 class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
+                action="http://192.168.1.148:8081/upload/"
                 :on-preview="handlePreview1"
                 :on-remove="handleRemove1"
                 :before-remove="beforeRemove1"
@@ -161,9 +161,7 @@
         </div>
       </div>
     </div>
-
   </div>
-
 </template>
 <script>
   export default {
@@ -172,7 +170,7 @@
       return {
         fileList: [
           {
-            name: 'food.jpeg', 
+            name: 'food.jpeg',
             url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
           },
           {
@@ -213,9 +211,22 @@
         options: [],
         role: []
       };
-
     },
     methods: {
+
+      beforeAvatarUpload(file) {
+        console.log(file);
+         file.type = 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 1;
+
+        // if (!isJPG) {
+        //   this.$message.error('上传头像图片只能是 JPG 格式!');
+        // }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 1MB!');
+        }
+        return  isLt2M;
+      },
       handleRemove1(file, fileList) {
         console.log(file, fileList);
       },
@@ -229,9 +240,11 @@
         return this.$confirm(`确定移除 ${ file.name }？`);
       },
       handleRemove(file, fileList) {
-        console.log(file, fileList);
+        console.log(file);
       },
       handlePictureCardPreview(file) {
+        console.log("OK");
+        console.log(file);
         this.dialogImageUrl = file.url;
         this.dialogVisible = true;
       },
@@ -250,7 +263,6 @@
             this.options = response.data.data;
           },
           ({type, info}) => {
-
           })
       },
       codeToName(organizeCode){
@@ -308,7 +320,7 @@
           path: "/Personnel"
         });
       },
-     
+
       testValue(){
         // let regEmail=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/;
         // if(this.persnneladd.email.test(" ")){
@@ -436,7 +448,6 @@
             padding-top: 45px;
             padding-left: 20px;
             //   border: 1px solid red;
-
             li {
               list-style-type: none;
               height: 60px;
@@ -465,7 +476,7 @@
             background-color: white;
           }
           .msg-box{
-            
+
             .detalis {
               list-style-type: none;
               height: 60px;
@@ -481,11 +492,10 @@
               }
             }
           }
-          
+
         }
       }
     }
   }
-  
-</style>
 
+</style>
