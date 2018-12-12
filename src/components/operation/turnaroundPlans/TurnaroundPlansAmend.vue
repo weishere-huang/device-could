@@ -234,8 +234,6 @@
           this
         ).then(response => {
           this.loadValue(response.data.data);
-            // this.companyName =response.data.data;
-            console.log(response.data.data)
           },
           ({type, info}) => {
 
@@ -246,7 +244,9 @@
         this.companyName.maintenanceClassify = this.companyName.maintenanceClassify.toString();
         this.companyName.maintenanceLevel = this.companyName.maintenanceLevel.toString();
         if(this.companyName.planType=== 0){
-          this.companyName.planType = "单次"
+          this.companyName.planType = "单次";
+          this.companyName.frequency = 1;
+          this.companyName.frequencyType = 1;
         }if(this.companyName.planType=== 1){
           this.companyName.planType = "周期"
         }
@@ -343,14 +343,7 @@
       toback() {
         this.$router.back(-1);
       },
-      // selectGroupChange(selection) {
-      //   this.deviceIds=selection.map(item=>item.id).toString();
-      //   this.arr = selection.map(item=>item);
-      // },
-      // selectALL(selection) {
-      //   this.deviceIds=selection.map(item=>item.id).toString();
-      //   this.arr = selection.map(item=>item);
-      // },
+
       selectChange(selection, rowData) {
         console.log("select-change", selection, rowData);
       },
