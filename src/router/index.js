@@ -117,6 +117,7 @@ const router = new Router({
     {
       path: '/Category',
       name: 'Category',
+      props:{title:'设备分类'},
       component: Category,
       meta: {
         requireAuth: true
@@ -392,6 +393,7 @@ const router = new Router({
     {
       path: '/Message',
       name: 'Message',
+      props:{title:'消息列表'},
       component: Message,
       meta: {
         requireAuth: true
@@ -425,6 +427,7 @@ const router = new Router({
     {
       path: '/SparePart',
       name: 'SparePart',
+      props:{title:'备品备件列表'},
       component: SparePart,
       meta: {
         requireAuth: true
@@ -433,6 +436,7 @@ const router = new Router({
     {
       path: '/SparePartAdd',
       name: 'SparePartAdd',
+      props:{title:'备品备件添加'},
       component: SparePartAdd,
       meta: {
         requireAuth: true
@@ -441,6 +445,7 @@ const router = new Router({
     {
       path: '/SparePartAmend/:id/',
       name: 'SparePartAmend',
+      props:{title:'备品备件详情页'},
       component: SparePartAmend,
       meta: {
         requireAuth: true
@@ -449,6 +454,7 @@ const router = new Router({
     {
       path: '/SparePartsWarehouse',
       name: 'SparePartsWarehouse',
+      props:{title:'备件入库'},
       component: SparePartsWarehouse,
       meta: {
         requireAuth: true
@@ -457,6 +463,7 @@ const router = new Router({
     {
       path: '/WarehousingDetail',
       name: 'WarehousingDetail',
+      props:{title:'入库明细'},
       component: WarehousingDetail,
       meta: {
         requireAuth: true
@@ -465,6 +472,7 @@ const router = new Router({
     {
       path: '/OutboundDetails',
       name: 'OutboundDetails',
+      props:{title:'出库明细'},
       component: OutboundDetails,
       meta: {
         requireAuth: true
@@ -473,6 +481,7 @@ const router = new Router({
     {
       path: '/SparePartsClassification',
       name: 'SparePartsClassification',
+      props:{title:'备件分类'},
       component: SparePartsClassification,
       meta: {
         requireAuth: true

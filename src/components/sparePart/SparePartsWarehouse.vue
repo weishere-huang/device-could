@@ -1,7 +1,7 @@
 <template>
   <div class="spare-parts-warehouse">
     <div class="top">
-      <el-button size="small" @click="Sinsert">保存</el-button>
+      <el-button size="small" type="primary" @click="Sinsert">保存</el-button>
     </div>
     <div class="warehouse">
       <h1>备件入库</h1>
@@ -321,6 +321,7 @@ export default {
     customCompFunc(params) {
       if (params.type === "delete") {
         console.log(params.rowData);
+        this.tableData1 = this.tableData1.filter(item => item.partId !== params.rowData.partId);
         // this.deleteOne(params.rowData["id"]);
         // this.$delete(this.tableData, params.index);
       }
@@ -350,7 +351,7 @@ export default {
     },
     toDetails2(rowIndex, rowData, column){
       console.log(rowData);
-      this.tableData1 = this.tableData1.filter(item => item.partId !== rowData.partId);
+
     },
     handleChange2(value) {
       let name = this.$refs["getName2"].currentLabels;
@@ -425,6 +426,9 @@ export default {
         result => {
           console.log(result);
           console.log(result.data);
+          if(result.data.code===200){
+            this.$message("添加成功");
+          }
         },
         ({ type, info }) => {}
       );

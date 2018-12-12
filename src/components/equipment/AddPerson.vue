@@ -38,7 +38,7 @@
               placeholder="如姓名，电话"
               v-model="condition"
             ></el-input>
-            <el-button size="mini" @click="findpeopler">搜索</el-button>
+            <el-button size="mini" type="primary" @click="findpeopler">搜索</el-button>
             <span style="padding:0 10px;">最近搜索：</span>
             <span style="text-decoration: underline;"></span>
           </div>
@@ -74,10 +74,12 @@
         <div class="right">
           <el-button
             size="mini"
+            type="primary"
             @click="deletes"
           >清空</el-button>
           <el-button
             size="mini"
+            type="primary"
             @click="toAdd"
           >保存</el-button>
           <div class="personList">
