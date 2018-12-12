@@ -178,8 +178,20 @@
         </el-form>
         <div style="padding:0 40px 0 12px;" class="upLoad">
           <span>相关资料：</span>
-          <span></span>
-          <span>附件上传</span>
+           <el-upload
+                style="display:inline-block;vertical-align:top"
+                class="upload-demo"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :on-preview="handlePreview1"
+                :on-remove="handleRemove1"
+                :before-remove="beforeRemove1"
+                multiple
+                :limit="20"
+                :on-exceed="handleExceed1"
+                :file-list="fileList">
+                <el-button size="mini" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">只能上传不超过1M的文件,且不能超过20个文件</div>
+              </el-upload>
         </div>
       </div>
     </div>
@@ -200,6 +212,16 @@
     name: "",
     data() {
       return {
+        fileList: [
+          {
+            name: 'food.jpeg', 
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          },
+          {
+            name: 'food2.jpeg',
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          }
+        ],
         defaultProps:{
           value:"code",
           label:"name"
@@ -285,6 +307,18 @@
       };
     },
     methods: {
+      handleRemove1(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview1(file) {
+        console.log(file);
+      },
+      handleExceed1(files, fileList) {
+        this.$message.warning(`当前限制选择 20 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
+      beforeRemove1(file, fileList) {
+        return this.$confirm(`确定移除 ${ file.name }？`);
+      },
       classf(value){
         console.log(value);
         let obj = {};

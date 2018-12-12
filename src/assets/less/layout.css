@@ -170,3 +170,13 @@ body {
 .el-dialog__header .el-dialog__headerbtn {
   top: 14px;
 }
+.el-upload--picture-card {
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+}
+.el-upload-list--picture-card .el-upload-list__item {
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+}
