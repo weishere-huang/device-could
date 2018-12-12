@@ -95,9 +95,9 @@
                     </el-form-item>
                 </el-form>
                 <el-form>
-                    <el-form-item label="计划添加时间：" style="height:auto;">
-                        <span>{{time}}</span>
-                    </el-form-item>
+                    <!--<el-form-item label="计划添加时间：" style="height:auto;">-->
+                        <!--<span>{{time}}</span>-->
+                    <!--</el-form-item>-->
                 </el-form>
             </div>
             <div class="right">

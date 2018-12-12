@@ -257,7 +257,7 @@
       },
 
       handleNodeClick(data) {
-        this.clickId = data.id;
+        this.clickId = data.categoryNo;
         this.toLoad();
       },
       selectChange(selection,rowData){
