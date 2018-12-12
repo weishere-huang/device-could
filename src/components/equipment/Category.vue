@@ -420,8 +420,9 @@ export default {
 @border: 1px solid #dde2eb;
 .category {
   border: @border;
+  border-radius: 5px;
   font-size: 12px;
-  max-height: 500px;
+  max-height: 80vh;
   overflow: scroll;
   padding-bottom: 10px;
   .classify-title {

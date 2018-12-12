@@ -188,7 +188,7 @@
             </div>
           </el-header>
         </el-header>
-        <el-main class="mainContentWrapper">
+        <el-main class="mainContentWrapper" style="padding:8px;">
           <transition>
             <router-view v-if="isRouterAlive" />
           </transition>
@@ -404,4 +404,5 @@ export default {
   border-radius: 3px;
   //-webkit-box-shadow: inset 0 0 6px rgba(7, 7, 7, 0.3);
 } /*定义滑块 内阴影+圆角*/
+
 </style>
