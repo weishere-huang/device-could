@@ -59,7 +59,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="备件分类：">
-          <span style="display:inline-block;width:110px;"></span>
+          <span style="display:inline-block;width:110px;">{{classfyname}}</span>
           <el-button type="primary" size="mini" @click="dialogVisible=true">点击修改</el-button>
           <!-- <el-cascader
             placeholder="搜索"
@@ -100,7 +100,7 @@
 
           <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false" size="mini">取 消</el-button>
-            <el-button type="primary" @click="dialogVisible = false" size="mini">确 定</el-button>
+            <el-button type="primary" @click="dialogVisible = false,classfyname=formInline.partClassifyName" size="mini">确 定</el-button>
           </span>
         </el-dialog>
       </el-form>
@@ -173,7 +173,9 @@
             label: "name"
           },
         urlid: "",
-        classfy:""
+        classfy:"",
+        classfyname:"",
+
       };
     },
     methods: {
@@ -187,6 +189,7 @@
         console.log(id, name);
         this.formInline.partClassify=id;
         this.formInline.partClassifyName=name;
+
       },
       baseupdate() {
         //编辑备件基础信息接口1
@@ -233,6 +236,7 @@
           );
       },
       btisok() {
+
         this.$confirm('确定完成修改吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -302,6 +306,7 @@
           .then(
             result => {
               this.formInline = result.data.data;
+              this.classfyname=this.formInline.partClassifyName
               console.log(resule.data.data);
             },
             ({type, info}) => {
