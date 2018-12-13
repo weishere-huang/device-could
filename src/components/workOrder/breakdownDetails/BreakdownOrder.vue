@@ -170,6 +170,7 @@
             :cell-edit-done="cellEditDone"
             row-height=24
             :height="140"
+             @on-custom-comp="customCompFunc"
           >
           </v-table>
         </div>
@@ -274,6 +275,7 @@
   </div>
 </template>
 <script>
+import Vue from "vue";
   export default {
     data() {
       return {
@@ -469,12 +471,13 @@
             isResize: true
           },
           {
-            field: "isOk",
+            field: "custome-adv",
             title: "操作",
             width: 90,
             titleAlign: "center",
             columnAlign: "center",
-            isResize: true
+            isResize: true,
+            componentName: "table-breakdownOrder"
           }
         ],
         informationTable: [
@@ -646,6 +649,13 @@
       };
     },
     methods: {
+       customCompFunc(params) {
+      console.log(params);
+      if (params.type === "delete") {
+        // do delete operation
+        console.log(params);
+      } 
+    },
       toBack(){
         this.$router.back(-1)
       },
@@ -1147,6 +1157,29 @@
       this.workLoad(this.$route.params.id);
     }
   };
+   Vue.component("table-breakdownOrder", {
+  template: `<span>
+          <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>
+        </span>`,
+  props: {
+    rowData: {
+      type: Object
+    },
+    field: {
+      type: String
+    },
+    index: {
+      type: Number
+    }
+  },
+  methods: {
+    deleteRow() {
+      // 参数根据业务场景随意构造
+      let params = { type: "delete", rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    }
+  }
+});
 </script>
 
 <style lang="less" scoped>
