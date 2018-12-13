@@ -272,7 +272,8 @@ export default {
         this
       ).then(response => {
           this.auditId = response.data.data.id;
-          this.submitAudit();
+          this.Upkeep();
+          // this.submitAudit();
         },
         ({type, info}) => {
 

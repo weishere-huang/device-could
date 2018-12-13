@@ -1040,10 +1040,14 @@
       //工单信息
       workInfoValue(value){
         this.workInfo = value;
+        if (value.workType ===0){
+          this.workInfo.workType = "检修"
+        }
+        if (value.workType ===1){
+          this.workInfo.workType = "保养"
+        }
         if (value.workType ===2){
           this.workInfo.workType = "故障"
-        }else{
-          this.workInfo.workType = "系统错误"
         }
         if (value.state === 0) {
           this.workInfo.state = "待审核";
