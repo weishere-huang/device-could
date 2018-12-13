@@ -105,16 +105,7 @@ export default {
         {
           field: "msgContent",
           title: "信息内容",
-          width: 150,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true,
-          overflowTitle: true
-        },
-        {
-          field: "msgType",
-          title: "消息类型",
-          width: 50,
+          width: 200,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
@@ -147,7 +138,9 @@ export default {
           componentName: "table-message"
           // isResize: true
         }
-      ]
+      ],
+      //判断是未读消息
+      readkey:0
     };
   },
   methods: {
@@ -204,13 +197,22 @@ export default {
       this.pageIndex = pageIndex;
       this.getTableData();
       console.log(pageIndex);
-      this.allMsg();
+      if(this.readkey === 0){
+        this.allMsg();
+      }else{
+        this.allNotReadMsg;
+      }
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
       this.allMsg();
+      if(this.readkey === 0){
+        this.allMsg();
+      }else{
+        this.allNotReadMsg;
+      }
     },
     sortChange(params) {
       if (params.height.length > 0) {
@@ -260,11 +262,7 @@ export default {
           this.$refs.messageTable.resize();
         }, 500);
       });
-      let qs = require("qs");
-      let data = qs.stringify({
-        page: this.pageIndex,
-        size: this.pageSize
-      });
+      this.readkey=0;
       this.Axios(
         {
           params: Object.assign(this.searchParams, {
@@ -275,7 +273,7 @@ export default {
             enableMsg: false
           },
           type: "get",
-          url: "/enterprise/findByNameOrState"
+          url: "/message/allMsg"
           // loadingConfig: {
           //   target: document.querySelector("#mainContentWrapper")
           // }
@@ -328,6 +326,7 @@ export default {
       //执行修改阅读状态函数
     },
     allNotReadMsg() {
+      this.readkey=1;
       this.Axios(
         {
           params: {

@@ -134,7 +134,7 @@ export default {
         partCategory:"",
         partClassify:"",
         partClassifyName:"",
-        lower:"",
+        lower:10,
         //以下可空
         partQuality:"",
         partUnit:"",

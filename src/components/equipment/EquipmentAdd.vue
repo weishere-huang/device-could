@@ -188,6 +188,7 @@
                 multiple
                 :limit="20"
                 :on-exceed="handleExceed1"
+                :on-success="handleAvatarSuccess"
                 :file-list="fileList">
                 <el-button size="mini" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">只能上传不超过1M的文件,且不能超过20个文件</div>
@@ -304,9 +305,14 @@
         ctgoptions:[],
         devicePersonnelInfoBase:[],
         //devicePersonnelInfo:[]
+        dialogImageUrl:"",
       };
     },
     methods: {
+      handleAvatarSuccess(res, file) {
+        this.dialogImageUrl = file.response.data.split(":")[1];
+        this.dialogImageUrl= "ftp://192.168.1.104/"+this.dialogImageUrl;
+      },
       handleRemove1(file, fileList) {
         console.log(file, fileList);
       },
@@ -424,7 +430,6 @@
           //   enableMsg: false
           // }
         },this)
-          //.post(this.global.apiSrc + "/device/add", data)
           .then(result => {
             console.log(result.data);
             alert("执行添加");
@@ -468,33 +473,6 @@
         }
         return tree;
       },
-      allOrganize() {
-        this.Axios({
-          params: {
-          },
-          option: {
-            enableMsg: false
-          },
-          type: "get",
-          url: "/organize/allOrganize"
-          // loadingConfig: {
-          //   target: document.querySelector("#mainContentWrapper")
-          // }
-        },this)
-          //.get(this.global.apiSrc + "/organize/allOrganize")
-          .then(result => {
-            console.log(result.data);
-            this.orgoptions = this.filterArray(result.data.data, 0);
-
-          },
-            ({type, info}) => {
-            }
-          )
-          // .catch(err => {
-          //   console.log(err);
-          //   console.log(this.userName);
-          // });
-      },
       filterArray2(data, parent) {
         //编辑设备类别数据为树状结构方法
         let vm = this;
@@ -512,42 +490,29 @@
         }
         return tree;
       },
-      findAlldeviceClassify(){
-        let qs = require("qs");
-        let data = qs.stringify({
-        });
-        this.Axios({
-          params: {
+      organdcls(){
+        this.Axios(
+          {
+            url: ["/organize/allOrganize", "/deviceCategory/all"],
+            type: ["get","get"],
+            params:[{},{}]
           },
-          option: {
-            enableMsg: false
+          this
+        ).then(
+          ([res1, res2]) => {
+            this.orgoptions = this.filterArray(res1.data.data, 0);
+            this.ctgoptions= this.filterArray2(res2.data.data,0);
           },
-          type: "get",
-          url: "/deviceCategory/all",
-        },this)
-          //.get(this.global.apiSrc + "/deviceCategory/all", data)
-          .then(result => {
-            console.log("查询设备类别")
-            this.ctgoptions= this.filterArray2(result.data.data,0);
-            console.log(this.ctgoptions);
-            console.log(result.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+          () => {}
+        );
       },
 
       personAddHandler(data){
         console.log(data);
         this.devicePersonnelInfoBase=data;
         this.dialogVisible=false;
-
       },
-      // addPerson(params){
-      //   this.dialogVisible = params.isOk
-      //   this.person1 =
-      //   console.log(params);
-      // },
+
       addwarning(){
         this.$confirm('确认添加设备吗?', '提示', {
           confirmButtonText: '确定',
@@ -562,12 +527,12 @@
             message: '已取消'
           });
         });
-      }
+      },
     },
     created() {
-      //this.findDeviceState();
-      this.findAlldeviceClassify();
-      this.allOrganize();
+      this.organdcls();
+      // this.findAlldeviceClassify();
+      // this.allOrganize();
       // console.log(this.options);
     },
     components: {
