@@ -309,6 +309,7 @@ export default {
       this.formLabelAlign.time = "";
       this.formLabelAlign.radio = "";
       this.formLabelAlign.name = "";
+      this.toAuditName="";
     },
     customCompFunc(params) {
       // console.log(params);
@@ -448,6 +449,12 @@ export default {
         if (this.tableData[i].state === 10) {
           this.tableData[i].state = "审批被驳回";
         }
+        if (this.tableData[i].state === 10) {
+          this.tableData[i].state = "已停止";
+        }
+        if (this.tableData[i].state === 14) {
+          this.tableData[i].state = "已完成";
+        }
         if (this.tableData[i].faultLevel === 1) {
           this.tableData[i].faultLevel = "低";
         }
@@ -569,7 +576,7 @@ export default {
       this.innerVisible = params.hide;
     },
     isSubmitAudit(){
-      if(!(this.toAuditName==""||this.formLabelAlign.type=="")){
+      if(!this.toAuditName==""||this.formLabelAlign.type){
         this.toSubmitAudit();
       }else{
         this.$message.error('请选择终审或添加下一审核人')
@@ -597,23 +604,11 @@ export default {
           this
         ).then(
           response => {
-            this.formLabelAlign.desc = "";
-            this.formLabelAlign.type = "";
-            this.formLabelAlign.time = "";
-            this.formLabelAlign.radio = "";
-            this.formLabelAlign.name = "";
-            this.arr = "";
-            console.log(response);
+            this.cancel();
             this.load();
-            this.outerVisible = false;
           },
           ({ type, info }) => {
-            this.formLabelAlign.desc = "";
-            this.formLabelAlign.type = "";
-            this.formLabelAlign.time = "";
-            this.formLabelAlign.radio = "";
-            this.formLabelAlign.name = "";
-            this.arr = "";
+            this.cancel();
           }
         );
       } else if (this.formLabelAlign.radio === "1") {

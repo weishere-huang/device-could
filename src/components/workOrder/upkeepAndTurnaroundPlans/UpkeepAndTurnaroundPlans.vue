@@ -741,7 +741,7 @@
         }
       },
       handleNodeClick(data) {
-        this.findBasicInfoByTypeId(data.categoryNo);
+        this.findBasicInfoByTypeId(data.id);
       },
       filterArray(data, parent) {
         let vm = this;
@@ -827,6 +827,13 @@
       },
       //执行审核
       examineUp(){
+        if(this.toExamine.userId !==""|| this.examine.type){
+          this.toExamineUp();
+        }else{
+          this.$message.error('请选择终审或添加下一级审批人')
+        }
+      },
+      toExamineUp(){
         this.Axios(
           {
             params: {
@@ -847,8 +854,16 @@
             this.pageSize = 10;
             this.examine.desc = "";
             this.examine.radio = 0;
+            this.toBack();
           },
-          ({ type, info }) => {}
+          ({ type, info }) => {
+            this.pageNumber = "";
+            this.outerVisible = false;
+            this.pageIndex = 1;
+            this.pageSize = 10;
+            this.examine.desc = "";
+            this.examine.radio = 0;
+          }
         );
       },
       //取消审核
@@ -913,6 +928,23 @@
         ).then(
           response => {
             this.findAlldeviceClassify();
+            this.addMaterielValue(response.data.data.content);
+            this.pageNumber = response.data.data.totalElements;
+          },
+          ({type, info}) => {
+
+          })
+      },
+      pageBasicInfo(){
+        this.Axios(
+          {
+            params: {page:this.pageIndex,size:this.pageSize},
+            type: "get",
+            url: "/part/listBasicInfo",
+          },
+          this
+        ).then(
+          response => {
             this.addMaterielValue(response.data.data.content);
             this.pageNumber = response.data.data.totalElements;
           },
@@ -1053,6 +1085,8 @@
         if (value.workType ===2){
           this.workInfo.workType = "故障"
         }
+
+
         if (value.state === 0) {
           this.workInfo.state = "待审核";
         }
@@ -1068,7 +1102,7 @@
         if (value.state === 4) {
           this.workInfo.state = "审核中";
         }
-        if (value.state === 5) {
+        if (value.state === 15) {
           this.workInfo.state = "待处理";
         }
         if (value.state === 6) {
