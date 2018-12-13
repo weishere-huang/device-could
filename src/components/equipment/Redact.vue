@@ -328,7 +328,20 @@
         >
           <span>相关资料：</span>
           <span></span>
-          <span>附件管理</span>
+          <span><el-upload
+            style="display:inline-block;vertical-align:top"
+            class="upload-demo"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :on-preview="handlePreview1"
+            :on-remove="handleRemove1"
+            :before-remove="beforeRemove1"
+            multiple
+            :limit="20"
+            :on-exceed="handleExceed1"
+            :file-list="fileList">
+                <el-button size="mini" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">只能上传不超过1M的文件,且不能超过20个文件</div>
+              </el-upload></span>
         </div>
         <div style="padding:0 40px 0 12px;margin-top:16px;">
           <span>运维记录：</span>
@@ -473,6 +486,7 @@ export default {
           content: []
         }
       ],
+      personAddHandler:"",
     };
   },
   components: {
@@ -695,7 +709,9 @@ export default {
 
             this.jsontoarr(result.data.data.devicePersonnelInfo);
             //this.aaaa.value = this.sizeForm.deviceState;
+          this.personAddHandler = this.devicePersonnelInfoBase;
           console.log(this.devicePersonnelInfoBase);
+          
           console.log("---------------");
         },
           ({type, info}) => {

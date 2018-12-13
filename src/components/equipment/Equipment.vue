@@ -65,12 +65,12 @@
         </el-button>
         <div class="searchright">
           <span>关键字：</span>
-
           <el-input
             type="search"
             size="small"
             placeholder="根据设备编号，名称，位号"
             v-model="keyWord"
+            style="width:200px"
           ></el-input>
           <el-button
             size="small"
@@ -766,7 +766,7 @@ Vue.component("table-equipment", {
 }
 
 .el-input {
-  width: auto !important;
+  // width: auto !important;
   padding: 0 !important;
 }
 

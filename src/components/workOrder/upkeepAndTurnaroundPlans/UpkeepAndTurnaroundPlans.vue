@@ -172,7 +172,6 @@
               row-click-color="#edf7ff"
               :cell-edit-done="cellEditDone"
               row-height=24
-              :height="230"
             ></v-table>
           </div>
         </el-dialog>
@@ -194,20 +193,20 @@
             row-click-color="#edf7ff"
             :cell-edit-done="cellEditDone"
             row-height=24
-            :height="140"
           >
           </v-table>
         </div>
         <!-- 物料添加弹窗 -->
         <el-dialog title="备品备件" :visible.sync="dialogVisible2" width="70%">
           <div style="padding:10px" class="dialog-case">
-            <div class="spare-parts-list">
+            <div class="spare-parts-list" style="overflow:scroll;height:425px">
               <el-tree
                 :data="data2"
                 node-key="id"
                 @node-click="handleNodeClick"
                 :props="defaultProps"
                 default-expand-all
+                :expand-on-click-node="false"
               >
               </el-tree>
             </div>
@@ -234,7 +233,7 @@
                 :row-dblclick="basicInfo"
                 :cell-edit-done="cellEditDone"
                 row-height=24
-                :height="230"
+               
               ></v-table>
               <div
                 class="mt20 mb20 bold"

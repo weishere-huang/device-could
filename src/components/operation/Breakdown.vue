@@ -56,7 +56,7 @@
         <div class="search">
           <el-input
             type="search"
-            placeholder="如故障编码，设备名称，位置，描述"
+            placeholder="如故障编码，设备名称"
             size="small"
             v-model="faultKey"
           ></el-input>

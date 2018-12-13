@@ -307,18 +307,20 @@ export default {
 
     //确认按钮
     btisok(){
-      this.$confirm('确定删除吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-         this.basedelete();
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消操作'
+      console.log(this.ids);
+      if(this.ids === "" || this.ids === undefined){
+        this.$message("请至少选择一行数据")
+      }else{
+        this.$confirm('确定删除吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.basedelete();
+        }).catch(() => {
         });
-      });
+      }
+
     }
 
   },
