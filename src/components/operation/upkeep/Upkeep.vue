@@ -560,11 +560,14 @@ export default {
     },
     //审核操作
     submitAudit(){
-      console.log(this.formLabelAlign.type);
-      if (this.formLabelAlign.type || !this.toAudit == "") {
-        this.toSubmitAudit();
+      if (this.formLabelAlign.radio!=1){
+        if (this.formLabelAlign.type ||!this.toAudit =="") {
+          this.toSubmitAudit();
+        }else{
+          this.$message.error('请选择终审或添加下一审核人')
+        }
       }else{
-        this.$message.error('请选择终审或添加下一审核人')
+        this.toSubmitAudit();
       }
     },
 
