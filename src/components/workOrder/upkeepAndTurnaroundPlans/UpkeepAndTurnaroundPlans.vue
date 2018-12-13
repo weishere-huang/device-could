@@ -100,13 +100,13 @@
             :model="maintenancePlan"
           >
             <el-form-item label="分类：">
-              <span>{{maintenancePlan.maintenanceClassify}}</span>
+              <span>{{maintenancePlan.maintenanceType}}</span>
             </el-form-item>
             <el-form-item label="级别：">
               <span>{{maintenancePlan.maintenanceLevel}}</span>
             </el-form-item>
             <el-form-item label="计划类型：">
-              <span>{{maintenancePlan.maintenanceType}}</span>
+              <span>{{maintenancePlan.planType}}</span>
             </el-form-item>
             <el-form-item label="开始时间：">
               <span>{{maintenancePlan.startTime}}</span>
@@ -685,12 +685,9 @@ import Vue from "vue";
     },
     methods: {
        customCompFunc(params) {
-      console.log("params");
-      console.log(params);
-      
       if (params.type === "delete") {
         // do delete operation
-       console.log(params);
+        this.maintenancePlan = this.maintenancePlan.filter(item=>item.id!=params.rowData["id"]);
       }
     },
       // 单元格编辑回调
@@ -840,10 +837,14 @@ import Vue from "vue";
       },
       //执行审核
       examineUp(){
-        if(this.toExamine.userId !==""|| this.examine.type){
-          this.toExamineUp();
+        if(this.examine.radio!=1){
+          if(this.toExamine.userId !==""|| this.examine.type){
+            this.toExamineUp();
+          }else{
+            this.$message.error('请选择终审或添加下一级审批人')
+          }
         }else{
-          this.$message.error('请选择终审或添加下一级审批人')
+          this.toExamineUp();
         }
       },
       toExamineUp(){
@@ -1137,10 +1138,11 @@ import Vue from "vue";
       //计划详情
       maintenancePlanValue(value){
         this.maintenancePlan = value;
-        if(this.maintenancePlan.maintenanceClassify === 0){
-          this.maintenancePlan.maintenanceClassify = "维修";
-        }if(this.maintenancePlan.maintenanceClassify === 1){
-          this.maintenancePlan.maintenanceClassify = "保养";
+        if(this.maintenancePlan.maintenanceType === 0){
+          this.maintenancePlan.maintenanceType = "维修";
+        }
+        if(this.maintenancePlan.maintenanceType === 1){
+          this.maintenancePlan.maintenanceType = "保养";
         }
 
         if(this.maintenancePlan.maintenanceLevel===1){
@@ -1151,10 +1153,10 @@ import Vue from "vue";
           this.maintenancePlan.maintenanceLevel = "大";
         }
 
-        if (this.maintenancePlan.maintenanceType === 0){
-          this.maintenancePlan.maintenanceType = "单次"
-        }if (this.maintenancePlan.maintenanceType === 1){
-          this.maintenancePlan.maintenanceType = "周期"
+        if (this.maintenancePlan.planType === 0){
+          this.maintenancePlan.planType = "单次"
+        }if (this.maintenancePlan.planType === 1){
+          this.maintenancePlan.planType = "周期"
         }
       },
       //设备

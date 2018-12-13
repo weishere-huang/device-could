@@ -650,11 +650,10 @@ import Vue from "vue";
     },
     methods: {
        customCompFunc(params) {
-      console.log(params);
+      // console.log(params);
       if (params.type === "delete") {
-        // do delete operation
-        console.log(params);
-      } 
+        this.suppliesTableData = this.suppliesTableData.filter(item=>item.id!=params.rowData["id"]);
+      }
     },
       toBack(){
         this.$router.back(-1)
@@ -746,11 +745,16 @@ import Vue from "vue";
 
       //执行审核
       examineUp(){
-        if(this.toExamine.userId !==""|| this.examine.type){
-          this.toExamineUp();
-        }else{
-          this.$message.error('请选择终审或添加下一级审批人')
-        }
+         if(this.examine.radio!=1){
+           if(this.toExamine.userId !==""|| this.examine.type){
+             this.toExamineUp();
+           }else{
+             this.$message.error('请选择终审或添加下一级审批人')
+           }
+         }else{
+           this.toExamineUp();
+         }
+
       },
       toExamineUp(){
         this.Axios(
