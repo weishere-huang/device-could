@@ -4,6 +4,6 @@ const apiSrc = "http://192.168.1.104:9880/d";
 //const apiSrc = "http://192.168.1.148:8080";
 export default {
   apiSrc,
-  apiImg
+  // apiImg
 };
 </script>
