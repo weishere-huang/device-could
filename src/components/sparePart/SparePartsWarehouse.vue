@@ -535,7 +535,7 @@ export default {
   },
   created() {
     this.Sgetlist();
-
+    this.baselist();
     EventBus.$on("sideBarTroggleHandle", isCollapse => {
       window.setTimeout(() => {
         this.$refs.inventoryListTable.resize();
