@@ -297,7 +297,7 @@ const router = new Router({
       },
     },
     {
-      path: '/BreakDetails',
+      path: '/BreakDetails/:id/',
       name: 'BreakDetails',
       props: {
         title: '故障详情'

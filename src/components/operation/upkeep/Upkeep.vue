@@ -14,6 +14,7 @@
         >审核</el-button>
         <el-dialog
           title="审核"
+          :beforeClose="cancel"
           :visible.sync="outerVisible"
         >
           <el-form
@@ -75,7 +76,7 @@
             class="dialog-footer"
           >
             <el-button
-              @click="outerVisible = false"
+              @click="cancel"
               type="primary"
               size="mini"
             >取 消</el-button>
@@ -271,6 +272,13 @@ export default {
     };
   },
   methods: {
+    cancel(){
+      this.outerVisible = false;
+      this.formLabelAlign.desc="";
+      this.formLabelAlign.type="";
+      this.formLabelAlign.radio="";
+      this.maintenanceIds="";
+    },
     customCompFunc(params) {
       // console.log(params);
 
@@ -292,8 +300,12 @@ export default {
       }
     },
     toAmend(rowIndex, rowData, column) {
-      this.$store.commit("upkeepAmend", rowData);
-      this.$router.push("/UpkeepAmend/" + rowData.id);
+      if(rowData.state=="待审核"){
+        this.$store.commit("upkeepAmend", rowData);
+        this.$router.push("/UpkeepAmend/" + rowData.id);
+      }else{
+        this.$message.error('只能修改待审核状态的计划')
+      }
     },
     toUpkeepAdd() {
       this.$router.push({
@@ -534,7 +546,15 @@ export default {
       }
     },
     //审核操作
-    submitAudit() {
+    submitAudit(){
+      if (!(this.formLabelAlign.type =="" ||this.toAudit=="")) {
+        this.toSubmitAudit();
+      }else{
+        this.$message.error('请选择终审或添加下一审核人')
+      }
+    },
+
+    toSubmitAudit() {
       this.formLabelAlign.type
         ? (this.formLabelAlign.type = 0)
         : (this.formLabelAlign.type = 1);
@@ -553,11 +573,19 @@ export default {
         this
       ).then(
         response => {
-          this.arr = "";
+          this.formLabelAlign.desc="";
+          this.formLabelAlign.type="";
+          this.formLabelAlign.radio="";
+          this.maintenanceIds="";
           this.load();
           this.outerVisible = false;
         },
-        ({ type, info }) => {}
+        ({ type, info }) => {
+          this.formLabelAlign.desc="";
+          this.formLabelAlign.type="";
+          this.formLabelAlign.radio="";
+          this.maintenanceIds="";
+        }
       );
     },
     outerVisibleIsOk() {
