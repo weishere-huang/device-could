@@ -163,8 +163,8 @@
                 :on-preview="handlePreview1"
                 :on-remove="handleRemove1"
                 :before-upload="beforeAvatarUpload1"
-                :before-remove="beforeRemove1"
-                multiple
+                :on-success="handleSuccess"
+                 multiple
                 :limit="10"
                 :on-exceed="handleExceed1"
                 :file-list="fileList">
@@ -183,16 +183,11 @@
     name: "",
     data() {
       return {
-        fileList: [
-          {
-            name: 'food.jpeg',
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-          },
-          {
-            name: 'food2.jpeg',
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-          }
-        ],
+        fileList: [],
+        fileListTest:[{
+          name:"",
+          url:"",
+        }],
         dialogImageUrl: '',
         dialogVisible: false,
         date:new Date().toLocaleString().split(" ")[0].replace(/\//g, "-"),
@@ -229,21 +224,22 @@
     },
     methods: {
       handleAvatarSuccess(res, file) {
-        this.dialogImageUrl = file.response.data.split(":")[1];
-        this.dialogImageUrl= "ftp://192.168.1.104/"+this.dialogImageUrl;
+        this.dialogImageUrl= "ftp://192.168.1.104/"+file.response.data.split(":")[1];
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
         const isPNG = file.type === 'image/png';
         const isLt1M = file.size / 1024 / 1024 < 1;
 
+        let isOk = true;
         if (!(isJPG || isPNG)) {
           this.$message.error('上传头像图片只能是 JPG/PNG 格式!');
+          isOk = false;
         }
         if (!isLt1M) {
           this.$message.error('上传头像图片大小不能超过 1MB!');
         }
-        return isJPG && isLt1M && isPNG;
+        return isOk && isLt1M ;
       },
       beforeAvatarUpload1(file) {
         const isDOC = file.type === 'application/msword';
@@ -264,7 +260,7 @@
           isOk = false;
         }
         if (!isLt1M) {
-          this.$message.error('上传头像图片大小不能超过 1MB!');
+          this.$message.error('上传的文件不能大于 1MB!');
         }
         return isOk&& isLt1M;
       },
@@ -274,12 +270,11 @@
       handlePreview1(file) {
         console.log(file);
       },
-      handleExceed1(files, fileList) {
+      handleExceed1(files,fileList) {
         this.$message.warning(`当前限制选择 10 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
       },
       beforeRemove1(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？`);
-        console.log(fileList);
       },
       handleRemove(file, fileList) {
         console.log(file);
@@ -288,6 +283,18 @@
       handlePictureCardPreview(file) {
         console.log(file);
         this.dialogVisible = true;
+      },
+      handleSuccess(res, file){
+        console.log(res);
+        this.fileListTest[0].url = "ftp://192.168.1.104/"+res.data.split(":")[1];
+        this.fileListTest[0].name = file.name;
+        console.log(this.fileListTest[0].name);
+        console.log(this.fileListTest[0].url);
+        this.fileList.push(this.fileListTest[0]);
+        for (let i in this.fileList){
+          console.log(this.fileList[i].name);
+          console.log(this.fileList[i].url);
+        }
       },
 
       tback(){

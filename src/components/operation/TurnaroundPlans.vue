@@ -58,6 +58,7 @@
     <el-dialog
       title="审核"
       :visible.sync="outerVisible"
+      :beforeClose="toCancel"
     >
       <el-form
         label-position=right
@@ -118,7 +119,7 @@
         class="dialog-footer"
       >
         <el-button
-          @click="outerVisible = false"
+          @click="toCancel"
           size="mini"
         >取 消</el-button>
         <el-button
@@ -290,8 +291,12 @@ export default {
     },
     toAmend(rowIndex, rowData, column) {
       // 传值给修改
-      this.$router.push("/TurnaroundPlansAmend/" + rowData.id);
-      this.$store.commit("turnaroundPlans", rowData);
+      if(rowData.state=="待审核"){
+        this.$router.push("/TurnaroundPlansAmend/" + rowData.id);
+        this.$store.commit("turnaroundPlans", rowData);
+      }else{
+        this.$message.error('只能修改待审核状态的计划')
+      }
     },
     toPansAdd() {
       this.$router.push({
@@ -405,11 +410,20 @@ export default {
         if (this.tableData[i].state === 4) {
           this.tableData[i].state = "审核中";
         }
-        if (this.tableData[i].state === 12) {
-          this.tableData[i].state = "停用";
+        if (this.tableData[i].state === 5) {
+          this.tableData[i].state = "待处理";
+        }
+        if (this.tableData[i].state === 6) {
+          this.tableData[i].state = "已消除";
+        }
+        if (this.tableData[i].state === 7) {
+          this.tableData[i].state = "已驳回";
         }
         if (this.tableData[i].state === 10) {
-          this.tableData[i].state = "已驳回";
+          this.tableData[i].state = "已停止";
+        }
+        if (this.tableData[i].state === 14) {
+          this.tableData[i].state = "已完成";
         }
         if (this.tableData[i].maintenanceType === 0) {
           this.tableData[i].maintenanceType = "维修";
@@ -532,7 +546,18 @@ export default {
       }
     },
     //审核操作
-    submitAudit() {
+    submitAudit(){
+      if (this.formLabelAlign.radio!=1){
+        if (this.formLabelAlign.type ||!this.toAudit =="") {
+          this.toSubmitAudit();
+        }else{
+          this.$message.error('请选择终审或添加下一审核人')
+        }
+      }else{
+        this.toSubmitAudit();
+      }
+    },
+    toSubmitAudit() {
       this.formLabelAlign.type
         ? (this.formLabelAlign.type = 0)
         : (this.formLabelAlign.type = 1);
@@ -552,10 +577,13 @@ export default {
       ).then(
         response => {
           this.arr = "";
+          this.toCancel();
           this.load();
-          this.outerVisible = false;
+
         },
-        ({ type, info }) => {}
+        ({ type, info }) => {
+          this.toCancel()
+        }
       );
     },
     outerVisibleIsOk() {
@@ -566,6 +594,14 @@ export default {
       } else {
         alert("抱歉只能计划只能单个修改");
       }
+    },
+    toCancel(){
+      this.formLabelAlign.desc="";
+      this.formLabelAlign.type=false;
+      this.formLabelAlign.radio="";
+      this.maintenanceIds="";
+      this.toAudit="";
+      this.outerVisible = false
     }
   },
   created() {

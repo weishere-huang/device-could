@@ -14,6 +14,7 @@
         >审核</el-button>
         <el-dialog
           title="审核"
+          :beforeClose="cancel"
           :visible.sync="outerVisible"
         >
           <el-form
@@ -75,7 +76,7 @@
             class="dialog-footer"
           >
             <el-button
-              @click="outerVisible = false"
+              @click="cancel"
               type="primary"
               size="mini"
             >取 消</el-button>
@@ -271,6 +272,14 @@ export default {
     };
   },
   methods: {
+    cancel(){
+      this.outerVisible = false;
+      this.formLabelAlign.desc="";
+      this.formLabelAlign.type="";
+      this.formLabelAlign.radio="";
+      this.maintenanceIds="";
+      this.toAudit="";
+    },
     customCompFunc(params) {
       // console.log(params);
 
@@ -292,8 +301,12 @@ export default {
       }
     },
     toAmend(rowIndex, rowData, column) {
-      this.$store.commit("upkeepAmend", rowData);
-      this.$router.push("/UpkeepAmend/" + rowData.id);
+      if(rowData.state=="待审核"){
+        this.$store.commit("upkeepAmend", rowData);
+        this.$router.push("/UpkeepAmend/" + rowData.id);
+      }else{
+        this.$message.error('只能修改待审核状态的计划')
+      }
     },
     toUpkeepAdd() {
       this.$router.push({
@@ -397,7 +410,7 @@ export default {
           this.tableData[i].state = "已通过";
         }
         if (this.tableData[i].state === 2) {
-          this.tableData[i].state = "已禁用";
+          this.tableData[i].state = "禁用";
         }
         if (this.tableData[i].state === 3) {
           this.tableData[i].state = "已删除";
@@ -405,11 +418,23 @@ export default {
         if (this.tableData[i].state === 4) {
           this.tableData[i].state = "审核中";
         }
-        if (this.tableData[i].state === 12) {
-          this.tableData[i].state = "停用";
+        if (this.tableData[i].state === 5) {
+          this.tableData[i].state = "待处理";
+        }
+        if (this.tableData[i].state === 6) {
+          this.tableData[i].state = "已消除";
+        }
+        if (this.tableData[i].state === 7) {
+          this.tableData[i].state = "已撤销";
         }
         if (this.tableData[i].state === 10) {
-          this.tableData[i].state = "已驳回";
+          this.tableData[i].state = "审批被驳回";
+        }
+        if (this.tableData[i].state === 10) {
+          this.tableData[i].state = "已停止";
+        }
+        if (this.tableData[i].state === 14) {
+          this.tableData[i].state = "已完成";
         }
         if (this.tableData[i].maintenanceType === 0) {
           this.tableData[i].maintenanceType = "维修";
@@ -534,7 +559,19 @@ export default {
       }
     },
     //审核操作
-    submitAudit() {
+    submitAudit(){
+      if (this.formLabelAlign.radio!=1){
+        if (this.formLabelAlign.type ||!this.toAudit =="") {
+          this.toSubmitAudit();
+        }else{
+          this.$message.error('请选择终审或添加下一审核人')
+        }
+      }else{
+        this.toSubmitAudit();
+      }
+    },
+
+    toSubmitAudit() {
       this.formLabelAlign.type
         ? (this.formLabelAlign.type = 0)
         : (this.formLabelAlign.type = 1);
@@ -553,11 +590,12 @@ export default {
         this
       ).then(
         response => {
-          this.arr = "";
+          this.cancel();
           this.load();
-          this.outerVisible = false;
         },
-        ({ type, info }) => {}
+        ({ type, info }) => {
+          this.cancel();
+        }
       );
     },
     outerVisibleIsOk() {

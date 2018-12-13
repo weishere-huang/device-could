@@ -34,9 +34,9 @@
       >
         <el-button
           type="primary"
-          @click="load(5)"
+          @click="load(15)"
           size="small"
-        >已通过</el-button>
+        >待处理</el-button>
       </el-badge>
       <el-badge class="item">
         <el-button
@@ -93,273 +93,276 @@
   </div>
 </template>
 <script>
-export default {
-  name: "Test",
-  data() {
-    return {
-      toNull: "",
-      audited: "",
-      inAudit: "",
-      handle: "",
-      //之后删除后三个变量
-      audited1: "",
-      inAudit1: "",
-      handle1: "",
-     //结束
-      pageIsOk: true,
-      pageIndex: 1,
-      pageSize: 10,
-      totalNub: "",
-      tableData: [],
-      tableDate: [],
-      columns: [
-        {
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
-        {
-          field: "workNo",
-          title: "工单编号",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true,
-          overflowTitle: true
-          //   orderBy: ""
-        },
-        {
-          field: "state",
-          title: "工单状态",
-          width: 70,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true,
-          overflowTitle: true
-        },
-        {
-          field: "workType",
-          title: "工单类型",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true,
-          overflowTitle: true
-        },
-        {
-          field: "workDesc",
-          title: "工单描述",
-          width: 200,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true,
-          overflowTitle: true
-        },
-        {
-          field: "workCauseAnalysis",
-          title: "原因分析",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true,
-          overflowTitle: true
-        },
-        {
-          field: "deviceNames",
-          title: "设备名称",
-          width: 120,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true,
-          overflowTitle: true
-        },
-        {
-          field: "gmtCreate",
-          title: "工单创建时间",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true,
-          overflowTitle: true
-        }
-      ]
-    };
-  },
-  methods: {
-    selectGroupChange(selection) {
-      console.log("select-group-change", selection);
-    },
-    selectALL(selection) {
-      console.log("select-aLL", selection);
-    },
-    selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
-    },
-    getTableData() {
-      this.tableData = this.tableDate.slice(
-        (this.pageIndex - 1) * this.pageSize,
-        this.pageIndex * this.pageSize
-      );
-    },
-    pageChange(pageIndex) {
-      this.pageIndex = pageIndex;
-      this.getTableData();
-      if (this.pageIsOk) {
-        this.audited = "";
-        this.inAudit = "";
-        this.handle = "";
-        this.load();
-      }
-    },
-    pageSizeChange(pageSize) {
-      this.pageIndex = 1;
-      this.pageSize = pageSize;
-      this.getTableData();
-      if (this.pageIsOk) {
-        this.audited = "";
-        this.inAudit = "";
-        this.handle = "";
-        this.load();
-      }
-    },
-    Jump(rowIndex, rowData, column) {
-      if (rowData.workType === "故障") {
-        this.$router.push("/BreakdownOrder/" + rowData.id);
-      } else {
-        this.$router.push("/UpkeepAndTurnaroundPlans/" + rowData.id);
-      }
-    },
-
-    load(stateNum) {
-      EventBus.$on("sideBarTroggleHandle", isCollapse => {
-        window.setTimeout(() => {
-          this.$refs.workOrderTable.resize();
-        }, 500);
-      });
-      if (stateNum == "") {
-        this.pageIsOk = true;
-        this.audited = "";
-        this.inAudit = "";
-        this.handle = "";
-      } else if (stateNum === 0) {
-        this.audited = "";
-        this.pageIsOk = false;
-      } else if (stateNum === 1) {
-        this.pageIsOk = false;
-      } else if (stateNum === 2) {
-        this.pageIsOk = false;
-      } else if (stateNum === 3) {
-        this.pageIsOk = false;
-      } else if (stateNum === 4) {
-        this.inAudit = "";
-        this.pageIsOk = false;
-      } else if (stateNum === 5) {
-        this.handle = "";
-        this.pageIsOk = false;
-      } else if (stateNum === 6) {
-        this.pageIsOk = false;
-      }
-      this.Axios(
-        {
-          params: {
-            state: stateNum,
-            page: this.pageIndex,
-            size: this.pageSize
+  export default {
+    name: "Test",
+    data() {
+      return {
+        stateNum:"",
+        toNull: "",
+        audited: "",
+        inAudit: "",
+        handle: "",
+        //之后删除后三个变量
+        audited1: "",
+        inAudit1: "",
+        handle1: "",
+        //结束
+        pageIsOk: true,
+        pageIndex: 1,
+        pageSize: 10,
+        totalNub: "",
+        tableData: [],
+        tableDate: [],
+        columns: [
+          {
+            width: 50,
+            titleAlign: "center",
+            columnAlign: "center",
+            type: "selection"
           },
-          type: "get",
-          url: "/maintenanceWork/workList"
-        },
-        this
-      ).then(
-        response => {
-          this.totalNub = response.data.data.totalElements;
-          this.tableData = response.data.data.content;
-          this.loadValue(response.data.data.content);
-          this.tableDate = this.tableData;
-        },
-        ({ type, info }) => {}
-      );
+          {
+            field: "workNo",
+            title: "工单编号",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true,
+            overflowTitle: true
+            //   orderBy: ""
+          },
+          {
+            field: "state",
+            title: "工单状态",
+            width: 70,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true,
+            overflowTitle: true
+          },
+          {
+            field: "workType",
+            title: "工单类型",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            overflowTitle: true
+          },
+          {
+            field: "workDesc",
+            title: "工单描述",
+            width: 200,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            overflowTitle: true
+          },
+          {
+            field: "workCauseAnalysis",
+            title: "原因分析",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            overflowTitle: true
+          },
+          {
+            field: "deviceNames",
+            title: "设备名称",
+            width: 120,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            overflowTitle: true
+          },
+          {
+            field: "gmtCreate",
+            title: "工单创建时间",
+            width: 100,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            overflowTitle: true
+          }
+        ]
+      };
     },
-    loadValue(value) {
-      for (let i in value) {
-        if (value[i].workType === 0) {
-          this.tableData[i].workType = "检修";
+    methods: {
+      selectGroupChange(selection) {
+        console.log("select-group-change", selection);
+      },
+      selectALL(selection) {
+        console.log("select-aLL", selection);
+      },
+      selectChange(selection, rowData) {
+        console.log("select-change", selection, rowData);
+      },
+      getTableData() {
+        this.tableData = this.tableDate.slice(
+          (this.pageIndex - 1) * this.pageSize,
+          this.pageIndex * this.pageSize
+        );
+      },
+      pageChange(pageIndex) {
+        this.pageIndex = pageIndex;
+        this.getTableData();
+        this.audited = "";
+        this.inAudit = "";
+        this.handle = "";
+        this.load(this.stateNum);
+      },
+      pageSizeChange(pageSize) {
+        this.pageIndex = 1;
+        this.pageSize = pageSize;
+        this.getTableData();
+        this.audited = "";
+        this.inAudit = "";
+        this.handle = "";
+        this.load(this.stateNum);
+      },
+      Jump(rowIndex, rowData, column) {
+        if (rowData.workType === "故障") {
+          this.$router.push("/BreakdownOrder/" + rowData.id);
+        } else {
+          this.$router.push("/UpkeepAndTurnaroundPlans/" + rowData.id);
         }
-        if (value[i].workType === 1) {
-          this.tableData[i].workType = "保养";
-        }
-        if (value[i].workType === 2) {
-          this.tableData[i].workType = "故障";
-        }
-        if (value[i].state === 0) {
-          this.tableData[i].state = "待审核";
-          this.audited++;
-        }
-        if (value[i].state === 1) {
-          this.tableData[i].state = "已通过";
-        }
-        if (value[i].state === 2) {
-          this.tableData[i].state = "已禁用";
-        }
-        if (value[i].state === 3) {
-          this.tableData[i].state = "已删除";
-        }
-        if (value[i].state === 4) {
-          this.tableData[i].state = "审核中";
-          this.inAudit++;
-        }
-        if (value[i].state === 5) {
-          this.tableData[i].state = "待处理";
-          this.handle++;
-        }
-        if (value[i].state === 6) {
-          this.tableData[i].state = "已消除";
-        }
-        if (value[i].state === 7) {
-          this.tableData[i].state = "已撤销";
-        }
-        if (value[i].state === 10) {
-          this.tableData[i].state = "已驳回";
-        }
-        if (value[i].state === 12) {
-          this.tableData[i].state = "已停止";
-        }
-        if (value[i].state === 13) {
-          this.tableData[i].state = "已完成";
+      },
+
+      load(stateNum) {
+        EventBus.$on("sideBarTroggleHandle", isCollapse => {
+          window.setTimeout(() => {
+            this.$refs.workOrderTable.resize();
+          }, 500);
+        });
+        this.stateNum = stateNum;
+        // if (stateNum == "") {
+        //   this.audited = "";
+        //   this.inAudit = "";
+        //   this.handle = "";
+        // }
+        // if (stateNum == 0) {
+        //   this.audited = "";
+        //   this.pageIsOk = false;
+        // }
+        // if (stateNum == 4) {
+        //   this.inAudit = "";
+        //   this.pageIsOk = false;
+        // } else if (stateNum == 15) {
+        //   this.handle = "";
+        //   this.pageIsOk = false;
+        // }
+        // if (stateNum == 7) {
+        //   this.pageIsOk = false;
+        // }
+        // if (stateNum == 10) {
+        //   this.pageIsOk = false;
+        // }
+        // if (stateNum == 13) {
+        //   this.pageIsOk = false;
+        // }
+        this.Axios(
+          {
+            params: {
+              state: stateNum,
+              page: this.pageIndex,
+              size: this.pageSize
+            },
+            type: "get",
+            url: "/maintenanceWork/workList"
+          },
+          this
+        ).then(
+          response => {
+            this.totalNub = response.data.data.totalElements;
+            this.tableData = response.data.data.content;
+            this.loadValue(response.data.data.content);
+            this.tableDate = this.tableData;
+          },
+          ({ type, info }) => {}
+        );
+      },
+      loadValue(value) {
+        for (let i in value) {
+          if (value[i].workType === 0) {
+            this.tableData[i].workType = "检修";
+          }
+          if (value[i].workType === 1) {
+            this.tableData[i].workType = "保养";
+          }
+          if (value[i].workType === 2) {
+            this.tableData[i].workType = "故障";
+          }
+          if (value[i].state === 0) {
+            this.tableData[i].state = "待审核";
+            this.audited++;
+          }
+          if (value[i].state === 1) {
+            this.tableData[i].state = "已通过";
+          }
+          if (value[i].state === 2) {
+            this.tableData[i].state = "已禁用";
+          }
+          if (value[i].state === 3) {
+            this.tableData[i].state = "已删除";
+          }
+          if (value[i].state === 4) {
+            this.tableData[i].state = "审核中";
+            this.inAudit++;
+          }
+          if (value[i].state === 5) {
+            this.tableData[i].state = "待处理";
+            this.handle++;
+          }
+          if (value[i].state === 6) {
+            this.tableData[i].state = "已消除";
+          }
+          if (value[i].state === 7) {
+            this.tableData[i].state = "已撤销";
+          }
+          if (value[i].state === 10) {
+            this.tableData[i].state = "已驳回";
+          }
+          if (value[i].state === 12) {
+            this.tableData[i].state = "已停止";
+          }
+          if (value[i].state === 13) {
+            this.tableData[i].state = "已完成";
+          }
+          if (value[i].state === 15) {
+            this.tableData[i].state = "待处理";
+          }
         }
       }
-    }
-  },
-  created() {
-    this.load();
-  },
-  mounted() {}
-};
+    },
+    created() {
+      this.load();
+    },
+    mounted() {}
+  };
 </script>
 <style scoped lang="less">
-@blue: #409eff;
-@Success: #67c23a;
-@Warning: #e6a23c;
-@Danger: #f56c6c;
-@Info: #dde2eb;
-@border: 1px solid #dde2eb;
-.work-order {
-  font-size: 12px;
-  .top {
-    border: @border;
-    padding: 10px;
-    border-radius: 5px;
-    .el-badge:not(:last-child) {
-      margin-right: 20px;
+  @blue: #409eff;
+  @Success: #67c23a;
+  @Warning: #e6a23c;
+  @Danger: #f56c6c;
+  @Info: #dde2eb;
+  @border: 1px solid #dde2eb;
+  .work-order {
+    font-size: 12px;
+    .top {
+      border: @border;
+      padding: 10px;
+      border-radius: 5px;
+      .el-badge:not(:last-child) {
+        margin-right: 20px;
+      }
+    }
+    .bottom {
+      margin-top: 10px;
+      padding: 10px;
+      border: @border;
+      border-radius: 5px;
     }
   }
-  .bottom {
-    margin-top: 10px;
-    padding: 10px;
-    border: @border;
-    border-radius: 5px;
-  }
-}
 </style>
 
