@@ -744,8 +744,8 @@ export default {
         });
       });
     },
-
     filterArray(data, parent) {
+      //编辑组织机构数据为树状结构方法
       let vm = this;
       var tree = [];
       var temp;
@@ -761,54 +761,8 @@ export default {
       }
       return tree;
     },
-    allOrganize() {
-      this.Axios(
-        {
-          params: {},
-          option: {
-            enableMsg: false
-          },
-          type: "get",
-          url: "/organize/allOrganize"
-        },
-        this
-      )
-        //.get(this.global.apiSrc + "/organize/allOrganize")
-        .then(
-          result => {
-            console.log(result.data);
-            for (let i = 0; i < result.data.data.length; i++) {
-              if (result.data.data[i].organizeType === 0) {
-                result.data.data[i].organizeType = "企业";
-              }
-              if (result.data.data[i].organizeType === 1) {
-                result.data.data[i].organizeType = "公司";
-              }
-              if (result.data.data[i].organizeType === 2) {
-                result.data.data[i].organizeType = "工厂";
-              }
-              if (result.data.data[i].organizeType === 3) {
-                result.data.data[i].organizeType = "部门";
-              }
-              if (result.data.data[i].organizeType === 4) {
-                result.data.data[i].organizeType = "车间";
-              }
-            }
-            this.orgoptions = this.filterArray(result.data.data, 0);
-            console.log("组织结构");
-            console.log(this.orgoptions);
-          },
-          ({ type, info }) => {
-            //错误类型 type=faild / error
-            //error && error(type, info);
-          }
-        );
-      // .catch(err => {
-      //   console.log(err);
-      //   console.log(this.userName);
-      // });
-    },
     filterArray2(data, parent) {
+      //编辑设备类别数据为树状结构方法
       let vm = this;
       var tree = [];
       var temp;
@@ -824,37 +778,21 @@ export default {
       }
       return tree;
     },
-    findAlldeviceClassify() {
+    organdcls(){
       this.Axios(
         {
-          params: {},
-          option: {
-            enableMsg: false
-          },
-          type: "get",
-          url: "/deviceCategory/all"
+          url: ["/organize/allOrganize", "/deviceCategory/all"],
+          type: ["get","get"],
+          params:[{},{}]
         },
         this
-      )
-        //.get(this.global.apiSrc + "/deviceCategory/all", data)
-        .then(
-          result => {
-            console.log("查询设备类别");
-            this.ctgoptions = this.filterArray2(result.data.data, 0);
-            console.log(result.data);
-          },
-          ({ type, info }) => {
-            //错误类型 type=faild / error
-            //error && error(type, info);
-          }
-        );
-      // .catch(err => {
-      //   console.log(err);
-      // });
-    },
-
-    orgAndClass(){
-
+      ).then(
+        ([res1, res2]) => {
+          this.orgoptions = this.filterArray(res1.data.data, 0);
+          this.ctgoptions= this.filterArray2(res2.data.data,0);
+        },
+        () => {}
+      );
     },
 
     orgsave(){
@@ -872,8 +810,7 @@ export default {
     this.urlid = this.$route.params.id;
     this.detail(this.urlid);
     console.log("letid:" + this.urlid);
-    this.allOrganize();
-    this.findAlldeviceClassify();
+    this.organdcls();
   }
 };
 </script>

@@ -341,8 +341,10 @@ export default {
     // }
   }
   .equListWrap {
-    //border: solid 1px #ccc;
-    margin: 20px 5px 5px 5px;
+    border: solid 1px #dfdfdf;
+    padding:10px;
+    margin-top: 10px;
+    border-radius: 5px;
   }
   .el-card__body {
     padding: 10px;

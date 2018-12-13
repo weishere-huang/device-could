@@ -100,13 +100,13 @@
             :model="maintenancePlan"
           >
             <el-form-item label="分类：">
-              <span>{{maintenancePlan.maintenanceClassify}}</span>
+              <span>{{maintenancePlan.maintenanceType}}</span>
             </el-form-item>
             <el-form-item label="级别：">
               <span>{{maintenancePlan.maintenanceLevel}}</span>
             </el-form-item>
             <el-form-item label="计划类型：">
-              <span>{{maintenancePlan.maintenanceType}}</span>
+              <span>{{maintenancePlan.planType}}</span>
             </el-form-item>
             <el-form-item label="开始时间：">
               <span>{{maintenancePlan.startTime}}</span>
@@ -685,12 +685,9 @@ import Vue from "vue";
     },
     methods: {
        customCompFunc(params) {
-      console.log("params");
-      console.log(params);
-      
       if (params.type === "delete") {
         // do delete operation
-       console.log(params);
+        this.maintenancePlan = this.maintenancePlan.filter(item=>item.id!=params.rowData["id"]);
       }
     },
       // 单元格编辑回调
@@ -754,7 +751,7 @@ import Vue from "vue";
         }
       },
       handleNodeClick(data) {
-        this.findBasicInfoByTypeId(data.categoryNo);
+        this.findBasicInfoByTypeId(data.id);
       },
       filterArray(data, parent) {
         let vm = this;
@@ -840,6 +837,17 @@ import Vue from "vue";
       },
       //执行审核
       examineUp(){
+        if(this.examine.radio!=1){
+          if(this.toExamine.userId !==""|| this.examine.type){
+            this.toExamineUp();
+          }else{
+            this.$message.error('请选择终审或添加下一级审批人')
+          }
+        }else{
+          this.toExamineUp();
+        }
+      },
+      toExamineUp(){
         this.Axios(
           {
             params: {
@@ -860,8 +868,16 @@ import Vue from "vue";
             this.pageSize = 10;
             this.examine.desc = "";
             this.examine.radio = 0;
+            this.toBack();
           },
-          ({ type, info }) => {}
+          ({ type, info }) => {
+            this.pageNumber = "";
+            this.outerVisible = false;
+            this.pageIndex = 1;
+            this.pageSize = 10;
+            this.examine.desc = "";
+            this.examine.radio = 0;
+          }
         );
       },
       //取消审核
@@ -926,6 +942,23 @@ import Vue from "vue";
         ).then(
           response => {
             this.findAlldeviceClassify();
+            this.addMaterielValue(response.data.data.content);
+            this.pageNumber = response.data.data.totalElements;
+          },
+          ({type, info}) => {
+
+          })
+      },
+      pageBasicInfo(){
+        this.Axios(
+          {
+            params: {page:this.pageIndex,size:this.pageSize},
+            type: "get",
+            url: "/part/listBasicInfo",
+          },
+          this
+        ).then(
+          response => {
             this.addMaterielValue(response.data.data.content);
             this.pageNumber = response.data.data.totalElements;
           },
@@ -1066,6 +1099,8 @@ import Vue from "vue";
         if (value.workType ===2){
           this.workInfo.workType = "故障"
         }
+
+
         if (value.state === 0) {
           this.workInfo.state = "待审核";
         }
@@ -1081,7 +1116,7 @@ import Vue from "vue";
         if (value.state === 4) {
           this.workInfo.state = "审核中";
         }
-        if (value.state === 5) {
+        if (value.state === 15) {
           this.workInfo.state = "待处理";
         }
         if (value.state === 6) {
@@ -1103,10 +1138,11 @@ import Vue from "vue";
       //计划详情
       maintenancePlanValue(value){
         this.maintenancePlan = value;
-        if(this.maintenancePlan.maintenanceClassify === 0){
-          this.maintenancePlan.maintenanceClassify = "维修";
-        }if(this.maintenancePlan.maintenanceClassify === 1){
-          this.maintenancePlan.maintenanceClassify = "保养";
+        if(this.maintenancePlan.maintenanceType === 0){
+          this.maintenancePlan.maintenanceType = "维修";
+        }
+        if(this.maintenancePlan.maintenanceType === 1){
+          this.maintenancePlan.maintenanceType = "保养";
         }
 
         if(this.maintenancePlan.maintenanceLevel===1){
@@ -1117,10 +1153,10 @@ import Vue from "vue";
           this.maintenancePlan.maintenanceLevel = "大";
         }
 
-        if (this.maintenancePlan.maintenanceType === 0){
-          this.maintenancePlan.maintenanceType = "单次"
-        }if (this.maintenancePlan.maintenanceType === 1){
-          this.maintenancePlan.maintenanceType = "周期"
+        if (this.maintenancePlan.planType === 0){
+          this.maintenancePlan.planType = "单次"
+        }if (this.maintenancePlan.planType === 1){
+          this.maintenancePlan.planType = "周期"
         }
       },
       //设备
