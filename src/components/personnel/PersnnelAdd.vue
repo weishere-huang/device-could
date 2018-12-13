@@ -257,13 +257,16 @@
         const isJPG = file.type === 'image/jpeg';
         const isPNG = file.type === 'image/png';
         const isLt1M = file.size / 1024 / 1024 < 1;
+
+        let isOk = true;
         if(!(isDOC || isDOCX || isXLS || isXLSX || isTXT || isPDF || isPPT || isPPTX || isJPG || isPNG ||isLt1M)){
           this.$message.error('文件格式不正确');
+          isOk = false;
         }
         if (!isLt1M) {
           this.$message.error('上传头像图片大小不能超过 1MB!');
         }
-
+        return isOk&& isLt1M;
       },
       handleRemove1(file, fileList) {
         console.log(file, fileList);
