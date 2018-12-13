@@ -188,6 +188,7 @@
                 multiple
                 :limit="20"
                 :on-exceed="handleExceed1"
+                :on-success="handleAvatarSuccess"
                 :file-list="fileList">
                 <el-button size="mini" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">只能上传不超过1M的文件,且不能超过20个文件</div>
@@ -304,9 +305,14 @@
         ctgoptions:[],
         devicePersonnelInfoBase:[],
         //devicePersonnelInfo:[]
+        dialogImageUrl:"",
       };
     },
     methods: {
+      handleAvatarSuccess(res, file) {
+        this.dialogImageUrl = file.response.data.split(":")[1];
+        this.dialogImageUrl= "ftp://192.168.1.104/"+this.dialogImageUrl;
+      },
       handleRemove1(file, fileList) {
         console.log(file, fileList);
       },
@@ -424,7 +430,6 @@
           //   enableMsg: false
           // }
         },this)
-          //.post(this.global.apiSrc + "/device/add", data)
           .then(result => {
             console.log(result.data);
             alert("执行添加");
@@ -522,7 +527,7 @@
             message: '已取消'
           });
         });
-      }
+      },
     },
     created() {
       this.organdcls();

@@ -105,16 +105,7 @@ export default {
         {
           field: "msgContent",
           title: "信息内容",
-          width: 150,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true,
-          overflowTitle: true
-        },
-        {
-          field: "msgType",
-          title: "消息类型",
-          width: 50,
+          width: 200,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,

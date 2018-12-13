@@ -74,8 +74,8 @@
       </p>
       <p class="registerSkip">
         <span>忘记密码</span>
-        <span v-on:click="function(){ 
-          isshow=!isshow 
+        <span v-on:click="function(){
+          isshow=!isshow
           ishide=!ishide
           }">企业注册</span>
       </p>
@@ -257,7 +257,7 @@
       <div
         class="loginSkip"
         v-on:click="function(){
-          isshow=!isshow 
+          isshow=!isshow
           ishide=!ishide
           }"
       >已有账号，直接登录
@@ -499,7 +499,7 @@ export default {
             console.log(result.data);
             sessionStorage.token = result.data.data.tokenStr;
             // sessionStorage.Cookie = result.data.data.organizeCode;
-            this.$cookieStore.addCookie( 'JSESSIONID' , result.data.data.jsessionid)
+            // this.$cookieStore.addCookie( 'JSESSIONID' , result.data.data.jsessionid)
             sessionStorage.user = result.data.data.employeeName;
             this.$store.commit("user", sessionStorage.getItem("user"));
             this.$store.commit("tokenSrc", result.data.data.tokenStr);
