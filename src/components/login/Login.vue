@@ -336,8 +336,8 @@ export default {
           { required: true, message: "用户名不能为空", trigger: "blur" },
           {
             validator: (rule, value, callback) => {
-              if (/^\d+$/.test(value) == false) {
-                callback(new Error("用户名不能输入汉字"));
+              if (/^[a-zA-Z0-9_-]{4,16}$/.test(value) == false) {
+                callback(new Error("用户名不能输入汉字和特殊符号"));
               } else {
                 callback();
               }
@@ -496,7 +496,10 @@ export default {
       ).then(
         result => {
           if (result.data.code === 200) {
+            console.log(result.data);
             sessionStorage.token = result.data.data.tokenStr;
+            // sessionStorage.Cookie = result.data.data.organizeCode;
+            this.$cookieStore.addCookie( 'JSESSIONID' , result.data.data.jsessionid)
             sessionStorage.user = result.data.data.employeeName;
             this.$store.commit("user", sessionStorage.getItem("user"));
             this.$store.commit("tokenSrc", result.data.data.tokenStr);

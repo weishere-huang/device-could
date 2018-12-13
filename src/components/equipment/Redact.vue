@@ -711,6 +711,7 @@ export default {
             //this.aaaa.value = this.sizeForm.deviceState;
           this.personAddHandler = this.devicePersonnelInfoBase;
           console.log(this.devicePersonnelInfoBase);
+          
           console.log("---------------");
         },
           ({type, info}) => {
