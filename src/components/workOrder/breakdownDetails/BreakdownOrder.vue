@@ -1144,7 +1144,7 @@ import Vue from "vue";
   };
    Vue.component("table-breakdownOrder", {
   template: `<span>
-          <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>
+          <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe635;</i></a>
         </span>`,
   props: {
     rowData: {

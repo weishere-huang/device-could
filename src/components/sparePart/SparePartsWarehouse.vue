@@ -442,8 +442,8 @@ export default {
       this.Axios(
         {
           params: {
-            page: this.pageIndex,
-            size: this.pageSize,
+            // page: this.pageIndex,
+            // size: this.pageSize,
             keywords: this.basekeyword
           },
           // option: {
@@ -610,12 +610,18 @@ Vue.component("table-warehouse", {
         float: left;
         height: 403px;
         padding-bottom: 10px;
+        .v-table-body{
+          height: 220px !important;
+        }
       }
       .inventory-list {
         width: 68%;
         // border: @border;
         float: left;
         height: 426px;
+        .v-table-body{
+          height: 320px !important;
+        }
       }
     }
   }

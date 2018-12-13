@@ -192,7 +192,11 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-          componentName: "switch-component"
+          formatter: function(rowData, rowIndex, pagingIndex, field) {
+            return rowData.state ==0
+              ? "待审核"
+              : rowData.state ==1?"正常":rowData.state ==2?"禁用":"驳回"
+          }
         },
         {
           field: "custome-adv",
@@ -500,9 +504,27 @@ Vue.component("switch-component", {
   }
 });
 Vue.component("table-company", {
-  template: `<span>
-          <el-button size="mini" @click.stop.prevent="audit(rowData,index)">审核</el-button>
-        </span>`,
+  template: `
+        <span v-if="rowData.state === '0'">
+          <el-tooltip class="item" effect="dark" content="审核" placement="top">
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="audit(rowData,index)" style='font-size:16px' class='iconfontz'>&#xe6a0;</i></a>
+          </el-tooltip>
+        </span>
+        <span v-else-if="rowData.state ==='1'||rowData.state === '2'">
+          <el-switch
+            v-model="rowData.state"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-value="1"
+            inactive-value="2"
+            @change="changeValue(rowData,index)">
+          </el-switch>
+        </span>
+        <span v-else-if="rowData.state === '10'">
+          
+        </span>
+          
+        `,
   props: {
     rowData: {
       type: Object
