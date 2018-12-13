@@ -58,6 +58,7 @@
     <el-dialog
       title="审核"
       :visible.sync="outerVisible"
+      :beforeClose="toCancel"
     >
       <el-form
         label-position=right
@@ -118,7 +119,7 @@
         class="dialog-footer"
       >
         <el-button
-          @click="outerVisible = false"
+          @click="toCancel"
           size="mini"
         >取 消</el-button>
         <el-button
@@ -290,8 +291,12 @@ export default {
     },
     toAmend(rowIndex, rowData, column) {
       // 传值给修改
-      this.$router.push("/TurnaroundPlansAmend/" + rowData.id);
-      this.$store.commit("turnaroundPlans", rowData);
+      if(rowData.state=="待审核"){
+        this.$router.push("/TurnaroundPlansAmend/" + rowData.id);
+        this.$store.commit("turnaroundPlans", rowData);
+      }else{
+        this.$message.error('只能修改待审核状态的计划')
+      }
     },
     toPansAdd() {
       this.$router.push({
@@ -532,7 +537,14 @@ export default {
       }
     },
     //审核操作
-    submitAudit() {
+    submitAudit(){
+      if (!(this.formLabelAlign.type =="" ||this.toAudit=="")) {
+        this.toSubmitAudit();
+      }else{
+        this.$message.error('请选择终审或添加下一审核人')
+      }
+    },
+    toSubmitAudit() {
       this.formLabelAlign.type
         ? (this.formLabelAlign.type = 0)
         : (this.formLabelAlign.type = 1);
@@ -553,9 +565,18 @@ export default {
         response => {
           this.arr = "";
           this.load();
+          this.formLabelAlign.desc="";
+          this.formLabelAlign.type="";
+          this.formLabelAlign.radio="";
+          this.maintenanceIds="";
           this.outerVisible = false;
         },
-        ({ type, info }) => {}
+        ({ type, info }) => {
+          this.formLabelAlign.desc="";
+          this.formLabelAlign.type="";
+          this.formLabelAlign.radio="";
+          this.maintenanceIds="";
+        }
       );
     },
     outerVisibleIsOk() {
@@ -566,6 +587,13 @@ export default {
       } else {
         alert("抱歉只能计划只能单个修改");
       }
+    },
+    toCancel(){
+      this.formLabelAlign.desc="";
+      this.formLabelAlign.type="";
+      this.formLabelAlign.radio="";
+      this.maintenanceIds="";
+      this.outerVisible = false
     }
   },
   created() {
