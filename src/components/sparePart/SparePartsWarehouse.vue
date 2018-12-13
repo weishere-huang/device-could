@@ -428,6 +428,7 @@ export default {
           console.log(result.data);
           if(result.data.code===200){
             this.$message("添加成功");
+            this.reload();
           }
         },
         ({ type, info }) => {}
