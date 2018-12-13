@@ -696,6 +696,7 @@ export default {
             this.jsontoarr(result.data.data.devicePersonnelInfo);
             //this.aaaa.value = this.sizeForm.deviceState;
           console.log(this.devicePersonnelInfoBase);
+          
           console.log("---------------");
         },
           ({type, info}) => {

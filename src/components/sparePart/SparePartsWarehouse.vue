@@ -1,7 +1,11 @@
 <template>
   <div class="spare-parts-warehouse">
     <div class="top">
-      <el-button size="small" type="primary" @click="Sinsert">保存</el-button>
+      <el-button
+        size="small"
+        type="primary"
+        @click="Sinsert"
+      >保存</el-button>
     </div>
     <div class="warehouse">
       <h1>备件入库</h1>
@@ -27,13 +31,15 @@
             label="入库日期："
             style="margin-bottom:0px;"
           >
-            <el-input
+            <el-date-picker
               v-model="formInline.time"
-              placeholder=""
+              type="date"
               size="small"
-              style="width:200px"
-              readonly
-            ></el-input>
+              value-format="yyyy/MM/dd"
+              placeholder="选择日期"
+            >
+            </el-date-picker>
+
           </el-form-item>
         </el-form>
       </div>
@@ -78,10 +84,9 @@
               :row-dblclick="toDetails"
               is-horizontal-resize
               is-vertical-resize
-              column-width-drag
+              row-height="30"
               :multiple-sort="false"
-              style="width:100%;height:280px"
-              :min-height='280'
+              style="width:100%;max-height:280px;height:280px;"
               :columns="columns"
               :table-data="tableData"
               row-hover-color="#eee"
@@ -320,7 +325,9 @@ export default {
     customCompFunc(params) {
       if (params.type === "delete") {
         console.log(params.rowData);
-        this.tableData1 = this.tableData1.filter(item => item.partId !== params.rowData.partId);
+        this.tableData1 = this.tableData1.filter(
+          item => item.partId !== params.rowData.partId
+        );
         // this.deleteOne(params.rowData["id"]);
         // this.$delete(this.tableData, params.index);
       }
@@ -423,7 +430,7 @@ export default {
         result => {
           console.log(result);
           console.log(result.data);
-          if(result.data.code===200){
+          if (result.data.code === 200) {
             this.$message("添加成功");
           }
         },
@@ -534,7 +541,7 @@ export default {
   },
   created() {
     this.Sgetlist();
-
+    this.baselist();
     EventBus.$on("sideBarTroggleHandle", isCollapse => {
       window.setTimeout(() => {
         this.$refs.inventoryListTable.resize();
@@ -589,6 +596,7 @@ Vue.component("table-warehouse", {
     padding: 10px;
     margin-top: 10px;
     padding: 10px;
+    overflow: hidden;
     h1 {
       text-align: center;
       letter-spacing: 6px;
@@ -600,7 +608,8 @@ Vue.component("table-warehouse", {
         width: 30%;
         // border: @border;
         float: left;
-        // height: 426px;
+        height: 403px;
+        padding-bottom: 10px;
       }
       .inventory-list {
         width: 68%;
@@ -617,5 +626,8 @@ Vue.component("table-warehouse", {
 }
 .title-cell-class-name {
   color: #e6a23c;
+}
+.v-checkbox-group {
+  height: auto;
 }
 </style>
