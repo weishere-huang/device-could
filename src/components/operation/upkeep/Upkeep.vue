@@ -278,6 +278,7 @@ export default {
       this.formLabelAlign.type="";
       this.formLabelAlign.radio="";
       this.maintenanceIds="";
+      this.toAudit="";
     },
     customCompFunc(params) {
       // console.log(params);
@@ -409,7 +410,7 @@ export default {
           this.tableData[i].state = "已通过";
         }
         if (this.tableData[i].state === 2) {
-          this.tableData[i].state = "已禁用";
+          this.tableData[i].state = "禁用";
         }
         if (this.tableData[i].state === 3) {
           this.tableData[i].state = "已删除";
@@ -417,11 +418,23 @@ export default {
         if (this.tableData[i].state === 4) {
           this.tableData[i].state = "审核中";
         }
-        if (this.tableData[i].state === 12) {
-          this.tableData[i].state = "停用";
+        if (this.tableData[i].state === 5) {
+          this.tableData[i].state = "待处理";
+        }
+        if (this.tableData[i].state === 6) {
+          this.tableData[i].state = "已消除";
+        }
+        if (this.tableData[i].state === 7) {
+          this.tableData[i].state = "已撤销";
         }
         if (this.tableData[i].state === 10) {
-          this.tableData[i].state = "已驳回";
+          this.tableData[i].state = "审批被驳回";
+        }
+        if (this.tableData[i].state === 10) {
+          this.tableData[i].state = "已停止";
+        }
+        if (this.tableData[i].state === 14) {
+          this.tableData[i].state = "已完成";
         }
         if (this.tableData[i].maintenanceType === 0) {
           this.tableData[i].maintenanceType = "维修";
@@ -547,7 +560,8 @@ export default {
     },
     //审核操作
     submitAudit(){
-      if (!(this.formLabelAlign.type =="" ||this.toAudit=="")) {
+      console.log(this.formLabelAlign.type);
+      if (this.formLabelAlign.type || !this.toAudit == "") {
         this.toSubmitAudit();
       }else{
         this.$message.error('请选择终审或添加下一审核人')
@@ -573,18 +587,11 @@ export default {
         this
       ).then(
         response => {
-          this.formLabelAlign.desc="";
-          this.formLabelAlign.type="";
-          this.formLabelAlign.radio="";
-          this.maintenanceIds="";
+          this.cancel();
           this.load();
-          this.outerVisible = false;
         },
         ({ type, info }) => {
-          this.formLabelAlign.desc="";
-          this.formLabelAlign.type="";
-          this.formLabelAlign.radio="";
-          this.maintenanceIds="";
+          this.cancel();
         }
       );
     },
