@@ -130,8 +130,11 @@
               <el-upload
                 style="display:inline-block;vertical-align:top"
                 action="http://192.168.1.148:8081/upload"
+                accept="image/jpeg,image/png"
                 list-type="picture-card"
                 :limit="1"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
                 :on-preview="handlePictureCardPreview"
                 :on-remove="handleRemove">
                 <i class="el-icon-plus"></i>
@@ -145,16 +148,28 @@
               <el-upload
                 style="display:inline-block;line-height:30px;vertical-align:top"
                 class="upload-demo"
-                action="http://192.168.1.148:8081/upload/"
+                action="http://192.168.1.148:8081/upload"
+                accept="
+                 application/msword,
+                 application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                 application/vnd.ms-excel,
+                 application/vnd.ms-powerpoint,
+                 application/vnd.openxmlformats-officedocument.presentationml.presentation,
+                 application/pdf,
+                 text/plain,
+                 image/jpeg,
+                 image/png"
                 :on-preview="handlePreview1"
                 :on-remove="handleRemove1"
-                :before-remove="beforeRemove1"
-                multiple
+                :before-upload="beforeAvatarUpload1"
+                :on-success="handleSuccess"
+                 multiple
                 :limit="10"
                 :on-exceed="handleExceed1"
                 :file-list="fileList">
                 <el-button size="mini" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">只能上传不超过1M的文件,且不能超过10个文件</div>
+                <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">文件小于1MB(最多上传10个)</div>
               </el-upload>
             </li>
           </ul>
@@ -168,16 +183,11 @@
     name: "",
     data() {
       return {
-        fileList: [
-          {
-            name: 'food.jpeg',
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-          },
-          {
-            name: 'food2.jpeg',
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-          }
-        ],
+        fileList: [],
+        fileListTest:[{
+          name:"",
+          url:"",
+        }],
         dialogImageUrl: '',
         dialogVisible: false,
         date:new Date().toLocaleString().split(" ")[0].replace(/\//g, "-"),
@@ -213,19 +223,46 @@
       };
     },
     methods: {
-
+      handleAvatarSuccess(res, file) {
+        this.dialogImageUrl= "ftp://192.168.1.104/"+file.response.data.split(":")[1];
+      },
       beforeAvatarUpload(file) {
-        console.log(file);
-         file.type = 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 1;
+        const isJPG = file.type === 'image/jpeg';
+        const isPNG = file.type === 'image/png';
+        const isLt1M = file.size / 1024 / 1024 < 1;
 
-        // if (!isJPG) {
-        //   this.$message.error('上传头像图片只能是 JPG 格式!');
-        // }
-        if (!isLt2M) {
+        let isOk = true;
+        if (!(isJPG || isPNG)) {
+          this.$message.error('上传头像图片只能是 JPG/PNG 格式!');
+          isOk = false;
+        }
+        if (!isLt1M) {
           this.$message.error('上传头像图片大小不能超过 1MB!');
         }
-        return  isLt2M;
+        return isOk && isLt1M ;
+      },
+      beforeAvatarUpload1(file) {
+        const isDOC = file.type === 'application/msword';
+        const isDOCX = file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        const isXLS = file.type === 'application/vnd.ms-excel';
+        const isXLSX = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        const isTXT = file.type === 'text/plain';
+        const isPDF = file.type === 'application/pdf';
+        const isPPT = file.type === 'application/vnd.ms-powerpoint';
+        const isPPTX = file.type === 'aapplication/vnd.openxmlformats-officedocument.presentationml.presentation';
+        const isJPG = file.type === 'image/jpeg';
+        const isPNG = file.type === 'image/png';
+        const isLt1M = file.size / 1024 / 1024 < 1;
+
+        let isOk = true;
+        if(!(isDOC || isDOCX || isXLS || isXLSX || isTXT || isPDF || isPPT || isPPTX || isJPG || isPNG ||isLt1M)){
+          this.$message.error('文件格式不正确');
+          isOk = false;
+        }
+        if (!isLt1M) {
+          this.$message.error('上传的文件不能大于 1MB!');
+        }
+        return isOk&& isLt1M;
       },
       handleRemove1(file, fileList) {
         console.log(file, fileList);
@@ -233,7 +270,7 @@
       handlePreview1(file) {
         console.log(file);
       },
-      handleExceed1(files, fileList) {
+      handleExceed1(files,fileList) {
         this.$message.warning(`当前限制选择 10 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
       },
       beforeRemove1(file, fileList) {
@@ -241,13 +278,25 @@
       },
       handleRemove(file, fileList) {
         console.log(file);
+        console.log(fileList);
       },
       handlePictureCardPreview(file) {
-        console.log("OK");
         console.log(file);
-        this.dialogImageUrl = file.url;
         this.dialogVisible = true;
       },
+      handleSuccess(res, file){
+        console.log(res);
+        this.fileListTest[0].url = "ftp://192.168.1.104/"+res.data.split(":")[1];
+        this.fileListTest[0].name = file.name;
+        console.log(this.fileListTest[0].name);
+        console.log(this.fileListTest[0].url);
+        this.fileList.push(this.fileListTest[0]);
+        for (let i in this.fileList){
+          console.log(this.fileList[i].name);
+          console.log(this.fileList[i].url);
+        }
+      },
+
       tback(){
         this.$router.back(-1)
       },
@@ -298,7 +347,7 @@
           postalAddress:this.persnneladd. postalAddress,
           graduateSchool:this.persnneladd. graduateSchool,
           degree:this.persnneladd.degree,
-          img:this.persnneladd.img,
+          img:this.dialogImageUrl,
           qualificationInfo:this.persnneladd.qualificationInfo,
           roleId:this.persnneladd.roleId
         });

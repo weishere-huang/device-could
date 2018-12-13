@@ -4,25 +4,28 @@
       <div class="top">
         <el-button
           size="small"
+          type="primary"
           @click="allMsg"
         >所有消息
         </el-button>
         <el-button
           size="small"
+          type="primary"
           @click="allNotReadMsg"
         >未读消息
         </el-button>
         <el-button
           size="small"
+          type="primary"
           @click="updateAllMessageRead"
-        >全部已阅
+        >全部标为已读
         </el-button>
         <el-button
           size="small"
+          type="primary"
           @click="deleteMessage"
         >删除
         </el-button>
-        您有 <font color="#dc143c">{{msgcount}}</font> 条未读消息 !
 
       </div>
       <div class="bottom">

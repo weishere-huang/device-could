@@ -1,7 +1,11 @@
 <template>
   <div class="spare-parts-warehouse">
     <div class="top">
-      <el-button size="small" @click="Sinsert">保存</el-button>
+      <el-button
+        size="small"
+        type="primary"
+        @click="Sinsert"
+      >保存</el-button>
     </div>
     <div class="warehouse">
       <h1>备件入库</h1>
@@ -27,13 +31,15 @@
             label="入库日期："
             style="margin-bottom:0px;"
           >
-            <el-input
+            <el-date-picker
               v-model="formInline.time"
-              placeholder=""
+              type="date"
               size="small"
-              style="width:200px"
-              readonly
-            ></el-input>
+              value-format="yyyy/MM/dd"
+              placeholder="选择日期"
+            >
+            </el-date-picker>
+
           </el-form-item>
         </el-form>
       </div>
@@ -78,10 +84,9 @@
               :row-dblclick="toDetails"
               is-horizontal-resize
               is-vertical-resize
-              column-width-drag
+              row-height="30"
               :multiple-sort="false"
-              style="width:100%;height:280px"
-              :min-height='280'
+              style="width:100%;max-height:280px;height:280px;"
               :columns="columns"
               :table-data="tableData"
               row-hover-color="#eee"
@@ -91,7 +96,7 @@
           </div>
         </div>
         <div style="float:left;font-size:20px;height:426px;line-height:426px">
-          →
+          <i class="iconfont icon-jiantouyou"></i>
         </div>
         <div class="inventory-list">
           <el-form label-width="85px">
@@ -138,7 +143,7 @@ export default {
         time: new Date().toLocaleDateString()
       },
       //入库单号
-      godownEntryNo:"",
+      godownEntryNo: "",
       ctgoptions: [],
       defaultProps2: {
         value: "id",
@@ -240,8 +245,8 @@ export default {
           columnAlign: "center",
           isResize: true,
           overflowTitle: true,
-          formatter:function (rowData,rowIndex,pagingIndex,field) {
-            return rowData.entryCount*rowData.entryPrice
+          formatter: function(rowData, rowIndex, pagingIndex, field) {
+            return rowData.entryCount * rowData.entryPrice;
           }
         },
         {
@@ -299,11 +304,10 @@ export default {
         }
       ],
       tableData: [],
-      tableData1: [
-      ],
-      classifyId:"",
+      tableData1: [],
+      classifyId: "",
       //搜索关键字
-      basekeyword:""
+      basekeyword: ""
     };
   },
   methods: {
@@ -321,6 +325,9 @@ export default {
     customCompFunc(params) {
       if (params.type === "delete") {
         console.log(params.rowData);
+        this.tableData1 = this.tableData1.filter(
+          item => item.partId !== params.rowData.partId
+        );
         // this.deleteOne(params.rowData["id"]);
         // this.$delete(this.tableData, params.index);
       }
@@ -328,29 +335,30 @@ export default {
     toDetails(rowIndex, rowData, column) {
       console.log(rowData);
       //this.getuserbatch(rowData.id);
-      if(this.tableData1.find(i => i.partId === rowData.id)){
+      if (this.tableData1.find(i => i.partId === rowData.id)) {
         this.$message("不能添加重复的配件");
-      }else{
+      } else {
         this.tableData1.push({
-          partId:rowData.id,
-          partName:rowData.partName,
-          partNo:rowData.partNo,
-          partModel:rowData.partModel,
-          entryCount:"",
-          entryPrice:"",
-          supplierName:"",
+          partId: rowData.id,
+          partName: rowData.partName,
+          partNo: rowData.partNo,
+          partModel: rowData.partModel,
+          entryCount: "",
+          entryPrice: "",
+          supplierName: "",
           //批次ID
           //batchNumberId:"",
-          batchNumber:"",
-          saveLocation:"",
-          remarks:"",
+          batchNumber: "",
+          saveLocation: "",
+          remarks: ""
         });
       }
-
     },
-    toDetails2(rowIndex, rowData, column){
+    toDetails2(rowIndex, rowData, column) {
       console.log(rowData);
-      this.tableData1 = this.tableData1.filter(item => item.partId !== rowData.partId);
+      this.tableData1 = this.tableData1.filter(
+        item => item.partId !== rowData.partId
+      );
     },
     handleChange2(value) {
       let name = this.$refs["getName2"].currentLabels;
@@ -358,9 +366,9 @@ export default {
       let id = value[value.length - 1];
       console.log(id, name);
       this.classifyId = id;
-      this.findbyclassifyId()
+      this.findbyclassifyId();
     },
-    gezhongconso(){
+    gezhongconso() {
       console.log(this.tableData1);
     },
     findbyclassifyId() {
@@ -385,12 +393,12 @@ export default {
       ).then(
         result => {
           console.log(result.data);
-          this.tableData=result.data.data.content;
+          this.tableData = result.data.data.content;
           for (let i = 0; i < this.tableData.length; i++) {
             if (this.tableData[i].partCategory === 2) {
               this.tableData[i].partCategory = "关键";
-            }else{
-              this.tableData[i].partCategory = "普通"
+            } else {
+              this.tableData[i].partCategory = "普通";
             }
           }
         },
@@ -403,10 +411,7 @@ export default {
       let data = qs.stringify({
         godownEntryNo: this.godownEntryNo,
         godownEntryTime: this.formInline.time,
-        partInfoListJsonStr: JSON.stringify(
-          this.tableData1
-
-        )
+        partInfoListJsonStr: JSON.stringify(this.tableData1)
       });
       this.Axios(
         {
@@ -425,42 +430,46 @@ export default {
         result => {
           console.log(result);
           console.log(result.data);
+          if (result.data.code === 200) {
+            this.$message("添加成功");
+          }
         },
         ({ type, info }) => {}
       );
     },
-    baselist(){
+    baselist() {
       //备品备件列表接口1
-      this.Axios({
-        params: {
-          page: this.pageIndex,
-          size: this.pageSize,
-          keywords:this.basekeyword,
-        },
-        // option: {
-        //   enableMsg: false
-        // },
-        type:"get",
-        url: "/part/searchBasicInfo"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            console.log(result.data);
-            this.tableData=result.data.data.content;
-            for (let i = 0; i < this.tableData.length; i++) {
-              if (this.tableData[i].partCategory === 2) {
-                this.tableData[i].partCategory = "关键";
-              }else{
-                this.tableData[i].partCategory = "普通"
-              }
-            }
+      this.Axios(
+        {
+          params: {
+            page: this.pageIndex,
+            size: this.pageSize,
+            keywords: this.basekeyword
           },
-          ({type, info}) => {
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/part/searchBasicInfo"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },
+        this
+      ).then(
+        result => {
+          console.log(result.data);
+          this.tableData = result.data.data.content;
+          for (let i = 0; i < this.tableData.length; i++) {
+            if (this.tableData[i].partCategory === 2) {
+              this.tableData[i].partCategory = "关键";
+            } else {
+              this.tableData[i].partCategory = "普通";
+            }
           }
-        );
+        },
+        ({ type, info }) => {}
+      );
     },
 
     //查询类别
@@ -505,33 +514,34 @@ export default {
       );
     },
     //获取批次
-    getuserbatch(id){
+    getuserbatch(id) {
       //获取最近使用批次接口
-      this.Axios({
-        params: {
-          partId:id
-        },
-        option: {
-          enableMsg: false
-        },
-        type: "get",
-        url: "/part/listRecentlyUsedBatch"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            console.log(result.data);
+      this.Axios(
+        {
+          params: {
+            partId: id
           },
-          ({type, info}) => {
-          }
-        );
-    },
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/part/listRecentlyUsedBatch"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },
+        this
+      ).then(
+        result => {
+          console.log(result.data);
+        },
+        ({ type, info }) => {}
+      );
+    }
   },
   created() {
     this.Sgetlist();
-
+    this.baselist();
     EventBus.$on("sideBarTroggleHandle", isCollapse => {
       window.setTimeout(() => {
         this.$refs.inventoryListTable.resize();
@@ -566,6 +576,7 @@ Vue.component("table-warehouse", {
 </script>
 
 <style lang="less" >
+@import url("../../assets/font/font.css");
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
@@ -585,6 +596,7 @@ Vue.component("table-warehouse", {
     padding: 10px;
     margin-top: 10px;
     padding: 10px;
+    overflow: hidden;
     h1 {
       text-align: center;
       letter-spacing: 6px;
@@ -596,7 +608,8 @@ Vue.component("table-warehouse", {
         width: 30%;
         // border: @border;
         float: left;
-        height: 426px;
+        height: 403px;
+        padding-bottom: 10px;
       }
       .inventory-list {
         width: 68%;
@@ -613,5 +626,8 @@ Vue.component("table-warehouse", {
 }
 .title-cell-class-name {
   color: #e6a23c;
+}
+.v-checkbox-group {
+  height: auto;
 }
 </style>

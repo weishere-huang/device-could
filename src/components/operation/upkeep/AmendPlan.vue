@@ -22,8 +22,9 @@
             <el-input
               type="search"
               size="mini"
-              style="width:30%;"
+              style="width:40%;"
               v-model="key"
+              placeholder="设备编号，名称，位置，型号"
             ></el-input>
             <el-button
               type="primary"

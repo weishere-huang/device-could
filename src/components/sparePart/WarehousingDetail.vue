@@ -29,7 +29,7 @@
               value-format="yyyy/MM/dd"
             >
             </el-date-picker>
-            <el-button size="small" @click="listsearch">查询</el-button>
+            <el-button size="small" type="primary" @click="listsearch">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -41,7 +41,7 @@
           size="small"
           v-model="rkeyword"
         ></el-input>
-        <el-button size="small" @click="listsearch">搜索</el-button>
+        <el-button size="small" type="primary" @click="listsearch">搜索</el-button>
       </div>
     </div>
     <div class="bottom">
@@ -83,7 +83,7 @@ export default {
     return {
       startTime: "",
       endTime: "",
-      pageNumber: "",
+      pageNumber: 0,
       pageIndex: 1,
       pageSize: 10,
       tableData: [],
@@ -213,7 +213,6 @@ export default {
     },
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
-      this.load();
       this.getTableData();
       this.listsearch();
     },
@@ -245,9 +244,13 @@ export default {
       },this)
         .then(
           result => {
+            console.log(result.data);
             this.tableData=result.data.data.content;
             this.pageNumber=result.data.data.totalElements;
-            console.log(result.data);
+            for(let i=0;i<this.tableData.length;i++){
+              this.tableData[i].godownEntryTime = this.tableData[i].godownEntryTime.split(" ")[0];
+            }
+
           },
           ({type, info}) => {
           }

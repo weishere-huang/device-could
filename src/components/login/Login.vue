@@ -336,8 +336,8 @@ export default {
           { required: true, message: "用户名不能为空", trigger: "blur" },
           {
             validator: (rule, value, callback) => {
-              if (/^\d+$/.test(value) == false) {
-                callback(new Error("用户名不能输入汉字"));
+              if (/^[a-zA-Z0-9_-]{4,16}$/.test(value) == false) {
+                callback(new Error("用户名不能输入汉字和特殊符号"));
               } else {
                 callback();
               }
@@ -496,7 +496,10 @@ export default {
       ).then(
         result => {
           if (result.data.code === 200) {
+            console.log(result.data);
             sessionStorage.token = result.data.data.tokenStr;
+            // sessionStorage.JSESSIONID = result.data.data.jsessionid;
+            // this.$cookieStore.addCookie( 'JSESSIONID' , result.data.data.jsessionid)
             sessionStorage.user = result.data.data.employeeName;
             this.$store.commit("user", sessionStorage.getItem("user"));
             this.$store.commit("tokenSrc", result.data.data.tokenStr);
@@ -512,39 +515,6 @@ export default {
         },
         ({ type, info }) => {}
       );
-
-      // this.axios
-      //   .post(this.global.apiSrc + "/user/login", data)
-      //   // .post("/api/user/login", data)
-      //   .then(result => {
-      //     console.log(result);
-      //     if (this.userName === "") {
-      //       console.log("请输入用户名");
-      //       alert("请输入用户名");
-      //     } else if (this.password === "") {
-      //       alert("请输入密码");
-      //     } else {
-      //       if (result.data.code === 200) {
-      //         sessionStorage.token = result.data.data.tokenStr;
-      //         console.log(result.data.data);
-      //         this.$store.commit("tokenSrc", result.data.data.tokenStr);
-      //         console.log(sessionStorage.token);
-      //         console.log(this.$store.state.token.tokenNub);
-      //         this.$router.push({
-      //           path: "/Home",
-      //           redirect: "/Home"
-      //         });
-      //         location.reload()
-      //       } else {
-      //         alert("账号或密码错误");
-      //         this.$router.push({ path: "/Login" });
-      //       }
-      //     }
-      //   })
-      //   .catch(err => {
-      //     console.log(err);
-      //     console.log(this.userName);
-      //   });
     },
     register() {
       let pass = this.manager.userPassword;
@@ -571,64 +541,64 @@ export default {
           this.isshow = false;
         }
       });
-      if (this.company.name === "") {
-        this.$message({
-          message: "企业名不能为空",
-          type: "error"
-        });
-      }
-      if (this.company.address === "") {
-        this.$message({
-          message: "企业地址不能为空",
-          type: "error"
-        });
-      }
-      if (this.company.phone === "") {
-        this.$message({
-          message: "企业电话不能为空",
-          type: "error"
-        });
-      }
-      if (this.company.corporation === "") {
-        this.$message({
-          message: "企业法人不能为空",
-          type: "error"
-        });
-      }
-      if (
-        this.company.companyID === "" ||
-        this.company.companyID.length !== 18
-      ) {
-        this.$message({
-          message:
-            "统一社会信用编码不能为空且必须为十八位，请与营业执照上的编码相同",
-          type: "error"
-        });
-      }
-      if (this.company.companyID === "") {
-        this.$message({
-          message: "请上传营业执照",
-          type: "error"
-        });
-      }
-      if (this.manager.userName === "") {
-        this.$message({
-          message: "请输入企业管理人信息",
-          type: "error"
-        });
-      }
-      if (pass === "") {
-        this.$message({
-          message: "请设置密码",
-          type: "error"
-        });
-      }
-      if (this.manager.phone === "") {
-        this.$message({
-          message: "请输入企业管理人电话",
-          type: "error"
-        });
-      }
+      // if (this.company.name === "") {
+      //   this.$message({
+      //     message: "企业名不能为空",
+      //     type: "error"
+      //   });
+      // }
+      // if (this.company.address === "") {
+      //   this.$message({
+      //     message: "企业地址不能为空",
+      //     type: "error"
+      //   });
+      // }
+      // if (this.company.phone === "") {
+      //   this.$message({
+      //     message: "企业电话不能为空",
+      //     type: "error"
+      //   });
+      // }
+      // if (this.company.corporation === "") {
+      //   this.$message({
+      //     message: "企业法人不能为空",
+      //     type: "error"
+      //   });
+      // }
+      // if (
+      //   this.company.companyID === "" ||
+      //   this.company.companyID.length !== 18
+      // ) {
+      //   this.$message({
+      //     message:
+      //       "统一社会信用编码不能为空且必须为十八位，请与营业执照上的编码相同",
+      //     type: "error"
+      //   });
+      // }
+      // if (this.company.companyID === "") {
+      //   this.$message({
+      //     message: "请上传营业执照",
+      //     type: "error"
+      //   });
+      // }
+      // if (this.manager.userName === "") {
+      //   this.$message({
+      //     message: "请输入企业管理人信息",
+      //     type: "error"
+      //   });
+      // }
+      // if (pass === "") {
+      //   this.$message({
+      //     message: "请设置密码",
+      //     type: "error"
+      //   });
+      // }
+      // if (this.manager.phone === "") {
+      //   this.$message({
+      //     message: "请输入企业管理人电话",
+      //     type: "error"
+      //   });
+      // }
       this.Axios(
         {
           url: "/enterprise/add",

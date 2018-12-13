@@ -45,11 +45,13 @@
       <div class="search">
         <el-button
           size="small"
+          type="primary"
           @click="toAdd"
         >添加
         </el-button>
         <el-button
           size="small"
+          type="primary"
           @click="editShow"
           disabled
         >修改
@@ -57,20 +59,22 @@
         <!--<el-button size="small" > 复制</el-button>-->
         <el-button
           size="small"
+          type="primary"
           @click="warningdelete"
         >删除
         </el-button>
         <div class="searchright">
           <span>关键字：</span>
-
           <el-input
             type="search"
             size="small"
             placeholder="根据设备编号，名称，位号"
             v-model="keyWord"
+            style="width:200px"
           ></el-input>
           <el-button
             size="small"
+            type="primary"
             @click="findByKeyWord"
           >搜索
           </el-button>
@@ -762,7 +766,7 @@ Vue.component("table-equipment", {
 }
 
 .el-input {
-  width: auto !important;
+  // width: auto !important;
   padding: 0 !important;
 }
 

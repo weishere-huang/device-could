@@ -3,8 +3,8 @@
     <div class="addCase">
       <div class="top">
         <el-row>
-          <el-button plain size="small" @click="tback">返回</el-button>
-          <el-button plain size="small" @click="addwarning">保存</el-button>
+          <el-button plain size="small" type="primary" @click="tback">返回</el-button>
+          <el-button plain size="small" type="primary" @click="addwarning">保存</el-button>
         </el-row>
       </div>
       <div class="center">
@@ -143,7 +143,7 @@
             </span>
           </el-form-item>
           <el-form-item style="padding-left:20px">
-            <el-button size="mini" @click="dialogVisible=true" >添加人员</el-button>
+            <el-button size="mini" type="primary" @click="dialogVisible=true" >添加人员</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -214,7 +214,7 @@
       return {
         fileList: [
           {
-            name: 'food.jpeg', 
+            name: 'food.jpeg',
             url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
           },
           {
