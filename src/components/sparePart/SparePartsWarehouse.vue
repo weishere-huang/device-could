@@ -599,7 +599,7 @@ Vue.component("table-warehouse", {
         width: 30%;
         // border: @border;
         float: left;
-        height: 426px;
+        // height: 426px;
       }
       .inventory-list {
         width: 68%;
