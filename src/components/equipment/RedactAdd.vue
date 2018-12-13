@@ -171,7 +171,7 @@ export default {
       editableTabsValue: "0",
       tabPosition: "top",
       pageIndex: 1,
-      pageSize: 4,
+      pageSize: 5,
       toValue: "",
       tableData: [],
       tableDate: [],
