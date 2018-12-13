@@ -187,12 +187,14 @@
             column-width-drag
             :multiple-sort="false"
             style="width:100%;"
+            :height="150"
             :columns="workSheetMaterialTable"
             :table-data="workSheetMaterialTableData"
             row-hover-color="#eee"
             row-click-color="#edf7ff"
             :cell-edit-done="cellEditDone"
             row-height=24
+            @on-custom-comp="customCompFunc"
           >
           </v-table>
         </div>
@@ -316,6 +318,7 @@
   </div>
 </template>
 <script>
+import Vue from "vue";
   export default {
     data() {
       return {
@@ -493,12 +496,13 @@
             isResize: true
           },
           {
-            field: "isOk",
+            field: "custome-adv",
             title: "操作",
             width: 90,
             titleAlign: "center",
             columnAlign: "center",
-            isResize: true
+            isResize: true,
+            componentName: "table-upkeepAndTurnaroundPlans"
           }
         ],
         flowInfoTable: [
@@ -680,6 +684,15 @@
       };
     },
     methods: {
+       customCompFunc(params) {
+      console.log("params");
+      console.log(params);
+      
+      if (params.type === "delete") {
+        // do delete operation
+       console.log(params);
+      }
+    },
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
         this.workSheetMaterialTableData[rowIndex][field] = newValue;
@@ -1147,9 +1160,39 @@
       this.overhaulLoad(this.workId);
     }
   };
+  Vue.component("table-upkeepAndTurnaroundPlans", {
+  template: `<span>
+          <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>
+        </span>`,
+  props: {
+    rowData: {
+      type: Object
+    },
+    field: {
+      type: String
+    },
+    index: {
+      type: Number
+    }
+  },
+  data(){
+    return {
+      deleteVisible:false,
+    }
+  },
+  methods: {
+   
+    deleteRow() {
+      // 参数根据业务场景随意构造
+      let params = { type: "delete", rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    }
+  }
+});
 </script>
 
 <style lang="less" scoped>
+@import url("../../../assets/font/font.css");
   @blue: #409eff;
   @Success: #67c23a;
   @Warning: #e6a23c;
@@ -1213,6 +1256,7 @@
           margin-top: 20px;
           padding: 10px;
           height: 220px;
+          // overflow: scroll;
         }
         .information-receipt {
           border: @border;
@@ -1260,6 +1304,7 @@
       border-radius: 5px;
     }
     .add {
+      
       width: 18%;
       float: left;
       border: @border;
