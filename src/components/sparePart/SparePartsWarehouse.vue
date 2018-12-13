@@ -356,9 +356,11 @@ export default {
     },
     toDetails2(rowIndex, rowData, column) {
       console.log(rowData);
-      this.tableData1 = this.tableData1.filter(
-        item => item.partId !== rowData.partId
-      );
+     //
+     //
+     //
+     //
+     //
     },
     handleChange2(value) {
       let name = this.$refs["getName2"].currentLabels;
