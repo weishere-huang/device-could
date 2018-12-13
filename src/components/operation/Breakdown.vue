@@ -102,6 +102,7 @@
     <el-dialog
       title="审核"
       :visible.sync="outerVisible"
+      :beforeClose="cancel"
     >
       <el-form
         label-position=right
@@ -303,9 +304,11 @@ export default {
     cancel() {
       this.dialogVisible = false;
       this.outerVisible = false;
+      this.formLabelAlign.desc = "";
+      this.formLabelAlign.type = "";
       this.formLabelAlign.time = "";
       this.formLabelAlign.radio = "";
-      this.formLabelAlign.desc = "";
+      this.formLabelAlign.name = "";
     },
     customCompFunc(params) {
       // console.log(params);
@@ -321,7 +324,7 @@ export default {
     },
     toDetails(rowIndex, rowData, column) {
       this.$store.commit("breakDetails", rowData);
-      this.$router.push("/BreakDetails" + rowData.id);
+      this.$router.push("/BreakDetails/" + rowData.id);
     },
     auditHide(params) {
       this.auditShow = params;
@@ -565,7 +568,14 @@ export default {
       this.toAuditName = params.person;
       this.innerVisible = params.hide;
     },
-    isSubmitAudit() {
+    isSubmitAudit(){
+      if(!(this.toAuditName==""||this.formLabelAlign.type=="")){
+        this.toSubmitAudit();
+      }else{
+        this.$message.error('请选择终审或添加下一审核人')
+      }
+    },
+    toSubmitAudit() {
       this.formLabelAlign.type
         ? (this.formLabelAlign.type = 1)
         : (this.formLabelAlign.type = 0);
@@ -597,7 +607,14 @@ export default {
             this.load();
             this.outerVisible = false;
           },
-          ({ type, info }) => {}
+          ({ type, info }) => {
+            this.formLabelAlign.desc = "";
+            this.formLabelAlign.type = "";
+            this.formLabelAlign.time = "";
+            this.formLabelAlign.radio = "";
+            this.formLabelAlign.name = "";
+            this.arr = "";
+          }
         );
       } else if (this.formLabelAlign.radio === "1") {
         let qs = require("qs");
@@ -615,11 +632,15 @@ export default {
         ).then(
           response => {
             this.arr = "";
+            this.formLabelAlign.desc = "";
             console.log(response);
             this.load();
             this.outerVisible = false;
           },
-          ({ type, info }) => {}
+          ({ type, info }) => {
+            this.arr = "";
+            this.formLabelAlign.desc = "";
+          }
         );
       }
     },
@@ -631,7 +652,8 @@ export default {
       } else {
         alert("抱歉、只能单个审核");
       }
-    }
+    },
+
   },
   created() {
     this.load();
