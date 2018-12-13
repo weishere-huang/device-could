@@ -36,7 +36,7 @@
           type="primary"
           @click="load(5)"
           size="small"
-        >待处理</el-button>
+        >已通过</el-button>
       </el-badge>
       <el-badge class="item">
         <el-button

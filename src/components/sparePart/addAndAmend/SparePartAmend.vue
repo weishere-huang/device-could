@@ -1,8 +1,8 @@
 <template>
   <div class="spare-part-amend">
     <div class="top">
-      <el-button size="small" @click="toBack">返回</el-button>
-      <el-button size="small" @click="btisok">保存</el-button>
+      <el-button size="small" type="primary" @click="toBack">返回</el-button>
+      <el-button size="small" type="primary" @click="btisok">保存</el-button>
     </div>
     <div class="basic-information">
       <h5>备件基本信息</h5>
@@ -97,7 +97,7 @@
             size="small"
             ></el-cascader>
           </div>
-          
+
           <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false" size="mini">取 消</el-button>
             <el-button type="primary" @click="dialogVisible = false" size="mini">确 定</el-button>

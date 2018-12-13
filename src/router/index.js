@@ -10,6 +10,9 @@ import Equipment from '@/components/equipment/Equipment'
 import Monit from '@/components/monit'
 import MonitSingle from '@/components/monit/single'
 import Oee from '@/components/oee/'
+import OeeDetails from '@/components/oee/details'
+import OeeAdd from '@/components/oee/add'
+import OeeEnd from '@/components/oee/end'
 import Category from '@/components/equipment/Category'
 import EquipmentAdd from '@/components/equipment/EquipmentAdd'
 import Redact from '@/components/equipment/Redact'
@@ -114,6 +117,7 @@ const router = new Router({
     {
       path: '/Category',
       name: 'Category',
+      props:{title:'设备分类'},
       component: Category,
       meta: {
         requireAuth: true
@@ -154,10 +158,35 @@ const router = new Router({
       path: '/Oee',
       name: 'Oee',
       component: Oee,
-      props:{title:'OEE分析'},
-      meta: {
-        requireAuth: true
-      },
+      props:{title:'OEE'},
+      children:[
+        {
+          path: 'End',
+          name: 'OeeEnd',
+          component: OeeEnd,
+          props:{title:'任务结束'}
+        },
+        {
+          path: 'Add',
+          name: 'OeeAdd',
+          component: OeeAdd,
+          props:{title:'任务新增'}
+        },
+        {
+          path: 'Details',
+          name: 'OeeDetails',
+          component: OeeDetails,
+          props:{title:'任务详情'},
+          children:[
+            {
+              path: 'End',
+              name: 'OeeEnd2',
+              component: OeeEnd,
+              props:{title:'任务结束'}
+            }
+          ]
+        }
+      ]
     },
     {
       path: '/EquipmentAdd',
@@ -313,6 +342,7 @@ const router = new Router({
       path: '/User',
       name: 'User',
       component: User,
+      props:{title:'用户管理'},
       meta: {
         requireAuth: true
       },
@@ -363,6 +393,7 @@ const router = new Router({
     {
       path: '/Message',
       name: 'Message',
+      props:{title:'消息列表'},
       component: Message,
       meta: {
         requireAuth: true
@@ -396,6 +427,7 @@ const router = new Router({
     {
       path: '/SparePart',
       name: 'SparePart',
+      props:{title:'备品备件列表'},
       component: SparePart,
       meta: {
         requireAuth: true
@@ -404,6 +436,7 @@ const router = new Router({
     {
       path: '/SparePartAdd',
       name: 'SparePartAdd',
+      props:{title:'备品备件添加'},
       component: SparePartAdd,
       meta: {
         requireAuth: true
@@ -412,6 +445,7 @@ const router = new Router({
     {
       path: '/SparePartAmend/:id/',
       name: 'SparePartAmend',
+      props:{title:'备品备件详情页'},
       component: SparePartAmend,
       meta: {
         requireAuth: true
@@ -420,6 +454,7 @@ const router = new Router({
     {
       path: '/SparePartsWarehouse',
       name: 'SparePartsWarehouse',
+      props:{title:'备件入库'},
       component: SparePartsWarehouse,
       meta: {
         requireAuth: true
@@ -428,6 +463,7 @@ const router = new Router({
     {
       path: '/WarehousingDetail',
       name: 'WarehousingDetail',
+      props:{title:'入库明细'},
       component: WarehousingDetail,
       meta: {
         requireAuth: true
@@ -436,6 +472,7 @@ const router = new Router({
     {
       path: '/OutboundDetails',
       name: 'OutboundDetails',
+      props:{title:'出库明细'},
       component: OutboundDetails,
       meta: {
         requireAuth: true
@@ -444,6 +481,7 @@ const router = new Router({
     {
       path: '/SparePartsClassification',
       name: 'SparePartsClassification',
+      props:{title:'备件分类'},
       component: SparePartsClassification,
       meta: {
         requireAuth: true

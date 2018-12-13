@@ -45,11 +45,13 @@
       <div class="search">
         <el-button
           size="small"
+          type="primary"
           @click="toAdd"
         >添加
         </el-button>
         <el-button
           size="small"
+          type="primary"
           @click="editShow"
           disabled
         >修改
@@ -57,6 +59,7 @@
         <!--<el-button size="small" > 复制</el-button>-->
         <el-button
           size="small"
+          type="primary"
           @click="warningdelete"
         >删除
         </el-button>
@@ -71,6 +74,7 @@
           ></el-input>
           <el-button
             size="small"
+            type="primary"
             @click="findByKeyWord"
           >搜索
           </el-button>

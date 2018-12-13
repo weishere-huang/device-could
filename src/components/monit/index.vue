@@ -13,7 +13,6 @@
                 <el-tree 
                   ref='tree'
                   :data="organizationTreeData" 
-                  :props="defaultProps" 
                   highlight-current
                   default-expand-all
                   node-key="id"
@@ -28,7 +27,6 @@
                 <el-tree 
                   ref='tree2'
                   :data="equTypeTreeData" 
-                  :props="defaultProps" 
                   highlight-current
                   default-expand-all
                   node-key="id"
@@ -358,13 +356,13 @@ export default {
       font-size: 12px;
       &>div:first-child {
         flex: 1;
-        margin: 5px;
+        margin: 5px 10px;
         line-height: 40px;
         //border: solid 1px #dfdfdf;
       }
       &>div:last-child {
-        flex: 3;
-        margin: 5px;
+        flex: 1;
+        margin: 5px 10px;
         //border: solid 1px #dfdfdf;
         text-align: right;
         div{

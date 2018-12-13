@@ -3,9 +3,10 @@
     <div class="top">
       <el-button
         size="small"
+        type="primary"
         @click="toAdd"
       >添加</el-button>
-      <el-button size="small" @click="btisok">删除</el-button>
+      <el-button size="small" type="primary" @click="btisok">删除</el-button>
       <div class="search">
         <span>关键字：</span>
         <el-input
@@ -14,7 +15,7 @@
           size="small"
           v-model="basekeyword"
         ></el-input>
-        <el-button size="small" @click="basesearch">搜索</el-button>
+        <el-button size="small" type="primary" @click="baselist">搜索</el-button>
       </div>
     </div>
     <div class="bottom">
@@ -206,8 +207,17 @@ export default {
         }
       }
       console.log(selection);
+      console.log(this.ids);
     },
     selectALL(selection) {
+      this.ids = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.ids != "") {
+          this.ids += "," + selection[i].id;
+        } else {
+          this.ids += selection[i].id;
+        }
+      }
       console.log(selection);
     },
     selectChange(selection, rowData) {
@@ -221,13 +231,14 @@ export default {
     },
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
-
       this.getTableData();
+      this.baselist();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+      this.baselist();
     },
 
     //备品备件接口
@@ -276,6 +287,7 @@ export default {
       },this)
         .then(
           result => {
+            console.log(result);
             console.log(result.data);
             this.tableData=result.data.data.content;
             for (let i = 0; i < this.tableData.length; i++) {
