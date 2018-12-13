@@ -55,7 +55,7 @@ let AUTH_TOKEN = (function () {
 })();
 var instance = axios.create({});
 instance.defaults.headers.common["token"] = sessionStorage.getItem("token");
-// instance.defaults.headers.common["Cookie"] = sessionStorage.getItem("Cookie");
+// instance.defaults.headers.common["JSESSIONID"] = sessionStorage.getItem("JSESSIONID");
 // instance.interceptors.request.use(function (config) {
 //   console.log(config)
 //   let url = config.url;
