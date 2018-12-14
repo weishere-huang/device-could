@@ -49,8 +49,8 @@
                   >
                     <i
                       style='font-size:16px'
-                      class='iconfontz'
-                    >&#xe626;</i>
+                      class='iconfont'
+                    >&#xe6b4;</i>
                   </el-button>
                 </el-tooltip>
                 <el-tooltip
@@ -63,11 +63,13 @@
                     type="text"
                     size="mini"
                     @click="() => warningdelete(data.id)"
+                    
                   >
                     <i
-                      style='font-size:16px'
-                      class='iconfontz'
-                    >&#xe635;</i>
+                      style='font-size:16px;color:#F56C6C'
+                      class='iconfont'
+                      
+                    >&#xe66b;</i>
                   </el-button>
                 </el-tooltip>
               </span>

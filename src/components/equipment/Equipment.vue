@@ -69,12 +69,12 @@
         >修改
         </el-button> -->
         <!--<el-button size="small" > 复制</el-button>-->
-        <el-button
+        <!-- <el-button
           size="small"
-          type="primary"
+          type="danger"
           @click="warningdelete"
         >删除
-        </el-button>
+        </el-button> -->
         <div class="searchright">
           <span>关键字：</span>
           <el-input
@@ -667,7 +667,7 @@ Vue.component("table-equipment", {
           </el-tooltip>
           &nbsp;&nbsp;
           <el-tooltip class="item" effect="dark" content="删除" placement="top">
-            <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfontz'>&#xe635;</i></a>
+            <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>
           </el-tooltip>
         </span>`,
   props: {

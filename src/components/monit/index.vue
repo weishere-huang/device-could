@@ -75,54 +75,56 @@
           <section class="equListWrap">
             <div>
               <el-row>
-                <el-col :span="6">
+                <el-col :span="6" v-for="(item, index) in equipmentOperationalCondition" :key="index">
                   <el-card shadow="always" class="cardItem">
                     <div slot="header" class="clearfix">
                       <span class="cardItem-header">
-                        <el-tooltip
+                        <!-- <el-tooltip
                           class="item"
                           effect="light"
                           content="严重警报，请立即检查设备"
                           placement="top"
                         >
                           <i class="iconfont c-red">&#xe651;</i>
-                        </el-tooltip>&nbsp;常减压装置
+                        </el-tooltip>&nbsp;常减压装置 -->
+                        
+                        {{item.deviceName}}
                       </span>
                       <router-link
                         :class="'g-link f14'"
                         style="float: right; padding: 3px 0"
-                        to="/Monit/12"
+                        :to="{path:'/Monit/'+item.id}"
                       >运行日志</router-link>
                     </div>
                     <div class="text item">
-                      <p>编号：CH10002355</p>
+                      <p>编号：{{item.deviceNo}}</p>
                       <!-- <div class="separate"></div> -->
                       <ul>
                         <li>
                           <i class="iconfont">&#xe658;</i>温度：
-                          <span>88℃</span>
+                          <span>{{item.temperature}}</span>
                         </li>
                         <li>
                           <i class="iconfont">&#xe607;</i>压力：
-                          <span>8ps</span>
+                          <span>{{item.pressure}}</span>
                         </li>
                         <li>
                           <i class="iconfont">&#xe628;</i>主轴转速：
-                          <span>1200转/分</span>
+                          <span>{{item.spindleSpeed}}</span>
                         </li>
                         <li>
                           <i class="iconfont">&#xe76a;</i>主润滑液位：
-                          <span>117.2</span>
+                          <span>{{item.lubricationLevel}}</span>
                         </li>
                         <li>
                           <i class="iconfont">&#xe641;</i>振动频率：
-                          <span>8Hz</span>
+                          <span>{{item.vibrationFrequency}}</span>
                         </li>
                       </ul>
                     </div>
                   </el-card>
                 </el-col>
-                <el-col :span="6">
+                <!-- <el-col :span="6">
                   <el-card shadow="always" class="cardItem">
                     <div slot="header" class="clearfix">
                       <span>常减压装置</span>
@@ -154,7 +156,7 @@
                       <p>编号：CH10002355</p>
                     </div>
                   </el-card>
-                </el-col>
+                </el-col> -->
               </el-row>
             </div>
           </section>
@@ -244,7 +246,8 @@ export default {
           label: "30分钟"
         }
       ],
-      refreshValue: "60"
+      refreshValue: "60",
+      equipmentOperationalCondition:[]
     };
   },
   watch: {
@@ -269,6 +272,8 @@ export default {
             res1.data.data,
             "0"
           );
+          this.$store.commit('getCode',res1.data.data[0].code)
+          
           this.setPinOption(res1.data.data[0].code);
           this.getEquList(res1.data.data[0].code);
         } else {
@@ -399,14 +404,14 @@ export default {
       {
         url: "/deviceState/listDeviceByState",
         type: "get",
-        params: {organizeCode:selectOrganizeCode},
+        params: {organizeCode:selectOrganizeCode,size:100},
         option: { requestTarget: "r" }
       },
       this
     ).then(
       (res) => {
-        console.log(res);
-
+        // console.log(res);
+        this.equipmentOperationalCondition=res.data.data.content
         //window.setTimeout(() => {this.$refs.tree.setCurrentKey("1024");}, 1000);
       }
     );

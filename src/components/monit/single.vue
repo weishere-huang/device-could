@@ -52,7 +52,7 @@
                     row-click-color="#edf7ff"
                 ></v-table>
                 <div class="pagerWrap">
-                    <v-pagination :total="600"></v-pagination>
+                    <v-pagination :total="2"></v-pagination>
                 </div>
             </section>
         </el-main> 
@@ -61,6 +61,7 @@
 </template>
 <script>
 var echarts = require("echarts");
+import  clone from 'clone';
 require("echarts/lib/chart/bar.js");
 export default {
   data() {
@@ -162,7 +163,8 @@ export default {
           columnAlign: "left",
           isResize: true
         }
-      ]
+      ],
+      days1:[],
     };
   },
   methods: {
@@ -175,6 +177,8 @@ export default {
     // var app = {};
     // option = null;
     // app.title = '坐标轴刻度与标签对齐';
+    
+    // console.log(this.days);
     mainChart.setOption({
       tooltip: {
         trigger: "axis",
@@ -197,7 +201,7 @@ export default {
       },
       xAxis: {
         type: "category",
-        data: ["12/1", "12/2", "12/3", "12/4", "12/5", "12/6", "12/7"]
+        data: []
       },
       series: [
         {
@@ -226,6 +230,38 @@ export default {
         }
       ]
     });
+  },
+  created () {
+    let id = this.$route.params.deviceId
+    let code=this.$store.state.monit.code
+    console.log(this.$store.state.monit.code);
+    console.log(id);
+    this.Axios(
+      {
+        url: "/deviceState/getRunInfoForStateTime",
+        type: "get",
+        params: {
+          organizeCode:1001,
+          deviceId:92,
+          startDate:"2018/01/01",
+          endDate:"2018/01/07"
+        },
+        option: { requestTarget: "r" }
+      },
+      this
+    ).then(
+      (res1) => {
+        console.log(res1.data.data);
+        let arr=new Array()
+        for (let i = 0; i < res1.data.data.length; i++) {
+         arr.push(res1.data.data[i].days)
+        }
+        
+        this.days1=clone(arr);
+        console.log(arr);
+        console.log(this.days1);
+      }
+    );
   }
 };
 </script>
