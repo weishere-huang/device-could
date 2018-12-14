@@ -78,8 +78,7 @@ export default {
       detailsShow: false,
       msgDetail: "",
       pageIndex: 1,
-      pageSize: 20,
-      userId: 10,
+      pageSize: 10,
       ids: "",
       rowData: "",
       msgcount: 0,
@@ -241,7 +240,8 @@ export default {
           type: "post",
           option: {
             enableMsg: false
-          }
+          },
+          option:{requestTarget:"m"}
         },
         this
       )
@@ -265,18 +265,19 @@ export default {
       this.readkey=0;
       this.Axios(
         {
-          params: Object.assign(this.searchParams, {
+          params:{
             page: this.pageIndex,
             size: this.pageSize
-          }),
+          },
           option: {
             enableMsg: false
           },
           type: "get",
-          url: "/message/allMsg"
+          url: "/message/allMsg",
           // loadingConfig: {
           //   target: document.querySelector("#mainContentWrapper")
           // }
+          option:{requestTarget:"m"}
         },
         this
       )
@@ -297,34 +298,6 @@ export default {
           console.log(err);
         });
     },
-    oneMessage() {
-      //根据消息ID查询单个消息
-      if (this.ids.length > 1) {
-        alert("请选择单个消息");
-      } else {
-        this.axios
-          .get(apiMsg + "/message/findOneMsg/" + this.ids)
-          .then(result => {
-            alert(
-              result.data.data.id +
-                "\n---标题--" +
-                result.data.data.msgTitle +
-                "\n--内容--" +
-                result.data.data.msgContent
-            );
-            console.log(result.data);
-            console.log(this.rowData);
-            if (this.rowData.isRead === 0) {
-              this.updateMessageRead();
-              this.allMsg();
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      }
-      //执行修改阅读状态函数
-    },
     allNotReadMsg() {
       this.readkey=1;
       this.Axios(
@@ -337,10 +310,11 @@ export default {
           //   enableMsg: false
           // },
           type: "get",
-          url: "/message/allNotReadMsg"
+          url: "/message/allNotReadMsg",
           // loadingConfig: {
           //   target: document.querySelector("#mainContentWrapper")
           // }
+          option:{requestTarget:"m"}
         },
         this
       )
@@ -368,7 +342,8 @@ export default {
       this.Axios(
         {
           url: "/message/NotReadMsgCount/",
-          type: "get"
+          type: "get",
+          option:{requestTarget:"m"}
         },
         this
       )
@@ -386,7 +361,8 @@ export default {
       this.Axios(
         {
           url: "/message/UpdateMsgRead/" + this.ids,
-          type: "get"
+          type: "get",
+          option:{requestTarget:"m"}
         },
         this
       )
@@ -403,7 +379,8 @@ export default {
       this.Axios(
         {
           url: "/message/UpdateAllMsgRead/",
-          type: "get"
+          type: "get",
+          option:{requestTarget:"m"}
         },
         this
       )
@@ -423,7 +400,8 @@ export default {
       this.Axios(
         {
           url: "/message/findOneMsg/" + this.ids,
-          type: "get"
+          type: "get",
+          option:{requestTarget:"m"}
         },
         this
       )

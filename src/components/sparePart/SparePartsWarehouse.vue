@@ -445,8 +445,7 @@ export default {
       this.Axios(
         {
           params: {
-            // page: this.pageIndex,
-            // size: this.pageSize,
+            page:-1,
             keywords: this.basekeyword
           },
           // option: {

@@ -100,7 +100,7 @@
 
           <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false" size="mini">取 消</el-button>
-            <el-button type="primary" @click="dialogVisible = false,classfyname=formInline.partClassifyName" size="mini">确 定</el-button>
+            <el-button type="primary" @click="dialogVisible = false,classfyname=formInline.partClassifyName,classfyid=formInline.partClassify" size="mini">确 定</el-button>
           </span>
         </el-dialog>
       </el-form>
@@ -175,6 +175,7 @@
         urlid: "",
         classfy:"",
         classfyname:"",
+        classfyid:"",
 
       };
     },
@@ -200,8 +201,8 @@
           partName: this.formInline.partName,
           partModel: this.formInline.partModel,
           partCategory: this.formInline.partCategory,
-          partClassify: this.formInline.partClassify,
-          partClassifyName: this.formInline.partClassifyName,
+          partClassify: this.classfyid,
+          partClassifyName: this.classfyname,
           lower: this.formInline.lower,
           remarks: this.formInline.remarks,
           partUnit: this.formInline.partUnit,
@@ -306,7 +307,8 @@
           .then(
             result => {
               this.formInline = result.data.data;
-              this.classfyname=this.formInline.partClassifyName
+              this.classfyname=this.formInline.partClassifyName;
+              this.classfyid=this.formInline.partClassify;
               console.log(resule.data.data);
             },
             ({type, info}) => {

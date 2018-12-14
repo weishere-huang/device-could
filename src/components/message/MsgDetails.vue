@@ -95,10 +95,11 @@ export default {
       //   enableMsg: false
       // },
       type: "get",
-      url: "/message/findOneMsg/" + this.msgDetail
+      url: "/message/findOneMsg/" + this.msgDetail,
       // loadingConfig: {
       //   target: document.querySelector(".message")
       // }
+      option:{requestTarget:"m"}
     },this)
       //.get(apiMsg + "/message/findOneMsg/" + this.msgDetail)
       .then(result => {
