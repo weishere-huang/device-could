@@ -148,8 +148,10 @@
           </el-form-item>
           <el-form-item label="营业执照：">
             <el-upload
-              action="https://jsonplaceholder.typicode.com/posts/"
+              :action="uploadUrl()"
               list-type="picture-card"
+              :on-success="handleAvatarSuccess"
+              :befor-upload="beforeAvatarUpload"
               :on-preview="handlePictureCardPreview"
               :on-remove="handleRemove"
             >
@@ -323,7 +325,7 @@
           //   ],
           phone: [
             {required: true, message: "电话不能为空", trigger: "blur"},
-            {max:15,message:"您的电话号码超出长度限制了，请重新输入"},
+            {max: 15, message: "您的电话号码超出长度限制了，请重新输入"},
             {
               validator: (rule, value, callback) => {
                 if (/^((\d3,4|\d{3,4}-)?\d{7,8})|([1][0-9]{10})$/.test(value) == false) {
@@ -345,14 +347,14 @@
               trigger: "blur"
             },
             {
-              validator:(rule,value,callback)=>{
-                if (/(^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$)|(^\d{15}$)/.test(value)==false ) {
+              validator: (rule, value, callback) => {
+                if (/(^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$)|(^\d{15}$)/.test(value) == false) {
                   callback(new Error("您输入的统一社会信用代码有误，请重新输入"))
-                }else{
+                } else {
                   callback();
                 }
               },
-              trigger:"blur"
+              trigger: "blur"
             }
             // {
             //   min: 18,
@@ -565,11 +567,11 @@
           enterprisePhone: this.company.phone,
           legalPerson: this.company.corporation,
           creditCode: this.company.companyID,
-          businessLicenseImg: "img",
+          businessLicenseImg: this.dialogImageUrl,
           userName: this.manager.userName,
           passWord: pass,
           phone: this.manager.phone,
-          verifyCode:this.manager.validate,
+          verifyCode: this.manager.validate,
           returnForget() {
             this.forgetShow = true;
             this.isshow = false;
@@ -685,16 +687,16 @@
         )
       },
       //注册验证码
-      registerSecuritycode(){
+      registerSecuritycode() {
         let qs = require("qs");
         let data = qs.stringify({
           phone: this.manager.phone
         });
         this.Axios(
           {
-            params:data,
-            url:"/enterprise/getVerifyCode",
-            type:"post"
+            params: data,
+            url: "/enterprise/getVerifyCode",
+            type: "post"
           },
           this
         ).then(
@@ -712,6 +714,28 @@
             })
           }
         )
+      },
+      uploadUrl() {
+        let url = this.global.apiImg + "/upload"
+        return url
+      },
+      handleAvatarSuccess(res, file) {
+        console.log(res.data)
+        this.dialogImageUrl = res.data;
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === "image/jpeg";
+        const isPNG = file.type === "image/png";
+        const isLt1M = file.size / 1024 / 1024 < 1;
+        let isOK = true
+        if (!(isJPG || isPNG)) {
+          this.$message.error("仅支持jpg/png格式");
+          isOK = false
+        }
+        if (!isLt1M) {
+          this.$message.error("图片大小不能超过1M");
+        }
+        return isOK && isLt1M
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
