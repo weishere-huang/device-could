@@ -136,6 +136,7 @@
     name: "",
     data() {
       return {
+        imgPath:[],
         dialogVisible:false,
         formLabelAlign:{
           time:"",
@@ -263,6 +264,7 @@
             this.tableData = response.data.data;
             this.companyName = this.tableData;
             this.toValue(response.data.data);
+            this.imgPath = JSON.parse(this.tableData.img);
           },
           ({type, info}) => {
 

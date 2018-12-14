@@ -228,7 +228,7 @@
                 <h6>已选择</h6>
                 <li v-model="personListValue" v-for="value in personListValue">
                   {{value.partName}}
-                  <span :id="value.id" @click="basicAdd($event)">X</span>
+                  <span :id="value.id" @click="basicAdd($event)" class="el-icon-circle-close-outline"></span>
                 </li>
               </ul>
             </div>
@@ -279,6 +279,7 @@ import Vue from "vue";
   export default {
     data() {
       return {
+        imgPath:[],
         examine:{
           desc:"",
           type:"",
@@ -701,8 +702,10 @@ import Vue from "vue";
         return tree;
       },
       basicInfo(rowIndex, rowData, column){
-        this.personListValue.push(rowData);
-        this.personListValue = Array.from(new Set(this.personListValue));
+        if( this.personListValue.find(i => i.id === rowData.id)){
+        }else{
+          this.personListValue.push(rowData);
+        }
       },
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
@@ -777,6 +780,7 @@ import Vue from "vue";
             this.pageSize = 10;
             this.examine.desc = "";
             this.examine.radio = 0;
+            this.examine.type = false;
             this.toBack();
           },
           ({ type, info }) => {
@@ -785,6 +789,7 @@ import Vue from "vue";
             this.pageIndex = 1;
             this.pageSize = 10;
             this.examine.desc = "";
+            this.examine.type = false;
             this.examine.radio = 0;
           }
         );
@@ -1124,6 +1129,7 @@ import Vue from "vue";
         if (this.formLabelAlign.faultLevel === 3) {
           this.formLabelAlign.faultLevel = "高";
         }
+        this.imgPath=JSON.parse(this.formLabelAlign.img);
       },
       //设备
       equipmentTableDataValue(value){
@@ -1313,11 +1319,11 @@ import Vue from "vue";
           span {
             float: right;
             cursor: pointer;
-            display: none;
           }
           &:hover {
             span {
               display: block;
+              color: red;
             }
           }
         }

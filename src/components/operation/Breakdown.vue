@@ -438,7 +438,7 @@
             this.tableData[i].state = "审核中";
           }
           if (this.tableData[i].state === 5) {
-            this.tableData[i].state = "待处理";
+            this.tableData[i].state = "执行中";
           }
           if (this.tableData[i].state === 6) {
             this.tableData[i].state = "已消除";

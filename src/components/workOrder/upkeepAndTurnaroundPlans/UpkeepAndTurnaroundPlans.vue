@@ -235,7 +235,7 @@
                 :row-dblclick="basicInfo"
                 :cell-edit-done="cellEditDone"
                 row-height=24
-               
+
               ></v-table>
               <div
                 class="mt20 mb20 bold"
@@ -258,7 +258,7 @@
                 <h6>已选择</h6>
                 <li v-model="personListValue" v-for="value in personListValue">
                   {{value.partName}}
-                  <span :id="value.id" @click="basicAdd($event)">X</span>
+                  <span :id="value.id" @click="basicAdd($event)" class="el-icon-circle-close-outline"></span>
                 </li>
               </ul>
             </div>
@@ -318,7 +318,7 @@
   </div>
 </template>
 <script>
-import Vue from "vue";
+  import Vue from "vue";
   export default {
     data() {
       return {
@@ -684,12 +684,12 @@ import Vue from "vue";
       };
     },
     methods: {
-       customCompFunc(params) {
-      if (params.type === "delete") {
-        // do delete operation
-        this.maintenancePlan = this.maintenancePlan.filter(item=>item.id!=params.rowData["id"]);
-      }
-    },
+      customCompFunc(params) {
+        if (params.type === "delete") {
+          // do delete operation
+          this.maintenancePlan = this.maintenancePlan.filter(item=>item.id!=params.rowData["id"]);
+        }
+      },
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
         this.workSheetMaterialTableData[rowIndex][field] = newValue;
@@ -770,8 +770,10 @@ import Vue from "vue";
         return tree;
       },
       basicInfo(rowIndex, rowData, column){
-        this.personListValue.push(rowData);
-        this.personListValue = Array.from(new Set(this.personListValue));
+       if( this.personListValue.find(i => i.id === rowData.id)){
+        }else{
+         this.personListValue.push(rowData);
+       }
       },
 
 
@@ -868,6 +870,7 @@ import Vue from "vue";
             this.pageSize = 10;
             this.examine.desc = "";
             this.examine.radio = 0;
+            this.examine.type = false;
             this.toBack();
           },
           ({ type, info }) => {
@@ -876,7 +879,8 @@ import Vue from "vue";
             this.pageIndex = 1;
             this.pageSize = 10;
             this.examine.desc = "";
-            this.examine.radio = 0;
+            this.examine.radio = "";
+            this.examine.type = false;
           }
         );
       },
@@ -1155,8 +1159,18 @@ import Vue from "vue";
 
         if (this.maintenancePlan.planType === 0){
           this.maintenancePlan.planType = "单次"
+          this.maintenancePlan.frequency="---"
         }if (this.maintenancePlan.planType === 1){
           this.maintenancePlan.planType = "周期"
+          if(this.maintenancePlan.frequencyType==1){
+            this.maintenancePlan.frequency=this.maintenancePlan.frequency+" 天"
+          }
+          if(this.maintenancePlan.frequencyType==2){
+            this.maintenancePlan.frequency=this.maintenancePlan.frequency+" 周"
+          }
+          if(this.maintenancePlan.frequencyType==3){
+            this.maintenancePlan.frequency=this.maintenancePlan.frequency+" 月"
+          }
         }
       },
       //设备
@@ -1197,38 +1211,38 @@ import Vue from "vue";
     }
   };
   Vue.component("table-upkeepAndTurnaroundPlans", {
-  template: `<span>
+    template: `<span>
           <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe635;</i></a>
         </span>`,
-  props: {
-    rowData: {
-      type: Object
+    props: {
+      rowData: {
+        type: Object
+      },
+      field: {
+        type: String
+      },
+      index: {
+        type: Number
+      }
     },
-    field: {
-      type: String
+    data(){
+      return {
+        deleteVisible:false,
+      }
     },
-    index: {
-      type: Number
+    methods: {
+
+      deleteRow() {
+        // 参数根据业务场景随意构造
+        let params = { type: "delete", rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      }
     }
-  },
-  data(){
-    return {
-      deleteVisible:false,
-    }
-  },
-  methods: {
-   
-    deleteRow() {
-      // 参数根据业务场景随意构造
-      let params = { type: "delete", rowData: this.rowData };
-      this.$emit("on-custom-comp", params);
-    }
-  }
-});
+  });
 </script>
 
 <style lang="less" scoped>
-@import url("../../../assets/font/font.css");
+  @import url("../../../assets/font/font.css");
   @blue: #409eff;
   @Success: #67c23a;
   @Warning: #e6a23c;
@@ -1340,7 +1354,7 @@ import Vue from "vue";
       border-radius: 5px;
     }
     .add {
-      
+
       width: 18%;
       float: left;
       border: @border;
@@ -1357,11 +1371,11 @@ import Vue from "vue";
           span {
             float: right;
             cursor: pointer;
-            display: none;
           }
           &:hover {
             span {
               display: block;
+              color: red;
             }
           }
         }
