@@ -19,27 +19,57 @@
           >
             <span class="content">{{ data.categoryName}}
               <span class="addCase">
-                <el-button
-                  type="text"
-                  size="mini"
-                  @click="dialogVisible=true"
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  content="添加"
+                  placement="top"
                 >
-                  添加
-                </el-button>
-                <el-button
-                  type="text"
-                  size="mini"
-                  @click="dialogVisible1=true,nodeCname=data.categoryName,nodeCMsg=data.categoryMsg"
+                  <el-button
+                    type="text"
+                    size="mini"
+                    @click="dialogVisible=true"
+                  >
+                    <i
+                      style='font-size:16px'
+                      class='iconfontz'
+                    >&#xe608;</i>
+                  </el-button>
+                </el-tooltip>
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  content="修改"
+                  placement="top"
                 >
-                  修改
-                </el-button>
-                <el-button
-                  type="text"
-                  size="mini"
-                  @click="() => warningdelete(data.id)"
+                  <el-button
+                    type="text"
+                    size="mini"
+                    @click="dialogVisible1=true,nodeCname=data.categoryName,nodeCMsg=data.categoryMsg"
+                  >
+                    <i
+                      style='font-size:16px'
+                      class='iconfontz'
+                    >&#xe626;</i>
+                  </el-button>
+                </el-tooltip>
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  content="删除"
+                  placement="top"
                 >
-                  删除
-                </el-button>
+                  <el-button
+                    type="text"
+                    size="mini"
+                    @click="() => warningdelete(data.id)"
+                  >
+                    <i
+                      style='font-size:16px'
+                      class='iconfontz'
+                    >&#xe635;</i>
+                  </el-button>
+                </el-tooltip>
               </span>
             </span>
             <span class="content-remarks">{{data.categoryMsg}}</span>
@@ -96,7 +126,7 @@
       <el-form
         ref="form"
         label-width="90px"
-        style="padding:10px;"
+        style="padding:10px 30px;"
       >
         <el-form-item label="类别名称：">
           <el-input
@@ -110,12 +140,17 @@
             v-model="nodeCMsg"
           ></el-input>
         </el-form-item>
-        <el-form-item>
+        <div style="text-align:center">
           <el-button
-            size="mini"
+            size="small"
+            @click="dialogVisible1=false"
+          >取消</el-button>
+          <el-button
+            size="small"
+            type="primary"
             @click="updateCategory"
           >确认修改</el-button>
-        </el-form-item>
+        </div>
       </el-form>
     </el-dialog>
     <el-dialog
@@ -126,7 +161,7 @@
       <el-form
         ref="form"
         label-width="90px"
-        style="padding:10px;"
+        style="padding:10px 30px;"
       >
         <el-form-item label="类别名称：">
           <el-input
@@ -140,12 +175,18 @@
             v-model="addmsg"
           ></el-input>
         </el-form-item>
-        <el-form-item>
+        <div style="text-align:center">
           <el-button
-            size="mini"
+            size="small"
+            @click="dialogVisible=false"
+            
+          >取消</el-button>
+          <el-button
+            size="small"
             @click="addCategory"
+            type="primary"
           >保存</el-button>
-        </el-form-item>
+        </div>
       </el-form>
     </el-dialog>
   </div>
@@ -432,13 +473,13 @@ export default {
       float: left;
       width: 40%;
       padding: 0 20px;
-    //   border-bottom: 1px solid #dde2eb;
+      //   border-bottom: 1px solid #dde2eb;
     }
     .remarks {
       float: right;
       width: 400px;
       padding: 0 20px;
-    //   border-bottom: 1px solid #dde2eb;
+      //   border-bottom: 1px solid #dde2eb;
     }
   }
   .classification {

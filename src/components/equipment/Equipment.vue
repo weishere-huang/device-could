@@ -32,11 +32,23 @@
         <div class="tone">
           <h5><i class='iconfont icon-shebeiguanli'></i>&nbsp;设备状况</h5>
           <ul>
-            <li  @click="leftcontro('','','1')">├在用</li>
-            <li style="color:#FF990E"  @click="leftcontro('','','2')">├出租</li>
-            <li style="color:#00990C"  @click="leftcontro('','','3')">├停用</li>
-            <li style="color:#0C99FD"  @click="leftcontro('','','4')">├封存</li>
-            <li style="color:#993202"  @click="leftcontro('','','5')">├报废</li>
+            <li @click="leftcontro('','','1')">├在用</li>
+            <li
+              style="color:#FF990E"
+              @click="leftcontro('','','2')"
+            >├出租</li>
+            <li
+              style="color:#00990C"
+              @click="leftcontro('','','3')"
+            >├停用</li>
+            <li
+              style="color:#0C99FD"
+              @click="leftcontro('','','4')"
+            >├封存</li>
+            <li
+              style="color:#993202"
+              @click="leftcontro('','','5')"
+            >├报废</li>
           </ul>
         </div>
       </div>
@@ -49,13 +61,13 @@
           @click="toAdd"
         >添加
         </el-button>
-        <el-button
+        <!-- <el-button
           size="small"
           type="primary"
           @click="editShow"
           disabled
         >修改
-        </el-button>
+        </el-button> -->
         <!--<el-button size="small" > 复制</el-button>-->
         <el-button
           size="small"
@@ -159,7 +171,7 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-           overflowTitle: true
+          overflowTitle: true
           // orderBy: ""
         },
         {
@@ -169,7 +181,7 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-           overflowTitle: true
+          overflowTitle: true
         },
         {
           field: "deviceState",
@@ -178,7 +190,7 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-           overflowTitle: true
+          overflowTitle: true
         },
         {
           field: "organizeName",
@@ -187,7 +199,7 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-           overflowTitle: true
+          overflowTitle: true
         },
         {
           field: "location",
@@ -196,7 +208,7 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-           overflowTitle: true
+          overflowTitle: true
         },
         {
           field: "locationNo",
@@ -205,7 +217,7 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-           overflowTitle: true
+          overflowTitle: true
         },
         {
           field: "deviceCategoryName",
@@ -214,7 +226,7 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-           overflowTitle: true
+          overflowTitle: true
         },
         {
           field: "deviceModel",
@@ -223,7 +235,7 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-           overflowTitle: true
+          overflowTitle: true
         },
         {
           field: "workerNames",
@@ -232,7 +244,7 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-           overflowTitle: true
+          overflowTitle: true
         },
         {
           field: "custome-adv",
@@ -240,22 +252,22 @@ export default {
           width: 70,
           titleAlign: "center",
           columnAlign: "center",
-          componentName: "table-equipment",
+          componentName: "table-equipment"
           // isResize: true
         }
       ],
       //监控为条件或高级搜索或左侧搜索栏
       keyorall: 0,
       //左侧搜索栏
-      leftclass:"",
-      leftcate:"",
-      leftstate:"",
+      leftclass: "",
+      leftcate: "",
+      leftstate: "",
       //高级搜索
-      deviceName:"",
-      locationNo:"",
-      workerName:"",
-      manufacturer:"",
-      deviceSates:"",
+      deviceName: "",
+      locationNo: "",
+      workerName: "",
+      manufacturer: "",
+      deviceSates: ""
     };
   },
   methods: {
@@ -264,14 +276,14 @@ export default {
 
       if (params.type === "delete") {
         // do delete operation
-        this.ids =params.rowData.id
+        this.ids = params.rowData.id;
         this.warningdelete();
         this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
         // do edit operation
         this.$router.push("/Redact/" + params.rowData.id);
         //alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
-      }else if (params.type === "audit") {
+      } else if (params.type === "audit") {
         // do edit operation
 
         alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
@@ -281,20 +293,20 @@ export default {
       this.leftcate = data.categoryNo;
       this.leftstate = "";
       this.leftclass = null;
-      this.keyorall=2;
-      this.pageIndex=1;
+      this.keyorall = 2;
+      this.pageIndex = 1;
       console.log(data);
       this.leftfind();
     },
     advanceValue(params) {
       // this.tableData = params;
-      this.deviceName=params.deviceName,
-      this.locationNo=params.locationNo,
-      this.workerName=params.workerName,
-      this.manufacturer=params.manufacturer,
-      this.deviceSates=params.deviceSates,
-      this.pageIndex=1,
-      this.findall();
+      (this.deviceName = params.deviceName),
+        (this.locationNo = params.locationNo),
+        (this.workerName = params.workerName),
+        (this.manufacturer = params.manufacturer),
+        (this.deviceSates = params.deviceSates),
+        (this.pageIndex = 1),
+        this.findall();
       console.log(params);
     },
     adsearch() {
@@ -351,9 +363,9 @@ export default {
       console.log(this.pageSize);
       if (this.keyorall === 0) {
         this.findall();
-      } else if(this.keyorall === 1){
+      } else if (this.keyorall === 1) {
         this.findByKeyWord();
-      }else{
+      } else {
         this.leftfind();
       }
     },
@@ -363,9 +375,9 @@ export default {
       this.getTableData();
       if (this.keyorall === 0) {
         this.findall();
-      } else if(this.keyorall === 1){
+      } else if (this.keyorall === 1) {
         this.findByKeyWord();
-      }else{
+      } else {
         this.leftfind();
       }
     },
@@ -395,11 +407,11 @@ export default {
           params: {
             page: this.pageIndex,
             size: this.pageSize,
-            deviceName:this.deviceName,
-            locationNo:this.locationNo,
-            workerName:this.workerName,
-            manufacturer:this.manufacturer,
-            deviceSates:this.deviceSates,
+            deviceName: this.deviceName,
+            locationNo: this.locationNo,
+            workerName: this.workerName,
+            manufacturer: this.manufacturer,
+            deviceSates: this.deviceSates
           },
           // option: {
           //   enableMsg: false
@@ -448,9 +460,10 @@ export default {
       // });
     },
     findByKeyWord() {
-        this.keyorall = 1;
-        //根据设备编号、位号、名称查询
-        this.Axios({
+      this.keyorall = 1;
+      //根据设备编号、位号、名称查询
+      this.Axios(
+        {
           params: {
             page: this.pageIndex,
             size: this.pageSize,
@@ -458,11 +471,10 @@ export default {
           },
           type: "get",
           url: "/device/findByKeyWord"
-
         },
         this
-      )
-        .then(result => {
+      ).then(
+        result => {
           this.totalnum = result.data.data.totalElements;
           this.tableData = result.data.data.content;
           for (let i = 0; i < this.tableData.length; i++) {
@@ -482,12 +494,11 @@ export default {
               this.tableData[i].deviceState = "报废";
             }
           }
-            console.log(result.data.data.content);
-          },
-          ({ type, info }) => {}
-          )
-
-      },
+          console.log(result.data.data.content);
+        },
+        ({ type, info }) => {}
+      );
+    },
     edelete() {
       let qs = require("qs");
       let data = qs.stringify({
@@ -503,15 +514,14 @@ export default {
           }
         },
         this
-      )
-        .then(
-          result => {
-            console.log("delete");
-            console.log(result);
-              this.reload();
-          },
-          ({ type, info }) => {}
-        );
+      ).then(
+        result => {
+          console.log("delete");
+          console.log(result);
+          this.reload();
+        },
+        ({ type, info }) => {}
+      );
       // .catch(err => {
       //   console.log(err);
       // });
@@ -551,48 +561,50 @@ export default {
         this
       )
         // .get(this.global.apiSrc + "/deviceCategory/all", data)
-        .then(result => {
-          this.organiza = this.filterArray(result.data.data, 0);
-          console.log("查找全部设备类别");
-          console.log(result.data);
-        },
+        .then(
+          result => {
+            this.organiza = this.filterArray(result.data.data, 0);
+            console.log("查找全部设备类别");
+            console.log(result.data);
+          },
           ({ type, info }) => {}
-        )
+        );
     },
-    warningdelete(){
-      this.$confirm('确定要删除吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.edelete();
-
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
+    warningdelete() {
+      this.$confirm("确定要删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.edelete();
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
         });
-      });
     },
 
-    leftcontro(a,b,c){
-      this.keyorall=2;
-      if(c === ""){
-        this.leftclass=a;
+    leftcontro(a, b, c) {
+      this.keyorall = 2;
+      if (c === "") {
+        this.leftclass = a;
       }
-      this.leftcate="";
-      this.leftstate=c;
-      this.pageIndex=1;
+      this.leftcate = "";
+      this.leftstate = c;
+      this.pageIndex = 1;
 
-       this.leftfind();
+      this.leftfind();
     },
-    leftfind(){
+    leftfind() {
       this.Axios(
         {
           params: {
-            classify:this.leftclass,
-            deviceCategory:this.leftcate,
-            deviceSates:this.leftstate,
+            classify: this.leftclass,
+            deviceCategory: this.leftcate,
+            deviceSates: this.leftstate,
             page: this.pageIndex,
             size: this.pageSize
           },
@@ -607,7 +619,7 @@ export default {
         },
         this
       )
-      //.get(this.global.apiSrc + "/device/select", {params:{ page: this.pageIndex,size: this.pageSize}})
+        //.get(this.global.apiSrc + "/device/select", {params:{ page: this.pageIndex,size: this.pageSize}})
         .then(
           result => {
             this.totalnum = result.data.data.totalElements;
@@ -639,7 +651,7 @@ export default {
         );
     }
   },
-     created() {
+  created() {
     this.findall();
     //this.findDeviceState();
     this.findAlldeviceClassify();
@@ -650,8 +662,13 @@ export default {
 };
 Vue.component("table-equipment", {
   template: `<span>
-        <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">修改</a>&nbsp;
-        <a href="" @click.stop.prevent="deleteRow(rowData,index)" style="text-decoration: none;">删除</a>
+          <el-tooltip class="item" effect="dark" content="修改" placement="top">
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i></a>
+          </el-tooltip>
+          &nbsp;&nbsp;
+          <el-tooltip class="item" effect="dark" content="删除" placement="top">
+            <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfontz'>&#xe635;</i></a>
+          </el-tooltip>
         </span>`,
   props: {
     rowData: {
@@ -675,7 +692,6 @@ Vue.component("table-equipment", {
 
       let params = { type: "delete", rowData: this.rowData };
       this.$emit("on-custom-comp", params);
-
     }
   }
 });
