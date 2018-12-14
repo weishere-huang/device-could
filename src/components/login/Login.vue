@@ -318,7 +318,29 @@
           ]
         },
         registerRules: {
-          name: [{required: true, message: "企业名不能为空", trigger: "blur"}],
+          name: [
+            {required: true, message: "企业名不能为空", trigger: "blur"},
+            {
+              validator: (rule, value, callback) => {
+                this.Axios(
+                  {
+                    params: Object.assign({name: this.company.name}),
+                    url: "/enterprise/findByName",
+                    type: "get",
+                    option: {enableMsg: false}
+                  },
+                )
+                compan(value).then(res=>{
+                  if (res.code==0) {
+                    callback(new Error("企业名称已存在"))
+                  } else if (res.code==200) {
+                    callback()
+                  }
+                })
+              }
+              , trigger: "blur"
+            }
+          ],
           address: [{required: true, message: "地址不能为空", trigger: "blur"}],
           // phone: [
           //   {required: true, message: "电话不能为空", trigger: "blur"}
@@ -658,7 +680,7 @@
         )
       },
       uploadUrl() {
-        let url = this.global.apiImg + "/upload"
+        let url = this.global.apiImg
         return url
       },
       handleAvatarSuccess(res, file) {
@@ -705,8 +727,18 @@
       }
     },
     //企业名称唯一验证
-    verifyCompany(){
-
+    verifyCompany() {
+      this.Axios(
+        {
+          params: Object.assign({name: this.company.name}),
+          url: "/enterprise/findByName",
+          type: "get"
+        },
+        this
+      ).then(response => {
+        console.log(response)
+      }), ({type, info}) => {
+      }
     },
     //联系电话唯一验证
     verifyPhone() {
