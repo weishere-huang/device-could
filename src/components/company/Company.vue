@@ -2,12 +2,12 @@
   <div class="company">
     <div class="userCase">
       <div class="top">
-        <el-button
-          type="primary"
-          size="small"
-          @click="auditblock"
-        >审核
-        </el-button>
+        <!--<el-button-->
+          <!--type="primary"-->
+          <!--size="small"-->
+          <!--@click="auditblock"-->
+        <!--&gt;审核-->
+        <!--</el-button>-->
         <el-button
           type="primary"
           size="small"
