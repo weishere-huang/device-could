@@ -650,11 +650,10 @@ import Vue from "vue";
     },
     methods: {
        customCompFunc(params) {
-      console.log(params);
+      // console.log(params);
       if (params.type === "delete") {
-        // do delete operation
-        console.log(params);
-      } 
+        this.suppliesTableData = this.suppliesTableData.filter(item=>item.id!=params.rowData["id"]);
+      }
     },
       toBack(){
         this.$router.back(-1)
@@ -683,7 +682,7 @@ import Vue from "vue";
         this.findByDeviceId(rowData.id);
       },
       handleNodeClick(data) {
-        this.findBasicInfoByTypeId(data.categoryNo);
+        this.findBasicInfoByTypeId(data.id);
       },
       filterArray(data, parent) {
         let vm = this;
@@ -746,6 +745,18 @@ import Vue from "vue";
 
       //执行审核
       examineUp(){
+         if(this.examine.radio!=1){
+           if(this.toExamine.userId !==""|| this.examine.type){
+             this.toExamineUp();
+           }else{
+             this.$message.error('请选择终审或添加下一级审批人')
+           }
+         }else{
+           this.toExamineUp();
+         }
+
+      },
+      toExamineUp(){
         this.Axios(
           {
             params: {
@@ -766,8 +777,16 @@ import Vue from "vue";
             this.pageSize = 10;
             this.examine.desc = "";
             this.examine.radio = 0;
+            this.toBack();
           },
-          ({ type, info }) => {}
+          ({ type, info }) => {
+            this.pageNumber = "";
+            this.outerVisible = false;
+            this.pageIndex = 1;
+            this.pageSize = 10;
+            this.examine.desc = "";
+            this.examine.radio = 0;
+          }
         );
       },
 
@@ -1074,7 +1093,7 @@ import Vue from "vue";
         if (value.state === 4) {
           this.workInfo.state = "审核中";
         }
-        if (value.state === 5) {
+        if (value.state === 15) {
           this.workInfo.state = "待处理";
         }
         if (value.state === 6) {
@@ -1144,7 +1163,7 @@ import Vue from "vue";
   };
    Vue.component("table-breakdownOrder", {
   template: `<span>
-          <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>
+          <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe635;</i></a>
         </span>`,
   props: {
     rowData: {

@@ -6,7 +6,7 @@
         </div>
         <div class="bottom">
             <div class="left">
-                <h5>检修计划</h5>
+                <h5>保养计划</h5>
                 <el-form label-width="100px">
                     <el-form-item label="计划名称：">
                         <el-input v-model="companyName.planName" size="mini"></el-input>

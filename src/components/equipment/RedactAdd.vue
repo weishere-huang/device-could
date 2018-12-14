@@ -97,7 +97,7 @@
             >
               <el-tab-pane
                 :key="item.name"
-                v-for="item in editableTabs"
+                v-for="item in editableTabs=personAddHandler"
                 :label="item.workerTypeName"
                 :name="item.workerType"
               >
@@ -171,7 +171,7 @@ export default {
       editableTabsValue: "0",
       tabPosition: "top",
       pageIndex: 1,
-      pageSize: 4,
+      pageSize: 5,
       toValue: "",
       tableData: [],
       tableDate: [],

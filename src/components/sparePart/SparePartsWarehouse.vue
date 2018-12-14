@@ -356,9 +356,11 @@ export default {
     },
     toDetails2(rowIndex, rowData, column) {
       console.log(rowData);
-      this.tableData1 = this.tableData1.filter(
-        item => item.partId !== rowData.partId
-      );
+     //
+     //
+     //
+     //
+     //
     },
     handleChange2(value) {
       let name = this.$refs["getName2"].currentLabels;
@@ -432,6 +434,7 @@ export default {
           console.log(result.data);
           if (result.data.code === 200) {
             this.$message("添加成功");
+            this.reload();
           }
         },
         ({ type, info }) => {}
@@ -442,8 +445,8 @@ export default {
       this.Axios(
         {
           params: {
-            page: this.pageIndex,
-            size: this.pageSize,
+            // page: this.pageIndex,
+            // size: this.pageSize,
             keywords: this.basekeyword
           },
           // option: {
@@ -610,12 +613,18 @@ Vue.component("table-warehouse", {
         float: left;
         height: 403px;
         padding-bottom: 10px;
+        .v-table-body{
+          height: 220px !important;
+        }
       }
       .inventory-list {
         width: 68%;
         // border: @border;
         float: left;
         height: 426px;
+        .v-table-body{
+          height: 320px !important;
+        }
       }
     }
   }
