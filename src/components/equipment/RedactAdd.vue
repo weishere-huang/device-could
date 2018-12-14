@@ -97,7 +97,7 @@
             >
               <el-tab-pane
                 :key="item.name"
-                v-for="item in editableTabs"
+                v-for="item in editableTabs=personAddHandler"
                 :label="item.workerTypeName"
                 :name="item.workerType"
               >

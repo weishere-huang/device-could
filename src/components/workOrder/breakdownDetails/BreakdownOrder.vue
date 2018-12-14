@@ -651,9 +651,9 @@ import Vue from "vue";
     },
     methods: {
        customCompFunc(params) {
-      // console.log(params);
       if (params.type === "delete") {
         this.suppliesTableData = this.suppliesTableData.filter(item=>item.id!=params.rowData["id"]);
+        this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id);
       }
     },
       toBack(){
@@ -663,6 +663,7 @@ import Vue from "vue";
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
         this.suppliesTableData[rowIndex][field] = newValue;
+        console.log(newValue);
         // 接下来处理你的业务逻辑，数据持久化等...
       },
       selectGroupChange(selection) {

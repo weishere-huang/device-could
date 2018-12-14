@@ -686,13 +686,16 @@
     methods: {
       customCompFunc(params) {
         if (params.type === "delete") {
+          console.log(params.rowData["id"]);
           // do delete operation
-          this.maintenancePlan = this.maintenancePlan.filter(item=>item.id!=params.rowData["id"]);
+          this.workSheetMaterialTableData = this.workSheetMaterialTableData.filter(item=>item.id!=params.rowData["id"]);
+          this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id);
         }
       },
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
         this.workSheetMaterialTableData[rowIndex][field] = newValue;
+        console.log(newValue);
         // 接下来处理你的业务逻辑，数据持久化等...
       },
       selectGroupChange(selection) {
@@ -1050,7 +1053,7 @@
             })
         }
       },
-      //双击删除指定的备品备件
+      //删除指定的备品备件
       basicAdd(event){
         this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id);
       },

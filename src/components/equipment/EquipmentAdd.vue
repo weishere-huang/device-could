@@ -181,7 +181,6 @@
            <el-upload
                 style="display:inline-block;vertical-align:top"
                 class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
                 :on-preview="handlePreview1"
                 :on-remove="handleRemove1"
                 :before-remove="beforeRemove1"
@@ -189,9 +188,10 @@
                 :limit="20"
                 :on-exceed="handleExceed1"
                 :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
                 :file-list="fileList">
                 <el-button size="mini" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">只能上传不超过1M的文件,且不能超过20个文件</div>
+                <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">只能上传不超过10M的文件,且不能超过20个文件</div>
               </el-upload>
         </div>
       </div>
@@ -214,14 +214,6 @@
     data() {
       return {
         fileList: [
-          {
-            name: 'food.jpeg',
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-          },
-          {
-            name: 'food2.jpeg',
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-          }
         ],
         defaultProps:{
           value:"code",
@@ -304,14 +296,26 @@
         orgoptions:[],
         ctgoptions:[],
         devicePersonnelInfoBase:[],
-        //devicePersonnelInfo:[]
         dialogImageUrl:"",
       };
     },
     methods: {
+      beforeAvatarUpload(file){
+        console.log("beforeAvatarUpload");
+        console.log(file);
+        const isLt10M = file.size/1024/1024<10;
+        if(!isLt10M){
+          this.$message.error('上传文件大小不能超过10MB!');
+        }
+      },
       handleAvatarSuccess(res, file) {
+        console.log("handleAvatarSuccess")
+        console.log(file);
+        console.log(res);
         this.dialogImageUrl = file.response.data.split(":")[1];
         this.dialogImageUrl= "ftp://192.168.1.104/"+this.dialogImageUrl;
+        // this.fileList.push()
+        console.log(this.fileList);
       },
       handleRemove1(file, fileList) {
         console.log(file, fileList);
