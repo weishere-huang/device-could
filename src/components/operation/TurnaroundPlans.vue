@@ -399,7 +399,7 @@ export default {
           this.tableData[i].state = "待审核";
         }
         if (this.tableData[i].state === 1) {
-          this.tableData[i].state = "已通过";
+          this.tableData[i].state = "执行中";
         }
         if (this.tableData[i].state === 2) {
           this.tableData[i].state = "已禁用";
@@ -409,9 +409,6 @@ export default {
         }
         if (this.tableData[i].state === 4) {
           this.tableData[i].state = "审核中";
-        }
-        if (this.tableData[i].state === 5) {
-          this.tableData[i].state = "待处理";
         }
         if (this.tableData[i].state === 6) {
           this.tableData[i].state = "已消除";
