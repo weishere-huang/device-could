@@ -52,7 +52,7 @@
             <v-pagination
               @page-change="pageChange"
               @page-size-change="pageSizeChange"
-              :total=this.tableData.length
+              :total=tableData.length
               :page-size="pageSize"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
@@ -283,6 +283,7 @@ export default {
       )
         // .get(apiMsg + "/message/allMsg/", data)
         .then(result => {
+          console.log(result.data);
           console.log(result.data.data);
           for (let i = 0; i < result.data.data.length; i++) {
             if (result.data.data[i].isRead == 0) {
