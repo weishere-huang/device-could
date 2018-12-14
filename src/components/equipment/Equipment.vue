@@ -69,12 +69,7 @@
         >修改
         </el-button> -->
         <!--<el-button size="small" > 复制</el-button>-->
-        <!-- <el-button
-          size="small"
-          type="danger"
-          @click="warningdelete"
-        >删除
-        </el-button> -->
+         -->
         <div class="searchright">
           <span>关键字：</span>
           <el-input
@@ -345,6 +340,14 @@ export default {
       console.log(this.ids);
     },
     selectALL(selection) {
+      this.ids = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.ids != "") {
+          this.ids += "," + selection[i].id;
+        } else {
+          this.ids += selection[i].id;
+        }
+      }
       console.log("select-aLL", selection);
     },
     selectChange(selection, rowData) {
