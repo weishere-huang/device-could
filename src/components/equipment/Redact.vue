@@ -331,10 +331,11 @@
           <span><el-upload
             style="display:inline-block;vertical-align:top"
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :action="path()"
             :on-preview="handlePreview1"
             :on-remove="handleRemove1"
             :before-remove="beforeRemove1"
+            :on-success="scse"
             multiple
             :limit="20"
             :on-exceed="handleExceed1"
@@ -493,6 +494,13 @@ export default {
     addperson
   },
   methods: {
+    scse(res,file){
+      console.log("res");
+      console.log(res);
+    },
+    path(){
+      return this.global.apiImg;
+    },
     handleChange(value) {
       let name = this.$refs["getName"].currentLabels;
       name = name[name.length - 1];
@@ -625,44 +633,34 @@ export default {
       newarrr =this.editableTabs;
       for(let i=0;i<data.length;i++){
         if(data[i].workerType === 0){
-          newarrr[0].content.push(
-            {
+          newarrr[0].content.push({
               id:data[i].workerId,
               workerName:data[i].workerName
-            }
-          )
+            })
         }
         if(data[i].workerType === 1){
-          newarrr[1].content.push(
-            {
+          newarrr[1].content.push({
               id:data[i].workerId,
               workerName:data[i].workerName
-            }
-          )
+            })
         }
         if(data[i].workerType === 2){
-          newarrr[2].content.push(
-            {
+          newarrr[2].content.push({
               id:data[i].workerId,
               workerName:data[i].workerName
-            }
-          )
+            })
         }
         if(data[i].workerType === 3){
-          newarrr[3].content.push(
-            {
+          newarrr[3].content.push({
               id:data[i].workerId,
               workerName:data[i].workerName
-            }
-          )
+            })
         }
         if(data[i].workerType === 4){
-          newarrr[4].content.push(
-            {
+          newarrr[4].content.push({
               id:data[i].workerId,
               workerName:data[i].workerName
-            }
-          )
+            })
         }
       }
       console.log(newarrr);
@@ -711,7 +709,7 @@ export default {
             //this.aaaa.value = this.sizeForm.deviceState;
           this.personAddHandler = this.devicePersonnelInfoBase;
           console.log(this.devicePersonnelInfoBase);
-          
+
           console.log("---------------");
         },
           ({type, info}) => {

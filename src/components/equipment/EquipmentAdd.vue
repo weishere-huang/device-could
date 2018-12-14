@@ -181,6 +181,8 @@
            <el-upload
                 style="display:inline-block;vertical-align:top"
                 class="upload-demo"
+                ref="upload"
+                :action="path()"
                 :on-preview="handlePreview1"
                 :on-remove="handleRemove1"
                 :before-remove="beforeRemove1"
@@ -189,7 +191,9 @@
                 :on-exceed="handleExceed1"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
-                :file-list="fileList">
+                :auto-upload="true"
+                :file-list="fileList"
+           >
                 <el-button size="mini" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">只能上传不超过10M的文件,且不能超过20个文件</div>
               </el-upload>
@@ -207,12 +211,12 @@
 </template>
 <script>
   import addPerson from "./AddPerson";
-
   export default {
     inject: ["reload"],
     name: "",
     data() {
       return {
+        upcode:"",
         fileList: [
         ],
         defaultProps:{
@@ -301,6 +305,9 @@
       };
     },
     methods: {
+      path(){
+        return this.global.apiImg;
+      },
       beforeAvatarUpload(file){
         console.log("beforeAvatarUpload");
         console.log(file);
@@ -310,13 +317,15 @@
         }
       },
       handleAvatarSuccess(res, file) {
+        this.upcode = res.code;
+        console.log(res);
         console.log("handleAvatarSuccess")
         console.log(file);
-        console.log(res);
-        this.dialogImageUrl = file.response.data.split(":")[1];
-        this.dialogImageUrl= "ftp://192.168.1.104/"+this.dialogImageUrl;
+        // this.dialogImageUrl = file.response.data.split(":")[1];
+        // this.dialogImageUrl= "ftp://192.168.1.104/"+this.dialogImageUrl;
         // this.fileList.push()
         console.log(this.fileList);
+        // this.$loading().close();
       },
       handleRemove1(file, fileList) {
         console.log(file, fileList);
@@ -369,6 +378,8 @@
       },
       add1() {
         //添加设备信息接口
+        //上传文件
+
 
         let qs = require("qs");
         let _devicePersonnelInfo=[];
@@ -452,6 +463,28 @@
           //   console.log(err);
           // });
       },
+      add2(){
+        this.$refs.upload.submit();
+        // let loadingInstance = Loading.service(options);
+        // Loading.service(options);
+        // if(this.upcode === 200 ){
+        //   this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+        //     loadingInstance.close();
+        //   });
+        // }
+        const loading = this.$loading({
+          lock: true,
+          text: '正在上传文件',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
+
+        setTimeout(() => {
+          loading.close();
+          this.$message.warning("上传文件超时")
+        }, 60000);
+      },
+
       devstate(data){
         let obj = {};
         obj = this.options4.find((item)=>{//这里的userList就是上面遍历的数据源
@@ -525,11 +558,12 @@
           type: 'warning'
         }).then(() => {
           this.add1();
+          // this.add2();
 
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消'
+            message: '取消保存'
           });
         });
       },
