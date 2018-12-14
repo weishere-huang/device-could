@@ -577,64 +577,6 @@
             this.isshow = false;
           }
         });
-        // if (this.company.name === "") {
-        //   this.$message({
-        //     message: "企业名不能为空",
-        //     type: "error"
-        //   });
-        // }
-        // if (this.company.address === "") {
-        //   this.$message({
-        //     message: "企业地址不能为空",
-        //     type: "error"
-        //   });
-        // }
-        // if (this.company.phone === "") {
-        //   this.$message({
-        //     message: "企业电话不能为空",
-        //     type: "error"
-        //   });
-        // }
-        // if (this.company.corporation === "") {
-        //   this.$message({
-        //     message: "企业法人不能为空",
-        //     type: "error"
-        //   });
-        // }
-        // if (
-        //   this.company.companyID === "" ||
-        //   this.company.companyID.length !== 18
-        // ) {
-        //   this.$message({
-        //     message:
-        //       "统一社会信用编码不能为空且必须为十八位，请与营业执照上的编码相同",
-        //     type: "error"
-        //   });
-        // }
-        // if (this.company.companyID === "") {
-        //   this.$message({
-        //     message: "请上传营业执照",
-        //     type: "error"
-        //   });
-        // }
-        // if (this.manager.userName === "") {
-        //   this.$message({
-        //     message: "请输入企业管理人信息",
-        //     type: "error"
-        //   });
-        // }
-        // if (pass === "") {
-        //   this.$message({
-        //     message: "请设置密码",
-        //     type: "error"
-        //   });
-        // }
-        // if (this.manager.phone === "") {
-        //   this.$message({
-        //     message: "请输入企业管理人电话",
-        //     type: "error"
-        //   });
-        // }
         this.Axios(
           {
             url: "/enterprise/add",
@@ -761,6 +703,14 @@
         });
         return encrypted.toString();
       }
+    },
+    //企业名称唯一验证
+    verifyCompany(){
+
+    },
+    //联系电话唯一验证
+    verifyPhone() {
+
     },
     components: {
       forgetThePassword
