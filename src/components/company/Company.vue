@@ -8,18 +8,18 @@
           <!--@click="auditblock"-->
         <!--&gt;审核-->
         <!--</el-button>-->
-        <el-button
-          type="primary"
-          size="small"
-          @click="startUseing"
-        >启用
-        </el-button>
-        <el-button
-          type="primary"
-          size="small"
-          @click="forbidden"
-        >停用
-        </el-button>
+        <!--<el-button-->
+          <!--type="primary"-->
+          <!--size="small"-->
+          <!--@click="startUseing"-->
+        <!--&gt;启用-->
+        <!--</el-button>-->
+        <!--<el-button-->
+          <!--type="primary"-->
+          <!--size="small"-->
+          <!--@click="forbidden"-->
+        <!--&gt;停用-->
+        <!--</el-button>-->
         <el-button
           type="primary"
           size="small"
