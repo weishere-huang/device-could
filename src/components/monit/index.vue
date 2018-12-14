@@ -53,7 +53,7 @@
         </el-aside>
         <el-main class="monitMainContent">
           <section class="topWrap">
-            <div>当前设备组：常减压产线组 / 数量（台）：20</div>
+            <div>当前设备组：常减压产线组 / 数量（台）：{{pageEquCount}}</div>
             <div>刷新频次：
               <el-select v-model="refreshValue" size="small" placeholder="请选择" style="width:100px">
                 <el-option
@@ -196,6 +196,7 @@ export default {
   data() {
     return {
       activeClass: `monitWrap`,
+      pageEquCount:0,
       selectOrganizeCode: "",
       activeNames: ["1", "2", "3"],
       organizationTreeData: [],
@@ -258,7 +259,7 @@ export default {
       {
         url: ["/organize/allOrganize", "/deviceCategory/all"],
         type: ["get", "get"],
-        params: [{}, {}]
+        params: {}
       },
       this
     ).then(
@@ -269,6 +270,7 @@ export default {
             "0"
           );
           this.setPinOption(res1.data.data[0].code);
+          this.getEquList(res1.data.data[0].code);
         } else {
           this.organizationEmptytTxt = "暂无数据";
         }
@@ -277,8 +279,7 @@ export default {
         else this.equTypeEmptytTxt = "暂无数据";
 
         //window.setTimeout(() => {this.$refs.tree.setCurrentKey("1024");}, 1000);
-      },
-      () => {}
+      }
     );
   },
   mounted: function() {
@@ -307,6 +308,7 @@ export default {
           const chartRight = echarts.init(document.getElementById("pinRight"));
           const baseState=res2_1.data.data;
           const warnState=res2_2.data.data;
+          this.pageEquCount=baseState.count||0;
           chartLeft.setOption({
             title: {
               text: "设备基本状态",
@@ -391,6 +393,23 @@ export default {
             ]
           });
         });
+    },
+    getEquList(selectOrganizeCode){
+      this.Axios(
+      {
+        url: "/deviceState/listDeviceByState",
+        type: "get",
+        params: {organizeCode:selectOrganizeCode},
+        option: { requestTarget: "r" }
+      },
+      this
+    ).then(
+      (res) => {
+        console.log(res);
+
+        //window.setTimeout(() => {this.$refs.tree.setCurrentKey("1024");}, 1000);
+      }
+    );
     },
     collapseItemChange(val) {
       console.log(val);
