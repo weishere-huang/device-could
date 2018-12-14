@@ -390,7 +390,7 @@
                   /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/.test(value) ==
                   false
                 ) {
-                  callback(new Error("密码不能全是数字，字母，不能少于6位"));
+                  callback(new Error("密码不能全是数字，字母，不能少于6位且小于20位"));
                 } else {
                   callback();
                 }
