@@ -318,7 +318,23 @@
         registerRules: {
           name: [{required: true, message: "企业名不能为空", trigger: "blur"}],
           address: [{required: true, message: "地址不能为空", trigger: "blur"}],
-          phone: [{required: true, message: "电话不能为空", trigger: "blur"}],
+          // phone: [
+          //   {required: true, message: "电话不能为空", trigger: "blur"}
+          //   ],
+          phone: [
+            {required: true, message: "电话不能为空", trigger: "blur"},
+            {max:15,message:"您的电话号码超出长度限制了，请重新输入"},
+            {
+              validator: (rule, value, callback) => {
+                if (/^((\d3,4|\d{3,4}-)?\d{7,8})|([1][0-9]{10})$/.test(value) == false) {
+                  callback(new Error("您输入的电话号码有误，请重新输入"));
+                } else {
+                  callback();
+                }
+              },
+              trigger: "blur"
+            }
+          ],
           corporation: [
             {required: true, message: "法人代表不能为空", trigger: "blur"}
           ],
@@ -329,11 +345,21 @@
               trigger: "blur"
             },
             {
-              min: 18,
-              max: 18,
-              message: "统一社会信用代码必须为18位",
-              trigger: "blur"
+              validator:(rule,value,callback)=>{
+                if (/(^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$)|(^\d{15}$)/.test(value)==false ) {
+                  callback(new Error("您输入的统一社会信用代码有误，请重新输入"))
+                }else{
+                  callback();
+                }
+              },
+              trigger:"blur"
             }
+            // {
+            //   min: 18,
+            //   max: 18,
+            //   message: "统一社会信用代码必须为18位",
+            //   trigger: "blur"
+            // }
           ]
         },
         managerRules: {
@@ -352,7 +378,7 @@
             {
               min: 6,
               max: 20,
-              message: "请输入6到20位的字母和数字",
+              message: "请输入6到20位的字母和数字组合",
               trigger: "blur"
             }
           ],
