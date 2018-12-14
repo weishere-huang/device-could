@@ -410,7 +410,9 @@ export default {
 };
 Vue.component("table-user", {
   template: `<span>
-        <el-button size= "mini" @click.stop.prevent="deleteRow(rowData,index)">删除</el-button>
+          <el-tooltip class="item" effect="dark" content="删除" placement="top">
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfontz'>&#xe635;</i></a>
+          </el-tooltip>
         </span>`,
   props: {
     rowData: {

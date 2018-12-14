@@ -348,7 +348,7 @@
           graduateSchool:this.persnneladd. graduateSchool,
           degree:this.persnneladd.degree,
           img:this.dialogImageUrl,
-          qualificationInfo:this.persnneladd.qualificationInfo,
+          qualificationInfo:JSON.stringify(this.fileList),
           roleId:this.persnneladd.roleId
         });
         this.Axios(
