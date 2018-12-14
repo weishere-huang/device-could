@@ -653,7 +653,7 @@ import Vue from "vue";
        customCompFunc(params) {
       if (params.type === "delete") {
         this.suppliesTableData = this.suppliesTableData.filter(item=>item.id!=params.rowData["id"]);
-        this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id);
+        this.personListValue = this.personListValue.filter(item=>item.id!=params.rowData["id"]);
       }
     },
       toBack(){
@@ -1035,7 +1035,8 @@ import Vue from "vue";
       //关闭备品备件页面并传值到详情页
       deleteBasic(){
         this.dialogVisible2 = false;
-        this.suppliesTableData = this.personListValue;
+        this.suppliesTableData = (this.suppliesTableData||[]).concat(this.personListValue);
+        this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
       },
 
       //双击删除指定的备品备件

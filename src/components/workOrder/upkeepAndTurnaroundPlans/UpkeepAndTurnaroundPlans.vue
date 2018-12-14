@@ -689,7 +689,7 @@
           console.log(params.rowData["id"]);
           // do delete operation
           this.workSheetMaterialTableData = this.workSheetMaterialTableData.filter(item=>item.id!=params.rowData["id"]);
-          this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id);
+          this.personListValue = this.personListValue.filter(item=>item.id!=params.rowData["id"]);
         }
       },
       // 单元格编辑回调
@@ -773,10 +773,10 @@
         return tree;
       },
       basicInfo(rowIndex, rowData, column){
-       if( this.personListValue.find(i => i.id === rowData.id)){
+        if( this.personListValue.find(i => i.id === rowData.id)){
         }else{
-         this.personListValue.push(rowData);
-       }
+          this.personListValue.push(rowData);
+        }
       },
 
 
@@ -1057,10 +1057,11 @@
       basicAdd(event){
         this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id);
       },
-      //关闭备品备件页面并传值到详情页
+      //保存备品备件页面并传值到详情页
       deleteBasic(){
         this.dialogVisible2 = false;
-        this.workSheetMaterialTableData = this.personListValue;
+          this.workSheetMaterialTableData = (this.workSheetMaterialTableData||[]).concat(this.personListValue);
+          this.workSheetMaterialTableData = Array.from(new Set(this.workSheetMaterialTableData))
       },
       //保存工单物料到数据库
       insertPart(){
