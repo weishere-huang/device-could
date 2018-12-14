@@ -333,6 +333,14 @@ export default {
       console.log(this.ids);
     },
     selectALL(selection) {
+      this.ids = "";
+      for (let i = 0; i < selection.length; i++) {
+        if (this.ids != "") {
+          this.ids += "," + selection[i].id;
+        } else {
+          this.ids += selection[i].id;
+        }
+      }
       console.log("select-aLL", selection);
     },
     selectChange(selection, rowData) {
@@ -560,20 +568,24 @@ export default {
         )
     },
     warningdelete(){
-      this.$confirm('确定要删除吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.edelete();
+      if (this.edbt.length > 0) {
+        this.$confirm('确定要删除吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.edelete();
 
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
         });
-      });
-    },
+      }else{
+        this.$message.warning("起码选择一行数据")
+      }
+      },
 
     leftcontro(a,b,c){
       this.keyorall=2;

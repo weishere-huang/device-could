@@ -461,7 +461,7 @@ export default {
       ).then(
         result => {
           console.log(result.data);
-          this.tableData = result.data.data.content;
+          this.tableData = result.data.data;
           for (let i = 0; i < this.tableData.length; i++) {
             if (this.tableData[i].partCategory === 2) {
               this.tableData[i].partCategory = "关键";
