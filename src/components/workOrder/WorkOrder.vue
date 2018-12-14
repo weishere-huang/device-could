@@ -38,13 +38,13 @@
           size="small"
         >待处理</el-button>
       </el-badge>
-      <el-badge class="item">
+      <!-- <el-badge class="item">
         <el-button
           type="primary"
           @click="load(7)"
           size="small"
         >已撤销</el-button>
-      </el-badge>
+      </el-badge> -->
       <el-badge class="item">
         <el-button
           type="primary"

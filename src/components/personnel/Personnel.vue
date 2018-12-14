@@ -7,7 +7,7 @@
           type="primary"
           @click="PersnnelAdd"
         >添加</el-button>
-        <el-button
+        <!-- <el-button
           size="small"
           type="primary"
           @click="updateEmployee"
@@ -26,7 +26,7 @@
           size="small"
           type="primary"
           @click="deleteEmployee"
-        >删除</el-button>
+        >删除</el-button> -->
         <div class="search">
           <el-input
             type="search"
