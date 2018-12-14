@@ -686,13 +686,16 @@
     methods: {
       customCompFunc(params) {
         if (params.type === "delete") {
+          console.log(params.rowData["id"]);
           // do delete operation
-          this.maintenancePlan = this.maintenancePlan.filter(item=>item.id!=params.rowData["id"]);
+          this.workSheetMaterialTableData = this.workSheetMaterialTableData.filter(item=>item.id!=params.rowData["id"]);
+          this.personListValue = this.personListValue.filter(item=>item.id!=params.rowData["id"]);
         }
       },
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
         this.workSheetMaterialTableData[rowIndex][field] = newValue;
+        console.log(newValue);
         // 接下来处理你的业务逻辑，数据持久化等...
       },
       selectGroupChange(selection) {
@@ -770,10 +773,10 @@
         return tree;
       },
       basicInfo(rowIndex, rowData, column){
-       if( this.personListValue.find(i => i.id === rowData.id)){
+        if( this.personListValue.find(i => i.id === rowData.id)){
         }else{
-         this.personListValue.push(rowData);
-       }
+          this.personListValue.push(rowData);
+        }
       },
 
 
@@ -1050,14 +1053,15 @@
             })
         }
       },
-      //双击删除指定的备品备件
+      //删除指定的备品备件
       basicAdd(event){
         this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id);
       },
-      //关闭备品备件页面并传值到详情页
+      //保存备品备件页面并传值到详情页
       deleteBasic(){
         this.dialogVisible2 = false;
-        this.workSheetMaterialTableData = this.personListValue;
+          this.workSheetMaterialTableData = (this.workSheetMaterialTableData||[]).concat(this.personListValue);
+          this.workSheetMaterialTableData = Array.from(new Set(this.workSheetMaterialTableData))
       },
       //保存工单物料到数据库
       insertPart(){

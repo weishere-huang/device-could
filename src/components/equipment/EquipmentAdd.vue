@@ -300,7 +300,6 @@
         orgoptions:[],
         ctgoptions:[],
         devicePersonnelInfoBase:[],
-        //devicePersonnelInfo:[]
         dialogImageUrl:"",
       };
     },
