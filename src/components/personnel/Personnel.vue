@@ -7,7 +7,7 @@
           type="primary"
           @click="PersnnelAdd"
         >添加</el-button>
-        <el-button
+        <!-- <el-button
           size="small"
           type="primary"
           @click="updateEmployee"
@@ -26,7 +26,7 @@
           size="small"
           type="primary"
           @click="deleteEmployee"
-        >删除</el-button>
+        >删除</el-button> -->
         <div class="search">
           <el-input
             type="search"
@@ -81,6 +81,7 @@ import Vue from "vue";
 export default {
   data() {
     return {
+      isPageOk:true,
       searchs: "",
       pageIndex: 1,
       pageSize: 10,
@@ -199,6 +200,11 @@ export default {
       }
     },
     search() {
+      if(this.searchs==""){
+        this.isPageOk=true;
+      }else{
+        this.isPageOk=false;
+      }
       this.pageIndex = 1;
       this.Axios(
         {
@@ -309,7 +315,9 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      this.load();
+      if (this.isPageOk) {
+        this.load();
+      }
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;

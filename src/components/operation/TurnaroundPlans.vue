@@ -12,7 +12,7 @@
           type="primary"
           @click="outerVisibleIsOk"
         >审核</el-button>
-        <el-button
+        <!-- <el-button
           size="small"
           type="primary"
           @click="stopDiscontinuation"
@@ -21,7 +21,7 @@
           size="small"
           type="primary"
           @click="deleteMaintenance"
-        >删除</el-button>
+        >删除</el-button> -->
       </div>
       <div class="bottom">
         <div>

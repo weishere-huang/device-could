@@ -596,7 +596,7 @@
             this.personnel.checkedSystem = arr3;
             this.user.checkedSystem = arr4;
             this.message.checkedSystem = arr5;
-
+          
             this.system.adminKey = adminKey;
             this.information.adminKey = adminKey1;
             this.equipment.adminKey = adminKey2;

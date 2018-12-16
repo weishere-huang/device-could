@@ -350,7 +350,7 @@
             for(let i in arr){
               this.fileList.push({
                 name:arr[i].name,
-                url:arr[i].img
+                url:"ftp://192.168.1.104"+arr[i].img.split(":")[1]
               })
             }
             console.log(this.fileList);

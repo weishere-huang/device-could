@@ -28,7 +28,7 @@
         <el-dialog title="人员添加" :visible.sync="innerVisible" append-to-body>
           <div style="padding:10px">
             <div class="search" style="padding:10px 0">
-              <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
+              <el-input type="search" placeholder="如姓名，手机号" size="mini" v-model="key" style="width:30%;"></el-input>
               <el-button size="mini" type="primary" @click="search">搜索</el-button>
               <span style="padding:0 10px;">最近搜索：</span>
               <span style="text-decoration: underline;"></span>
@@ -651,9 +651,9 @@ import Vue from "vue";
     },
     methods: {
        customCompFunc(params) {
-      // console.log(params);
       if (params.type === "delete") {
         this.suppliesTableData = this.suppliesTableData.filter(item=>item.id!=params.rowData["id"]);
+        this.personListValue = this.personListValue.filter(item=>item.id!=params.rowData["id"]);
       }
     },
       toBack(){
@@ -663,6 +663,7 @@ import Vue from "vue";
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
         this.suppliesTableData[rowIndex][field] = newValue;
+        console.log(newValue);
         // 接下来处理你的业务逻辑，数据持久化等...
       },
       selectGroupChange(selection) {
@@ -1034,7 +1035,8 @@ import Vue from "vue";
       //关闭备品备件页面并传值到详情页
       deleteBasic(){
         this.dialogVisible2 = false;
-        this.suppliesTableData = this.personListValue;
+        this.suppliesTableData = (this.suppliesTableData||[]).concat(this.personListValue);
+        this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
       },
 
       //双击删除指定的备品备件

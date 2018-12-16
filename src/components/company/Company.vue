@@ -550,6 +550,10 @@ Vue.component("table-company", {
     audit() {
       let params = { type: "audit", rowData: this.rowData };
       this.$emit("on-custom-comp", params);
+    },
+    changeValue() {
+      let params = { type: "change", rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
     }
   }
 });
