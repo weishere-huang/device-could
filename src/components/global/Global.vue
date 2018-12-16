@@ -1,7 +1,7 @@
 <script>
 const apiSrc = "http://192.168.1.104:9880";
 const apiImg="http://192.168.1.147:8081/upload";
-// const apiSrc = "http://192.168.1.147:8080";
+// const apiSrc = "http://192.168.1.109:8080";
 export default {
   apiSrc,
   apiImg

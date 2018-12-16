@@ -324,7 +324,7 @@ export default {
         .then(result => {
           console.log(result);
           console.log(result.data);
-          
+
           if (result.data.data.length > 0) {
             for (let i = 0; i < result.data.data.length; i++) {
               if (result.data.data[i].isRead == 0) {
