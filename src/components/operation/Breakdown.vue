@@ -314,10 +314,8 @@
       customCompFunc(params) {
         // console.log(params);
         if (params.type === "delete") {
-          // this.$delete(this.tableData, params.index);
           this.toDeleteBreak(params.rowData.id);
         } else if (params.type === "edit") {
-          // alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
           this.toDetails(params.index, params.rowData);
         } else if (params.type === "stop") {
           alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
@@ -553,23 +551,30 @@
         }
       },
       toDeleteBreak(faultIds) {
-        let qs = require("qs");
-        let data = qs.stringify({
-          ids: faultIds
-        });
-        this.Axios(
-          {
-            params: data,
-            type: "post",
-            url: "/fault/delete"
-          },
-          this
-        ).then(
-          response => {
-            this.load();
-          },
-          ({ type, info }) => {}
-        );
+        this.$confirm('此操作将删除该计划、 是否继续?', '提示')
+          .then(_=>{
+            let qs = require("qs");
+            let data = qs.stringify({
+              ids: faultIds
+            });
+            this.Axios(
+              {
+                params: data,
+                type: "post",
+                url: "/fault/delete"
+              },
+              this
+            ).then(
+              response => {
+                this.load();
+              },
+              ({ type, info }) => {}
+            );
+          })
+          .catch(_=>{
+            console.log("stop")
+          })
+
       },
       getPersonnel(params) {
         this.toAuditName = params.person;

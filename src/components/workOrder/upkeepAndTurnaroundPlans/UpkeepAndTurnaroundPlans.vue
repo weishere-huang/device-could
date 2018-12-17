@@ -181,8 +181,10 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-            <el-button  type="primary" size="mini" @click="listBasicInfo">从物料库中添加</el-button>
-            <el-button  type="primary" @click="insertPart" size="mini">保存列表</el-button>
+            <el-button-group>
+              <el-button  type="primary" size="mini" @click="listBasicInfo">添加物料</el-button>
+              <el-button  type="primary" @click="insertPart" size="mini">保存列表</el-button>
+            </el-button-group>
           </div>
           <v-table
             is-horizontal-resize
