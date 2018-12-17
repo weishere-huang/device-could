@@ -6,6 +6,8 @@
                    type="primary" @click="tback">返回</el-button>
         <el-button size="small"
                    type="primary" @click="updateEmployee">保存</el-button>
+        <!--<el-button size="small"-->
+                   <!--type="primary" @click="test">测试</el-button>-->
       </div>
       <div class="botton">
         <div class="essential">
@@ -227,6 +229,7 @@
       handleAvatarSuccess(res, file) {
         this.$message.success('图片成功上传');
         this.dialogImageUrl[0].url= file.response.data;
+        this.persnneladd.img = file.response.data;
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
@@ -290,12 +293,22 @@
         this.$message.success('文件成功上传');
         if(fileList.length>=1){
           this.fileList.push({
-            url:fileList[fileList.length-1].response.data,
-            name:fileList[fileList.length-1].name
+            url:res.data,
+            name:file.name
           });
         }
       },
-
+      // test(){
+      //   let file = [];
+      //   for(let i in this.fileList) {
+      //     file.push({
+      //       name: this.fileList[i].name,
+      //       img: "img:"+this.fileList[i].url.split(":8080/")[1],
+      //     });
+      //     console.log(file[i].img);
+      //   }
+      //
+      // },
 
       organize(){
         this.Axios(
@@ -343,6 +356,7 @@
             if (this.persnneladd.marital!=null){
               this.persnneladd.marital = response.data.data.marital.toString();
             }
+            console.log(this.persnneladd.qualificationInfo);
             let arr = JSON.parse(this.persnneladd.qualificationInfo);
             this.dialogImageUrl = [{
               url:this.global.imgPath+this.persnneladd.img.split(":")[1],
@@ -353,9 +367,6 @@
                 url:this.global.imgPath+arr[i].img.split(":")[1]
               })
             }
-            // console.log(this.fileList);
-            // this.dialogImageUrl[0].url = "http://pic36.nipic.com/20131215/15111776_132407484349_2.jpg";
-          console.log(this.dialogImageUrl[0].url)
           },
           ({type, info}) => {
 
@@ -366,10 +377,11 @@
         for(let i in this.fileList){
           file.push({
             name:this.fileList[i].name,
-            img:this.fileList[i].img,
-          })
+            img: "img:"+this.fileList[i].url.split(":8080/")[1],
+          });
+          console.log(this.fileList[i].url);
         }
-        console.log(this.fileList);
+        console.log(file);
         this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
         let qs = require("qs");
@@ -396,7 +408,7 @@
           postalAddress: this.persnneladd.postalAddress,
           graduateSchool: this.persnneladd.graduateSchool,
           degree: this.persnneladd.degree,
-          img: this.dialogImageUrl[0].url,
+          img: this.persnneladd.img,
           qualificationInfo:JSON.stringify(file),
           roleId: this.persnneladd.roleId
         });
