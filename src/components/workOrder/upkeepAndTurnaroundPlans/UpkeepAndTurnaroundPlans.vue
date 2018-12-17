@@ -774,6 +774,7 @@
       },
       basicInfo(rowIndex, rowData, column){
         if( this.personListValue.find(i => i.id === rowData.id)){
+          this.$message.error("请勿重复添加物料");
         }else{
           this.personListValue.push(rowData);
         }

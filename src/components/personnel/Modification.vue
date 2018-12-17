@@ -345,16 +345,17 @@
             }
             let arr = JSON.parse(this.persnneladd.qualificationInfo);
             this.dialogImageUrl = [{
-              url:this.persnneladd.img,
+              url:this.global.imgPath+this.persnneladd.img.split(":")[1],
             }];
             for(let i in arr){
               this.fileList.push({
                 name:arr[i].name,
-                url:"ftp://192.168.1.104"+arr[i].img.split(":")[1]
+                url:this.global.imgPath+arr[i].img.split(":")[1]
               })
             }
-            console.log(this.fileList);
-          console.log(this.dialogImageUrl)
+            // console.log(this.fileList);
+            // this.dialogImageUrl[0].url = "http://pic36.nipic.com/20131215/15111776_132407484349_2.jpg";
+          console.log(this.dialogImageUrl[0].url)
           },
           ({type, info}) => {
 
