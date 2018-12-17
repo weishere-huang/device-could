@@ -25,7 +25,7 @@
               size="mini"
               v-model="key"
               style="width:40%;"
-              placeholder="如编号，名称，型号，位置"
+              placeholder="如编号，名称"
             ></el-input>
             <el-button
               size="mini"

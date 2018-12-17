@@ -41,13 +41,6 @@
       <el-badge class="item">
         <el-button
           type="primary"
-          @click="load(7)"
-          size="small"
-        >已撤销</el-button>
-      </el-badge>
-      <el-badge class="item">
-        <el-button
-          type="primary"
           @click="load(10)"
           size="small"
         >已驳回</el-button>

@@ -17,7 +17,7 @@
         <el-button
           size="small"
           type="primary"
-          @click="updateAllMessageRead"
+          @click="btwarning"
         >全部标为已读
         </el-button>
         <el-button
@@ -73,6 +73,7 @@ import MsgDetails from "./MsgDetails";
 import Vue from "vue";
 
 export default {
+  inject: ["reload"],
   data() {
     return {
       detailsShow: false,
@@ -286,9 +287,9 @@ export default {
           console.log(result.data);
           console.log(result.data.data);
           for (let i = 0; i < result.data.data.length; i++) {
-            if (result.data.data[i].isRead == 0) {
+            if (result.data.data[i].isRead === 0) {
               result.data.data[i].isRead = "未读";
-            } else {
+            } else if(result.data.data[i].isRead === 1){
               result.data.data[i].isRead = "已读";
             }
           }
@@ -321,12 +322,14 @@ export default {
       )
         //.get(apiMsg+"/message/allNotReadMsg/",data)
         .then(result => {
+          console.log(result);
           console.log(result.data);
+
           if (result.data.data.length > 0) {
             for (let i = 0; i < result.data.data.length; i++) {
               if (result.data.data[i].isRead == 0) {
                 result.data.data[i].isRead = "未读";
-              } else {
+              } else  if(result.data.data[i].isRead === 1){
                 result.data.data[i].isRead = "已读";
               }
             }
@@ -361,13 +364,13 @@ export default {
       //修改消息为已读
       this.Axios(
         {
-          url: "/message/UpdateMsgRead/" + this.ids,
+          params:{ids:this.ids},
+          url: "/message/UpdateMsgRead/",
           type: "get",
           option:{requestTarget:"m"}
         },
         this
       )
-        // .get(apiMsg + "/message/UpdateMsgRead/" + this.ids)
         .then(result => {
           console.log(result.data);
         })
@@ -387,17 +390,40 @@ export default {
       )
         //.get(apiMsg + "/message/UpdateAllMsgRead/")
         .then(result => {
-          console.log(result.data);
+          if(result.data.code === 200){
+            this.reload();
+          }
+          console.log(result.data.code);
         })
         .catch(err => {
           console.log(err);
         });
     },
+    btwarning(){
+      this.$confirm('确定要全部标为已读吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.updateAllMessageRead();
+
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      });
+    },
+
     details(rowIndex, rowData, column) {
       console.log(rowData.id);
       this.msgDetail = rowData;
       this.detailsShow = true;
       this.ids = rowData.id;
+      this.updateMessageRead();
+      this.findonemsg();
+    },
+    findonemsg(){
       this.Axios(
         {
           url: "/message/findOneMsg/" + this.ids,
@@ -406,13 +432,12 @@ export default {
         },
         this
       )
-        // .get(apiMsg + "/message/findOneMsg/" + this.ids)
+      // .get(apiMsg + "/message/findOneMsg/" + this.ids)
         .then(result => {
           console.log(result);
           this.msgDetail = result.data.data;
           if (this.msgDetail.isRead === 0) {
-            this.updateMessageRead();
-            this.allMsg();
+            //this.reload();
           }
         })
         .catch(err => {

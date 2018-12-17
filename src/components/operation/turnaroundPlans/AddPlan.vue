@@ -25,7 +25,7 @@
               size="mini"
               v-model="key"
               style="width:40%;"
-              placeholder="设备编号，名称，位置，型号"
+              placeholder="设备编号，名称"
             ></el-input>
             <el-button
               size="mini"

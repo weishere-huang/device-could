@@ -170,7 +170,7 @@
               :table-data="personData"
               row-hover-color="#eee"
               row-click-color="#edf7ff"
-              :cell-edit-done="cellEditDone"
+              
               row-height=24
             ></v-table>
           </div>
@@ -233,7 +233,7 @@
                 row-hover-color="#eee"
                 row-click-color="#edf7ff"
                 :row-dblclick="basicInfo"
-                :cell-edit-done="cellEditDone"
+               
                 row-height=24
 
               ></v-table>
@@ -308,7 +308,7 @@
             :table-data="flowInfoData"
             row-hover-color="#eee"
             row-click-color="#edf7ff"
-            :cell-edit-done="cellEditDone"
+            
             row-height=24
             :height="230"
           ></v-table>
@@ -774,6 +774,7 @@
       },
       basicInfo(rowIndex, rowData, column){
         if( this.personListValue.find(i => i.id === rowData.id)){
+          this.$message.error("请勿重复添加物料");
         }else{
           this.personListValue.push(rowData);
         }
