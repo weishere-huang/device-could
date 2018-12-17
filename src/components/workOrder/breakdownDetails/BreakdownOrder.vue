@@ -1,8 +1,10 @@
 <template>
   <div class="breakdown-order">
     <div class="top">
-      <el-button @click="toBack" type="primary" size="small">返回</el-button>
-      <el-button size="small" type="primary" @click="outerVisible=true">提交审核</el-button>
+      <el-button-group>
+        <el-button @click="toBack" type="primary" size="small">返回</el-button>
+        <el-button size="small" type="primary" @click="outerVisible=true">提交审核</el-button>
+      </el-button-group>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
         <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
