@@ -121,7 +121,7 @@
       </div>
     </div>
     <el-dialog title="角色添加" :visible.sync="dialogFormVisible" width="40%" :beforeClose="toCancel">
-      <el-form :model="form">
+      <el-form :model="form" style="padding:10px 30px;">
         <el-form-item label="角色名称" label-width="120px">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
@@ -503,7 +503,7 @@
           this
         ).then(
           response => {
-            this.load();
+            this.reload();
             this.form.name = "";
             this.form.desc = "";
           },
@@ -693,7 +693,7 @@
           this
         ).then(
           response => {
-            this.load();
+            this.reload();
           },
           ({type, info}) => {
 

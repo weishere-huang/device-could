@@ -22,30 +22,30 @@
                         @change="timeInfo"
                         :picker-options="pickerOptions">
                     </el-date-picker>&nbsp;
-                    <el-button type="primary" size="small" icon="el-icon-search">查询</el-button>&nbsp;&nbsp;
+                    <el-button type="primary" size="small" icon="el-icon-search" @click="searchTime">查询</el-button>&nbsp;&nbsp;
                 </section>
             </section>
             <section class="mainWrap">
                 <div>
-                    <el-tag type="info ellipsis">名称：{{runningLog.deviceName}}</el-tag>
-                    <el-tag type="info ellipsis">型号：{{runningLog.deviceModel}}</el-tag>
-                    <el-tag type="info ellipsis">编号：{{runningLog.deviceNo}}</el-tag>
-                    <el-tag type="info ellipsis">位置：{{runningLog.location}}</el-tag>
-                    <el-tag type="info ellipsis">当前状态：{{runningLog.deviceState}}</el-tag>
-                    <el-tag type="info ellipsis">报警状态：
+                    <el-tag type="info ellipsis" :title="runningLog.deviceName">名称：{{runningLog.deviceName}}</el-tag>
+                    <el-tag type="info ellipsis" :title="runningLog.deviceModel">型号：{{runningLog.deviceModel}}</el-tag>
+                    <el-tag type="info ellipsis" :title="runningLog.deviceNo">编号：{{runningLog.deviceNo}}</el-tag>
+                    <el-tag type="info ellipsis" :title="runningLog.location">位置：{{runningLog.location}}</el-tag>
+                    <el-tag type="info ellipsis" :title="runningLog.deviceState">当前状态：{{runningLog.deviceState}}</el-tag>
+                    <el-tag type="info ellipsis" title="">报警状态：
                       <i class="iconfont c-green" v-if="runningLog.warnLevel===0">&#xe651;</i>
-                      <i class="iconfont c-yellow" v-if="runningLog.warnLevel===1">&#xe651;</i>
-                      <i class="iconfont c-orange" v-if="runningLog.warnLevel===2">&#xe651;</i>
-                      <i class="iconfont c-red" v-if="runningLog.warnLevel===3">&#xe651;</i>
-                      <i class="iconfont c-darkgray" v-if="runningLog.warnLevel===4">&#xe651;</i>
+                      <i class="iconfont c-yellow" v-else-if="runningLog.warnLevel===1">&#xe651;</i>
+                      <i class="iconfont c-orange" v-else-if="runningLog.warnLevel===2">&#xe651;</i>
+                      <i class="iconfont c-red" v-else-if="runningLog.warnLevel===3">&#xe651;</i>
+                      <i class="iconfont c-darkgray" v-else-if="runningLog.warnLevel===4">&#xe651;</i>
                     </el-tag>
-                    <div style="float:right">
+                    <!-- <div style="float:right">
                         <el-button-group>
                         <el-button size="mini" type="primary" class="time_active">一周</el-button>
                         <el-button size="mini" type="primary">两周</el-button>
                         <el-button size="mini" type="primary">一月</el-button>
                         </el-button-group>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="chartWrap">
                 </div>
@@ -146,7 +146,10 @@ export default {
           width: 100,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          formatter: function (rowData,rowIndex,pagingIndex,field) {
+            return rowData.dataType===0 ? '开机':rowData.dataType===1?"关机":"故障"
+          }
         },
         {
           field: "createTime",
@@ -174,15 +177,17 @@ export default {
         }
       ],
       runningLog:"",
-      startDate:"",
-      endDate:""
+      startDate:"2018/01/01",
+      endDate:"2018/01/07"
     };
   },
   methods: {
+    searchTime(){
+      this.selectALLMsg()
+    },
     timeInfo(data){
       this.startDate=data[0]
       this.endDate=data[1]
-      console.log(this.startDate,this.endDate);
     },
     clickDemo: function() {
       this.showInfo++;
@@ -247,57 +252,60 @@ export default {
         ]
       });
     },
+    selectALLMsg(){
+      let id = this.$route.params.deviceId
+      let code=this.$store.state.monit.code
+      console.log(this.$store.state.monit.code);
+      console.log(id);
+      this.Axios(
+        {
+          url: ["/deviceState/getRunInfoForStateTime","/deviceState/getRunInfoForBasic"],
+          type: ["get","get"],
+          params: {
+            organizeCode:1001,
+            deviceId:92,
+            startDate:this.startDate,
+            endDate:this.endDate,
+            page:1,
+            size:''
+          },
+          option: { requestTarget: "r" }
+        },
+        this
+      ).then(
+        ([res1,res2]) => {
+          this.runningLog=res2.data.data
+          if (this.runningLog.deviceState===0) {
+            this.runningLog.deviceState="正常"
+          }else if (this.runningLog.deviceState===1) {
+            this.runningLog.deviceState="故障"
+          }else if (this.runningLog.deviceState===2) {
+            this.runningLog.deviceState="维保"
+          }else if (this.runningLog.deviceState===3) {
+            this.runningLog.deviceState="关机"
+          }
+          console.log(this.runningLog);
+          let days=new Array()
+          let unexpected=new Array()
+          let normal=new Array()
+          for (let i = 0; i < res1.data.data.length; i++) {
+            days.push(res1.data.data[i].days)
+            unexpected.push(res1.data.data[i].unexpected)
+            normal.push(res1.data.data[i].normal)
+          }
+          console.log(res1.data.data);
+          this.echartsWrap(days,unexpected,normal)
+          this.tableData=res2.data.data.content
+          console.log(this.tableData);
+        }
+      );
+    }
   },
   mounted: function() {
- 
+    
   },
   created () {
-    let id = this.$route.params.deviceId
-    let code=this.$store.state.monit.code
-    console.log(this.$store.state.monit.code);
-    console.log(id);
-    this.Axios(
-      {
-        url: ["/deviceState/getRunInfoForStateTime","/deviceState/getRunInfoForBasic"],
-        type: ["get","get"],
-        params: {
-          organizeCode:1001,
-          deviceId:92,
-          startDate:"2018/01/01",
-          endDate:"2018/01/07",
-          page:1,
-          size:''
-        },
-        option: { requestTarget: "r" }
-      },
-      this
-    ).then(
-      ([res1,res2]) => {
-        this.runningLog=res2.data.data
-        if (this.runningLog.deviceState===0) {
-          this.runningLog.deviceState="正常"
-        }else if (this.runningLog.deviceState===1) {
-          this.runningLog.deviceState="故障"
-        }else if (this.runningLog.deviceState===2) {
-          this.runningLog.deviceState="维保"
-        }else if (this.runningLog.deviceState===3) {
-          this.runningLog.deviceState="关机"
-        }
-        console.log(this.runningLog);
-        let days=new Array()
-        let unexpected=new Array()
-        let normal=new Array()
-        for (let i = 0; i < res1.data.data.length; i++) {
-          days.push(res1.data.data[i].days)
-          unexpected.push(res1.data.data[i].unexpected)
-          normal.push(res1.data.data[i].normal)
-        }
-        console.log(res1.data.data);
-        this.echartsWrap(days,unexpected,normal)
-        this.tableData=res2.data.data.content
-        console.log(this.tableData);
-      }
-    );
+    this.selectALLMsg()
   }
 };
 </script>
