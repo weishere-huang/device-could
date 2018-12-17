@@ -8,7 +8,7 @@
          <el-main class="monitSingleMainContent">
             <section class="topWrap">
                 <div><el-button type="primary" size="small" @click="()=>{this.$router.go(-1) }" icon="el-icon-arrow-left">任务列表</el-button></div>
-                <div><el-button type="primary" size="small" @click="$router.push({ path: '/Oee/Details/'+this.$route.params.equId+'/End' })"><i class='iconfont'>&#xe603;</i>&nbsp;结束任务</el-button></div>
+                <div><el-button type="primary" size="small" @click="$router.push({ path: '/Oee/Details/'+$route.params.equId+'/End' })"><i class='iconfont'>&#xe603;</i>&nbsp;结束任务</el-button></div>
             </section>
             <section class="mainWrap">
                 <div>
@@ -148,33 +148,56 @@ export default {
     };
   },
   methods: {
-    setGaugeOption:function(){
+    setGaugeOption:function(params){
       var mainChart_1 = echarts.init(document.querySelector("#gaugeWrap_1"));
       var mainChart_2 = echarts.init(document.querySelector("#gaugeWrap_2"));
       var mainChart_3 = echarts.init(document.querySelector("#gaugeWrap_3"));
       var mainChart_4 = echarts.init(document.querySelector("#gaugeWrap_4"));
-      const option = {
-          tooltip : {
-              formatter: "{a} <br/>{b} : {c}%"
-          },
-          toolbox: {
-              feature: {
-                  saveAsImage: {}
-              }
-          },
-          series: [
-              {
-                  name: 'OEE',
-                  type: 'gauge',
-                  detail: {formatter:'{value}'},
-                  data: [{value: 50, name: 'OEE性能'}]
-              }
-          ]
-      }
-      mainChart_1.setOption(option, true);
-      mainChart_2.setOption(option, true);
-      mainChart_3.setOption(option, true);
-      mainChart_4.setOption(option, true);
+      const gaugeArr=[mainChart_1,mainChart_2,mainChart_3,mainChart_4];
+      gaugeArr.map((item,index)=>{
+        const _op=params[index];
+        const option = {
+            tooltip : {
+                formatter: "{a} <br/>{b} : {c}%"
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            series: [
+                {
+                    name: 'OEE',
+                    type: 'gauge',
+                    detail: {formatter:'{value}'},
+                    data: [{value: _op.value, name: _op.name}]
+                }
+            ]
+        }
+        item.setOption(option, true);
+      })
+      // const option = {
+      //     tooltip : {
+      //         formatter: "{a} <br/>{b} : {c}%"
+      //     },
+      //     toolbox: {
+      //         feature: {
+      //             saveAsImage: {}
+      //         }
+      //     },
+      //     series: [
+      //         {
+      //             name: 'OEE',
+      //             type: 'gauge',
+      //             detail: {formatter:'{value}'},
+      //             data: [{value: 50, name: 'OEE性能'}]
+      //         }
+      //     ]
+      // }
+      // mainChart_1.setOption(option, true);
+      // mainChart_2.setOption(option, true);
+      // mainChart_3.setOption(option, true);
+      // mainChart_4.setOption(option, true);
       }
   },
   created:function(){
@@ -195,12 +218,25 @@ export default {
           this.tableData=response.data.data.content.map(item=>{return {
             equName: `${item.deviceName}(${item.deviceNo})`,
             hourNum: item.recordTime,
-          }})
+          }});
+          window.setTimeout(()=>{
+            this.setGaugeOption([
+              {name:'OEE',value:this.oeeDetails.oee},
+              {name:'时间开动率',value:this.oeeDetails.timeStartRate},
+              {name:'性能开动率',value:this.oeeDetails.performanceEfficiency},
+              {name:'良品率',value:this.oeeDetails.qualifiedRate}
+            ]);
+          },300);
         }
       );
   },
   mounted: function() {
-    this.setGaugeOption();
+    // this.setGaugeOption([
+    //   {name:'OEE',value:0},
+    //   {name:'时间开动率',value:0},
+    //   {name:'性能开动率',value:0},
+    //   {name:'良品率',value:0}
+    // ]);
     // var app = {};
     // option = null;
     // app.title = '坐标轴刻度与标签对齐';
