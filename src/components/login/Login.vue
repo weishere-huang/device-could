@@ -563,9 +563,10 @@
             if (result.data.code === 200) {
               console.log(result.data);
               sessionStorage.token = result.data.data.tokenStr;
-              sessionStorage.Cookie =JSON.stringify(result.data.data);
+              sessionStorage.user =JSON.stringify(result.data.data);
+              // sessionStorage.Cookie =result.data.data;
               // this.$cookieStore.addCookie('JSESSIONID', result.data.data.jsessionid)
-              sessionStorage.user = result.data.data.employeeName;
+              // sessionStorage.user = result.data.data.employeeName;
               this.$store.commit("user", sessionStorage.getItem("user"));
               this.$store.commit("tokenSrc", result.data.data.tokenStr);
               this.$router.replace("/Home");

@@ -246,7 +246,7 @@ export default {
       //     option:{enableMsg:false}
       //   },
       // ).then(response=>{
-        this.$confirm("您确定要退出登录吗？","Warning",{
+        this.$confirm("您确定要退出登录吗？","确认",{
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -256,6 +256,7 @@ export default {
             type:"success"
           })
           sessionStorage.removeItem('token');
+          sessionStorage.removeItem('user')
           this.$router.push({
             path: "/Login",
             redirect: "/Login"
@@ -286,7 +287,7 @@ export default {
 
   },
   created () {
-    this.user=sessionStorage.getItem("user");
+    this.user=JSON.parse(sessionStorage.getItem("user")).name
     this.MsgCount();
   },
   components: {
