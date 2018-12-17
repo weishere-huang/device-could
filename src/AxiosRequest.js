@@ -38,24 +38,27 @@ export default ({ url, type, params, config, option, loadingConfig }, vue) => {
             const _params = Object.prototype.toString.call(params) !== '[object Array]' ? params || {} : params[index];
             const _type = Object.prototype.toString.call(type) !== '[object Array]' ? type || "post" : type[index];
             return new Promise(function (resolve, reject) {
-                axios[_type](_url, _type === "get" ? { params: _params } : _params, config || {}).then(res => {
-                    if (res.status === 200 && res.data.code === 200) {
-                        //success && success(res.data);
-                        //option.enableMsg && Message.success({message:option.successMsg, customClass:'e-message', duration:1500});
-                        resolve(res);
-                    } else {
-                        //console.log(res.data.msg);
-                        Message.error({ message: `${res.data.msg}(${res.data.code})`, customClass: 'e-message', duration: 5000 });
-                        reject({ type: 'faild', info: res.data });
-                    }
-                    loading.close();
-                }).catch(res => {
-                    //error && error(res);
-                    //loading.close();
-                    //console.log(info);
-                    Message.error({ message: `网络异常：${res.message}`, customClass: 'e-message', duration: 5000 });
-                    reject({ type: 'error', info: res });
-                })
+                //window.setTimeout(() => {
+                    axios[_type](_url, _type === "get" ? { params: _params } : _params, config || {}).then(res => {
+                        loading.close();
+                        if (res.status === 200 && res.data.code === 200) {
+                            //success && success(res.data);
+                            //option.enableMsg && Message.success({message:option.successMsg, customClass:'e-message', duration:1500});
+                            resolve(res);
+                        } else {
+                            //console.log(res.data.msg);
+                            Message.error({ message: `${res.data.msg}(${res.data.code})`, customClass: 'e-message', duration: 5000 });
+                            reject({ type: 'faild', info: res.data });
+                        }
+                        
+                    }).catch(res => {
+                        //error && error(res);
+                        loading.close();
+                        //console.log(info);
+                        Message.error({ message: `网络异常：${res.message}`, customClass: 'e-message', duration: 5000 });
+                        reject({ type: 'error', info: res });
+                    })
+                //}, 10);
             });
         });
         return new Promise((resolve, reject) => {
@@ -75,9 +78,10 @@ export default ({ url, type, params, config, option, loadingConfig }, vue) => {
                 resolve({ code: 0, data: params.resetData });
                 return;
             }
-            window.setTimeout(() => {
+            //window.setTimeout(() => {
                 const loading = loadInit();
                 axios[type || 'post'](url, type === 'get' ? { params: params } : params, config || {}).then(res => {
+                    
                     if (res.status === 200 && res.data.code === 200) {
                         //success && success(res.data);
                         option.enableMsg && Message.success({ message: "数据请求完成~", customClass: 'e-message', duration: 2000 });
@@ -103,7 +107,7 @@ export default ({ url, type, params, config, option, loadingConfig }, vue) => {
                     //     });
                     // }, 2000);
                 })
-            }, 10)
+            //}, 10)
         })
     }
 }

@@ -134,7 +134,6 @@ export default {
           name: "",
           address: "",
           phone: "",
-          address: "",
           gmtCreate: "",
           state: ""
         }
@@ -279,6 +278,7 @@ export default {
       this.dialogVisible = true;
       this.detailsValue = rowData;
       console.log(rowData);
+
     },
     selectGroupChange(selection) {
       console.log("select-group-change", selection);
@@ -385,7 +385,9 @@ export default {
           this.tableData = response.data.data.content;
           for (let i = 0; i < this.tableData.length; i++) {
             this.tableData[i].state = String(this.tableData[i].state);
+            this.tableData[i].businessLicenseImg=this.global.imgPath +this.tableData[i].businessLicenseImg.split(":")[1];
           }
+          // console.log(this.tableData[2].businessLicenseImg)
         },
         ({ type, info }) => {
           //错误类型 type=faild / error

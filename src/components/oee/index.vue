@@ -59,7 +59,7 @@
                       row-click-color="#edf7ff"
               ></v-table>
               <div class="pagerWrap">
-                    <v-pagination :total="600"></v-pagination>
+                    <v-pagination :total="pageable.total" :pageIndex="pageable.pageNumber" :pageSize="pageable.pageSize"></v-pagination>
                 </div>
             </div>
           </section>
@@ -96,9 +96,7 @@ Vue.component("table-operation", {
               <el-button type="primary" size="mini" @click="deleteVisible = false">确定</el-button>
             </div>
             <el-button type="text" slot="reference" class='g-link' @click.stop.prevent="deleteRow(rowData,index)"><i style='font-size:16px' class='iconfont'>&#xe66b;</i></el-button>
-            
           </el-popover>
-            
           </el-tooltip>
         </span>`,
   
@@ -121,22 +119,29 @@ Vue.component("table-operation", {
   },
   methods: {
     endOeeTask() {
-      this.$router.push({ path: "/Oee/End" });
+      //this.$router.push({ name: "/Oee/End/123",params:{endTime:rowData.endTime,desc:rowData.desc}});
+      this.$router.push({ path: "/Oee/End/"+this.rowData.id});
     },
     oeeTaskDetails() {
-      this.$router.push({ path: "/Oee/Details" });
+      this.$router.push({ path: "/Oee/Details/"+this.rowData.id });
     },
     deleteRow() {
       // 参数根据业务场景随意构造
       let params = { type: "delete", index: this.index };
       this.$emit("on-custom-comp", params);
+    },
+    blurHandler:function(){
+    },
+    deleteOeeTask:function(){
+      Message.wran({message:'此OEE任务不允许删除'});
+      deleteVisible = false;
     }
   }
 });
 export default {
   data() {
     return {
-      isHideList: false,
+      isHideList: false,//this.$route.matched.find(item=>(item.name==="OeeDetails"))?true:false,
       formInline: {},
       isHideAdvSearch: true,
       dateRange: "",
@@ -172,19 +177,20 @@ export default {
         ]
       },
       tableData: [
-        {
-          oeeCode: "OEE233371",
-          customName: "第三季度第二次OEE测试",
-          startDate: "2018/10/11",
-          endDate: "2018/11/23",
-          equNum: 122,
-          state: 1,
-          oee: 332.3
-        }
+        // {
+        //   oeeCode: "OEE233371",
+        //   customName: "第三季度第二次OEE测试",
+        //   startDate: "2018/10/11",
+        //   endDate: "2018/11/23",
+        //   equNum: 122,
+        //   state: 1,
+        //   oee: 332.3
+        // }
       ],
+      hasLoaded:false,
       columns: [
         {
-          field: "oeeCode",
+          field: "planNo",
           title: "OEE编号",
           width: 120,
           titleAlign: "center",
@@ -195,8 +201,16 @@ export default {
           // }, isResize:true
         },
         {
-          field: "customName",
+          field: "shorthandName",
           title: "速记名称",
+          width: 250,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "organizeName",
+          title: "组织机构名称",
           width: 250,
           titleAlign: "center",
           columnAlign: "center",
@@ -205,10 +219,13 @@ export default {
         {
           field: "startDate",
           title: "起始时间",
-          width: 100,
+          width: 150,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          formatter:function(rowData){
+            return new Date(rowData.startDate).toLocaleDateString().replace(/\//g, "-");
+          }
         },
         {
           field: "endDate",
@@ -216,12 +233,15 @@ export default {
           width: 150,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          formatter:function(rowData){
+            return new Date(rowData.endDate).toLocaleDateString().replace(/\//g, "-");
+          }
         },
         {
-          field: "equNum",
+          field: "count",
           title: "设备数量",
-          width: 150,
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -229,18 +249,31 @@ export default {
         {
           field: "state",
           title: "状态",
-          width: 50,
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          formatter:function (rowData,rowIndex,pagingIndex,field){
+            switch(rowData.state){
+              case 0:
+              return '未开始';
+              case 1:
+              return '进行中';
+              case 2:
+              return '已完成';
+            }
+          }
         },
         {
           field: "oee",
           title: "OEE值",
-          width: 50,
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          formatter:function (rowData,rowIndex,pagingIndex,field){
+            return rowData.oee?rowData.oee:'-';
+          }
         },
         {
           title: "操作",
@@ -250,14 +283,19 @@ export default {
           componentName: "table-operation",
           isResize: true
         }
-      ]
+      ],
+      pageable:{pageNumber:0,pageSize:0,total:0}
     };
   },
-  created: function() {},
+  created: function() {
+    this.dataInit();
+  },
   mounted: function() {},
   watch: {
     $route() {
-      this.isHideList=this.$route.matched.find(item=>(item.path==='/Oee/Details'))?true:false;
+      //debugger
+      this.isHideList=this.$route.matched.find(item=>(item.name==="OeeDetails"))?true:false;
+      if(!this.hasLoaded)this.dataInit();
     }
   },
   methods: {
@@ -266,6 +304,33 @@ export default {
     },
     treeNodeClick(data) {
       console.log(data);
+    },
+    dataInit:function(){
+      this.hasLoaded=true;
+      
+      this.Axios(
+        {
+          params: {organizeCode:'1000'},
+          url: "/data/listOeePlans",
+          type: "get",
+          option: {
+            enableMsg:false,
+            requestTarget:'r'
+          }
+        },
+        this
+      ).then(
+        response => {
+          const _d=response.data.data;
+          this.tableData=_d.content;
+          this.pageable={
+            pageNumber:_d.pageable.pageNumber,
+            pageSize:_d.pageable.pageSize,
+            total:_d.totalElements}
+            this.isHideList=this.$route.matched.find(item=>(item.name==="OeeDetails"))?true:false;
+        },
+        ({ type, info }) => {}
+      );
     }
   }
 };
