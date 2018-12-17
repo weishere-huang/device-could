@@ -286,14 +286,14 @@ export default {
         .then(result => {
           console.log(result.data);
           console.log(result.data.data);
-          for (let i = 0; i < result.data.data.length; i++) {
-            if (result.data.data[i].isRead === 0) {
-              result.data.data[i].isRead = "未读";
-            } else if(result.data.data[i].isRead === 1){
-              result.data.data[i].isRead = "已读";
+          for (let i = 0; i < result.data.data.content.length; i++) {
+            if (result.data.data.content[i].isRead === 0) {
+              result.data.data.content[i].isRead = "未读";
+            } else if(result.data.data.content[i].isRead === 1){
+              result.data.data.content[i].isRead = "已读";
             }
           }
-          this.tableData = result.data.data;
+          this.tableData = result.data.data.content;
           this.NotReadMsgCount();
         })
         .catch(err => {
@@ -324,8 +324,8 @@ export default {
         .then(result => {
           console.log(result);
           console.log(result.data);
-
-          if (result.data.data.length > 0) {
+          this.tableData = result.data.data;
+          if(this.tableData !== null){
             for (let i = 0; i < result.data.data.length; i++) {
               if (result.data.data[i].isRead == 0) {
                 result.data.data[i].isRead = "未读";
@@ -333,8 +333,10 @@ export default {
                 result.data.data[i].isRead = "已读";
               }
             }
-            this.tableData = result.data.data;
+          }else{
+            console.log("数据为空")
           }
+
         })
         .catch(err => {
           console.log(err);
