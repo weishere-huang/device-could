@@ -193,7 +193,7 @@
             <router-view v-if="isRouterAlive" />
           </transition>
         </el-main>
-        <el-footer>长虹智能终端设备生产管理云平台</el-footer>
+        <el-footer>长虹智能终端设备生产管理云平台({{version?(new Date(version).format("yyyy/MM/dd hh:mm:ss")):'no version'}})</el-footer>
       </el-container>
     </el-container>
 
@@ -216,7 +216,8 @@ export default {
       isCollapse: false,
       pictLoading: true,
       isRouterAlive:true,
-      msgcount:0
+      msgcount:0,
+      version:versionInfo
     };
   },
   methods: {

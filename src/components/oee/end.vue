@@ -6,10 +6,10 @@
     center>
         <section class='addOeeWrap'>
             <el-form ref="form" :model="form" label-width="200px">
-                <el-form-item size="mini" label="起始时间">
+                <el-form-item size="small" label="起始时间">
                     <span>{{(startDate?(new Date(startDate).toLocaleDateString().replace(/\//g, "-")):"")}}</span>
                 </el-form-item>
-                <el-form-item size="mini" label="结束时间">
+                <el-form-item size="small" label="结束时间">
                     <el-checkbox v-model="reResetTime">是否重设时间</el-checkbox>&nbsp;&nbsp;
                     <el-date-picker
                         :disabled="!reResetTime"
@@ -19,11 +19,15 @@
                         placeholder="选择日期">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item size="mini" label="生产总量">
-                    <el-input maxlength="2" v-model="form.prodTotal" type='number' placeholder="生产总量（件）"></el-input>
+                <el-form-item size="small" label="生产总量">
+                    <el-input maxlength="2" v-model="form.prodTotal" type='number' placeholder="生产总量（件）">
+                        <template slot="append">件</template>
+                    </el-input>
                 </el-form-item>
-                <el-form-item size="mini" label="合格成品量">
-                    <el-input v-model="form.qualifiedCount" type='number' placeholder="生产的成品总合格数量"></el-input>
+                <el-form-item size="small" label="合格成品量">
+                    <el-input v-model="form.qualifiedCount" type='number' placeholder="生产的成品总合格数量">
+                        <template slot="append">件</template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="备注">
                     <el-input type="textarea" v-model="form.describeInfo"></el-input>
@@ -66,7 +70,8 @@ export default {
             url: "/data/getOeePlanDetail",
             type: "get",
             option: {
-                requestTarget:'r'
+                requestTarget:'r',
+                enableMsg: false
             },
             loadingConfig: {
                 target: document.querySelector(".el-dialog")
@@ -109,7 +114,8 @@ export default {
           url: "/data/terminationOeePlan",
           type: "post",
           option: {
-            requestTarget:'r'
+            requestTarget:'r',
+            successMsg:'任务已经成功结束'
           },
           params: qs.stringify(_params)
         },
