@@ -1,8 +1,10 @@
 <template>
   <div class="breakdown-order">
     <div class="top">
-      <el-button @click="toBack" type="primary" size="small">返回</el-button>
-      <el-button size="small" type="primary" @click="outerVisible=true">提交审核</el-button>
+      <el-button-group>
+        <el-button @click="toBack" type="primary" size="small">返回</el-button>
+        <el-button size="small" type="primary" @click="outerVisible=true">提交审核</el-button>
+      </el-button-group>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
         <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
@@ -170,7 +172,7 @@
             :cell-edit-done="cellEditDone"
             row-height=24
             :height="140"
-             @on-custom-comp="customCompFunc"
+            @on-custom-comp="customCompFunc"
           >
           </v-table>
         </div>
@@ -275,7 +277,7 @@
   </div>
 </template>
 <script>
-import Vue from "vue";
+  import Vue from "vue";
   export default {
     data() {
       return {
@@ -650,12 +652,12 @@ import Vue from "vue";
       };
     },
     methods: {
-       customCompFunc(params) {
-      if (params.type === "delete") {
-        this.suppliesTableData = this.suppliesTableData.filter(item=>item.id!=params.rowData["id"]);
-        this.personListValue = this.personListValue.filter(item=>item.id!=params.rowData["id"]);
-      }
-    },
+      customCompFunc(params) {
+        if (params.type === "delete") {
+          this.suppliesTableData = this.suppliesTableData.filter(item=>item.id!=params.rowData["id"]);
+          this.personListValue = this.personListValue.filter(item=>item.id!=params.rowData["id"]);
+        }
+      },
       toBack(){
         this.$router.back(-1)
       },
@@ -704,6 +706,7 @@ import Vue from "vue";
       },
       basicInfo(rowIndex, rowData, column){
         if( this.personListValue.find(i => i.id === rowData.id)){
+          this.$message.error("请勿重复添加物料");
         }else{
           this.personListValue.push(rowData);
         }
@@ -749,15 +752,15 @@ import Vue from "vue";
 
       //执行审核
       examineUp(){
-         if(this.examine.radio!=1){
-           if(this.toExamine.userId !==""|| this.examine.type){
-             this.toExamineUp();
-           }else{
-             this.$message.error('请选择终审或添加下一级审批人')
-           }
-         }else{
-           this.toExamineUp();
-         }
+        if(this.examine.radio!=1){
+          if(this.toExamine.userId !==""|| this.examine.type){
+            this.toExamineUp();
+          }else{
+            this.$message.error('请选择终审或添加下一级审批人')
+          }
+        }else{
+          this.toExamineUp();
+        }
 
       },
       toExamineUp(){
@@ -1169,29 +1172,29 @@ import Vue from "vue";
       this.workLoad(this.$route.params.id);
     }
   };
-   Vue.component("table-breakdownOrder", {
-  template: `<span>
+  Vue.component("table-breakdownOrder", {
+    template: `<span>
           <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe635;</i></a>
         </span>`,
-  props: {
-    rowData: {
-      type: Object
+    props: {
+      rowData: {
+        type: Object
+      },
+      field: {
+        type: String
+      },
+      index: {
+        type: Number
+      }
     },
-    field: {
-      type: String
-    },
-    index: {
-      type: Number
+    methods: {
+      deleteRow() {
+        // 参数根据业务场景随意构造
+        let params = { type: "delete", rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      }
     }
-  },
-  methods: {
-    deleteRow() {
-      // 参数根据业务场景随意构造
-      let params = { type: "delete", rowData: this.rowData };
-      this.$emit("on-custom-comp", params);
-    }
-  }
-});
+  });
 </script>
 
 <style lang="less" scoped>

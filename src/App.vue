@@ -14,7 +14,7 @@
             <!-- <el-submenu index="/">
               <template slot="title" class="logoWrap">
                 <span slot="title">
-                  
+
                 </span>
                 </template>
             </el-submenu> -->
@@ -159,7 +159,7 @@
                     content="我的消息"
                     placement="bottom-end"
                   >
-                    <el-badge :value="0" :max="99" class="item">
+                    <el-badge :value="msgcount" :max="99" class="item">
                       <i class="iconfont">&#xe601;</i>
                     </el-badge>
                   </el-tooltip>
@@ -216,6 +216,7 @@ export default {
       isCollapse: false,
       pictLoading: true,
       isRouterAlive:true,
+      msgcount:0
     };
   },
   methods: {
@@ -262,11 +263,31 @@ export default {
         })
       // },({type,info})=>{})
 
+    },
+    //未读消息数
+    MsgCount(){
+      this.Axios(
+        {
+          url: "/message/NotReadMsgCount/",
+          type: "get",
+          option:{requestTarget:"m"}
+        },
+        this
+      )
+        .then(result => {
+          this.msgcount = result.data.data;
+          console.log("msgcount");
+          console.log(result.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
 
   },
   created () {
     this.user=sessionStorage.getItem("user");
+    this.MsgCount();
   },
   components: {
     breadCrumb

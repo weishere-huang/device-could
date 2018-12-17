@@ -94,6 +94,7 @@
           label-width="160px"
           :model="company"
           :rules="registerRules"
+          @blur="vercompany"
           ref="company"
         >
           <el-form-item
@@ -280,6 +281,23 @@
     inject: ["reload"],
     name: "Login",
     data() {
+      let validate = (rule, value, callback) => {
+        //后台方法
+        this.Axios(
+          {
+            params: Object.assign({name: this.company.name}),
+            url: "/enterprise/findByName",
+            type: "get"
+          }
+        )
+        validateCode(value).then(res => {
+          if (res && res.data === 'TRUE') {
+            callback()
+          } else if (res && res.data === 'FALSE') {
+            callback('编码已存在')
+          }
+        })
+      }
       return {
         labelPosition: "right",
         dialogImageUrl: "",
@@ -320,26 +338,23 @@
         registerRules: {
           name: [
             {required: true, message: "企业名不能为空", trigger: "blur"},
-            {
-              validator: (rule, value, callback) => {
-                this.Axios(
-                  {
-                    params: Object.assign({name: this.company.name}),
-                    url: "/enterprise/findByName",
-                    type: "get",
-                    option: {enableMsg: false}
-                  },
-                )
-                compan(value).then(res=>{
-                  if (res.code==0) {
-                    callback(new Error("企业名称已存在"))
-                  } else if (res.code==200) {
-                    callback()
-                  }
-                })
-              }
-              , trigger: "blur"
-            }
+            // {validator:validate, trigger: 'blur'},
+            // {validator:function(rule, value, callback){
+            //   this.Axios(
+            //     {
+            //       params: Object.assign({name: this.company.name}),
+            //       url: "/enterprise/findByName",
+            //       type: "get"
+            //     }
+            //   ).then(res=>{
+            //     if (res.info.code == 0) {
+            //       callback (new Error("企业名称重复"))
+            //     }else if (res.info.code == 200) {
+            //       callback()
+            //     }
+            //   })
+            //   },
+            //   trigger: 'blur'}
           ],
           address: [{required: true, message: "地址不能为空", trigger: "blur"}],
           // phone: [
@@ -378,12 +393,6 @@
               },
               trigger: "blur"
             }
-            // {
-            //   min: 18,
-            //   max: 18,
-            //   message: "统一社会信用代码必须为18位",
-            //   trigger: "blur"
-            // }
           ]
         },
         managerRules: {

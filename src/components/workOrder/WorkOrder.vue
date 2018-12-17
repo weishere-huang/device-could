@@ -1,64 +1,88 @@
 <template>
   <div class="work-order">
     <div class="top">
-      <el-badge class="item">
-        <el-button
-          type="primary"
-          @click="load(toNull)"
-          size="small"
-        >全部工单</el-button>
-      </el-badge>
-      <el-badge
-        :value="audited1"
-        class="item"
-      >
-        <el-button
-          type="primary"
-          @click="load(0)"
-          size="small"
-        >待审核</el-button>
-      </el-badge>
-      <el-badge
-        :value="inAudit1"
-        class="item"
-      >
-        <el-button
-          type="primary"
-          @click="load(4)"
-          size="small"
-        >审核中</el-button>
-      </el-badge>
-      <el-badge
-        :value="handle1"
-        class="item"
-      >
-        <el-button
-          type="primary"
-          @click="load(15)"
-          size="small"
-        >待处理</el-button>
-      </el-badge>
-      <!-- <el-badge class="item">
-        <el-button
-          type="primary"
-          @click="load(7)"
-          size="small"
-        >已撤销</el-button>
-      </el-badge> -->
-      <el-badge class="item">
-        <el-button
-          type="primary"
-          @click="load(10)"
-          size="small"
-        >已驳回</el-button>
-      </el-badge>
-      <el-badge class="item">
-        <el-button
-          type="primary"
-          @click="load(13)"
-          size="small"
-        >已完成</el-button>
-      </el-badge>
+        <!--<el-badge class="item">-->
+          <!--<el-button-->
+            <!--type="primary"-->
+            <!--@click="load(toNull)"-->
+            <!--size="small"-->
+          <!--&gt;全部工单</el-button>-->
+        <!--</el-badge>-->
+        <!--<el-badge-->
+          <!--:value="audited1"-->
+          <!--class="item"-->
+        <!--&gt;-->
+          <!--<el-button-->
+            <!--type="primary"-->
+            <!--@click="load(0)"-->
+            <!--size="small"-->
+          <!--&gt;待审核</el-button>-->
+        <!--</el-badge>-->
+        <!--<el-badge-->
+          <!--:value="inAudit1"-->
+          <!--class="item">-->
+          <!--<el-button-->
+            <!--type="primary"-->
+            <!--@click="load(4)"-->
+            <!--size="small"-->
+          <!--&gt;审核中</el-button>-->
+        <!--</el-badge>-->
+        <!--<el-badge-->
+          <!--:value="handle1"-->
+          <!--class="item"-->
+        <!--&gt;-->
+          <!--<el-button-->
+            <!--type="primary"-->
+            <!--@click="load(15)"-->
+            <!--size="small"-->
+          <!--&gt;待处理</el-button>-->
+        <!--</el-badge>-->
+        <!--<el-badge class="item">-->
+          <!--<el-button-->
+            <!--type="primary"-->
+            <!--@click="load(10)"-->
+            <!--size="small"-->
+          <!--&gt;已驳回</el-button>-->
+        <!--</el-badge>-->
+        <!--<el-badge class="item">-->
+          <!--<el-button-->
+            <!--type="primary"-->
+            <!--@click="load(13)"-->
+            <!--size="small"-->
+          <!--&gt;已完成</el-button>-->
+        <!--</el-badge>-->
+      <el-button-group>
+      <el-button
+        type="primary"
+        @click="load(toNull)"
+        size="small"
+      >全部工单</el-button>
+      <el-button
+        type="primary"
+        @click="load(0)"
+        size="small"
+      >待审核</el-button>
+      <el-button
+        type="primary"
+        @click="load(4)"
+        size="small"
+      >审核中</el-button>
+      <el-button
+        type="primary"
+        @click="load(15)"
+        size="small"
+      >待处理</el-button>
+      <el-button
+        type="primary"
+        @click="load(10)"
+        size="small"
+      >已驳回</el-button>
+      <el-button
+        type="primary"
+        @click="load(13)"
+        size="small"
+      >已完成</el-button>
+      </el-button-group>
     </div>
     <div class="bottom">
       <v-table
@@ -350,11 +374,12 @@
   .work-order {
     font-size: 12px;
     .top {
+
       border: @border;
       padding: 10px;
       border-radius: 5px;
       .el-badge:not(:last-child) {
-        margin-right: 20px;
+        margin-right: 10px;
       }
     }
     .bottom {

@@ -100,7 +100,7 @@
 
           <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false" size="mini">取 消</el-button>
-            <el-button type="primary" @click="dialogVisible = false,classfyname=formInline.partClassifyName,classfyid=formInline.partClassify" size="mini">确 定</el-button>
+            <el-button type="primary" @click="dialogVisible = false,classfyname=formInline.partClassifyName,classfycode=formInline.partClassify" size="mini">确 定</el-button>
           </span>
         </el-dialog>
       </el-form>
@@ -169,13 +169,13 @@
             }
           ],
         defaultProps2:  {
-            value: "id",
+            value: "code",
             label: "name"
           },
         urlid: "",
         classfy:"",
         classfyname:"",
-        classfyid:"",
+        classfycode:"",
 
       };
     },
@@ -186,9 +186,9 @@
       handleChange2(value) {
         let name = this.$refs["getName2"].currentLabels;
         name = name[name.length - 1];
-        let id = value[value.length - 1];
-        console.log(id, name);
-        this.formInline.partClassify=id;
+        let code = value[value.length - 1];
+        console.log(code, name);
+        this.formInline.partClassify=code;
         this.formInline.partClassifyName=name;
 
       },
@@ -201,7 +201,7 @@
           partName: this.formInline.partName,
           partModel: this.formInline.partModel,
           partCategory: this.formInline.partCategory,
-          partClassify: this.classfyid,
+          partClassify: this.classfycode,
           partClassifyName: this.classfyname,
           lower: this.formInline.lower,
           remarks: this.formInline.remarks,

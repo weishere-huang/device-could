@@ -1,8 +1,10 @@
 <template>
   <div class="breakdown-order">
     <div class="top">
-      <el-button size="small" type="primary" @click="toBack">返回</el-button>
-      <el-button size="small" type="primary" @click="outerVisible=true">提交审核</el-button>
+      <el-button-group>
+        <el-button size="small" type="primary" @click="toBack">返回</el-button>
+        <el-button size="small" type="primary" @click="outerVisible=true">提交审核</el-button>
+      </el-button-group>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
         <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
@@ -170,7 +172,7 @@
               :table-data="personData"
               row-hover-color="#eee"
               row-click-color="#edf7ff"
-              
+
               row-height=24
             ></v-table>
           </div>
@@ -233,7 +235,7 @@
                 row-hover-color="#eee"
                 row-click-color="#edf7ff"
                 :row-dblclick="basicInfo"
-               
+
                 row-height=24
 
               ></v-table>
@@ -308,7 +310,7 @@
             :table-data="flowInfoData"
             row-hover-color="#eee"
             row-click-color="#edf7ff"
-            
+
             row-height=24
             :height="230"
           ></v-table>
@@ -774,6 +776,7 @@
       },
       basicInfo(rowIndex, rowData, column){
         if( this.personListValue.find(i => i.id === rowData.id)){
+          this.$message.error("请勿重复添加物料");
         }else{
           this.personListValue.push(rowData);
         }
@@ -1060,8 +1063,8 @@
       //保存备品备件页面并传值到详情页
       deleteBasic(){
         this.dialogVisible2 = false;
-          this.workSheetMaterialTableData = (this.workSheetMaterialTableData||[]).concat(this.personListValue);
-          this.workSheetMaterialTableData = Array.from(new Set(this.workSheetMaterialTableData))
+        this.workSheetMaterialTableData = (this.workSheetMaterialTableData||[]).concat(this.personListValue);
+        this.workSheetMaterialTableData = Array.from(new Set(this.workSheetMaterialTableData))
       },
       //保存工单物料到数据库
       insertPart(){

@@ -290,12 +290,6 @@ export default {
           });
         });
     },
-    ap() {
-      this.add1 = !this.add1;
-    },
-    revise() {
-      this.revise1 = !this.revise1;
-    }
   },
   mounted() {
     let li = document.querySelectorAll(".left li");
