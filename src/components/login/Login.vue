@@ -563,7 +563,7 @@
             if (result.data.code === 200) {
               console.log(result.data);
               sessionStorage.token = result.data.data.tokenStr;
-              // sessionStorage.Cookie = result.data.data.organizeCode;
+              sessionStorage.Cookie =JSON.stringify(result.data.data);
               // this.$cookieStore.addCookie('JSESSIONID', result.data.data.jsessionid)
               sessionStorage.user = result.data.data.employeeName;
               this.$store.commit("user", sessionStorage.getItem("user"));
