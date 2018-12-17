@@ -76,10 +76,8 @@
       isHide() {
         this.$emit("childByValue", false)
       }
-
     },
     created() {
-
     }
   };
 </script>
