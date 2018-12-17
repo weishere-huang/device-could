@@ -341,7 +341,7 @@
       tback(){
         this.$router.back(-1)
       },
-      selectOne(employeeId,userName){
+      selectOne(employeeId){
         this.Axios(
           {
             params:{employeeId:employeeId},
@@ -352,7 +352,6 @@
         ).then(response => {
             this.persnneladd = response.data.data;
             this.persnneladd.gender = response.data.data.gender.toString();
-            this.persnneladd.userName= userName;
             if (this.persnneladd.marital!=null){
               this.persnneladd.marital = response.data.data.marital.toString();
             }
