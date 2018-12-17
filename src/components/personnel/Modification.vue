@@ -362,7 +362,14 @@
           })
       },
       updateEmployee(){
-        this.codeToName(this.persnneladd.organizeCode);
+        let file = [];
+        for(let i in this.fileList){
+          file.push({
+            name:this.fileList[i].name,
+            img:this.fileList[i].img,
+          })
+        }
+        console.log(this.fileList);
         this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
         let qs = require("qs");
@@ -389,8 +396,8 @@
           postalAddress: this.persnneladd.postalAddress,
           graduateSchool: this.persnneladd.graduateSchool,
           degree: this.persnneladd.degree,
-          img: this.persnneladd.img,
-          qualificationInfo: this.persnneladd.qualificationInfo,
+          img: this.dialogImageUrl[0].url,
+          qualificationInfo:JSON.stringify(file),
           roleId: this.persnneladd.roleId
         });
         this.Axios(
