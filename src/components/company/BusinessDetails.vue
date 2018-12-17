@@ -75,15 +75,11 @@
     methods: {
       isHide() {
         this.$emit("childByValue", false)
-
       }
 
     },
     created() {
-      // console.log("tupian ")
-      // console.log(this.detailsValue.businessLicenseImg);
-      // this.imgUrl = this.global.imgPath + this.detailsValue.businessLicenseImg.split(":")[1];
-      // console.log(this.imgUrl)
+
     }
   };
 </script>
