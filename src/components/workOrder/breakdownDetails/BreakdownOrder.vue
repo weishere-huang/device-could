@@ -244,18 +244,18 @@
         <div class="information-receipt">
           <h5>回执信息</h5>
           <div style="overflow-y:scroll;" class="case">
-            <el-form label-width="100px" :model="workReceiptInfo">
+            <el-form label-width="100px" :model="workReceiptInfo" v-for="item of workReceiptInfo">
               <el-form-item label="施工人员：">
-                <span>{{workReceiptInfo.builder}}</span>
+                <span>{{item.builder}}</span>
               </el-form-item>
               <el-form-item label="处理状态：">
-                <span>{{workReceiptInfo.dealState}}</span>
+                <span>{{item.dealState}}</span>
               </el-form-item>
               <el-form-item label="处理时间：">
-                <span>{{workReceiptInfo.dealTime}}</span>
+                <span>{{item.dealTime}}</span>
               </el-form-item>
               <el-form-item label="处理内容：">
-                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="" readonly style="width:94%" v-model="workReceiptInfo.dealContent"></el-input>
+                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="" readonly style="width:94%" v-model="item.dealContent"></el-input>
               </el-form-item>
             </el-form>
           </div>
@@ -914,7 +914,7 @@
           this
         ).then(
           response => {
-            console.log(response.data.data);
+            console.log(response.data.data.workReceiptInfo);
             this.workInfoValue(response.data.data.work);
             this.formLabelAlignValue(response.data.data.fault);
             this.equipmentTableDataValue(response.data.data.devices);
@@ -1163,11 +1163,22 @@
           }
         }
       },
-      //流程信息
+      //回执信息
       workReceiptInfoValue(value){
         this.workReceiptInfo = value;
+        for(let i in this.workReceiptInfo){
+          if(this.workReceiptInfo[i].dealState==0){
+            this.workReceiptInfo[i].dealState="已处理"
+          }
+          if(this.workReceiptInfo[i].dealState==1){
+            this.workReceiptInfo[i].dealState="未处理"
+          }
+          if(this.workReceiptInfo[i].dealState==2){
+            this.workReceiptInfo[i].dealState="已取消"
+          }
+        }
       },
-      //回执信息
+      //流程信息
       informationDataValue(value){
         this.informationData = value;
       }
