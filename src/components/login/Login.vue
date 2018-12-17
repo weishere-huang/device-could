@@ -147,7 +147,7 @@
               style="width:80%"
             ></el-input>
           </el-form-item>
-          <el-form-item label="营业执照：">
+          <el-form-item label="营业执照：" props="dialogImageUrl">
             <el-upload
               :action="uploadUrl()"
               list-type="picture-card"
@@ -161,7 +161,7 @@
             <el-dialog :visible.sync="dialogVisible">
               <img
                 width="100%"
-                :src="dialogImageUrl"
+                :src="company.dialogImageUrl"
                 alt=""
               >
             </el-dialog>
@@ -300,20 +300,7 @@
       }
       return {
         labelPosition: "right",
-        dialogImageUrl: "",
         dialogVisible: false,
-        fileList2: [
-          {
-            name: "food.jpeg",
-            url:
-              "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-          },
-          {
-            name: "food2.jpeg",
-            url:
-              "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-          }
-        ],
         loginList: {
           verification: "",
           userName: "",
@@ -459,7 +446,8 @@
           address: "",
           phone: "",
           corporation: "",
-          companyID: ""
+          companyID: "",
+          dialogImageUrl: "",
         },
         manager: {
           userName: "",
@@ -486,7 +474,7 @@
         console.log(file, fileList);
       },
       handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.url;
+        this.company.dialogImageUrl = file.url;
         this.dialogVisible = true;
       },
       // let instance = axios.create({
@@ -599,7 +587,7 @@
           enterprisePhone: this.company.phone,
           legalPerson: this.company.corporation,
           creditCode: this.company.companyID,
-          businessLicenseImg: this.dialogImageUrl,
+          businessLicenseImg: this.company.dialogImageUrl,
           userName: this.manager.userName,
           passWord: pass,
           phone: this.manager.phone,
@@ -695,7 +683,7 @@
       },
       handleAvatarSuccess(res, file) {
         console.log(res.data)
-        this.dialogImageUrl = res.data;
+        this.company.dialogImageUrl = res.data;
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === "image/jpeg";
