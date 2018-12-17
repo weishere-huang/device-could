@@ -188,11 +188,8 @@ export default {
       if (params.type === "delete") {
        this.deleteEmployee();
         this.$delete(this.tableData, params.index);
-
       } else if (params.type === "edit") {
-
-        this.$router.push("/Modification?id="+this.userIds);
-
+        this.$router.push("/Modification/"+this.userIds);
       } else if (params.type === "stop") {
         this.enable();
       } else if (params.type === "start") {
@@ -391,7 +388,7 @@ export default {
     },
     updateEmployee() {
       if (this.values.length === 1) {
-        this.$router.push("/Modification?id=" + this.values[0].id);
+        this.$router.push("/Modification/" + this.values[0].id);
         // this.$store.commit("personnel", this.values[0]);
       } else {
         alert("抱歉、只能单个修改");
