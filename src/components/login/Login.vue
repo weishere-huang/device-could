@@ -147,7 +147,7 @@
               style="width:80%"
             ></el-input>
           </el-form-item>
-          <el-form-item label="营业执照：">
+          <el-form-item label="营业执照：" props="dialogImageUrl">
             <el-upload
               :action="uploadUrl()"
               list-type="picture-card"
@@ -161,7 +161,7 @@
             <el-dialog :visible.sync="dialogVisible">
               <img
                 width="100%"
-                :src="dialogImageUrl"
+                :src="company.dialogImageUrl"
                 alt=""
               >
             </el-dialog>
@@ -284,7 +284,6 @@
     data() {
       return {
         labelPosition: "right",
-        dialogImageUrl: "",
         dialogVisible: false,
         loginList: {
           verification: "",
@@ -429,7 +428,8 @@
           address: "",
           phone: "",
           corporation: "",
-          companyID: ""
+          companyID: "",
+          dialogImageUrl: "",
         },
         manager: {
           userName: "",
@@ -456,7 +456,7 @@
         console.log(file, fileList);
       },
       handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.url;
+        this.company.dialogImageUrl = file.url;
         this.dialogVisible = true;
       },
       // let instance = axios.create({
@@ -540,9 +540,10 @@
             if (result.data.code === 200) {
               console.log(result.data);
               sessionStorage.token = result.data.data.tokenStr;
-              sessionStorage.Cookie =JSON.stringify(result.data.data);
+              sessionStorage.user =JSON.stringify(result.data.data);
+              // sessionStorage.Cookie =result.data.data;
               // this.$cookieStore.addCookie('JSESSIONID', result.data.data.jsessionid)
-              sessionStorage.user = result.data.data.employeeName;
+              // sessionStorage.user = result.data.data.employeeName;
               this.$store.commit("user", sessionStorage.getItem("user"));
               this.$store.commit("tokenSrc", result.data.data.tokenStr);
               this.$router.replace("/Home");
@@ -575,7 +576,7 @@
           enterprisePhone: this.company.phone,
           legalPerson: this.company.corporation,
           creditCode: this.company.companyID,
-          businessLicenseImg: this.dialogImageUrl,
+          businessLicenseImg: this.company.dialogImageUrl,
           userName: this.manager.userName,
           passWord: pass,
           phone: this.manager.phone,
@@ -678,7 +679,7 @@
       },
       handleAvatarSuccess(res, file) {
         console.log(res.data)
-        this.dialogImageUrl = res.data;
+        this.company.dialogImageUrl = res.data;
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === "image/jpeg";

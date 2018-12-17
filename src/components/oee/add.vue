@@ -75,16 +75,24 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="计划日工时">
-                    <el-input size="small" maxlength="2" v-model="form.calendarHours" type='number' placeholder="每日的单台设备预计生产工时（小时/日）例如：8"></el-input>
+                    <el-input size="small" maxlength="2" v-model="form.calendarHours" type='number' placeholder="每日的单台设备预计生产工时（小时/日）例如：8">
+                        <template slot="append">小时/日</template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="计划日停机时间">
-                    <el-input size="small" v-model="form.shutdownTime" type='number' placeholder="每日的单台设备预计停机工时（小时/日）例如：1"></el-input>
+                    <el-input size="small" v-model="form.shutdownTime" type='number' placeholder="每日的单台设备预计停机工时（小时/日）例如：1">
+                        <template slot="append">小时/日</template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="计划日损耗时间">
-                    <el-input size="small" v-model="form.changeTime" type='number' placeholder="每日的单台设备预计损耗工时（小时/日）例如：1.5"></el-input>
+                    <el-input size="small" v-model="form.changeTime" type='number' placeholder="每日的单台设备预计损耗工时（小时/日）例如：1.5">
+                        <template slot="append">小时/日</template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="计划单件成品生产时间">
-                    <el-input size="small" v-model="form.planProdTime" type='number' placeholder="预计单件成品生产所用时件（秒/件）例如：120"></el-input>
+                    <el-input size="small" v-model="form.planProdTime" type='number' placeholder="预计单件成品生产所用时件（秒/件）例如：120">
+                        <template slot="append">秒/件</template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="设备选择">
                     <el-button size="mini" @click="equChooseHandler" type="primary" icon="el-icon-plus" circle></el-button>
@@ -138,12 +146,12 @@ export default {
       equList:[],
       selectedEquList:[],
       form: {
-        shorthandName: "速记名称002",
+        shorthandName: "",
         region: [],//Date.parse(new Date(this.form.region[0]))
-        calendarHours:8,
-        shutdownTime:1,
-        changeTime:1,
-        planProdTime:65,
+        calendarHours:'',
+        shutdownTime:'',
+        changeTime:'',
+        planProdTime:'',
         deviceIds:'103,104',
         describeInfo: ""
       },
@@ -210,7 +218,6 @@ export default {
           type: "post",
           option: {
             requestTarget:'r',
-            successMsg:'任务已经成功结束'
           },
           params: qs.stringify(_params)
         },

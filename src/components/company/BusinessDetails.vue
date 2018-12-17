@@ -44,9 +44,7 @@
         </div> -->
       </div>
       <div class="right">
-        <a target="_blank" :href="detailsValue.businessLicenseImg">
-        <img :src="detailsValue.businessLicenseImg" alt="">
-        </a>
+          <img :src="detailsValue.businessLicenseImg" alt="" title="营业执照" @click="picShow">
       </div>
     </div>
   </div>
@@ -57,6 +55,7 @@
     props: ["detailsValue"],
     data() {
       return {
+        dialogVisible:false,
         imgUrl: "",
         msg: "哈哈哈",
         img: "",
@@ -77,6 +76,9 @@
     methods: {
       isHide() {
         this.$emit("childByValue", false)
+      },
+      picShow(){
+        this.$emit("picShow", true)
       }
     },
     created() {

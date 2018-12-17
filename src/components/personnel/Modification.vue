@@ -298,18 +298,50 @@
           });
         }
       },
-      // test(){
-      //   let file = [];
-      //   for(let i in this.fileList) {
-      //     file.push({
-      //       name: this.fileList[i].name,
-      //       img: "img:"+this.fileList[i].url.split(":8080/")[1],
-      //     });
-      //     console.log(file[i].img);
-      //   }
-      //
-      // },
 
+      testValue(){
+        // let regEmail=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/;
+        // if(this.persnneladd.email.test(" ")){
+        //   if(!regEmail.test(this.persnneladd.email)){
+        //     alert("邮箱格式不正确");
+        //     return false;
+        //   }
+        // }
+        if (this.persnneladd.name == ""){
+          this.$message.error("员工名不能为空");
+          return false;
+        }
+        if(this.persnneladd.employeeNo == ""){
+          this.$message.error("员工编号不能为空");
+          return false;
+        }
+        let regIdNo = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if (!regIdNo.test(this.persnneladd.idCardNo)){
+          this.$message.error("身份证号填写有误");
+          return false;
+        }
+        if (this.persnneladd.roleId == ""){
+          this.$message.error("请选择角色权限");
+          return false;
+        }
+        if(!(/^1[34578]\d{9}$/.test(this.persnneladd.phone))){
+          this.$message.error("手机号码有误，请重填");
+          return false;
+        }
+        if(this.persnneladd.birthday == ""){
+          this.$message.error("请选择出生日期");
+          return false;
+        }
+        if(this.persnneladd.organizationName == " "){
+          this.$message.error("请选择组织机构");
+          return false;
+        }
+        if(this.persnneladd.position==""){
+          this.$message.error("请输入岗位");
+          return false;
+        }
+        return true;
+      },
       organize(){
         this.Axios(
           {
@@ -371,6 +403,12 @@
           })
       },
       updateEmployee(){
+        this.codeToName(this.persnneladd.organizeCode);
+        if(this.testValue()){
+          this.toUpdateEmployee()
+        }
+      },
+      toUpdateEmployee(){
         let file = [];
         for(let i in this.fileList){
           file.push({
@@ -378,7 +416,11 @@
             img: "img:"+this.fileList[i].url.split(":8080/")[1],
           });
         }
-        this.persnneladd.img="img:"+this.dialogImageUrl[0].url.split(":8080/")[1];
+        this.persnneladd.img = this.dialogImageUrl[0].url;
+        if(this.persnneladd.img.split(":")[0] !=="img"){
+          this.persnneladd.img="img:"+this.dialogImageUrl[0].url.split(":8080/")[1];
+        }
+        console.log(this.persnneladd.img);
         this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
         let qs = require("qs");
@@ -478,8 +520,8 @@
             // width: 110px;
             position: absolute;
             text-align: center;
-            top: 0%;
-            left: 2.5%;
+            top: 4px;
+            left: 30px;
             background-color: white;
           }
           .left {
@@ -517,16 +559,16 @@
           width: 600px;
           border: 1px solid @Info;
           border-radius: 5px;
-          overflow: hidden;
+          // overflow: hidden;
           margin-top: 30px;
           padding-left: 20px;
           .title {
             display: inline-block;
             // width: 110px;
             text-align: center;
-            position: absolute;
-            top: 48%;
-            left: 2.5%;
+            position: relative;
+            top: -7px;
+            left: 0px;
             background-color: white;
           }
           li {

@@ -193,7 +193,7 @@
             <router-view v-if="isRouterAlive" />
           </transition>
         </el-main>
-        <el-footer>长虹智能终端设备生产管理云平台</el-footer>
+        <el-footer>长虹智能终端设备生产管理云平台({{version?(new Date(version).format("yyyy/MM/dd hh:mm:ss")):'no version'}})</el-footer>
       </el-container>
     </el-container>
 
@@ -216,7 +216,8 @@ export default {
       isCollapse: false,
       pictLoading: true,
       isRouterAlive:true,
-      msgcount:0
+      msgcount:0,
+      version:versionInfo
     };
   },
   methods: {
@@ -246,7 +247,7 @@ export default {
       //     option:{enableMsg:false}
       //   },
       // ).then(response=>{
-        this.$confirm("您确定要退出登录吗？","Warning",{
+        this.$confirm("您确定要退出登录吗？","确认",{
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -256,6 +257,7 @@ export default {
             type:"success"
           })
           sessionStorage.removeItem('token');
+          sessionStorage.removeItem('user')
           this.$router.push({
             path: "/Login",
             redirect: "/Login"
@@ -286,7 +288,7 @@ export default {
 
   },
   created () {
-    this.user=sessionStorage.getItem("user");
+    this.user=JSON.parse(sessionStorage.getItem("user")).name
     this.MsgCount();
   },
   components: {
