@@ -44,7 +44,7 @@
         </div> -->
       </div>
       <div class="right">
-        <img :src="imgUrl1" alt="">
+        <img :src="detailsValue.businessLicenseImg" alt="">
       </div>
     </div>
   </div>
@@ -55,7 +55,7 @@
     props: ["detailsValue"],
     data() {
       return {
-        imgUrl1: "",
+        imgUrl: "",
         msg: "哈哈哈",
         img: "",
         block: false,
@@ -73,16 +73,13 @@
       };
     },
     methods: {
-
       isHide() {
         this.$emit("childByValue", false)
       }
 
     },
     created() {
-      console.log(this.detailsValue.businessLicenseImg);
-      this.imgUrl = this.global.imgPath + this.detailsValue.businessLicenseImg.split(":")[1];
-      console.log(this.imgUrl)
+
     }
   };
 </script>
