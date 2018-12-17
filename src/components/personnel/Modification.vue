@@ -478,8 +478,8 @@
             // width: 110px;
             position: absolute;
             text-align: center;
-            top: 0%;
-            left: 2.5%;
+            top: 4px;
+            left: 30px;
             background-color: white;
           }
           .left {
@@ -517,16 +517,16 @@
           width: 600px;
           border: 1px solid @Info;
           border-radius: 5px;
-          overflow: hidden;
+          // overflow: hidden;
           margin-top: 30px;
           padding-left: 20px;
           .title {
             display: inline-block;
             // width: 110px;
             text-align: center;
-            position: absolute;
-            top: 48%;
-            left: 2.5%;
+            position: relative;
+            top: -7px;
+            left: 0px;
             background-color: white;
           }
           li {

@@ -664,8 +664,13 @@
   };
   Vue.component("table-breakdown", {
     template: `<span>
-        <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">查看</a>&nbsp;
-        <a href="" @click.stop.prevent="deleteRow(rowData,index)" style="text-decoration: none;">删除</a>
+        <el-tooltip class="item" effect="dark" content="查看" placement="top">
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfontz'>&#xe60d;</i></a>
+        </el-tooltip>
+        &nbsp;
+        <el-tooltip class="item" effect="dark" content="删除" placement="top">
+            <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>
+          </el-tooltip>
         </span>`,
     props: {
       rowData: {
