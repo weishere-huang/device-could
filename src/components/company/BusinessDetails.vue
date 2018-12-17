@@ -31,14 +31,14 @@
           </li>
         </ul>
 
-        <div class="state">
+       <!-- <div class="state">
           <span>
             驳回原因：
           </span>
           <span style="color:red;display:inline-block">
             <p>{{detailsValue.auditOpinion}}</p>
           </span>
-        </div>
+        </div>-->
         <!-- <div style="margin-top:20px;text-align:center;">
           <el-button size="small" @click="isHide">返回</el-button>
         </div> -->
