@@ -187,7 +187,7 @@
     data() {
       return {
         fileList: [],
-        dialogImageUrl:[],
+        dialogImageUrl:[{url:""}],
         dialogVisible:false,
         persnneladd: {
           id:"",
@@ -355,7 +355,6 @@
             if (this.persnneladd.marital!=null){
               this.persnneladd.marital = response.data.data.marital.toString();
             }
-            console.log(this.persnneladd.qualificationInfo);
             let arr = JSON.parse(this.persnneladd.qualificationInfo);
             this.dialogImageUrl = [{
               url:this.global.imgPath+this.persnneladd.img.split(":")[1],
