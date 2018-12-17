@@ -44,7 +44,9 @@
         </div> -->
       </div>
       <div class="right">
+        <a target="_blank" :href="detailsValue.businessLicenseImg">
         <img :src="detailsValue.businessLicenseImg" alt="">
+        </a>
       </div>
     </div>
   </div>
