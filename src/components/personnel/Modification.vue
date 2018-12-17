@@ -379,9 +379,8 @@
             name:this.fileList[i].name,
             img: "img:"+this.fileList[i].url.split(":8080/")[1],
           });
-          console.log(this.fileList[i].url);
         }
-        console.log(file);
+        this.persnneladd.img="img:"+this.dialogImageUrl[0].url.split(":8080/")[1];
         this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
         let qs = require("qs");
