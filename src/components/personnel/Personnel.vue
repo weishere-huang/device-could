@@ -366,25 +366,34 @@ export default {
       );
     },
     deleteEmployee() {
-      let qs = require("qs");
-      let data = qs.stringify({
-        employeeIds: this.userIds,
-        enableOrDisable: 2
-      });
+      this.$confirm('此操作将删除该角色, 是否继续?', '提示')
+        .then(_=>{
+          let qs = require("qs");
+          let data = qs.stringify({
+            employeeIds: this.userIds,
+            enableOrDisable: 2
+          });
 
-      this.Axios(
-        {
-          params: data,
-          type: "post",
-          url: "/employee/enableOrDisable"
-        },
-        this
-      ).then(
-        response => {
-          this.load();
-        },
-        ({ type, info }) => {}
-      );
+          this.Axios(
+            {
+              params: data,
+              type: "post",
+              url: "/employee/enableOrDisable"
+            },
+            this
+          ).then(
+            response => {
+              this.load();
+            },
+            ({ type, info }) => {}
+          );
+        })
+        .catch(_=>{
+          console.log("stop")
+        })
+
+
+
     },
     updateEmployee() {
       if (this.values.length === 1) {
