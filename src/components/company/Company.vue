@@ -134,7 +134,6 @@ export default {
           name: "",
           address: "",
           phone: "",
-          address: "",
           gmtCreate: "",
           state: ""
         }

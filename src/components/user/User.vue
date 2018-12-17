@@ -332,7 +332,7 @@ export default {
         type: "warning"
       }).then(
         response => {
-          this.reload();
+          this.load();
           this.$message({
             message: "您已经删除该用户",
             type: "success"
