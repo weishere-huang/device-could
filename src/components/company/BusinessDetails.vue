@@ -44,7 +44,7 @@
         </div> -->
       </div>
       <div class="right">
-        <img src="../../assets/image/chlogo.png" alt="">
+        <img :src="detailsValue.businessLicenseImg" alt="">
       </div>
     </div>
   </div>
@@ -55,6 +55,7 @@
     props: ["detailsValue"],
     data() {
       return {
+        imgUrl: "",
         msg: "哈哈哈",
         img: "",
         block: false,
@@ -77,7 +78,6 @@
       }
     },
     created() {
-
     }
   };
 </script>
@@ -141,6 +141,7 @@
       padding: 20px;
       img {
         width: 100%;
+        height: auto;
       }
     }
   }

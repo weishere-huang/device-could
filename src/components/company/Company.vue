@@ -2,24 +2,24 @@
   <div class="company">
     <div class="userCase">
       <div class="top">
-        <el-button
-          type="primary"
-          size="small"
-          @click="auditblock"
-        >审核
-        </el-button>
-        <el-button
-          type="primary"
-          size="small"
-          @click="startUseing"
-        >启用
-        </el-button>
-        <el-button
-          type="primary"
-          size="small"
-          @click="forbidden"
-        >停用
-        </el-button>
+        <!--<el-button-->
+          <!--type="primary"-->
+          <!--size="small"-->
+          <!--@click="auditblock"-->
+        <!--&gt;审核-->
+        <!--</el-button>-->
+        <!--<el-button-->
+          <!--type="primary"-->
+          <!--size="small"-->
+          <!--@click="startUseing"-->
+        <!--&gt;启用-->
+        <!--</el-button>-->
+        <!--<el-button-->
+          <!--type="primary"-->
+          <!--size="small"-->
+          <!--@click="forbidden"-->
+        <!--&gt;停用-->
+        <!--</el-button>-->
         <el-button
           type="primary"
           size="small"
@@ -134,7 +134,6 @@ export default {
           name: "",
           address: "",
           phone: "",
-          address: "",
           gmtCreate: "",
           state: ""
         }
@@ -279,6 +278,7 @@ export default {
       this.dialogVisible = true;
       this.detailsValue = rowData;
       console.log(rowData);
+
     },
     selectGroupChange(selection) {
       console.log("select-group-change", selection);
@@ -385,7 +385,9 @@ export default {
           this.tableData = response.data.data.content;
           for (let i = 0; i < this.tableData.length; i++) {
             this.tableData[i].state = String(this.tableData[i].state);
+            this.tableData[i].businessLicenseImg=this.global.imgPath +this.tableData[i].businessLicenseImg.split(":")[1];
           }
+          // console.log(this.tableData[2].businessLicenseImg)
         },
         ({ type, info }) => {
           //错误类型 type=faild / error
@@ -549,6 +551,10 @@ Vue.component("table-company", {
     },
     audit() {
       let params = { type: "audit", rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    },
+    changeValue() {
+      let params = { type: "change", rowData: this.rowData };
       this.$emit("on-custom-comp", params);
     }
   }

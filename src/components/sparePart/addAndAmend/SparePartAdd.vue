@@ -160,10 +160,11 @@ export default {
         }
       ],
       defaultProps2: {
-        value: "id",
+        value: "code",
         label: "name"
       },
       classfy:"",
+      classfyid:"",
 
     };
   },
@@ -174,9 +175,9 @@ export default {
     handleChange2(value) {
       let name = this.$refs["getName2"].currentLabels;
       name = name[name.length - 1];
-      let id = value[value.length - 1];
-      console.log(id, name);
-      this.formInline.partClassify=id;
+      let code = value[value.length - 1];
+      console.log(code, name);
+      this.formInline.partClassify=code;
       this.formInline.partClassifyName=name;
     },
     //新增

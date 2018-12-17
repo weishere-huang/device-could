@@ -2,24 +2,24 @@
   <div class="userManagement">
     <div class="userCase">
       <div class="top">
-        <el-button
-          type="primary"
-          size="small"
-          @click="enable"
-        >启用
-        </el-button>
-        <el-button
-          type="primary"
-          size="small"
-          @click="prohibit"
-        >停用
-        </el-button>
-        <el-button
-          type="primary"
-          size="small"
-          @click="deleteUser"
-        >删除
-        </el-button>
+        <!--<el-button-->
+          <!--type="primary"-->
+          <!--size="small"-->
+          <!--@click="enable"-->
+        <!--&gt;启用-->
+        <!--</el-button>-->
+        <!--<el-button-->
+          <!--type="primary"-->
+          <!--size="small"-->
+          <!--@click="prohibit"-->
+        <!--&gt;停用-->
+        <!--</el-button>-->
+        <!--<el-button-->
+          <!--type="primary"-->
+          <!--size="small"-->
+          <!--@click="deleteUser"-->
+        <!--&gt;删除-->
+        <!--</el-button>-->
         <div class="search">
           <el-input
             type="search"
@@ -332,7 +332,7 @@ export default {
         type: "warning"
       }).then(
         response => {
-          this.reload();
+          this.load();
           this.$message({
             message: "您已经删除该用户",
             type: "success"

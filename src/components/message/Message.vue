@@ -17,7 +17,7 @@
         <el-button
           size="small"
           type="primary"
-          @click="updateAllMessageRead"
+          @click="btwarning"
         >全部标为已读
         </el-button>
         <el-button
@@ -52,7 +52,7 @@
             <v-pagination
               @page-change="pageChange"
               @page-size-change="pageSizeChange"
-              :total=this.tableData.length
+              :total=tableData.length
               :page-size="pageSize"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
@@ -73,13 +73,13 @@ import MsgDetails from "./MsgDetails";
 import Vue from "vue";
 
 export default {
+  inject: ["reload"],
   data() {
     return {
       detailsShow: false,
       msgDetail: "",
       pageIndex: 1,
-      pageSize: 20,
-      userId: 10,
+      pageSize: 10,
       ids: "",
       rowData: "",
       msgcount: 0,
@@ -241,7 +241,8 @@ export default {
           type: "post",
           option: {
             enableMsg: false
-          }
+          },
+          option:{requestTarget:"m"}
         },
         this
       )
@@ -265,65 +266,39 @@ export default {
       this.readkey=0;
       this.Axios(
         {
-          params: Object.assign(this.searchParams, {
+          params:{
             page: this.pageIndex,
             size: this.pageSize
-          }),
+          },
           option: {
             enableMsg: false
           },
           type: "get",
-          url: "/message/allMsg"
+          url: "/message/allMsg",
           // loadingConfig: {
           //   target: document.querySelector("#mainContentWrapper")
           // }
+          option:{requestTarget:"m"}
         },
         this
       )
         // .get(apiMsg + "/message/allMsg/", data)
         .then(result => {
+          console.log(result.data);
           console.log(result.data.data);
-          for (let i = 0; i < result.data.data.length; i++) {
-            if (result.data.data[i].isRead == 0) {
-              result.data.data[i].isRead = "未读";
-            } else {
-              result.data.data[i].isRead = "已读";
+          for (let i = 0; i < result.data.data.content.length; i++) {
+            if (result.data.data.content[i].isRead === 0) {
+              result.data.data.content[i].isRead = "未读";
+            } else if(result.data.data.content[i].isRead === 1){
+              result.data.data.content[i].isRead = "已读";
             }
           }
-          this.tableData = result.data.data;
+          this.tableData = result.data.data.content;
           this.NotReadMsgCount();
         })
         .catch(err => {
           console.log(err);
         });
-    },
-    oneMessage() {
-      //根据消息ID查询单个消息
-      if (this.ids.length > 1) {
-        alert("请选择单个消息");
-      } else {
-        this.axios
-          .get(apiMsg + "/message/findOneMsg/" + this.ids)
-          .then(result => {
-            alert(
-              result.data.data.id +
-                "\n---标题--" +
-                result.data.data.msgTitle +
-                "\n--内容--" +
-                result.data.data.msgContent
-            );
-            console.log(result.data);
-            console.log(this.rowData);
-            if (this.rowData.isRead === 0) {
-              this.updateMessageRead();
-              this.allMsg();
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      }
-      //执行修改阅读状态函数
     },
     allNotReadMsg() {
       this.readkey=1;
@@ -337,26 +312,31 @@ export default {
           //   enableMsg: false
           // },
           type: "get",
-          url: "/message/allNotReadMsg"
+          url: "/message/allNotReadMsg",
           // loadingConfig: {
           //   target: document.querySelector("#mainContentWrapper")
           // }
+          option:{requestTarget:"m"}
         },
         this
       )
         //.get(apiMsg+"/message/allNotReadMsg/",data)
         .then(result => {
+          console.log(result);
           console.log(result.data);
-          if (result.data.data.length > 0) {
+          this.tableData = result.data.data;
+          if(this.tableData !== null){
             for (let i = 0; i < result.data.data.length; i++) {
               if (result.data.data[i].isRead == 0) {
                 result.data.data[i].isRead = "未读";
-              } else {
+              } else  if(result.data.data[i].isRead === 1){
                 result.data.data[i].isRead = "已读";
               }
             }
-            this.tableData = result.data.data;
+          }else{
+            console.log("数据为空")
           }
+
         })
         .catch(err => {
           console.log(err);
@@ -368,7 +348,8 @@ export default {
       this.Axios(
         {
           url: "/message/NotReadMsgCount/",
-          type: "get"
+          type: "get",
+          option:{requestTarget:"m"}
         },
         this
       )
@@ -385,12 +366,13 @@ export default {
       //修改消息为已读
       this.Axios(
         {
-          url: "/message/UpdateMsgRead/" + this.ids,
-          type: "get"
+          params:{ids:this.ids},
+          url: "/message/UpdateMsgRead/",
+          type: "get",
+          option:{requestTarget:"m"}
         },
         this
       )
-        // .get(apiMsg + "/message/UpdateMsgRead/" + this.ids)
         .then(result => {
           console.log(result.data);
         })
@@ -403,37 +385,61 @@ export default {
       this.Axios(
         {
           url: "/message/UpdateAllMsgRead/",
-          type: "get"
+          type: "get",
+          option:{requestTarget:"m"}
         },
         this
       )
         //.get(apiMsg + "/message/UpdateAllMsgRead/")
         .then(result => {
-          console.log(result.data);
+          if(result.data.code === 200){
+            this.reload();
+          }
+          console.log(result.data.code);
         })
         .catch(err => {
           console.log(err);
         });
     },
+    btwarning(){
+      this.$confirm('确定要全部标为已读吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.updateAllMessageRead();
+
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      });
+    },
+
     details(rowIndex, rowData, column) {
       console.log(rowData.id);
       this.msgDetail = rowData;
       this.detailsShow = true;
       this.ids = rowData.id;
+      this.updateMessageRead();
+      this.findonemsg();
+    },
+    findonemsg(){
       this.Axios(
         {
           url: "/message/findOneMsg/" + this.ids,
-          type: "get"
+          type: "get",
+          option:{requestTarget:"m"}
         },
         this
       )
-        // .get(apiMsg + "/message/findOneMsg/" + this.ids)
+      // .get(apiMsg + "/message/findOneMsg/" + this.ids)
         .then(result => {
           console.log(result);
           this.msgDetail = result.data.data;
           if (this.msgDetail.isRead === 0) {
-            this.updateMessageRead();
-            this.allMsg();
+            //this.reload();
           }
         })
         .catch(err => {

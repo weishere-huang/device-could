@@ -100,7 +100,7 @@
 
           <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false" size="mini">取 消</el-button>
-            <el-button type="primary" @click="dialogVisible = false,classfyname=formInline.partClassifyName" size="mini">确 定</el-button>
+            <el-button type="primary" @click="dialogVisible = false,classfyname=formInline.partClassifyName,classfycode=formInline.partClassify" size="mini">确 定</el-button>
           </span>
         </el-dialog>
       </el-form>
@@ -169,12 +169,13 @@
             }
           ],
         defaultProps2:  {
-            value: "id",
+            value: "code",
             label: "name"
           },
         urlid: "",
         classfy:"",
         classfyname:"",
+        classfycode:"",
 
       };
     },
@@ -185,9 +186,9 @@
       handleChange2(value) {
         let name = this.$refs["getName2"].currentLabels;
         name = name[name.length - 1];
-        let id = value[value.length - 1];
-        console.log(id, name);
-        this.formInline.partClassify=id;
+        let code = value[value.length - 1];
+        console.log(code, name);
+        this.formInline.partClassify=code;
         this.formInline.partClassifyName=name;
 
       },
@@ -200,8 +201,8 @@
           partName: this.formInline.partName,
           partModel: this.formInline.partModel,
           partCategory: this.formInline.partCategory,
-          partClassify: this.formInline.partClassify,
-          partClassifyName: this.formInline.partClassifyName,
+          partClassify: this.classfycode,
+          partClassifyName: this.classfyname,
           lower: this.formInline.lower,
           remarks: this.formInline.remarks,
           partUnit: this.formInline.partUnit,
@@ -306,7 +307,8 @@
           .then(
             result => {
               this.formInline = result.data.data;
-              this.classfyname=this.formInline.partClassifyName
+              this.classfyname=this.formInline.partClassifyName;
+              this.classfyid=this.formInline.partClassify;
               console.log(resule.data.data);
             },
             ({type, info}) => {

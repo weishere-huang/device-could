@@ -1,8 +1,10 @@
 <template>
   <div class="breakdown-order">
     <div class="top">
-      <el-button @click="toBack" type="primary" size="small">返回</el-button>
-      <el-button size="small" type="primary" @click="outerVisible=true">提交审核</el-button>
+      <el-button-group>
+        <el-button @click="toBack" type="primary" size="small">返回</el-button>
+        <el-button size="small" type="primary" @click="outerVisible=true">提交审核</el-button>
+      </el-button-group>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
         <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
@@ -28,7 +30,7 @@
         <el-dialog title="人员添加" :visible.sync="innerVisible" append-to-body>
           <div style="padding:10px">
             <div class="search" style="padding:10px 0">
-              <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
+              <el-input type="search" placeholder="如姓名，手机号" size="mini" v-model="key" style="width:30%;"></el-input>
               <el-button size="mini" type="primary" @click="search">搜索</el-button>
               <span style="padding:0 10px;">最近搜索：</span>
               <span style="text-decoration: underline;"></span>
@@ -170,7 +172,7 @@
             :cell-edit-done="cellEditDone"
             row-height=24
             :height="140"
-             @on-custom-comp="customCompFunc"
+            @on-custom-comp="customCompFunc"
           >
           </v-table>
         </div>
@@ -228,7 +230,7 @@
                 <h6>已选择</h6>
                 <li v-model="personListValue" v-for="value in personListValue">
                   {{value.partName}}
-                  <span :id="value.id" @click="basicAdd($event)">X</span>
+                  <span :id="value.id" @click="basicAdd($event)" class="el-icon-circle-close-outline"></span>
                 </li>
               </ul>
             </div>
@@ -275,10 +277,11 @@
   </div>
 </template>
 <script>
-import Vue from "vue";
+  import Vue from "vue";
   export default {
     data() {
       return {
+        imgPath:[],
         examine:{
           desc:"",
           type:"",
@@ -649,12 +652,12 @@ import Vue from "vue";
       };
     },
     methods: {
-       customCompFunc(params) {
-      // console.log(params);
-      if (params.type === "delete") {
-        this.suppliesTableData = this.suppliesTableData.filter(item=>item.id!=params.rowData["id"]);
-      }
-    },
+      customCompFunc(params) {
+        if (params.type === "delete") {
+          this.suppliesTableData = this.suppliesTableData.filter(item=>item.id!=params.rowData["id"]);
+          this.personListValue = this.personListValue.filter(item=>item.id!=params.rowData["id"]);
+        }
+      },
       toBack(){
         this.$router.back(-1)
       },
@@ -662,6 +665,7 @@ import Vue from "vue";
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
         this.suppliesTableData[rowIndex][field] = newValue;
+        console.log(newValue);
         // 接下来处理你的业务逻辑，数据持久化等...
       },
       selectGroupChange(selection) {
@@ -701,8 +705,11 @@ import Vue from "vue";
         return tree;
       },
       basicInfo(rowIndex, rowData, column){
-        this.personListValue.push(rowData);
-        this.personListValue = Array.from(new Set(this.personListValue));
+        if( this.personListValue.find(i => i.id === rowData.id)){
+          this.$message.error("请勿重复添加物料");
+        }else{
+          this.personListValue.push(rowData);
+        }
       },
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
@@ -745,15 +752,15 @@ import Vue from "vue";
 
       //执行审核
       examineUp(){
-         if(this.examine.radio!=1){
-           if(this.toExamine.userId !==""|| this.examine.type){
-             this.toExamineUp();
-           }else{
-             this.$message.error('请选择终审或添加下一级审批人')
-           }
-         }else{
-           this.toExamineUp();
-         }
+        if(this.examine.radio!=1){
+          if(this.toExamine.userId !==""|| this.examine.type){
+            this.toExamineUp();
+          }else{
+            this.$message.error('请选择终审或添加下一级审批人')
+          }
+        }else{
+          this.toExamineUp();
+        }
 
       },
       toExamineUp(){
@@ -777,6 +784,7 @@ import Vue from "vue";
             this.pageSize = 10;
             this.examine.desc = "";
             this.examine.radio = 0;
+            this.examine.type = false;
             this.toBack();
           },
           ({ type, info }) => {
@@ -785,6 +793,7 @@ import Vue from "vue";
             this.pageIndex = 1;
             this.pageSize = 10;
             this.examine.desc = "";
+            this.examine.type = false;
             this.examine.radio = 0;
           }
         );
@@ -1029,7 +1038,8 @@ import Vue from "vue";
       //关闭备品备件页面并传值到详情页
       deleteBasic(){
         this.dialogVisible2 = false;
-        this.suppliesTableData = this.personListValue;
+        this.suppliesTableData = (this.suppliesTableData||[]).concat(this.personListValue);
+        this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
       },
 
       //双击删除指定的备品备件
@@ -1124,6 +1134,7 @@ import Vue from "vue";
         if (this.formLabelAlign.faultLevel === 3) {
           this.formLabelAlign.faultLevel = "高";
         }
+        this.imgPath=JSON.parse(this.formLabelAlign.img);
       },
       //设备
       equipmentTableDataValue(value){
@@ -1161,29 +1172,29 @@ import Vue from "vue";
       this.workLoad(this.$route.params.id);
     }
   };
-   Vue.component("table-breakdownOrder", {
-  template: `<span>
+  Vue.component("table-breakdownOrder", {
+    template: `<span>
           <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe635;</i></a>
         </span>`,
-  props: {
-    rowData: {
-      type: Object
+    props: {
+      rowData: {
+        type: Object
+      },
+      field: {
+        type: String
+      },
+      index: {
+        type: Number
+      }
     },
-    field: {
-      type: String
-    },
-    index: {
-      type: Number
+    methods: {
+      deleteRow() {
+        // 参数根据业务场景随意构造
+        let params = { type: "delete", rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      }
     }
-  },
-  methods: {
-    deleteRow() {
-      // 参数根据业务场景随意构造
-      let params = { type: "delete", rowData: this.rowData };
-      this.$emit("on-custom-comp", params);
-    }
-  }
-});
+  });
 </script>
 
 <style lang="less" scoped>
@@ -1313,11 +1324,11 @@ import Vue from "vue";
           span {
             float: right;
             cursor: pointer;
-            display: none;
           }
           &:hover {
             span {
               display: block;
+              color: red;
             }
           }
         }

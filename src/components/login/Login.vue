@@ -94,6 +94,7 @@
           label-width="160px"
           :model="company"
           :rules="registerRules"
+          @blur="vercompany"
           ref="company"
         >
           <el-form-item
@@ -148,8 +149,10 @@
           </el-form-item>
           <el-form-item label="营业执照：">
             <el-upload
-              action="https://jsonplaceholder.typicode.com/posts/"
+              :action="uploadUrl()"
               list-type="picture-card"
+              :on-success="handleAvatarSuccess"
+              :befor-upload="beforeAvatarUpload"
               :on-preview="handlePictureCardPreview"
               :on-remove="handleRemove"
             >
@@ -278,6 +281,23 @@
     inject: ["reload"],
     name: "Login",
     data() {
+      let validate = (rule, value, callback) => {
+        //后台方法
+        this.Axios(
+          {
+            params: Object.assign({name: this.company.name}),
+            url: "/enterprise/findByName",
+            type: "get"
+          }
+        )
+        validateCode(value).then(res => {
+          if (res && res.data === 'TRUE') {
+            callback()
+          } else if (res && res.data === 'FALSE') {
+            callback('编码已存在')
+          }
+        })
+      }
       return {
         labelPosition: "right",
         dialogImageUrl: "",
@@ -316,9 +336,44 @@
           ]
         },
         registerRules: {
-          name: [{required: true, message: "企业名不能为空", trigger: "blur"}],
+          name: [
+            {required: true, message: "企业名不能为空", trigger: "blur"},
+            // {validator:validate, trigger: 'blur'},
+            // {validator:function(rule, value, callback){
+            //   this.Axios(
+            //     {
+            //       params: Object.assign({name: this.company.name}),
+            //       url: "/enterprise/findByName",
+            //       type: "get"
+            //     }
+            //   ).then(res=>{
+            //     if (res.info.code == 0) {
+            //       callback (new Error("企业名称重复"))
+            //     }else if (res.info.code == 200) {
+            //       callback()
+            //     }
+            //   })
+            //   },
+            //   trigger: 'blur'}
+          ],
           address: [{required: true, message: "地址不能为空", trigger: "blur"}],
-          phone: [{required: true, message: "电话不能为空", trigger: "blur"}],
+          // phone: [
+          //   {required: true, message: "电话不能为空", trigger: "blur"}
+          //   ],
+          phone: [
+            {required: true, message: "电话不能为空", trigger: "blur"},
+            {max: 15, message: "您的电话号码超出长度限制了，请重新输入"},
+            {
+              validator: (rule, value, callback) => {
+                if (/^((\d3,4|\d{3,4}-)?\d{7,8})|([1][0-9]{10})$/.test(value) == false) {
+                  callback(new Error("您输入的电话号码有误，请重新输入"));
+                } else {
+                  callback();
+                }
+              },
+              trigger: "blur"
+            }
+          ],
           corporation: [
             {required: true, message: "法人代表不能为空", trigger: "blur"}
           ],
@@ -329,9 +384,13 @@
               trigger: "blur"
             },
             {
-              min: 18,
-              max: 18,
-              message: "统一社会信用代码必须为18位",
+              validator: (rule, value, callback) => {
+                if (/(^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$)|(^\d{15}$)/.test(value) == false) {
+                  callback(new Error("您输入的统一社会信用代码有误，请重新输入"))
+                } else {
+                  callback();
+                }
+              },
               trigger: "blur"
             }
           ]
@@ -352,7 +411,7 @@
             {
               min: 6,
               max: 20,
-              message: "请输入6到20位的字母和数字",
+              message: "请输入6到20位的字母和数字组合",
               trigger: "blur"
             }
           ],
@@ -539,74 +598,16 @@
           enterprisePhone: this.company.phone,
           legalPerson: this.company.corporation,
           creditCode: this.company.companyID,
-          businessLicenseImg: "img",
+          businessLicenseImg: this.dialogImageUrl,
           userName: this.manager.userName,
           passWord: pass,
           phone: this.manager.phone,
-          verifyCode:this.manager.validate,
+          verifyCode: this.manager.validate,
           returnForget() {
             this.forgetShow = true;
             this.isshow = false;
           }
         });
-        // if (this.company.name === "") {
-        //   this.$message({
-        //     message: "企业名不能为空",
-        //     type: "error"
-        //   });
-        // }
-        // if (this.company.address === "") {
-        //   this.$message({
-        //     message: "企业地址不能为空",
-        //     type: "error"
-        //   });
-        // }
-        // if (this.company.phone === "") {
-        //   this.$message({
-        //     message: "企业电话不能为空",
-        //     type: "error"
-        //   });
-        // }
-        // if (this.company.corporation === "") {
-        //   this.$message({
-        //     message: "企业法人不能为空",
-        //     type: "error"
-        //   });
-        // }
-        // if (
-        //   this.company.companyID === "" ||
-        //   this.company.companyID.length !== 18
-        // ) {
-        //   this.$message({
-        //     message:
-        //       "统一社会信用编码不能为空且必须为十八位，请与营业执照上的编码相同",
-        //     type: "error"
-        //   });
-        // }
-        // if (this.company.companyID === "") {
-        //   this.$message({
-        //     message: "请上传营业执照",
-        //     type: "error"
-        //   });
-        // }
-        // if (this.manager.userName === "") {
-        //   this.$message({
-        //     message: "请输入企业管理人信息",
-        //     type: "error"
-        //   });
-        // }
-        // if (pass === "") {
-        //   this.$message({
-        //     message: "请设置密码",
-        //     type: "error"
-        //   });
-        // }
-        // if (this.manager.phone === "") {
-        //   this.$message({
-        //     message: "请输入企业管理人电话",
-        //     type: "error"
-        //   });
-        // }
         this.Axios(
           {
             url: "/enterprise/add",
@@ -659,16 +660,16 @@
         )
       },
       //注册验证码
-      registerSecuritycode(){
+      registerSecuritycode() {
         let qs = require("qs");
         let data = qs.stringify({
           phone: this.manager.phone
         });
         this.Axios(
           {
-            params:data,
-            url:"/enterprise/getVerifyCode",
-            type:"post"
+            params: data,
+            url: "/enterprise/getVerifyCode",
+            type: "post"
           },
           this
         ).then(
@@ -686,6 +687,28 @@
             })
           }
         )
+      },
+      uploadUrl() {
+        let url = this.global.apiImg
+        return url
+      },
+      handleAvatarSuccess(res, file) {
+        console.log(res.data)
+        this.dialogImageUrl = res.data;
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === "image/jpeg";
+        const isPNG = file.type === "image/png";
+        const isLt1M = file.size / 1024 / 1024 < 1;
+        let isOK = true
+        if (!(isJPG || isPNG)) {
+          this.$message.error("仅支持jpg/png格式");
+          isOK = false
+        }
+        if (!isLt1M) {
+          this.$message.error("图片大小不能超过1M");
+        }
+        return isOK && isLt1M
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
@@ -711,6 +734,24 @@
         });
         return encrypted.toString();
       }
+    },
+    //企业名称唯一验证
+    verifyCompany() {
+      this.Axios(
+        {
+          params: Object.assign({name: this.company.name}),
+          url: "/enterprise/findByName",
+          type: "get"
+        },
+        this
+      ).then(response => {
+        console.log(response)
+      }), ({type, info}) => {
+      }
+    },
+    //联系电话唯一验证
+    verifyPhone() {
+
     },
     components: {
       forgetThePassword

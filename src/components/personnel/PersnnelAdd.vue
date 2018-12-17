@@ -129,7 +129,7 @@
               <label for="" style="letter-spacing: 8px;">照片：</label>
               <el-upload
                 style="display:inline-block;vertical-align:top"
-                action="http://192.168.1.148:8081/upload"
+                :action="path()"
                 accept="image/jpeg,image/png"
                 list-type="picture-card"
                 :limit="1"
@@ -148,7 +148,7 @@
               <el-upload
                 style="display:inline-block;line-height:30px;vertical-align:top"
                 class="upload-demo"
-                action="http://192.168.1.148:8081/upload"
+                :action="path()"
                 accept="
                  application/msword,
                  application/vnd.openxmlformats-officedocument.wordprocessingml.document,
@@ -164,7 +164,6 @@
                 :on-remove="handleRemove1"
                 :before-upload="beforeAvatarUpload1"
                 :on-success="handleSuccess"
-                 multiple
                 :limit="10"
                 :on-exceed="handleExceed1"
                 :file-list="fileList">
@@ -184,10 +183,6 @@
     data() {
       return {
         fileList: [],
-        fileListTest:[{
-          name:"",
-          url:"",
-        }],
         dialogImageUrl: '',
         dialogVisible: false,
         date:new Date().toLocaleString().split(" ")[0].replace(/\//g, "-"),
@@ -223,8 +218,12 @@
       };
     },
     methods: {
+      path(){
+        return this.global.apiImg;
+      },
       handleAvatarSuccess(res, file) {
-        this.dialogImageUrl= "ftp://192.168.1.104/"+file.response.data.split(":")[1];
+        this.$message.success('图片成功上传');
+        this.dialogImageUrl= file.response.data;
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
@@ -265,7 +264,7 @@
         return isOk&& isLt1M;
       },
       handleRemove1(file, fileList) {
-        console.log(file, fileList);
+        this.fileList = this.fileList.filter(item=>item.name!=file.name);
       },
       handlePreview1(file) {
         console.log(file);
@@ -281,19 +280,16 @@
         console.log(fileList);
       },
       handlePictureCardPreview(file) {
-        console.log(file);
+        this.dialogImageUrl = file.url;
         this.dialogVisible = true;
       },
-      handleSuccess(res, file){
-        console.log(res);
-        this.fileListTest[0].url = "ftp://192.168.1.104/"+res.data.split(":")[1];
-        this.fileListTest[0].name = file.name;
-        console.log(this.fileListTest[0].name);
-        console.log(this.fileListTest[0].url);
-        this.fileList.push(this.fileListTest[0]);
-        for (let i in this.fileList){
-          console.log(this.fileList[i].name);
-          console.log(this.fileList[i].url);
+      handleSuccess(res, file,fileList){
+        this.$message.success('文件成功上传');
+        if(fileList.length>=1){
+          this.fileList.push({
+            img:fileList[fileList.length-1].response.data,
+            name:fileList[fileList.length-1].name
+          });
         }
       },
 
@@ -322,6 +318,14 @@
         }
       },
       toEmployeeAdd() {
+        console.log(this.fileList);
+        let file = [];
+        for(let i in this.fileList){
+          file.push({
+            name:this.fileList[i].name,
+            img:this.fileList[i].img,
+          })
+        }
         this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
         let qs = require("qs");
@@ -348,7 +352,7 @@
           graduateSchool:this.persnneladd. graduateSchool,
           degree:this.persnneladd.degree,
           img:this.dialogImageUrl,
-          qualificationInfo:JSON.stringify(this.fileList),
+          qualificationInfo:JSON.stringify(file),
           roleId:this.persnneladd.roleId
         });
         this.Axios(

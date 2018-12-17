@@ -25,7 +25,7 @@
               size="mini"
               v-model="key"
               style="width:40%;"
-              placeholder="设备编号，名称，位置，型号"
+              placeholder="设备编号，名称"
             ></el-input>
             <el-button
               size="mini"
@@ -71,7 +71,7 @@
             <ul @click="getId">
               <li v-for="(item, index) in personListValue" :key="index">
                 {{item.deviceName}}
-                <span :label="item.id">x</span>
+                <i :label="item.id"  class="el-icon-circle-close-outline"></i>
               </li>
             </ul>
           </div>
@@ -432,14 +432,14 @@
               height: 20px;
               line-height: 20px;
               padding: 0 10px;
-              span {
+              i {
                 float: right;
                 cursor: pointer;
-                display: none;
               }
               &:hover {
-                span {
+                i {
                   display: block;
+                  color: red;
                 }
               }
             }
