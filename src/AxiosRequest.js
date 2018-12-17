@@ -15,7 +15,7 @@ export default ({ url, type, params, config, option, loadingConfig }, vue) => {
     option = Object.assign({
         requestTarget: 'd',
         enableMsg: true,
-        successMsg: '请求成功'
+        successMsg: '数据请求完成~'
     }, option || {});
     const loadInit = function () {
         return Loading.service(Object.assign({
@@ -64,7 +64,7 @@ export default ({ url, type, params, config, option, loadingConfig }, vue) => {
         return new Promise((resolve, reject) => {
             window.setTimeout(() => {
                 Promise.all(runAsync).then(function (results) {
-                    option.enableMsg && Message.success({ message: "数据请求完成~", customClass: 'e-message', duration: 2000 });
+                    option.enableMsg && Message.success({ message: option.successMsg, customClass: 'e-message', duration: 2000 });
                     resolve(results);
                 });
             }, 10);
@@ -84,7 +84,7 @@ export default ({ url, type, params, config, option, loadingConfig }, vue) => {
                     
                     if (res.status === 200 && res.data.code === 200) {
                         //success && success(res.data);
-                        option.enableMsg && Message.success({ message: "数据请求完成~", customClass: 'e-message', duration: 2000 });
+                        option.enableMsg && Message.success({ message: option.successMsg, customClass: 'e-message', duration: 2000 });
                         //option.enableMsg && Message.success({message:option.successMsg, customClass:'e-message', duration:1500});
                         resolve(res);
                     } else {
