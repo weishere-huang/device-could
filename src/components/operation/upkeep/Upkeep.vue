@@ -599,9 +599,7 @@ export default {
       if (this.arr.length === 1) {
         this.outerVisible = true;
       } else if (this.arr.length === 0) {
-        alert("请选择计划");
-      } else {
-        alert("抱歉只能计划只能单个修改");
+        this.$message.error("请选择计划")
       }
     },
     getPersonnel(params) {
