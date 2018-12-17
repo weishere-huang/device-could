@@ -6,6 +6,8 @@
                    type="primary" @click="tback">返回</el-button>
         <el-button size="small"
                    type="primary" @click="updateEmployee">保存</el-button>
+        <!--<el-button size="small"-->
+                   <!--type="primary" @click="test">测试</el-button>-->
       </div>
       <div class="botton">
         <div class="essential">
@@ -185,7 +187,7 @@
     data() {
       return {
         fileList: [],
-        dialogImageUrl:[],
+        dialogImageUrl:[{url:""}],
         dialogVisible:false,
         persnneladd: {
           id:"",
@@ -227,6 +229,7 @@
       handleAvatarSuccess(res, file) {
         this.$message.success('图片成功上传');
         this.dialogImageUrl[0].url= file.response.data;
+        this.persnneladd.img = file.response.data;
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
@@ -290,13 +293,55 @@
         this.$message.success('文件成功上传');
         if(fileList.length>=1){
           this.fileList.push({
-            url:fileList[fileList.length-1].response.data,
-            name:fileList[fileList.length-1].name
+            url:res.data,
+            name:file.name
           });
         }
       },
 
-
+      testValue(){
+        // let regEmail=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/;
+        // if(this.persnneladd.email.test(" ")){
+        //   if(!regEmail.test(this.persnneladd.email)){
+        //     alert("邮箱格式不正确");
+        //     return false;
+        //   }
+        // }
+        if (this.persnneladd.name == ""){
+          this.$message.error("员工名不能为空");
+          return false;
+        }
+        if(this.persnneladd.employeeNo == ""){
+          this.$message.error("员工编号不能为空");
+          return false;
+        }
+        let regIdNo = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if (!regIdNo.test(this.persnneladd.idCardNo)){
+          this.$message.error("身份证号填写有误");
+          return false;
+        }
+        if (this.persnneladd.roleId == ""){
+          this.$message.error("请选择角色权限");
+          return false;
+        }
+        if(!(/^1[34578]\d{9}$/.test(this.persnneladd.phone))){
+          this.$message.error("手机号码有误，请重填");
+          return false;
+        }
+        if(this.persnneladd.birthday == ""){
+          this.$message.error("请选择出生日期");
+          return false;
+        }
+        if(this.persnneladd.organizationName == " "){
+          this.$message.error("请选择组织机构");
+          return false;
+        }
+        if(this.persnneladd.position==""){
+          this.$message.error("请输入岗位");
+          return false;
+        }
+        return true;
+      },
       organize(){
         this.Axios(
           {
@@ -328,7 +373,7 @@
       tback(){
         this.$router.back(-1)
       },
-      selectOne(employeeId,userName){
+      selectOne(employeeId){
         this.Axios(
           {
             params:{employeeId:employeeId},
@@ -339,7 +384,6 @@
         ).then(response => {
             this.persnneladd = response.data.data;
             this.persnneladd.gender = response.data.data.gender.toString();
-            this.persnneladd.userName= userName;
             if (this.persnneladd.marital!=null){
               this.persnneladd.marital = response.data.data.marital.toString();
             }
@@ -353,23 +397,30 @@
                 url:this.global.imgPath+arr[i].img.split(":")[1]
               })
             }
-            // console.log(this.fileList);
-            // this.dialogImageUrl[0].url = "http://pic36.nipic.com/20131215/15111776_132407484349_2.jpg";
-          console.log(this.dialogImageUrl[0].url)
           },
           ({type, info}) => {
 
           })
       },
       updateEmployee(){
+        this.codeToName(this.persnneladd.organizeCode);
+        if(this.testValue()){
+          this.toUpdateEmployee()
+        }
+      },
+      toUpdateEmployee(){
         let file = [];
         for(let i in this.fileList){
           file.push({
             name:this.fileList[i].name,
-            img:this.fileList[i].img,
-          })
+            img: "img:"+this.fileList[i].url.split(":8080/")[1],
+          });
         }
-        console.log(this.fileList);
+        this.persnneladd.img = this.dialogImageUrl[0].url;
+        if(this.persnneladd.img.split(":")[0] !=="img"){
+          this.persnneladd.img="img:"+this.dialogImageUrl[0].url.split(":8080/")[1];
+        }
+        console.log(this.persnneladd.img);
         this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
         let qs = require("qs");
@@ -396,7 +447,7 @@
           postalAddress: this.persnneladd.postalAddress,
           graduateSchool: this.persnneladd.graduateSchool,
           degree: this.persnneladd.degree,
-          img: this.dialogImageUrl[0].url,
+          img: this.persnneladd.img,
           qualificationInfo:JSON.stringify(file),
           roleId: this.persnneladd.roleId
         });
@@ -469,8 +520,8 @@
             // width: 110px;
             position: absolute;
             text-align: center;
-            top: 0%;
-            left: 2.5%;
+            top: 4px;
+            left: 30px;
             background-color: white;
           }
           .left {
@@ -508,16 +559,16 @@
           width: 600px;
           border: 1px solid @Info;
           border-radius: 5px;
-          overflow: hidden;
+          // overflow: hidden;
           margin-top: 30px;
           padding-left: 20px;
           .title {
             display: inline-block;
             // width: 110px;
             text-align: center;
-            position: absolute;
-            top: 48%;
-            left: 2.5%;
+            position: relative;
+            top: -7px;
+            left: 0px;
             background-color: white;
           }
           li {

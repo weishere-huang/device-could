@@ -12,9 +12,9 @@
               >
             </div>
             <div class="message">
-              <p>姓名</p>
-              <p>职位</p>
-              <p>TEL：</p>
+              <p>{{userMsg.name}}</p>
+              <p>{{userMsg.position}}</p>
+              <p>TEL：{{userMsg.phone}}</p>
             </div>
           </div>
         </div>
@@ -207,11 +207,17 @@
 export default {
   data() {
     return {
-      entryList: ["设备管理", "故障管理", "备品备件", "检修计划", "保养计划"]
+      entryList: ["设备管理", "故障管理", "备品备件", "检修计划", "保养计划"],
+      userMsg:{
+        
+      }
     };
   },
   methods: {},
-  created() {}
+  created() {
+    this.userMsg=JSON.parse(sessionStorage.getItem("user"))
+    console.log(this.userMsg.name);
+  }
 };
 </script>
 <style lang="less">

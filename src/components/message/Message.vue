@@ -60,11 +60,14 @@
         </div>
       </div>
     </div>
-    <MsgDetails
+    <el-dialog title="消息详情" width="30%" :visible.sync="detailsShow">
+     <MsgDetails
       v-show="detailsShow"
       :msgDetail="msgDetail"
       v-on:detailsIsHide="detailsIsHide"
-    ></MsgDetails>
+      ></MsgDetails>
+    </el-dialog>
+   
   </div>
 </template>
 <script>
@@ -460,7 +463,7 @@ export default {
 };
 Vue.component("table-message", {
   template: `<span>
-        <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">修改</a>
+        <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">删除</a>
         </span>`,
   props: {
     rowData: {

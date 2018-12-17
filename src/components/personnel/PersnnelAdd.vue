@@ -383,36 +383,36 @@
         //   }
         // }
         if (this.persnneladd.name == ""){
-          alert("员工名不能为空");
+          this.$message.error("员工名不能为空");
           return false;
         }
         if(this.persnneladd.employeeNo == ""){
-          alert("员工编号不能为空");
+          this.$message.error("员工编号不能为空");
           return false;
         }
         let regIdNo = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
         if (!regIdNo.test(this.persnneladd.idCardNo)){
-          alert("身份证号填写有误");
+          this.$message.error("身份证号填写有误");
           return false;
         }
         if (this.persnneladd.roleId == ""){
-          alert("请选择角色权限");
+          this.$message.error("请选择角色权限");
           return false;
         }
         if(!(/^1[34578]\d{9}$/.test(this.persnneladd.phone))){
-          alert("手机号码有误，请重填");
+          this.$message.error("手机号码有误，请重填");
           return false;
         }
         if(this.persnneladd.birthday == ""){
-          alert("请选择出生日期");
+          this.$message.error("请选择出生日期");
           return false;
         }
         if(this.persnneladd.organizationName == " "){
-          alert("请选择组织机构");
+          this.$message.error("请选择组织机构");
           return false;
         }
         if(this.persnneladd.position==""){
-          alert("请输入岗位");
+          this.$message.error("请输入岗位");
           return false;
         }
         return true;

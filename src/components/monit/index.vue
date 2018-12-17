@@ -410,7 +410,7 @@ export default {
       this
     ).then(
       (res) => {
-        // console.log(res);
+        console.log(res);
         this.equipmentOperationalCondition=res.data.data.content
         //window.setTimeout(() => {this.$refs.tree.setCurrentKey("1024");}, 1000);
       }

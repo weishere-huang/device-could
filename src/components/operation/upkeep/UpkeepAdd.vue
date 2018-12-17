@@ -219,10 +219,8 @@ export default {
     },
     addPlan(){
       this.deviceIds = this.tableData.map(item=>item.id).toString();
-      if(this.deviceIds!==""){
+      if(this.valueVerification()){
         this.toAddPlan()
-      }else{
-        alert("请至少选择一个设备")
       }
     },
     toAddPlan(){
@@ -278,6 +276,57 @@ export default {
         ({type, info}) => {
 
         })
+    },
+    valueVerification(){
+      if(this.deviceIds===""){
+        this.$message.error('最少添加一个设备');
+        return false;
+      }
+      if(this.companyName.planName===""){
+        this.$message.error('计划名称不能为空');
+        return false;
+      }
+      if(this.companyName.maintenanceClassify===""){
+        this.$message.error('保养类别不能为空');
+        return false;
+      }
+      if(this.companyName.maintenanceLevel===""){
+        this.$message.error('保养级别不能为空');
+        return false;
+      }
+      if(this.companyName.maintenanceType===""){
+        this.$message.error('保养类型不能为空');
+        return false;
+      }
+      if(this.companyName.planType===""){
+        this.$message.error('请选择计划类型');
+        return false;
+      }
+      if(this.companyName.startTime===""){
+        this.$message.error('开始时间不能为空');
+        return false;
+      }
+
+      if(this.companyName.planName=="周期"){
+        if(this.companyName.endTime===""){
+          this.$message.error('结束时间不能为空');
+          return false;
+        }
+      }
+      if(this.date===""){
+        this.$message.error('首次执行日期不能为空');
+        return false;
+      }
+      if(this.times===""){
+        this.$message.error('执行时间不能为空');
+        return false;
+      }
+      if(this.companyName.maintenanceCc===""){
+        this.$message.error('保养内容不能为空');
+        return false;
+      }else{
+        return true;
+      }
     },
 
     submitAudit(){
