@@ -44,7 +44,7 @@
         </div> -->
       </div>
       <div class="right">
-        <img src="../../assets/image/chlogo.png" alt="">
+        <img :src="imgUrl1" alt="">
       </div>
     </div>
   </div>
@@ -55,6 +55,7 @@
     props: ["detailsValue"],
     data() {
       return {
+        imgUrl1: "",
         msg: "哈哈哈",
         img: "",
         block: false,
@@ -72,13 +73,16 @@
       };
     },
     methods: {
+
       isHide() {
         this.$emit("childByValue", false)
       }
 
     },
     created() {
-
+      console.log(this.detailsValue.businessLicenseImg);
+      this.imgUrl = this.global.imgPath + this.detailsValue.businessLicenseImg.split(":")[1];
+      console.log(this.imgUrl)
     }
   };
 </script>
@@ -142,6 +146,7 @@
       padding: 20px;
       img {
         width: 100%;
+        height: auto;
       }
     }
   }
