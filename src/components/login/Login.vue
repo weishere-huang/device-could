@@ -181,6 +181,7 @@
         v-show="nextshow"
         style="margin-top:20px"
       >
+        <h2>企业注册</h2>
         <div class="titleText">（管理员信息登记）</div>
         <el-form
           :label-position="labelPosition"
@@ -281,39 +282,10 @@
     inject: ["reload"],
     name: "Login",
     data() {
-      let validate = (rule, value, callback) => {
-        //后台方法
-        this.Axios(
-          {
-            params: Object.assign({name: this.company.name}),
-            url: "/enterprise/findByName",
-            type: "get"
-          }
-        )
-        validateCode(value).then(res => {
-          if (res && res.data === 'TRUE') {
-            callback()
-          } else if (res && res.data === 'FALSE') {
-            callback('编码已存在')
-          }
-        })
-      }
       return {
         labelPosition: "right",
         dialogImageUrl: "",
         dialogVisible: false,
-        fileList2: [
-          {
-            name: "food.jpeg",
-            url:
-              "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-          },
-          {
-            name: "food2.jpeg",
-            url:
-              "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-          }
-        ],
         loginList: {
           verification: "",
           userName: "",
@@ -338,8 +310,8 @@
         registerRules: {
           name: [
             {required: true, message: "企业名不能为空", trigger: "blur"},
-            // {validator:validate, trigger: 'blur'},
-            // {validator:function(rule, value, callback){
+
+            // {validator:(rule, value, callback)=>{
             //   this.Axios(
             //     {
             //       params: Object.assign({name: this.company.name}),
@@ -347,12 +319,10 @@
             //       type: "get"
             //     }
             //   ).then(res=>{
-            //     if (res.info.code == 0) {
-            //       callback (new Error("企业名称重复"))
-            //     }else if (res.info.code == 200) {
-            //       callback()
-            //     }
-            //   })
+            //   },({type, info}) => {
+            //     console.log(info)
+            //     callback (new Error("企业名称已存在"))
+            //     })
             //   },
             //   trigger: 'blur'}
           ],
@@ -504,16 +474,23 @@
         });
       },
       registerNext(formName) {
-        this.$refs[formName].validate(valid => {
-          if (valid) {
-            // alert("submit!");
-            this.nextshow = !this.nextshow;
-            this.backshow = !this.backshow;
-          } else {
-            this.$message.error("请完善信息");
-            return false;
-          }
-        });
+        // if (this.dialogImageUrl===""){
+        //   this.$message.error("营业执照不能为空")
+        // } else {
+          this.$refs[formName].validate(valid => {
+            if (valid) {
+              // alert("submit!");
+              this.nextshow = !this.nextshow;
+              this.backshow = !this.backshow;
+              console.log(1213123)
+              console.log(this.dialogImageUrl)
+            } else {
+              this.$message.error("请完善信息");
+              return false;
+            }
+          });
+        // }
+
       },
       registerInfo(formName) {
         this.$refs[formName].validate(valid => {
@@ -618,11 +595,18 @@
         ).then(
           result => {
             if (result.data.code === 200) {
-              this.$message({
-                message: "恭喜您注册成功",
-                type: "success"
-              });
-              location.reload();
+              this.$alert("恭喜您，企业注册信息已提交成功！审核结果我们将以短信的形式发送到绑定的手机号码","提示",{
+                confirmButtonText: "确定",
+                callback:action=>{
+                  location.reload()
+                }
+              })
+
+            //   this.$message({
+            //     message: "恭喜您注册成功",
+            //     type: "success"
+            //   });
+            //   location.reload();
             }
           },
           ({type, info}) => {
