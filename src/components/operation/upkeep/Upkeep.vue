@@ -420,7 +420,7 @@ export default {
           this.tableData[i].state = "已撤销";
         }
         if (this.tableData[i].state === 10) {
-          this.tableData[i].state = "审批被驳回";
+          this.tableData[i].state = "已驳回";
         }
         if (this.tableData[i].state === 10) {
           this.tableData[i].state = "已停止";

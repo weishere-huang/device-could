@@ -322,7 +322,6 @@
         }
       },
       toDetails(rowIndex, rowData, column) {
-        this.$store.commit("breakDetails", rowData);
         this.$router.push("/BreakDetails/" + rowData.id);
       },
       auditHide(params) {
@@ -424,7 +423,7 @@
             this.tableData[i].state = "待审核";
           }
           if (this.tableData[i].state === 1) {
-            this.tableData[i].state = "已通过";
+            this.tableData[i].state = "执行中";
           }
           if (this.tableData[i].state === 2) {
             this.tableData[i].state = "禁用";
@@ -445,7 +444,7 @@
             this.tableData[i].state = "已撤销";
           }
           if (this.tableData[i].state === 10) {
-            this.tableData[i].state = "审批被驳回";
+            this.tableData[i].state = "已驳回";
           }
           if (this.tableData[i].state === 10) {
             this.tableData[i].state = "已停止";
