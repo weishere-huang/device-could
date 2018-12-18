@@ -479,12 +479,12 @@
         });
       },
       registerNext(formName) {
-        if(this.company.dialogImageUrl===""){
+        if (this.company.dialogImageUrl === "") {
           this.$message({
             message: "请上传营业执照",
-            type:"error"
+            type: "error"
           })
-        }else {
+        } else {
           this.$refs[formName].validate(valid => {
             if (valid) {
               // alert("submit!");
@@ -556,11 +556,13 @@
             }
           },
           ({type, info}) => {
-            this.$message({
-              message: "账号或密码错误",
-              type: "error"
-            });
-            this.$router.push({path: "/Login"});
+            console.log(info)
+            if (info.code === 0) {
+              this.$message.error("验证码错误")
+            } else {
+              this.$message.error("账号或密码错误")
+              this.$router.push({path: "/Login"});
+            }
           }
         );
       },
@@ -602,7 +604,7 @@
             if (result.data.code === 200) {
               this.$alert("恭喜您，企业注册信息已提交成功。审核结果将以短信的方式通知到您绑定的手机号。", "提示", {
                 confirmButtonText: "确定",
-                callback:action=>{
+                callback: action => {
                   location.reload();
                 }
               })
@@ -636,12 +638,12 @@
           },
           ({type, info}) => {
             console.log(info)
-            if(info.code==0){
+            if (info.code == 0) {
               this.$message({
                 message: "未找到该用户",
                 type: "error"
               })
-            }else {
+            } else {
               this.$message({
                 message: "服务器异常，请联系管理员",
                 type: "error"
