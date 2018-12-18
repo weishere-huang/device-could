@@ -96,6 +96,7 @@
                 </el-form-item>
                 <el-form-item label="设备选择">
                     <el-button size="mini" @click="equChooseHandler" type="primary" icon="el-icon-plus" circle></el-button>
+                    <span>已选择{{selectedEquList.length}}台设备</span>
                 </el-form-item>
                 <el-form-item label="备注">
                     <el-input size="small" type="textarea" v-model="form.describeInfo"></el-input>
