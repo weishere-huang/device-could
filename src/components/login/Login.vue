@@ -101,6 +101,7 @@
             prop="name"
           >
             <el-input
+              placeholder="营业执照主体单位名称"
               size="small"
               v-model="company.name"
               style="width:80%"
@@ -111,6 +112,7 @@
             prop="corporation"
           >
             <el-input
+              placeholder="营业执照法定代表人"
               size="small"
               v-model="company.corporation"
               style="width:80%"
@@ -121,6 +123,7 @@
             prop="phone"
           >
             <el-input
+              placeholder="028-8888888"
               size="small"
               v-model="company.phone"
               style="width:80%"
@@ -131,6 +134,7 @@
             prop="address"
           >
             <el-input
+              placeholder="企业现在所处的详细地址"
               size="small"
               v-model="company.address"
               style="width:80%"
@@ -141,6 +145,7 @@
             prop="companyID"
           >
             <el-input
+              placeholder="18位统一社会信用代码"
               size="small"
               v-model="company.companyID"
               style="width:80%"
@@ -198,6 +203,7 @@
             prop="userName"
           >
             <el-input
+              placeholder="6~20位字符组成，以字母开头"
               size="small"
               v-model="manager.userName"
               style="width:80%"
@@ -208,6 +214,7 @@
             prop="userPassword"
           >
             <el-input
+              placeholder="6~20位字符组成，区分大小写"
               size="small"
               type="password"
               v-model="manager.userPassword"
@@ -219,6 +226,7 @@
             prop="phone"
           >
             <el-input
+              placeholder="11位手机号（仅国内）"
               size="small"
               v-model="manager.phone"
               style="width:80%"
@@ -229,6 +237,7 @@
             prop="validate"
           >
             <el-input
+              placeholder="短信验证码"
               type="text"
               v-model="manager.validate"
               size="small"
