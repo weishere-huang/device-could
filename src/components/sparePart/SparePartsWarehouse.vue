@@ -349,8 +349,8 @@ export default {
           partName: rowData.partName,
           partNo: rowData.partNo,
           partModel: rowData.partModel,
-          entryCount: "",
-          entryPrice: "",
+          entryCount: 0,
+          entryPrice: 0,
           supplierName: "",
           //批次ID
           //batchNumberId:"",
