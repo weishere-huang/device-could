@@ -313,21 +313,22 @@ export default {
       registerRules: {
         name: [
           { required: true, message: "企业名不能为空", trigger: "blur" },
-
-          // {validator:(rule, value, callback)=>{
-          //   this.Axios(
-          //     {
-          //       params: Object.assign({name: this.company.name}),
-          //       url: "/enterprise/findByName",
-          //       type: "get"
-          //     }
-          //   ).then(res=>{
-          //   },({type, info}) => {
-          //     console.log(info)
-          //     callback (new Error("企业名称已存在"))
-          //     })
-          //   },
-          //   trigger: 'blur'}
+          {validator:(rule, value, callback)=>{
+            this.Axios(
+              {
+                params: Object.assign({name: this.company.name}),
+                url: "/enterprise/findByName",
+                type: "get"
+              }
+            ).then(res=>{
+              console.log(res)
+              callback()
+            },({type, info}) => {
+              console.log(info)
+              callback (new Error("企业名称已存在"))
+              })
+            },
+            trigger: 'blur'}
         ],
         address: [{ required: true, message: "地址不能为空", trigger: "blur" }],
         // phone: [
@@ -335,7 +336,6 @@ export default {
         //   ],
         phone: [
           { required: true, message: "电话不能为空", trigger: "blur" },
-
           {
             validator: (rule, value, callback) => {
               if (
@@ -347,7 +347,23 @@ export default {
               }
             },
             trigger: "blur"
-          }
+          },
+          {validator:(rule, value, callback)=>{
+              this.Axios(
+                {
+                  params: Object.assign({phone: this.company.phone}),
+                  url: "/enterprise/findByPhone",
+                  type: "get"
+                }
+              ).then(res=>{
+                console.log(res)
+                callback()
+              },({type, info}) => {
+                console.log(info)
+                callback (new Error("联系电话已存在"))
+              })
+            },
+            trigger: 'blur'}
         ],
         corporation: [
           { required: true, message: "法人代表不能为空", trigger: "blur" }
@@ -371,7 +387,23 @@ export default {
               }
             },
             trigger: "blur"
-          }
+          },
+          {validator:(rule, value, callback)=>{
+              this.Axios(
+                {
+                  params: Object.assign({creditCode: this.company.companyID}),
+                  url: "/enterprise/findByCreditCode",
+                  type: "get"
+                }
+              ).then(res=>{
+                console.log(res)
+                callback()
+              },({type, info}) => {
+                console.log(info)
+                callback (new Error("统一社会信用代码已存在"))
+              })
+            },
+            trigger: 'blur'}
         ]
       },
       managerRules: {
@@ -392,7 +424,23 @@ export default {
             max: 20,
             message: "请输入6到20位的字母和数字组合",
             trigger: "blur"
-          }
+          },
+          {validator:(rule, value, callback)=>{
+              this.Axios(
+                {
+                  params: Object.assign({username: this.manager.userName}),
+                  url: "/user/userNameIsSingle",
+                  type: "get"
+                }
+              ).then(res=>{
+                console.log(res)
+                callback()
+              },({type, info}) => {
+                console.log(info)
+                callback (new Error("该用户名已存在"))
+              })
+            },
+            trigger: 'blur'}
         ],
         userPassword: [
           { required: true, message: "密码不能为空", trigger: "blur" },
@@ -423,7 +471,23 @@ export default {
               }
             },
             trigger: "blur"
-          }
+          },
+          {validator:(rule, value, callback)=>{
+              this.Axios(
+                {
+                  params: Object.assign({phone: this.manager.phone}),
+                  url: "/user/phoneIsSingle",
+                  type: "get"
+                }
+              ).then(res=>{
+                console.log(res)
+                callback()
+              },({type, info}) => {
+                console.log(info)
+                callback (new Error("该手机号码已存在"))
+              })
+            },
+            trigger: 'blur'}
         ],
         validate: [
           { required: false, message: "验证码不能为空", trigger: "blur" }
@@ -648,7 +712,8 @@ export default {
           console.log(info);
           if (info.code == 0) {
             this.$message.error("未找到该用户");
-          } else {
+          }
+          else {
             this.$message.error("服务器异常，请联系管理员");
           }
         }
@@ -673,6 +738,7 @@ export default {
           this.$message.success("短信验证码已发送至您的手机，请注意查收");
         },
         ({ type, info }) => {
+          console.log(info)
           this.$message.error("服务器异常，请联系管理员");
         }
       );
