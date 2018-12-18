@@ -6,9 +6,9 @@
                    type="primary" @click="tback" icon="el-icon-arrow-left">返回</el-button>
         <el-button size="small"
                    type="primary" @click="updateEmployee">
-                   <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
+          <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
         <!--<el-button size="small"-->
-                   <!--type="primary" @click="test">测试</el-button>-->
+        <!--type="primary" @click="test">测试</el-button>-->
       </div>
       <div class="botton">
         <div class="essential">
@@ -412,16 +412,22 @@
       toUpdateEmployee(){
         let file = [];
         for(let i in this.fileList){
-          file.push({
-            name:this.fileList[i].name,
-            img: "img:"+this.fileList[i].url.split(":8080/")[1],
-          });
+          if(this.fileList[i].url.split(":")[0] ==="img"){
+            file.push({
+              name:this.fileList[i].name,
+              img: this.fileList[i].url
+            });
+          }else{
+            file.push({
+              name:this.fileList[i].name,
+              img: "img:"+this.fileList[i].url.split(":8080/")[1],
+            });
+          }
         }
         this.persnneladd.img = this.dialogImageUrl[0].url;
         if(this.persnneladd.img.split(":")[0] !=="img"){
           this.persnneladd.img="img:"+this.dialogImageUrl[0].url.split(":8080/")[1];
         }
-        console.log(this.persnneladd.img);
         this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
         let qs = require("qs");

@@ -452,9 +452,11 @@
             width: 70,
             titleAlign: "center",
             columnAlign: "center",
-
             isResize: true,
-            isEdit: true
+            isEdit: true,
+            formatter: function (rowData,rowIndex,pagingIndex,field) {
+              return `<s class='cell-edit-style'></s><span">${rowData.planCount}</span>`;
+            }
           },
           {
             field: "actualCount",
@@ -664,7 +666,6 @@
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
         this.suppliesTableData[rowIndex][field] = newValue;
-        console.log(newValue);
         // 接下来处理你的业务逻辑，数据持久化等...
       },
       selectGroupChange(selection) {

@@ -478,7 +478,10 @@
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
-            isEdit: true
+            isEdit: true,
+            formatter: function (rowData,rowIndex,pagingIndex,field) {
+              return `<s class='cell-edit-style'></s><span>${rowData.planCount}</span>`;
+            }
           },
           {
             field: "actualCount",
@@ -685,6 +688,7 @@
       };
     },
     methods: {
+
       customCompFunc(params) {
         if (params.type === "delete") {
           this.workSheetMaterialTableData = this.workSheetMaterialTableData.filter(item=>item.id!=params.rowData["id"]);
