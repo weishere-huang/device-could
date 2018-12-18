@@ -631,23 +631,15 @@
         ).then(
           response => {
             console.log(1111);
-            this.$message({
-              message: "短信验证码已发送至您的手机，请注意查收",
-              type: "success"
-            });
+            this.$message.success("短信验证码已发送至您的手机，请注意查收")
+
           },
           ({type, info}) => {
             console.log(info)
             if (info.code == 0) {
-              this.$message({
-                message: "未找到该用户",
-                type: "error"
-              })
+              this.$message.error("未找到该用户")
             } else {
-              this.$message({
-                message: "服务器异常，请联系管理员",
-                type: "error"
-              });
+              this.$message.error("服务器异常，请联系管理员")
             }
           }
         );
@@ -668,16 +660,10 @@
         ).then(
           response => {
             console.log(1111);
-            this.$message({
-              message: "短信验证码已发送至您的手机，请注意查收",
-              type: "success"
-            });
+            this.$message.success("短信验证码已发送至您的手机，请注意查收")
           },
           ({type, info}) => {
-            this.$message({
-              message: "服务器异常，请联系管理员",
-              type: "error"
-            });
+            this.$message.error("服务器异常，请联系管理员")
           }
         );
       },
