@@ -525,7 +525,6 @@ export default {
     handleRemove1(file, fileList) {
       console.log(file);
       console.log(fileList);
-      console.log(this.fileList);
       this.fileList1.filter(item >= item.name !== file.name);
     },
     handlePreview1(file) {
@@ -611,7 +610,7 @@ export default {
         deviceState: this.sizeForm.deviceState,
         organizeCode: this.sizeForm.organizeCode,
         enterFactoryDate: this.sizeForm.enterFactoryDate,
-         // deviceDataInfo: JSON.stringify(this.fileList1),
+        // deviceDataInfo: JSON.stringify(this.fileList1),
          // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo)
         devicePersonnelInfo: JSON.stringify(_devicePersonnelInfo)
       });
@@ -651,16 +650,11 @@ export default {
     jsontoarr(data){
       //把查出来的人员json数据转换为数组
       var jsonObj =  JSON.parse(data)
-      console.log(jsonObj)
       var jsonStr1 = JSON.stringify(jsonObj)
-      console.log(jsonStr1+"jsonStr1")
       var jsonArr = [];
       for(var i =0 ;i < jsonObj.length;i++){
         jsonArr[i] = jsonObj[i];
       }
-      console.log(jsonArr);
-      console.log("jsontoarr");
-
       this.arrrrrrr(jsonArr);
     },
     arrrrrrr(data){
@@ -698,8 +692,6 @@ export default {
             })
         }
       }
-      console.log(newarrr);
-      console.log("newarrr");
       this.devicePersonnelInfoBase = newarrr ;
     },
 
@@ -744,12 +736,10 @@ export default {
             //this.aaaa.value = this.sizeForm.deviceState;
           this.personAddHandler = this.devicePersonnelInfoBase;
 
-          // this.fileList = result.data.data.deviceDataInfo;
-          // this.fileList1 = result.data.data.deviceDataInfo;
+          this.fileList = result.data.data.deviceDataInfo;
+          this.fileList1 = result.data.data.deviceDataInfo;
           console.log(this.fileList);
           console.log(this.fileList1);
-          console.log(this.devicePersonnelInfoBase);
-
           console.log("---------------");
         },
           ({type, info}) => {
