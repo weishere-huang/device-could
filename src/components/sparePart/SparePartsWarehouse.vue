@@ -238,7 +238,10 @@ export default {
           isResize: true,
           overflowTitle: true,
           isEdit: true,
-          titleCellClassName: "title-cell-class-name"
+          titleCellClassName: "title-cell-class-name",
+          formatter: function (rowData,rowIndex,pagingIndex,field) {
+            return `<s class='cell-edit-style'></s><span>${rowData.entryPrice}</span>`;
+          }
         },
         {
           field: "faultNo4",

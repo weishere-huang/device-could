@@ -87,6 +87,7 @@ export default {
           columnAlign: "center",
           isResize: true,
           overflowTitle: true
+
         },
         {
           field: "partModel",
@@ -104,7 +105,12 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-          overflowTitle: true
+          overflowTitle: true,
+          formatter: function(rowData, rowIndex, pagingIndex, field) {
+            return rowData.partCategory === 2
+              ?`<span style="color:red">关键</span>`
+              :`<span style="color:cornflowerblue">普通</span>`
+          },
         },
         {
           field: "partClassifyName",
@@ -290,13 +296,6 @@ export default {
             console.log(result);
             console.log(result.data);
             this.tableData=result.data.data.content;
-            for (let i = 0; i < this.tableData.length; i++) {
-              if (this.tableData[i].partCategory === 2) {
-                this.tableData[i].partCategory = "关键";
-              }else{
-                this.tableData[i].partCategory = "普通"
-              }
-            }
             this.pageNumber = result.data.data.totalElements;
           },
           ({type, info}) => {
