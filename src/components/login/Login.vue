@@ -310,7 +310,7 @@
           name: [
             {required: true, message: "企业名不能为空", trigger: "blur"},
 
-       lo     // {validator:(rule, value, callback)=>{
+            // {validator:(rule, value, callback)=>{
             //   this.Axios(
             //     {
             //       params: Object.assign({name: this.company.name}),

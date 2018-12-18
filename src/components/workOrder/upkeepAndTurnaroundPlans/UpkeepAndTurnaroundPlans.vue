@@ -690,8 +690,6 @@
     methods: {
       customCompFunc(params) {
         if (params.type === "delete") {
-          console.log(params.rowData["id"]);
-          // do delete operation
           this.workSheetMaterialTableData = this.workSheetMaterialTableData.filter(item=>item.id!=params.rowData["id"]);
           this.personListValue = this.personListValue.filter(item=>item.id!=params.rowData["id"]);
         }

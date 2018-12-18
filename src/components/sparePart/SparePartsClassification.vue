@@ -67,7 +67,7 @@
               <el-input
                 v-model="addname"
                 size="mini"
-                
+
               ></el-input>
             </el-form-item>
             <el-form-item label="备注：">
@@ -286,7 +286,7 @@ export default {
             if (result.data.code === 200) {
               this.reload();
             } else {
-              alert("修改失败,请重新尝试");
+              this.$message("修改失败,请重新尝试");
             }
             console.log("修改备品备件类别");
             console.log(result.data);
@@ -318,7 +318,7 @@ export default {
             if (result.data.code === 200) {
               this.reload();
             } else {
-              alert("删除失败,请重新尝试");
+              this.$message("删除失败,请重新尝试");
             }
             console.log("删除备品备件类别");
             console.log(result.data);
@@ -367,11 +367,11 @@ export default {
         .then(
           result => {
             if (result.data.code === 200) {
-              alert("添加成功");
+              this.$message("添加成功");
               this.dialogVisible3 = false
               this.reload();
             } else {
-              alert("添加失败,请重新添加");
+              this.$message("添加失败,请重新添加");
             }
             console.log("添加根类");
             console.log(result.data);

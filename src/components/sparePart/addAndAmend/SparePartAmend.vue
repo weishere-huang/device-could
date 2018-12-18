@@ -222,13 +222,12 @@
           .then(
             result => {
               if (result.data.code == 200) {
-                alert("修改成功");
                 console.log(result);
                 console.log("update");
                 console.log(result.data);
                 this.$router.push("/SparePart");
               } else if (result.data.code == 410) {
-                alert("该设备编号以存在,请修改!!!");
+                this.$message("该设备编号以存在,请修改!!!");
               }
               console.log("请求参数：" + data);
             },

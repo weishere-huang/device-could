@@ -2,6 +2,7 @@
   <div class="turnaround-plans">
     <div class="userCase">
       <div class="top">
+        <el-button-group>
         <el-button
           size="small"
           type="primary"
@@ -12,6 +13,7 @@
           type="primary"
           @click="outerVisibleIsOk"
         >审核</el-button>
+        </el-button-group>
         <el-dialog
           title="审核"
           :beforeClose="cancel"
