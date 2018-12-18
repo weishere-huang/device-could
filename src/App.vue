@@ -31,6 +31,18 @@
               <span slot="title">企业管理</span></template>
             <el-menu-item index="/Company">企业管理</el-menu-item>
           </el-submenu>
+          <el-submenu index="5">
+              <template slot="title">
+                <i class="iconfont">&#xe62e;</i>
+                <span slot="title">组织机构</span></template>
+                <el-menu-item index="/Organization">组织机构管理</el-menu-item>
+            </el-submenu>
+          <el-submenu index="6">
+              <template slot="title">
+                <i class="iconfont">&#xe68d;</i>
+                <span slot="title">员工管理</span></template>
+                <el-menu-item index="/Personnel">员工管理</el-menu-item>
+            </el-submenu>
           <el-submenu index="3">
             <template slot="title">
               <i class="iconfont">&#xe61c;</i>
@@ -53,17 +65,15 @@
                 <el-menu-item index="/TurnaroundPlans">检修计划</el-menu-item>
                 <el-menu-item index="/Upkeep">保养计划</el-menu-item>
             </el-submenu>
-            <el-submenu index="5">
+            <el-submenu index="14">
               <template slot="title">
-                <i class="iconfont">&#xe62e;</i>
-                <span slot="title">组织机构</span></template>
-                <el-menu-item index="/Organization">组织机构管理</el-menu-item>
-            </el-submenu>
-            <el-submenu index="6">
-              <template slot="title">
-                <i class="iconfont">&#xe68d;</i>
-                <span slot="title">员工管理</span></template>
-                <el-menu-item index="/Personnel">员工管理</el-menu-item>
+                <i class="iconfont">&#xe60b;</i>
+                <span slot="title">备品备件</span></template>
+              <el-menu-item index="/SparePart">备件基础信息</el-menu-item>
+              <!-- <el-menu-item index="/OutboundDetails">出库明细</el-menu-item> -->
+              <el-menu-item index="/SparePartsClassification">备件分类</el-menu-item>
+              <el-menu-item index="/SparePartsWarehouse">备件入库</el-menu-item>
+              <el-menu-item index="/WarehousingDetail">入库明细</el-menu-item>
             </el-submenu>
             <!-- <el-submenu index="8">
               <template slot="title">
@@ -76,21 +86,12 @@
           <el-submenu index="9">
             <template slot="title">
               <i class="iconfont">&#xe60b;</i>
-              <span slot="title">工单</span></template>
+              <span slot="title">工单系统</span></template>
             <el-menu-item index="/WorkOrder">工单列表</el-menu-item>
             <!-- <el-menu-item index="/BreakdownOrder">故障工单详情</el-menu-item> -->
             <!-- <el-menu-item index="/UpkeepAndTurnaroundPlans">检修&保养计划工单详情</el-menu-item> -->
           </el-submenu>
-          <el-submenu index="14">
-            <template slot="title">
-              <i class="iconfont">&#xe60b;</i>
-              <span slot="title">备品备件</span></template>
-            <el-menu-item index="/SparePart">备件基础信息</el-menu-item>
-            <!-- <el-menu-item index="/OutboundDetails">出库明细</el-menu-item> -->
-            <el-menu-item index="/SparePartsClassification">备件分类</el-menu-item>
-            <el-menu-item index="/SparePartsWarehouse">备件入库</el-menu-item>
-            <el-menu-item index="/WarehousingDetail">入库明细</el-menu-item>
-          </el-submenu>
+          
           <!-- <el-submenu index="10">
             <template slot="title">
               <i class="iconfont">&#xe602;</i>
