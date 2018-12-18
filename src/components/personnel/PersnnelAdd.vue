@@ -34,9 +34,8 @@
               <li>
                 <label for="">组织单位：</label>
                 <el-select v-model="persnneladd.organizeCode" placeholder="请选择" size="small" style="width:70%">
-                  <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.code">
-                  </el-option>
-
+                <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.code">
+                </el-option>
                 </el-select>
               </li>
               <li>
