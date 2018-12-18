@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="right">
-        <img src="../../assets/image/chlogo.png" alt="">
+        <img :src="auditValue.businessLicenseImg" alt="">
       </div>
     </div>
   </div>
