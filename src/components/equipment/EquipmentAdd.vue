@@ -217,7 +217,7 @@
     data() {
       return {
         upcode:"",
-        fileList: [
+        fileList1: [
         ],
         defaultProps:{
           value:"code",
@@ -316,18 +316,21 @@
         }
       },
       handleAvatarSuccess(res, file) {
-        this.upcode = res.code;
+        // this.upcode = res.code;
         console.log(res);
         console.log("handleAvatarSuccess")
         console.log(file);
-        // this.dialogImageUrl = file.response.data.split(":")[1];
-        // this.dialogImageUrl= "ftp://192.168.1.104/"+this.dialogImageUrl;
-        // this.fileList.push()
+        this.fileList1.push({
+          url:res.data,
+          name:file.name
+        })
         console.log(this.fileList);
-        // this.$loading().close();
       },
       handleRemove1(file, fileList) {
-        console.log(file, fileList);
+        console.log(file);
+        console.log(fileList);
+        console.log(this.fileList);
+        this.fileList1.filter(item >= item.name !== file.name);
       },
       handlePreview1(file) {
         console.log(file);
@@ -412,7 +415,7 @@
           deviceModel: this.sizeForm.deviceModel,
           deviceState: this.sizeForm.deviceState,
           enterFactoryDate: this.sizeForm.enterFactoryDate,
-          deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
+          deviceDataInfo: JSON.stringify(this.fileList),
           devicePersonnelInfo:JSON.stringify(_devicePersonnelInfo)
 
           // deviceNo: this.sizeForm.deviceNo,
@@ -447,11 +450,10 @@
         },this)
           .then(result => {
             console.log(result.data);
-            alert("执行添加");
+
             if (result.data.code == 410) {
-              alert("该设备号已存在,请重新编辑!!!")
+              this.$message.warning("该设备号已存在,请重新编辑!!!")
             } else if (result.data.code == 200) {
-              alert("添加成功");
               console.log("add");
               console.log(result.data);
               this.$router.push("/Equipment");

@@ -173,7 +173,7 @@ export default {
               console.log(result.data);
               this.reload();
             } else {
-              alert("删除失败");
+              this.$message("删除失败");
               console.log(result.data);
             }
           },

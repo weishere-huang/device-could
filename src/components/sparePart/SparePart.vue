@@ -309,7 +309,7 @@ export default {
     btisok(){
       console.log(this.ids);
       if(this.ids === "" || this.ids === undefined){
-        this.$message("请至少选择一行数据")
+        this.$message.warning("请至少选择一行数据")
       }else{
         this.$confirm('确定删除吗?', '提示', {
           confirmButtonText: '确定',
