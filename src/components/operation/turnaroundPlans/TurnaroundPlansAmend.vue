@@ -1,8 +1,10 @@
 <template>
   <div class="turnaroundPlansAdd">
     <div class="top">
-      <el-button size="small" type="primary" @click="toback">返回</el-button>
-      <el-button size="small" type="primary" @click="updatePlan">保存</el-button>
+      <el-button-group>
+        <el-button size="small" type="primary" @click="toback">返回</el-button>
+        <el-button size="small" type="primary" @click="updatePlan">保存</el-button>
+      </el-button-group>
     </div>
     <div class="bottom">
       <div class="left">
@@ -65,10 +67,10 @@
             <el-input type="textarea" v-model="companyName.maintenanceCc" style="width:100%;"></el-input>
           </el-form-item>
           <!--<el-form-item label="分布详情：" style="height:auto;margin:5px 0;">-->
-            <!--<tr class="tableTime">-->
-              <!--<td>111</td>-->
-              <!--<td>2</td>-->
-            <!--</tr>-->
+          <!--<tr class="tableTime">-->
+          <!--<td>111</td>-->
+          <!--<td>2</td>-->
+          <!--</tr>-->
           <!--</el-form-item>-->
         </el-form>
         <!-- 单次执行 -->
@@ -93,7 +95,7 @@
         </el-form>
         <el-form>
           <!--<el-form-item label="计划添加时间：" style="height:auto;">-->
-            <!--<span>{{time}}</span>-->
+          <!--<span>{{time}}</span>-->
           <!--</el-form-item>-->
         </el-form>
       </div>
@@ -233,7 +235,7 @@
           },
           this
         ).then(response => {
-          this.loadValue(response.data.data);
+            this.loadValue(response.data.data);
           },
           ({type, info}) => {
 
