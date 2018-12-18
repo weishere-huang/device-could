@@ -321,7 +321,7 @@
         console.log("handleAvatarSuccess")
         console.log(file);
         this.fileList1.push({
-          url:res.data,
+          img:res.data,
           name:file.name
         })
         console.log(this.fileList);
@@ -381,8 +381,6 @@
       add1() {
         //添加设备信息接口
         //上传文件
-
-
         let qs = require("qs");
         let _devicePersonnelInfo=[];
         this.devicePersonnelInfoBase.forEach(items => {
@@ -415,7 +413,7 @@
           deviceModel: this.sizeForm.deviceModel,
           deviceState: this.sizeForm.deviceState,
           enterFactoryDate: this.sizeForm.enterFactoryDate,
-          deviceDataInfo: JSON.stringify(this.fileList),
+          deviceDataInfo: JSON.stringify(this.fileList1),
           devicePersonnelInfo:JSON.stringify(_devicePersonnelInfo)
 
           // deviceNo: this.sizeForm.deviceNo,

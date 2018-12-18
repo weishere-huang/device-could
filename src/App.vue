@@ -149,7 +149,7 @@
                     content="设备状态"
                     placement="bottom-end"
                   >
-                    <i class="iconfont">&#xe609;</i>
+                    <i class="iconfont" @click="pathto(0)">&#xe609;</i>
                   </el-tooltip>
                 </li>
                 <li>
@@ -160,7 +160,7 @@
                     placement="bottom-end"
                   >
                     <el-badge :value="msgcount" :max="99" class="item">
-                      <i class="iconfont">&#xe601;</i>
+                      <i class="iconfont" @click="pathto(1)">&#xe601;</i>
                     </el-badge>
                   </el-tooltip>
                 </li>
@@ -171,7 +171,7 @@
                     content="我的工单"
                     placement="bottom-end"
                   >
-                    <i class="iconfont">&#xe61d;</i>
+                    <i class="iconfont" @click="pathto(2)">&#xe61d;</i>
                   </el-tooltip>
                 </li>
                 <li>
@@ -284,8 +284,18 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    //路径跳转
+    pathto(a){
+      //0跳转设备状态,1跳转消息,2跳转工单
+      if(a===0){
+        this.$router.push({path:'/Monit'})
+      }else if(a===1){
+        this.$router.push({path:'/Message'})
+      }else if(a===2){
+        this.$router.push({path:'/WorkOrder'})
+      }
     }
-
   },
   created () {
     this.user=JSON.parse(sessionStorage.getItem("user")).name
