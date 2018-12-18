@@ -36,7 +36,7 @@
                   v-if="data.organizeType!='企业'"
                 >
                   <el-tooltip class="item" effect="dark" content="修改" placement="top">
-                  <i style='font-size:16px' class='iconfontz'>&#xe626;</i>
+                  <i style='font-size:16px' class='iconfont'>&#xe6b4;</i>
                 </el-tooltip>
                 </el-button>
                 <el-button

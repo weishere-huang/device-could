@@ -24,7 +24,7 @@
           type="primary"
           size="small"
           @click="replace"
-        >刷新
+        ><i style='font-size:12px' class='iconfont'>&#xe614;</i> &nbsp;刷新
         </el-button>
         <div class="search">
           <el-input
@@ -522,7 +522,7 @@ Vue.component("table-company", {
   template: `
         <span v-if="rowData.state === '0'">
           <el-tooltip class="item" effect="dark" content="审核" placement="top">
-            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="audit(rowData,index)" style='font-size:16px' class='iconfontz'>&#xe6a0;</i></a>
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="audit(rowData,index)" style='font-size:16px' class='iconfont'>&#xe61d;</i></a>
           </el-tooltip>
         </span>
         <span v-else-if="rowData.state ==='1'||rowData.state === '2'">
