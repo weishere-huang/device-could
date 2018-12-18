@@ -160,7 +160,7 @@
         </el-form>
         <el-form :inline="true" style="padding-left:12px" size="small">
           <el-form-item label="购买价格">
-            <el-input v-model="sizeForm.buyPrice" style="width:215px"></el-input>
+            <el-input v-model="sizeForm.buyPrice" style="width:215px" type="number"></el-input>
           </el-form-item>
           <el-form-item label="购买日期">
             <el-col :span="11">
