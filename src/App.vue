@@ -241,6 +241,13 @@ export default {
     // }
 
     out(){
+      // this.Axios(
+      //   {
+      //     url: "/user/logout",
+      //     type:"post",
+      //     option:{enableMsg:false}
+      //   },
+      // ).then(response=>{
         this.$confirm("您确定要退出登录吗？","确认",{
           confirmButtonText: '确定',
           cancelButtonText: '取消',

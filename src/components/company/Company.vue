@@ -490,11 +490,19 @@ export default {
         this
       ).then(
         response => {
-          this.$message({
-            message: "禁用成功",
-            type: "success"
-          });
-          this.load();
+          this.$confirm("禁用该企业之后会停用该企业下所有的员工，确定要禁用该企业吗？",{
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(()=>{
+            this.$message.success("禁用成功")
+            this.load()
+          })
+          // this.$message({
+          //   message: "禁用成功",
+          //   type: "success"
+          // });
+          // this.load();
         },
         ({ type, info }) => {}
       );
