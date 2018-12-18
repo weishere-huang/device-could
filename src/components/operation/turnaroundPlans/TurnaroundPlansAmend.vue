@@ -281,9 +281,13 @@
       updatePlan(){
         this.deviceIds = this.tableData.map(item=>item.id).toString();
         if(this.deviceIds!==""){
-          this.toUpdatePlan()
+          if(this.companyName.state==0){
+            this.toUpdatePlan()
+          }else{
+            this.$message.error('只能修改待审核状态的计划')
+          }
         }else{
-          alert("请至少选择一个设备")
+          this.$message.error("请至少选择一个设备")
         }
       },
       toUpdatePlan(){

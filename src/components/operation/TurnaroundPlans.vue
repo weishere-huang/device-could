@@ -291,12 +291,7 @@ export default {
     },
     toAmend(rowIndex, rowData, column) {
       // 传值给修改
-      if(rowData.state=="待审核"){
         this.$router.push("/TurnaroundPlansAmend/" + rowData.id);
-        this.$store.commit("turnaroundPlans", rowData);
-      }else{
-        this.$message.error('只能修改待审核状态的计划')
-      }
     },
     toPansAdd() {
       this.$router.push({

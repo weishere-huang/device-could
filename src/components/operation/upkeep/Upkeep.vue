@@ -301,12 +301,7 @@ export default {
       }
     },
     toAmend(rowIndex, rowData, column) {
-      if(rowData.state=="待审核"){
-        this.$store.commit("upkeepAmend", rowData);
         this.$router.push("/UpkeepAmend/" + rowData.id);
-      }else{
-        this.$message.error('只能修改待审核状态的计划')
-      }
     },
     toUpkeepAdd() {
       this.$router.push({

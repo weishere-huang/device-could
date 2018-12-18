@@ -243,6 +243,17 @@ export default {
     },
     updatePlan(){
       this.deviceIds = this.tableData.map(item=>item.id).toString();
+      if(this.deviceIds!==""){
+        if(this.companyName.state==0){
+          this.toUpdatePlan()
+        }else{
+          this.$message.error('只能修改待审核状态的计划')
+        }
+      }else{
+        this.$message.error("请至少选择一个设备")
+      }
+    },
+    toUpdatePlan(){
       this.companyName.executeTime = this.date +" "+ this.times;
       this.companyName.executeTime = this.companyName.executeTime.split(".")[0].replace(/-/g,"/");
       this.companyName.startTime = this.companyName.startTime.split(" ")[0].replace(/-/g,"/");
