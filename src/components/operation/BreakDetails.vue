@@ -2,11 +2,9 @@
   <div class="breakDetails">
     <div class="case">
       <div class="top">
-        <el-button-group>
         <el-button size="small" type="primary" @click="toback">返回</el-button>
         <!--<el-button size="small" @click="commitAudit">提交审核</el-button>-->
-        <el-button size="small" type="primary" @click="dispel">故障消除</el-button>
-        </el-button-group>
+        <el-button size="small" type="primary" @click="dispel" v-if="isOk">故障消除</el-button>
         <!-- 故障消除弹框 -->
         <el-dialog
           title="故障消除"
@@ -138,6 +136,7 @@
     name: "",
     data() {
       return {
+        isOk:true,
         imgPath:[],
         dialogVisible:false,
         formLabelAlign:{
@@ -211,11 +210,16 @@
         this.$router.back(-1)
       },
       toValue(value) {
+        if(this.companyName.state!==0){
+          this.isOk = false;
+        }else{
+          this.isOk = true;
+        }
         if (value.state === 0) {
           this.companyName.state = "待审核";
         }
         if (value.state === 1) {
-          this.companyName.state = "审核通过";
+          this.companyName.state = "执行中";
         }
         if (value.state === 2) {
           this.companyName.state = "禁用";
