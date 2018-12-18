@@ -461,7 +461,6 @@ export default {
             enableMsg: false
           }
         },
-        this
       ).then(
         response => {
           this.$message({
@@ -479,7 +478,6 @@ export default {
       let data = qs.stringify({
         enterpriseIds: this.choice
       });
-      console.log("请求参数：" + data);
       this.Axios(
         {
           params: data,

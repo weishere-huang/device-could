@@ -340,9 +340,6 @@ export default {
             trigger: 'blur'}
         ],
         address: [{ required: true, message: "地址不能为空", trigger: "blur" }],
-        // phone: [
-        //   {required: true, message: "电话不能为空", trigger: "blur"}
-        //   ],
         phone: [
           { required: true, message: "电话不能为空", trigger: "blur" },
           {
@@ -356,23 +353,7 @@ export default {
               }
             },
             trigger: "blur"
-          },
-          {validator:(rule, value, callback)=>{
-              this.Axios(
-                {
-                  params: Object.assign({phone: this.company.phone}),
-                  url: "/enterprise/findByPhone",
-                  type: "get"
-                }
-              ).then(res=>{
-                console.log(res)
-                callback()
-              },({type, info}) => {
-                console.log(info)
-                callback (new Error("联系电话已存在"))
-              })
-            },
-            trigger: 'blur'}
+          }
         ],
         corporation: [
           { required: true, message: "法人代表不能为空", trigger: "blur" }
@@ -386,7 +367,7 @@ export default {
           {
             validator: (rule, value, callback) => {
               if (
-                /(^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$)|(^\d{15}$)/.test(
+                /^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$/.test(
                   value
                 ) == false
               ) {
@@ -421,7 +402,7 @@ export default {
           {
             validator: (rule, value, callback) => {
               if (/^[a-zA-Z0-9_-]{4,16}$/.test(value) == false) {
-                callback(new Error("用户名不能输入汉字和特殊符号"));
+                callback(new Error("用户名格式不正确，请输入6~20位字符，不能以数字开头"));
               } else {
                 callback();
               }
@@ -437,16 +418,16 @@ export default {
           {validator:(rule, value, callback)=>{
               this.Axios(
                 {
-                  params: Object.assign({username: this.manager.userName}),
+                  params: Object.assign({userName: this.manager.userName}),
                   url: "/user/userNameIsSingle",
                   type: "get"
                 }
               ).then(res=>{
                 console.log(res)
-                callback (new Error("该用户名已存在"))
+                callback ()
               },({type, info}) => {
                 console.log(info)
-                callback ()
+                callback (new Error("该用户名已存在"))
               })
             },
             trigger: 'blur'}
@@ -719,7 +700,7 @@ export default {
         },
         ({ type, info }) => {
           console.log(info);
-          if (info.code == 0) {
+          if (info.code == 406) {
             this.$message.error("未找到该用户");
           }
           else {
@@ -799,25 +780,6 @@ export default {
       return encrypted.toString();
     }
   },
-  //企业名称唯一验证
-  verifyCompany() {
-    this.Axios(
-      {
-        params: Object.assign({ name: this.company.name }),
-        url: "/enterprise/findByName",
-        type: "get"
-      },
-      this
-    ).then(response => {
-      console.log(response);
-    }),
-      ({ type, info }) => {};
-  },
-  //联系电话唯一验证
-  verifyPhone() {},
-  components: {
-    forgetThePassword
-  }
 };
 </script>
 <style lang="less" scoped>
