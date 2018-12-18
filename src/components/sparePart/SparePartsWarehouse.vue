@@ -560,7 +560,7 @@ Vue.component("table-warehouse", {
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
             <i style='font-size:16px;color:#F56C6C;cursor: pointer;' class='iconfont' @click.stop.prevent="deleteRow(rowData,index)">&#xe66b;</i>
         </el-tooltip>
-        
+
         </span>`,
   props: {
     rowData: {
@@ -597,7 +597,7 @@ Vue.component("table-warehouse", {
     border: @border;
     border-radius: 5px;
     padding: 10px;
-    
+
   }
   .warehouse {
     border: @border;

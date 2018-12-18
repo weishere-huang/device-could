@@ -1,12 +1,8 @@
 <template>
   <div class="breakdown-order">
     <div class="top">
-      <el-button-group>
-        <el-button-group>
           <el-button @click="toBack" type="primary" size="small">返回</el-button>
           <el-button size="small" type="primary" @click="outerVisible=true" v-if="isOk">提交审核</el-button>
-        </el-button-group>
-      </el-button-group>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
         <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
@@ -159,10 +155,8 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-            <el-button-group>
               <el-button size="mini" type="primary" @click=" listBasicInfo">添加物料</el-button>
               <el-button type="primary" @click="insertPart" size="mini">保存列表</el-button>
-            </el-button-group>
           </div>
           <v-table
             is-horizontal-resize
@@ -458,9 +452,11 @@
             width: 70,
             titleAlign: "center",
             columnAlign: "center",
-
             isResize: true,
-            isEdit: true
+            isEdit: true,
+            formatter(rowData,rowIndex,pagingIndex,field) {
+              return `<s class='cell-edit-style'></s><span">${rowData.planCount}</span>`;
+            }
           },
           {
             field: "actualCount",
@@ -670,8 +666,6 @@
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
         this.suppliesTableData[rowIndex][field] = newValue;
-        console.log(newValue);
-        // 接下来处理你的业务逻辑，数据持久化等...
       },
       selectGroupChange(selection) {
         console.log("select-group-change", selection);
@@ -882,7 +876,6 @@
             this.suppliesTableData[i].partCategory = 2;
           }
         }
-        console.log(this.workInfo.id);
         let qs = require("qs");
         let data = qs.stringify({
           workId:this.workInfo.id,
@@ -1044,6 +1037,7 @@
       deleteBasic(){
         this.dialogVisible2 = false;
         this.suppliesTableData = (this.suppliesTableData||[]).concat(this.personListValue);
+        this.suppliesTableData.forEach(function (item){item.planCount = 0});
         this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
       },
 
