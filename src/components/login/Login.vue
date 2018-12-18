@@ -434,10 +434,10 @@ export default {
                 }
               ).then(res=>{
                 console.log(res)
-                callback()
+                callback (new Error("该用户名已存在"))
               },({type, info}) => {
                 console.log(info)
-                callback (new Error("该用户名已存在"))
+                callback ()
               })
             },
             trigger: 'blur'}
