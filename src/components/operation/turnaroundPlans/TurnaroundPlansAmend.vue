@@ -1,10 +1,8 @@
 <template>
   <div class="turnaroundPlansAdd">
     <div class="top">
-      <el-button-group>
         <el-button size="small" type="primary" @click="toback">返回</el-button>
         <el-button size="small" type="primary" @click="updatePlan">保存</el-button>
-      </el-button-group>
     </div>
     <div class="bottom">
       <div class="left">

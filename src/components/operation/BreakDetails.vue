@@ -2,11 +2,9 @@
   <div class="breakDetails">
     <div class="case">
       <div class="top">
-        <el-button-group>
         <el-button size="small" type="primary" @click="toback">返回</el-button>
         <!--<el-button size="small" @click="commitAudit">提交审核</el-button>-->
         <el-button size="small" type="primary" @click="dispel">故障消除</el-button>
-        </el-button-group>
         <!-- 故障消除弹框 -->
         <el-dialog
           title="故障消除"

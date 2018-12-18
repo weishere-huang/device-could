@@ -2,7 +2,6 @@
   <div class="turnaround-plans">
     <div class="userCase">
       <div class="top">
-        <el-button-group>
         <el-button
           size="small"
           type="primary"
@@ -23,7 +22,6 @@
           type="primary"
           @click="deleteMaintenance"
         >删除</el-button> -->
-        </el-button-group>
       </div>
       <div class="bottom">
         <div>
@@ -557,9 +555,7 @@ export default {
       }
     },
     toSubmitAudit() {
-      this.formLabelAlign.type
-        ? (this.formLabelAlign.type = 0)
-        : (this.formLabelAlign.type = 1);
+      this.formLabelAlign.type ? (this.formLabelAlign.type = 0) : (this.formLabelAlign.type = 1);
       this.Axios(
         {
           params: {
@@ -572,10 +568,15 @@ export default {
           type: "get",
           url: "/mplan/maintenanceAudit"
         },
+        console.log(this.formLabelAlign.radio),
+        console.log(this.maintenanceIds),
+        console.log(this.formLabelAlign.type),
+        console.log(this.formLabelAlign.desc),
+        console.log(this.toAudit.id),
         this
       ).then(
         response => {
-          this.arr = "";
+          // this.arr = [];
           this.toCancel();
           this.load();
 

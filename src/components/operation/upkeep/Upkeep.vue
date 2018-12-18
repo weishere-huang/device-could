@@ -2,7 +2,6 @@
   <div class="turnaround-plans">
     <div class="userCase">
       <div class="top">
-        <el-button-group>
         <el-button
           size="small"
           type="primary"
@@ -13,7 +12,6 @@
           type="primary"
           @click="outerVisibleIsOk"
         >审核</el-button>
-        </el-button-group>
         <el-dialog
           title="审核"
           :beforeClose="cancel"
@@ -571,9 +569,7 @@ export default {
     },
 
     toSubmitAudit() {
-      this.formLabelAlign.type
-        ? (this.formLabelAlign.type = 0)
-        : (this.formLabelAlign.type = 1);
+      this.formLabelAlign.type ? (this.formLabelAlign.type = 0) : (this.formLabelAlign.type = 1);
       this.Axios(
         {
           params: {
@@ -589,6 +585,7 @@ export default {
         this
       ).then(
         response => {
+          this.arr=[];
           this.cancel();
           this.load();
         },

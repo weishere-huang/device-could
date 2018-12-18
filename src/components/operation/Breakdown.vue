@@ -2,7 +2,6 @@
   <div class="turnaround-plans">
     <div class="userCase">
       <div class="top">
-        <el-button-group>
         <el-button
           size="small"
           type="primary"
@@ -13,7 +12,6 @@
           type="primary"
           @click="dispel"
         >故障消除</el-button>
-        </el-button-group>
         <!-- 故障消除弹框 -->
         <el-dialog
           title="故障消除"
