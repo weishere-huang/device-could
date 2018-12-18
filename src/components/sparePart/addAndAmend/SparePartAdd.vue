@@ -221,7 +221,7 @@ export default {
         .then(
           result => {
             if(result.data.code ===200){
-              alert("添加成功");
+              this.$message("添加成功");
               this.$router.push("/SparePart");
             }
 

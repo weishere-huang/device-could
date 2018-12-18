@@ -69,7 +69,6 @@
         >修改
         </el-button> -->
         <!--<el-button size="small" > 复制</el-button>-->
-         -->
         <div class="searchright">
           <span>关键字：</span>
           <el-input
@@ -318,7 +317,7 @@ export default {
         this.$router.push("/Redact/" + this.edbt[0].id);
         this.$store.commit("equipmentRedact", this.edbt);
       } else {
-        alert("只能选择选择一行数据!!!");
+        this.$message("只能选择选择一行数据!!!");
       }
     },
     redactShow(rowIndex, rowData, column) {
