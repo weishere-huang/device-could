@@ -417,7 +417,7 @@
 
       roleAdd(){
         if (this.form.name === ""){
-          alert("请输入角色名称");
+          this.$message.error("请输入角色名称");
         }else{
           this.Axios(
             {
@@ -464,7 +464,6 @@
               }
             }
           }
-          // console.log(toKey);
         }
         switch(number){
           case 1:
@@ -505,7 +504,7 @@
           this
         ).then(
           response => {
-            this.reload();
+            this.load();
             this.form.name = "";
             this.form.desc = "";
           },
@@ -535,9 +534,7 @@
           this
         ).then(
           response => {
-            // this.load();
-            console.log(response);
-            this.reload()
+            this.load()
           },
           ({type, info}) => {
 

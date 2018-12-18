@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="right">
-        <img :src="auditValue.businessLicenseImg" alt="">
+        <img :src="auditValue.businessLicenseImg" alt="" @click="imgShow">
       </div>
     </div>
   </div>
@@ -73,6 +73,9 @@
       };
     },
     methods: {
+      imgShow(){
+        this.$emit("imgShow", true)
+      },
       auditback() {
         this.$emit("auditByValue", this.block);
         // location.reload();
@@ -99,6 +102,7 @@
           })
           this.reload();
         }, ({type, info}) => {
+          console.log(info)
         })
       },
       reject() {
