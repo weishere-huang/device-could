@@ -63,12 +63,12 @@
                     type="text"
                     size="mini"
                     @click="() => warningdelete(data.id)"
-                    
+
                   >
                     <i
                       style='font-size:16px;color:#F56C6C'
                       class='iconfont'
-                      
+
                     >&#xe66b;</i>
                   </el-button>
                 </el-tooltip>
@@ -181,7 +181,7 @@
           <el-button
             size="small"
             @click="dialogVisible=false"
-            
+
           >取消</el-button>
           <el-button
             size="small"
@@ -301,10 +301,10 @@ export default {
         .then(
           result => {
             if (result.data.code === 200) {
-              alert("添加成功");
+              this.$message("添加成功");
               this.reload();
             } else {
-              alert("添加失败,请重新添加");
+              this.$message("添加失败,请重新添加");
             }
             console.log("addCategory");
             console.log(result.data);
@@ -341,10 +341,10 @@ export default {
         .then(
           result => {
             if (result.data.code === 200) {
-              alert("添加成功");
+              this.$message("添加成功");
               this.reload();
             } else {
-              alert("添加失败,请重新添加");
+              this.$message("添加失败,请重新添加");
             }
             console.log("addCategory");
             console.log(result.data);
@@ -375,10 +375,10 @@ export default {
         .then(
           result => {
             if (result.data.code === 200) {
-              alert("修改成功");
+              this.$message("修改成功");
               this.reload();
             } else {
-              alert("修改失败,请重新尝试");
+              this.$message("修改失败,请重新尝试");
             }
             console.log("修改设备类别");
             console.log(result.data);
@@ -420,7 +420,7 @@ export default {
               });
               this.reload();
             } else {
-              alert("删除失败,请重新尝试");
+              this.$message.info("删除失败,请重新尝试");
             }
             console.log("删除设备类别");
             console.log(result.data);

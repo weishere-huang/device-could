@@ -111,7 +111,7 @@ export default {
             this.orgInfo=""
             this.reload();
           }else{
-            alert("添加失败");
+            this.$message("添加失败");
             console.log(result.data);
           }
         })

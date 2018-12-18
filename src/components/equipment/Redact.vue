@@ -335,7 +335,7 @@
             :on-preview="handlePreview1"
             :on-remove="handleRemove1"
             :before-remove="beforeRemove1"
-            :on-success="scse"
+            :on-success="handleAvatarSuccess"
             multiple
             :limit="20"
             :on-exceed="handleExceed1"
@@ -365,6 +365,8 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      fileList:[],
+      fileList1: [],
       qqqqq: "",
       dialogVisible3: false,
       dialogVisible1: false,
@@ -494,12 +496,42 @@ export default {
     addperson
   },
   methods: {
-    scse(res,file){
-      console.log("res");
-      console.log(res);
-    },
     path(){
       return this.global.apiImg;
+    },
+    beforeAvatarUpload(file){
+      console.log("beforeAvatarUpload");
+      console.log(file);
+      const isLt10M = file.size/1024/1024<10;
+      if(!isLt10M){
+        this.$message.error('上传文件大小不能超过10MB!');
+      }
+    },
+    handleAvatarSuccess(res, file) {
+      // this.upcode = res.code;
+      console.log(res);
+      console.log("handleAvatarSuccess")
+      console.log(file);
+      this.fileList1.push({
+        url:res.data,
+        name:file.name
+      })
+      console.log(this.fileList);
+    },
+    handleRemove1(file, fileList) {
+      console.log(file);
+      console.log(fileList);
+      console.log(this.fileList);
+      this.fileList1.filter(item >= item.name !== file.name);
+    },
+    handlePreview1(file) {
+      console.log(file);
+    },
+    handleExceed1(files, fileList) {
+      this.$message.warning(`当前限制选择 20 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+    },
+    beforeRemove1(file, fileList) {
+      return this.$confirm(`确定移除 ${ file.name }？`);
     },
     handleChange(value) {
       let name = this.$refs["getName"].currentLabels;
@@ -575,8 +607,8 @@ export default {
         deviceState: this.sizeForm.deviceState,
         organizeCode: this.sizeForm.organizeCode,
         enterFactoryDate: this.sizeForm.enterFactoryDate,
-         //deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
-        // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo)
+         // deviceDataInfo: JSON.stringify(this.fileList1),
+         // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo)
         devicePersonnelInfo: JSON.stringify(_devicePersonnelInfo)
       });
       this.Axios(
@@ -594,13 +626,12 @@ export default {
         .then(
           result => {
             if (result.data.code == 200) {
-              alert("修改成功");
               console.log(result);
               console.log("update");
               console.log(result.data);
               this.$router.push("/Equipment");
             } else if (result.data.code == 410) {
-              alert("该设备编号以存在,请修改!!!");
+              this.$message.warning("该设备编号以存在,请修改!!!");
             }
           },
           ({ type, info }) => {
@@ -708,6 +739,11 @@ export default {
             this.jsontoarr(result.data.data.devicePersonnelInfo);
             //this.aaaa.value = this.sizeForm.deviceState;
           this.personAddHandler = this.devicePersonnelInfoBase;
+
+          // this.fileList = result.data.data.deviceDataInfo;
+          // this.fileList1 = result.data.data.deviceDataInfo;
+          console.log(this.fileList);
+          console.log(this.fileList1);
           console.log(this.devicePersonnelInfoBase);
 
           console.log("---------------");

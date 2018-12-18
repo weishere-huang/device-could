@@ -252,7 +252,7 @@ export default {
         //.post(apiMsg + "/message/UpdateMsgState/", data)
         .then(result => {
           this.allMsg();
-          alert("成功删除!!!");
+          this.$message("成功删除!!!");
           console.log(result.data);
         })
         .catch(err => {

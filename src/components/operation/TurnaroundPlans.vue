@@ -2,6 +2,7 @@
   <div class="turnaround-plans">
     <div class="userCase">
       <div class="top">
+        <el-button-group>
         <el-button
           size="small"
           type="primary"
@@ -22,6 +23,7 @@
           type="primary"
           @click="deleteMaintenance"
         >删除</el-button> -->
+        </el-button-group>
       </div>
       <div class="bottom">
         <div>
