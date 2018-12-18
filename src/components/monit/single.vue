@@ -254,16 +254,16 @@ export default {
     },
     selectALLMsg(){
       let id = this.$route.params.deviceId
-      let code=this.$store.state.monit.code
-      console.log(this.$store.state.monit.code);
+      let code=JSON.parse(sessionStorage.getItem('user')).organizeCode
+      console.log(code);
       console.log(id);
       this.Axios(
         {
           url: ["/deviceState/getRunInfoForStateTime","/deviceState/getRunInfoForBasic"],
           type: ["get","get"],
           params: {
-            organizeCode:1001,
-            deviceId:92,
+            organizeCode:code,
+            deviceId:id,
             startDate:this.startDate,
             endDate:this.endDate,
             page:1,

@@ -33,12 +33,12 @@
                             计划日工时：{{oeeDetails.calendarHours||'--'}}小时/日
                         </el-col>
                         <el-col :span="12">
-                            计划日停机时间：{{oeeDetails.shutdownTime||'--'}}小时/日
+                            计划日停机时间：{{oeeDetails.shutdownTime||'--'}}分钟/日
                         </el-col>
                     </el-row>
                     <el-row :gutter="20">
                         <el-col :span="12">
-                            计划日损耗时间：{{oeeDetails.changeTime||'--'}}小时/日
+                            计划日损耗时间：{{oeeDetails.changeTime||'--'}}分钟/日
                         </el-col>
                         <el-col :span="12">
                             计划日单件生产时间：{{oeeDetails.planProdTime||'--'}}秒/件
