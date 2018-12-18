@@ -202,8 +202,6 @@
           this
         ).then(response => {
             this.loadValue(response.data.data);
-            // this.companyName =response.data.data;
-            // console.log(response.data.data)
           },
           ({type, info}) => {
 
@@ -241,6 +239,12 @@
         ).then(response => {
             arr = response.data.data;
             this.tableData = arr;
+            for (let i in arr){
+              this.tableData[i].workerNames = arr[i].maintains+","+arr[i].overhauls;
+              if(this.tableData[i].workerNames=="null,null"){
+                this.tableData[i].workerNames="";
+              }
+            }
             this.tableDate = this.tableData;
           },
           ({type, info}) => {

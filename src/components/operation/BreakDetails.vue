@@ -257,6 +257,7 @@
         if(value.faultSource === "1"){
           this.companyName.faultSource = "设备自检";
         }
+        this.companyName.faultDuration +="小时";
       },
       load(number) {
         this.Axios(
@@ -280,7 +281,7 @@
         if (this.companyName.state !=="已删除"&&this.companyName.state!=="待审核"){
           this.dialogVisible=true;
         }else{
-          alert("对不起、不能删除待审核或已删除状态的数据")
+          alert("对不起、不能消除待审核或已删除状态的数据")
         }
       },
       toDispel(){
