@@ -1,10 +1,8 @@
 <template>
   <div class="turnaroundPlansAdd">
     <div class="top">
-      <el-button-group>
-        <el-button size="small" type="primary" @click="toback">返回</el-button>
-        <el-button size="small" type="primary" @click="updatePlan">保存</el-button>
-      </el-button-group>
+      <el-button size="small" type="primary" @click="toback">返回</el-button>
+      <el-button size="small" type="primary" @click="updatePlan" v-if="isOk">保存</el-button>
     </div>
     <div class="bottom">
       <div class="left">
@@ -66,12 +64,6 @@
           <el-form-item label="检修内容：" style="height:auto;">
             <el-input type="textarea" v-model="companyName.maintenanceCc" style="width:100%;"></el-input>
           </el-form-item>
-          <!--<el-form-item label="分布详情：" style="height:auto;margin:5px 0;">-->
-          <!--<tr class="tableTime">-->
-          <!--<td>111</td>-->
-          <!--<td>2</td>-->
-          <!--</tr>-->
-          <!--</el-form-item>-->
         </el-form>
         <!-- 单次执行 -->
         <el-form label-width="110px" v-if="companyName.planType==='单次'" v-model="companyName.planType">
@@ -94,20 +86,15 @@
           </el-form-item>
         </el-form>
         <el-form>
-          <!--<el-form-item label="计划添加时间：" style="height:auto;">-->
-          <!--<span>{{time}}</span>-->
-          <!--</el-form-item>-->
         </el-form>
       </div>
       <div class="right">
         <div>
-          <!--<el-button size="small" @click="eliminateAll">清空已选</el-button>-->
           <el-button size="small" type="primary" @click="amendPlanIsShow">设备添加</el-button>
         </div>
         <h5>设备列表</h5>
         <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
         <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-          <!--<v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>-->
         </div>
       </div>
     </div>
@@ -127,6 +114,7 @@
     name: "",
     data() {
       return {
+        isOk:true,
         arr:new Array(),
         auditId:0,
         deviceIds:0,
@@ -196,14 +184,6 @@
             columnAlign: "center",
             isResize: true
           },
-          // {
-          //   field: "starTime",
-          //   title: "操作",
-          //   width: 100,
-          //   titleAlign: "center",
-          //   columnAlign: "center",
-          //   isResize: true
-          // }
         ],
         pageIndex: 1,
         pageSize: 10,
@@ -255,6 +235,11 @@
         this.companyName.frequencyType = this.companyName.frequencyType.toString();
         this.date = this.companyName.executeTime.split(" ")[0];
         this.times = this.companyName.executeTime.split(" ")[1].split(".")[0];
+        if(this.companyName.state!==0){
+          this.isOk = false;
+        }else{
+          this.isOk = true;
+        }
       },
 
       TurnaroundPlans() {
@@ -281,11 +266,16 @@
           })
       },
       updatePlan(){
+        console.log(this.tableData);
         this.deviceIds = this.tableData.map(item=>item.id).toString();
-        if(this.deviceIds!==""){
-          this.toUpdatePlan()
+        if(this.companyName.state===0){
+          if(this.deviceIds!==""){
+            this.toUpdatePlan()
+          }else{
+            this.$message.error("请至少选择一个设备")
+          }
         }else{
-          alert("请至少选择一个设备")
+          this.$message.error('只能修改待审核状态的计划')
         }
       },
       toUpdatePlan(){
