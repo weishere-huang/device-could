@@ -3,9 +3,10 @@
     <div class="add-case">
       <div class="topbtn">
         <el-button size="small"
-                   type="primary" @click="tback">返回</el-button>
+                   type="primary" @click="tback" icon="el-icon-arrow-left">返回</el-button>
         <el-button size="small"
-                   type="primary" @click="employeeAdd">保存</el-button>
+                   type="primary" @click="employeeAdd">
+                   <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
       </div>
       <div class="botton">
         <div class="essential">

@@ -24,7 +24,7 @@
           type="primary"
           size="small"
           @click="replace"
-        >刷新
+        ><i style='font-size:12px' class='iconfont'>&#xe614;</i> &nbsp;刷新
         </el-button>
         <div class="search">
           <el-input
@@ -35,8 +35,9 @@
           ></el-input>
           <el-button
             size="small"
+            type="primary"
             @click="findByName"
-          >搜索
+          > <i class='el-icon-search'></i> 搜索
           </el-button>
           <span
             style="color:#409eff"
@@ -92,8 +93,16 @@
       <audit
         v-on:auditByValue="auditByValue"
         :auditValue="auditValue"
+        v-on:imgShow="imgShow"
         :searchData="name"
       ></audit>
+      <el-dialog
+        width="60%"
+        title="营业执照详情"
+        :visible.sync="inVisible"
+        append-to-body>
+        <img :src="innerVisibleImg" alt="" style="width:100%;">
+      </el-dialog>
     </el-dialog>
     <el-dialog
       title="企业详情"
@@ -127,6 +136,7 @@ export default {
     return {
       innerVisibleImg:"",
       innerVisible:false,
+      inVisible:false,
       dialogVisible: false,
       detailsShow: true,
       auditShow: false,
@@ -225,7 +235,11 @@ export default {
     audit
   },
   methods: {
+    imgShow(params) {
+      this.inVisible=params
+    },
     picShow(params){
+      console.log(params)
       this.innerVisible=params
     },
     customCompFunc(params) {
@@ -252,11 +266,12 @@ export default {
         this.choice = params.rowData.id;
         this.startUseing();
         this.choice = "";
-        console.log(this.params);
+        
       } else if (params.type === "audit") {
         // do edit operation
         this.auditShow = true;
         this.auditValue = params.rowData;
+        this.innerVisibleImg=params.rowData.businessLicenseImg
       }
     },
     advanceValue: function({ dataName, params }) {
@@ -279,6 +294,7 @@ export default {
         });
       } else {
         this.auditShow = true;
+
       }
     },
     auditByValue: function(params) {
@@ -522,7 +538,7 @@ Vue.component("table-company", {
   template: `
         <span v-if="rowData.state === '0'">
           <el-tooltip class="item" effect="dark" content="审核" placement="top">
-            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="audit(rowData,index)" style='font-size:16px' class='iconfontz'>&#xe6a0;</i></a>
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="audit(rowData,index)" style='font-size:16px' class='iconfont'>&#xe61d;</i></a>
           </el-tooltip>
         </span>
         <span v-else-if="rowData.state ==='1'||rowData.state === '2'">

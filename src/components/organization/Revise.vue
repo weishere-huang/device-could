@@ -44,7 +44,7 @@
             size="small"
             @click="reviseHide"
           >取消</el-button>
-          <el-button size="small" @click="update">保存</el-button>
+          <el-button size="small" @click="update" type="primary">保存</el-button>
         </li>
       </ul>
     </div>

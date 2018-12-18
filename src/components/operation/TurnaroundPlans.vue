@@ -613,7 +613,7 @@ Vue.component("table-turnaroundPlans", {
         </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="停止" placement="top">
-            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="stop(rowData,index)" style='font-size:16px' class='iconfontz'>&#xe60c;</i></a>
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="stop(rowData,index)" style='font-size:16px' class='iconfont'>&#xe603;</i></a>
         </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="删除" placement="top">

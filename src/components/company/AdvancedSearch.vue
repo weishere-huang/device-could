@@ -26,6 +26,7 @@
         <el-button
           size="small"
           v-on:click="search"
+          type="primary"
         >搜索</el-button>
       </div>
     </div>
