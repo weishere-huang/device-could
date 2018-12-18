@@ -2,11 +2,9 @@
   <div class="breakDetails">
     <div class="case">
       <div class="top">
-        <el-button-group>
         <el-button size="small" type="primary" @click="toback">返回</el-button>
         <!--<el-button size="small" @click="commitAudit">提交审核</el-button>-->
-        <el-button size="small" type="primary" @click="dispel">故障消除</el-button>
-        </el-button-group>
+        <el-button size="small" type="primary" @click="dispel" v-if="isOk">故障消除</el-button>
         <!-- 故障消除弹框 -->
         <el-dialog
           title="故障消除"
@@ -138,6 +136,7 @@
     name: "",
     data() {
       return {
+        isOk:true,
         imgPath:[],
         dialogVisible:false,
         formLabelAlign:{
@@ -211,11 +210,16 @@
         this.$router.back(-1)
       },
       toValue(value) {
+        if(this.companyName.state!==0){
+          this.isOk = false;
+        }else{
+          this.isOk = true;
+        }
         if (value.state === 0) {
           this.companyName.state = "待审核";
         }
         if (value.state === 1) {
-          this.companyName.state = "审核通过";
+          this.companyName.state = "执行中";
         }
         if (value.state === 2) {
           this.companyName.state = "禁用";
@@ -329,6 +333,8 @@
         overflow: hidden;
         .left {
           padding: 10px;
+          width: 35%;
+          min-width: 350px;
           float: left;
           .fault-top {
             width: 350px;
@@ -337,7 +343,7 @@
             border-radius: 5px;
             h5 {
               position: relative;
-              top: -20px;
+              top: -17px;
               left: 10px;
             }
             .el-form-item {
@@ -353,7 +359,7 @@
             margin-top: 20px;
             h5 {
               position: relative;
-              top: -20px;
+              top: -17px;
               left: 10px;
             }
             .el-form-item {
@@ -369,21 +375,22 @@
         }
         .right {
           padding: 10px;
-          width: 650px;
+          width: 65%;
+          min-width: 650px;
           float: left;
 
           .msgCase {
             border: @border;
             padding: 10px;
             border-radius: 5px;
-            min-height: 698px;
+            min-height: 650px;
             .el-form-item{
               width: 45%;
             }
             
             h5 {
               position: relative;
-              top: -20px;
+              top: -17px;
               left: 10px;
             }
             .el-form-item {

@@ -3,8 +3,8 @@
     <div class="addCase">
       <div class="top">
         <el-row>
-          <el-button plain size="small" type="primary" @click="tback">返回</el-button>
-          <el-button plain size="small" type="primary" @click="addwarning">保存</el-button>
+          <el-button  size="small" type="primary" @click="tback" icon="el-icon-arrow-left">返回</el-button>
+          <el-button  size="small" type="primary" @click="addwarning"><i style='font-size:12px' class='iconfont'>&#xe645;</i> &nbsp;保存</el-button>
         </el-row>
       </div>
       <div class="center">
@@ -321,7 +321,7 @@
         console.log("handleAvatarSuccess")
         console.log(file);
         this.fileList1.push({
-          url:res.data,
+          img:res.data,
           name:file.name
         })
         console.log(this.fileList);
@@ -381,8 +381,6 @@
       add1() {
         //添加设备信息接口
         //上传文件
-
-
         let qs = require("qs");
         let _devicePersonnelInfo=[];
         this.devicePersonnelInfoBase.forEach(items => {
@@ -415,7 +413,7 @@
           deviceModel: this.sizeForm.deviceModel,
           deviceState: this.sizeForm.deviceState,
           enterFactoryDate: this.sizeForm.enterFactoryDate,
-          deviceDataInfo: JSON.stringify(this.fileList),
+          deviceDataInfo: JSON.stringify(this.fileList1),
           devicePersonnelInfo:JSON.stringify(_devicePersonnelInfo)
 
           // deviceNo: this.sizeForm.deviceNo,

@@ -25,21 +25,28 @@
                   size="mini"
                   @click="dialogVisible=true"
                 >
-                  添加
+                  <el-tooltip class="item" effect="dark" content="添加" placement="top">
+                    <i style='font-size:16px' class='iconfont'>&#xe62f;</i>
+                  </el-tooltip>
                 </el-button>
                 <el-button
                   type="text"
                   size="mini"
                   @click="dialogVisible1=true,nodeCname=data.name,nodeCMsg=data.remarks"
                 >
-                  修改
+                  <el-tooltip class="item" effect="dark" content="修改" placement="top">
+                    <i style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+                  </el-tooltip>
                 </el-button>
                 <el-button
                   type="text"
                   size="mini"
                   @click="() => warningdelete(data.id)"
+                  style="color:#F56C6C"
                 >
-                  删除
+                  <el-tooltip class="item" effect="dark" content="删除" placement="top">
+                  <i style='font-size:16px' class='iconfont'>&#xe66b;</i>
+                </el-tooltip>
                 </el-button>
               </span>
             </span>
@@ -62,6 +69,7 @@
             ref="form"
             label-width="90px"
             style="padding:20px 30px 0;"
+            @submit.native.prevent
           >
             <el-form-item label="类别名称：">
               <el-input
@@ -101,6 +109,7 @@
         ref="form"
         label-width="90px"
         style="padding:10px;"
+        @submit.native.prevent
       >
         <el-form-item label="类别名称：">
           <el-input
@@ -136,6 +145,7 @@
         ref="form"
         label-width="90px"
         style="padding:10px;"
+        @submit.native.prevent
       >
         <el-form-item label="类别名称：">
           <el-input

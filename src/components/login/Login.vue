@@ -157,6 +157,7 @@
               :befor-upload="beforeAvatarUpload"
               :on-preview="handlePictureCardPreview"
               :on-remove="handleRemove"
+              :limit="1"
             >
               <i class="el-icon-plus"></i>
             </el-upload>
@@ -280,173 +281,243 @@ import md5 from "js-md5/src/md5.js";
 import CryptoJS from "crypto-js/crypto-js.js";
 import forgetThePassword from "./ForgetThePassword";
 
-  export default {
-    inject: ["reload"],
-    name: "Login",
-    data() {
-      return {
-        labelPosition: "right",
-        dialogVisible: false,
-        loginList: {
-          verification: "",
-          userName: "",
-          password: ""
-        },
-        isshow: true,
-        ishide: false,
-        nextshow: false,
-        backshow: true,
-        loginRules: {
-          userName: [
-            {required: true, message: "请输入用户名或手机号", trigger: "blur"},
-            {min: 1, max: 20, message: "长度在20个字符内", trigger: "blur"}
-          ],
-          password: [
-            {required: true, message: "密码不能为空", trigger: "blur"}
-          ],
-          verification: [
-            {required: true, message: "验证码不能为空", trigger: "blur"},
-            {type:"number",message:"验证码错误",trigger:"blur"}
-          ]
-        },
-        registerRules: {
-          name: [
-            {required: true, message: "企业名不能为空", trigger: "blur"},
-
-            // {validator:(rule, value, callback)=>{
-            //   this.Axios(
-            //     {
-            //       params: Object.assign({name: this.company.name}),
-            //       url: "/enterprise/findByName",
-            //       type: "get"
-            //     }
-            //   ).then(res=>{
-            //   },({type, info}) => {
-            //     console.log(info)
-            //     callback (new Error("企业名称已存在"))
-            //     })
-            //   },
-            //   trigger: 'blur'}
-          ],
-          address: [{required: true, message: "地址不能为空", trigger: "blur"}],
-          // phone: [
-          //   {required: true, message: "电话不能为空", trigger: "blur"}
-          //   ],
-          phone: [
-            {required: true, message: "电话不能为空", trigger: "blur"},
-            {max: 15, message: "您的电话号码超出长度限制了，请重新输入"},
-            {
-              validator: (rule, value, callback) => {
-                if (/^((\d3,4|\d{3,4}-)?\d{7,8})|([1][0-9]{10})$/.test(value) == false) {
-                  callback(new Error("您输入的电话号码有误，请重新输入"));
-                } else {
-                  callback();
-                }
-              },
-              trigger: "blur"
-            }
-          ],
-          corporation: [
-            {required: true, message: "法人代表不能为空", trigger: "blur"}
-          ],
-          companyID: [
-            {
-              required: true,
-              message: "统一社会信用代码不能为空",
-              trigger: "blur"
+export default {
+  inject: ["reload"],
+  name: "Login",
+  data() {
+    return {
+      labelPosition: "right",
+      dialogVisible: false,
+      loginList: {
+        verification: "",
+        userName: "",
+        password: ""
+      },
+      isshow: true,
+      ishide: false,
+      nextshow: false,
+      backshow: true,
+      loginRules: {
+        userName: [
+          { required: true, message: "请输入用户名或手机号", trigger: "blur" },
+          { min: 1, max: 20, message: "长度在20个字符内", trigger: "blur" }
+        ],
+        password: [
+          { required: true, message: "密码不能为空", trigger: "blur" }
+        ],
+        verification: [
+          { required: true, message: "验证码不能为空", trigger: "blur" },
+          { type: "number", message: "验证码错误", trigger: "blur" }
+        ]
+      },
+      registerRules: {
+        name: [
+          { required: true, message: "企业名不能为空", trigger: "blur" },
+          {validator:(rule, value, callback)=>{
+            this.Axios(
+              {
+                params: Object.assign({name: this.company.name}),
+                url: "/enterprise/findByName",
+                type: "get"
+              }
+            ).then(res=>{
+              console.log(res)
+              callback()
+            },({type, info}) => {
+              console.log(info)
+              callback (new Error("企业名称已存在"))
+              })
             },
-            {
-              validator: (rule, value, callback) => {
-                if (/(^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$)|(^\d{15}$)/.test(value) == false) {
-                  callback(new Error("您输入的统一社会信用代码有误，请重新输入"))
-                } else {
-                  callback();
-                }
-              },
-              trigger: "blur"
-            }
-          ]
-        },
-        managerRules: {
-          userName: [
-            {required: true, message: "用户名不能为空", trigger: "blur"},
-            {
-              validator: (rule, value, callback) => {
-                if (/^[a-zA-Z0-9_-]{4,16}$/.test(value) == false) {
-                  callback(new Error("用户名不能输入汉字和特殊符号"));
-                } else {
-                  callback();
-                }
-              },
-              trigger: "blur"
-            },
-            {
-              min: 6,
-              max: 20,
-              message: "请输入6到20位的字母和数字组合",
-              trigger: "blur"
-            }
-          ],
-          userPassword: [
-            {required: true, message: "密码不能为空", trigger: "blur"},
-            {
-              validator: (rule, value, callback) => {
-                if (
-                  /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/.test(value) ==
-                  false
-                ) {
-                  callback(new Error("密码不能全是数字，字母，不能少于6位且小于20位"));
-                } else {
-                  callback();
-                }
-              },
-              trigger: "blur"
-            }
-          ],
-          phone: [
-            {required: true, message: "电话不能为空", trigger: "blur"},
-            {
-              validator: (rule, value, callback) => {
-                if (/^[1][0-9]{10}$/.test(value) == false) {
-                  callback(new Error("您输入的手机号有误，请重新输入"));
-                } else {
-                  callback();
-                }
-              },
-              trigger: "blur"
-            }
-          ],
-          validate: [
-            {required: false, message: "验证码不能为空", trigger: "blur"}
-          ]
-        },
-        fileList: [
+            trigger: 'blur'}
+        ],
+        address: [{ required: true, message: "地址不能为空", trigger: "blur" }],
+        // phone: [
+        //   {required: true, message: "电话不能为空", trigger: "blur"}
+        //   ],
+        phone: [
+          { required: true, message: "电话不能为空", trigger: "blur" },
           {
-            name: "",
-            url: ""
+            validator: (rule, value, callback) => {
+              if (
+                /^((0\d{2,3}-\d{7,8})||(1[34578]\d{9}))$/.test(value) == false
+              ) {
+                callback(new Error("您输入的电话号码有误，请重新输入"));
+              } else {
+                callback();
+              }
+            },
+            trigger: "blur"
+          },
+          {validator:(rule, value, callback)=>{
+              this.Axios(
+                {
+                  params: Object.assign({phone: this.company.phone}),
+                  url: "/enterprise/findByPhone",
+                  type: "get"
+                }
+              ).then(res=>{
+                console.log(res)
+                callback()
+              },({type, info}) => {
+                console.log(info)
+                callback (new Error("联系电话已存在"))
+              })
+            },
+            trigger: 'blur'}
+        ],
+        corporation: [
+          { required: true, message: "法人代表不能为空", trigger: "blur" }
+        ],
+        companyID: [
+          {
+            required: true,
+            message: "统一社会信用代码不能为空",
+            trigger: "blur"
+          },
+          {
+            validator: (rule, value, callback) => {
+              if (
+                /(^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$)|(^\d{15}$)/.test(
+                  value
+                ) == false
+              ) {
+                callback(new Error("您输入的统一社会信用代码有误，请重新输入"));
+              } else {
+                callback();
+              }
+            },
+            trigger: "blur"
+          },
+          {validator:(rule, value, callback)=>{
+              this.Axios(
+                {
+                  params: Object.assign({creditCode: this.company.companyID}),
+                  url: "/enterprise/findByCreditCode",
+                  type: "get"
+                }
+              ).then(res=>{
+                console.log(res)
+                callback()
+              },({type, info}) => {
+                console.log(info)
+                callback (new Error("统一社会信用代码已存在"))
+              })
+            },
+            trigger: 'blur'}
+        ]
+      },
+      managerRules: {
+        userName: [
+          { required: true, message: "用户名不能为空", trigger: "blur" },
+          {
+            validator: (rule, value, callback) => {
+              if (/^[a-zA-Z0-9_-]{4,16}$/.test(value) == false) {
+                callback(new Error("用户名不能输入汉字和特殊符号"));
+              } else {
+                callback();
+              }
+            },
+            trigger: "blur"
+          },
+          {
+            min: 6,
+            max: 20,
+            message: "请输入6到20位的字母和数字组合",
+            trigger: "blur"
+          },
+          {validator:(rule, value, callback)=>{
+              this.Axios(
+                {
+                  params: Object.assign({username: this.manager.userName}),
+                  url: "/user/userNameIsSingle",
+                  type: "get"
+                }
+              ).then(res=>{
+                console.log(res)
+                callback (new Error("该用户名已存在"))
+              },({type, info}) => {
+                console.log(info)
+                callback ()
+              })
+            },
+            trigger: 'blur'}
+        ],
+        userPassword: [
+          { required: true, message: "密码不能为空", trigger: "blur" },
+          {
+            validator: (rule, value, callback) => {
+              if (
+                /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/.test(value) ==
+                false
+              ) {
+                callback(
+                  new Error("密码不能全是数字，字母，不能少于6位且小于20位")
+                );
+              } else {
+                callback();
+              }
+            },
+            trigger: "blur"
           }
         ],
-        company: {
+        phone: [
+          { required: true, message: "电话不能为空", trigger: "blur" },
+          {
+            validator: (rule, value, callback) => {
+              if (/^[1][0-9]{10}$/.test(value) == false) {
+                callback(new Error("您输入的手机号有误，请重新输入"));
+              } else {
+                callback();
+              }
+            },
+            trigger: "blur"
+          },
+          {validator:(rule, value, callback)=>{
+              this.Axios(
+                {
+                  params: Object.assign({phone: this.manager.phone}),
+                  url: "/user/phoneIsSingle",
+                  type: "get"
+                }
+              ).then(res=>{
+                console.log(res)
+                callback()
+              },({type, info}) => {
+                console.log(info)
+                callback (new Error("该手机号码已存在"))
+              })
+            },
+            trigger: 'blur'}
+        ],
+        validate: [
+          { required: false, message: "验证码不能为空", trigger: "blur" }
+        ]
+      },
+      fileList: [
+        {
           name: "",
-          address: "",
-          phone: "",
-          corporation: "",
-          companyID: "",
-          dialogImageUrl: "",
-        },
-        manager: {
-          userName: "",
-          userPassword: "",
-          // password: "",
-          phone: "",
-          validate: ""
-        },
-        checked: true
-      };
-    },
-    
-    
-  
+          url: ""
+        }
+      ],
+      company: {
+        name: "",
+        address: "",
+        phone: "",
+        corporation: "",
+        companyID: "",
+        dialogImageUrl: ""
+      },
+      manager: {
+        userName: "",
+        userPassword: "",
+        // password: "",
+        phone: "",
+        validate: ""
+      },
+      checked: true
+    };
+  },
+
   methods: {
     checkData(rule, value, callback) {
       if (value) {
@@ -480,16 +551,23 @@ import forgetThePassword from "./ForgetThePassword";
       });
     },
     registerNext(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          // alert("submit!");
-          this.nextshow = !this.nextshow;
-          this.backshow = !this.backshow;
-        } else {
-          this.$message.error("请完善信息");
-          return false;
-        }
-      });
+      if (this.company.dialogImageUrl === "") {
+        this.$message({
+          message: "请上传营业执照",
+          type: "error"
+        });
+      } else {
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            // alert("submit!");
+            this.nextshow = !this.nextshow;
+            this.backshow = !this.backshow;
+          } else {
+            this.$message.error("请完善信息");
+            return false;
+          }
+        });
+      }
     },
     registerInfo(formName) {
       this.$refs[formName].validate(valid => {
@@ -547,15 +625,17 @@ import forgetThePassword from "./ForgetThePassword";
             this.$store.commit("tokenSrc", result.data.data.tokenStr);
             this.$router.replace("/Home");
             location.reload();
-          } else {
-            this.$message({
-              message: "账号或密码错误",
-              type: "error"
-            });
-            this.$router.push({ path: "/Login" });
           }
         },
-        ({ type, info }) => {}
+        ({ type, info }) => {
+          console.log(info);
+          if (info.code === 0) {
+            this.$message.error("验证码错误");
+          } else {
+            this.$message.error("账号或密码错误");
+            this.$router.push({ path: "/Login" });
+          }
+        }
       );
     },
     register() {
@@ -594,11 +674,16 @@ import forgetThePassword from "./ForgetThePassword";
       ).then(
         result => {
           if (result.data.code === 200) {
-            this.$message({
-              message: "恭喜您注册成功",
-              type: "success"
-            });
-            location.reload();
+            this.$alert(
+              "恭喜您，企业注册信息已提交成功。审核结果将以短信的方式通知到您绑定的手机号。",
+              "提示",
+              {
+                confirmButtonText: "确定",
+                callback: action => {
+                  location.reload();
+                }
+              }
+            );
           }
         },
         ({ type, info }) => {}
@@ -621,16 +706,16 @@ import forgetThePassword from "./ForgetThePassword";
       ).then(
         response => {
           console.log(1111);
-          this.$message({
-            message: "短信验证码已发送至您的手机，请注意查收",
-            type: "success"
-          });
+          this.$message.success("短信验证码已发送至您的手机，请注意查收");
         },
         ({ type, info }) => {
-          this.$message({
-            message: "服务器异常，请联系管理员",
-            type: "error"
-          });
+          console.log(info);
+          if (info.code == 0) {
+            this.$message.error("未找到该用户");
+          }
+          else {
+            this.$message.error("服务器异常，请联系管理员");
+          }
         }
       );
     },
@@ -650,16 +735,11 @@ import forgetThePassword from "./ForgetThePassword";
       ).then(
         response => {
           console.log(1111);
-          this.$message({
-            message: "短信验证码已发送至您的手机，请注意查收",
-            type: "success"
-          });
+          this.$message.success("短信验证码已发送至您的手机，请注意查收");
         },
         ({ type, info }) => {
-          this.$message({
-            message: "服务器异常，请联系管理员",
-            type: "error"
-          });
+          console.log(info)
+          this.$message.error("服务器异常，请联系管理员");
         }
       );
     },

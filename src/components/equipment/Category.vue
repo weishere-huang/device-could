@@ -30,10 +30,7 @@
                     size="mini"
                     @click="dialogVisible=true"
                   >
-                    <i
-                      style='font-size:16px'
-                      class='iconfontz'
-                    >&#xe608;</i>
+                    <i style='font-size:16px' class='iconfont'>&#xe62f;</i>
                   </el-button>
                 </el-tooltip>
                 <el-tooltip
@@ -93,8 +90,9 @@
             ref="form"
             label-width="90px"
             style="padding:10px"
+            @submit.native.prevent
           >
-            <el-form-item label="类别名称：">
+            <el-form-item label="类别名称：" >
               <el-input
                 v-model="addname"
                 size="mini"
@@ -129,6 +127,7 @@
         ref="form"
         label-width="90px"
         style="padding:10px 30px;"
+        @submit.native.prevent
       >
         <el-form-item label="类别名称：">
           <el-input
@@ -164,6 +163,7 @@
         ref="form"
         label-width="90px"
         style="padding:10px 30px;"
+        @submit.native.prevent
       >
         <el-form-item label="类别名称：">
           <el-input
@@ -181,7 +181,6 @@
           <el-button
             size="small"
             @click="dialogVisible=false"
-
           >取消</el-button>
           <el-button
             size="small"

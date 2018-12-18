@@ -2,7 +2,6 @@
   <div class="turnaround-plans">
     <div class="userCase">
       <div class="top">
-        <el-button-group>
         <el-button
           size="small"
           type="primary"
@@ -23,7 +22,6 @@
           type="primary"
           @click="deleteMaintenance"
         >删除</el-button> -->
-        </el-button-group>
       </div>
       <div class="bottom">
         <div>
@@ -293,12 +291,7 @@ export default {
     },
     toAmend(rowIndex, rowData, column) {
       // 传值给修改
-      if(rowData.state=="待审核"){
         this.$router.push("/TurnaroundPlansAmend/" + rowData.id);
-        this.$store.commit("turnaroundPlans", rowData);
-      }else{
-        this.$message.error('只能修改待审核状态的计划')
-      }
     },
     toPansAdd() {
       this.$router.push({
@@ -557,9 +550,7 @@ export default {
       }
     },
     toSubmitAudit() {
-      this.formLabelAlign.type
-        ? (this.formLabelAlign.type = 0)
-        : (this.formLabelAlign.type = 1);
+      this.formLabelAlign.type ? (this.formLabelAlign.type = 0) : (this.formLabelAlign.type = 1);
       this.Axios(
         {
           params: {
@@ -572,10 +563,15 @@ export default {
           type: "get",
           url: "/mplan/maintenanceAudit"
         },
+        console.log(this.formLabelAlign.radio),
+        console.log(this.maintenanceIds),
+        console.log(this.formLabelAlign.type),
+        console.log(this.formLabelAlign.desc),
+        console.log(this.toAudit.id),
         this
       ).then(
         response => {
-          this.arr = "";
+          // this.arr = [];
           this.toCancel();
           this.load();
 
@@ -617,7 +613,7 @@ Vue.component("table-turnaroundPlans", {
         </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="停止" placement="top">
-            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="stop(rowData,index)" style='font-size:16px' class='iconfontz'>&#xe60c;</i></a>
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="stop(rowData,index)" style='font-size:16px' class='iconfont'>&#xe603;</i></a>
         </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="删除" placement="top">

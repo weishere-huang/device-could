@@ -344,7 +344,12 @@ export default {
     },
 
     toAdd() {
-      this.$props.personAddHandler(this.editableTabs);
+      // this.$props.personAddHandler(this.editableTabs);
+      let params={
+        data:this.editableTabs,
+        isHide:false
+      }
+      this.$emit("personData",params)
     },
     deletes() {
       this.editableTabs[this.editableTabsValue].content = [];

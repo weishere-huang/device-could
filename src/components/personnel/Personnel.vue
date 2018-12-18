@@ -6,7 +6,7 @@
           size="small"
           type="primary"
           @click="PersnnelAdd"
-        >添加</el-button>
+        ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</el-button>
         <!-- <el-button
           size="small"
           type="primary"
@@ -38,7 +38,7 @@
             size="small"
             type="primary"
             @click="search"
-          >搜索</el-button>
+          ><i class='el-icon-search'></i>&nbsp;搜索</el-button>
         </div>
       </div>
       <div class="bottom">
