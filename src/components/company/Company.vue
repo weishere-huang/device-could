@@ -35,8 +35,9 @@
           ></el-input>
           <el-button
             size="small"
+            type="primary"
             @click="findByName"
-          >搜索
+          > <i class='el-icon-search'></i> 搜索
           </el-button>
           <span
             style="color:#409eff"
@@ -252,7 +253,7 @@ export default {
         this.choice = params.rowData.id;
         this.startUseing();
         this.choice = "";
-        console.log(this.params);
+        
       } else if (params.type === "audit") {
         // do edit operation
         this.auditShow = true;

@@ -329,6 +329,8 @@
         overflow: hidden;
         .left {
           padding: 10px;
+          width: 35%;
+          min-width: 350px;
           float: left;
           .fault-top {
             width: 350px;
@@ -337,7 +339,7 @@
             border-radius: 5px;
             h5 {
               position: relative;
-              top: -20px;
+              top: -17px;
               left: 10px;
             }
             .el-form-item {
@@ -353,7 +355,7 @@
             margin-top: 20px;
             h5 {
               position: relative;
-              top: -20px;
+              top: -17px;
               left: 10px;
             }
             .el-form-item {
@@ -369,21 +371,22 @@
         }
         .right {
           padding: 10px;
-          width: 650px;
+          width: 65%;
+          min-width: 650px;
           float: left;
 
           .msgCase {
             border: @border;
             padding: 10px;
             border-radius: 5px;
-            min-height: 698px;
+            min-height: 650px;
             .el-form-item{
               width: 45%;
             }
             
             h5 {
               position: relative;
-              top: -20px;
+              top: -17px;
               left: 10px;
             }
             .el-form-item {

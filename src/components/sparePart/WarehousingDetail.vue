@@ -29,7 +29,7 @@
               value-format="yyyy/MM/dd"
             >
             </el-date-picker>
-            <el-button size="small" type="primary" @click="listsearch">查询</el-button>
+            <el-button size="small" type="primary" @click="listsearch"><i class='el-icon-search'></i>&nbsp;查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -41,7 +41,7 @@
           size="small"
           v-model="rkeyword"
         ></el-input>
-        <el-button size="small" type="primary" @click="listsearch">搜索</el-button>
+        <el-button size="small" type="primary" @click="listsearch"><i class='el-icon-search'></i>&nbsp;搜索</el-button>
       </div>
     </div>
     <div class="bottom">

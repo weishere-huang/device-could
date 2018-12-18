@@ -5,8 +5,8 @@
         size="small"
         type="primary"
         @click="toAdd"
-      >添加</el-button>
-      <el-button size="small" type="primary" @click="btisok">删除</el-button>
+      ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</el-button>
+      <!-- <el-button size="small" type="primary" @click="btisok">删除</el-button> -->
       <div class="search">
         <span>关键字：</span>
         <el-input
@@ -15,7 +15,7 @@
           size="small"
           v-model="basekeyword"
         ></el-input>
-        <el-button size="small" type="primary" @click="baselist">搜索</el-button>
+        <el-button size="small" type="primary" @click="baselist"><i class='el-icon-search'></i> 搜索</el-button>
       </div>
     </div>
     <div class="bottom">
@@ -332,8 +332,13 @@ export default {
 };
 Vue.component("table-sparePart", {
   template: `<span>
-        <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">修改</a>
-        <a href="" @click.stop.prevent="deleteRow(rowData,index)" style="text-decoration: none;">删除</a>
+        <el-tooltip class="item" effect="dark" content="修改" placement="top">
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i></a>
+        </el-tooltip>
+        &nbsp;
+        <el-tooltip class="item" effect="dark" content="删除" placement="top">
+            <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>
+          </el-tooltip>
         </span>`,
   props: {
     rowData: {

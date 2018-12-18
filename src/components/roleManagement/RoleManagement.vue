@@ -2,8 +2,10 @@
   <div class="roleManagement">
     <div class="case">
       <div class="top">
-        <el-button size="small" type="primary" @click="dialogFormVisible=true">添加角色</el-button>
-        <el-button size="small" type="primary" @click="update">保存</el-button>
+        <el-button size="small" type="primary" @click="dialogFormVisible=true">
+          <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加角色</el-button>
+        <el-button size="small" type="primary" @click="update">
+          <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
       </div>
       <div class="left">
         <h6>角色列表</h6>

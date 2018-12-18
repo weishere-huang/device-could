@@ -30,10 +30,7 @@
                     size="mini"
                     @click="dialogVisible=true"
                   >
-                    <i
-                      style='font-size:16px'
-                      class='iconfontz'
-                    >&#xe608;</i>
+                    <i style='font-size:16px' class='iconfont'>&#xe62f;</i>
                   </el-button>
                 </el-tooltip>
                 <el-tooltip
