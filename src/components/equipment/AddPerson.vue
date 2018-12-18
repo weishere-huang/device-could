@@ -251,27 +251,6 @@ export default {
     isHide() {
       this.$emit("isHide", false);
     },
-    // selectGroupChange(selection) {
-    //   this.toValue = selection;
-    //   let arr = new Array();
-    //   for (let i = 0; i < selection.length; i++) {
-    //     arr[i] = selection[i].name;
-    //   }
-    //   this.personListValue = arr;
-    //   console.log(arr);
-    //   console.log("select-group-change", selection);
-    // },
-    // selectALL(selection) {
-    //   this.toValue = selection;
-    //   let arr = new Array();
-    //   for (let i = 0; i < selection.length; i++) {
-    //     arr[i] = selection[i].name;
-    //   }
-    //   this.personListValue = arr;
-    // },
-    // selectChange(selection, rowData) {
-    //   console.log("select-change", selection, rowData);
-    // },
     getTableData() {
       this.tableData = this.tableDate.slice(
         (this.pageIndex - 1) * this.pageSize,

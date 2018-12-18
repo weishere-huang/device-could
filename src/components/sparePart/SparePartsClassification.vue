@@ -69,6 +69,7 @@
             ref="form"
             label-width="90px"
             style="padding:20px 30px 0;"
+            @submit.native.prevent
           >
             <el-form-item label="类别名称：">
               <el-input
@@ -108,6 +109,7 @@
         ref="form"
         label-width="90px"
         style="padding:10px;"
+        @submit.native.prevent
       >
         <el-form-item label="类别名称：">
           <el-input
@@ -143,6 +145,7 @@
         ref="form"
         label-width="90px"
         style="padding:10px;"
+        @submit.native.prevent
       >
         <el-form-item label="类别名称：">
           <el-input
