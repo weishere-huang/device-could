@@ -1175,13 +1175,13 @@
         }if (this.maintenancePlan.planType === 1){
           this.maintenancePlan.planType = "周期"
           if(this.maintenancePlan.frequencyType==1){
-            this.maintenancePlan.frequency=this.maintenancePlan.frequency+" 天"
+            this.maintenancePlan.frequency=this.maintenancePlan.frequency+"天/次"
           }
           if(this.maintenancePlan.frequencyType==2){
-            this.maintenancePlan.frequency=this.maintenancePlan.frequency+" 周"
+            this.maintenancePlan.frequency=this.maintenancePlan.frequency+"周/次"
           }
           if(this.maintenancePlan.frequencyType==3){
-            this.maintenancePlan.frequency=this.maintenancePlan.frequency+" 月"
+            this.maintenancePlan.frequency=this.maintenancePlan.frequency+"月/次"
           }
         }
       },
