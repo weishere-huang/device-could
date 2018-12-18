@@ -148,7 +148,7 @@ export default {
           title: "岗位",
           width: 80,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true,
           overflowTitle: true
         },
@@ -166,9 +166,15 @@ export default {
           title: "状态",
           width: 80,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true,
-          overflowTitle: true
+          overflowTitle: true,
+          formatter: function(rowData, rowIndex, pagingIndex, field) {
+            return rowData.state === "0"
+              ? "正常"
+              : "停用"
+          },
+          componentName: "switch-personnel"
         },
         {
           field: "custome-adv",
@@ -185,14 +191,23 @@ export default {
   methods: {
     customCompFunc(params) {
       this.userIds = params.rowData["id"];
+      if (params.type === "change") {
+        console.log(params);
+        if (params.rowData.state === "1") {
+          this.choice = params.rowData.id;
+          this.enable();
+          
+        } else if (params.rowData.state === "0") {
+          this.choice = params.rowData.id;
+          this.disable();
+          
+        }
+      }
       if (params.type === "delete") {
        this.deleteEmployee();
         this.$delete(this.tableData, params.index);
-
       } else if (params.type === "edit") {
-
-        this.$router.push("/Modification?id="+this.userIds);
-
+        this.$router.push("/Modification/"+this.userIds);
       } else if (params.type === "stop") {
         this.enable();
       } else if (params.type === "start") {
@@ -220,9 +235,8 @@ export default {
             this.tableData = response.data.data.content;
             this.searchs = "";
             for (let i in this.tableData) {
-              this.tableData[i].state === 1
-                ? (this.tableData[i].state = "禁用")
-                : (this.tableData[i].state = "启用");
+              this.tableData[i].state =String(this.tableData[i].state)
+              
             }
             this.tableDate = this.tableData;
           } else {
@@ -359,9 +373,7 @@ export default {
           this.pageNumber = response.data.data.totalElements;
           this.tableData = response.data.data.content;
           for (let i in this.tableData) {
-            this.tableData[i].state === 1
-              ? (this.tableData[i].state = "禁用")
-              : (this.tableData[i].state = "启用");
+            this.tableData[i].state =String(this.tableData[i].state)
           }
           this.tableDate = this.tableData;
         },
@@ -369,29 +381,38 @@ export default {
       );
     },
     deleteEmployee() {
-      let qs = require("qs");
-      let data = qs.stringify({
-        employeeIds: this.userIds,
-        enableOrDisable: 2
-      });
+      this.$confirm('此操作将删除该角色, 是否继续?', '提示')
+        .then(_=>{
+          let qs = require("qs");
+          let data = qs.stringify({
+            employeeIds: this.userIds,
+            enableOrDisable: 2
+          });
 
-      this.Axios(
-        {
-          params: data,
-          type: "post",
-          url: "/employee/enableOrDisable"
-        },
-        this
-      ).then(
-        response => {
-          this.load();
-        },
-        ({ type, info }) => {}
-      );
+          this.Axios(
+            {
+              params: data,
+              type: "post",
+              url: "/employee/enableOrDisable"
+            },
+            this
+          ).then(
+            response => {
+              this.load();
+            },
+            ({ type, info }) => {}
+          );
+        })
+        .catch(_=>{
+          console.log("stop")
+        })
+
+
+
     },
     updateEmployee() {
       if (this.values.length === 1) {
-        this.$router.push("/Modification?id=" + this.values[0].id);
+        this.$router.push("/Modification/" + this.values[0].id);
         // this.$store.commit("personnel", this.values[0]);
       } else {
         alert("抱歉、只能单个修改");
@@ -402,12 +423,45 @@ export default {
     this.load();
   }
 };
+Vue.component("switch-personnel", {
+  template: `<span>
+      <el-switch
+        v-model="rowData.state"
+        active-value="0"
+        inactive-value="1"
+        active-color="#13ce66"
+        inactive-color="#ff4949"
+        @change="changeValue(rowData,index)"
+        >
+      </el-switch>
+  </span>`,
+  props: {
+    rowData: {
+      type: Object
+    },
+    field: {
+      type: String
+    },
+    index: {
+      type: Number
+    }
+  },
+  methods: {
+    changeValue() {
+      let params = { type: "change", rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    }
+  }
+});
 Vue.component("table-person", {
   template: `<span>
-        <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">修改</a>&nbsp;
-        <a href="" @click.stop.prevent="startUsing(rowData,index)" style="text-decoration: none;">启用</a>&nbsp;
-        <a href="" @click.stop.prevent="stop(rowData,index)" style="text-decoration: none;">停用</a>&nbsp;
-        <a href="" @click.stop.prevent="deleteRow(rowData,index)" style="text-decoration: none;">删除</a>
+          <el-tooltip class="item" effect="dark" content="修改" placement="top">
+              <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i></a>
+          </el-tooltip>
+          &nbsp;
+          <el-tooltip class="item" effect="dark" content="删除" placement="top">
+              <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>
+          </el-tooltip>
         </span>`,
   props: {
     rowData: {

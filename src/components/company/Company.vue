@@ -102,8 +102,16 @@
     >
       <businessDetails
         v-on:childByValue="childByValue"
+        v-on:picShow="picShow"
         :detailsValue="detailsValue"
       ></businessDetails>
+      <el-dialog
+        width="60%"
+        title="营业执照详情"
+        :visible.sync="innerVisible"
+        append-to-body>
+        <img :src="innerVisibleImg" alt="" style="width:100%;">
+      </el-dialog>
     </el-dialog>
   </div>
 </template>
@@ -117,6 +125,8 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      innerVisibleImg:"",
+      innerVisible:false,
       dialogVisible: false,
       detailsShow: true,
       auditShow: false,
@@ -134,7 +144,6 @@ export default {
           name: "",
           address: "",
           phone: "",
-          address: "",
           gmtCreate: "",
           state: ""
         }
@@ -216,6 +225,9 @@ export default {
     audit
   },
   methods: {
+    picShow(params){
+      this.innerVisible=params
+    },
     customCompFunc(params) {
       console.log("params");
       console.log(params);
@@ -279,6 +291,7 @@ export default {
       this.dialogVisible = true;
       this.detailsValue = rowData;
       console.log(rowData);
+      this.innerVisibleImg=rowData.businessLicenseImg
     },
     selectGroupChange(selection) {
       console.log("select-group-change", selection);
@@ -385,7 +398,9 @@ export default {
           this.tableData = response.data.data.content;
           for (let i = 0; i < this.tableData.length; i++) {
             this.tableData[i].state = String(this.tableData[i].state);
+            this.tableData[i].businessLicenseImg=this.global.imgPath +this.tableData[i].businessLicenseImg.split(":")[1];
           }
+          // console.log(this.tableData[2].businessLicenseImg)
         },
         ({ type, info }) => {
           //错误类型 type=faild / error

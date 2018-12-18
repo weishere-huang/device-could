@@ -1,11 +1,11 @@
 <template>
   <div class="msgDetails">
     <div class="case">
-      <div class="top">
+      <!-- <div class="top">
         <el-button size="small" @click="back">返回</el-button>
-      </div>
+      </div> -->
       <div class="bottom">
-        <h4>消息详情</h4>
+        <!-- <h4>消息详情</h4> -->
         <ul>
           <li>
             <span>消息标题：</span>
@@ -101,38 +101,38 @@ export default {
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
 .msgDetails {
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: #55565738;
+  // width: 100vw;
+  // height: 100vh;
+  // position: absolute;
+  // top: 0;
+  // left: 0;
+  // background-color: #55565738;
   .case {
-    width: 700px;
+    width: 100%;
     font-size: 14px;
     margin: auto;
-    padding: 20px;
-    background-color: white;
-    margin-top: 100px;
-    border-radius: 5px;
-    box-shadow: 4px 4px 10px #a9cef3;
-    .top {
-      width: 100%;
-      height: 40px;
-      line-height: 40px;
-    }
+    padding: 10px 20px; 
+    // background-color: white;
+    // margin-top: 100px;
+    // border-radius: 5px;
+    // box-shadow: 4px 4px 10px #a9cef3;
+    // .top {
+    //   width: 100%;
+    //   height: 40px;
+    //   line-height: 40px;
+    // }
     .bottom {
-      margin-top: 10px;
-      border: @border;
-      border-radius: 5px;
-      padding-left: 30px;
-      h4 {
-        position: relative;
-        top: -10px;
-        background-color: white;
-        width: 70px;
-        text-align: center;
-      }
+      // margin-top: 10px;
+      // border: @border;
+      // border-radius: 5px;
+      // padding-left: 30px;
+      // h4 {
+      //   position: relative;
+      //   top: -10px;
+      //   background-color: white;
+      //   width: 70px;
+      //   text-align: center;
+      // }
       li {
         list-style-type: none;
         span:nth-child(1) {

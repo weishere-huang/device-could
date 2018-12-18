@@ -18,26 +18,34 @@
                         range-separator="至"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
+                        value-format="yyyy/MM/dd"
+                        @change="timeInfo"
                         :picker-options="pickerOptions">
                     </el-date-picker>&nbsp;
-                    <el-button type="primary" size="small" icon="el-icon-search">查询</el-button>&nbsp;&nbsp;
+                    <el-button type="primary" size="small" icon="el-icon-search" @click="searchTime">查询</el-button>&nbsp;&nbsp;
                 </section>
             </section>
             <section class="mainWrap">
                 <div>
-                    <el-tag type="info ellipsis">名称：常减压装置</el-tag>
-                    <el-tag type="info ellipsis">型号：CY-2017-09</el-tag>
-                    <el-tag type="info ellipsis">编号：CH10002355</el-tag>
-                    <el-tag type="info ellipsis">位置：东2区 208</el-tag>
-                    <el-tag type="info ellipsis">当前状态：正常</el-tag>
-                    <el-tag type="info ellipsis">报警状态：<i class="iconfont c-red">&#xe651;</i></el-tag>
-                    <div style="float:right">
+                    <el-tag type="info ellipsis" :title="runningLog.deviceName">名称：{{runningLog.deviceName}}</el-tag>
+                    <el-tag type="info ellipsis" :title="runningLog.deviceModel">型号：{{runningLog.deviceModel}}</el-tag>
+                    <el-tag type="info ellipsis" :title="runningLog.deviceNo">编号：{{runningLog.deviceNo}}</el-tag>
+                    <el-tag type="info ellipsis" :title="runningLog.location">位置：{{runningLog.location}}</el-tag>
+                    <el-tag type="info ellipsis" :title="runningLog.deviceState">当前状态：{{runningLog.deviceState}}</el-tag>
+                    <el-tag type="info ellipsis" title="">报警状态：
+                      <i class="iconfont c-green" v-if="runningLog.warnLevel===0">&#xe651;</i>
+                      <i class="iconfont c-yellow" v-else-if="runningLog.warnLevel===1">&#xe651;</i>
+                      <i class="iconfont c-orange" v-else-if="runningLog.warnLevel===2">&#xe651;</i>
+                      <i class="iconfont c-red" v-else-if="runningLog.warnLevel===3">&#xe651;</i>
+                      <i class="iconfont c-darkgray" v-else-if="runningLog.warnLevel===4">&#xe651;</i>
+                    </el-tag>
+                    <!-- <div style="float:right">
                         <el-button-group>
                         <el-button size="mini" type="primary" class="time_active">一周</el-button>
                         <el-button size="mini" type="primary">两周</el-button>
                         <el-button size="mini" type="primary">一月</el-button>
                         </el-button-group>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="chartWrap">
                 </div>
@@ -47,12 +55,13 @@
                     :columns="columns"
                     :table-data="tableData"
                     is-horizontal-resize
+                    value-format="yyyy/MM/dd"
                     style="width:100%"
                     row-hover-color="#eee"
                     row-click-color="#edf7ff"
                 ></v-table>
                 <div class="pagerWrap">
-                    <v-pagination :total="2"></v-pagination>
+                    <v-pagination :total="runningLog.totalElements"></v-pagination>
                 </div>
             </section>
         </el-main> 
@@ -100,47 +109,50 @@ export default {
       },
       tableData: [
         {
-          eventName: "开机",
-          eventTime: "2018/12/9 8:22:43",
-          interval: 490,
-          note: "工作日上午正常开机"
+          dataType: "开机",
+          createTime: "2018/12/9 8:22:43",
+          lastEventInterval: 490,
+          collectData: "工作日上午正常开机"
         },
         {
-          eventName: "一般报警",
-          eventTime: "2018/12/9 9:26:43",
-          interval: 64,
-          note: "主轴温度超标报警"
+          dataType: "一般报警",
+          createTime: "2018/12/9 9:26:43",
+          lastEventInterval: 64,
+          collectData: "主轴温度超标报警"
         },
         {
-          eventName: "严重报警",
-          eventTime: "2018/12/9 9:56:43",
-          interval: 94,
-          note: "主轴温度过高报警"
+          dataType: "严重报警",
+          createTime: "2018/12/9 9:56:43",
+          lastEventInterval: 94,
+          collectData: "主轴温度过高报警"
         },
         {
-          eventName: "关机",
-          eventTime: "2018/12/9 11:26:43",
-          interval: 90,
-          note: "设备关机（手动）"
+          dataType: "关机",
+          createTime: "2018/12/9 11:26:43",
+          lastEventInterval: 90,
+          collectData: "设备关机（手动）"
         },
         {
-          eventName: "开机",
-          eventTime: "2018/12/9 11:46:43",
-          interval: 10,
-          note: "手动开机"
+          dataType: "开机",
+          createTime: "2018/12/9 11:46:43",
+          lastEventInterval: 10,
+          collectData: "手动开机"
         }
       ],
       columns: [
         {
-          field: "eventName",
+          field: "dataType",
           title: "设备事件",
           width: 100,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true
+          isResize: true,
+          formatter: function (rowData,rowIndex,pagingIndex,field) {
+            return rowData.dataType===0 ? '开机':rowData.dataType===1?"关机":"故障"
+          }
         },
         {
-          field: "eventTime",
+          field: "createTime",
           title: "记录时间",
           width: 220,
           titleAlign: "center",
@@ -148,7 +160,7 @@ export default {
           isResize: true
         },
         {
-          field: "interval",
+          field: "lastEventInterval",
           title: "上一事件间隔时间(分钟)",
           width: 200,
           titleAlign: "center",
@@ -156,7 +168,7 @@ export default {
           isResize: true
         },
         {
-          field: "note",
+          field: "collectData",
           title: "事件详情",
           width: 470,
           titleAlign: "center",
@@ -164,104 +176,136 @@ export default {
           isResize: true
         }
       ],
-      days1:[],
+      runningLog:"",
+      startDate:"2018/01/01",
+      endDate:"2018/01/07"
     };
   },
   methods: {
+    searchTime(){
+      this.selectALLMsg()
+    },
+    timeInfo(data){
+      this.startDate=data[0]
+      this.endDate=data[1]
+    },
     clickDemo: function() {
       this.showInfo++;
+    },
+    echartsWrap(days,unexpected,normal){
+      console.log(days,unexpected,normal);
+      var mainChart = echarts.init(document.querySelector(".chartWrap"));
+      // var app = {};
+      // option = null;
+      // app.title = '坐标轴刻度与标签对齐';
+      
+      // console.log(this.days);
+      mainChart.setOption({
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        legend: {
+          data: ["正常运行时间", "关机时间","其他状况"]
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        yAxis: {
+          type: "value"
+        },
+        xAxis: {
+          type: "category",
+          data: days
+        },
+        series: [
+          {
+            name: "正常运行时间",
+            type: "bar",
+            stack: "总量",
+            label: {
+              normal: {
+                show: true,
+                position: "insideRight"
+              }
+            },
+            data: normal
+          },
+          {
+            name: "其他状况",
+            type: "bar",
+            stack: "总量",
+            label: {
+              normal: {
+                show: true,
+                position: "insideRight"
+              }
+            },
+            data: unexpected
+          }
+        ]
+      });
+    },
+    selectALLMsg(){
+      let id = this.$route.params.deviceId
+      let code=this.$store.state.monit.code
+      console.log(this.$store.state.monit.code);
+      console.log(id);
+      this.Axios(
+        {
+          url: ["/deviceState/getRunInfoForStateTime","/deviceState/getRunInfoForBasic"],
+          type: ["get","get"],
+          params: {
+            organizeCode:1001,
+            deviceId:92,
+            startDate:this.startDate,
+            endDate:this.endDate,
+            page:1,
+            size:''
+          },
+          option: { requestTarget: "r" }
+        },
+        this
+      ).then(
+        ([res1,res2]) => {
+          this.runningLog=res2.data.data
+          if (this.runningLog.deviceState===0) {
+            this.runningLog.deviceState="正常"
+          }else if (this.runningLog.deviceState===1) {
+            this.runningLog.deviceState="故障"
+          }else if (this.runningLog.deviceState===2) {
+            this.runningLog.deviceState="维保"
+          }else if (this.runningLog.deviceState===3) {
+            this.runningLog.deviceState="关机"
+          }
+          console.log(this.runningLog);
+          let days=new Array()
+          let unexpected=new Array()
+          let normal=new Array()
+          for (let i = 0; i < res1.data.data.length; i++) {
+            days.push(res1.data.data[i].days)
+            unexpected.push(res1.data.data[i].unexpected)
+            normal.push(res1.data.data[i].normal)
+          }
+          console.log(res1.data.data);
+          this.echartsWrap(days,unexpected,normal)
+          this.tableData=res2.data.data.content
+          console.log(this.tableData);
+        }
+      );
     }
   },
   mounted: function() {
-    var mainChart = echarts.init(document.querySelector(".chartWrap"));
-    // var app = {};
-    // option = null;
-    // app.title = '坐标轴刻度与标签对齐';
     
-    // console.log(this.days);
-    mainChart.setOption({
-      tooltip: {
-        trigger: "axis",
-        axisPointer: {
-          // 坐标轴指示器，坐标轴触发有效
-          type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
-        }
-      },
-      legend: {
-        data: ["正常运行时间", "关机时间","其他状况"]
-      },
-      grid: {
-        left: "3%",
-        right: "4%",
-        bottom: "3%",
-        containLabel: true
-      },
-      yAxis: {
-        type: "value"
-      },
-      xAxis: {
-        type: "category",
-        data: []
-      },
-      series: [
-        {
-          name: "正常运行时间",
-          type: "bar",
-          stack: "总量",
-          label: {
-            normal: {
-              show: true,
-              position: "insideRight"
-            }
-          },
-          data: [320, 302, 301, 334, 390, 330, 320]
-        },
-        {
-          name: "其他状况",
-          type: "bar",
-          stack: "总量",
-          label: {
-            normal: {
-              show: true,
-              position: "insideRight"
-            }
-          },
-          data: [120, 132, 101, 134, 90, 230, 210]
-        }
-      ]
-    });
   },
   created () {
-    let id = this.$route.params.deviceId
-    let code=this.$store.state.monit.code
-    console.log(this.$store.state.monit.code);
-    console.log(id);
-    this.Axios(
-      {
-        url: "/deviceState/getRunInfoForStateTime",
-        type: "get",
-        params: {
-          organizeCode:1001,
-          deviceId:92,
-          startDate:"2018/01/01",
-          endDate:"2018/01/07"
-        },
-        option: { requestTarget: "r" }
-      },
-      this
-    ).then(
-      (res1) => {
-        console.log(res1.data.data);
-        let arr=new Array()
-        for (let i = 0; i < res1.data.data.length; i++) {
-         arr.push(res1.data.data[i].days)
-        }
-        
-        this.days1=clone(arr);
-        console.log(arr);
-        console.log(this.days1);
-      }
-    );
+    this.selectALLMsg()
   }
 };
 </script>

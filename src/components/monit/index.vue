@@ -197,7 +197,7 @@ const initTreeDataForEquType = function(nodeData, parentCode) {
 export default {
   data() {
     return {
-      activeClass: `monitWrap`,
+      activeClass: this.$route.params.deviceId !== undefined ? "monitWrap hide" : "monitWrap show",//`monitWrap`,
       pageEquCount:0,
       selectOrganizeCode: "",
       activeNames: ["1", "2", "3"],
@@ -410,7 +410,7 @@ export default {
       this
     ).then(
       (res) => {
-        // console.log(res);
+        console.log(res);
         this.equipmentOperationalCondition=res.data.data.content
         //window.setTimeout(() => {this.$refs.tree.setCurrentKey("1024");}, 1000);
       }

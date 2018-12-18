@@ -18,14 +18,16 @@
             class="custom-tree-node"
             slot-scope="{ node, data }"
           >
-            <span class="listcontent">{{ data.name }}
+            <span :title="data.name" class="listcontent">{{ data.name }}
               <span class="addCase">
                 <el-button
                   type="text"
                   size="mini"
                   @click="toAdd"
                 >
-                  添加
+                <el-tooltip class="item" effect="dark" content="添加" placement="top">
+                  <i style='font-size:16px' class='iconfont'>&#xe608;</i>
+                </el-tooltip>
                 </el-button>
                 <el-button
                   type="text"
@@ -33,15 +35,20 @@
                   @click="() => toRevise(data.id)"
                   v-if="data.organizeType!='企业'"
                 >
-                  修改
+                  <el-tooltip class="item" effect="dark" content="修改" placement="top">
+                  <i style='font-size:16px' class='iconfontz'>&#xe626;</i>
+                </el-tooltip>
                 </el-button>
                 <el-button
                   type="text"
                   size="mini"
                   @click="() => warningdelete(data.id)"
                   v-if="data.organizeType!='企业'"
+                  style="color:#F56C6C"
                 >
-                  删除
+                  <el-tooltip class="item" effect="dark" content="删除" placement="top">
+                  <i style='font-size:16px' class='iconfont'>&#xe66b;</i>
+                </el-tooltip>
                 </el-button>
               </span>
             </span>

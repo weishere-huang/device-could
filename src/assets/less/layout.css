@@ -61,6 +61,9 @@ body {
 .c-blue {
   color: blue;
 }
+.c-green {
+  color: green;
+}
 #app,
 .mainWrapper {
   height: 100%;

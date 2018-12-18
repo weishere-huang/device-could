@@ -52,19 +52,19 @@
                 </div>
             </section>
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="handleOK">确定</el-button>
-                <el-button @click="innerHandleClose">取消</el-button>
+                <el-button type="primary" @click="handleDeviceOK">确定</el-button>
+                <!-- <el-button @click="innerHandleClose">取消</el-button> -->
             </span>
         </el-dialog>
         <section class='addOeeWrap'>
             <el-form ref="form" :model="form" label-width="200px">
                 <el-form-item label="速记名称">
-                    <el-input v-model="form.name" placeholder="速记名称(不超过30字)" maxlength='30'></el-input>
+                    <el-input size="small" v-model="form.shorthandName" placeholder="速记名称(不超过30字)" maxlength='30'></el-input>
                 </el-form-item>
                 <el-form-item label="起止时间">
                     <el-date-picker
                         size="small"
-                        v-model="form.date1"
+                        v-model="form.region"
                         type="daterange"
                         align="right"
                         unlink-panels
@@ -75,34 +75,43 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="计划日工时">
-                    <el-input maxlength="2" v-model="form.name" type='number' placeholder="每日的单台设备预计生产工时（小时/日）例如：8"></el-input>
+                    <el-input size="small" maxlength="2" v-model="form.calendarHours" type='number' placeholder="每日的单台设备预计生产工时（小时/日）例如：8">
+                        <template slot="append">小时/日</template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="计划日停机时间">
-                    <el-input v-model="form.name" type='number' placeholder="每日的单台设备预计停机工时（小时/日）例如：1"></el-input>
+                    <el-input size="small" v-model="form.shutdownTime" type='number' placeholder="每日的单台设备预计停机工时（小时/日）例如：1">
+                        <template slot="append">小时/日</template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="计划日损耗时间">
-                    <el-input v-model="form.name" type='number' placeholder="每日的单台设备预计损耗工时（小时/日）例如：1.5"></el-input>
+                    <el-input size="small" v-model="form.changeTime" type='number' placeholder="每日的单台设备预计损耗工时（小时/日）例如：1.5">
+                        <template slot="append">小时/日</template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="计划单件成品生产时间">
-                    <el-input v-model="form.name" type='number' placeholder="预计单件成品生产所用时件（秒/件）例如：120"></el-input>
+                    <el-input size="small" v-model="form.planProdTime" type='number' placeholder="预计单件成品生产所用时件（秒/件）例如：120">
+                        <template slot="append">秒/件</template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="设备选择">
-                    <el-button @click="equChooseHandler" type="primary" icon="el-icon-plus" circle></el-button>
+                    <el-button size="mini" @click="equChooseHandler" type="primary" icon="el-icon-plus" circle></el-button>
                 </el-form-item>
                 <el-form-item label="备注">
-                    <el-input type="textarea" v-model="form.desc"></el-input>
+                    <el-input size="small" type="textarea" v-model="form.describeInfo"></el-input>
                 </el-form-item>
                 
             </el-form>
         </section>
         <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="handleOK">立即创建</el-button>
-            <el-button @click="handleClose">取消</el-button>
+            <el-button size="small" type="primary" @click="handleOK">立即创建</el-button>
+            <el-button size="small" @click="handleClose">取消</el-button>
         </span>
     </el-dialog>
     
 </template>
 <script>
+let qs = require("qs");
 const initTreeDataForOrganization = function(nodeData, parentCode) {
   return nodeData.filter(item => item.parentCode === parentCode).map(item => {
     return {
@@ -129,9 +138,6 @@ export default {
       dialogVisible: true,
       innerVisible:false,
       dateRange: "",
-      formInline: {
-        region: ""
-      },
       activeNames: ["1", "2"],
       organizationTreeData: [],
       organizationEmptytTxt:'数据加载中...',
@@ -140,14 +146,14 @@ export default {
       equList:[],
       selectedEquList:[],
       form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: ""
+        shorthandName: "",
+        region: [],//Date.parse(new Date(this.form.region[0]))
+        calendarHours:'',
+        shutdownTime:'',
+        changeTime:'',
+        planProdTime:'',
+        deviceIds:'103,104',
+        describeInfo: ""
       },
       addOeeWrap: {},
       pickerOptions2: {
@@ -197,7 +203,32 @@ export default {
       this.dialogBack();
     },
     handleOK: function() {
-      this.dialogBack();
+      //consol.log(this.form.region);
+      const _params=Object.assign({
+              organizeCode:'1000',
+              organizeName:'山海重工股份有限公司',
+              startDate:new Date(this.form.region[0]).format("yyyy/MM/dd"),
+              endDate:new Date(this.form.region[1]).format("yyyy/MM/dd"),
+              deviceIds:this.selectedEquList.join(',')
+           },this.form);
+           delete _params.region;
+      this.Axios(
+        {
+          url: "/data/insertOeePlan",
+          type: "post",
+          option: {
+            requestTarget:'r',
+          },
+          params: qs.stringify(_params)
+        },
+        this
+      ).then(
+        response => {
+          this.dialogBack();
+        });
+    },
+    handleDeviceOK:function(){
+        this.innerVisible=false;
     },
     innerHandleClose: function() {
       this.innerVisible=false;
@@ -208,25 +239,50 @@ export default {
         {
             url: ["/organize/allOrganize", "/deviceCategory/all"],
             type: ["get","get"],
-            params:[{},{}]
+            params:[{},{}],
+            loadingConfig:{
+                        target: document.querySelector('.el-dialog')
+                    }
         },
         this
         ).then(
         ([res1, res2]) => {
-            if(res1.data.data.length)
-            this.organizationTreeData = initTreeDataForOrganization(res1.data.data,"0");
-            else
-            this.organizationEmptytTxt='暂无数据';
-
-            if(res2.data.data.length)
-            this.equTypeTreeData = initTreeDataForEquType(res2.data.data, "0");
-            else
-            this.equTypeEmptytTxt='暂无数据';
-            
+            if(res1.data.data.length){
+                this.organizationTreeData = initTreeDataForOrganization(res1.data.data,"0");
+                this.Axios(
+                {
+                    url: "/deviceState/listDeviceByOrganize",
+                    type: 'get',
+                    params:{
+                        organizeCode:res1.data.data[0].code
+                    },
+                    option:{requestTarget:'r'},
+                    loadingConfig:{
+                        target: document.querySelector('.el-dialog')
+                    }
+                },
+                this
+                ).then((response)=>{
+                    this.equList=response.data.data.content.map(item=>{return {
+                        key: item.id,
+                        label: `${item.deviceName}(${item.deviceNo})`
+                    }})
+                })
+            }else{
+                this.organizationEmptytTxt='暂无数据';
+            }
+            if(res2.data.data.length){
+                this.equTypeTreeData = initTreeDataForEquType(res2.data.data, "0");
+            }else{
+                this.equTypeEmptytTxt='暂无数据';
+            }
             //window.setTimeout(() => {this.$refs.tree.setCurrentKey("1024");}, 1000);
         },
         () => {}
         );
+    },
+    treeNodeClick:function(){
+
     }
   }
 };

@@ -170,7 +170,7 @@ const router = new Router({
         title: 'OEE'
       },
       children: [{
-          path: 'End',
+          path: 'End/:equId',
           name: 'OeeEnd',
           component: OeeEnd,
           props: {
@@ -186,7 +186,7 @@ const router = new Router({
           }
         },
         {
-          path: 'Details',
+          path: 'Details/:equId',
           name: 'OeeDetails',
           component: OeeDetails,
           props: {

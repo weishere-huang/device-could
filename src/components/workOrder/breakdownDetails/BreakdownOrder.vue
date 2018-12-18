@@ -1,8 +1,12 @@
 <template>
   <div class="breakdown-order">
     <div class="top">
-      <el-button @click="toBack" type="primary" size="small">返回</el-button>
-      <el-button size="small" type="primary" @click="outerVisible=true">提交审核</el-button>
+      <el-button-group>
+        <el-button-group>
+          <el-button @click="toBack" type="primary" size="small">返回</el-button>
+          <el-button size="small" type="primary" @click="outerVisible=true">提交审核</el-button>
+        </el-button-group>
+      </el-button-group>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
         <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
@@ -155,8 +159,10 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-            <el-button size="mini" type="primary" @click=" listBasicInfo">从物料库中添加</el-button>
-            <el-button type="primary" @click="insertPart" size="mini">保存列表</el-button>
+            <el-button-group>
+              <el-button size="mini" type="primary" @click=" listBasicInfo">添加物料</el-button>
+              <el-button type="primary" @click="insertPart" size="mini">保存列表</el-button>
+            </el-button-group>
           </div>
           <v-table
             is-horizontal-resize
@@ -238,18 +244,18 @@
         <div class="information-receipt">
           <h5>回执信息</h5>
           <div style="overflow-y:scroll;" class="case">
-            <el-form label-width="100px" :model="workReceiptInfo">
+            <el-form label-width="100px" :model="workReceiptInfo" v-for="item of workReceiptInfo">
               <el-form-item label="施工人员：">
-                <span>{{workReceiptInfo.builder}}</span>
+                <span>{{item.builder}}</span>
               </el-form-item>
               <el-form-item label="处理状态：">
-                <span>{{workReceiptInfo.dealState}}</span>
+                <span>{{item.dealState}}</span>
               </el-form-item>
               <el-form-item label="处理时间：">
-                <span>{{workReceiptInfo.dealTime}}</span>
+                <span>{{item.dealTime}}</span>
               </el-form-item>
               <el-form-item label="处理内容：">
-                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="" readonly style="width:94%" v-model="workReceiptInfo.dealContent"></el-input>
+                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="" readonly style="width:94%" v-model="item.dealContent"></el-input>
               </el-form-item>
             </el-form>
           </div>
@@ -908,7 +914,7 @@
           this
         ).then(
           response => {
-            console.log(response.data.data);
+            console.log(response.data.data.workReceiptInfo);
             this.workInfoValue(response.data.data.work);
             this.formLabelAlignValue(response.data.data.fault);
             this.equipmentTableDataValue(response.data.data.devices);
@@ -1157,11 +1163,22 @@
           }
         }
       },
-      //流程信息
+      //回执信息
       workReceiptInfoValue(value){
         this.workReceiptInfo = value;
+        for(let i in this.workReceiptInfo){
+          if(this.workReceiptInfo[i].dealState==0){
+            this.workReceiptInfo[i].dealState="已处理"
+          }
+          if(this.workReceiptInfo[i].dealState==1){
+            this.workReceiptInfo[i].dealState="未处理"
+          }
+          if(this.workReceiptInfo[i].dealState==2){
+            this.workReceiptInfo[i].dealState="已取消"
+          }
+        }
       },
-      //回执信息
+      //流程信息
       informationDataValue(value){
         this.informationData = value;
       }

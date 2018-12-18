@@ -1,8 +1,10 @@
 <template>
   <div class="breakdown-order">
     <div class="top">
-      <el-button size="small" type="primary" @click="toBack">返回</el-button>
-      <el-button size="small" type="primary" @click="outerVisible=true">提交审核</el-button>
+      <el-button-group>
+        <el-button size="small" type="primary" @click="toBack">返回</el-button>
+        <el-button size="small" type="primary" @click="outerVisible=true">提交审核</el-button>
+      </el-button-group>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
         <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
@@ -170,7 +172,7 @@
               :table-data="personData"
               row-hover-color="#eee"
               row-click-color="#edf7ff"
-              
+
               row-height=24
             ></v-table>
           </div>
@@ -179,8 +181,10 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-            <el-button  type="primary" size="mini" @click="listBasicInfo">从物料库中添加</el-button>
-            <el-button  type="primary" @click="insertPart" size="mini">保存列表</el-button>
+            <el-button-group>
+              <el-button  type="primary" size="mini" @click="listBasicInfo">添加物料</el-button>
+              <el-button  type="primary" @click="insertPart" size="mini">保存列表</el-button>
+            </el-button-group>
           </div>
           <v-table
             is-horizontal-resize
@@ -233,7 +237,7 @@
                 row-hover-color="#eee"
                 row-click-color="#edf7ff"
                 :row-dblclick="basicInfo"
-               
+
                 row-height=24
 
               ></v-table>
@@ -274,15 +278,16 @@
             <el-form
               label-width="100px"
               :model="workReceiptInfo"
+              v-for="item of workReceiptInfo"
             >
               <el-form-item label="施工人员：">
-                <span>{{workReceiptInfo.builder}}</span>
+                <span>{{item.builder}}</span>
               </el-form-item>
               <el-form-item label="处理状态：">
-                <span>{{workReceiptInfo.dealState}}</span>
+                <span>{{item.dealState}}</span>
               </el-form-item>
               <el-form-item label="处理时间：">
-                <span>{{workReceiptInfo.dealTime}}</span>
+                <span>{{item.dealTime}}</span>
               </el-form-item>
               <el-form-item label="处理内容：">
                 <el-input
@@ -291,7 +296,7 @@
                   placeholder=""
                   readonly
                   style="width:94%"
-                  v-model="workReceiptInfo.dealContent"
+                  v-model="item.dealContent"
                 ></el-input>
               </el-form-item>
             </el-form>
@@ -308,7 +313,7 @@
             :table-data="flowInfoData"
             row-hover-color="#eee"
             row-click-color="#edf7ff"
-            
+
             row-height=24
             :height="230"
           ></v-table>
@@ -475,7 +480,6 @@
             width: 70,
             titleAlign: "center",
             columnAlign: "center",
-
             isResize: true,
             isEdit: true
           },
@@ -686,8 +690,6 @@
     methods: {
       customCompFunc(params) {
         if (params.type === "delete") {
-          console.log(params.rowData["id"]);
-          // do delete operation
           this.workSheetMaterialTableData = this.workSheetMaterialTableData.filter(item=>item.id!=params.rowData["id"]);
           this.personListValue = this.personListValue.filter(item=>item.id!=params.rowData["id"]);
         }
@@ -1061,8 +1063,8 @@
       //保存备品备件页面并传值到详情页
       deleteBasic(){
         this.dialogVisible2 = false;
-          this.workSheetMaterialTableData = (this.workSheetMaterialTableData||[]).concat(this.personListValue);
-          this.workSheetMaterialTableData = Array.from(new Set(this.workSheetMaterialTableData))
+        this.workSheetMaterialTableData = (this.workSheetMaterialTableData||[]).concat(this.personListValue);
+        this.workSheetMaterialTableData = Array.from(new Set(this.workSheetMaterialTableData))
       },
       //保存工单物料到数据库
       insertPart(){
@@ -1203,6 +1205,17 @@
       //回执信息
       workReceiptInfoValue(value){
         this.workReceiptInfo = value
+        for(let i in this.workReceiptInfo){
+          if(this.workReceiptInfo[i].dealState==0){
+            this.workReceiptInfo[i].dealState="已处理"
+          }
+          if(this.workReceiptInfo[i].dealState==1){
+            this.workReceiptInfo[i].dealState="未处理"
+          }
+          if(this.workReceiptInfo[i].dealState==2){
+            this.workReceiptInfo[i].dealState="已取消"
+          }
+        }
       },
       //流程信息
       flowInfo(value){

@@ -7,41 +7,41 @@
       <el-container>
          <el-main class="monitSingleMainContent">
             <section class="topWrap">
-                <div><el-button type="primary" size="small" @click="()=>{this.$router.go(-1) }" icon="el-icon-arrow-left">返回</el-button></div>
-                <div><el-button type="primary" size="small" @click="$router.push({ path: '/Oee/Details/End' })"><i class='iconfont'>&#xe603;</i>&nbsp;结束任务</el-button></div>
+                <div><el-button type="primary" size="small" @click="()=>{this.$router.go(-1) }" icon="el-icon-arrow-left">任务列表</el-button></div>
+                <div><el-button type="primary" size="small" @click="$router.push({ path: '/Oee/Details/'+$route.params.equId+'/End' })"><i class='iconfont'>&#xe603;</i>&nbsp;结束任务</el-button></div>
             </section>
             <section class="mainWrap">
                 <div>
                     <el-row :gutter="20">
                         <el-col :span="12">
-                            OEE任务编号：OEE289330124
+                            OEE任务编号：{{oeeDetails.planNo||'--'}}
                         </el-col>
                         <el-col :span="12">
-                            OEE任务速记名称：2018年第四季度第二次OEE任务
-                        </el-col>
-                    </el-row>
-                    <el-row :gutter="20">
-                        <el-col :span="12">
-                            任务状态：已完成
-                        </el-col>
-                        <el-col :span="12">
-                            任务时间：2018/12/2~2018/12/15
+                            OEE任务速记名称：{{oeeDetails.shorthandName||'--'}}
                         </el-col>
                     </el-row>
                     <el-row :gutter="20">
                         <el-col :span="12">
-                            计划日工时：9小时/日
+                            任务状态：{{oeeDetails.state||'--'}}
                         </el-col>
                         <el-col :span="12">
-                            计划日停机时间：1.2小时/日
+                            任务时间：{{oeeDetails.startDate?new Date(oeeDetails.startDate).toLocaleDateString().replace(/\//g, "-"):'--'}} ~ {{oeeDetails.endDate?new Date(oeeDetails.endDate).toLocaleDateString().replace(/\//g, "-"):'--'}}
                         </el-col>
                     </el-row>
                     <el-row :gutter="20">
                         <el-col :span="12">
-                            计划日损耗时间：1小时/日
+                            计划日工时：{{oeeDetails.calendarHours||'--'}}小时/日
                         </el-col>
                         <el-col :span="12">
-                            计划日单件生产时间：120秒/件
+                            计划日停机时间：{{oeeDetails.shutdownTime||'--'}}小时/日
+                        </el-col>
+                    </el-row>
+                    <el-row :gutter="20">
+                        <el-col :span="12">
+                            计划日损耗时间：{{oeeDetails.changeTime||'--'}}小时/日
+                        </el-col>
+                        <el-col :span="12">
+                            计划日单件生产时间：{{oeeDetails.planProdTime||'--'}}秒/件
                         </el-col>
                     </el-row>
                 </div>
@@ -77,6 +77,7 @@ export default {
   data() {
     return {
       dateValue: "",
+      oeeDetails:{calendarHours:0,content:[]},
       pickerOptions: {
         shortcuts: [
           {
@@ -109,18 +110,18 @@ export default {
         ]
       },
       tableData: [
-        {
-          equName: "A3区施耐德加工中心HDC344L型",
-          hourNum: 99,
-        },
-        {
-          equName: "A3区施耐德加工中心HDC344L型",
-          hourNum: 190,
-        },
-        {
-          equName: "A3区施耐德加工中心HDC344L型",
-          hourNum: 130,
-        }
+        // {
+        //   equName: "A3区施耐德加工中心HDC344L型",
+        //   hourNum: 99,
+        // },
+        // {
+        //   equName: "A3区施耐德加工中心HDC344L型",
+        //   hourNum: 190,
+        // },
+        // {
+        //   equName: "A3区施耐德加工中心HDC344L型",
+        //   hourNum: 130,
+        // }
       ],
       columns: [
         {
@@ -138,8 +139,8 @@ export default {
           width: 600,
           titleAlign: "center",
           isResize: true,
-          formatter: function (rowData,rowIndex,pagingIndex,field) {
-            const showWidth=(rowData.hourNum/300)*($("#mainListWrap .v-table-htable").width()||1000);
+          formatter:  (rowData,rowIndex,pagingIndex,field) =>{
+            const showWidth=(rowData.hourNum/(this.oeeDetails.calendarHours*this.oeeDetails.content.length))*($("#mainListWrap .v-table-htable").width()||1000);
             return `<span style='width:${showWidth}px' class="progressBar">${rowData.hourNum}</span>`;
           }
         }
@@ -147,37 +148,95 @@ export default {
     };
   },
   methods: {
-    clickDemo: function() {
-      this.showInfo++;
-    }
+    setGaugeOption:function(params){
+      var mainChart_1 = echarts.init(document.querySelector("#gaugeWrap_1"));
+      var mainChart_2 = echarts.init(document.querySelector("#gaugeWrap_2"));
+      var mainChart_3 = echarts.init(document.querySelector("#gaugeWrap_3"));
+      var mainChart_4 = echarts.init(document.querySelector("#gaugeWrap_4"));
+      const gaugeArr=[mainChart_1,mainChart_2,mainChart_3,mainChart_4];
+      gaugeArr.map((item,index)=>{
+        const _op=params[index];
+        const option = {
+            tooltip : {
+                formatter: "{a} <br/>{b} : {c}%"
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            series: [
+                {
+                    name: 'OEE',
+                    type: 'gauge',
+                    detail: {formatter:'{value}'},
+                    data: [{value: _op.value, name: _op.name}]
+                }
+            ]
+        }
+        item.setOption(option, true);
+      })
+      // const option = {
+      //     tooltip : {
+      //         formatter: "{a} <br/>{b} : {c}%"
+      //     },
+      //     toolbox: {
+      //         feature: {
+      //             saveAsImage: {}
+      //         }
+      //     },
+      //     series: [
+      //         {
+      //             name: 'OEE',
+      //             type: 'gauge',
+      //             detail: {formatter:'{value}'},
+      //             data: [{value: 50, name: 'OEE性能'}]
+      //         }
+      //     ]
+      // }
+      // mainChart_1.setOption(option, true);
+      // mainChart_2.setOption(option, true);
+      // mainChart_3.setOption(option, true);
+      // mainChart_4.setOption(option, true);
+      }
+  },
+  created:function(){
+    
+    this.Axios(
+        {
+          params: {organizeCode:'1000',planId:this.$route.params.equId},
+          url: "/data/getOeePlanDetail",
+          type: "get",
+          option: {
+            requestTarget:'r'
+          }
+        },
+        this
+      ).then(
+        response => {
+          this.oeeDetails=response.data.data;
+          this.tableData=response.data.data.content.map(item=>{return {
+            equName: `${item.deviceName}(${item.deviceNo})`,
+            hourNum: item.recordTime,
+          }});
+          window.setTimeout(()=>{
+            this.setGaugeOption([
+              {name:'OEE',value:this.oeeDetails.oee},
+              {name:'时间开动率',value:this.oeeDetails.timeStartRate},
+              {name:'性能开动率',value:this.oeeDetails.performanceEfficiency},
+              {name:'良品率',value:this.oeeDetails.qualifiedRate}
+            ]);
+          },300);
+        }
+      );
   },
   mounted: function() {
-    var mainChart_1 = echarts.init(document.querySelector("#gaugeWrap_1"));
-    var mainChart_2 = echarts.init(document.querySelector("#gaugeWrap_2"));
-    var mainChart_3 = echarts.init(document.querySelector("#gaugeWrap_3"));
-    var mainChart_4 = echarts.init(document.querySelector("#gaugeWrap_4"));
-    const option = {
-        tooltip : {
-            formatter: "{a} <br/>{b} : {c}%"
-        },
-        toolbox: {
-            feature: {
-                saveAsImage: {}
-            }
-        },
-        series: [
-            {
-                name: 'OEE',
-                type: 'gauge',
-                detail: {formatter:'{value}'},
-                data: [{value: 50, name: 'OEE性能'}]
-            }
-        ]
-    }
-    mainChart_1.setOption(option, true);
-    mainChart_2.setOption(option, true);
-    mainChart_3.setOption(option, true);
-    mainChart_4.setOption(option, true);
+    // this.setGaugeOption([
+    //   {name:'OEE',value:0},
+    //   {name:'时间开动率',value:0},
+    //   {name:'性能开动率',value:0},
+    //   {name:'良品率',value:0}
+    // ]);
     // var app = {};
     // option = null;
     // app.title = '坐标轴刻度与标签对齐';

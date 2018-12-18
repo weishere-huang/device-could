@@ -2,6 +2,7 @@
   <div class="turnaround-plans">
     <div class="userCase">
       <div class="top">
+        <el-button-group>
         <el-button
           size="small"
           type="primary"
@@ -12,6 +13,7 @@
           type="primary"
           @click="outerVisibleIsOk"
         >审核</el-button>
+        </el-button-group>
         <el-dialog
           title="审核"
           :beforeClose="cancel"
@@ -599,9 +601,7 @@ export default {
       if (this.arr.length === 1) {
         this.outerVisible = true;
       } else if (this.arr.length === 0) {
-        alert("请选择计划");
-      } else {
-        alert("抱歉只能计划只能单个修改");
+        this.$message.error("请选择计划")
       }
     },
     getPersonnel(params) {
@@ -620,9 +620,17 @@ export default {
 };
 Vue.component("table-upkeep", {
   template: `<span>
-        <a href="" @click.stop.prevent="update(rowData,index)" style="text-decoration: none;">修改</a>&nbsp;
-        <a href="" @click.stop.prevent="stop(rowData,index)" style="text-decoration: none;">停止</a>&nbsp;
-        <a href="" @click.stop.prevent="deleteRow(rowData,index)" style="text-decoration: none;">删除</a>
+        <el-tooltip class="item" effect="dark" content="修改" placement="top">
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i></a>
+        </el-tooltip>
+        &nbsp;
+        <el-tooltip class="item" effect="dark" content="停止" placement="top">
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="stop(rowData,index)" style='font-size:16px' class='iconfontz'>&#xe60c;</i></a>
+        </el-tooltip>
+        &nbsp;
+        <el-tooltip class="item" effect="dark" content="删除" placement="top">
+            <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>
+        </el-tooltip>
         </span>`,
   props: {
     rowData: {

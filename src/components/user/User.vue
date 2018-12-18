@@ -149,12 +149,13 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-          // formatter: function(rowData, rowIndex, pagingIndex, field) {
-          //   return rowData.state === 0
-          //     ? "正常"
-          //     : "禁用"
-          // }
-          componentName: "switch-company"
+          overflowTitle: true,
+          formatter: function(rowData, rowIndex, pagingIndex, field) {
+            return rowData.state === "0"
+              ? "正常"
+              : "禁用"
+          },
+          componentName: "switch-user"
         },
         {
           field: "custome-adv",
@@ -332,7 +333,7 @@ export default {
         type: "warning"
       }).then(
         response => {
-          this.reload();
+          this.load();
           this.$message({
             message: "您已经删除该用户",
             type: "success"
@@ -442,7 +443,7 @@ Vue.component("table-user", {
     }
   }
 });
-Vue.component("switch-company", {
+Vue.component("switch-user", {
   template: `<span>
       <el-switch
         v-model="rowData.state"

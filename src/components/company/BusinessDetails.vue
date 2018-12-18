@@ -31,20 +31,20 @@
           </li>
         </ul>
 
-        <div class="state">
+       <!-- <div class="state">
           <span>
             驳回原因：
           </span>
           <span style="color:red;display:inline-block">
             <p>{{detailsValue.auditOpinion}}</p>
           </span>
-        </div>
+        </div>-->
         <!-- <div style="margin-top:20px;text-align:center;">
           <el-button size="small" @click="isHide">返回</el-button>
         </div> -->
       </div>
       <div class="right">
-        <img :src="imgUrl1" alt="">
+          <img :src="detailsValue.businessLicenseImg" alt="" title="营业执照" @click="picShow">
       </div>
     </div>
   </div>
@@ -55,7 +55,8 @@
     props: ["detailsValue"],
     data() {
       return {
-        imgUrl1: "",
+        dialogVisible:false,
+        imgUrl: "",
         msg: "哈哈哈",
         img: "",
         block: false,
@@ -73,16 +74,14 @@
       };
     },
     methods: {
-
       isHide() {
         this.$emit("childByValue", false)
+      },
+      picShow(){
+        this.$emit("picShow", true)
       }
-
     },
     created() {
-      console.log(this.detailsValue.businessLicenseImg);
-      this.imgUrl = this.global.imgPath + this.detailsValue.businessLicenseImg.split(":")[1];
-      console.log(this.imgUrl)
     }
   };
 </script>
