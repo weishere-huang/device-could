@@ -264,7 +264,6 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           componentName: "table-turnaroundPlans"
-          // isResize: true
         }
       ]
     };
