@@ -1,10 +1,8 @@
 <template>
   <div class="breakdown-order">
     <div class="top">
-      <el-button-group>
         <el-button size="small" type="primary" @click="toBack">返回</el-button>
         <el-button size="small" type="primary" @click="outerVisible=true" v-if="isOk">提交审核</el-button>
-      </el-button-group>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
         <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
@@ -181,10 +179,8 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-            <el-button-group>
               <el-button  type="primary" size="mini" @click="listBasicInfo">添加物料</el-button>
               <el-button  type="primary" @click="insertPart" size="mini">保存列表</el-button>
-            </el-button-group>
           </div>
           <v-table
             is-horizontal-resize
