@@ -92,8 +92,16 @@
       <audit
         v-on:auditByValue="auditByValue"
         :auditValue="auditValue"
+        v-on:imgShow="imgShow"
         :searchData="name"
       ></audit>
+      <el-dialog
+        width="60%"
+        title="营业执照详情"
+        :visible.sync="inVisible"
+        append-to-body>
+        <img :src="innerVisibleImg" alt="" style="width:100%;">
+      </el-dialog>
     </el-dialog>
     <el-dialog
       title="企业详情"
@@ -127,6 +135,7 @@ export default {
     return {
       innerVisibleImg:"",
       innerVisible:false,
+      inVisible:false,
       dialogVisible: false,
       detailsShow: true,
       auditShow: false,
@@ -225,7 +234,11 @@ export default {
     audit
   },
   methods: {
+    imgShow(params) {
+      this.inVisible=params
+    },
     picShow(params){
+      console.log(params)
       this.innerVisible=params
     },
     customCompFunc(params) {
@@ -257,6 +270,7 @@ export default {
         // do edit operation
         this.auditShow = true;
         this.auditValue = params.rowData;
+        this.innerVisibleImg=params.rowData.businessLicenseImg
       }
     },
     advanceValue: function({ dataName, params }) {
@@ -279,6 +293,7 @@ export default {
         });
       } else {
         this.auditShow = true;
+
       }
     },
     auditByValue: function(params) {
