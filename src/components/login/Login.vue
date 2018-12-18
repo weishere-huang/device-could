@@ -157,6 +157,7 @@
               :befor-upload="beforeAvatarUpload"
               :on-preview="handlePictureCardPreview"
               :on-remove="handleRemove"
+              :limit="1"
             >
               <i class="el-icon-plus"></i>
             </el-upload>
@@ -311,7 +312,7 @@ export default {
       },
       registerRules: {
         name: [
-          { required: true, message: "企业名不能为空", trigger: "blur" }
+          { required: true, message: "企业名不能为空", trigger: "blur" },
 
           // {validator:(rule, value, callback)=>{
           //   this.Axios(
@@ -334,12 +335,11 @@ export default {
         //   ],
         phone: [
           { required: true, message: "电话不能为空", trigger: "blur" },
-          { max: 15, message: "您的电话号码超出长度限制了，请重新输入" },
+
           {
             validator: (rule, value, callback) => {
               if (
-                /^((\d3,4|\d{3,4}-)?\d{7,8})|([1][0-9]{10})$/.test(value) ==
-                false
+                /^((0\d{2,3}-\d{7,8})||(1[34578]\d{9}))$/.test(value) == false
               ) {
                 callback(new Error("您输入的电话号码有误，请重新输入"));
               } else {
@@ -453,6 +453,7 @@ export default {
       checked: true
     };
   },
+
   methods: {
     checkData(rule, value, callback) {
       if (value) {
@@ -486,16 +487,23 @@ export default {
       });
     },
     registerNext(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          // alert("submit!");
-          this.nextshow = !this.nextshow;
-          this.backshow = !this.backshow;
-        } else {
-          this.$message.error("请完善信息");
-          return false;
-        }
-      });
+      if (this.company.dialogImageUrl === "") {
+        this.$message({
+          message: "请上传营业执照",
+          type: "error"
+        });
+      } else {
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            // alert("submit!");
+            this.nextshow = !this.nextshow;
+            this.backshow = !this.backshow;
+          } else {
+            this.$message.error("请完善信息");
+            return false;
+          }
+        });
+      }
     },
     registerInfo(formName) {
       this.$refs[formName].validate(valid => {
@@ -553,15 +561,17 @@ export default {
             this.$store.commit("tokenSrc", result.data.data.tokenStr);
             this.$router.replace("/Home");
             location.reload();
-          } else {
-            this.$message({
-              message: "账号或密码错误",
-              type: "error"
-            });
-            this.$router.push({ path: "/Login" });
           }
         },
-        ({ type, info }) => {}
+        ({ type, info }) => {
+          console.log(info);
+          if (info.code === 0) {
+            this.$message.error("验证码错误");
+          } else {
+            this.$message.error("账号或密码错误");
+            this.$router.push({ path: "/Login" });
+          }
+        }
       );
     },
     register() {
@@ -600,11 +610,16 @@ export default {
       ).then(
         result => {
           if (result.data.code === 200) {
-            this.$message({
-              message: "恭喜您注册成功",
-              type: "success"
-            });
-            location.reload();
+            this.$alert(
+              "恭喜您，企业注册信息已提交成功。审核结果将以短信的方式通知到您绑定的手机号。",
+              "提示",
+              {
+                confirmButtonText: "确定",
+                callback: action => {
+                  location.reload();
+                }
+              }
+            );
           }
         },
         ({ type, info }) => {}
@@ -627,16 +642,15 @@ export default {
       ).then(
         response => {
           console.log(1111);
-          this.$message({
-            message: "短信验证码已发送至您的手机，请注意查收",
-            type: "success"
-          });
+          this.$message.success("短信验证码已发送至您的手机，请注意查收");
         },
         ({ type, info }) => {
-          this.$message({
-            message: "服务器异常，请联系管理员",
-            type: "error"
-          });
+          console.log(info);
+          if (info.code == 0) {
+            this.$message.error("未找到该用户");
+          } else {
+            this.$message.error("服务器异常，请联系管理员");
+          }
         }
       );
     },
@@ -656,16 +670,10 @@ export default {
       ).then(
         response => {
           console.log(1111);
-          this.$message({
-            message: "短信验证码已发送至您的手机，请注意查收",
-            type: "success"
-          });
+          this.$message.success("短信验证码已发送至您的手机，请注意查收");
         },
         ({ type, info }) => {
-          this.$message({
-            message: "服务器异常，请联系管理员",
-            type: "error"
-          });
+          this.$message.error("服务器异常，请联系管理员");
         }
       );
     },
