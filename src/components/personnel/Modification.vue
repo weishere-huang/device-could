@@ -187,7 +187,7 @@
     data() {
       return {
         fileList: [],
-        dialogImageUrl:[{url:""}],
+        dialogImageUrl:[],
         dialogVisible:false,
         persnneladd: {
           id:"",
@@ -300,13 +300,6 @@
       },
 
       testValue(){
-        // let regEmail=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/;
-        // if(this.persnneladd.email.test(" ")){
-        //   if(!regEmail.test(this.persnneladd.email)){
-        //     alert("邮箱格式不正确");
-        //     return false;
-        //   }
-        // }
         if (this.persnneladd.name == ""){
           this.$message.error("员工名不能为空");
           return false;
@@ -339,6 +332,13 @@
         if(this.persnneladd.position==""){
           this.$message.error("请输入岗位");
           return false;
+        }
+        let regEmail= /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
+        if(this.persnneladd.email!==""){
+          if(!regEmail.test(this.persnneladd.email)){
+            alert("邮箱格式不正确");
+            return false;
+          }
         }
         return true;
       },
