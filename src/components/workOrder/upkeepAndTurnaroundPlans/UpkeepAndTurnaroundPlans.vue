@@ -278,15 +278,16 @@
             <el-form
               label-width="100px"
               :model="workReceiptInfo"
+              v-for="item of workReceiptInfo"
             >
               <el-form-item label="施工人员：">
-                <span>{{workReceiptInfo.builder}}</span>
+                <span>{{item.builder}}</span>
               </el-form-item>
               <el-form-item label="处理状态：">
-                <span>{{workReceiptInfo.dealState}}</span>
+                <span>{{item.dealState}}</span>
               </el-form-item>
               <el-form-item label="处理时间：">
-                <span>{{workReceiptInfo.dealTime}}</span>
+                <span>{{item.dealTime}}</span>
               </el-form-item>
               <el-form-item label="处理内容：">
                 <el-input
@@ -295,7 +296,7 @@
                   placeholder=""
                   readonly
                   style="width:94%"
-                  v-model="workReceiptInfo.dealContent"
+                  v-model="item.dealContent"
                 ></el-input>
               </el-form-item>
             </el-form>
@@ -479,7 +480,6 @@
             width: 70,
             titleAlign: "center",
             columnAlign: "center",
-
             isResize: true,
             isEdit: true
           },
@@ -1207,6 +1207,17 @@
       //回执信息
       workReceiptInfoValue(value){
         this.workReceiptInfo = value
+        for(let i in this.workReceiptInfo){
+          if(this.workReceiptInfo[i].dealState==0){
+            this.workReceiptInfo[i].dealState="已处理"
+          }
+          if(this.workReceiptInfo[i].dealState==1){
+            this.workReceiptInfo[i].dealState="未处理"
+          }
+          if(this.workReceiptInfo[i].dealState==2){
+            this.workReceiptInfo[i].dealState="已取消"
+          }
+        }
       },
       //流程信息
       flowInfo(value){

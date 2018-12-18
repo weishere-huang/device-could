@@ -652,9 +652,7 @@
         if (this.arr.length === 1) {
           this.outerVisible = true;
         } else if (this.arr.length === 0) {
-          alert("请选择要处理的故障");
-        } else {
-          alert("抱歉、只能单个审核");
+          this.$message.error("请选择要处理的故障");
         }
       },
 
