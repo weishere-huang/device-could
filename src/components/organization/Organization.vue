@@ -26,7 +26,7 @@
                   @click="toAdd"
                 >
                 <el-tooltip class="item" effect="dark" content="添加" placement="top">
-                  <i style='font-size:16px' class='iconfont'>&#xe608;</i>
+                  <i style='font-size:16px' class='iconfont'>&#xe62f;</i>
                 </el-tooltip>
                 </el-button>
                 <el-button
