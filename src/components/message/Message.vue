@@ -23,7 +23,7 @@
         <el-button
           size="small"
           type="primary"
-          @click="deleteMessage"
+          @click="dtwarning"
         >删除
         </el-button>
 
@@ -52,7 +52,7 @@
             <v-pagination
               @page-change="pageChange"
               @page-size-change="pageSizeChange"
-              :total=tableData.length
+              :total=totoelement
               :page-size="pageSize"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
@@ -67,7 +67,7 @@
       v-on:detailsIsHide="detailsIsHide"
       ></MsgDetails>
     </el-dialog>
-   
+
   </div>
 </template>
 <script>
@@ -143,7 +143,8 @@ export default {
         }
       ],
       //判断是未读消息
-      readkey:0
+      readkey:0,
+      totoelement:0
     };
   },
   methods: {
@@ -156,8 +157,8 @@ export default {
         this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
         // do edit operation
-
-        alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
+        this.ids = params.rowData.id;
+        this.dtwarning();
       } else if (params.type === "stop") {
         // do edit operation
 
@@ -231,6 +232,25 @@ export default {
       }
     },
 
+    dtwarning() {
+      console.log(this.ids);
+      if (this.ids === "") {
+        this.$message.warning("至少选择一条数据")
+      } else {
+      this.$confirm('确定要删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteMessage();
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      });
+    }
+    },
     deleteMessage() {
       //逻辑删除
       let qs = require("qs");
@@ -251,7 +271,7 @@ export default {
       )
         //.post(apiMsg + "/message/UpdateMsgState/", data)
         .then(result => {
-          this.allMsg();
+          this.reload();
           this.$message("成功删除!!!");
           console.log(result.data);
         })
@@ -273,19 +293,20 @@ export default {
             page: this.pageIndex,
             size: this.pageSize
           },
-          option: {
-            enableMsg: false
-          },
           type: "get",
           url: "/message/allMsg",
           // loadingConfig: {
           //   target: document.querySelector("#mainContentWrapper")
           // }
-          option:{requestTarget:"m"}
+          option:{
+            requestTarget:"m",
+            enableMsg: false,
+            sccessMessage:false
+          }
         },
         this
       )
-        // .get(apiMsg + "/message/allMsg/", data)
+
         .then(result => {
           console.log(result.data);
           console.log(result.data.data);
@@ -297,6 +318,7 @@ export default {
             }
           }
           this.tableData = result.data.data.content;
+          this.totoelement = result.data.data.totalElements;
           this.NotReadMsgCount();
         })
         .catch(err => {
@@ -311,9 +333,6 @@ export default {
             page: this.pageIndex,
             size: this.pageSize
           },
-          // option: {
-          //   enableMsg: false
-          // },
           type: "get",
           url: "/message/allNotReadMsg",
           // loadingConfig: {
@@ -327,7 +346,8 @@ export default {
         .then(result => {
           console.log(result);
           console.log(result.data);
-          this.tableData = result.data.data;
+          this.tableData = result.data.data.content;
+          this.totoelement = result.data.data.totalElements;
           if(this.tableData !== null){
             for (let i = 0; i < result.data.data.length; i++) {
               if (result.data.data[i].isRead == 0) {
