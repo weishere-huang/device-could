@@ -479,7 +479,7 @@
             columnAlign: "center",
             isResize: true,
             isEdit: true,
-            formatter: function (rowData,rowIndex,pagingIndex,field) {
+            formatter (rowData,rowIndex,pagingIndex,field) {
               return `<s class='cell-edit-style'></s><span>${rowData.planCount}</span>`;
             }
           },
@@ -698,7 +698,6 @@
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
         this.workSheetMaterialTableData[rowIndex][field] = newValue;
-        console.log(newValue);
         // 接下来处理你的业务逻辑，数据持久化等...
       },
       selectGroupChange(selection) {
@@ -1065,6 +1064,7 @@
       deleteBasic(){
         this.dialogVisible2 = false;
         this.workSheetMaterialTableData = (this.workSheetMaterialTableData||[]).concat(this.personListValue);
+        this.workSheetMaterialTableData.forEach(function (item){item.planCount = 0});
         this.workSheetMaterialTableData = Array.from(new Set(this.workSheetMaterialTableData))
       },
       //保存工单物料到数据库
@@ -1077,7 +1077,6 @@
             this.workSheetMaterialTableData[i].partCategory = 2;
           }
         }
-        console.log(JSON.stringify(this.workSheetMaterialTableData));
         let qs = require("qs");
         let data = qs.stringify({
           workId:this.workInfo.id,

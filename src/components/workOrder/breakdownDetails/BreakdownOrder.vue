@@ -454,7 +454,7 @@
             columnAlign: "center",
             isResize: true,
             isEdit: true,
-            formatter: function (rowData,rowIndex,pagingIndex,field) {
+            formatter(rowData,rowIndex,pagingIndex,field) {
               return `<s class='cell-edit-style'></s><span">${rowData.planCount}</span>`;
             }
           },
@@ -666,7 +666,6 @@
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
         this.suppliesTableData[rowIndex][field] = newValue;
-        // 接下来处理你的业务逻辑，数据持久化等...
       },
       selectGroupChange(selection) {
         console.log("select-group-change", selection);
@@ -877,7 +876,6 @@
             this.suppliesTableData[i].partCategory = 2;
           }
         }
-        console.log(this.workInfo.id);
         let qs = require("qs");
         let data = qs.stringify({
           workId:this.workInfo.id,
@@ -1039,6 +1037,7 @@
       deleteBasic(){
         this.dialogVisible2 = false;
         this.suppliesTableData = (this.suppliesTableData||[]).concat(this.personListValue);
+        this.suppliesTableData.forEach(function (item){item.planCount = 0});
         this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
       },
 
