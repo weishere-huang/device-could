@@ -26,7 +26,7 @@
             size="small"
             @click="addHide"
           >取消</el-button>
-          <el-button size="small" @click="add">保存</el-button>
+          <el-button size="small" @click="add" type="primary">保存</el-button>
         </li>
       </ul>
     </div>

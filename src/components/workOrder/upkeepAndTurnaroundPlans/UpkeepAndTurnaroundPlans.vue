@@ -3,7 +3,7 @@
     <div class="top">
       <el-button-group>
         <el-button size="small" type="primary" @click="toBack">返回</el-button>
-        <el-button size="small" type="primary" @click="outerVisible=true">提交审核</el-button>
+        <el-button size="small" type="primary" @click="outerVisible=true" v-if="isOk">提交审核</el-button>
       </el-button-group>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
@@ -327,6 +327,7 @@
   export default {
     data() {
       return {
+        isOk:true,
         workId:0,
         pageIndex:1,
         pageSize:10,
@@ -1110,7 +1111,11 @@
         if (value.workType ===2){
           this.workInfo.workType = "故障"
         }
-
+        if (value.state ===0){
+          this.isOk = true
+        } else{
+          this.isOk = false
+        }
 
         if (value.state === 0) {
           this.workInfo.state = "待审核";

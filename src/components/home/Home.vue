@@ -21,7 +21,7 @@
         <div class="equipment-data">
           <div class="top">
             <span>设备数据</span>
-            <i class='el-icon-refresh'></i>
+            <i style='font-size:16px' class='iconfont'>&#xe614;</i>
           </div>
           <ul class="case">
             <li title="设备总数">
@@ -43,8 +43,8 @@
         <div class="top">
           <span>快捷入口</span>
           <span class="addIcon">
-            <i class="iconfont icon-jia1"></i>
-            <i class="iconfont icon-xiepinglun"></i>
+            <i style='font-size:16px' class='iconfont'>&#xe62f;</i>
+            <i style='font-size:16px' class='iconfont'>&#xe6b4;</i>
           </span>
         </div>
         <ul class="bottom">

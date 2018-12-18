@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div style="width:100%;text-align:center;margin-top:20px;">
-                <el-button size="small" type="primary" @click="isHide">取消</el-button>
+                <el-button size="small"  @click="isHide">取消</el-button>
                 <el-button size="small" type="primary" v-on:click="givevalue">搜索</el-button>
             </div>
         </div>

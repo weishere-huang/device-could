@@ -355,7 +355,7 @@
       :visible.sync="dialogVisible"
       width="80%"
     >
-      <addperson :personAddHandler="personAddHandler"> </addperson>
+      <addperson :personAddHandler="personAddHandler" v-on:personData="personData"> </addperson>
     </el-dialog>
   </div>
 </template>
@@ -496,6 +496,10 @@ export default {
     addperson
   },
   methods: {
+    personData(params){
+      this.devicePersonnelInfoBase=params.data
+      this.dialogVisible=params.isHide
+    },
     path(){
       return this.global.apiImg;
     },

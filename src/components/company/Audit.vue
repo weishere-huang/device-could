@@ -37,12 +37,12 @@
           <div style="margin-top:10px;width:100%;text-align:center;">
             <el-button size="small" @click="auditback">返回</el-button>
             <el-button size="small" @click="reject">驳回</el-button>
-            <el-button size="small" @click="pass">通过</el-button>
+            <el-button size="small" @click="pass" type="primary">通过</el-button>
           </div>
         </div>
       </div>
       <div class="right">
-        <img src="../../assets/image/chlogo.png" alt="">
+        <img :src="auditValue.businessLicenseImg" alt="" @click="imgShow">
       </div>
     </div>
   </div>
@@ -54,7 +54,7 @@
     props: ["auditValue"],
     data() {
       return {
-        msg: "哈哈哈",
+        msg: "",
         img: "",
         block: false,
         enterpriseIds: "",
@@ -73,6 +73,9 @@
       };
     },
     methods: {
+      imgShow(){
+        this.$emit("imgShow", true)
+      },
       auditback() {
         this.$emit("auditByValue", this.block);
         // location.reload();
@@ -99,6 +102,7 @@
           })
           this.reload();
         }, ({type, info}) => {
+          console.log(info)
         })
       },
       reject() {

@@ -59,7 +59,7 @@
           size="small"
           type="primary"
           @click="toAdd"
-        >添加
+        ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp; 添加
         </el-button>
         <!-- <el-button
           size="small"
@@ -82,7 +82,7 @@
             size="small"
             type="primary"
             @click="findByKeyWord"
-          >搜索
+          ><i class='el-icon-search'></i> 搜索
           </el-button>
           <span
             style="color:#409eff;font-size:12px;cursor: pointer;"

@@ -1,10 +1,8 @@
 <template>
   <div class="turnaroundPlansAdd">
     <div class="top">
-      <el-button-group>
         <el-button size="small" type="primary" @click="toBack">返回</el-button>
         <el-button size="small" type="primary" @click="addPlan">保存</el-button>
-      </el-button-group>
     </div>
     <div class="bottom">
       <div class="left">
@@ -13,7 +11,7 @@
           <el-form-item label="计划名称：">
             <el-input v-model="companyName.planName" size="mini"></el-input>
           </el-form-item>
-          <el-form-item label="检修分类：">
+          <el-form-item label="保养分类：">
             <el-select v-model="companyName.maintenanceClassify" placeholder="请选择" size="mini">
               <el-option label="例行保养" value="1"></el-option>
               <el-option label="季节性保养" value="2"></el-option>
@@ -24,7 +22,7 @@
               <el-option label="其他" value="7"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="检修级别：">
+          <el-form-item label="保养级别：">
             <el-select v-model="companyName.maintenanceLevel" placeholder="请选择" size="mini">
               <el-option label="大" value="3"></el-option>
               <el-option label="中" value="2"></el-option>
@@ -66,7 +64,7 @@
               <el-option label="月" value="3"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="检修内容：" style="height:auto;">
+          <el-form-item label="保养内容：" style="height:auto;">
             <el-input type="textarea" v-model="companyName.maintenanceCc" style="width:100%;"></el-input>
           </el-form-item>
           <!--<el-form-item label="分布详情：" style="height:auto;margin:5px 0;">-->
@@ -92,7 +90,7 @@
               <el-time-picker type="fixed-time" placeholder="选择时间" v-model="times" format="HH:mm:ss" value-format="HH:mm:ss" style="width: 100%;padding-right:5px;" size="mini"></el-time-picker>
             </el-col>
           </el-form-item>
-          <el-form-item label="检修内容：" style="height:auto;">
+          <el-form-item label="保养内容：" style="height:auto;">
             <el-input type="textarea" v-model="companyName.maintenanceCc" style="width:100%;"></el-input>
           </el-form-item>
         </el-form>

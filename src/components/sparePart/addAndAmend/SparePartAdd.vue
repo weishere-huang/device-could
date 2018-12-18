@@ -5,8 +5,10 @@
         size="small"
         type="primary"
         @click="toBack"
+        icon="el-icon-arrow-left"
       >返回</el-button>
-      <el-button size="small" type="primary" @click="btisok">保存</el-button>
+      <el-button size="small" type="primary" @click="btisok">
+        <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
     </div>
     <div class="basic-information">
       <h5>备件基本信息</h5>

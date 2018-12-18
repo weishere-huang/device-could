@@ -65,10 +65,8 @@
           </div>
         </div>
         <div class="right">
-          <el-button-group>
           <el-button size="mini" type="primary" @click="deletes">清空</el-button>
           <el-button size="mini" type="primary" @click="toAdd">确定</el-button>
-          </el-button-group>
           <div class="personList">
             <ul @click="getId">
               <li v-for="(item, index) in personListValue" :key="index">

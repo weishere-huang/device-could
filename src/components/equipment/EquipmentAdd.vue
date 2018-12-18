@@ -3,8 +3,8 @@
     <div class="addCase">
       <div class="top">
         <el-row>
-          <el-button plain size="small" type="primary" @click="tback">返回</el-button>
-          <el-button plain size="small" type="primary" @click="addwarning">保存</el-button>
+          <el-button  size="small" type="primary" @click="tback" icon="el-icon-arrow-left">返回</el-button>
+          <el-button  size="small" type="primary" @click="addwarning"><i style='font-size:12px' class='iconfont'>&#xe645;</i> &nbsp;保存</el-button>
         </el-row>
       </div>
       <div class="center">

@@ -4,7 +4,7 @@
       <el-button-group>
         <el-button-group>
           <el-button @click="toBack" type="primary" size="small">返回</el-button>
-          <el-button size="small" type="primary" @click="outerVisible=true">提交审核</el-button>
+          <el-button size="small" type="primary" @click="outerVisible=true" v-if="isOk">提交审核</el-button>
         </el-button-group>
       </el-button-group>
       <!-- 审核弹框 -->
@@ -285,6 +285,7 @@
   export default {
     data() {
       return {
+        isOk:true,
         imgPath:[],
         examine:{
           desc:"",
@@ -1082,6 +1083,11 @@
 
       //工单信息
       workInfoValue(value){
+        if (value.state ===0){
+          this.isOk = true
+        } else{
+          this.isOk = false
+        }
         this.workInfo = value;
         if (value.workType ===0){
           this.workInfo.workType = "检修"
