@@ -297,6 +297,7 @@
             <el-input
               v-model="sizeForm.buyPrice"
               style="width:215px"
+              type="number"
             ></el-input>
           </el-form-item>
           <el-form-item label="购买日期">
@@ -366,7 +367,7 @@ export default {
   data() {
     return {
       fileList:[],
-      fileList1: [],
+      fileList1:[],
       qqqqq: "",
       dialogVisible3: false,
       dialogVisible1: false,
@@ -516,11 +517,13 @@ export default {
       console.log(res);
       console.log("handleAvatarSuccess")
       console.log(file);
+      console.log(this.fileList);
       this.fileList1.push({
-        url:res.data,
+        img:res.data,
         name:file.name
       })
       console.log(this.fileList);
+      // console.log(this.fileList1);
     },
     handleRemove1(file, fileList) {
       console.log(file);
@@ -610,7 +613,7 @@ export default {
         deviceState: this.sizeForm.deviceState,
         organizeCode: this.sizeForm.organizeCode,
         enterFactoryDate: this.sizeForm.enterFactoryDate,
-        // deviceDataInfo: JSON.stringify(this.fileList1),
+        deviceDataInfo: JSON.stringify(this.fileList1),
          // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo)
         devicePersonnelInfo: JSON.stringify(_devicePersonnelInfo)
       });
@@ -736,8 +739,9 @@ export default {
             //this.aaaa.value = this.sizeForm.deviceState;
           this.personAddHandler = this.devicePersonnelInfoBase;
 
-          this.fileList = result.data.data.deviceDataInfo;
-          this.fileList1 = result.data.data.deviceDataInfo;
+          this.fileList = JSON.parse(result.data.data.deviceDataInfo);
+          this.fileList1 = JSON.parse(result.data.data.deviceDataInfo);
+
           console.log(this.fileList);
           console.log(this.fileList1);
           console.log("---------------");

@@ -79,15 +79,33 @@
                   <el-card shadow="always" class="cardItem">
                     <div slot="header" class="clearfix">
                       <span class="cardItem-header">
-                        <!-- <el-tooltip
+                        <el-tooltip
+                          v-if="item.runState===1"
+                          class="item"
+                          effect="light"
+                          content="黄色预警，请检查设备"
+                          placement="top"
+                        >
+                          <i class="iconfont c-yellow">&#xe651;</i>
+                        </el-tooltip>
+                        <el-tooltip
+                          v-if="item.runState===2"
+                          class="item"
+                          effect="light"
+                          content="橙色预警，请立即检查设备"
+                          placement="top"
+                        >
+                          <i class="iconfont c-orange">&#xe651;</i>
+                        </el-tooltip>
+                        <el-tooltip
+                          v-if="item.runState===3"
                           class="item"
                           effect="light"
                           content="严重警报，请立即检查设备"
                           placement="top"
                         >
                           <i class="iconfont c-red">&#xe651;</i>
-                        </el-tooltip>&nbsp;常减压装置 -->
-                        
+                        </el-tooltip>
                         {{item.deviceName}}
                       </span>
                       <router-link
@@ -410,7 +428,7 @@ export default {
       this
     ).then(
       (res) => {
-        console.log(res);
+        console.log(res.data.data.content);
         this.equipmentOperationalCondition=res.data.data.content
         //window.setTimeout(() => {this.$refs.tree.setCurrentKey("1024");}, 1000);
       }
