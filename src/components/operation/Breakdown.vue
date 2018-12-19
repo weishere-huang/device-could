@@ -5,13 +5,13 @@
         <el-button
           size="small"
           type="primary"
-          @click="outerVisibleIsOk"
-        >审核</el-button>
-        <el-button
-          size="small"
-          type="primary"
-          @click="dispel"
-        >故障消除</el-button>
+          @click="load"
+        >刷新</el-button>
+        <!--<el-button-->
+          <!--size="small"-->
+          <!--type="primary"-->
+          <!--@click="dispel"-->
+        <!--&gt;故障消除</el-button>-->
         <!-- 故障消除弹框 -->
         <el-dialog
           title="故障消除"
@@ -210,12 +210,6 @@
         pageIsOk: true,
         columns: [
           {
-            width: 50,
-            titleAlign: "center",
-            columnAlign: "center",
-            type: "selection"
-          },
-          {
             field: "faultNo",
             title: "故障编号",
             width: 80,
@@ -291,7 +285,7 @@
           {
             field: "custome-adv",
             title: "操作",
-            width: 100,
+            width: 120,
             titleAlign: "center",
             columnAlign: "center",
             componentName: "table-breakdown"
@@ -317,8 +311,10 @@
           this.toDeleteBreak(params.rowData.id);
         } else if (params.type === "edit") {
           this.toDetails(params.index, params.rowData);
-        } else if (params.type === "stop") {
-          alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
+        }else if(params.type === "dispel"){
+          params.rowData.state ==="待处理" ?　this.dispel() : this.$message.error('对不起、不能消除'+params.rowData.state+'的计划')
+        }else if(params.type === "submitAudit"){
+          params.rowData.state ==="待审核" ?　this.outerVisible = true : this.$message.error('对不起、不能审核'+params.rowData.state+'的计划')
         }
       },
       toDetails(rowIndex, rowData, column) {
@@ -502,15 +498,7 @@
         );
       },
       dispel() {
-        if (this.arr.length === 1) {
-          this.dialogVisible = true;
-        }
-        if (this.arr.length > 1) {
-          alert("抱歉、只能单个处理");
-        }
-        if (this.arr.length === 0) {
-          alert("请选择要处理的故障");
-        }
+        this.dialogVisible = true;
       },
       toDispel() {
         let qs = require("qs");
@@ -571,7 +559,6 @@
             );
           })
           .catch(_=>{
-            console.log("stop")
           })
 
       },
@@ -580,14 +567,16 @@
         this.innerVisible = params.hide;
       },
       isSubmitAudit(){
-        if (this.formLabelAlign.radio!=1){
-          if(!this.toAuditName==""||this.formLabelAlign.type){
+        if (this.formLabelAlign.radio!==1){
+          if(this.toAuditName!==""||this.formLabelAlign.type){
             this.toSubmitAudit();
           }else{
             this.$message.error('请选择终审或添加下一审核人')
           }
-        }else{
+        }else if(this.formLabelAlign.desc!==""){
           this.toSubmitAudit();
+        }else{
+          this.$message.error("请填写驳回原因")
         }
       },
       toSubmitAudit() {
@@ -669,10 +658,19 @@
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
             <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe734;</i></a>
         </el-tooltip>
+         &nbsp;
+        <el-tooltip class="item" effect="dark" content="审核" placement="top">
+            <a href="" style="text-decoration: none;color:#2474c5"><i @click.stop.prevent="submitAudit(rowData,index)" style='font-size:16px' class='iconfont'>&#xe61d;</i></a>
+          </el-tooltip>
+         &nbsp;
+        <el-tooltip class="item" effect="dark" content="消除" placement="top">
+            <a href="" style="text-decoration: none;color:#2474c5"><i @click.stop.prevent="dispel(rowData,index)" style='font-size:16px' class='iconfont'>&#xe645;</i></a>
+          </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
             <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>
           </el-tooltip>
+
         </span>`,
     props: {
       rowData: {
@@ -694,6 +692,15 @@
       deleteRow() {
         // 参数根据业务场景随意构造
         let params = { type: "delete", rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      },
+      dispel() {
+        // 参数根据业务场景随意构造
+        let params = { type: "dispel", rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      },
+      submitAudit(){
+        let params = { type: "submitAudit", rowData: this.rowData };
         this.$emit("on-custom-comp", params);
       }
     }

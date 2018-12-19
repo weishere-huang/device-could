@@ -137,12 +137,6 @@
           maintenanceCc:""
         },
         columns: [
-          // {
-          //   width: 50,
-          //   titleAlign: "center",
-          //   columnAlign: "center",
-          //   type: "selection"
-          // },
           {
             field: "deviceNo",
             title: "设备编号",

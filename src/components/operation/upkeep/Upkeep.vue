@@ -7,12 +7,12 @@
           type="primary"
           @click="toUpkeepAdd"
         >添加</el-button>
-        <el-button
-          size="small"
-          type="primary"
-          @click="outerVisibleIsOk"
-          :disabled="disabled"
-        >审核</el-button>
+        <!--<el-button-->
+          <!--size="small"-->
+          <!--type="primary"-->
+          <!--@click="outerVisibleIsOk"-->
+          <!--:disabled="disabled"-->
+        <!--&gt;审核</el-button>-->
         <el-dialog
           title="审核"
           :beforeClose="cancel"
@@ -165,12 +165,6 @@ export default {
       tableDate: [],
       columns: [
         {
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
-        {
           field: "planName",
           title: "计划名称",
           width: 150,
@@ -264,7 +258,7 @@ export default {
         {
           field: "custome-adv",
           title: "操作",
-          width: 100,
+          width: 120,
           titleAlign: "center",
           columnAlign: "center",
           componentName: "table-upkeep"
@@ -288,18 +282,17 @@ export default {
       if (params.type === "delete") {
         // do delete operation
         this.deleteMaintenanceOne(params.rowData["id"]);
-        // this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
         // do edit operation
         this.toAmend(params.index, params.rowData);
-        // alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
       } else if (params.type === "stop") {
-        // do edit operation
         this.stopDiscontinuationOne(
           params.rowData["id"],
           params.rowData["state"]
         );
-        // alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
+      }else if (params.type === "submitAudit") {
+        this.maintenanceIds = params.rowData.id;
+        params.rowData.state==="待审核" ? this.outerVisible = true : this.$message.error('对不起、不能审核'+params.rowData.state+'的计划')
       }
     },
     toAmend(rowIndex, rowData, column) {
@@ -563,8 +556,10 @@ export default {
         }else{
           this.$message.error('请选择终审或添加下一审核人')
         }
-      }else{
+      }else  if(this.formLabelAlign.desc!==""){
         this.toSubmitAudit();
+      }else{
+        this.$message.error("请填写驳回原因")
       }
     },
 
@@ -624,6 +619,10 @@ Vue.component("table-upkeep", {
         <el-tooltip class="item" effect="dark" content="停止" placement="top">
             <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="stop(rowData,index)" style='font-size:16px' class='iconfont'>&#xe603;</i></a>
         </el-tooltip>
+         &nbsp;
+        <el-tooltip class="item" effect="dark" content="审核" placement="top">
+            <a href="" style="text-decoration: none;color:#409EFF"><i @click.stop.prevent="submitAudit(rowData,index)" style='font-size:16px' class='iconfont'>&#xe61d;</i></a>
+          </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
             <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>
@@ -653,6 +652,10 @@ Vue.component("table-upkeep", {
     },
     stop() {
       let params = { type: "stop", rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    },
+    submitAudit() {
+      let params = { type: "submitAudit", rowData: this.rowData };
       this.$emit("on-custom-comp", params);
     }
   }
