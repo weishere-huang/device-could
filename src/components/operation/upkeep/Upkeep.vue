@@ -6,7 +6,7 @@
           size="small"
           type="primary"
           @click="toUpkeepAdd"
-        >添加</el-button>
+        ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</el-button>
         <!--<el-button-->
           <!--size="small"-->
           <!--type="primary"-->

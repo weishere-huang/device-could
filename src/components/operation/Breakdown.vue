@@ -6,7 +6,7 @@
           size="small"
           type="primary"
           @click="load"
-        >刷新</el-button>
+        ><i style='font-size:12px' class='iconfont'>&#xe614;</i>&nbsp;刷新</el-button>
         <!--<el-button-->
           <!--size="small"-->
           <!--type="primary"-->
@@ -64,7 +64,7 @@
             size="small"
             @click="search"
             type="primary"
-          >搜索</el-button>
+          ><i class='el-icon-search'></i>&nbsp;搜索</el-button>
         </div>
       </div>
       <div class="bottom">
