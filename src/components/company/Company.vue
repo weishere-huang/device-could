@@ -32,6 +32,7 @@
             placeholder="根据企业名称"
             size="small"
             v-model="name"
+            @keyup.enter.native="findByName"
           ></el-input>
           <el-button
             size="small"

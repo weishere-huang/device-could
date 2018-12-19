@@ -1,7 +1,7 @@
 <template>
     <div class="navbar clearfix">
         <el-breadcrumb class="breadcrumb-container" separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item v-for="item in levelList" :key="item.path" :to="item.path">{{item.meta.title}}</el-breadcrumb-item>
+            <el-breadcrumb-item v-for="item in levelList" :key="item.path" :to="item.path">{{item.meta.pageName}}</el-breadcrumb-item>
         </el-breadcrumb>
     </div>
 </template>
@@ -32,10 +32,10 @@
                 // }
                 // this.levelList = matched
                 let matched = this.$route.matched.filter(item => item.name)
-                let rList = [{ path: '/Home', meta: { title: '工作台' }}];
+                let rList = [{ path: '/Home', meta: { pageName: '工作台' }}];
                 matched.forEach(item => {
                     if(item.path!=='/Home')
-                        rList.push({ path: item.path, meta: { title: item.props.default.title}});
+                        rList.push({ path: item.path, meta: { pageName: item.props.default.title}});
                 });
                 this.levelList = rList;
             }
