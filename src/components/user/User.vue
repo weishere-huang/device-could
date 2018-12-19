@@ -506,6 +506,7 @@ Vue.component("switch-user", {
       border-radius: 5px;
       padding: 10px;
       margin-top: 10px;
+      
     }
   }
 }
