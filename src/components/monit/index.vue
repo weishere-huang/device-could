@@ -6,10 +6,19 @@
   <div>
     <div v-bind:class="activeClass">
       <el-container>
-        <el-aside width="200px" class="equTypeListBar">
-          <el-collapse v-model="activeNames" @change="collapseItemChange">
-            <el-collapse-item title="组织机构" name="1">
-              <div>
+        <el-aside
+          width="200px"
+          class="equTypeListBar"
+        >
+          <el-collapse
+            v-model="activeNames"
+            @change="collapseItemChange"
+          >
+            <el-collapse-item
+              title="组织机构"
+              name="1"
+            >
+              <div style="max-height:300px;overflow:scroll;">
                 <el-tree
                   ref="tree"
                   :data="organizationTreeData"
@@ -22,8 +31,11 @@
                 ></el-tree>
               </div>
             </el-collapse-item>
-            <el-collapse-item title="设备类别" name="2">
-              <div>
+            <el-collapse-item
+              title="设备类别"
+              name="2"
+            >
+              <div style="max-height:300px;overflow:scroll;">
                 <el-tree
                   ref="tree2"
                   :data="equTypeTreeData"
@@ -55,7 +67,12 @@
           <section class="topWrap">
             <div>当前设备组：常减压产线组 / 数量（台）：{{pageEquCount}}</div>
             <div>刷新频次：
-              <el-select v-model="refreshValue" size="small" placeholder="请选择" style="width:100px">
+              <el-select
+                v-model="refreshValue"
+                size="small"
+                placeholder="请选择"
+                style="width:100px"
+              >
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -63,7 +80,11 @@
                   :value="item.value"
                 ></el-option>
               </el-select>
-              <el-button size="small" type="primary" @click="reload()">
+              <el-button
+                size="small"
+                type="primary"
+                @click="reload()"
+              >
                 <i class="el-icon-refresh"></i> 立即刷新
               </el-button>
             </div>
@@ -75,12 +96,22 @@
           <section class="equListWrap">
             <div>
               <el-row>
-                <el-col :span="6" v-for="(item, index) in equipmentOperationalCondition" :key="index">
-                  <el-card shadow="always" class="cardItem">
-                    <div slot="header" class="clearfix">
+                <el-col
+                  :span="6"
+                  v-for="(item, index) in equipmentOperationalCondition"
+                  :key="index"
+                >
+                  <el-card
+                    shadow="always"
+                    class="cardItem"
+                  >
+                    <div
+                      slot="header"
+                      class="clearfix"
+                    >
                       <span class="cardItem-header">
                         <el-tooltip
-                          v-if="item.runState===1"
+                          v-if="item.warnLevel===1"
                           class="item"
                           effect="light"
                           content="黄色预警，请检查设备"
@@ -89,7 +120,7 @@
                           <i class="iconfont c-yellow">&#xe651;</i>
                         </el-tooltip>
                         <el-tooltip
-                          v-if="item.runState===2"
+                          v-if="item.warnLevel===2"
                           class="item"
                           effect="light"
                           content="橙色预警，请立即检查设备"
@@ -98,7 +129,7 @@
                           <i class="iconfont c-orange">&#xe651;</i>
                         </el-tooltip>
                         <el-tooltip
-                          v-if="item.runState===3"
+                          v-if="item.warnLevel===3"
                           class="item"
                           effect="light"
                           content="严重警报，请立即检查设备"
@@ -213,11 +244,14 @@ const initTreeDataForEquType = function(nodeData, parentCode) {
     });
 };
 export default {
-  inject:['reload'],
+  inject: ["reload"],
   data() {
     return {
-      activeClass: this.$route.params.deviceId !== undefined ? "monitWrap hide" : "monitWrap show",//`monitWrap`,
-      pageEquCount:0,
+      activeClass:
+        this.$route.params.deviceId !== undefined
+          ? "monitWrap hide"
+          : "monitWrap show", //`monitWrap`,
+      pageEquCount: 0,
       selectOrganizeCode: "",
       activeNames: ["1", "2", "3"],
       organizationTreeData: [],
@@ -266,9 +300,11 @@ export default {
         }
       ],
       refreshValue: "60",
-      equipmentOperationalCondition:[],
-      organizeCode:JSON.parse(sessionStorage.getItem("user")).organizeCode,
-      deviceCategory:''
+      equipmentOperationalCondition: [],
+      organizeCode: JSON.parse(sessionStorage.getItem("user")).organizeCode,
+      deviceCategory: "",
+      basicStateCount: "",
+      type:"",
     };
   },
   watch: {
@@ -280,7 +316,7 @@ export default {
   },
   created: function() {
     console.log();
-    
+
     this.Axios(
       {
         url: ["/organize/allOrganize", "/deviceCategory/all"],
@@ -288,28 +324,26 @@ export default {
         params: {}
       },
       this
-    ).then(
-      ([res1, res2]) => {
-        console.log(res2.data.data);
-        if (res1.data.data.length) {
-          this.organizationTreeData = initTreeDataForOrganization(
-            res1.data.data,
-            "0"
-          );
-          this.$store.commit('getCode',res1.data.data[0].code)
-          
-          this.setPinOption();
-          this.getEquList();
-        } else {
-          this.organizationEmptytTxt = "暂无数据";
-        }
-        if (res2.data.data.length)
-          this.equTypeTreeData = initTreeDataForEquType(res2.data.data, "0");
-        else this.equTypeEmptytTxt = "暂无数据";
+    ).then(([res1, res2]) => {
+      console.log(res2.data.data);
+      if (res1.data.data.length) {
+        this.organizationTreeData = initTreeDataForOrganization(
+          res1.data.data,
+          "0"
+        );
+        this.$store.commit("getCode", res1.data.data[0].code);
 
-        //window.setTimeout(() => {this.$refs.tree.setCurrentKey("1024");}, 1000);
+        this.setPinOption();
+        this.getEquList();
+      } else {
+        this.organizationEmptytTxt = "暂无数据";
       }
-    );
+      if (res2.data.data.length)
+        this.equTypeTreeData = initTreeDataForEquType(res2.data.data, "0");
+      else this.equTypeEmptytTxt = "暂无数据";
+
+      //window.setTimeout(() => {this.$refs.tree.setCurrentKey("1024");}, 1000);
+    });
   },
   mounted: function() {
     // 基于准备好的dom，初始化echarts实例
@@ -327,138 +361,211 @@ export default {
           type: "get",
           params: {
             organizeCode: this.organizeCode,
-            deviceCategory:this.deviceCategory
+            deviceCategory: this.deviceCategory
           },
           option: { requestTarget: "r" }
         },
         this
-      ).then(
-        ([res2_1, res2_2]) => {
-          const chartLeft = echarts.init(document.getElementById("pinLeft"));
-          const chartRight = echarts.init(document.getElementById("pinRight"));
-          const baseState=res2_1.data.data;
-          const warnState=res2_2.data.data;
-          this.pageEquCount=baseState.count||0;
-          chartLeft.setOption({
-            title: {
-              text: "设备基本状态",
-              subtext: "统计设备量："+baseState.count||0,
-              x: "center"
-            },
-            tooltip: {
-              trigger: "item",
-              formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-              orient: "vertical",
-              left: "left",
+      ).then(([res2_1, res2_2]) => {
+        const chartLeft = echarts.init(document.getElementById("pinLeft"));
+        const chartRight = echarts.init(document.getElementById("pinRight"));
+        const baseState = res2_1.data.data;
+        const warnState = res2_2.data.data;
+        this.pageEquCount = baseState.count || 0;
+        const self=this;
+        chartLeft.setOption({
+          title: {
+            text: "设备基本状态",
+            subtext: "统计设备量：" + baseState.count || 0,
+            x: "center"
+          },
+          tooltip: {
+            trigger: "item",
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          legend: {
+            orient: "vertical",
+            left: "left",
+            data: ["正常运行", "故障待处理", "维修中", "关机中", "断线"]
+          },
+          series: [
+            {
+              name: "设备状态",
+              type: "pie",
+              radius: "55%",
+              center: ["50%", "60%"],
+              stillShowZeroSum: false,
               data: [
-                "正常运行",
-                "故障待处理",
-                "维修中",
-                "关机中",
-                "断线"
-              ]
-            },
-            series: [
-              {
-                name: "设备状态",
-                type: "pie",
-                radius: "55%",
-                center: ["50%", "60%"],
-                stillShowZeroSum:false,
-                data: [
-                  {value: baseState.normal||0,name: "正常运行",itemStyle: { color: "#008000" }},
-                  {value: baseState.fault||0,name: "故障待处理",itemStyle: { color: "#FF0000" }},
-                  { value: baseState.maintenance||0, name: "维修中", itemStyle: { color: "#FFD700" } },
-                  { value: baseState.showdown||0, name: "关机中", itemStyle: { color: "#909090" } },
-                  { value: baseState.unline||0, name: "断线", itemStyle: { color: "#CDC9C9" } }
-                ],
-                itemStyle: {
-                  emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: "rgba(0, 0, 0, 0.5)"
-                  }
+                {
+                  value: baseState.normal || 0,
+                  name: "正常运行",
+                  itemStyle: { color: "#008000" }
+                },
+                {
+                  value: baseState.fault || 0,
+                  name: "故障待处理",
+                  itemStyle: { color: "#FF0000" }
+                },
+                {
+                  value: baseState.maintenance || 0,
+                  name: "维修中",
+                  itemStyle: { color: "#FFD700" }
+                },
+                {
+                  value: baseState.showdown || 0,
+                  name: "关机中",
+                  itemStyle: { color: "#909090" }
+                },
+                {
+                  value: baseState.unline || 0,
+                  name: "断线",
+                  itemStyle: { color: "#CDC9C9" }
+                }
+              ],
+              itemStyle: {
+                emphasis: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: "rgba(0, 0, 0, 0.5)"
                 }
               }
-            ]
-          });
-          chartRight.setOption({
-            title: {
-              text: "设备预警状态",
-              subtext: "统计设备量："+warnState.count,
-              x: "center"
-            },
-            tooltip: {
-              trigger: "item",
-              formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-              orient: "vertical",
-              left: "left",
-              data: ["正常", "橙色预警", "黄色预警", "红色预警", "断线"]
-            },
-            series: [
-              {
-                name: "设备状态",
-                type: "pie",
-                radius: "55%",
-                center: ["50%", "60%"],
-                data: [
-                  { value: warnState.normal||0, name: "正常", itemStyle: { color: "#008000" } },
-                  {value: warnState.orange||0,name: "橙色预警",itemStyle: { color: "#FF8C00" }},
-                  {value: warnState.yellow||0,name: "黄色预警",itemStyle: { color: "#CDCD00" }},
-                  {value: warnState.red||0,name: "红色预警",itemStyle: { color: "#FF0000" }},
-                  { value: warnState.unline||0, name: "断线", itemStyle: { color: "#CDC9C9" } }
-                ],
-                itemStyle: {
-                  emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: "rgba(0, 0, 0, 0.5)"
-                  }
-                }
-              }
-            ]
-          });
+            }
+          ]
         });
+        chartRight.setOption({
+          title: {
+            text: "设备预警状态",
+            subtext: "统计设备量：" + warnState.count,
+            x: "center"
+          },
+          tooltip: {
+            trigger: "item",
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          legend: {
+            orient: "vertical",
+            left: "left",
+            data: ["正常", "橙色预警", "黄色预警", "红色预警", "断线"]
+          },
+          series: [
+            {
+              name: "设备状态",
+              type: "pie",
+              radius: "55%",
+              center: ["50%", "60%"],
+              data: [
+                {
+                  value: warnState.normal || 0,
+                  name: "正常",
+                  itemStyle: { color: "#008000" }
+                },
+                {
+                  value: warnState.orange || 0,
+                  name: "橙色预警",
+                  itemStyle: { color: "#FF8C00" }
+                },
+                {
+                  value: warnState.yellow || 0,
+                  name: "黄色预警",
+                  itemStyle: { color: "#CDCD00" }
+                },
+                {
+                  value: warnState.red || 0,
+                  name: "红色预警",
+                  itemStyle: { color: "#FF0000" }
+                },
+                {
+                  value: warnState.unline || 0,
+                  name: "断线",
+                  itemStyle: { color: "#CDC9C9" }
+                }
+              ],
+              itemStyle: {
+                emphasis: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: "rgba(0, 0, 0, 0.5)"
+                }
+              }
+            }
+          ]
+        });
+        // eConsole(param) {
+        //   if (param.data.name === "正常运行") {
+        //     this.basicStateCount = 0;
+        //   }
+        //   console.log(param.data.name);
+        // }
+        chartLeft.on("click", function (param) { 
+          if (param.data.name === "正常运行") {
+            self.basicStateCount = 0;
+          }else if (param.data.name === "故障待处理") {
+            self.basicStateCount = 1;
+          }else if (param.data.name === "维修中") {
+            self.basicStateCount = 2;
+          }else if (param.data.name === "关机中") {
+            self.basicStateCount = 3;
+          }else if (param.data.name === "断线") {
+            self.basicStateCount = 4;
+          }
+          self.type=0
+          console.log(param.data.name,self.basicStateCount);
+          self.getEquList()
+         });
+         chartRight.on("click", function (param) { 
+          if (param.data.name === "正常") {
+            self.basicStateCount = 0;
+          }else if (param.data.name === "黄色预警") {
+            self.basicStateCount = 1;
+          }else if (param.data.name === "橙色预警") {
+            self.basicStateCount = 2;
+          }else if (param.data.name === "红色预警") {
+            self.basicStateCount = 3;
+          }else if (param.data.name === "断线") {
+            self.basicStateCount = 4;
+          }
+          self.type=1
+          console.log(param.data.name,self.basicStateCount);
+          self.getEquList()
+         });
+      });
     },
-    getEquList(selectOrganizeCode){
+    
+    getEquList(selectOrganizeCode) {
       this.Axios(
-      {
-        url: "/deviceState/listDeviceByState",
-        type: "get",
-        params: {
-          organizeCode:this.organizeCode,
-          deviceCategory:this.deviceCategory,
-          size:100
+        {
+          url: "/deviceState/listDeviceByState",
+          type: "get",
+          params: {
+            organizeCode: this.organizeCode,
+            deviceCategory: this.deviceCategory,
+            state: this.basicStateCount,
+            type:this.type,
+            size: 100
+          },
+          option: { requestTarget: "r" }
         },
-        option: { requestTarget: "r" }
-      },
-      this
-    ).then(
-      (res) => {
-        // console.log(res.data.data.content);
-        this.equipmentOperationalCondition=res.data.data.content
+        this
+      ).then(res => {
+        console.log(res.data.data.content);
+        this.equipmentOperationalCondition = res.data.data.content;
         //window.setTimeout(() => {this.$refs.tree.setCurrentKey("1024");}, 1000);
-      }
-    );
+      });
     },
     collapseItemChange(val) {
       console.log(val);
     },
     treeNodeClick(data) {
       console.log(data);
-      this.organizeCode=data.id
-      this.setPinOption()
-      this.getEquList()
+      this.organizeCode = data.id;
+      this.setPinOption();
+      this.getEquList();
     },
-    classifyNodeclick(data){
+    classifyNodeclick(data) {
       console.log(data);
-      this.deviceCategory=data.id
-      this.setPinOption()
-      this.getEquList()
+      this.deviceCategory = data.id;
+      this.setPinOption();
+      this.getEquList();
     }
   }
 };

@@ -283,6 +283,7 @@
               label-width="100px"
               :model="workReceiptInfo"
               v-for="item of workReceiptInfo"
+              :key="item.id"
             >
               <el-form-item label="施工人员：">
                 <span>{{item.builder}}</span>

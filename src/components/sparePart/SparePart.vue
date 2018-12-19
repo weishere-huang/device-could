@@ -108,8 +108,8 @@ export default {
           overflowTitle: true,
           formatter: function(rowData, rowIndex, pagingIndex, field) {
             return rowData.partCategory === 2
-              ?`<span style="color:red">关键</span>`
-              :`<span style="color:cornflowerblue">普通</span>`
+              ?`<span style="color:#ff6600">关键</span>`
+              :`<span >普通</span>`
           },
         },
         {

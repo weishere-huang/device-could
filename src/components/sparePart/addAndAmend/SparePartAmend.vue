@@ -12,8 +12,10 @@
         :model="formInline"
         class="demo-form-inline"
         label-width="100px"
+        ref="baseinfo"
+        :rules="rules1"
       >
-        <el-form-item label="备件编号：">
+        <el-form-item label="备件编号：" prop="partNo">
           <el-input
             v-model="formInline.partNo"
             placeholder=""
@@ -21,7 +23,7 @@
             style="width:200px"
           ></el-input>
         </el-form-item>
-        <el-form-item label="备件名称：">
+        <el-form-item label="备件名称：" prop="partName">
           <el-input
             v-model="formInline.partName"
             placeholder=""
@@ -35,8 +37,10 @@
         :model="formInline"
         class="demo-form-inline"
         label-width="100px"
+        ref="ggform"
+        :rules="rules2"
       >
-        <el-form-item label="型号/规格：">
+        <el-form-item label="型号/规格：" prop="partModel">
           <el-input
             v-model="formInline.partModel"
             placeholder=""
@@ -178,6 +182,25 @@
         classfyname:"",
         classfycode:"",
 
+        rules1:{
+          partNo:[
+            {required: true, message: '请输入备件编号', trigger: 'blur'},
+            {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
+          ],
+          partName:[
+            {required: true, message: '请输入设备名称', trigger: 'blur'},
+            {max: 20, message: '备件名称过长', trigger: 'blur'}
+          ]
+        },
+        rules2:{
+          partModel:[
+            {required: true, message: '请输入规格型号', trigger: 'blur'},
+            {max: 20, message: '长度在 20 个字符以内', trigger: 'blur'}
+          ],
+          // partCategory:[
+          //   {required: true, message: '请选择备件级别', trigger: 'blur'},
+          // ]
+        }
       };
     },
     methods: {
@@ -237,19 +260,38 @@
           );
       },
       btisok() {
+        let subok = true;
 
-        this.$confirm('确定完成修改吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.baseupdate();
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消操作'
-          });
+        this.$refs['baseinfo'].validate((valid) => {
+          if (valid) {
+          } else {
+            subok = false;
+            return false;
+          }
         });
+        this.$refs['ggform'].validate((valid) => {
+          if (valid) {
+          } else {
+            subok = false;
+            return false;
+          }
+        });
+        if(subok){
+          this.$confirm('确定完成修改吗?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.baseupdate();
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消操作'
+            });
+          });
+        }else{
+          this.$message.warning("请完善备件信息");
+        }
       },
 
       filterArray(data, parent) {
@@ -308,7 +350,7 @@
             result => {
               this.formInline = result.data.data;
               this.classfyname=this.formInline.partClassifyName;
-              this.classfyid=this.formInline.partClassify;
+              this.classfycode =this.formInline.partClassify;
               console.log(resule.data.data);
             },
             ({type, info}) => {
