@@ -33,6 +33,7 @@
             placeholder="如员工姓名，手机，部门，岗位"
             size="small"
             v-model="searchs"
+            @keyup.enter.native="search"
           ></el-input>
           <el-button
             size="small"
@@ -233,7 +234,6 @@ export default {
           if (this.searchs !== "") {
             this.pageNumber = response.data.data.totalElements;
             this.tableData = response.data.data.content;
-            this.searchs = "";
             for (let i in this.tableData) {
               this.tableData[i].state =String(this.tableData[i].state)
               

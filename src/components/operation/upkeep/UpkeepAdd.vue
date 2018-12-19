@@ -122,7 +122,7 @@
             :table-data="personData"
             row-hover-color="#eee"
             row-click-color="#edf7ff"
-            row-height=24
+            row-height=30
           ></v-table>
         </div>
       </el-dialog>
