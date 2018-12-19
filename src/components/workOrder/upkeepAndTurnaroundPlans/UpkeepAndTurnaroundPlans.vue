@@ -1,8 +1,9 @@
 <template>
   <div class="breakdown-order">
     <div class="top">
-        <el-button size="small" type="primary" @click="toBack">返回</el-button>
-        <el-button size="small" type="primary" @click="outerVisible=true" v-if="isOk">提交审核</el-button>
+        <el-button size="small" type="primary" @click="toBack" icon="el-icon-arrow-left">返回</el-button>
+        <el-button size="small" type="primary" @click="outerVisible=true" v-if="isOk">
+          <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;提交审核</el-button>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
         <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
@@ -21,7 +22,8 @@
             </el-form-item>
             <el-form-item label="下一级审批人：" v-if="examine.type!=true">
               <el-input v-model="toExamine.name" size="mini" style="width:60%"></el-input>
-              <el-button type="primary" @click="personLoad" size="mini">添加审批人</el-button>
+              <el-button type="primary" @click="personLoad" size="mini">
+                <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加审批人</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -29,7 +31,7 @@
           <div style="padding:10px">
             <div class="search" style="padding:10px 0">
               <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
-              <el-button type="primary" size="mini" @click="search">搜索</el-button>
+              <el-button type="primary" size="mini" @click="search"><i class='el-icon-search'></i>&nbsp;搜索</el-button>
               <span style="padding:0 10px;">最近搜索：</span>
               <span style="text-decoration: underline;"></span>
             </div>
@@ -65,8 +67,10 @@
 
         </el-dialog>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="goExit" size="mini">取 消</el-button>
-          <el-button @click="examineUp" type="primary" size="mini">提 交</el-button>
+          <el-button @click="goExit" size="mini">
+            <i style='font-size:12px' class='iconfont'>&#xe729;</i>&nbsp;取 消</el-button>
+          <el-button @click="examineUp" type="primary" size="mini">
+            <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;提 交</el-button>
         </div>
       </el-dialog>
       <!-- 审核弹框结束 -->
@@ -179,8 +183,10 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-              <el-button  type="primary" size="mini" @click="listBasicInfo">添加物料</el-button>
-              <el-button  type="primary" @click="insertPart" size="mini">保存列表</el-button>
+              <el-button  type="primary" size="mini" @click="listBasicInfo">
+                <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加物料</el-button>
+              <el-button  type="primary" @click="insertPart" size="mini">
+                <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存列表</el-button>
           </div>
           <v-table
             is-horizontal-resize
@@ -221,7 +227,8 @@
                   style="width:50%;"
                   placeholder="关键词：设备编号、备件名称、型号/规格"
                 ></el-input>
-                <el-button type="primary" @click="goDownEntryInfo" size="mini">查询</el-button>
+                <el-button type="primary" @click="goDownEntryInfo" size="mini">
+                  <i class='el-icon-search'></i>&nbsp;查询</el-button>
               </div>
               <v-table
                 is-horizontal-resize
@@ -252,7 +259,8 @@
             </div>
             <div class="add">
               <div style="text-align:center">
-                <el-button type="primary" @click="deleteBasic" size="mini">提交</el-button>
+                <el-button type="primary" @click="deleteBasic" size="mini">
+                  <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
               </div>
               <ul>
                 <h6>已选择</h6>
@@ -689,7 +697,6 @@
       };
     },
     methods: {
-
       customCompFunc(params) {
         if (params.type === "delete") {
           this.workSheetMaterialTableData = this.workSheetMaterialTableData.filter(item=>item.id!=params.rowData["id"]);
@@ -699,7 +706,7 @@
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
         this.workSheetMaterialTableData[rowIndex][field] = newValue;
-        // 接下来处理你的业务逻辑，数据持久化等...
+        this.workSheetMaterialTableData = Array.from(new Set(this.workSheetMaterialTableData))
       },
       selectGroupChange(selection) {
         console.log("select-group-change", selection);
@@ -1063,6 +1070,7 @@
       },
       //保存备品备件页面并传值到详情页
       deleteBasic(){
+        console.log("ok");
         this.dialogVisible2 = false;
         this.workSheetMaterialTableData = (this.workSheetMaterialTableData||[]).concat(this.personListValue);
         this.workSheetMaterialTableData.forEach(function (item){item.planCount = 0});
