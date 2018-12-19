@@ -59,9 +59,16 @@
                     style="width:100%"
                     row-hover-color="#eee"
                     row-click-color="#edf7ff"
+                    ref="singleTable"
+                    row-height="30"
                 ></v-table>
                 <div class="pagerWrap">
-                    <v-pagination :total="runningLog.totalElements"></v-pagination>
+                    <v-pagination :total="runningLog.totalElements" 
+                    @page-change="pageChange"
+                    @page-size-change="pageSizeChange"
+                    :page-size="pageSize"
+                    :page-index="pageIndex"
+                    :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
                 </div>
             </section>
         </el-main> 
@@ -75,7 +82,10 @@ require("echarts/lib/chart/bar.js");
 export default {
   data() {
     return {
+      pageSize:10,
+      pageIndex:1,
       dateValue: "",
+      tableDate:'',
       pickerOptions: {
         shortcuts: [
           {
@@ -173,15 +183,34 @@ export default {
           width: 470,
           titleAlign: "center",
           columnAlign: "left",
-          isResize: true
+          isResize: true,
+          overflowTitle: true,
         }
       ],
       runningLog:"",
-      startDate:"2018/01/01",
-      endDate:"2018/01/07"
+      startDate:"",
+      endDate:""
     };
   },
   methods: {
+    pageChange(pageIndex) {
+      this.pageIndex = pageIndex;
+      this.getTableData();
+      this.selectALLMsg()
+      console.log(pageIndex);
+    },
+    pageSizeChange(pageSize) {
+      this.pageIndex = 1;
+      this.pageSize = pageSize;
+      this.selectALLMsg()
+      console.log(pageSize);
+    },
+    getTableData() {
+      this.tableData = this.tableDate.slice(
+        (this.pageIndex - 1) * this.pageSize,
+        this.pageIndex * this.pageSize
+      );
+    },
     searchTime(){
       this.selectALLMsg()
     },
@@ -253,6 +282,11 @@ export default {
       });
     },
     selectALLMsg(){
+      EventBus.$on("sideBarTroggleHandle", isCollapse => {
+        window.setTimeout(() => {
+          this.$refs.singleTable.resize();
+        }, 500);
+      });
       let id = this.$route.params.deviceId
       let code=JSON.parse(sessionStorage.getItem('user')).organizeCode
       console.log(code);
@@ -266,8 +300,8 @@ export default {
             deviceId:id,
             startDate:this.startDate,
             endDate:this.endDate,
-            page:1,
-            size:''
+            page:this.pageIndex,
+            size:this.pageSize
           },
           option: { requestTarget: "r" }
         },

@@ -67,7 +67,7 @@
             </el-submenu>
             <el-submenu index="14">
               <template slot="title">
-                <i class="iconfont">&#xe60b;</i>
+                <i class="iconfont">&#xe690;</i>
                 <span slot="title">备品备件</span></template>
               <el-menu-item index="/SparePart">备件基础信息</el-menu-item>
               <!-- <el-menu-item index="/OutboundDetails">出库明细</el-menu-item> -->
@@ -102,7 +102,7 @@
           </el-submenu> -->
           <el-submenu index="11">
             <template slot="title">
-              <i class="iconfont">&#xe601;</i>
+              <i class="iconfont">&#xe627;</i>
               <span slot="title">消息管理</span></template>
             <el-menu-item index="/Message">消息管理</el-menu-item>
           </el-submenu>

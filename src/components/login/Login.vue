@@ -93,7 +93,6 @@
           label-width="160px"
           :model="company"
           :rules="registerRules"
-          @blur="vercompany"
           ref="company"
         >
           <el-form-item
@@ -175,6 +174,7 @@
               >
             </el-dialog>
           </el-form-item>
+          <div style="display:inline-block;margin-left:-75px;color:#999999;">仅支持小于1Mb的jpg或png图片格式</div>
         </el-form>
         <div class="next">
           <el-button
@@ -340,7 +340,8 @@
                   {
                     params: Object.assign({name: this.company.name}),
                     url: "/enterprise/findByName",
-                    type: "get"
+                    type: "get",
+                    option:{enableMsg:false}
                   }
                 ).then(res => {
                   console.log(res)
@@ -412,7 +413,8 @@
                   {
                     params: Object.assign({creditCode: this.company.companyID}),
                     url: "/enterprise/findByCreditCode",
-                    type: "get"
+                    type: "get",
+                    option:{enableMsg:false}
                   }
                 ).then(res => {
                   console.log(res)
@@ -451,7 +453,8 @@
                   {
                     params: Object.assign({userName: this.manager.userName}),
                     url: "/user/userNameIsSingle",
-                    type: "get"
+                    type: "get",
+                    option:{enableMsg:false}
                   }
                 ).then(res => {
                   console.log(res)
@@ -500,7 +503,8 @@
                   {
                     params: Object.assign({phone: this.manager.phone}),
                     url: "/user/phoneIsSingle",
-                    type: "get"
+                    type: "get",
+                    option:{enableMsg:false}
                   }
                 ).then(res => {
                   console.log(res)
@@ -633,7 +637,8 @@
           {
             url: "/user/login",
             params: data,
-            type: "post"
+            type: "post",
+            option:{enableMsg:false}
           },
           this
         ).then(
@@ -692,7 +697,8 @@
           {
             url: "/enterprise/add",
             params: data,
-            type: "post"
+            type: "post",
+            option:{enableMsg:false}
           },
           this
         ).then(
@@ -725,7 +731,8 @@
           {
             params: data,
             url: "/user/getVerifyCode",
-            type: "post"
+            type: "post",
+            option:{enableMsg:false}
           },
           this
         ).then(
@@ -754,7 +761,8 @@
           {
             params: data,
             url: "/enterprise/getVerifyCode",
-            type: "post"
+            type: "post",
+            option:{enableMsg:false}
           },
           this
         ).then(
