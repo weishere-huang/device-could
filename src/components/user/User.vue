@@ -185,8 +185,10 @@ export default {
         }
       }
       if (params.type === "delete") {
-        this.choice = params.rowData.id;
-        this.deleteUser();
+        this.$confirm("确定删除该用户吗？","提示").then(_=>{
+          this.choice = params.rowData.id;
+          this.deleteUser()
+        }).catch(_=>{})
         this.choice = "";
         // do delete operation
         this.$delete(this.tableData, params.index);
@@ -316,33 +318,60 @@ export default {
         ({ type, info }) => {}
       );
     },
-    deleteUser() {
+    deleteUser(){
+      // this.$confirm("您确定要删除该用户吗？", "提示")
+      //   .then(_=>{
+      //   }).catch(info=>{console.log(info)})
       let qs = require("qs");
       let data = qs.stringify({
         userIds: this.choice
       });
+      console.log(111)
+      console.log(this.choice)
       this.Axios({
         url: "/user/deleteUsers",
         params: data,
         type: "post",
         option: { enableMsg: false }
-      });
-      this;
-      this.$confirm("您确定要删除该用户吗？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(
-        response => {
-          this.load();
-          this.$message({
-            message: "您已经删除该用户",
-            type: "success"
-          });
-        },
-        ({ type, info }) => {}
-      );
+      }).then(res=>{
+        // console.log(res)
+        this.$message.success("您已经删除该用户")
+        this.load()
+      },({type,info})=>{
+        console.log(info)
+      })
     },
+
+
+    // deleteUs() {
+    //   let qs = require("qs");
+    //   let data = qs.stringify({
+    //     userIds: this.choice
+    //   });
+    //   this.Axios({
+    //     url: "/user/deleteUsers",
+    //     params: data,
+    //     type: "post",
+    //     option: { enableMsg: false }
+    //   });
+    //   this;
+    //   this.$confirm("您确定要删除该用户吗？", "提示", {
+    //     confirmButtonText: "确定",
+    //     cancelButtonText: "取消",
+    //     type: "warning"
+    //   }).then(
+    //     response => {
+    //       this.load();
+    //       this.$message({
+    //         message: "您已经删除该用户",
+    //         type: "success"
+    //       });
+    //     },
+    //     ({ type, info }) => {}
+    //   ).catch(info=>{
+    //     console.log(info)
+    //   });
+    // },
     findByKeyWord() {
       this.Axios(
         {
