@@ -123,7 +123,7 @@
             prop="phone"
           >
             <el-input
-              placeholder="028-8888888"
+              placeholder="如：028-XXXXXXXX"
               size="small"
               v-model="company.phone"
               style="width:80%"
@@ -309,10 +309,11 @@ export default {
       loginRules: {
         userName: [
           { required: true, message: "请输入用户名或手机号", trigger: "blur" },
-          { min: 1, max: 20, message: "长度在20个字符内", trigger: "blur" }
+          { min: 1, max: 20, message: "请输入正确的用户名或手机号"}
         ],
         password: [
-          { required: true, message: "密码不能为空", trigger: "blur" }
+          { required: true, message: "密码不能为空", trigger: "blur" },
+          {max:20,message:"密码错误"}
         ],
         verification: [
           { required: true, message: "验证码不能为空", trigger: "blur" },
@@ -322,6 +323,12 @@ export default {
       registerRules: {
         name: [
           { required: true, message: "企业名不能为空", trigger: "blur" },
+          {min:1,max:30,message:"企业名称长度不能超过30字符"},
+          {validator:(rule,value,callback)=>{
+            if(/^(?!(\d+)$)[\u4e00-\u9fffa-zA-Z\d\-_]+$/.test(value)==false){
+              callback(new Error("请输入正确的企业名称"))
+            }else{callback()}
+            },trigger:"blur"},
           {validator:(rule, value, callback)=>{
             this.Axios(
               {
@@ -339,10 +346,10 @@ export default {
             },
             trigger: 'blur'}
         ],
-        address: [{ required: true, message: "地址不能为空", trigger: "blur" }],
-        // phone: [
-        //   {required: true, message: "电话不能为空", trigger: "blur"}
-        //   ],
+        address: [
+          { required: true, message: "地址不能为空", trigger: "blur" },
+          {max:30,message:"企业地址长度不能超过30字符"}
+        ],
         phone: [
           { required: true, message: "电话不能为空", trigger: "blur" },
           {
@@ -356,26 +363,17 @@ export default {
               }
             },
             trigger: "blur"
-          },
-          {validator:(rule, value, callback)=>{
-              this.Axios(
-                {
-                  params: Object.assign({phone: this.company.phone}),
-                  url: "/enterprise/findByPhone",
-                  type: "get"
-                }
-              ).then(res=>{
-                console.log(res)
-                callback()
-              },({type, info}) => {
-                console.log(info)
-                callback (new Error("联系电话已存在"))
-              })
-            },
-            trigger: 'blur'}
+          }
         ],
         corporation: [
-          { required: true, message: "法人代表不能为空", trigger: "blur" }
+          { required: true, message: "法人代表不能为空", trigger: "blur" },
+          {max:30, message: "法人代表长度不能超过30个字符"},
+          {validator:(rule,value,callback)=>{
+              // if(/^(?!(\d+)$)[\u4e00-\u9fffa-zA-Z\d\-_]+$/.test(value)==false){
+              if( /^([\u4E00-\u9FA5]+|[a-zA-Z\s?]+)$/.test(value)==false) {
+                callback(new Error("请填写正确的法人代表"))
+              }else{callback()}
+            },trigger:"blur"},
         ],
         companyID: [
           {
@@ -386,7 +384,7 @@ export default {
           {
             validator: (rule, value, callback) => {
               if (
-                /(^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$)|(^\d{15}$)/.test(
+                /^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$/.test(
                   value
                 ) == false
               ) {
@@ -420,8 +418,8 @@ export default {
           { required: true, message: "用户名不能为空", trigger: "blur" },
           {
             validator: (rule, value, callback) => {
-              if (/^[a-zA-Z0-9_-]{4,16}$/.test(value) == false) {
-                callback(new Error("用户名不能输入汉字和特殊符号"));
+              if (/^[/D][a-zA-Z0-9_-]{6,20}$/.test(value) == false) {
+                callback(new Error("用户名格式不正确，请输入6~20位字符，不能以数字开头"));
               } else {
                 callback();
               }
@@ -437,16 +435,16 @@ export default {
           {validator:(rule, value, callback)=>{
               this.Axios(
                 {
-                  params: Object.assign({username: this.manager.userName}),
+                  params: Object.assign({userName: this.manager.userName}),
                   url: "/user/userNameIsSingle",
                   type: "get"
                 }
               ).then(res=>{
                 console.log(res)
-                callback (new Error("该用户名已存在"))
+                callback ()
               },({type, info}) => {
                 console.log(info)
-                callback ()
+                callback (new Error("该用户名已存在"))
               })
             },
             trigger: 'blur'}
@@ -719,7 +717,7 @@ export default {
         },
         ({ type, info }) => {
           console.log(info);
-          if (info.code == 0) {
+          if (info.code == 406) {
             this.$message.error("未找到该用户");
           }
           else {
@@ -799,25 +797,6 @@ export default {
       return encrypted.toString();
     }
   },
-  //企业名称唯一验证
-  verifyCompany() {
-    this.Axios(
-      {
-        params: Object.assign({ name: this.company.name }),
-        url: "/enterprise/findByName",
-        type: "get"
-      },
-      this
-    ).then(response => {
-      console.log(response);
-    }),
-      ({ type, info }) => {};
-  },
-  //联系电话唯一验证
-  verifyPhone() {},
-  components: {
-    forgetThePassword
-  }
 };
 </script>
 <style lang="less" scoped>

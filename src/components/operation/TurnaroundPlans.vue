@@ -164,7 +164,7 @@ export default {
           width: 50,
           titleAlign: "center",
           columnAlign: "center",
-          type: "selection"
+          type: "selection",
         },
         {
           field: "planName",
@@ -264,7 +264,6 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           componentName: "table-turnaroundPlans"
-          // isResize: true
         }
       ]
     };
