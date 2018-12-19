@@ -124,8 +124,8 @@ export default {
           overflowTitle: true,
           formatter: function(rowData, rowIndex, pagingIndex, field) {
             return rowData.state === "0"
-              ?`<span style="color:red">未读</span>`
-              :`<span style="color:cornflowerblue">已读</span>`
+              ?`<span style="color:#ff6600">未读</span>`
+              :`<span>已读</span>`
           },
         },
         {
