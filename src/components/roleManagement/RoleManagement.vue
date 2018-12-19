@@ -125,15 +125,16 @@
     <el-dialog title="角色添加" :visible.sync="dialogFormVisible" width="40%" :beforeClose="toCancel">
       <el-form :model="form" style="padding:10px 30px;">
         <el-form-item label="角色名称" label-width="120px">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+          <el-input v-model="form.name" autocomplete="off" @keyup.enter.native="roleAdd"></el-input>
         </el-form-item>
         <el-form-item label="角色描述" label-width="120px">
-          <el-input type="textarea" v-model="form.desc"></el-input>
+          <el-input type="textarea" v-model="form.desc" @keyup.enter.native="roleAdd"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="toCancel" size="small">取 消</el-button>
-        <el-button type="primary" @click="roleAdd" size="small">保 存</el-button>
+        <el-button type="primary" @click="roleAdd" size="small">
+          <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
       </div>
     </el-dialog>
   </div>
@@ -436,6 +437,30 @@
 
         }
       },
+      toRoleAdd(){
+        this.dialogFormVisible = false;
+        let qs = require("qs");
+        let data = qs.stringify({
+          name:this.form.name,
+          description:this.form.desc
+        });
+        this.Axios(
+          {
+            params:data ,
+            type: "post",
+            url: "/role/add",
+          },
+          this
+        ).then(
+          response => {
+            this.load();
+            this.form.name = "";
+            this.form.desc = "";
+          },
+          ({type, info}) => {
+
+          })
+      },
       load(){
         this.Axios(
           {
@@ -487,30 +512,6 @@
           default:
             break;
         }
-      },
-      toRoleAdd(){
-        this.dialogFormVisible = false;
-        let qs = require("qs");
-        let data = qs.stringify({
-          name:this.form.name,
-          description:this.form.desc
-        });
-        this.Axios(
-          {
-            params:data ,
-            type: "post",
-            url: "/role/add",
-          },
-          this
-        ).then(
-          response => {
-            this.load();
-            this.form.name = "";
-            this.form.desc = "";
-          },
-          ({type, info}) => {
-
-          })
       },
       update(){
         this.systemID = "";

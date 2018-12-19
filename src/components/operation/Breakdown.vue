@@ -59,6 +59,7 @@
             placeholder="如故障编码，设备名称"
             size="small"
             v-model="faultKey"
+            @keyup.enter.native="search"
           ></el-input>
           <el-button
             size="small"
@@ -487,7 +488,6 @@
           this
         ).then(
           response => {
-            this.faultKey = "";
             this.pageNumber = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             this.springReplacement();

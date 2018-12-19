@@ -174,10 +174,12 @@
               :table-data="personData"
               row-hover-color="#eee"
               row-click-color="#edf7ff"
-
-              row-height=24
+              row-height=35
             ></v-table>
           </div>
+          <!--<div slot="footer" class="dialog-footer">-->
+            <!--<el-button size="small" type="primary" @click="dialogVisible1=false">确定</el-button>-->
+          <!--</div>-->
         </el-dialog>
         <!-- 设备对象人员查看弹框结束 -->
         <div class="supplies">

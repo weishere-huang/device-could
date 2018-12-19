@@ -125,8 +125,9 @@
       <!-- 照片弹框 -->
       <el-dialog title="查看图片" :visible.sync="pictureDialog" width="60%">
         <el-carousel :interval="4000" type="card" height="400px">
-          <el-carousel-item v-for="item in 6" :key="item">
-            <h3>{{ item }}</h3>
+          <el-carousel-item v-for="item in imgPath" :key="item">
+            <!--<h2>&#45;&#45;{{item}}-&#45;&#45;</h2>-->
+            <img :src="item"/>
           </el-carousel-item>
         </el-carousel>
       </el-dialog>
@@ -150,7 +151,7 @@
               row-hover-color="#eee"
               row-click-color="#edf7ff"
               :cell-edit-done="cellEditDone"
-              row-height=24
+              row-height=35
               :height="230"
             ></v-table>
           </div>
@@ -289,6 +290,7 @@
       return {
         isOk:true,
         imgPath:[],
+        imgPaths:['http://img.zcool.cn/community/0188915805cc66a84a0e282b933a57.jpg@1280w_1l_2o_100sh.png','http://img.zcool.cn/community/0188915805cc66a84a0e282b933a57.jpg@1280w_1l_2o_100sh.png'],
         examine:{
           desc:"",
           type:"",
@@ -920,7 +922,6 @@
           this
         ).then(
           response => {
-            console.log(response.data.data.workReceiptInfo);
             this.workInfoValue(response.data.data.work);
             this.formLabelAlignValue(response.data.data.fault);
             this.equipmentTableDataValue(response.data.data.devices);
@@ -1196,6 +1197,24 @@
       }
     },
     created(){
+      // this.imgPath = "http://img.zcool.cn/community/0188915805cc66a84a0e282b933a57.jpg@1280w_1l_2o_100sh.png"
+      // this.imgPath.push({
+      //   name:"1",
+      //   url:"http://img.zcool.cn/community/0188915805cc66a84a0e282b933a57.jpg@1280w_1l_2o_100sh.png",
+      // },{
+      //   name:"2",
+      //   url:"http://pic.58pic.com/58pic/13/80/78/35V58PICrWD_1024.jpg",
+      // });
+      this.imgPath=[
+        "http://img.zcool.cn/community/0188915805cc66a84a0e282b933a57.jpg@1280w_1l_2o_100sh.png",
+        "http://pic.58pic.com/58pic/13/80/78/35V58PICrWD_1024.jpg",
+      ]
+      window.setTimeout(( )=>{
+
+      },1000)
+      // this.imgPath.forEach((item)=>{
+      //   item.url="http://pic.58pic.com/58pic/13/80/78/35V58PICrWD_1024.jpg";
+      // });
       this.workLoad(this.$route.params.id);
     }
   };
