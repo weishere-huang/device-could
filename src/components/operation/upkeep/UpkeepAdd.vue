@@ -1,8 +1,8 @@
 <template>
   <div class="turnaroundPlansAdd">
     <div class="top">
-        <el-button size="small" type="primary" @click="toBack">返回</el-button>
-        <el-button size="small" type="primary" @click="addPlan">保存</el-button>
+        <el-button size="small" type="primary" @click="toBack"  icon="el-icon-arrow-left">返回</el-button>
+        <el-button size="small" type="primary" @click="addPlan"><i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
     </div>
     <div class="bottom">
       <div class="left">
@@ -102,14 +102,30 @@
       </div>
       <div class="right">
         <div>
-          <el-button size="small" type="primary" @click="addPlanIsShow">设备添加</el-button>
+          <el-button size="small" type="primary" @click="addPlanIsShow"><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;设备添加</el-button>
         </div>
         <h5>设备列表</h5>
-        <v-table :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-        <!--<div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">-->
-        <!--<v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>-->
-        <!--</div>-->
+        <v-table :select-all="selectALL" @on-custom-comp="customCompFunc" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
       </div>
+      <el-dialog
+        title="人员列表"
+        :visible.sync="person"
+        width="50%"
+      >
+        <div style="padding:10px">
+          <v-table
+            is-horizontal-resize
+            column-width-drag
+            :multiple-sort="false"
+            style="width:100%;"
+            :columns="personTable"
+            :table-data="personData"
+            row-hover-color="#eee"
+            row-click-color="#edf7ff"
+            row-height=24
+          ></v-table>
+        </div>
+      </el-dialog>
     </div>
     <el-dialog
       title="添加设备"
@@ -123,10 +139,12 @@
 </template>
 <script>
   import AddPlan from "./AddPlan";
+  import Vue from "vue";
   export default {
     name: "",
     data() {
       return {
+        person:false,
         arr:[],
         deviceIds:1,
         auditId:0,
@@ -148,6 +166,49 @@
           frequencyType:"1",
           maintenanceCc:""
         },
+        personTable: [
+          {
+            field: "workTypeName",
+            title: "职责",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "name",
+            title: "姓名",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "phone",
+            title: "手机号",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "organizeName",
+            title: "组织单位/部门",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "position",
+            title: "岗位",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+        ],
+        personData: [],
         columns: [
           {
             field: "deviceNo",
@@ -188,7 +249,8 @@
             width: 80,
             titleAlign: "center",
             columnAlign: "center",
-            isResize: true
+            isResize: true,
+            componentName: "table-person"
           },
         ],
         pageIndex: 1,
@@ -329,6 +391,32 @@
         }
       },
 
+      //通过设备ID查找相关负责人员
+      findByDeviceId(deviceId){
+        this.Axios(
+          {
+            params: {deviceId:deviceId},
+            type: "get",
+            url: "/device/findDeviceWorker",
+          },
+          this
+        ).then(
+          response => {
+            // console.log(response.data.data);
+            this.personData = response.data.data;
+          },
+          ({type, info}) => {
+
+          })
+      },
+
+      customCompFunc(params) {
+        if (params.type === "showLook") {
+          this.findByDeviceId(params.rowData.id);
+          this.person = true;
+        }
+      },
+
       submitAudit(){
         this.$confirm('计划添加成功,是否立即提交审核', '提示')
           .then(_=>{
@@ -424,6 +512,32 @@
       addPlan: AddPlan
     }
   };
+  Vue.component("table-person", {
+    template: `<span>
+        <el-tooltip class="item" effect="dark" content="查看" placement="top">
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="showLook(rowData,index)" style='font-size:20px' class='iconfont'>&#xe734;</i></a>
+        </el-tooltip>
+        </span>`,
+    props: {
+      rowData: {
+        type: Object
+      },
+      field: {
+        type: String
+      },
+      index: {
+        type: Number
+      }
+    },
+    methods: {
+      showLook() {
+        // 参数根据业务场景随意构造
+        let params = { type: "showLook", index: this.index, rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      },
+    }
+  });
+
 </script>
 
 <style lang="less" scoped>

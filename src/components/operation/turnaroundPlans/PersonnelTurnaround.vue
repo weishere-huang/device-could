@@ -4,7 +4,7 @@
 
       <div class="search">
         <el-input type="search" size="mini"placeholder="只能输入姓名或手机号" v-model="key" style="width:30%;"></el-input>
-        <el-button size="mini" type="primary" @click="search">搜索</el-button>
+        <el-button size="mini" type="primary" @click="search" icon="el-icon-search">搜索</el-button>
         <span style="padding:0 10px;">最近搜索：{{searchs}}</span>
         <span style="text-decoration: underline;"></span>
       </div>
