@@ -252,7 +252,7 @@
             </div>
             <div class="add">
               <div style="text-align:center">
-                <el-button type="primary" @click="deleteBasic" size="mini">提交</el-button>
+                <el-button type="primary" @click="deleteBasic" size="mini">保存</el-button>
               </div>
               <ul>
                 <h6>已选择</h6>
@@ -688,7 +688,6 @@
       };
     },
     methods: {
-
       customCompFunc(params) {
         if (params.type === "delete") {
           this.workSheetMaterialTableData = this.workSheetMaterialTableData.filter(item=>item.id!=params.rowData["id"]);
@@ -698,7 +697,7 @@
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
         this.workSheetMaterialTableData[rowIndex][field] = newValue;
-        // 接下来处理你的业务逻辑，数据持久化等...
+        this.workSheetMaterialTableData = Array.from(new Set(this.workSheetMaterialTableData))
       },
       selectGroupChange(selection) {
         console.log("select-group-change", selection);
@@ -1062,6 +1061,7 @@
       },
       //保存备品备件页面并传值到详情页
       deleteBasic(){
+        console.log("ok");
         this.dialogVisible2 = false;
         this.workSheetMaterialTableData = (this.workSheetMaterialTableData||[]).concat(this.personListValue);
         this.workSheetMaterialTableData.forEach(function (item){item.planCount = 0});

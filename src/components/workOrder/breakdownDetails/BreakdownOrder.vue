@@ -222,7 +222,7 @@
             </div>
             <div class="add">
               <div style="text-align:center">
-                <el-button @click="deleteBasic" type="primary" size="mini">提交</el-button>
+                <el-button @click="deleteBasic" type="primary" size="mini">保存</el-button>
               </div>
               <ul>
                 <h6>已选择</h6>
@@ -666,6 +666,7 @@
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
         this.suppliesTableData[rowIndex][field] = newValue;
+        this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
       },
       selectGroupChange(selection) {
         console.log("select-group-change", selection);

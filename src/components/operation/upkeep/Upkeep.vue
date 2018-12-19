@@ -11,6 +11,7 @@
           size="small"
           type="primary"
           @click="outerVisibleIsOk"
+          :disabled="disabled"
         >审核</el-button>
         <el-dialog
           title="审核"
@@ -140,6 +141,7 @@ import Vue from "vue";
 export default {
   data() {
     return {
+      disabled:true,
       arr: [],
       toAudit: "",
       radio: "",
@@ -318,6 +320,9 @@ export default {
           this.maintenanceIds += "," + selection[i].id;
         }
       }
+      selection.length===1 ?
+        selection[0].state === "待审核" ? this.disabled=false:this.disabled=true:
+        this.disabled = true;
     },
     selectALL(selection) {
       this.arr = selection;
