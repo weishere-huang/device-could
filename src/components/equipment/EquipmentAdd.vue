@@ -9,14 +9,14 @@
       </div>
       <div class="center">
         <h5>基础信息</h5>
-        <el-form ref="form" :model="sizeForm" label-width="80px" size="small">
-          <el-form-item label="设备编号">
+        <el-form ref="baseform" :model="sizeForm" label-width="80px" size="small" :rules="rules1" >
+          <el-form-item label="设备编号" prop="deviceNo">
             <el-input v-model="sizeForm.deviceNo" style="width:200px"></el-input>
           </el-form-item>
-          <el-form-item label="设备名称">
+          <el-form-item label="设备名称" prop="deviceName">
             <el-input v-model="sizeForm.deviceName" style="width:512px"></el-input>
           </el-form-item>
-          <el-form-item label="所属部门">
+          <el-form-item label="所属部门" prop="defaultProps">
             <el-cascader
               placeholder="搜索"
               :options="orgoptions"
@@ -32,13 +32,13 @@
             ></el-cascader>
           </el-form-item>
           <el-form :inline="true" style="padding-left:12px" size="small">
-            <el-form-item label="设备分类">
+            <el-form-item label="设备分类" prop="ctg">
               <el-select v-model="sizeForm.deviceClassify" placeholder="点击选择" style="width:215px" @change="classf" ref="getclassfy">
                 <el-option v-for="(item,index) in options2" :key="index" :label="item.label"
                            :value="item.value"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="设备类别">
+            <el-form-item label="设备类别" prop="clsfy">
               <el-cascader
                 placeholder="搜索"
                 :options="ctgoptions"
@@ -55,10 +55,10 @@
             </el-form-item>
           </el-form>
           <el-form :inline="true" style="padding-left:12px" size="small">
-            <el-form-item label="设备型号">
+            <el-form-item label="设备型号" prop="dxh">
               <el-input v-model="sizeForm.deviceModel" style="width:215px"></el-input>
             </el-form-item>
-            <el-form-item label="设备状况">
+            <el-form-item label="设备状况" prop="dzk">
               <el-select v-model="sizeForm.deviceState" placeholder="点击选择" style="width:215px">
 
                 <el-option v-for="(item,index) in options4" :key="index" :label="item.label"
@@ -192,8 +192,7 @@
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
                 :auto-upload="true"
-                :file-list="fileList"
-           >
+                :file-list="fileList">
                 <el-button size="mini" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">只能上传不超过10M的文件,且不能超过20个文件</div>
               </el-upload>
@@ -217,8 +216,7 @@
     data() {
       return {
         upcode:"",
-        fileList1: [
-        ],
+        fileList1: [],
         defaultProps:{
           value:"code",
           label:"name"
@@ -301,6 +299,21 @@
         ctgoptions:[],
         devicePersonnelInfoBase:[],
         dialogImageUrl:"",
+        //表名baseform
+        rules1:{
+          //编号
+          deviceNo:[
+            {required: true, message: '请输入设备编号', trigger: 'blur'},
+            {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
+          ],
+          deviceName:[
+            {required: true, message: '请输入设备名称', trigger: 'blur'},
+            {max:20,message:'设备名称过长'}
+          ],
+          // defaultProps:[
+          //   {required: true, message: '请添加组织机构', trigger: 'blur'},
+          // ]
+        },
       };
     },
     methods: {
@@ -551,20 +564,34 @@
       },
 
       addwarning(){
-        this.$confirm('确认添加设备吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.add1();
-          // this.add2();
-
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消保存'
-          });
+        let subok = true;
+        this.$refs['baseform'].validate((valid) => {
+          if (valid) {
+          } else {
+            subok = false;
+            return false;
+          }
         });
+        //如果提交通过, 则弹出提示框
+        if(subok){
+          this.$confirm('确认添加设备吗?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.add1();
+            // this.add2();
+
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '取消保存'
+            });
+          });
+        }else{
+          this.$message.error("请完善设备信息");
+        }
+
       },
     },
     created() {
