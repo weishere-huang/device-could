@@ -164,7 +164,7 @@ export default {
           width: 50,
           titleAlign: "center",
           columnAlign: "center",
-          type: "selection"
+          type: "selection",
         },
         {
           field: "planName",
