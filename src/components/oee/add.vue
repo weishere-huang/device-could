@@ -36,7 +36,7 @@
                             node-key="id"
                             :empty-text="equTypeEmptytTxt"
                             :expand-on-click-node="false"
-                            @node-click="treeNodeClick">
+                            @node-click="classifyNodeclick">
                             </el-tree>
                         </div>
                         </el-collapse-item>
@@ -68,6 +68,7 @@
                         type="daterange"
                         align="right"
                         unlink-panels
+                        value-format="yyyy/MM/dd"
                         range-separator="至"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
@@ -80,13 +81,13 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item label="计划日停机时间">
-                    <el-input size="small" v-model="form.shutdownTime" type='number' placeholder="每日的单台设备预计停机工时（小时/日）例如：1">
-                        <template slot="append">小时/日</template>
+                    <el-input size="small" v-model="form.shutdownTime" type='number' placeholder="每日的单台设备预计停机工时（分钟/日）例如：1">
+                        <template slot="append">分钟/日</template>
                     </el-input>
                 </el-form-item>
                 <el-form-item label="计划日损耗时间">
-                    <el-input size="small" v-model="form.changeTime" type='number' placeholder="每日的单台设备预计损耗工时（小时/日）例如：1.5">
-                        <template slot="append">小时/日</template>
+                    <el-input size="small" v-model="form.changeTime" type='number' placeholder="每日的单台设备预计损耗工时（分钟/日）例如：1.5">
+                        <template slot="append">分钟/日</template>
                     </el-input>
                 </el-form-item>
                 <el-form-item label="计划单件成品生产时间">
@@ -116,7 +117,7 @@ let qs = require("qs");
 const initTreeDataForOrganization = function(nodeData, parentCode) {
   return nodeData.filter(item => item.parentCode === parentCode).map(item => {
     return {
-      id: item.id,
+      id: item.code,
       label: item.name,
       children: initTreeDataForOrganization(nodeData, item.code)
     };
@@ -127,7 +128,7 @@ const initTreeDataForEquType = function(nodeData, parentCode) {
     .filter(item => item.categoryParentNo === parentCode)
     .map(item => {
       return {
-        id: item.id,
+        id: item.categoryNo,
         label: item.categoryName,
         children: initTreeDataForEquType(nodeData, item.categoryNo)
       };
@@ -187,7 +188,9 @@ export default {
             }
           }
         ]
-      }
+      },
+      organizeCode:"",
+      deviceCategory:"",
     };
   },
   created:function(){
@@ -206,11 +209,17 @@ export default {
     handleOK: function() {
       //consol.log(this.form.region);
       const _params=Object.assign({
-              organizeCode:'1000',
-              organizeName:'山海重工股份有限公司',
+              organizeCode:JSON.parse(sessionStorage.getItem('user')).organizeCode,
+              organizeName:JSON.parse(sessionStorage.getItem('user')).organizeName,
               startDate:new Date(this.form.region[0]).format("yyyy/MM/dd"),
               endDate:new Date(this.form.region[1]).format("yyyy/MM/dd"),
-              deviceIds:this.selectedEquList.join(',')
+              deviceIds:this.selectedEquList.join(','),
+              shorthandName:this.form.shorthandName,
+              calendarHours:this.form.calendarHours,
+              shutdownTime:this.form.shutdownTime,
+              changeTime:this.form.changeTime,
+              planProdTime:this.form.planProdTime,
+              describeInfo:this.form.describeInfo,
            },this.form);
            delete _params.region;
       this.Axios(
@@ -234,7 +243,34 @@ export default {
     innerHandleClose: function() {
       this.innerVisible=false;
     },
+    deviceList(){
+        this.Axios(
+                {
+                    url: "/deviceState/listDeviceByOrganize",
+                    type: 'get',
+                    params:{
+                        organizeCode:this.organizeCode,
+                        deviceCategory:this.deviceCategory,
+                        page:-1,
+                        // size:100,
+
+                    },
+                    option:{requestTarget:'r'},
+                    loadingConfig:{
+                        target: document.querySelector('.el-dialog')
+                    }
+                },
+                this
+                ).then((response)=>{
+                    console.log(response);
+                    this.equList=response.data.data.map(item=>{return {
+                        key: item.id,
+                        label: `${item.deviceName}(${item.deviceNo})`
+                    }})
+                })
+    },
     equChooseHandler:function(){
+        this.organizeCode=JSON.parse(sessionStorage.getItem('user')).organizeCode
         this.innerVisible=true;
         this.Axios(
         {
@@ -250,25 +286,7 @@ export default {
         ([res1, res2]) => {
             if(res1.data.data.length){
                 this.organizationTreeData = initTreeDataForOrganization(res1.data.data,"0");
-                this.Axios(
-                {
-                    url: "/deviceState/listDeviceByOrganize",
-                    type: 'get',
-                    params:{
-                        organizeCode:res1.data.data[0].code
-                    },
-                    option:{requestTarget:'r'},
-                    loadingConfig:{
-                        target: document.querySelector('.el-dialog')
-                    }
-                },
-                this
-                ).then((response)=>{
-                    this.equList=response.data.data.content.map(item=>{return {
-                        key: item.id,
-                        label: `${item.deviceName}(${item.deviceNo})`
-                    }})
-                })
+                this.deviceList()
             }else{
                 this.organizationEmptytTxt='暂无数据';
             }
@@ -282,8 +300,15 @@ export default {
         () => {}
         );
     },
-    treeNodeClick:function(){
-
+    treeNodeClick(data){
+        this.organizeCode=data.id
+        console.log(data);
+        this.deviceList()
+    },
+    classifyNodeclick(data){
+        this.deviceCategory=data.id
+        console.log(data);
+        this.deviceList()
     }
   }
 };
