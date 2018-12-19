@@ -1,5 +1,5 @@
 <template>
-  <div class="organization">
+  <div class="organizationManage">
     <div class="content">
       <div class="left">
         <h5 class="componet-name">企业名称</h5>
@@ -8,18 +8,18 @@
           <h5 class="remarks">备注</h5>
         </div>
         <el-tree
+          class="organization-tree"
           :data="data"
           default-expand-all
           :props="defaultProps"
           @node-click="handleNodeClick"
-          :expand-on-click-node="false"
         >
           <span
             class="custom-tree-node"
             slot-scope="{ node, data }"
           >
             <span :title="data.name" class="listcontent">{{ data.name }}
-              <span class="addCase">
+              <span class="addCase" @click.stop>
                 <el-button
                   type="text"
                   size="mini"
@@ -124,6 +124,7 @@ export default {
     },
     toAdd() {
       this.addShow = true;
+      return false;
     },
     handleNodeClick(data) {
       console.log(data);
@@ -326,7 +327,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="less" >
 @import url("../../assets/font/font.css");
 
 @blue: #409eff;
@@ -335,9 +336,14 @@ export default {
 @Danger: #f56c6c;
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
-.organization {
+
+.organizationManage {
   // padding-left: 180px;
   font-size: 12px;
+  .el-tree-node__content{
+    height: 40px;
+    border-top: solid 1px #eee;
+  }
   add {
     position: absolute;
     top: 50%;
@@ -347,14 +353,16 @@ export default {
     overflow: scroll;
     border: @border;
     border-radius: 5px;
-    max-height: 500px;
+    //max-height: 500px;
     .left {
-      width: 1000px;
+      width: 100%;
       // padding: 10px;
       overflow: hidden;
       float: left;
+      margin-left: 5px;
       // text-align: center;
       // border: @border;
+      
       .componet-name {
         line-height: 30px;
         width: 500px;
@@ -379,54 +387,53 @@ export default {
       }
     }
   }
-}
-
-.el-tree {
-  width: 100%;
-
-  overflow: hidden;
-
-  .custom-tree-node {
+  .organization-tree {
     width: 100%;
-    text-align: right;
-    // height: 40px;
-    .listcontent {
-      // display: inline-block;
-      float: left;
-      text-align: left;
-      width: 400px;
-      position: relative;
-      .addCase {
+    overflow: hidden;
+    .custom-tree-node {
+      width: 100%;
+      text-align: right;
+      // height: 40px;
+      .listcontent {
+        // display: inline-block;
+        float: left;
+        text-align: left;
+        width: 400px;
         position: relative;
-        display: inline-block;
-        margin-left: 30px;
-        opacity: 0;
-        z-index: -10;
-      }
-      &:hover {
         .addCase {
-          opacity: 1;
-          z-index: 10;
+          position: relative;
+          display: inline-block;
+          margin-left: 30px;
+          opacity: 0;
+          z-index: -10;
+        }
+        &:hover {
+          .addCase {
+            opacity: 1;
+            z-index: 10;
+          }
         }
       }
-    }
-    .state {
-      display: inline-block;
-      width: 100px;
-      line-height: 28px;
-      text-align: center;
-      // border: @border;
-    }
-    .organizeInfo {
-      display: inline-block;
-      text-align: center;
-      width: 400px;
-      line-height: 28px;
-      // border: @border;
-    }
+      .state {
+        display: inline-block;
+        width: 100px;
+        line-height: 28px;
+        text-align: center;
+        // border: @border;
+      }
+      .organizeInfo {
+        display: inline-block;
+        text-align: center;
+        width: 400px;
+        line-height: 28px;
+        // border: @border;
+      }
 
-    .state {
+      .state {
+      }
     }
   }
 }
+
+
 </style>
