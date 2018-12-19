@@ -9,12 +9,12 @@
           <section class="topWrap">
             <div>
               <el-button size="small" type="primary" @click="$router.push({path: '/Oee/Add'})"><i class='el-icon-circle-plus-outline'></i> 新增OEE任务</el-button>
-              <el-button size="small" type="primary"><i class='el-icon-refresh'></i> 立即刷新</el-button>
+              <el-button size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
             </div>
             <div>
               搜索：
-                <el-input style="width:200px" size="small"  placeholder="请输入编号"></el-input>
-                <el-button size="small" type="primary"><i class='el-icon-search'></i> 搜索</el-button>
+                <el-input style="width:200px" size="small" v-model="planNo"  placeholder="请输入编号"></el-input>
+                <el-button size="small" type="primary" @click="dataInit()"><i class='el-icon-search'></i> 搜索</el-button>
                 <el-button type="text" @click="isHideAdvSearch=!isHideAdvSearch"><i :class="[isHideAdvSearch?'el-icon-arrow-down':'el-icon-arrow-up']"></i> more</el-button>
             </div>
           </section>
@@ -31,6 +31,7 @@
                   align="right"
                   unlink-panels
                   range-separator="至"
+                  value-format="yyyy/MM/dd"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
                   :picker-options="pickerOptions2">
@@ -44,7 +45,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item>
-                <el-button size="small" type="primary"><i class='el-icon-search'></i> 查询</el-button>
+                <el-button size="small" type="primary" @click="dataInit()"><i class='el-icon-search'></i> 查询</el-button>
               </el-form-item>
             </el-form>
           </section>
@@ -57,10 +58,19 @@
                       :table-data="tableData"
                       row-hover-color="#eee"
                       row-click-color="#edf7ff"
+                      @on-custom-comp="customCompFunc"
+                      ref="oeeTable"
               ></v-table>
               <div class="pagerWrap">
-                    <v-pagination :total="pageable.total" :pageIndex="pageable.pageNumber" :pageSize="pageable.pageSize"></v-pagination>
-                </div>
+                <v-pagination 
+                    :total="totalElements" 
+                    @page-change="pageChange"
+                    @page-size-change="pageSizeChange"
+                    :page-size="pageSize"
+                    :page-index="pageIndex"
+                    :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']">
+                </v-pagination>
+              </div>
             </div>
           </section>
         </el-main>
@@ -70,6 +80,7 @@
 </template>
 
 <script>
+let qs = require("qs");
 var echarts = require("echarts");
 import Vue from "vue";
 require("echarts/lib/chart/pie");
@@ -86,17 +97,7 @@ Vue.component("table-operation", {
         &nbsp;
         
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
-          <el-popover
-            placement="top"
-            width="160"
-            v-model="deleteVisible">
-            <p>确定要删除此条Oee任务吗？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="deleteVisible = false">取消</el-button>
-              <el-button type="primary" size="mini" @click="deleteVisible = false">确定</el-button>
-            </div>
-            <el-button type="text" slot="reference" class='g-link' @click.stop.prevent="deleteRow(rowData,index)"><i style='font-size:16px' class='iconfont'>&#xe66b;</i></el-button>
-          </el-popover>
+            <a href="javascript:;"  class='g-link' @click.stop.prevent="deleteRow(rowData,index)"><i style='font-size:16px;color:#F56C6C' class='iconfont'>&#xe66b;</i></a>
           </el-tooltip>
         </span>`,
   
@@ -127,7 +128,7 @@ Vue.component("table-operation", {
     },
     deleteRow() {
       // 参数根据业务场景随意构造
-      let params = { type: "delete", index: this.index };
+      let params = { type: "delete", index: this.index,rowData:this.rowData };
       this.$emit("on-custom-comp", params);
     },
     blurHandler:function(){
@@ -139,10 +140,18 @@ Vue.component("table-operation", {
   }
 });
 export default {
+  inject:['reload'],
   data() {
     return {
+      planNo:"",
+      pageSize:10,
+      pageIndex:1,
       isHideList: false,//this.$route.matched.find(item=>(item.name==="OeeDetails"))?true:false,
-      formInline: {},
+      formInline: {
+        user:"",
+        region:"",
+        region:"",
+      },
       isHideAdvSearch: true,
       dateRange: "",
       pickerOptions2: {
@@ -177,15 +186,7 @@ export default {
         ]
       },
       tableData: [
-        // {
-        //   oeeCode: "OEE233371",
-        //   customName: "第三季度第二次OEE测试",
-        //   startDate: "2018/10/11",
-        //   endDate: "2018/11/23",
-        //   equNum: 122,
-        //   state: 1,
-        //   oee: 332.3
-        // }
+       
       ],
       hasLoaded:false,
       columns: [
@@ -284,7 +285,10 @@ export default {
           isResize: true
         }
       ],
-      pageable:{pageNumber:0,pageSize:0,total:0}
+      pageable:{pageNumber:0,pageSize:0,total:0},
+      totalElements:"",
+      oeePlans:"",
+      organizeCode:JSON.parse(sessionStorage.getItem('user')).organizeCode,
     };
   },
   created: function() {
@@ -299,6 +303,58 @@ export default {
     }
   },
   methods: {
+    customCompFunc(params){
+      if (params.type === "delete") {
+        this.oeePlans=params.rowData.id
+        this.$confirm('此操作将删除此任务, 是否继续?', '提示')
+        .then(()=>{
+          this.Axios(
+        {
+          url: "/data/deleteOeePlans",
+          params:qs.stringify({
+            // oeePlans:1500,
+            // organizeCode:1000,
+            organizeCode:this.organizeCode,
+            oeePlans:this.oeePlans
+         }) ,
+          type: "post",
+          option: { 
+            requestTarget:'r' 
+          }
+        },
+        this
+      ).then(
+        response => {
+          this.$message({
+            message: "计划已删除",
+            type: "success"
+          });
+          this.reload();
+        },
+        ({ type, info }) => {}
+      );
+        })
+        
+      }
+    },
+    pageChange(pageIndex) {
+      this.pageIndex = pageIndex;
+      this.getTableData();
+      this.dataInit()
+      console.log(pageIndex);
+    },
+    pageSizeChange(pageSize) {
+      this.pageIndex = 1;
+      this.pageSize = pageSize;
+      this.dataInit()
+      console.log(pageSize);
+    },
+    getTableData() {
+      this.tableData = this.tableDate.slice(
+        (this.pageIndex - 1) * this.pageSize,
+        this.pageIndex * this.pageSize
+      );
+    },
     collapseItemChange(val) {
       console.log(val);
     },
@@ -306,11 +362,24 @@ export default {
       console.log(data);
     },
     dataInit:function(){
+      EventBus.$on("sideBarTroggleHandle", isCollapse => {
+        window.setTimeout(() => {
+          this.$refs.oeeTable.resize();
+        }, 500);
+      });
       this.hasLoaded=true;
-      
       this.Axios(
         {
-          params: {organizeCode:'1000'},
+          params: {
+            organizeCode:JSON.parse(sessionStorage.getItem('user')).organizeCode,
+            planNo:this.planNo,
+            shorthandName:this.formInline.user,
+            startDate:this.dateRange[0],
+            endDate:this.dateRange[1],
+            state:this.formInline.region,
+            page:this.pageIndex,
+            size:this.pageSize,
+          },
           url: "/data/listOeePlans",
           type: "get",
           option: {
@@ -322,7 +391,9 @@ export default {
       ).then(
         response => {
           const _d=response.data.data;
+          this.totalElements=response.data.data.totalElements
           this.tableData=_d.content;
+          console.log(response.data.data);
           this.pageable={
             pageNumber:_d.pageable.pageNumber,
             pageSize:_d.pageable.pageSize,
