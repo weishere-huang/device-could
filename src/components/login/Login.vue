@@ -367,10 +367,11 @@ export default {
         ],
         corporation: [
           { required: true, message: "法人代表不能为空", trigger: "blur" },
-          {max:20, message: "法人代表长度不能超过20个字符"},
+          {max:30, message: "法人代表长度不能超过30个字符"},
           {validator:(rule,value,callback)=>{
-              if(/^(?!(\d+)$)[\u4e00-\u9fffa-zA-Z\d\-_]+$/.test(value)==false){
-                callback(new Error("法人代表不能为纯数字"))
+              // if(/^(?!(\d+)$)[\u4e00-\u9fffa-zA-Z\d\-_]+$/.test(value)==false){
+              if( /^([\u4E00-\u9FA5]+|[a-zA-Z\s?]+)$/.test(value)==false) {
+                callback(new Error("请填写正确的法人代表"))
               }else{callback()}
             },trigger:"blur"},
         ],
