@@ -123,7 +123,7 @@
             prop="phone"
           >
             <el-input
-              placeholder="028-8888888"
+              placeholder="如：028-XXXXXXXX"
               size="small"
               v-model="company.phone"
               style="width:80%"
@@ -309,10 +309,11 @@ export default {
       loginRules: {
         userName: [
           { required: true, message: "请输入用户名或手机号", trigger: "blur" },
-          { min: 1, max: 20, message: "长度在20个字符内", trigger: "blur" }
+          { min: 1, max: 20, message: "请输入正确的用户名或手机号"}
         ],
         password: [
-          { required: true, message: "密码不能为空", trigger: "blur" }
+          { required: true, message: "密码不能为空", trigger: "blur" },
+          {max:20,message:"密码错误"}
         ],
         verification: [
           { required: true, message: "验证码不能为空", trigger: "blur" },
@@ -322,6 +323,12 @@ export default {
       registerRules: {
         name: [
           { required: true, message: "企业名不能为空", trigger: "blur" },
+          {min:1,max:30,message:"企业名称长度不能超过30字符"},
+          {validator:(rule,value,callback)=>{
+            if(/^(?!(\d+)$)[\u4e00-\u9fffa-zA-Z\d\-_]+$/.test(value)==false){
+              callback(new Error("请输入正确的企业名称"))
+            }else{callback()}
+            },trigger:"blur"},
           {validator:(rule, value, callback)=>{
             this.Axios(
               {
@@ -339,7 +346,10 @@ export default {
             },
             trigger: 'blur'}
         ],
-        address: [{ required: true, message: "地址不能为空", trigger: "blur" }],
+        address: [
+          { required: true, message: "地址不能为空", trigger: "blur" },
+          {max:30,message:"企业地址长度不能超过30字符"}
+        ],
         phone: [
           { required: true, message: "电话不能为空", trigger: "blur" },
           {
@@ -356,7 +366,13 @@ export default {
           }
         ],
         corporation: [
-          { required: true, message: "法人代表不能为空", trigger: "blur" }
+          { required: true, message: "法人代表不能为空", trigger: "blur" },
+          {max:20, message: "法人代表长度不能超过20个字符"},
+          {validator:(rule,value,callback)=>{
+              if(/^(?!(\d+)$)[\u4e00-\u9fffa-zA-Z\d\-_]+$/.test(value)==false){
+                callback(new Error("法人代表不能为纯数字"))
+              }else{callback()}
+            },trigger:"blur"},
         ],
         companyID: [
           {
@@ -401,7 +417,7 @@ export default {
           { required: true, message: "用户名不能为空", trigger: "blur" },
           {
             validator: (rule, value, callback) => {
-              if (/^[a-zA-Z0-9_-]{4,16}$/.test(value) == false) {
+              if (/^[/D][a-zA-Z0-9_-]{6,20}$/.test(value) == false) {
                 callback(new Error("用户名格式不正确，请输入6~20位字符，不能以数字开头"));
               } else {
                 callback();
