@@ -21,17 +21,18 @@
       <div class="center">
         <h5>基础信息</h5>
         <el-form
-          ref="form"
+          ref="baseform"
           label-width="80px"
           size="small"
+          :rules="rules1"
         >
-          <el-form-item label="设备编号">
+          <el-form-item label="设备编号" prop="deviceNo">
             <el-input
               v-model="sizeForm.deviceNo"
               style="width:200px"
             ></el-input>
           </el-form-item>
-          <el-form-item label="设备名称">
+          <el-form-item label="设备名称" prop="deviceName">
             <el-input
               v-model="sizeForm.deviceName"
               style="width:512px"
@@ -491,6 +492,20 @@ export default {
         }
       ],
       personAddHandler:"",
+      rules1:{
+        //编号
+        deviceNo:[
+          {required: true, message: '请输入设备编号', trigger: 'blur'},
+          {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
+        ],
+        deviceName:[
+          {required: true, message: '请输入设备名称', trigger: 'blur'},
+          {max:20,message:'设备名称过长'}
+        ],
+        // defaultProps:[
+        //   {required: true, message: '请添加组织机构', trigger: 'blur'},
+        // ]
+      },
     };
   },
   components: {
@@ -762,19 +777,32 @@ export default {
       console.log(data);
     },
     updatewarning(){
-      this.$confirm('确定要修改吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.update();
-
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });
+      let subok = true;
+      this.$refs['baseform'].validate((valid) => {
+        if (valid) {
+        } else {
+          subok = false;
+          return false;
+        }
       });
+      if(subok){
+        this.$confirm('确定要修改吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.update();
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      }else{
+        this.$message.warning("请完善设备信息");
+      }
+
     },
     filterArray(data, parent) {
       //编辑组织机构数据为树状结构方法
