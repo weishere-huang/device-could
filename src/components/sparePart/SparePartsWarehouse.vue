@@ -238,7 +238,10 @@ export default {
           isResize: true,
           overflowTitle: true,
           isEdit: true,
-          titleCellClassName: "title-cell-class-name"
+          titleCellClassName: "title-cell-class-name",
+          formatter: function (rowData,rowIndex,pagingIndex,field) {
+            return `<s class='cell-edit-style'></s><span>${rowData.entryPrice}</span>`;
+          }
         },
         {
           field: "faultNo4",
@@ -346,8 +349,8 @@ export default {
           partName: rowData.partName,
           partNo: rowData.partNo,
           partModel: rowData.partModel,
-          entryCount: "",
-          entryPrice: "",
+          entryCount: 0,
+          entryPrice: 0,
           supplierName: "",
           //批次ID
           //batchNumberId:"",
@@ -560,7 +563,7 @@ Vue.component("table-warehouse", {
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
             <i style='font-size:16px;color:#F56C6C;cursor: pointer;' class='iconfont' @click.stop.prevent="deleteRow(rowData,index)">&#xe66b;</i>
         </el-tooltip>
-        
+
         </span>`,
   props: {
     rowData: {
@@ -597,7 +600,7 @@ Vue.component("table-warehouse", {
     border: @border;
     border-radius: 5px;
     padding: 10px;
-    
+
   }
   .warehouse {
     border: @border;

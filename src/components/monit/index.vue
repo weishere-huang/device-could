@@ -32,7 +32,7 @@
                   node-key="id"
                   :empty-text="equTypeEmptytTxt"
                   :expand-on-click-node="false"
-                  @node-click="treeNodeClick"
+                  @node-click="classifyNodeclick"
                 ></el-tree>
               </div>
             </el-collapse-item>
@@ -63,7 +63,7 @@
                   :value="item.value"
                 ></el-option>
               </el-select>
-              <el-button size="small" type="primary">
+              <el-button size="small" type="primary" @click="reload()">
                 <i class="el-icon-refresh"></i> 立即刷新
               </el-button>
             </div>
@@ -79,15 +79,33 @@
                   <el-card shadow="always" class="cardItem">
                     <div slot="header" class="clearfix">
                       <span class="cardItem-header">
-                        <!-- <el-tooltip
+                        <el-tooltip
+                          v-if="item.runState===1"
+                          class="item"
+                          effect="light"
+                          content="黄色预警，请检查设备"
+                          placement="top"
+                        >
+                          <i class="iconfont c-yellow">&#xe651;</i>
+                        </el-tooltip>
+                        <el-tooltip
+                          v-if="item.runState===2"
+                          class="item"
+                          effect="light"
+                          content="橙色预警，请立即检查设备"
+                          placement="top"
+                        >
+                          <i class="iconfont c-orange">&#xe651;</i>
+                        </el-tooltip>
+                        <el-tooltip
+                          v-if="item.runState===3"
                           class="item"
                           effect="light"
                           content="严重警报，请立即检查设备"
                           placement="top"
                         >
                           <i class="iconfont c-red">&#xe651;</i>
-                        </el-tooltip>&nbsp;常减压装置 -->
-                        
+                        </el-tooltip>
                         {{item.deviceName}}
                       </span>
                       <router-link
@@ -177,7 +195,7 @@ const initTreeDataForOrganization = function(nodeData, parentCode) {
     .filter(item => item.parentCode === parentCode)
     .map(item => {
       return {
-        id: item.id,
+        id: item.code,
         label: item.name,
         children: initTreeDataForOrganization(nodeData, item.code)
       };
@@ -188,13 +206,14 @@ const initTreeDataForEquType = function(nodeData, parentCode) {
     .filter(item => item.categoryParentNo === parentCode)
     .map(item => {
       return {
-        id: item.id,
+        id: item.categoryNo,
         label: item.categoryName,
         children: initTreeDataForEquType(nodeData, item.categoryNo)
       };
     });
 };
 export default {
+  inject:['reload'],
   data() {
     return {
       activeClass: this.$route.params.deviceId !== undefined ? "monitWrap hide" : "monitWrap show",//`monitWrap`,
@@ -247,7 +266,9 @@ export default {
         }
       ],
       refreshValue: "60",
-      equipmentOperationalCondition:[]
+      equipmentOperationalCondition:[],
+      organizeCode:JSON.parse(sessionStorage.getItem("user")).organizeCode,
+      deviceCategory:''
     };
   },
   watch: {
@@ -258,6 +279,8 @@ export default {
     }
   },
   created: function() {
+    console.log();
+    
     this.Axios(
       {
         url: ["/organize/allOrganize", "/deviceCategory/all"],
@@ -267,6 +290,7 @@ export default {
       this
     ).then(
       ([res1, res2]) => {
+        console.log(res2.data.data);
         if (res1.data.data.length) {
           this.organizationTreeData = initTreeDataForOrganization(
             res1.data.data,
@@ -274,8 +298,8 @@ export default {
           );
           this.$store.commit('getCode',res1.data.data[0].code)
           
-          this.setPinOption(res1.data.data[0].code);
-          this.getEquList(res1.data.data[0].code);
+          this.setPinOption();
+          this.getEquList();
         } else {
           this.organizationEmptytTxt = "暂无数据";
         }
@@ -302,7 +326,8 @@ export default {
           ],
           type: "get",
           params: {
-            organizeCode: selectOrganizeCode
+            organizeCode: this.organizeCode,
+            deviceCategory:this.deviceCategory
           },
           option: { requestTarget: "r" }
         },
@@ -404,13 +429,17 @@ export default {
       {
         url: "/deviceState/listDeviceByState",
         type: "get",
-        params: {organizeCode:selectOrganizeCode,size:100},
+        params: {
+          organizeCode:this.organizeCode,
+          deviceCategory:this.deviceCategory,
+          size:100
+        },
         option: { requestTarget: "r" }
       },
       this
     ).then(
       (res) => {
-        console.log(res);
+        // console.log(res.data.data.content);
         this.equipmentOperationalCondition=res.data.data.content
         //window.setTimeout(() => {this.$refs.tree.setCurrentKey("1024");}, 1000);
       }
@@ -421,6 +450,15 @@ export default {
     },
     treeNodeClick(data) {
       console.log(data);
+      this.organizeCode=data.id
+      this.setPinOption()
+      this.getEquList()
+    },
+    classifyNodeclick(data){
+      console.log(data);
+      this.deviceCategory=data.id
+      this.setPinOption()
+      this.getEquList()
     }
   }
 };

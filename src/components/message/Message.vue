@@ -121,7 +121,12 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-          overflowTitle: true
+          overflowTitle: true,
+          formatter: function(rowData, rowIndex, pagingIndex, field) {
+            return rowData.state === "0"
+              ?`<span style="color:red">未读</span>`
+              :`<span style="color:cornflowerblue">已读</span>`
+          },
         },
         {
           field: "gmtCreate",
@@ -310,13 +315,7 @@ export default {
         .then(result => {
           console.log(result.data);
           console.log(result.data.data);
-          for (let i = 0; i < result.data.data.content.length; i++) {
-            if (result.data.data.content[i].isRead === 0) {
-              result.data.data.content[i].isRead = "未读";
-            } else if(result.data.data.content[i].isRead === 1){
-              result.data.data.content[i].isRead = "已读";
-            }
-          }
+
           this.tableData = result.data.data.content;
           this.totoelement = result.data.data.totalElements;
           this.NotReadMsgCount();
@@ -342,24 +341,11 @@ export default {
         },
         this
       )
-        //.get(apiMsg+"/message/allNotReadMsg/",data)
         .then(result => {
           console.log(result);
           console.log(result.data);
           this.tableData = result.data.data.content;
           this.totoelement = result.data.data.totalElements;
-          if(this.tableData !== null){
-            for (let i = 0; i < result.data.data.length; i++) {
-              if (result.data.data[i].isRead == 0) {
-                result.data.data[i].isRead = "未读";
-              } else  if(result.data.data[i].isRead === 1){
-                result.data.data[i].isRead = "已读";
-              }
-            }
-          }else{
-            console.log("数据为空")
-          }
-
         })
         .catch(err => {
           console.log(err);
@@ -486,7 +472,7 @@ Vue.component("table-message", {
   <el-tooltip class="item" effect="dark" content="删除" placement="top">
             <i style='font-size:16px;color:#F56C6C;cursor: pointer;' class='iconfont' @click.stop.prevent="update(rowData,index)">&#xe66b;</i>
         </el-tooltip>
-        
+
         </span>`,
   props: {
     rowData: {

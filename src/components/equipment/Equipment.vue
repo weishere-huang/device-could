@@ -184,7 +184,21 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-          overflowTitle: true
+          overflowTitle: true,
+          formatter: function (rowData, rowIndex, pagingIndex, field) {
+            if (rowData.deviceState === 1) {
+              return `<span >在用</span>`
+            }else if(rowData.deviceState === 2){
+              return `<span style="color:#FF990E">出租</span>`
+            }else if(rowData.deviceState === 3){
+              return `<span style="color:#00990C">停运</span>`
+            }else if(rowData.deviceState === 4){
+              return `<span style="color:#0C99FD">封存</span>`
+            }else if(rowData.deviceState === 5){
+              return `<span style="color:#993202">报废</span>`
+            }
+
+          },
         },
         {
           field: "organizeName",
@@ -433,23 +447,7 @@ export default {
             console.log("查找设备");
             console.log(result.data);
             this.tableData = result.data.data.content;
-            for (let i = 0; i < this.tableData.length; i++) {
-              if (this.tableData[i].deviceState === 1) {
-                this.tableData[i].deviceState = "在用";
-              }
-              if (this.tableData[i].deviceState === 2) {
-                this.tableData[i].deviceState = "出租";
-              }
-              if (this.tableData[i].deviceState === 3) {
-                this.tableData[i].deviceState = "停用";
-              }
-              if (this.tableData[i].deviceState === 4) {
-                this.tableData[i].deviceState = "封存";
-              }
-              if (this.tableData[i].deviceState === 5) {
-                this.tableData[i].deviceState = "报废";
-              }
-            }
+
             console.log(result.data);
           },
           ({ type, info }) => {
@@ -479,23 +477,7 @@ export default {
         result => {
           this.totalnum = result.data.data.totalElements;
           this.tableData = result.data.data.content;
-          for (let i = 0; i < this.tableData.length; i++) {
-            if (this.tableData[i].deviceState === 1) {
-              this.tableData[i].deviceState = "在用";
-            }
-            if (this.tableData[i].deviceState === 2) {
-              this.tableData[i].deviceState = "出租";
-            }
-            if (this.tableData[i].deviceState === 3) {
-              this.tableData[i].deviceState = "停用";
-            }
-            if (this.tableData[i].deviceState === 4) {
-              this.tableData[i].deviceState = "封存";
-            }
-            if (this.tableData[i].deviceState === 5) {
-              this.tableData[i].deviceState = "报废";
-            }
-          }
+
           console.log(result.data.data.content);
         },
         ({ type, info }) => {}
@@ -628,23 +610,7 @@ export default {
             console.log("++++");
             console.log(result.data);
             this.tableData = result.data.data.content;
-            for (let i = 0; i < this.tableData.length; i++) {
-              if (this.tableData[i].deviceState === 1) {
-                this.tableData[i].deviceState = "在用";
-              }
-              if (this.tableData[i].deviceState === 2) {
-                this.tableData[i].deviceState = "出租";
-              }
-              if (this.tableData[i].deviceState === 3) {
-                this.tableData[i].deviceState = "停用";
-              }
-              if (this.tableData[i].deviceState === 4) {
-                this.tableData[i].deviceState = "封存";
-              }
-              if (this.tableData[i].deviceState === 5) {
-                this.tableData[i].deviceState = "报废";
-              }
-            }
+
           },
           ({ type, info }) => {
             //错误类型 type=faild / error

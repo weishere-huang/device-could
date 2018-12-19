@@ -461,7 +461,6 @@ export default {
             enableMsg: false
           }
         },
-        this
       ).then(
         response => {
           this.$message({
