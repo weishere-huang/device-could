@@ -665,7 +665,10 @@
 
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
-        this.suppliesTableData[rowIndex][field] = newValue;
+        let _suppliesTableData=require('clone')(this.suppliesTableData);
+        _suppliesTableData[rowIndex][field] = newValue;
+        this.suppliesTableData=_suppliesTableData;
+        //this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
       },
       selectGroupChange(selection) {
         console.log("select-group-change", selection);
