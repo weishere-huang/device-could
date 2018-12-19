@@ -26,6 +26,7 @@
             placeholder="如企业名称，用户名，手机号"
             size="small"
             v-model="keyWord"
+            @keyup.enter.native="findByKeyWord"
           ></el-input>
           <el-button
             size="small"

@@ -6,6 +6,7 @@
         type="search"
         size="mini"
         v-model="companyName"
+        @keyup.enter.native="search"
       ></el-input>
       <div>
         <label for="">企业状态：</label>
@@ -14,7 +15,6 @@
             <el-checkbox label="0">待审核</el-checkbox>
             <el-checkbox label="1">正常</el-checkbox>
             <el-checkbox label="2">已禁用</el-checkbox>
-            <el-checkbox label="10">未通过</el-checkbox>
           </el-checkbox-group>
         </div>
       </div>
