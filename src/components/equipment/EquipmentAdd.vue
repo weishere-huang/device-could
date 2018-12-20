@@ -4,7 +4,7 @@
       <div class="top">
         <el-row>
           <el-button  size="small" type="primary" @click="tback" icon="el-icon-arrow-left">返回</el-button>
-          <el-button  size="small" type="primary" @click="addwarning"><i style='font-size:12px' class='iconfont'>&#xe645;</i> &nbsp;保存</el-button>
+          <el-button  size="small" type="primary" @click="add1"><i style='font-size:12px' class='iconfont'>&#xe645;</i> &nbsp;保存</el-button>
         </el-row>
       </div>
       <div class="center">
@@ -406,12 +406,9 @@
             }}));
         });
         console.log(_devicePersonnelInfo);
-        if(this.fileList1 == null || this.fileList1.length===0  ){
-          this.fileList1 = null
-        }else{
-          this.fileList1=JSON.stringify(this.fileList1);
-        };
-        let data = qs.stringify({
+
+
+        let data ={
           deviceNo: this.sizeForm.deviceNo,
           deviceName: this.sizeForm.deviceName,
           deviceClassify: this.sizeForm.deviceClassify,
@@ -421,18 +418,15 @@
           organizeCode: this.sizeForm.organizeCode,
           deviceCategory: this.sizeForm.deviceCategory,
           deviceCategoryName: this.sizeForm.deviceCategoryName,
-          outputDate: this.sizeForm.outputDate,
           manufacturer: this.sizeForm.manufacturer,
           location: this.sizeForm.location,
           // location: null,
           locationNo: this.sizeForm.locationNo,
           buyPrice: this.sizeForm.buyPrice * 100,
-          buyDate: this.sizeForm.buyDate,
           dataInfo: this.sizeForm.dataInfo,
           deviceModel: this.sizeForm.deviceModel,
           deviceState: this.sizeForm.deviceState,
-          enterFactoryDate: this.sizeForm.enterFactoryDate,
-          deviceDataInfo: this.fileList1,
+
           devicePersonnelInfo:JSON.stringify(_devicePersonnelInfo)
 
           // deviceNo: this.sizeForm.deviceNo,
@@ -456,7 +450,21 @@
           // // enterFactoryDate: this.sizeForm.enterFactoryDate,
           // deviceDataInfo: JSON.stringify(this.sizeForm.deviceDataInfo),
           // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo),
-        });
+        };
+
+        if(this.fileList1.length > 0){
+          data.deviceDataInfo=JSON.stringify(this.fileList1);
+        }
+        if(this.sizeForm.outputDate.length !== 0 )  {
+          data.outputDate = this.sizeForm.outputDate;
+        }
+        if(this.sizeForm.buyDate.length !== 0){
+          data.buyDate = this.sizeForm.buyDate;
+        }
+        if(this.sizeForm.enterFactoryDate.length !== 0){
+          data.enterFactoryDate = this.sizeForm.enterFactoryDate;
+        }
+        data=qs.stringify(data);
         this.Axios({
           url: "/device/add",
           params: data,
