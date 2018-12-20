@@ -153,7 +153,7 @@
           <el-form-item
             label="营业执照："
             props="dialogImageUrl"
-            
+
             style="padding-top: 6px;"
           >
             <el-upload
@@ -166,8 +166,8 @@
               :before-upload="beforeAvatarUpload"
               :on-preview="handlePictureCardPreview"
               :on-remove="handleRemove"
-              >
-              
+            >
+
               <i class="el-icon-plus"></i>
             </el-upload>
             <el-dialog :visible.sync="dialogVisible">
@@ -346,7 +346,7 @@
                     params: Object.assign({name: this.company.name}),
                     url: "/enterprise/findByName",
                     type: "get",
-                    option: {enableMsg: false}
+                    option: {enableMsg: false,enableLoad:false}
                   }
                 ).then(res => {
                   console.log(res)
@@ -401,7 +401,8 @@
             {
               validator: (rule, value, callback) => {
                 if (
-                  /^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$/.test(
+                  // /^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$/.test(
+                    /^[1-9A-GY]{1}[1239]{1}[\d]{6}[\dA-Z]{10}$/.test(
                     value
                   ) == false
                 ) {
@@ -419,7 +420,7 @@
                     params: Object.assign({creditCode: this.company.companyID}),
                     url: "/enterprise/findByCreditCode",
                     type: "get",
-                    option: {enableMsg: false}
+                    option: {enableMsg: false,enableLoad:false}
                   }
                 ).then(res => {
                   console.log(res)
@@ -459,7 +460,7 @@
                     params: Object.assign({userName: this.manager.userName}),
                     url: "/user/userNameIsSingle",
                     type: "get",
-                    option: {enableMsg: false}
+                    option: {enableMsg: false,enableLoad:false}
                   }
                 ).then(res => {
                   console.log(res)
@@ -509,7 +510,7 @@
                     params: Object.assign({phone: this.manager.phone}),
                     url: "/user/phoneIsSingle",
                     type: "get",
-                    option: {enableMsg: false}
+                    option: {enableMsg: false,enableLoad:false}
                   }
                 ).then(res => {
                   console.log(res)
@@ -643,8 +644,8 @@
             url: "/user/login",
             params: data,
             type: "post",
-            option: {enableMsg: false},
-            loadingConfig:{
+            option: {enableMsg: false,enableLoad:false},
+            loadingConfig: {
               target: document.querySelector('.login')
             }
           },
@@ -666,9 +667,9 @@
           },
           ({type, info}) => {
             console.log(info);
-            if (info.code === 0) {
+            if (info.code === 408) {
               this.$message.error("验证码错误");
-            } else {
+            } else if (info.code === 400) {
               this.$message.error("账号或密码错误");
               this.$router.push({path: "/Login"});
             }
@@ -706,7 +707,7 @@
             url: "/enterprise/add",
             params: data,
             type: "post",
-            option: {enableMsg: false}
+            option: {enableMsg: false,enableLoad:false}
           },
           this
         ).then(
@@ -742,7 +743,7 @@
             type: "post",
             option: {
               enableMsg: false,
-              enableLoad:false
+              enableLoad: false
             },
             // loadingConfig:{
             //   target: document.querySelector('.login')
@@ -778,7 +779,7 @@
             type: "post",
             option: {
               enableMsg: false,
-              enableLoad:false
+              enableLoad: false
             }
           },
           this
@@ -845,7 +846,7 @@
         return encrypted.toString();
       }
     },
-    mounted () {
+    mounted() {
     }
   };
 </script>
@@ -1078,8 +1079,7 @@
       font-size: 12px;
       cursor: pointer;
     }
-    
-    
+
   }
- 
+
 </style>
