@@ -15,9 +15,13 @@ export default ({ url, type, params, config, option, loadingConfig }, vue) => {
     option = Object.assign({
         requestTarget: 'd',
         enableMsg: true,
-        successMsg: '数据请求完成~'
+        successMsg: '数据请求完成~',
+        enableLoad:true
     }, option || {});
     const loadInit = function () {
+        if(!option.enableLoad){
+            return {close:()=>{}}
+        }
         return Loading.service(Object.assign({
             lock: true,
             text: '正加载中，请稍候...',
