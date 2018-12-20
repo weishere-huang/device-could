@@ -350,8 +350,12 @@
       },
 
       testValue(){
+        let nameValue=/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/im;
         if (this.persnneladd.name == ""){
           this.$message.error("员工名不能为空");
+          return false;
+        }else if(nameValue.test(this.persnneladd.name)){
+          this.$message.error("员工名不能有特殊字符");
           return false;
         }
         if(this.persnneladd.employeeNo == ""){
@@ -386,7 +390,7 @@
         let regEmail= /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
         if(this.persnneladd.email!==""){
           if(!regEmail.test(this.persnneladd.email)){
-            alert("邮箱格式不正确");
+            this.$message.error("邮箱格式不正确");
             return false;
           }
         }
@@ -432,6 +436,7 @@
           },
           this
         ).then(response => {
+          console.log(response.data);
             this.persnneladd = response.data.data;
             this.persnneladd.gender = response.data.data.gender.toString();
             if (this.persnneladd.marital!=null){

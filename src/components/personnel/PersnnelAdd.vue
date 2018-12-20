@@ -293,7 +293,7 @@
         return isOk&& isLt1M;
       },
       handleRemove1(file, fileList) {
-        this.fileList = this.fileList.filter(item=>item.name!=file.name);
+        this.fileList = this.fileList.filter(item=>item.name!==file.name);
       },
       handlePreview1(file) {
         console.log(file);
@@ -421,8 +421,12 @@
       },
 
       testValue(){
+        let nameValue=/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/im;
         if (this.persnneladd.name == ""){
           this.$message.error("员工名不能为空");
+          return false;
+        }else if(nameValue.test(this.persnneladd.name)){
+          this.$message.error("员工名不能有特殊字符");
           return false;
         }
         if(this.persnneladd.employeeNo == ""){
@@ -457,7 +461,7 @@
         let regEmail= /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
         if(this.persnneladd.email!==""){
           if(!regEmail.test(this.persnneladd.email)){
-            alert("邮箱格式不正确");
+            this.$message.error("邮箱格式不正确");
             return false;
           }
         }
