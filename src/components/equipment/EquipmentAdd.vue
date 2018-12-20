@@ -406,6 +406,9 @@
             }}));
         });
         console.log(_devicePersonnelInfo);
+        if(this.fileList1.length===0){
+          this.fileList1 = null
+        };
         let data = qs.stringify({
           deviceNo: this.sizeForm.deviceNo,
           deviceName: this.sizeForm.deviceName,
@@ -420,7 +423,7 @@
           manufacturer: this.sizeForm.manufacturer,
           location: this.sizeForm.location,
           locationNo: this.sizeForm.locationNo,
-          buyPrice: this.sizeForm.buyPrice,
+          buyPrice: this.sizeForm.buyPrice * 100,
           buyDate: this.sizeForm.buyDate,
           dataInfo: this.sizeForm.dataInfo,
           deviceModel: this.sizeForm.deviceModel,

@@ -620,7 +620,7 @@ export default {
         manufacturer: this.sizeForm.manufacturer,
         location: this.sizeForm.location,
         locationNo: this.sizeForm.locationNo,
-        buyPrice: this.sizeForm.buyPrice,
+        buyPrice: this.sizeForm.buyPrice*100,
         buyDate: this.sizeForm.buyDate,
         deviceCategory: this.sizeForm.deviceCategory,
         deviceCategoryName: this.sizeForm.deviceCategoryName,
@@ -738,7 +738,7 @@ export default {
           console.log("detail");
           console.log(result.data);
           this.sizeForm = result.data.data;
-
+          this.sizeForm.buyPrice = parseInt(this.sizeForm.buyPrice)/100;
           this.placeholder=this.sizeForm.organizeName;
           if (this.sizeForm.buyDate != null) {
             this.sizeForm.buyDate = this.sizeForm.buyDate.replace(/-/g, "/");
