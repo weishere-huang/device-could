@@ -737,8 +737,13 @@
             params: data,
             url: "/user/getVerifyCode",
             type: "post",
-            option: {enableMsg: false},
-         
+            option: {
+              enableMsg: false,
+              enableLoad:false
+            },
+            // loadingConfig:{
+            //   target: document.querySelector('.login')
+            // }
           },
           this
         ).then(
@@ -768,7 +773,10 @@
             params: data,
             url: "/enterprise/getVerifyCode",
             type: "post",
-            option: {enableMsg: false}
+            option: {
+              enableMsg: false,
+              enableLoad:false
+            }
           },
           this
         ).then(
