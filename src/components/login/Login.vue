@@ -178,7 +178,7 @@
               >
             </el-dialog>
           </el-form-item>
-          <div style="display:inline-block;margin-left:-75px;color:#999999;">仅支持小于1Mb的jpg或png图片格式</div>
+          <div style="display:inline-block;margin-left:-20px;color:#999999;">仅支持小于1Mb的jpg或png图片格式</div>
         </el-form>
         <div class="next">
           <el-button
