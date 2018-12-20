@@ -329,10 +329,10 @@
         registerRules: {
           name: [
             {required: true, message: "企业名不能为空", trigger: "blur"},
-            {min: 1, max: 30, message: "企业名称长度不能超过30字符"},
+            {min: 1, max: 100, message: "企业名称长度不能超过30字符"},
             {
               validator: (rule, value, callback) => {
-                if (/^(?!(\d+)$)[\u4e00-\u9fffa-zA-Z\d\-_]+$/.test(value) == false) {
+                if (/^(?!(\d+)$)[\u4e00-\u9fffa-zA-Z\d\-_\(\)\（\）\s]+$/.test(value) == false) {
                   callback(new Error("请输入正确的企业名称"))
                 } else {
                   callback()
