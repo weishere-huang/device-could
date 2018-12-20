@@ -50,7 +50,7 @@
               :visible.sync="dialogVisible1"
               width="300px"
               style="overflow: hidden;"
-            > 
+            >
             <el-col :span="24" style="text-align:center;">
               <el-cascader
                 placeholder="请选择"
@@ -132,7 +132,7 @@
                       type="primary"
                       @click="ctgsave"
                     >确 定</el-button>
-                  </div>   
+                  </div>
               </el-dialog>
             </el-form-item>
           </el-form>
@@ -602,7 +602,6 @@ export default {
     update() {
       //编辑设备信息接口
       let qs = require("qs");
-
       let _devicePersonnelInfo=[];
       this.devicePersonnelInfoBase.forEach(items => {
         _devicePersonnelInfo=_devicePersonnelInfo.concat(items.content.map(item=>{
@@ -613,15 +612,7 @@ export default {
             workerTypeName: items.workerTypeName
           }}));
       });
-      if(this.fileList1 == null || this.fileList1.length===0  ){
-        this.fileList1 = null
-      }else{
-        this.fileList1=JSON.stringify(this.fileList1);
-      };
-
-
-
-      let data = qs.stringify({
+      let data = {
         //sizeForm: JSON.stringify(this.sizeForm),21
         id: this.urlid,
         deviceNo: this.sizeForm.deviceNo,
@@ -630,22 +621,32 @@ export default {
         deviceClassify: this.sizeForm.deviceClassify,
         deviceClassifyName: this.sizeForm.deviceClassifyName,
         deviceSpec: this.sizeForm.deviceSpec,
-        outputDate: this.sizeForm.outputDate,
         manufacturer: this.sizeForm.manufacturer,
         location: this.sizeForm.location,
         locationNo: this.sizeForm.locationNo,
         buyPrice: this.sizeForm.buyPrice*100,
-        buyDate: this.sizeForm.buyDate,
         deviceCategory: this.sizeForm.deviceCategory,
         deviceCategoryName: this.sizeForm.deviceCategoryName,
         deviceModel: this.sizeForm.deviceModel,
         deviceState: this.sizeForm.deviceState,
         organizeCode: this.sizeForm.organizeCode,
-        enterFactoryDate: this.sizeForm.enterFactoryDate,
-        deviceDataInfo: this.fileList1,
          // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo)
         devicePersonnelInfo: JSON.stringify(_devicePersonnelInfo)
-      });
+      };
+
+      if(this.fileList1.length > 0){
+        data.deviceDataInfo=JSON.stringify(this.fileList1);
+      }
+      if(this.sizeForm.outputDate.length !== 0 )  {
+        data.outputDate = this.sizeForm.outputDate;
+      }
+      if(this.sizeForm.buyDate.length !== 0){
+        data.buyDate = this.sizeForm.buyDate;
+      }
+      if(this.sizeForm.enterFactoryDate.length !== 0){
+        data.enterFactoryDate = this.sizeForm.enterFactoryDate;
+      }
+      data=qs.stringify(data);
       this.Axios(
         {
           url: "/device/update",
