@@ -301,6 +301,17 @@ export default {
       }
       return tree;
     },
+    getparaentcode(data){
+      let pcode;
+      let tempcode = 50;
+      for(let b in data){
+        if(data[b].parentCode.length < tempcode){
+          tempcode=data[b].parentCode.length;
+          pcode=data[b].parentCode;
+        }
+      }
+      return pcode;
+    },
     findpeopler() {
       this.Axios(
         {
@@ -377,7 +388,7 @@ export default {
           console.log("查询所有组织机构");
           console.log(result.data);
           console.log(result.data.data);
-          let arr = this.filterArray(result.data.data, 0);
+          let arr = this.filterArray(result.data.data, this.getparaentcode(result.data.data));
           console.log(arr);
           //this.data2 = this.filterArray(result.data.data,1000);
           this.data2 = arr;
