@@ -341,7 +341,7 @@
                     params: Object.assign({name: this.company.name}),
                     url: "/enterprise/findByName",
                     type: "get",
-                    option:{enableMsg:false}
+                    option: {enableMsg: false}
                   }
                 ).then(res => {
                   console.log(res)
@@ -414,7 +414,7 @@
                     params: Object.assign({creditCode: this.company.companyID}),
                     url: "/enterprise/findByCreditCode",
                     type: "get",
-                    option:{enableMsg:false}
+                    option: {enableMsg: false}
                   }
                 ).then(res => {
                   console.log(res)
@@ -454,7 +454,7 @@
                     params: Object.assign({userName: this.manager.userName}),
                     url: "/user/userNameIsSingle",
                     type: "get",
-                    option:{enableMsg:false}
+                    option: {enableMsg: false}
                   }
                 ).then(res => {
                   console.log(res)
@@ -504,7 +504,7 @@
                     params: Object.assign({phone: this.manager.phone}),
                     url: "/user/phoneIsSingle",
                     type: "get",
-                    option:{enableMsg:false}
+                    option: {enableMsg: false}
                   }
                 ).then(res => {
                   console.log(res)
@@ -638,7 +638,7 @@
             url: "/user/login",
             params: data,
             type: "post",
-            option:{enableMsg:false}
+            option: {enableMsg: false}
           },
           this
         ).then(
@@ -698,7 +698,7 @@
             url: "/enterprise/add",
             params: data,
             type: "post",
-            option:{enableMsg:false}
+            option: {enableMsg: false}
           },
           this
         ).then(
@@ -732,7 +732,7 @@
             params: data,
             url: "/user/getVerifyCode",
             type: "post",
-            option:{enableMsg:false}
+            option: {enableMsg: false}
           },
           this
         ).then(
@@ -762,7 +762,7 @@
             params: data,
             url: "/enterprise/getVerifyCode",
             type: "post",
-            option:{enableMsg:false}
+            option: {enableMsg: false}
           },
           this
         ).then(
@@ -830,7 +830,7 @@
     },
   };
 </script>
-<style lang="less" scoped>
+<style lang="less" >
   @import url("../../assets/font/font.css");
 
   @blue: #409eff;
@@ -1059,5 +1059,16 @@
       font-size: 12px;
       cursor: pointer;
     }
+  }
+  .v-modal{
+    z-index: -1 !important;
+  
+  }
+  .el-dialog__wrapper{
+    // opacity: .5;
+    background: rgba(0, 0, 0, 0.507);
+  }
+  .el-dialog__header{
+    height: 40px;
   }
 </style>
