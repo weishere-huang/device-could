@@ -402,7 +402,7 @@
               validator: (rule, value, callback) => {
                 if (
                   // /^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$/.test(
-                    /^[]$/.test(
+                    /^[1-9A-GY]{1}[1239]{1}[\d]{6}[\dA-Z]{10}$/.test(
                     value
                   ) == false
                 ) {
