@@ -153,6 +153,8 @@
           <el-form-item
             label="营业执照："
             props="dialogImageUrl"
+            
+            style="padding-top: 6px;"
           >
             <el-upload
               style="display:inline-block;vertical-align:top"
@@ -163,7 +165,9 @@
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
               :on-preview="handlePictureCardPreview"
-              :on-remove="handleRemove">
+              :on-remove="handleRemove"
+              >
+              
               <i class="el-icon-plus"></i>
             </el-upload>
             <el-dialog :visible.sync="dialogVisible">
@@ -248,7 +252,8 @@
             <el-button
               type="primary"
               plain
-              style="width:38%;height:32px;"
+              style="width:38%;"
+              size="small"
               @click="registerSecuritycode"
             >获取验证码
             </el-button>
@@ -828,6 +833,8 @@
         return encrypted.toString();
       }
     },
+    mounted () {
+    }
   };
 </script>
 <style lang="less" >
@@ -1041,7 +1048,7 @@
       font-size: 12px;
       color: #909399;
       text-align: center;
-      padding: 10px 0 10px 20px;
+      padding: 10px 0 10px 0px;
     }
     .upload-demo {
       width: 50%;
