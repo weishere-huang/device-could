@@ -153,7 +153,6 @@
           <el-form-item
             label="营业执照："
             props="dialogImageUrl"
-
             style="padding-top: 6px;"
           >
             <el-upload
@@ -167,7 +166,6 @@
               :on-preview="handlePictureCardPreview"
               :on-remove="handleRemove"
             >
-
               <i class="el-icon-plus"></i>
             </el-upload>
             <el-dialog :visible.sync="dialogVisible">
