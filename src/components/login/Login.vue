@@ -660,7 +660,6 @@
               // this.$cookieStore.addCookie('JSESSIONID', result.data.data.jsessionid)
               // sessionStorage.user = result.data.data.employeeName;
               this.$store.commit("user", sessionStorage.getItem("user"));
-              console.log(this.$store.state.token.userMsg);
               this.$store.commit("tokenSrc", result.data.data.tokenStr);
               this.$router.replace("/Home");
               location.reload();
