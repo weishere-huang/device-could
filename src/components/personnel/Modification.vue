@@ -14,177 +14,177 @@
         <div class="essential">
           <p class="title">基本信息（必填）</p>
           <el-form :label-position="labelPosition" label-width="100px" style="width:100%;margin-top:26px"  size="mini">
-              <el-col :span="11">
-                <el-form-item label="姓名：" style="">
-                  <el-input type="text"   v-model="persnneladd.name"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="11">
-                <el-form-item label="账号：" >
-                  <el-input type="text"  v-model="persnneladd.userName" readonly></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="11">
-                <el-form-item label="性别：" style="">
-                  <el-radio v-model="persnneladd.gender" label="1">男</el-radio>
-                  <el-radio v-model="persnneladd.gender" label="0">女</el-radio>
-                </el-form-item>
-              </el-col>
-              <el-col :span="11">
-                <el-form-item label="身份证：" style="">
-                   <el-input type="text"  v-model="persnneladd.idCardNo"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="11">
-                <el-form-item label="员工编号：" style="">
-                  <el-input type="text"  v-model="persnneladd.employeeNo"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="11">
-                <el-form-item label="角色权限：" style="">
-                  <el-select v-model="persnneladd.roleId" placeholder="请选择" style="width:100%">
+            <el-col :span="11">
+              <el-form-item label="姓名：" style="">
+                <el-input type="text"   v-model="persnneladd.name"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11">
+              <el-form-item label="账号：" >
+                <el-input type="text"  v-model="persnneladd.userName" readonly></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11">
+              <el-form-item label="性别：" style="">
+                <el-radio v-model="persnneladd.gender" label="1">男</el-radio>
+                <el-radio v-model="persnneladd.gender" label="0">女</el-radio>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11">
+              <el-form-item label="身份证：" style="">
+                <el-input type="text"  v-model="persnneladd.idCardNo"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11">
+              <el-form-item label="员工编号：" style="">
+                <el-input type="text"  v-model="persnneladd.employeeNo"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11">
+              <el-form-item label="角色权限：" style="">
+                <el-select v-model="persnneladd.roleId" placeholder="请选择" style="width:100%">
                   <el-option v-for="item in role" :key="item.value" :label="item.name" :value="item.id">
                   </el-option>
                 </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="11">
-                <el-form-item label="手机号码：" style="">
-                  <el-input type="text"  v-model="persnneladd.phone"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="11">
-                <el-form-item label="出生日期：" style="">
-                  <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.birthday"
-                             style="width:100%"     ></el-date-picker>
-                </el-form-item>
-              </el-col>
-              <el-col :span="11">
-                <el-form-item label="组织单位：" style="">
-                    <span>{{persnneladd.organizationName}}</span>
-              <el-button
-                size="mini"
-                type="primary"
-                @click="dialogVisible3=true"
-                style="float: right;"
-              >点击修改</el-button>
-              <el-dialog
-                title="修改类别"
-                :visible.sync="dialogVisible3"
-                width="30%"
-              >
-                <el-cascader
-                  placeholder=""
-                  :options="orgoptions"
-                  :props="defaultProps"
-                  filterable
-                  ref="getName"
-                  expand-trigger="hover"
-                  change-on-select
-                  :show-all-levels="false"
-                  v-model="qqqqq"
-                  @change="handleChange"
-                  style="width:215px;padding:1px;"
-                ></el-cascader>
-                <el-button @click="dialogVisible3 = false" >取 消</el-button>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11">
+              <el-form-item label="手机号码：" style="">
+                <el-input type="text"  v-model="persnneladd.phone"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11">
+              <el-form-item label="出生日期：" style="">
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.birthday"
+                                style="width:100%"     ></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11">
+              <el-form-item label="组织单位：" style="">
+                <span>{{persnneladd.organizationName}}</span>
                 <el-button
+                  size="mini"
                   type="primary"
-                  @click="orgsave"
-                >确 定</el-button>
+                  @click="dialogVisible3=true"
+                  style="float: right;"
+                >点击修改</el-button>
+                <el-dialog
+                  title="修改类别"
+                  :visible.sync="dialogVisible3"
+                  width="30%"
+                >
+                  <el-cascader
+                    placeholder=""
+                    :options="orgoptions"
+                    :props="defaultProps"
+                    filterable
+                    ref="getName"
+                    expand-trigger="hover"
+                    change-on-select
+                    :show-all-levels="false"
+                    v-model="qqqqq"
+                    @change="handleChange"
+                    style="width:215px;padding:1px;"
+                  ></el-cascader>
+                  <el-button @click="dialogVisible3 = false" >取 消</el-button>
+                  <el-button
+                    type="primary"
+                    @click="orgsave"
+                  >确 定</el-button>
 
-              </el-dialog>
-                </el-form-item>
-              </el-col>
-              <el-col :span="11">
-                <el-form-item label="岗位：" style="">
-                  <el-input type="text"  v-model="persnneladd.position"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="11">
-                <el-form-item label="入职时间：" style="">
-                  <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.entryTime"
-                         style="width:100%"         ></el-date-picker>
-                </el-form-item>
-              </el-col>
-              <el-col :span="11">
-                <el-form-item label="婚姻状况：" style="">
-                  <el-radio v-model="persnneladd.marital" label="1">已婚</el-radio>
-                  <el-radio v-model="persnneladd.marital" label="0">未婚</el-radio>
-                </el-form-item>
-              </el-col>
-            </el-form>
+                </el-dialog>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11">
+              <el-form-item label="岗位：" style="">
+                <el-input type="text"  v-model="persnneladd.position"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11">
+              <el-form-item label="入职时间：" style="">
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.entryTime"
+                                style="width:100%"         ></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11">
+              <el-form-item label="婚姻状况：" style="">
+                <el-radio v-model="persnneladd.marital" label="1">已婚</el-radio>
+                <el-radio v-model="persnneladd.marital" label="0">未婚</el-radio>
+              </el-form-item>
+            </el-col>
+          </el-form>
         </div>
         <div class="more-msg">
           <p class="title">更多信息（选填）</p>
           <div style="overflow: hidden;">
             <el-form :label-position="labelPosition" label-width="100px" style="width:100%;margin-top:26px"  size="mini">
-            <el-col :span="11">
-              <el-form-item label="工作年限：">
-                <el-input type="text" style="width:50%" v-model="persnneladd.workingYears"></el-input>&nbsp;年
-              </el-form-item>
-            </el-col>
-            <el-col :span="11">
-              <el-form-item label="身高：">
-                <el-input type="text" style="width:50%" v-model="persnneladd.height"></el-input>&nbsp;CM
-              </el-form-item>
-            </el-col>
-            <el-col :span="11">
-              <el-form-item label="籍贯：">
-                <el-input type="text"  v-model="persnneladd.nativePlace"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="11">
-              <el-form-item label="国籍：">
-                <el-input type="text" style="width:50%" v-model="persnneladd.nationality"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="14">
-              <el-form-item label="电子邮箱：">
-                <el-input type="text"  v-model="persnneladd.email"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="14">
-              <el-form-item label="通讯地址：">
-                <el-input type="text"  v-model="persnneladd.postalAddress"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="11">
-              <el-form-item label="毕业学校：">
-                <el-input type="text"  v-model="persnneladd.graduateSchool"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="11">
-              <el-form-item label="最高学历：">
-                <el-input type="text" style="width:50%" v-model="persnneladd.degree"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="20">
-              <el-form-item label="照片：">
-               <el-upload
-                style="display:inline-block;vertical-align:top"
-                :action="path()"
-                accept="image/jpeg,image/png"
-                list-type="picture-card"
-                :limit="1"
-                :file-list="dialogImageUrl"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload"
-                :on-preview="handlePictureCardPreview"
-                :on-remove="handleRemove">
-                <i class="el-icon-plus"></i>
-              </el-upload>
-              <el-dialog :visible.sync="dialogVisible">
-                <img width="100%" :src="dialogImageUrl[0].url" alt="">
-              </el-dialog>
-              </el-form-item>
-            </el-col>
-            <el-col :span="20">
-              <el-form-item label="资质：">
-                <el-upload
-                style="display:inline-block;line-height:30px;vertical-align:top"
-                class="upload-demo"
-                :action="path()"
-                accept="
+              <el-col :span="11">
+                <el-form-item label="工作年限：">
+                  <el-input type="text" style="width:50%" v-model="persnneladd.workingYears"></el-input>&nbsp;年
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="身高：">
+                  <el-input type="text" style="width:50%" v-model="persnneladd.height"></el-input>&nbsp;CM
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="籍贯：">
+                  <el-input type="text"  v-model="persnneladd.nativePlace"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="国籍：">
+                  <el-input type="text" style="width:50%" v-model="persnneladd.nationality"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="14">
+                <el-form-item label="电子邮箱：">
+                  <el-input type="text"  v-model="persnneladd.email"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="14">
+                <el-form-item label="通讯地址：">
+                  <el-input type="text"  v-model="persnneladd.postalAddress"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="毕业学校：">
+                  <el-input type="text"  v-model="persnneladd.graduateSchool"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="最高学历：">
+                  <el-input type="text" style="width:50%" v-model="persnneladd.degree"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="20">
+                <el-form-item label="照片：">
+                  <el-upload
+                    style="display:inline-block;vertical-align:top"
+                    :action="path()"
+                    accept="image/jpeg,image/png"
+                    list-type="picture-card"
+                    :limit="1"
+                    :file-list="dialogImageUrl"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload"
+                    :on-preview="handlePictureCardPreview"
+                    :on-remove="handleRemove">
+                    <i class="el-icon-plus"></i>
+                  </el-upload>
+                  <el-dialog :visible.sync="dialogVisible">
+                    <img width="100%" :src="dialogImageUrl" alt="" v-if="dialogImageUrl===''">
+                  </el-dialog>
+                </el-form-item>
+              </el-col>
+              <el-col :span="20">
+                <el-form-item label="资质：">
+                  <el-upload
+                    style="display:inline-block;line-height:30px;vertical-align:top"
+                    class="upload-demo"
+                    :action="path()"
+                    accept="
                  application/msword,
                  application/vnd.openxmlformats-officedocument.wordprocessingml.document,
                  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
@@ -195,19 +195,19 @@
                  text/plain,
                  image/jpeg,
                  image/png"
-                :on-preview="handlePreview1"
-                :on-remove="handleRemove1"
-                :before-upload="beforeAvatarUpload1"
-                :on-success="handleSuccess"
-                :limit="10"
-                :on-exceed="handleExceed1"
-                :file-list="fileList">
-                <el-button size="mini" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">文件小于1MB(最多上传10个)</div>
-              </el-upload>
-              </el-form-item>
-            </el-col>
-          </el-form>
+                    :on-preview="handlePreview1"
+                    :on-remove="handleRemove1"
+                    :before-upload="beforeAvatarUpload1"
+                    :on-success="handleSuccess"
+                    :limit="10"
+                    :on-exceed="handleExceed1"
+                    :file-list="fileList">
+                    <el-button size="mini" type="primary">点击上传</el-button>
+                    <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">文件小于1MB(最多上传10个)</div>
+                  </el-upload>
+                </el-form-item>
+              </el-col>
+            </el-form>
           </div>
         </div>
       </div>
@@ -219,6 +219,7 @@
     name: "",
     data() {
       return {
+        labelPosition:"right",
         fileList: [],
         dialogImageUrl:[],
         dialogVisible:false,
@@ -264,8 +265,8 @@
     },
     methods: {
       orgsave(){
-      this.dialogVisible3 = false ;
-    },
+        this.dialogVisible3 = false ;
+      },
       handleChange(value) {
         let name = this.$refs["getName"].currentLabels;
         name = name[name.length - 1];
@@ -405,7 +406,8 @@
           },
           this
         ).then(response => {
-          this.orgoptions = this.filterArray(response.data.data, 0);
+            let arr = Math.min.apply(null, (response.data.data).map((item)=>{return item.code}));
+            this.orgoptions = this.filterArray(response.data.data, arr);
           },
           ({type, info}) => {
 
@@ -436,16 +438,17 @@
           },
           this
         ).then(response => {
-          console.log(response.data);
             this.persnneladd = response.data.data;
             this.persnneladd.gender = response.data.data.gender.toString();
             if (this.persnneladd.marital!=null){
               this.persnneladd.marital = response.data.data.marital.toString();
             }
             let arr = JSON.parse(this.persnneladd.qualificationInfo);
-            this.dialogImageUrl = [{
-              url:this.global.imgPath+this.persnneladd.img.split(":")[1],
-            }];
+            if(this.persnneladd.img!==""){
+              this.dialogImageUrl = [{
+                url:this.global.imgPath+this.persnneladd.img.split(":")[1],
+              }];
+            }
             for(let i in arr){
               this.fileList.push({
                 name:arr[i].name,
