@@ -217,7 +217,7 @@ export default {
                 result.data.data[i].organizeType = "车间";
               }
             }
-            this.data = this.filterArray(result.data.data, 0);
+            this.data = this.filterArray(result.data.data,this.getparaentcode(result.data.data));
             console.log(this.data);
             // console.log(this.name1[0].children);
 
@@ -263,6 +263,10 @@ export default {
         });
     },
     filterArray(data, parent) {
+      // let pcode = data.find(function (data) {data.parentCode.length === 1;});
+      // console.log(pcode);
+      // console.log('pcode');
+
       let vm = this;
       var tree = [];
       var temp;
@@ -277,6 +281,17 @@ export default {
         }
       }
       return tree;
+    },
+    getparaentcode(data){
+      let pcode;
+      let tempcode = 50;
+      for(let b in data){
+        if(data[b].parentCode.length < tempcode){
+          tempcode=data[b].parentCode.length;
+          pcode=data[b].parentCode;
+        }
+      }
+      return pcode;
     },
     ap() {
       this.add1 = !this.add1;
@@ -364,7 +379,7 @@ export default {
       margin-left: 5px;
       // text-align: center;
       // border: @border;
-      
+
       .componet-name {
         line-height: 30px;
         width: 500px;

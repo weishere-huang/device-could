@@ -4,7 +4,7 @@
       <el-button
         size="small"
         type="primary"
-        @click="Sinsert"
+        @click="insertBT"
       ><i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
     </div>
     <div class="warehouse">
@@ -362,11 +362,6 @@ export default {
     },
     toDetails2(rowIndex, rowData, column) {
       console.log(rowData);
-     //
-     //
-     //
-     //
-     //
     },
     handleChange2(value) {
       let name = this.$refs["getName2"].currentLabels;
@@ -545,7 +540,33 @@ export default {
         },
         ({ type, info }) => {}
       );
+    },
+
+    insertBT(){
+      let subok = true;
+
+      if(this.godownEntryNo === "" || this.tableData1.length === 0){
+        subok = false;
+      }
+
+      if(subok){
+        this.$confirm('确定完成入库吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.Sinsert();
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消操作'
+          });
+        });
+      }else{
+        this.$message.warning("请完善入库信息");
+      }
     }
+
   },
   created() {
     this.Sgetlist();

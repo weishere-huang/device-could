@@ -260,6 +260,8 @@ export default {
     },
     //按钮控制
     btisok(){
+      console.log(this.formInline.partClassify);
+      console.log(this.formInline.partCategory);
       let subok = true;
 
       this.$refs['baseinfo'].validate((valid) => {
@@ -276,7 +278,7 @@ export default {
           return false;
         }
       });
-
+      //
       if(subok){
         this.$confirm('确定完成操作吗?', '提示', {
           confirmButtonText: '确定',

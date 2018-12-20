@@ -285,6 +285,17 @@ export default {
       }
       return tree;
     },
+    getparaentcode(data){
+      let pcode;
+      let tempcode = 50;
+      for(let b in data){
+        if(data[b].parentCode.length < tempcode){
+          tempcode=data[b].parentCode.length;
+          pcode=data[b].parentCode;
+        }
+      }
+      return pcode;
+    },
     findpeopler() {
       this.Axios(
         {
@@ -355,49 +366,52 @@ export default {
       }
       this.tableData = newarr;
       console.log(this.tableData);
+    },
+    getorg(){
+      this.Axios(
+        {
+          params: {
+            page: this.pageIndex,
+            size: this.pageSize
+          },
+          // option: {
+          //   enableMsg: false
+          // },
+          type: "get",
+          url: "/organize/allOrganize"
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+        },
+        this
+      )
+      // .get(this.global.apiSrc + "/organize/allOrganize")
+        .then(
+          result => {
+            console.log("查询所有组织机构");
+            console.log(result.data);
+            console.log(result.data.data);
+            let arr = this.filterArray(result.data.data, this.getparaentcode(result.data.data));
+            console.log(arr);
+            //this.data2 = this.filterArray(result.data.data,1000);
+            this.data2 = arr;
+
+            this.orgcode=result.data.data[0].code;
+            this.findpeopler();
+          },
+          ({ type, info }) => {
+            //错误类型 type=faild / error
+            //error && error(type, info);
+          }
+        )
+        .catch(err => {
+          console.log(err);
+        });
     }
 
   },
   created() {
-    this.Axios(
-      {
-        params: {
-          page: this.pageIndex,
-          size: this.pageSize
-        },
-        // option: {
-        //   enableMsg: false
-        // },
-        type: "get",
-        url: "/organize/allOrganize"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },
-      this
-    )
-      // .get(this.global.apiSrc + "/organize/allOrganize")
-      .then(
-        result => {
-          console.log("查询所有组织机构");
-          console.log(result.data);
-          console.log(result.data.data);
-          let arr = this.filterArray(result.data.data, 0);
-          console.log(arr);
-          //this.data2 = this.filterArray(result.data.data,1000);
-          this.data2 = arr;
-
-          this.orgcode=result.data.data[0].code;
-          this.findpeopler();
-        },
-        ({ type, info }) => {
-          //错误类型 type=faild / error
-          //error && error(type, info);
-        }
-      )
-      .catch(err => {
-        console.log(err);
-      });
+    this.getorg();
   }
 };
 </script>
