@@ -125,8 +125,7 @@
       <!-- 照片弹框 -->
       <el-dialog title="查看图片" :visible.sync="pictureDialog" width="60%">
         <el-carousel :interval="4000" type="card" height="400px">
-          <el-carousel-item v-for="item in imgPath" :key="item">
-            <!--<h2>&#45;&#45;{{item}}-&#45;&#45;</h2>-->
+          <el-carousel-item v-for="(item,index) in imgPath" :key="index">
             <img :src="item" style="height: 100%;width: 100%">
           </el-carousel-item>
         </el-carousel>
@@ -235,7 +234,7 @@
               </div>
               <ul>
                 <h6>已选择</h6>
-                <li v-model="personListValue" v-for="value in personListValue" :key="value">
+                <li v-model="personListValue" v-for="(value,index) in personListValue" :key="index">
                   {{value.partName}}
                   <span :id="value.id" @click="basicAdd($event)" class="el-icon-circle-close-outline"></span>
                 </li>
@@ -247,7 +246,7 @@
         <div class="information-receipt">
           <h5>回执信息</h5>
           <div style="overflow-y:scroll;" class="case">
-            <el-form label-width="100px" :model="workReceiptInfo" v-for="item of workReceiptInfo" :key="item.id">
+            <el-form label-width="100px" :model="workReceiptInfo" v-for="(item,index) of workReceiptInfo" :key="index">
               <el-form-item label="施工人员：">
                 <span>{{item.builder}}</span>
               </el-form-item>
@@ -928,6 +927,7 @@
           this
         ).then(
           response => {
+            console.log(response.data.data.devices);
             this.workInfoValue(response.data.data.work);
             this.formLabelAlignValue(response.data.data.fault);
             this.equipmentTableDataValue(response.data.data.devices);
@@ -1157,14 +1157,16 @@
         if (this.formLabelAlign.faultLevel === 3) {
           this.formLabelAlign.faultLevel = "高";
         }
-        this.imgPath = this.formLabelAlign.img.split(",").map((item)=>{
-          return this.global.imgPath+item.split("img:")[1];
-        });
+        if(this.formLabelAlign.img!==null){
+            this.imgPath = this.formLabelAlign.img.split(",").map((item)=>{
+            return this.global.imgPath+item.split("img:")[1];
+          });
+        }
       },
       //设备
       equipmentTableDataValue(value){
-        let arr = value;
-        this.equipmentTableData = arr;
+        this.equipmentTableData = value;
+        console.log(this.equipmentTableData)
       },
       //工单物料
       suppliesTableDataValue(value){
