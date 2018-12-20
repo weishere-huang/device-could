@@ -658,7 +658,7 @@
               this.$store.commit("user", sessionStorage.getItem("user"));
               this.$store.commit("tokenSrc", result.data.data.tokenStr);
               this.$router.replace("/Home");
-              location.reload();
+              this.reload();
             }
           },
           ({type, info}) => {
@@ -737,7 +737,8 @@
             params: data,
             url: "/user/getVerifyCode",
             type: "post",
-            option: {enableMsg: false}
+            option: {enableMsg: false},
+         
           },
           this
         ).then(

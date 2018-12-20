@@ -273,7 +273,10 @@ export default {
         {
           url: "/message/NotReadMsgCount/",
           type: "get",
-          option:{requestTarget:"m"}
+          option:{
+            requestTarget:"m",
+            enableMsg: false
+          }
         },
         this
       )
