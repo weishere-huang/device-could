@@ -663,7 +663,7 @@
               console.log(this.$store.state.token.userMsg);
               this.$store.commit("tokenSrc", result.data.data.tokenStr);
               this.$router.replace("/Home");
-              this.reload();
+              location.reload();
             }
           },
           ({type, info}) => {

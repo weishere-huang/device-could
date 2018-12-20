@@ -48,10 +48,12 @@
             <el-dialog
               title="修改部门"
               :visible.sync="dialogVisible1"
-              width="30%"
-            >
+              width="300px"
+              style="overflow: hidden;"
+            > 
+            <el-col :span="24" style="text-align:center;">
               <el-cascader
-                placeholder="placeholder1"
+                placeholder="请选择"
                 :options="orgoptions"
                 :props="defaultProps"
                 expand-trigger="hover"
@@ -61,14 +63,16 @@
                 :show-all-levels="false"
                 v-model="qqqqq"
                 @change="handleChange"
-                style="padding:10px;"
+                style="padding:10px;width:90%"
               ></el-cascader>
-              <el-button @click="dialogVisible1 = false;chengeOrgCode='';chengeOrgname=''">取 消</el-button>
+            </el-col>
+              <div style="text-align:right;padding:10px;">
+                <el-button @click="dialogVisible1 = false;chengeOrgCode='';chengeOrgname=''">取 消</el-button>
               <el-button
                 type="primary"
                 @click="orgsave"
               >确 定</el-button>
-
+              </div>
             </el-dialog>
 
           </el-form-item>
@@ -104,29 +108,32 @@
               <el-dialog
                 title="修改类别"
                 :visible.sync="dialogVisible3"
-                width="30%"
+                width="300px"
               >
-                <el-cascader
-                  placeholder=""
-                  :options="ctgoptions"
-                  filterable
-                  ref="getName2"
-                  expand-trigger="hover"
-                  :props="defaultProps2"
-                  change-on-select
-                  :show-all-levels="false"
-                  v-model="classfynm"
-                  @change="handleChange2"
-                  style="width:215px;padding:10px;"
-                ></el-cascader>
-                <el-button @click="dialogVisible3 = false;chengectg='';chengectgname=''" >取 消</el-button>
-                <el-button
-                  type="primary"
-                  @click="ctgsave"
-                >确 定</el-button>
-
+                <el-col :span="24" style="text-align:center;">
+                  <el-cascader
+                      placeholder=""
+                      :options="ctgoptions"
+                      filterable
+                      ref="getName2"
+                      expand-trigger="hover"
+                      :props="defaultProps2"
+                      change-on-select
+                      size="small"
+                      :show-all-levels="false"
+                      v-model="classfynm"
+                      @change="handleChange2"
+                      style="padding:10px;width:90%"
+                    ></el-cascader>
+                </el-col>
+                  <div style="text-align:right;padding:10px;">
+                   <el-button @click="dialogVisible3 = false;chengectg='';chengectgname=''" >取 消</el-button>
+                    <el-button
+                      type="primary"
+                      @click="ctgsave"
+                    >确 定</el-button>
+                  </div>   
               </el-dialog>
-
             </el-form-item>
           </el-form>
           <el-form
@@ -874,7 +881,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="less" >
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
@@ -969,6 +976,9 @@ export default {
         }
       }
     }
+  }
+  .el-cascader__label{
+    top:10px !important;
   }
 }
 </style>

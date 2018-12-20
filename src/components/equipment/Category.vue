@@ -453,14 +453,16 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
 @Danger: #f56c6c;
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
+
 .category {
+  
   border: @border;
   border-radius: 5px;
   font-size: 12px;

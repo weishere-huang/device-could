@@ -61,6 +61,9 @@ const router = new Router({
       path: '/Login',
       name: 'Login',
       component: Login,
+      meta: {
+        requireAuth: false
+      },
     },
     {
       path: '/Home',
@@ -560,14 +563,14 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  let isLogin = sessionStorage.getItem('token')
   if (to.meta.requireAuth) { // 判断是否需要登录权限
-    if (sessionStorage.getItem('token')) { // 判断是否登录
+    if (isLogin) { // 判断是否登录
       next()
-    } else if (sessionStorage.getItem('token') === "") { // 没登录则跳转到登录界面
+    } else  { // 没登录则跳转到登录界面
       next({
-        path: '/',
+        path: '/Login',
         query: {
-          // redirect: "/Login"
           redirect: to.fullPath
         }
       })
