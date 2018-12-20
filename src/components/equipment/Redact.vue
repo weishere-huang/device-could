@@ -48,10 +48,12 @@
             <el-dialog
               title="修改部门"
               :visible.sync="dialogVisible1"
-              width="30%"
-            >
+              width="300px"
+              style="overflow: hidden;"
+            > 
+            <el-col :span="24" style="text-align:center;">
               <el-cascader
-                placeholder="placeholder1"
+                placeholder="请选择"
                 :options="orgoptions"
                 :props="defaultProps"
                 expand-trigger="hover"
@@ -61,14 +63,16 @@
                 :show-all-levels="false"
                 v-model="qqqqq"
                 @change="handleChange"
-                style="padding:10px;"
+                style="padding:10px;width:90%"
               ></el-cascader>
-              <el-button @click="dialogVisible1 = false;chengeOrgCode='';chengeOrgname=''">取 消</el-button>
+            </el-col>
+              <div style="text-align:right;padding:10px;">
+                <el-button @click="dialogVisible1 = false;chengeOrgCode='';chengeOrgname=''">取 消</el-button>
               <el-button
                 type="primary"
                 @click="orgsave"
               >确 定</el-button>
-
+              </div>
             </el-dialog>
 
           </el-form-item>
@@ -104,29 +108,32 @@
               <el-dialog
                 title="修改类别"
                 :visible.sync="dialogVisible3"
-                width="30%"
+                width="300px"
               >
-                <el-cascader
-                  placeholder=""
-                  :options="ctgoptions"
-                  filterable
-                  ref="getName2"
-                  expand-trigger="hover"
-                  :props="defaultProps2"
-                  change-on-select
-                  :show-all-levels="false"
-                  v-model="classfynm"
-                  @change="handleChange2"
-                  style="width:215px;padding:10px;"
-                ></el-cascader>
-                <el-button @click="dialogVisible3 = false;chengectg='';chengectgname=''" >取 消</el-button>
-                <el-button
-                  type="primary"
-                  @click="ctgsave"
-                >确 定</el-button>
-
+                <el-col :span="24" style="text-align:center;">
+                  <el-cascader
+                      placeholder=""
+                      :options="ctgoptions"
+                      filterable
+                      ref="getName2"
+                      expand-trigger="hover"
+                      :props="defaultProps2"
+                      change-on-select
+                      size="small"
+                      :show-all-levels="false"
+                      v-model="classfynm"
+                      @change="handleChange2"
+                      style="padding:10px;width:90%"
+                    ></el-cascader>
+                </el-col>
+                  <div style="text-align:right;padding:10px;">
+                   <el-button @click="dialogVisible3 = false;chengectg='';chengectgname=''" >取 消</el-button>
+                    <el-button
+                      type="primary"
+                      @click="ctgsave"
+                    >确 定</el-button>
+                  </div>   
               </el-dialog>
-
             </el-form-item>
           </el-form>
           <el-form
@@ -538,7 +545,7 @@ export default {
         name:file.name
       })
       console.log(this.fileList);
-      // console.log(this.fileList1);
+
     },
     handleRemove1(file, fileList) {
       console.log(file);
@@ -606,6 +613,13 @@ export default {
             workerTypeName: items.workerTypeName
           }}));
       });
+      if(this.fileList1 == null || this.fileList1.length===0  ){
+        this.fileList1 = null
+      }else{
+        this.fileList1=JSON.stringify(this.fileList1);
+      };
+
+
 
       let data = qs.stringify({
         //sizeForm: JSON.stringify(this.sizeForm),21
@@ -620,7 +634,7 @@ export default {
         manufacturer: this.sizeForm.manufacturer,
         location: this.sizeForm.location,
         locationNo: this.sizeForm.locationNo,
-        buyPrice: this.sizeForm.buyPrice,
+        buyPrice: this.sizeForm.buyPrice*100,
         buyDate: this.sizeForm.buyDate,
         deviceCategory: this.sizeForm.deviceCategory,
         deviceCategoryName: this.sizeForm.deviceCategoryName,
@@ -628,7 +642,7 @@ export default {
         deviceState: this.sizeForm.deviceState,
         organizeCode: this.sizeForm.organizeCode,
         enterFactoryDate: this.sizeForm.enterFactoryDate,
-        deviceDataInfo: JSON.stringify(this.fileList1),
+        deviceDataInfo: this.fileList1,
          // devicePersonnelInfo: JSON.stringify(this.sizeForm.devicePersonnelInfo)
         devicePersonnelInfo: JSON.stringify(_devicePersonnelInfo)
       });
@@ -643,7 +657,6 @@ export default {
         },
         this
       )
-        // .post(this.global.apiSrc + "/device/update", data)
         .then(
           result => {
             if (result.data.code == 200) {
@@ -652,17 +665,17 @@ export default {
               console.log(result.data);
               this.$router.push("/Equipment");
             } else if (result.data.code == 410) {
+              this.fileList1= JSON.parse(this.fileList1);
               this.$message.warning("该设备编号以存在,请修改!!!");
+            }else{
+              this.fileList1= JSON.parse(this.fileList1);
             }
           },
           ({ type, info }) => {
-            //错误类型 type=faild / error
-            //error && error(type, info);
+
           }
         );
-      // .catch(err => {
-      //   console.log(err);
-      // });
+
     },
 
     jsontoarr(data){
@@ -720,25 +733,16 @@ export default {
           params: {
             deviceId: id
           },
-          // option: {
-          //   enableMsg: false
-          // },
           type: "get",
           url: "/device/detail"
-          // loadingConfig: {
-          //   target: document.querySelector("#mainContentWrapper")
-          // }
         },
         this
       )
-        // .get(this.global.apiSrc + "/device/detail", {
-        //   params: { deviceId: id }
-        // })
         .then(result => {
           console.log("detail");
           console.log(result.data);
           this.sizeForm = result.data.data;
-
+          this.sizeForm.buyPrice = parseInt(this.sizeForm.buyPrice)/100;
           this.placeholder=this.sizeForm.organizeName;
           if (this.sizeForm.buyDate != null) {
             this.sizeForm.buyDate = this.sizeForm.buyDate.replace(/-/g, "/");
@@ -762,13 +766,10 @@ export default {
           console.log("---------------");
         },
           ({type, info}) => {
-            //错误类型 type=faild / error
-            //error && error(type, info);
+
           }
         );
-      // .catch(err => {
-      //   console.log(err);
-      // });
+
     },
     personAddHandler(data){
       console.log(data);
@@ -785,6 +786,13 @@ export default {
           return false;
         }
       });
+      //判断人员
+      if(!(this.devicePersonnelInfoBase.find(item=> item.workerType==='0') || this.devicePersonnelInfoBase.find(item=> item.workerType==='1') || this.devicePersonnelInfoBase.find(item=> item.workerType==='2') || this.devicePersonnelInfoBase.find(item=> item.workerType==='3'))){
+        subok = false;
+      }
+      if(this.sizeForm.deviceClassify==="" || this.sizeForm.organizeCode === "" || this.sizeForm.deviceState === "" || this.sizeForm.deviceSpec===""){
+        subok = false;
+      }
       if(subok){
         this.$confirm('确定要修改吗?', '提示', {
           confirmButtonText: '确定',
@@ -792,7 +800,6 @@ export default {
           type: 'warning'
         }).then(() => {
           this.update();
-
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -821,6 +828,17 @@ export default {
       }
       return tree;
     },
+    getparaentcode(data){
+      let pcode;
+      let tempcode = 50;
+      for(let b in data){
+        if(data[b].parentCode.length < tempcode){
+          tempcode=data[b].parentCode.length;
+          pcode=data[b].parentCode;
+        }
+      }
+      return pcode;
+    },
     filterArray2(data, parent) {
       //编辑设备类别数据为树状结构方法
       let vm = this;
@@ -848,7 +866,7 @@ export default {
         this
       ).then(
         ([res1, res2]) => {
-          this.orgoptions = this.filterArray(res1.data.data, 0);
+          this.orgoptions = this.filterArray(res1.data.data, this.getparaentcode(res1.data.data));
           this.ctgoptions= this.filterArray2(res2.data.data,0);
         },
         () => {}
@@ -874,7 +892,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="less" >
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
@@ -969,6 +987,9 @@ export default {
         }
       }
     }
+  }
+  .el-cascader__label{
+    top:10px !important;
   }
 }
 </style>

@@ -406,6 +406,11 @@
             }}));
         });
         console.log(_devicePersonnelInfo);
+        if(this.fileList1 == null || this.fileList1.length===0  ){
+          this.fileList1 = null
+        }else{
+          this.fileList1=JSON.stringify(this.fileList1);
+        };
         let data = qs.stringify({
           deviceNo: this.sizeForm.deviceNo,
           deviceName: this.sizeForm.deviceName,
@@ -419,14 +424,15 @@
           outputDate: this.sizeForm.outputDate,
           manufacturer: this.sizeForm.manufacturer,
           location: this.sizeForm.location,
+          // location: null,
           locationNo: this.sizeForm.locationNo,
-          buyPrice: this.sizeForm.buyPrice,
+          buyPrice: this.sizeForm.buyPrice * 100,
           buyDate: this.sizeForm.buyDate,
           dataInfo: this.sizeForm.dataInfo,
           deviceModel: this.sizeForm.deviceModel,
           deviceState: this.sizeForm.deviceState,
           enterFactoryDate: this.sizeForm.enterFactoryDate,
-          deviceDataInfo: JSON.stringify(this.fileList1),
+          deviceDataInfo: this.fileList1,
           devicePersonnelInfo:JSON.stringify(_devicePersonnelInfo)
 
           // deviceNo: this.sizeForm.deviceNo,
@@ -523,6 +529,17 @@
         }
         return tree;
       },
+      getparaentcode(data){
+        let pcode;
+        let tempcode = 50;
+        for(let b in data){
+          if(data[b].parentCode.length < tempcode){
+            tempcode=data[b].parentCode.length;
+            pcode=data[b].parentCode;
+          }
+        }
+        return pcode;
+      },
       filterArray2(data, parent) {
         //编辑设备类别数据为树状结构方法
         let vm = this;
@@ -550,7 +567,7 @@
           this
         ).then(
           ([res1, res2]) => {
-            this.orgoptions = this.filterArray(res1.data.data, 0);
+            this.orgoptions = this.filterArray(res1.data.data, this.getparaentcode(res1.data.data));
             this.ctgoptions= this.filterArray2(res2.data.data,0);
           },
           () => {}
@@ -572,6 +589,18 @@
             return false;
           }
         });
+        if(this.sizeForm.deviceClassify==="" || this.sizeForm.organizeCode === "" || this.sizeForm.deviceState === "" || this.sizeForm.deviceSpec === ""){
+          subok = false;
+        }
+        console.log(this.sizeForm.deviceSpec === "");
+        console.log(this.sizeForm.deviceClassify === "");
+        console.log(this.sizeForm.organizeCode === "");
+        console.log(this.sizeForm.deviceState === "");
+        //判断人员
+        if(!(this.devicePersonnelInfoBase.find(item=> item.workerType==='0') || this.devicePersonnelInfoBase.find(item=> item.workerType==='1') || this.devicePersonnelInfoBase.find(item=> item.workerType==='2') || this.devicePersonnelInfoBase.find(item=> item.workerType==='3'))){
+          subok = false;
+        }
+
         //如果提交通过, 则弹出提示框
         if(subok){
           this.$confirm('确认添加设备吗?', '提示', {
