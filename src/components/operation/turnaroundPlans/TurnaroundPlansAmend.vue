@@ -242,7 +242,7 @@
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
-            componentName: "table-person"
+            componentName: "table-amendPerson"
           },
         ],
         pageIndex: 1,
@@ -448,7 +448,7 @@
     }
   };
 
-  Vue.component("table-person", {
+  Vue.component("table-amendPerson", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
             <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="showLook(rowData,index)" style='font-size:20px' class='iconfont'>&#xe734;</i></a>
@@ -467,7 +467,6 @@
     },
     methods: {
       showLook() {
-        // 参数根据业务场景随意构造
         let params = { type: "showLook", index: this.index, rowData: this.rowData };
         this.$emit("on-custom-comp", params);
       },

@@ -253,7 +253,6 @@ export default {
     },
     modefication(rowIndex, rowData, column) {
       this.$router.push("/Modification/" + rowData.id);
-      this.$store.commit("personnel", rowData);
     },
     disable() {
       let qs = require("qs");
@@ -413,7 +412,6 @@ export default {
     updateEmployee() {
       if (this.values.length === 1) {
         this.$router.push("/Modification/" + this.values[0].id);
-        // this.$store.commit("personnel", this.values[0]);
       } else {
         alert("抱歉、只能单个修改");
       }

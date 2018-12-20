@@ -58,10 +58,10 @@
                 </el-form-item>
               </el-col>
               <el-col :span="11">
-                <el-form-item label="组织单位：" style="">
+                <el-form-item label="组织单位："  prop="defaultProps">
                   <el-cascader
                     placeholder="搜索"
-                    :options="orgoptions"
+                    :options="options"
                     :props="defaultProps"
                     expand-trigger="hover"
                     filterable
@@ -72,10 +72,6 @@
                     @change="handleChange"
                     style="width:100%"
                   ></el-cascader>
-                   <!-- <el-select  v-model="persnneladd.organizeCode" placeholder="请选择"  style="width:100%">
-                <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.code">
-                </el-option>
-                </el-select> -->
                 </el-form-item>
               </el-col>
               <el-col :span="11">
@@ -202,6 +198,7 @@
     name: "",
     data() {
       return {
+        ogrname:"",
         labelPosition:"right",
         fileList: [],
         dialogImageUrl: '',
@@ -235,12 +232,23 @@
           roleId: ""
         },
         options: [],
-        role: []
+        role: [],
+        defaultProps: {
+          value: "code",
+          label: "name"
+        },
       };
     },
     methods: {
       path(){
         return this.global.apiImg;
+      },
+      handleChange(value) {
+        let name = this.$refs["getName"].currentLabels;
+        name = name[name.length - 1];
+        let id = value[value.length - 1];
+        this.persnneladd.organizeCode = id;
+        this.persnneladd.organizationName = name;
       },
       handleAvatarSuccess(res, file) {
         this.$message.success('图片成功上传');
@@ -326,10 +334,27 @@
           },
           this
         ).then(response => {
-            this.options = response.data.data;
+            this.options = this.filterArray(response.data.data,0);
           },
           ({type, info}) => {
           })
+      },
+      filterArray(data, parent) {
+        //编辑组织机构数据为树状结构方法
+        let vm = this;
+        var tree = [];
+        var temp;
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].parentCode == parent) {
+            var obj = data[i];
+            temp = this.filterArray(data, data[i].code);
+            if (temp.length > 0) {
+              obj.children = temp;
+            }
+            tree.push(obj);
+          }
+        }
+        return tree;
       },
       codeToName(organizeCode){
         for (let i =0;i<this.options.length;i++){
