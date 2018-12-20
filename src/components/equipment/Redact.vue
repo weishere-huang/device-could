@@ -5,17 +5,19 @@
       <div class="top">
         <el-row>
           <el-button
-            plain
+            
             size="small"
             @click="tback"
             type="primary"
+            icon="el-icon-arrow-left"
           >返回</el-button>
           <el-button
-            plain
+            
             size="small"
             type="primary"
             @click="updatewarning"
-          >保存</el-button>
+          >
+          <i style='font-size:12px' class='iconfont'>&#xe645;</i> &nbsp;保存</el-button>
         </el-row>
       </div>
       <div class="center">
@@ -331,12 +333,13 @@
             </el-col>
           </el-form-item>
         </el-form>
-        <div
+        <el-col style="padding:5px 0;">
+          <div
           style="padding:0 40px 0 12px;"
           class="upLoad"
         >
           <span>相关资料：</span>
-          <span></span>
+          
           <span><el-upload
             style="display:inline-block;vertical-align:top"
             class="upload-demo"
@@ -353,6 +356,8 @@
                 <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">只能上传不超过1M的文件,且不能超过20个文件</div>
               </el-upload></span>
         </div>
+        </el-col>
+        
         <div style="padding:0 40px 0 12px;margin-top:16px;">
           <span>运维记录：</span>
           <span>查看</span>
@@ -984,7 +989,7 @@ export default {
           color: #409eff;
           cursor: pointer;
           display: inline-block;
-          float: right;
+         
         }
       }
     }

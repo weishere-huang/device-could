@@ -607,9 +607,9 @@ Vue.component("table-company", {
       .search {
         float: right;
         overflow: hidden;
-        width: 40%;
+        padding-right: 10px;
         .el-input {
-          width: 60%;
+          width: 300px;
         }
         span {
           font-size: 12px;
