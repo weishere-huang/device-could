@@ -243,7 +243,7 @@
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
-            componentName: "table-person"
+            componentName: "table-upkeepAmendPerson"
           },
         ],
         pageIndex: 1,
@@ -467,7 +467,7 @@
       amendPlan: AmendPlan
     }
   };
-  Vue.component("table-person", {
+  Vue.component("table-upkeepAmendPerson", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
             <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="showLook(rowData,index)" style='font-size:20px' class='iconfont'>&#xe734;</i></a>

@@ -127,7 +127,7 @@
         <el-carousel :interval="4000" type="card" height="400px">
           <el-carousel-item v-for="item in imgPath" :key="item">
             <!--<h2>&#45;&#45;{{item}}-&#45;&#45;</h2>-->
-            <img :src="item"/>
+            <img :src="item" style="height: 100%;width: 100%">
           </el-carousel-item>
         </el-carousel>
       </el-dialog>
@@ -235,7 +235,7 @@
               </div>
               <ul>
                 <h6>已选择</h6>
-                <li v-model="personListValue" v-for="value in personListValue">
+                <li v-model="personListValue" v-for="value in personListValue" :key="value">
                   {{value.partName}}
                   <span :id="value.id" @click="basicAdd($event)" class="el-icon-circle-close-outline"></span>
                 </li>
@@ -247,7 +247,7 @@
         <div class="information-receipt">
           <h5>回执信息</h5>
           <div style="overflow-y:scroll;" class="case">
-            <el-form label-width="100px" :model="workReceiptInfo" v-for="item of workReceiptInfo">
+            <el-form label-width="100px" :model="workReceiptInfo" v-for="item of workReceiptInfo" :key="item.id">
               <el-form-item label="施工人员：">
                 <span>{{item.builder}}</span>
               </el-form-item>
@@ -358,7 +358,7 @@
           causeAnalysis:"",
           dispelId:"",
         },
-        workReceiptInfo:{
+        workReceiptInfo:[{
           id:"",
           workId:"",
           builderId:"",
@@ -369,7 +369,7 @@
           gmtCreate:"",
           gmtModified:"",
           state:"",
-        },
+        }],
         suppliesTableData: [],
         equipmentTableData: [],
         informationData: [],
@@ -665,8 +665,14 @@
     methods: {
       customCompFunc(params) {
         if (params.type === "delete") {
-          this.suppliesTableData = this.suppliesTableData.filter(item=>item.id!=params.rowData["id"]);
-          this.personListValue = this.personListValue.filter(item=>item.id!=params.rowData["id"]);
+          this.$confirm('此操作将删除该物料, 是否继续?', '提示')
+            .then(_=>{
+              this.suppliesTableData = this.suppliesTableData.filter(item=>item.id!=params.rowData["id"]);
+              this.personListValue = this.personListValue.filter(item=>item.id!=params.rowData["id"]);
+            })
+            .catch(_=>{
+            })
+
         }
       },
       toBack(){
@@ -1151,7 +1157,9 @@
         if (this.formLabelAlign.faultLevel === 3) {
           this.formLabelAlign.faultLevel = "高";
         }
-        this.imgPath=JSON.parse(this.formLabelAlign.img);
+        this.imgPath = this.formLabelAlign.img.split(",").map((item)=>{
+          return this.global.imgPath+item.split("img:")[1];
+        });
       },
       //设备
       equipmentTableDataValue(value){
@@ -1197,24 +1205,6 @@
       }
     },
     created(){
-      // this.imgPath = "http://img.zcool.cn/community/0188915805cc66a84a0e282b933a57.jpg@1280w_1l_2o_100sh.png"
-      // this.imgPath.push({
-      //   name:"1",
-      //   url:"http://img.zcool.cn/community/0188915805cc66a84a0e282b933a57.jpg@1280w_1l_2o_100sh.png",
-      // },{
-      //   name:"2",
-      //   url:"http://pic.58pic.com/58pic/13/80/78/35V58PICrWD_1024.jpg",
-      // });
-      this.imgPath=[
-        "http://img.zcool.cn/community/0188915805cc66a84a0e282b933a57.jpg@1280w_1l_2o_100sh.png",
-        "http://pic.58pic.com/58pic/13/80/78/35V58PICrWD_1024.jpg",
-      ]
-      window.setTimeout(( )=>{
-
-      },1000)
-      // this.imgPath.forEach((item)=>{
-      //   item.url="http://pic.58pic.com/58pic/13/80/78/35V58PICrWD_1024.jpg";
-      // });
       this.workLoad(this.$route.params.id);
     }
   };
