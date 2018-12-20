@@ -16,7 +16,7 @@
           <el-form-item label="设备名称" prop="deviceName">
             <el-input v-model="sizeForm.deviceName" style="width:512px"></el-input>
           </el-form-item>
-          <el-form-item label="所属部门" prop="defaultProps">
+          <el-form-item label="所属部门" prop="defaultProps" >
             <el-cascader
               placeholder="搜索"
               :options="orgoptions"
