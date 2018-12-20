@@ -32,6 +32,7 @@
             placeholder="根据企业名称"
             size="small"
             v-model="name"
+            @keyup.enter.native="findByName"
           ></el-input>
           <el-button
             size="small"
@@ -397,11 +398,9 @@ export default {
             page: this.pageIndex,
             size: this.pageSize
           }),
-          option: {
-            enableMsg: false
-          },
           type: "get",
-          url: "/enterprise/findByNameOrState"
+          url: "/enterprise/findByNameOrState",
+          option:{enableMsg:false}
           // loadingConfig: {
           //   target: document.querySelector("#mainContentWrapper")
           // }
@@ -433,7 +432,8 @@ export default {
             page: 1,
             size: this.pageSize
           }),
-          type: "get"
+          type: "get",
+          option:{enableMsg:false}
         },
         this
       ).then(
@@ -457,9 +457,7 @@ export default {
           url: "/enterprise/enableEnterprises/",
           params: data,
           type: "post",
-          option: {
-            enableMsg: false
-          }
+          option:{enableMsg:false}
         },
       ).then(
         response => {
@@ -484,9 +482,7 @@ export default {
           params: data,
           url: "/enterprise/discontinuationEnterprises",
           type: "post",
-          option: {
-            enableMsg: false
-          }
+          option:{enableMsg:false}
         },
         this
       ).then(
@@ -553,7 +549,7 @@ Vue.component("table-company", {
         <span v-else-if="rowData.state === '10'">
           
         </span>
-          
+
         `,
   props: {
     rowData: {

@@ -91,9 +91,7 @@
             url: "/enterprise/auditEnterprise/",
             params: data,
             type: "post",
-            option: {
-              enableMsg: false
-            },
+            option:{enableMsg:false}
           }
         ).then(response => {
           this.$message({

@@ -11,122 +11,135 @@
       <div class="botton">
         <div class="essential">
           <p class="title">基本信息（必填）</p>
-          <div class="left">
-            <ul>
-              <li>
-                <label for=""><span style="letter-spacing: 10px;">姓名</span>：</label>
-                <el-input type="text" size="small" v-model="persnneladd.name"></el-input>
-              </li>
-              <li>
-                <label for=""><span style="letter-spacing: 10px;">性别</span>：</label>
-                <span style="display: inline-block;width:70%;text-align: left;">
+            <el-form :label-position="labelPosition" label-width="100px" style="width:100%;margin-top:26px"  size="mini">
+              <el-col :span="14">
+                <el-form-item label="姓名：" style="">
+                  <el-input type="text" style="width:70%"  v-model="persnneladd.name"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="账号：" style="display:none">
+                  <el-input type="text"  v-model="persnneladd.name"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="性别：" style="">
                   <el-radio v-model="persnneladd.gender" label="1">男</el-radio>
                   <el-radio v-model="persnneladd.gender" label="0">女</el-radio>
-                </span>
-              </li>
-              <li>
-                <label for="">员工编号：</label>
-                <el-input type="text" size="small" v-model="persnneladd.employeeNo"></el-input>
-              </li>
-              <li>
-                <label for="">手机号码：</label>
-                <el-input type="text" size="small" v-model="persnneladd.phone"></el-input>
-              </li>
-              <li>
-                <label for="">组织单位：</label>
-                <el-select v-model="persnneladd.organizeCode" placeholder="请选择" size="small" style="width:70%">
-                <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.code">
-                </el-option>
-                </el-select>
-              </li>
-              <li>
-                <label for="">入职时间：</label>
-                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.entryTime"
-                                size="small"  ></el-date-picker>
-              </li>
-            </ul>
-          </div>
-          <div class="right">
-            <ul>
-              <li>
-                <label for="">身份证：</label>
-                <el-input type="text" size="small" v-model="persnneladd.idCardNo"></el-input>
-              </li>
-              <li>
-                <label for="">角色权限：</label>
-                <el-select v-model="persnneladd.roleId" placeholder="请选择" size="small" style="width:70%">
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="身份证：" style="">
+                   <el-input type="text"  v-model="persnneladd.idCardNo"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="员工编号：" style="">
+                  <el-input type="text"  v-model="persnneladd.employeeNo"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="角色权限：" style="">
+                  <el-select v-model="persnneladd.roleId" placeholder="请选择" style="width:100%">
                   <el-option v-for="item in role" :key="item.value" :label="item.name" :value="item.id">
                   </el-option>
                 </el-select>
-              </li>
-              <li>
-                <label for="">出生日期：</label>
-                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.birthday"
-                                size="small"  ></el-date-picker>
-                <!-- <el-input type="date" size="small" v-model="persnneladd.birthday"></el-input> -->
-              </li>
-              <li>
-                <label for="">岗位：</label>
-                <el-input type="text" size="small" v-model="persnneladd.position"></el-input>
-              </li>
-              <li>
-                <label for="">婚姻状况：</label>
-                <span style="display: inline-block;width:70%;text-align: left;">
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="手机号码：" style="">
+                  <el-input type="text"  v-model="persnneladd.phone"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="出生日期：" style="">
+                  <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.birthday"
+                             style="width:100%"     ></el-date-picker>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="组织单位："  prop="defaultProps">
+                  <el-cascader
+                    placeholder="搜索"
+                    :options="options"
+                    :props="defaultProps"
+                    expand-trigger="hover"
+                    filterable
+                    ref="getName"
+                    change-on-select
+                    :show-all-levels="false"
+                    v-model="ogrname"
+                    @change="handleChange"
+                    style="width:100%"
+                  ></el-cascader>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="岗位：" style="">
+                  <el-input type="text"  v-model="persnneladd.position"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="入职时间：" style="">
+                  <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.entryTime"
+                         style="width:100%"         ></el-date-picker>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="婚姻状况：" style="">
                   <el-radio v-model="persnneladd.marital" label="1">已婚</el-radio>
                   <el-radio v-model="persnneladd.marital" label="0">未婚</el-radio>
-                </span>
-              </li>
-
-            </ul>
-          </div>
+                </el-form-item>
+              </el-col>
+            </el-form>
         </div>
         <div class="more-msg">
           <p class="title">更多信息（选填）</p>
-          <ul class="msg-box">
-            <li class="detalis">
-              <span>
-                <label for="">工作年限：</label>
-                <el-input type="text" size="small" style="width:80px" v-model="persnneladd.workingYears"></el-input>
-                年
-              </span>
-              <span style="display:inline-block;float:right;padding-right:100px">
-                <label for="">身高：</label>
-                <el-input type="text" size="small" style="width:80px" v-model="persnneladd.height"></el-input>
-                CM
-              </span>
-            </li>
-            <li class="detalis">
-              <span>
-                <label for="" style="letter-spacing:8px;">籍贯：</label>
-                <el-input type="text" size="small" style="width:200px" v-model="persnneladd.nativePlace"></el-input>
-
-              </span>
-              <span style="display:inline-block;float:right;padding-right:123px">
-                <label for="">国籍：</label>
-                <el-input type="text" size="small" style="width:80px" v-model="persnneladd.nationality"></el-input>
-              </span>
-            </li>
-            <li class="detalis">
-              <label for="">电子邮箱：</label>
-              <el-input type="email"  size="small" style="width:200px" v-model="persnneladd.email"></el-input>
-            </li>
-            <li class="detalis">
-              <label for="">通讯地址：</label>
-              <el-input type="text" size="small" style="width:200px" v-model="persnneladd.postalAddress"></el-input>
-            </li>
-            <li class="detalis">
-              <span>
-                <label for="">毕业学校：</label>
-                <el-input type="text" size="small" style="width:200px" v-model="persnneladd.graduateSchool"></el-input>
-              </span>
-              <span style="display:inline-block;float:right;padding-right:100px">
-                <label for="">最高学历：</label>
-                <el-input type="text" size="small" style="width:80px" v-model="persnneladd.degree"></el-input>
-              </span>
-            </li>
-            <li style="height:auto ;margin-top:10px;" class="detalis">
-              <label for="" style="letter-spacing: 8px;">照片：</label>
-              <el-upload
+          <div style="overflow: hidden;">
+            <el-form :label-position="labelPosition" label-width="100px" style="width:100%;margin-top:26px"  size="mini">
+            <el-col :span="11">
+              <el-form-item label="工作年限：">
+                <el-input type="text" style="width:50%" v-model="persnneladd.workingYears"></el-input>&nbsp;年
+              </el-form-item>
+            </el-col>
+            <el-col :span="11">
+              <el-form-item label="身高：">
+                <el-input type="text" style="width:50%" v-model="persnneladd.height"></el-input>&nbsp;CM
+              </el-form-item>
+            </el-col>
+            <el-col :span="11">
+              <el-form-item label="籍贯：">
+                <el-input type="text"  v-model="persnneladd.nativePlace"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11">
+              <el-form-item label="国籍：">
+                <el-input type="text" style="width:50%" v-model="persnneladd.nationality"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="14">
+              <el-form-item label="电子邮箱：">
+                <el-input type="text"  v-model="persnneladd.email"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="14">
+              <el-form-item label="通讯地址：">
+                <el-input type="text"  v-model="persnneladd.postalAddress"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11">
+              <el-form-item label="毕业学校：">
+                <el-input type="text"  v-model="persnneladd.graduateSchool"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11">
+              <el-form-item label="最高学历：">
+                <el-input type="text" style="width:50%" v-model="persnneladd.degree"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="20">
+              <el-form-item label="照片：">
+                <el-upload
                 style="display:inline-block;vertical-align:top"
                 :action="path()"
                 accept="image/jpeg,image/png"
@@ -141,10 +154,11 @@
               <el-dialog :visible.sync="dialogVisible">
                 <img width="100%" :src="dialogImageUrl" alt="">
               </el-dialog>
-            </li>
-            <li style="height:auto;margin-top:20px;line-height:40px;" class="detalis">
-              <label for="" style="letter-spacing: 8px;display:inline-block">资质：</label>
-              <el-upload
+              </el-form-item>
+            </el-col>
+            <el-col :span="20">
+              <el-form-item label="资质：">
+                <el-upload
                 style="display:inline-block;line-height:30px;vertical-align:top"
                 class="upload-demo"
                 :action="path()"
@@ -169,8 +183,11 @@
                 <el-button size="mini" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">文件小于1MB(最多上传10个)</div>
               </el-upload>
-            </li>
-          </ul>
+              </el-form-item>
+            </el-col>
+          </el-form>
+          </div>
+          
         </div>
       </div>
     </div>
@@ -181,6 +198,8 @@
     name: "",
     data() {
       return {
+        ogrname:"",
+        labelPosition:"right",
         fileList: [],
         dialogImageUrl: '',
         dialogVisible: false,
@@ -213,12 +232,23 @@
           roleId: ""
         },
         options: [],
-        role: []
+        role: [],
+        defaultProps: {
+          value: "code",
+          label: "name"
+        },
       };
     },
     methods: {
       path(){
         return this.global.apiImg;
+      },
+      handleChange(value) {
+        let name = this.$refs["getName"].currentLabels;
+        name = name[name.length - 1];
+        let id = value[value.length - 1];
+        this.persnneladd.organizeCode = id;
+        this.persnneladd.organizationName = name;
       },
       handleAvatarSuccess(res, file) {
         this.$message.success('图片成功上传');
@@ -304,10 +334,27 @@
           },
           this
         ).then(response => {
-            this.options = response.data.data;
+            this.options = this.filterArray(response.data.data,0);
           },
           ({type, info}) => {
           })
+      },
+      filterArray(data, parent) {
+        //编辑组织机构数据为树状结构方法
+        let vm = this;
+        var tree = [];
+        var temp;
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].parentCode == parent) {
+            var obj = data[i];
+            temp = this.filterArray(data, data[i].code);
+            if (temp.length > 0) {
+              obj.children = temp;
+            }
+            tree.push(obj);
+          }
+        }
+        return tree;
       },
       codeToName(organizeCode){
         for (let i =0;i<this.options.length;i++){
@@ -516,7 +563,7 @@
           border-radius: 5px;
           // overflow: hidden;
           margin-top: 30px;
-          padding-left: 20px;
+         
           padding-bottom: 20px;
           .title {
             display: inline-block;
@@ -524,7 +571,7 @@
             text-align: center;
             position: relative;
             top: -7px;
-            left: 0px;
+            left: 20px;
             background-color: white;
           }
           .msg-box{
@@ -540,6 +587,7 @@
                 // line-height: 30px;
                 ul{
                   display: inline-block;
+                  
                 }
               }
             }

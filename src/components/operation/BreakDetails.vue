@@ -2,9 +2,9 @@
   <div class="breakDetails">
     <div class="case">
       <div class="top">
-        <el-button size="small" type="primary" @click="toback">返回</el-button>
+        <el-button size="small" type="primary" @click="toback"  icon="el-icon-arrow-left">返回</el-button>
         <!--<el-button size="small" @click="commitAudit">提交审核</el-button>-->
-        <el-button size="small" type="primary" @click="dispel" v-if="isOk">故障消除</el-button>
+        <el-button size="small" type="primary" @click="dispel" v-if="isOk"><i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;故障消除</el-button>
         <!-- 故障消除弹框 -->
         <el-dialog
           title="故障消除"
@@ -118,8 +118,8 @@
               <el-form-item label="照片：" style="width:100%">
                 <template>
                   <el-carousel trigger="click" :autoplay=false height="200px">
-                    <el-carousel-item v-for="item in 6" :key="item">
-                      <h3>{{ item }}</h3>
+                    <el-carousel-item v-for="item in imgPath" :key="item">
+                      <img :src="item" style="height: 100%;width: 100%">
                     </el-carousel-item>
                   </el-carousel>
                 </template>
@@ -271,7 +271,9 @@
             this.tableData = response.data.data;
             this.companyName = this.tableData;
             this.toValue(response.data.data);
-            this.imgPath = JSON.parse(this.tableData.img);
+            this.imgPath = this.tableData.img.split(",").map((item)=>{
+              return this.global.imgPath+item.split("img:")[1];
+            });
           },
           ({type, info}) => {
 

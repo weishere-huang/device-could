@@ -26,6 +26,7 @@
             placeholder="如企业名称，用户名，手机号"
             size="small"
             v-model="keyWord"
+            @keyup.enter.native="findByKeyWord"
           ></el-input>
           <el-button
             size="small"
@@ -341,37 +342,6 @@ export default {
         console.log(info)
       })
     },
-
-
-    // deleteUs() {
-    //   let qs = require("qs");
-    //   let data = qs.stringify({
-    //     userIds: this.choice
-    //   });
-    //   this.Axios({
-    //     url: "/user/deleteUsers",
-    //     params: data,
-    //     type: "post",
-    //     option: { enableMsg: false }
-    //   });
-    //   this;
-    //   this.$confirm("您确定要删除该用户吗？", "提示", {
-    //     confirmButtonText: "确定",
-    //     cancelButtonText: "取消",
-    //     type: "warning"
-    //   }).then(
-    //     response => {
-    //       this.load();
-    //       this.$message({
-    //         message: "您已经删除该用户",
-    //         type: "success"
-    //       });
-    //     },
-    //     ({ type, info }) => {}
-    //   ).catch(info=>{
-    //     console.log(info)
-    //   });
-    // },
     findByKeyWord() {
       this.Axios(
         {
@@ -381,7 +351,8 @@ export default {
             page: 1,
             size: this.pageSize
           }),
-          type: "get"
+          type: "get",
+          option:{enableMsg:false}
         },
         this
       ).then(

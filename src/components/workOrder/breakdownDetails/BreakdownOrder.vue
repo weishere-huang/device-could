@@ -1,8 +1,9 @@
 <template>
   <div class="breakdown-order">
     <div class="top">
-          <el-button @click="toBack" type="primary" size="small">返回</el-button>
-          <el-button size="small" type="primary" @click="outerVisible=true" v-if="isOk">提交审核</el-button>
+          <el-button @click="toBack" type="primary" size="small" icon="el-icon-arrow-left">返回</el-button>
+          <el-button size="small" type="primary" @click="outerVisible=true" v-if="isOk">
+            <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;提交审核</el-button>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
         <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
@@ -21,7 +22,8 @@
             </el-form-item>
             <el-form-item label="下一级审批人：" v-if="examine.type!=true">
               <el-input v-model="toExamine.name" size="mini" style="width:60%"></el-input>
-              <el-button type="primary" @click="personLoad" size="mini">添加审批人</el-button>
+              <el-button type="primary" @click="personLoad" size="mini">
+                <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加审批人</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -29,7 +31,7 @@
           <div style="padding:10px">
             <div class="search" style="padding:10px 0">
               <el-input type="search" placeholder="如姓名，手机号" size="mini" v-model="key" style="width:30%;"></el-input>
-              <el-button size="mini" type="primary" @click="search">搜索</el-button>
+              <el-button size="mini" type="primary" @click="search"><i class='el-icon-search'></i>&nbsp;搜索</el-button>
               <span style="padding:0 10px;">最近搜索：</span>
               <span style="text-decoration: underline;"></span>
             </div>
@@ -63,8 +65,10 @@
           </div>
         </el-dialog>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="goExit" type="primary" size="mini">取 消</el-button>
-          <el-button @click="examineUp" type="primary" size="mini">提 交</el-button>
+          <el-button @click="goExit"  size="mini">
+            <i style='font-size:12px' class='iconfont'>&#xe729;</i>&nbsp;取 消</el-button>
+          <el-button @click="examineUp" type="primary" size="mini">
+            <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;提 交</el-button>
         </div>
       </el-dialog>
       <!-- 审核弹框结束 -->
@@ -121,8 +125,9 @@
       <!-- 照片弹框 -->
       <el-dialog title="查看图片" :visible.sync="pictureDialog" width="60%">
         <el-carousel :interval="4000" type="card" height="400px">
-          <el-carousel-item v-for="item in 6" :key="item">
-            <h3>{{ item }}</h3>
+          <el-carousel-item v-for="item in imgPath" :key="item">
+            <!--<h2>&#45;&#45;{{item}}-&#45;&#45;</h2>-->
+            <img :src="item" style="height: 100%;width: 100%">
           </el-carousel-item>
         </el-carousel>
       </el-dialog>
@@ -146,7 +151,7 @@
               row-hover-color="#eee"
               row-click-color="#edf7ff"
               :cell-edit-done="cellEditDone"
-              row-height=24
+              row-height=35
               :height="230"
             ></v-table>
           </div>
@@ -155,8 +160,10 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-              <el-button size="mini" type="primary" @click=" listBasicInfo">添加物料</el-button>
-              <el-button type="primary" @click="insertPart" size="mini">保存列表</el-button>
+              <el-button size="mini" type="primary" @click=" listBasicInfo">
+                <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加物料</el-button>
+              <el-button type="primary" @click="insertPart" size="mini">
+                <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存列表</el-button>
           </div>
           <v-table
             is-horizontal-resize
@@ -190,7 +197,8 @@
             <div class="center-list">
               <div style="padding:10px;">
                 <el-input type="search" size="mini" v-model="searchPerson" style="width:50%;" placeholder="关键词：设备编号、备件名称、型号/规格"></el-input>
-                <el-button @click="goDownEntryInfo" type="primary"  size="mini">查询</el-button>
+                <el-button @click="goDownEntryInfo" type="primary"  size="mini">
+                  <i class='el-icon-search'></i>&nbsp;查询</el-button>
               </div>
               <v-table
                 is-horizontal-resize
@@ -222,11 +230,12 @@
             </div>
             <div class="add">
               <div style="text-align:center">
-                <el-button @click="deleteBasic" type="primary" size="mini">提交</el-button>
+                <el-button @click="deleteBasic" type="primary" size="mini">
+                  <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
               </div>
               <ul>
                 <h6>已选择</h6>
-                <li v-model="personListValue" v-for="value in personListValue">
+                <li v-model="personListValue" v-for="value in personListValue" :key="value">
                   {{value.partName}}
                   <span :id="value.id" @click="basicAdd($event)" class="el-icon-circle-close-outline"></span>
                 </li>
@@ -238,7 +247,7 @@
         <div class="information-receipt">
           <h5>回执信息</h5>
           <div style="overflow-y:scroll;" class="case">
-            <el-form label-width="100px" :model="workReceiptInfo" v-for="item of workReceiptInfo">
+            <el-form label-width="100px" :model="workReceiptInfo" v-for="item of workReceiptInfo" :key="item.id">
               <el-form-item label="施工人员：">
                 <span>{{item.builder}}</span>
               </el-form-item>
@@ -281,6 +290,7 @@
       return {
         isOk:true,
         imgPath:[],
+        imgPaths:['http://img.zcool.cn/community/0188915805cc66a84a0e282b933a57.jpg@1280w_1l_2o_100sh.png','http://img.zcool.cn/community/0188915805cc66a84a0e282b933a57.jpg@1280w_1l_2o_100sh.png'],
         examine:{
           desc:"",
           type:"",
@@ -348,7 +358,7 @@
           causeAnalysis:"",
           dispelId:"",
         },
-        workReceiptInfo:{
+        workReceiptInfo:[{
           id:"",
           workId:"",
           builderId:"",
@@ -359,7 +369,7 @@
           gmtCreate:"",
           gmtModified:"",
           state:"",
-        },
+        }],
         suppliesTableData: [],
         equipmentTableData: [],
         informationData: [],
@@ -655,8 +665,14 @@
     methods: {
       customCompFunc(params) {
         if (params.type === "delete") {
-          this.suppliesTableData = this.suppliesTableData.filter(item=>item.id!=params.rowData["id"]);
-          this.personListValue = this.personListValue.filter(item=>item.id!=params.rowData["id"]);
+          this.$confirm('此操作将删除该物料, 是否继续?', '提示')
+            .then(_=>{
+              this.suppliesTableData = this.suppliesTableData.filter(item=>item.id!=params.rowData["id"]);
+              this.personListValue = this.personListValue.filter(item=>item.id!=params.rowData["id"]);
+            })
+            .catch(_=>{
+            })
+
         }
       },
       toBack(){
@@ -669,6 +685,7 @@
         _suppliesTableData[rowIndex][field] = newValue;
         this.suppliesTableData=_suppliesTableData;
         //this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
+        this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
       },
       selectGroupChange(selection) {
         console.log("select-group-change", selection);
@@ -911,7 +928,6 @@
           this
         ).then(
           response => {
-            console.log(response.data.data.workReceiptInfo);
             this.workInfoValue(response.data.data.work);
             this.formLabelAlignValue(response.data.data.fault);
             this.equipmentTableDataValue(response.data.data.devices);
@@ -1141,7 +1157,9 @@
         if (this.formLabelAlign.faultLevel === 3) {
           this.formLabelAlign.faultLevel = "高";
         }
-        this.imgPath=JSON.parse(this.formLabelAlign.img);
+        this.imgPath = this.formLabelAlign.img.split(",").map((item)=>{
+          return this.global.imgPath+item.split("img:")[1];
+        });
       },
       //设备
       equipmentTableDataValue(value){

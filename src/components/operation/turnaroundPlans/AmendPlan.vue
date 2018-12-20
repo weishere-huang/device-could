@@ -30,6 +30,7 @@
               size="mini"
               type="primary"
               @click="search"
+              icon="el-icon-search"
             >搜索</el-button>
             <span style="padding:0 10px;">最近搜索：{{searchs}}</span>
             <span style="text-decoration: underline;"></span>
@@ -64,8 +65,10 @@
           </div>
         </div>
         <div class="right">
-          <el-button size="mini" type="primary" @click="deletes">清空</el-button>
-          <el-button size="mini" type="primary" @click="toAdd">确定</el-button>
+          <el-button size="mini" type="primary" @click="deletes">
+            <i style='font-size:12px' class='iconfont'>&#xe66b;</i>&nbsp;清空</el-button>
+          <el-button size="mini" type="primary" @click="toAdd">
+            <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;确定</el-button>
           <div class="personList">
             <ul @click="getId">
               <li v-for="(item, index) in personListValue" :key="index">
