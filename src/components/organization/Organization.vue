@@ -23,7 +23,7 @@
                 <el-button
                   type="text"
                   size="mini"
-                  @click="toAdd"
+                  @click="toAdd(data)"
                 >
                 <el-tooltip class="item" effect="dark" content="添加" placement="top">
                   <i style='font-size:16px' class='iconfont'>&#xe62f;</i>
@@ -122,7 +122,9 @@ export default {
     addHide(params) {
       this.addShow = params;
     },
-    toAdd() {
+    toAdd(data) {
+      console.log(data);
+      this.nodedata=data
       this.addShow = true;
       return false;
     },

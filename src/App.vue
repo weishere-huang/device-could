@@ -273,7 +273,10 @@ export default {
         {
           url: "/message/NotReadMsgCount/",
           type: "get",
-          option:{requestTarget:"m"}
+          option:{
+            requestTarget:"m",
+            enableMsg: false
+          }
         },
         this
       )
@@ -374,9 +377,7 @@ export default {
     }
   }
 }
-.el-input__inner {
-  padding: 0 5px;
-}
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

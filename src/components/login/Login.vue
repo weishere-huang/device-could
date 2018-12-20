@@ -153,6 +153,8 @@
           <el-form-item
             label="营业执照："
             props="dialogImageUrl"
+
+            style="padding-top: 6px;"
           >
             <el-upload
               style="display:inline-block;vertical-align:top"
@@ -163,7 +165,9 @@
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
               :on-preview="handlePictureCardPreview"
-              :on-remove="handleRemove">
+              :on-remove="handleRemove"
+            >
+
               <i class="el-icon-plus"></i>
             </el-upload>
             <el-dialog :visible.sync="dialogVisible">
@@ -174,7 +178,7 @@
               >
             </el-dialog>
           </el-form-item>
-          <div style="display:inline-block;margin-left:-75px;color:#999999;">仅支持小于1Mb的jpg或png图片格式</div>
+          <div style="display:inline-block;margin-left:-20px;color:#999999;">仅支持小于1Mb的jpg或png图片格式</div>
         </el-form>
         <div class="next">
           <el-button
@@ -248,7 +252,8 @@
             <el-button
               type="primary"
               plain
-              style="width:38%;height:32px;"
+              style="width:38%;"
+              size="small"
               @click="registerSecuritycode"
             >获取验证码
             </el-button>
@@ -324,10 +329,10 @@
         registerRules: {
           name: [
             {required: true, message: "企业名不能为空", trigger: "blur"},
-            {min: 1, max: 30, message: "企业名称长度不能超过30字符"},
+            {min: 1, max: 100, message: "企业名称长度不能超过30字符"},
             {
               validator: (rule, value, callback) => {
-                if (/^(?!(\d+)$)[\u4e00-\u9fffa-zA-Z\d\-_]+$/.test(value) == false) {
+                if (/^(?!(\d+)$)[\u4e00-\u9fffa-zA-Z\d\-_\(\)\（\）\s]+$/.test(value) == false) {
                   callback(new Error("请输入正确的企业名称"))
                 } else {
                   callback()
@@ -341,7 +346,7 @@
                     params: Object.assign({name: this.company.name}),
                     url: "/enterprise/findByName",
                     type: "get",
-                    option: {enableMsg: false}
+                    option: {enableMsg: false,enableLoad:false}
                   }
                 ).then(res => {
                   console.log(res)
@@ -396,7 +401,8 @@
             {
               validator: (rule, value, callback) => {
                 if (
-                  /^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$/.test(
+                  // /^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$/.test(
+                    /^[1-9A-GY]{1}[1239]{1}[\d]{6}[\dA-Z]{10}$/.test(
                     value
                   ) == false
                 ) {
@@ -414,7 +420,7 @@
                     params: Object.assign({creditCode: this.company.companyID}),
                     url: "/enterprise/findByCreditCode",
                     type: "get",
-                    option: {enableMsg: false}
+                    option: {enableMsg: false,enableLoad:false}
                   }
                 ).then(res => {
                   console.log(res)
@@ -454,7 +460,7 @@
                     params: Object.assign({userName: this.manager.userName}),
                     url: "/user/userNameIsSingle",
                     type: "get",
-                    option: {enableMsg: false}
+                    option: {enableMsg: false,enableLoad:false}
                   }
                 ).then(res => {
                   console.log(res)
@@ -504,7 +510,7 @@
                     params: Object.assign({phone: this.manager.phone}),
                     url: "/user/phoneIsSingle",
                     type: "get",
-                    option: {enableMsg: false}
+                    option: {enableMsg: false,enableLoad:false}
                   }
                 ).then(res => {
                   console.log(res)
@@ -638,7 +644,10 @@
             url: "/user/login",
             params: data,
             type: "post",
-            option: {enableMsg: false}
+            option: {enableMsg: false,enableLoad:false},
+            loadingConfig: {
+              target: document.querySelector('.login')
+            }
           },
           this
         ).then(
@@ -651,6 +660,7 @@
               // this.$cookieStore.addCookie('JSESSIONID', result.data.data.jsessionid)
               // sessionStorage.user = result.data.data.employeeName;
               this.$store.commit("user", sessionStorage.getItem("user"));
+              console.log(this.$store.state.token.userMsg);
               this.$store.commit("tokenSrc", result.data.data.tokenStr);
               this.$router.replace("/Home");
               location.reload();
@@ -658,9 +668,9 @@
           },
           ({type, info}) => {
             console.log(info);
-            if (info.code === 0) {
+            if (info.code === 408) {
               this.$message.error("验证码错误");
-            } else {
+            } else if (info.code === 400) {
               this.$message.error("账号或密码错误");
               this.$router.push({path: "/Login"});
             }
@@ -698,7 +708,7 @@
             url: "/enterprise/add",
             params: data,
             type: "post",
-            option: {enableMsg: false}
+            option: {enableMsg: false,enableLoad:false}
           },
           this
         ).then(
@@ -732,7 +742,13 @@
             params: data,
             url: "/user/getVerifyCode",
             type: "post",
-            option: {enableMsg: false}
+            option: {
+              enableMsg: false,
+              enableLoad: false
+            },
+            // loadingConfig:{
+            //   target: document.querySelector('.login')
+            // }
           },
           this
         ).then(
@@ -762,7 +778,10 @@
             params: data,
             url: "/enterprise/getVerifyCode",
             type: "post",
-            option: {enableMsg: false}
+            option: {
+              enableMsg: false,
+              enableLoad: false
+            }
           },
           this
         ).then(
@@ -828,9 +847,11 @@
         return encrypted.toString();
       }
     },
+    mounted() {
+    }
   };
 </script>
-<style lang="less" >
+<style lang="less">
   @import url("../../assets/font/font.css");
 
   @blue: #409eff;
@@ -1041,7 +1062,7 @@
       font-size: 12px;
       color: #909399;
       text-align: center;
-      padding: 10px 0 10px 20px;
+      padding: 10px 0 10px 0px;
     }
     .upload-demo {
       width: 50%;
@@ -1059,16 +1080,11 @@
       font-size: 12px;
       cursor: pointer;
     }
+
   }
-  .v-modal{
-    z-index: -1 !important;
-  
-  }
-  .el-dialog__wrapper{
-    // opacity: .5;
-    background: rgba(0, 0, 0, 0.507);
-  }
-  .el-dialog__header{
-    height: 40px;
-  }
+.el-icon-upload-success {
+  position: absolute !important;
+  top: 0px !important;
+  right: 14px !important;
+}
 </style>
