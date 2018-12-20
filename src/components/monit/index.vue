@@ -146,7 +146,7 @@
                       >运行日志</router-link>
                     </div>
                     <div class="text item">
-                      <p>编号：{{item.deviceNo}}</p>
+                      <p :style="'border-color:'+(item.runState===0?'green':item.runState===1?'red':item.runState===2?'yellow':item.runState===3?'darkgray':'#CEC9C9')">编号：{{item.deviceNo}}</p>
                       <!-- <div class="separate"></div> -->
                       <ul>
                         <li>

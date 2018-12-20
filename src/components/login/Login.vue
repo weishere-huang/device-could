@@ -643,7 +643,10 @@
             url: "/user/login",
             params: data,
             type: "post",
-            option: {enableMsg: false}
+            option: {enableMsg: false},
+            loadingConfig:{
+              target: document.querySelector('.login')
+            }
           },
           this
         ).then(
@@ -846,7 +849,7 @@
     }
   };
 </script>
-<style lang="less" >
+<style lang="less">
   @import url("../../assets/font/font.css");
 
   @blue: #409eff;
@@ -1075,16 +1078,8 @@
       font-size: 12px;
       cursor: pointer;
     }
+    
+    
   }
-  .v-modal{
-    z-index: -1 !important;
-  
-  }
-  .el-dialog__wrapper{
-    // opacity: .5;
-    background: rgba(0, 0, 0, 0.507);
-  }
-  .el-dialog__header{
-    height: 40px;
-  }
+ 
 </style>
