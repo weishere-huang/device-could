@@ -99,7 +99,6 @@
         <h5>设备列表</h5>
         <v-table :select-all="selectALL" @on-custom-comp="customCompFunc"  :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
         <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-          <!--<v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableData.length" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>-->
         </div>
       </div>
       <el-dialog
@@ -202,7 +201,7 @@
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
-            componentName: "table-person"
+            componentName: "table-addPerson"
           },
         ],
         pageIndex: 1,
@@ -483,7 +482,7 @@
       addPlan
     }
   };
-  Vue.component("table-person", {
+  Vue.component("table-addPerson", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
             <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="showLook(rowData,index)" style='font-size:20px' class='iconfont'>&#xe734;</i></a>

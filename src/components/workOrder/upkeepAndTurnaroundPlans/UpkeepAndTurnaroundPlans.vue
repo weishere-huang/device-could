@@ -266,7 +266,7 @@
               </div>
               <ul>
                 <h6>已选择</h6>
-                <li v-model="personListValue" v-for="value in personListValue">
+                <li v-model="personListValue" v-for="value in personListValue" :key="value">
                   {{value.partName}}
                   <span :id="value.id" @click="basicAdd($event)" class="el-icon-circle-close-outline"></span>
                 </li>
@@ -701,8 +701,13 @@
     methods: {
       customCompFunc(params) {
         if (params.type === "delete") {
-          this.workSheetMaterialTableData = this.workSheetMaterialTableData.filter(item=>item.id!=params.rowData["id"]);
-          this.personListValue = this.personListValue.filter(item=>item.id!=params.rowData["id"]);
+          this.$confirm('此操作将删除该物料, 是否继续?', '提示')
+            .then(_=>{
+              this.workSheetMaterialTableData = this.workSheetMaterialTableData.filter(item=>item.id!=params.rowData["id"]);
+              this.personListValue = this.personListValue.filter(item=>item.id!=params.rowData["id"]);
+            })
+            .catch(_=>{
+            })
         }
       },
       // 单元格编辑回调

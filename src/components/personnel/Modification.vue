@@ -61,11 +61,12 @@
               </el-col>
               <el-col :span="11">
                 <el-form-item label="组织单位：" style="">
-                    <span>{{persnneladd.organizeName}}</span>
+                    <span>{{persnneladd.organizationName}}</span>
               <el-button
                 size="mini"
                 type="primary"
                 @click="dialogVisible3=true"
+                style="float: right;"
               >点击修改</el-button>
               <el-dialog
                 title="修改类别"
@@ -75,15 +76,15 @@
                 <el-cascader
                   placeholder=""
                   :options="orgoptions"
+                  :props="defaultProps"
                   filterable
                   ref="getName"
                   expand-trigger="hover"
-                  :props="defaultProps"
                   change-on-select
                   :show-all-levels="false"
                   v-model="qqqqq"
                   @change="handleChange"
-                  style="width:215px;padding:10px;"
+                  style="width:215px;padding:1px;"
                 ></el-cascader>
                 <el-button @click="dialogVisible3 = false" >取 消</el-button>
                 <el-button
@@ -92,11 +93,6 @@
                 >确 定</el-button>
 
               </el-dialog>
-
-                   <!-- <el-select  v-model="persnneladd.organizeCode" placeholder="请选择"  style="width:100%">
-                <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.code">
-                </el-option>
-                </el-select> -->
                 </el-form-item>
               </el-col>
               <el-col :span="11">
@@ -269,17 +265,13 @@
     methods: {
       orgsave(){
       this.dialogVisible3 = false ;
-     
     },
       handleChange(value) {
         let name = this.$refs["getName"].currentLabels;
         name = name[name.length - 1];
         let id = value[value.length - 1];
-        console.log(id, name);
-        this.chengeOrgCode = id;
-        this.chengeOrgname = name;
-        // this.sizeForm.organizeCode = id;
-        // this.sizeForm.organizeName =this.chengeOrgname name;
+        this.persnneladd.organizeCode = id;
+        this.persnneladd.organizationName = name;
       },
       path(){
         return this.global.apiImg;
@@ -410,7 +402,6 @@
           this
         ).then(response => {
           this.orgoptions = this.filterArray(response.data.data, 0);
-           
           },
           ({type, info}) => {
 
