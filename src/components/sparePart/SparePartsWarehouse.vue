@@ -264,7 +264,10 @@ export default {
           isResize: true,
           overflowTitle: true,
           isEdit: true,
-          titleCellClassName: "title-cell-class-name"
+          titleCellClassName: "title-cell-class-name",
+          formatter: function (rowData,rowIndex,pagingIndex,field) {
+            return `<s class='cell-edit-style'></s><span>${rowData.supplierName}</span>`;
+          }
         },
         {
           field: "batchNumber",
@@ -275,7 +278,10 @@ export default {
           isResize: true,
           overflowTitle: true,
           isEdit: true,
-          titleCellClassName: "title-cell-class-name"
+          titleCellClassName: "title-cell-class-name",
+          formatter: function (rowData,rowIndex,pagingIndex,field) {
+            return `<s class='cell-edit-style'></s><span>${rowData.batchNumber}</span>`;
+          }
         },
         {
           field: "saveLocation",
@@ -286,7 +292,10 @@ export default {
           isResize: true,
           overflowTitle: true,
           isEdit: true,
-          titleCellClassName: "title-cell-class-name"
+          titleCellClassName: "title-cell-class-name",
+          formatter: function (rowData,rowIndex,pagingIndex,field) {
+            return `<s class='cell-edit-style'></s><span>${rowData.saveLocation}</span>`;
+          }
         },
         {
           field: "remarks",
@@ -297,7 +306,10 @@ export default {
           isResize: true,
           overflowTitle: true,
           isEdit: true,
-          titleCellClassName: "title-cell-class-name"
+          titleCellClassName: "title-cell-class-name",
+          formatter: function (rowData,rowIndex,pagingIndex,field) {
+            return `<s class='cell-edit-style'></s><span>${rowData.remarks}</span>`;
+          }
         },
         {
           field: "custome-adv",
