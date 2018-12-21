@@ -26,15 +26,14 @@
           ref="baseform"
           label-width="80px"
           size="small"
-          :rules="rules1"
         >
-          <el-form-item label="设备编号" prop="deviceNo">
+          <el-form-item label="设备编号" >
             <el-input
               v-model="sizeForm.deviceNo"
               style="width:200px"
             ></el-input>
           </el-form-item>
-          <el-form-item label="设备名称" prop="deviceName">
+          <el-form-item label="设备名称" >
             <el-input
               v-model="sizeForm.deviceName"
               style="width:512px"
@@ -505,20 +504,6 @@ export default {
         }
       ],
       personAddHandler:"",
-      rules1:{
-        //编号
-        deviceNo:[
-          {required: true, message: '请输入设备编号', trigger: 'blur'},
-          {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
-        ],
-        deviceName:[
-          {required: true, message: '请输入设备名称', trigger: 'blur'},
-          {max:20,message:'设备名称过长'}
-        ],
-        // defaultProps:[
-        //   {required: true, message: '请添加组织机构', trigger: 'blur'},
-        // ]
-      },
     };
   },
   components: {
@@ -786,14 +771,11 @@ export default {
     },
     updatewarning(){
       let subok = true;
-      this.$refs['baseform'].validate((valid) => {
-        if (valid) {
-        } else {
-          subok = false;
-          return false;
-        }
-      });
+
       //判断人员
+      if(this.sizeForm.deviceNo ==="" ||this.sizeForm.deviceName === ""){
+        subok = false;
+      }
       if(!(this.devicePersonnelInfoBase.find(item=> item.workerType==='0') || this.devicePersonnelInfoBase.find(item=> item.workerType==='1') || this.devicePersonnelInfoBase.find(item=> item.workerType==='2') || this.devicePersonnelInfoBase.find(item=> item.workerType==='3'))){
         subok = false;
       }
@@ -835,17 +817,6 @@ export default {
       }
       return tree;
     },
-    getparaentcode(data){
-      let pcode;
-      let tempcode = 50;
-      for(let b in data){
-        if(data[b].parentCode.length < tempcode){
-          tempcode=data[b].parentCode.length;
-          pcode=data[b].parentCode;
-        }
-      }
-      return pcode;
-    },
     filterArray2(data, parent) {
       //编辑设备类别数据为树状结构方法
       let vm = this;
@@ -873,7 +844,8 @@ export default {
         this
       ).then(
         ([res1, res2]) => {
-          this.orgoptions = this.filterArray(res1.data.data, this.getparaentcode(res1.data.data));
+          let arr = Math.min.apply(null, (res1.data.data).map((item)=>{return item.parentCode}));
+          this.orgoptions = this.filterArray(res1.data.data, arr);
           this.ctgoptions= this.filterArray2(res2.data.data,0);
         },
         () => {}

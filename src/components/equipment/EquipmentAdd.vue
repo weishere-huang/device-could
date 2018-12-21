@@ -537,17 +537,6 @@
         }
         return tree;
       },
-      getparaentcode(data){
-        let pcode;
-        let tempcode = 50;
-        for(let b in data){
-          if(data[b].parentCode.length < tempcode){
-            tempcode=data[b].parentCode.length;
-            pcode=data[b].parentCode;
-          }
-        }
-        return pcode;
-      },
       filterArray2(data, parent) {
         //编辑设备类别数据为树状结构方法
         let vm = this;
@@ -578,7 +567,8 @@
           this
         ).then(
           ([res1, res2]) => {
-            this.orgoptions = this.filterArray(res1.data.data, this.getparaentcode(res1.data.data));
+            let arr = Math.min.apply(null, (res1.data.data).map((item)=>{return item.parentCode}));
+            this.orgoptions = this.filterArray(res1.data.data, arr);
             this.ctgoptions= this.filterArray2(res2.data.data,0);
           },
           () => {}
