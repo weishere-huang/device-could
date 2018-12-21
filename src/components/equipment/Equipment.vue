@@ -81,7 +81,7 @@
           <el-button
             size="small"
             type="primary"
-            @click="findByKeyWord"
+            @click="beforefindByKeyWord"
           ><i class='el-icon-search'></i> 搜索
           </el-button>
           <span
@@ -191,7 +191,7 @@ export default {
             }else if(rowData.deviceState === 2){
               return `<span style="color:#FF990E">出租</span>`
             }else if(rowData.deviceState === 3){
-              return `<span style="color:#00990C">停运</span>`
+              return `<span style="color:#00990C">停用</span>`
             }else if(rowData.deviceState === 4){
               return `<span style="color:#0C99FD">封存</span>`
             }else if(rowData.deviceState === 5){
@@ -392,7 +392,7 @@ export default {
       if (this.keyorall === 0) {
         this.findall();
       } else if (this.keyorall === 1) {
-        this.findByKeyWord();
+
       } else {
         this.leftfind();
       }
@@ -482,6 +482,10 @@ export default {
         },
         ({ type, info }) => {}
       );
+    },
+    beforefindByKeyWord(){
+      this.pageIndex=1;
+      this.findByKeyWord();
     },
     edelete() {
       let qs = require("qs");
