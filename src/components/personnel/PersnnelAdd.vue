@@ -487,7 +487,7 @@
           this.role = response.data.data;
           this.persnneladd.entryTime = this.date;
         // this.persnneladd.birthday =this.date.replace(this.date.split("-")[0], parseInt(this.date.split("-")[0])-20);
-          this.persnneladd.birthday = parseInt(this.date.split("-")[0])-20+"-01-01";
+          this.persnneladd.birthday = parseInt(this.date.split("-")[0])-30+"-01-01";
         },
         ({type, info}) => {
         })
