@@ -119,18 +119,16 @@
                 <template>
                   <el-carousel trigger="click" :autoplay=false height="260px" style="width: 94%">
                     <el-carousel-item v-for="item in imgPath" :key="item" >
-                      <!--<i @click="imgIsOk" :id="item" style="margin: auto"><img :src="item" style="width: 100%;"></i>-->
-                      <a :href="item" target="_blank"><img :src="item" style="width: 100%;"></a>
+                      <i @click="imgIsOk" :id="item"><img :src="item" style="width: 100%;"></i>
+                      <!--<a :href="item" target="_blank"><img :src="item" style="width: 100%;"></a>-->
                     </el-carousel-item>
                   </el-carousel>
-                  <!--<div style="width: auto">-->
-                    <!--<el-dialog-->
-                      <!--:visible.sync="imgShow"-->
-                      <!--fullscreen="true"-->
-                      <!--center>-->
-                      <!--<img :src="lookImg" style="width: 1000px"/>-->
-                    <!--</el-dialog>-->
-                  <!--</div>-->
+                    <el-dialog
+                      width="75%"
+                      :visible.sync="imgShow"
+                      center>
+                      <img :src="lookImg" style="max-width: 100%;  "/>
+                    </el-dialog>
                 </template>
               </el-form-item>
             </el-form>
