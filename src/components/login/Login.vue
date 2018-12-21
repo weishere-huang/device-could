@@ -56,13 +56,9 @@
             style="width:60%"
           >
           </el-input>
-          <el-button
-            type="primary"
-            plain
-            style="width:38%;height:40px;"
-            @click="loginSecuritycode"
-          >获取验证码
-          </el-button>
+          <!--<el-button type="primary" plain style="width:38%;height:40px;" @click="loginSecuritycode">-->
+          <el-button type="primary" style="width:38%;height:40px;" v-if="!sendMsgDisabled" @click="loginSecuritycode">获取验证码</el-button>
+          <el-button type="primary" plain style="width:38%;height:40px;" v-if="sendMsgDisabled">{{time+'秒后获取'}}</el-button>
         </el-form-item>
       </el-form>
       <p>
@@ -247,14 +243,9 @@
               style="width:40%"
             >
             </el-input>
-            <el-button
-              type="primary"
-              plain
-              style="width:38%;"
-              size="small"
-              @click="registerSecuritycode"
-            >获取验证码
-            </el-button>
+            <el-button type="primary" style="width:38%;" size="small" v-if="!sendMsgDisabled" @click="registerSecuritycode">获取验证码</el-button>
+            <el-button type="primary" plain style="width:38%;height:40px;" v-if="sendMsgDisabled">{{time+'秒后获取'}}</el-button>
+
           </el-form-item>
           <el-form-item label="">
             <el-checkbox v-model="checked">您已阅读<a href="">《长虹设备云用户注册协议》</a></el-checkbox>
@@ -299,6 +290,8 @@
     name: "Login",
     data() {
       return {
+        time: 60, // 发送验证码倒计时
+        sendMsgDisabled: false,
         labelPosition: "right",
         dialogVisible: false,
         loginList: {
@@ -674,6 +667,17 @@
           }
         );
       },
+      send() {
+        let me = this;
+        me.sendMsgDisabled = true;
+        let interval = window.setInterval(function() {
+          if ((me.time--) <= 0) {
+            me.time = 60;
+            me.sendMsgDisabled = false;
+            window.clearInterval(interval);
+          }
+        }, 1000);
+      },
       register() {
         let pass = this.manager.userPassword;
         pass = md5(pass);
@@ -729,16 +733,11 @@
       },
       //登录验证码
       loginSecuritycode() {
-        console.log(this.loginList.userName);
-        let qs = require("qs");
-        let data = qs.stringify({
-          phoneOrName: this.loginList.userName
-        });
         this.Axios(
           {
-            params: data,
+            params: Object.assign({phoneOrName:this.loginList.userName}),
             url: "/user/getVerifyCode",
-            type: "post",
+            type: "get",
             option: {
               enableMsg: false,
               enableLoad: false
@@ -752,11 +751,12 @@
           response => {
             console.log(1111);
             this.$message.success("短信验证码已发送至您的手机，请注意查收");
+            this.send()
           },
           ({type, info}) => {
             console.log(info);
             if (info.code == 406) {
-              this.$message.error("未找到该用户");
+              this.$message.error("用户名或手机号错误");
             }
             else {
               this.$message.error("服务器异常，请联系管理员");
@@ -766,15 +766,11 @@
       },
       //注册验证码
       registerSecuritycode() {
-        let qs = require("qs");
-        let data = qs.stringify({
-          phone: this.manager.phone
-        });
         this.Axios(
           {
-            params: data,
+            params: Object.assign({phone: this.manager.phone}),
             url: "/enterprise/getVerifyCode",
-            type: "post",
+            type: "get",
             option: {
               enableMsg: false,
               enableLoad: false
@@ -785,6 +781,7 @@
           response => {
             console.log(1111);
             this.$message.success("短信验证码已发送至您的手机，请注意查收");
+            this.send()
           },
           ({type, info}) => {
             console.log(info)
