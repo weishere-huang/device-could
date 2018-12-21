@@ -217,7 +217,8 @@ export default {
                 result.data.data[i].organizeType = "车间";
               }
             }
-            this.data = this.filterArray(result.data.data,this.getparaentcode(result.data.data));
+            let arr = Math.min.apply(null, (result.data.data).map((item)=>{return item.parentCode}));
+            this.data = this.filterArray(result.data.data,arr);
             console.log(this.data);
             // console.log(this.name1[0].children);
 
@@ -281,17 +282,6 @@ export default {
         }
       }
       return tree;
-    },
-    getparaentcode(data){
-      let pcode;
-      let tempcode = 50;
-      for(let b in data){
-        if(data[b].parentCode.length < tempcode){
-          tempcode=data[b].parentCode.length;
-          pcode=data[b].parentCode;
-        }
-      }
-      return pcode;
     },
     ap() {
       this.add1 = !this.add1;
