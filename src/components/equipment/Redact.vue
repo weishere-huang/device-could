@@ -783,18 +783,7 @@ export default {
         subok = false;
       }
       if(subok){
-        this.$confirm('确定要修改吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.update();
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
-        });
+        this.update();
       }else{
         this.$message.warning("请完善设备信息");
       }
