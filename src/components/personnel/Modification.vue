@@ -37,7 +37,7 @@
             </el-col>
             <el-col :span="11">
               <el-form-item label="员工编号：" style="">
-                <el-input type="text"  v-model="persnneladd.employeeNo"></el-input>
+                <el-input type="text"  v-model="persnneladd.employeeNo" readonly></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
@@ -174,7 +174,7 @@
                     <i class="el-icon-plus"></i>
                   </el-upload>
                   <el-dialog :visible.sync="dialogVisible">
-                    <img width="100%" :src="dialogImageUrl" alt="" v-if="dialogImageUrl===''">
+                    <img width="100%" :src="imgPath" alt="" />
                   </el-dialog>
                 </el-form-item>
               </el-col>
@@ -219,6 +219,7 @@
     name: "",
     data() {
       return {
+        imgPath:'',
         labelPosition:"right",
         fileList: [],
         dialogImageUrl:[],
@@ -279,7 +280,7 @@
       },
       handleAvatarSuccess(res, file) {
         this.$message.success('图片成功上传');
-        this.dialogImageUrl[0].url= file.response.data;
+        this.imgPath=file.response.data;
         this.persnneladd.img = file.response.data;
       },
       beforeAvatarUpload(file) {
@@ -333,11 +334,13 @@
         return this.$confirm(`确定移除 ${ file.name }？`);
       },
       handleRemove(file, fileList) {
-        console.log(file);
-        console.log(fileList);
+        this.persnneladd.img = "";
+        this.imgPath = "";
+        this.dialogImageUrl=[];
+        console.log(this.persnneladd.img );
       },
       handlePictureCardPreview(file) {
-        this.dialogImageUrl[0].url = file.url;
+        this.imgPath = file.url;
         this.dialogVisible = true;
       },
       handleSuccess(res, file,fileList){
@@ -372,7 +375,10 @@
           this.$message.error("请选择角色权限");
           return false;
         }
-        if(!(/^1[34578]\d{9}$/.test(this.persnneladd.phone))){
+        if(this.persnneladd.phone===""){
+          this.$message.error("手机号码不能为空");
+          return false;
+        }else if(!(/^1[34578]\d{9}$/.test(this.persnneladd.phone))){
           this.$message.error("手机号码有误，请重填");
           return false;
         }
@@ -414,13 +420,13 @@
           })
 
       },
-      codeToName(organizeCode){
-        for (let i =0;i<this.options.length;i++){
-          if(this.options[i].code === organizeCode){
-            this.persnneladd.organizationName = this.options[i].name;
-          }
-        }
-      },
+      // codeToName(organizeCode){
+      //   for (let i =0;i<this.options.length;i++){
+      //     if(this.options[i].code === organizeCode){
+      //       this.persnneladd.organizationName = this.options[i].name;
+      //     }
+      //   }
+      // },
       Personnel() {
         this.$router.push({
           path: "/Personnel"
@@ -445,6 +451,7 @@
             }
             let arr = JSON.parse(this.persnneladd.qualificationInfo);
             if(this.persnneladd.img!==""){
+              this.imgPath = this.global.imgPath+this.persnneladd.img.split(":")[1];
               this.dialogImageUrl = [{
                 url:this.global.imgPath+this.persnneladd.img.split(":")[1],
               }];
@@ -461,7 +468,7 @@
           })
       },
       updateEmployee(){
-        this.codeToName(this.persnneladd.organizeCode);
+         // this.codeToName(this.persnneladd.organizeCode);
         if(this.testValue()){
           this.toUpdateEmployee()
         }
@@ -498,9 +505,11 @@
             });
           }
         }
-        this.persnneladd.img = this.dialogImageUrl[0].url;
-        if(this.persnneladd.img.split(":")[0] !=="img"){
-          this.persnneladd.img="img:"+this.dialogImageUrl[0].url.split(":8080/")[1];
+        if(this.dialogImageUrl.length!==0){
+          this.persnneladd.img = this.dialogImageUrl[0].url;
+          if(this.persnneladd.img.split(":")[0] !=="img"){
+            this.persnneladd.img="img:"+this.dialogImageUrl[0].url.split(":8080/")[1];
+          }
         }
         this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");

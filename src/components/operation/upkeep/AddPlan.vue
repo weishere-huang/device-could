@@ -145,22 +145,7 @@
           {
             id: 1,
             categoryName: "一级",
-            children: [
-              {
-                id: 11,
-                categoryName: "二级 1-1",
-                children: [
-                  {
-                    id: 12,
-                    categoryName: "三级 1-1-1"
-                  },
-                  {
-                    id: 13,
-                    categoryName: "三级 1-1-2"
-                  }
-                ]
-              }
-            ]
+            children: []
           }
         ],
         defaultProps: {

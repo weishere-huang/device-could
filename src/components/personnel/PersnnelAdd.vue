@@ -253,6 +253,7 @@
       handleAvatarSuccess(res, file) {
         this.$message.success('图片成功上传');
         this.dialogImageUrl= file.response.data;
+        console.log(this.dialogImageUrl);
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
@@ -281,7 +282,6 @@
         const isJPG = file.type === 'image/jpeg';
         const isPNG = file.type === 'image/png';
         const isLt1M = file.size / 1024 / 1024 < 1;
-
         let isOk = true;
         if(!(isDOC || isDOCX || isXLS || isXLSX || isTXT || isPDF || isPPT || isPPTX || isJPG || isPNG ||isLt1M)){
           this.$message.error('文件格式不正确');
@@ -290,7 +290,8 @@
         if (!isLt1M) {
           this.$message.error('上传的文件不能大于 1MB!');
         }
-        return isOk&& isLt1M;
+
+        return isOk && isLt1M;
       },
       handleRemove1(file, fileList) {
         this.fileList = this.fileList.filter(item=>item.name!==file.name);
@@ -303,8 +304,10 @@
       },
       beforeRemove1(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？`);
+
       },
       handleRemove(file, fileList) {
+        this.dialogImageUrl=fileList;
         console.log(file);
         console.log(fileList);
       },
@@ -356,13 +359,6 @@
           }
         }
         return tree;
-      },
-      codeToName(organizeCode){
-        for (let i =0;i<this.options.length;i++){
-          if(this.options[i].code === organizeCode){
-            this.persnneladd.organizationName = this.options[i].name;
-          }
-        }
       },
       toEmployeeAdd() {
         console.log(this.fileList);
@@ -443,9 +439,12 @@
           this.$message.error("请选择角色权限");
           return false;
         }
-        if(!(/^1[34578]\d{9}$/.test(this.persnneladd.phone))){
-          this.$message.error("手机号码有误，请重填");
+        if(this.persnneladd.phone===""){
+          this.$message.error("手机号码不能为空");
           return false;
+        }else if(!(/^1[34578]\d{9}$/.test(this.persnneladd.phone))){
+            this.$message.error("手机号码有误，请重填");
+            return false;
         }
         if(this.persnneladd.birthday == ""){
           this.$message.error("请选择出生日期");
@@ -469,7 +468,7 @@
         return true;
       },
       employeeAdd(){
-        this.codeToName(this.persnneladd.organizeCode);
+        console.log(this.dialogImageUrl);
         if(this.testValue()){
           this.toEmployeeAdd()
         }
@@ -486,7 +485,9 @@
         this
       ).then(response => {
           this.role = response.data.data;
-          this.persnneladd.entryTime = this.date
+          this.persnneladd.entryTime = this.date;
+        // this.persnneladd.birthday =this.date.replace(this.date.split("-")[0], parseInt(this.date.split("-")[0])-20);
+          this.persnneladd.birthday = parseInt(this.date.split("-")[0])-20+"-01-01";
         },
         ({type, info}) => {
         })
