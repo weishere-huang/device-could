@@ -4,7 +4,7 @@
       <div class="top">
         <el-row>
           <el-button  size="small" type="primary" @click="tback" icon="el-icon-arrow-left">返回</el-button>
-          <el-button  size="small" type="primary" @click="add1"><i style='font-size:12px' class='iconfont'>&#xe645;</i> &nbsp;保存</el-button>
+          <el-button  size="small" type="primary" @click="addwarning"><i style='font-size:12px' class='iconfont'>&#xe645;</i> &nbsp;保存</el-button>
         </el-row>
       </div>
       <div class="center">
@@ -160,7 +160,7 @@
         </el-form>
         <el-form :inline="true" style="padding-left:12px" size="small">
           <el-form-item label="购买价格">
-            <el-input v-model="sizeForm.buyPrice" style="width:215px" type="number"></el-input>
+            <el-input v-model="sizeForm.buyPrice" style="width:215px" type="number" min="0"></el-input>
           </el-form-item>
           <el-form-item label="购买日期">
             <el-col :span="11">
@@ -570,7 +570,10 @@
           {
             url: ["/organize/allOrganize", "/deviceCategory/all"],
             type: ["get","get"],
-            params:[{},{}]
+            params:[{},{}],
+            option:{
+              enableMsg:false
+            }
           },
           this
         ).then(

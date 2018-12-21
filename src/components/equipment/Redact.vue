@@ -5,14 +5,14 @@
       <div class="top">
         <el-row>
           <el-button
-            
+
             size="small"
             @click="tback"
             type="primary"
             icon="el-icon-arrow-left"
           >返回</el-button>
           <el-button
-            
+
             size="small"
             type="primary"
             @click="updatewarning"
@@ -308,6 +308,7 @@
               v-model="sizeForm.buyPrice"
               style="width:215px"
               type="number"
+              min="0"
             ></el-input>
           </el-form-item>
           <el-form-item label="购买日期">
@@ -339,7 +340,7 @@
           class="upLoad"
         >
           <span>相关资料：</span>
-          
+
           <span><el-upload
             style="display:inline-block;vertical-align:top"
             class="upload-demo"
@@ -357,7 +358,7 @@
               </el-upload></span>
         </div>
         </el-col>
-        
+
         <div style="padding:0 40px 0 12px;margin-top:16px;">
           <span>运维记录：</span>
           <span>查看</span>
@@ -989,7 +990,7 @@ export default {
           color: #409eff;
           cursor: pointer;
           display: inline-block;
-         
+
         }
       }
     }

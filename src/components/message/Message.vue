@@ -306,7 +306,6 @@ export default {
           option:{
             requestTarget:"m",
             enableMsg: false,
-            sccessMessage:false
           }
         },
         this
