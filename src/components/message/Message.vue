@@ -268,9 +268,9 @@ export default {
           params: data,
           type: "post",
           option: {
-            enableMsg: false
+            requestTarget:"m",
+            enableMsg:false
           },
-          option:{requestTarget:"m"}
         },
         this
       )
@@ -305,12 +305,11 @@ export default {
           // }
           option:{
             requestTarget:"m",
-            enableMsg: false,
+            enableMsg:false
           }
         },
         this
       )
-
         .then(result => {
           console.log(result.data);
           console.log(result.data.data);
@@ -336,7 +335,10 @@ export default {
           // loadingConfig: {
           //   target: document.querySelector("#mainContentWrapper")
           // }
-          option:{requestTarget:"m"}
+          option:{
+            requestTarget:"m",
+            enableMsg:false
+          }
         },
         this
       )
@@ -357,7 +359,10 @@ export default {
         {
           url: "/message/NotReadMsgCount/",
           type: "get",
-          option:{requestTarget:"m"}
+          option:{
+            enableMsg:false,
+            requestTarget:"m"
+          }
         },
         this
       )

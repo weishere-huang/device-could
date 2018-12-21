@@ -313,9 +313,9 @@
       Sgetlist() {
         //获取备品备件分类数据接口1
         this.Axios({
-          // option: {
-          //   enableMsg: false
-          // },
+          option: {
+            enableMsg: false
+          },
           type: "get",
           url: "/part/list"
           // loadingConfig: {

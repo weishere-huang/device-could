@@ -282,9 +282,9 @@ export default {
           size: this.pageSize,
           keywords:this.basekeyword,
         },
-        // option: {
-        //   enableMsg: false
-        // },
+        option: {
+          successMsg:"备件信息加载完成"
+        },
         type:"get",
         url: "/part/searchBasicInfo"
         // loadingConfig: {
