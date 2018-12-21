@@ -564,6 +564,7 @@ export default {
     },
 
     toSubmitAudit() {
+      console.log(this.toAudit);
       this.formLabelAlign.type ? (this.formLabelAlign.type = 0) : (this.formLabelAlign.type = 1);
       this.Axios(
         {
@@ -572,7 +573,7 @@ export default {
             maintenanceId: this.maintenanceIds,
             isEndAudit: this.formLabelAlign.type,
             auditOpinion: this.formLabelAlign.desc,
-            nextUserId: this.toAudit.id
+            nextUserId: this.toAudit.userId
           },
           type: "get",
           url: "/mplan/maintenanceAudit"
