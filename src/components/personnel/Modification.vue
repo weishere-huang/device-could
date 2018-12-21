@@ -174,7 +174,7 @@
                     <i class="el-icon-plus"></i>
                   </el-upload>
                   <el-dialog :visible.sync="dialogVisible">
-                    <img width="100%" :src="dialogImageUrl" alt="" v-if="dialogImageUrl===''">
+                    <img width="100%" :src="imgPath" alt="" />
                   </el-dialog>
                 </el-form-item>
               </el-col>
@@ -219,6 +219,7 @@
     name: "",
     data() {
       return {
+        imgPath:'',
         labelPosition:"right",
         fileList: [],
         dialogImageUrl:[],
@@ -279,8 +280,8 @@
       },
       handleAvatarSuccess(res, file) {
         this.$message.success('图片成功上传');
+        this.imgPath=file.response.data;
         this.persnneladd.img = file.response.data;
-        console.log(this.persnneladd.img);
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
@@ -334,12 +335,12 @@
       },
       handleRemove(file, fileList) {
         this.persnneladd.img = "";
-        this.dialogImageUrl = [];
-        // console.log(file);
-        // console.log(fileList);
+        this.imgPath = "";
+        this.dialogImageUrl=[];
+        console.log(this.persnneladd.img );
       },
       handlePictureCardPreview(file) {
-        this.dialogImageUrl[0].url = file.url;
+        this.imgPath = file.url;
         this.dialogVisible = true;
       },
       handleSuccess(res, file,fileList){
@@ -419,13 +420,13 @@
           })
 
       },
-      codeToName(organizeCode){
-        for (let i =0;i<this.options.length;i++){
-          if(this.options[i].code === organizeCode){
-            this.persnneladd.organizationName = this.options[i].name;
-          }
-        }
-      },
+      // codeToName(organizeCode){
+      //   for (let i =0;i<this.options.length;i++){
+      //     if(this.options[i].code === organizeCode){
+      //       this.persnneladd.organizationName = this.options[i].name;
+      //     }
+      //   }
+      // },
       Personnel() {
         this.$router.push({
           path: "/Personnel"
@@ -450,6 +451,7 @@
             }
             let arr = JSON.parse(this.persnneladd.qualificationInfo);
             if(this.persnneladd.img!==""){
+              this.imgPath = this.global.imgPath+this.persnneladd.img.split(":")[1];
               this.dialogImageUrl = [{
                 url:this.global.imgPath+this.persnneladd.img.split(":")[1],
               }];
@@ -466,7 +468,7 @@
           })
       },
       updateEmployee(){
-        // this.codeToName(this.persnneladd.organizeCode);
+         // this.codeToName(this.persnneladd.organizeCode);
         if(this.testValue()){
           this.toUpdateEmployee()
         }

@@ -253,6 +253,7 @@
       handleAvatarSuccess(res, file) {
         this.$message.success('图片成功上传');
         this.dialogImageUrl= file.response.data;
+        console.log(this.dialogImageUrl);
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
@@ -303,8 +304,10 @@
       },
       beforeRemove1(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？`);
+
       },
       handleRemove(file, fileList) {
+        this.dialogImageUrl=fileList;
         console.log(file);
         console.log(fileList);
       },
@@ -356,13 +359,6 @@
           }
         }
         return tree;
-      },
-      codeToName(organizeCode){
-        for (let i =0;i<this.options.length;i++){
-          if(this.options[i].code === organizeCode){
-            this.persnneladd.organizationName = this.options[i].name;
-          }
-        }
       },
       toEmployeeAdd() {
         console.log(this.fileList);
@@ -472,7 +468,7 @@
         return true;
       },
       employeeAdd(){
-        this.codeToName(this.persnneladd.organizeCode);
+        console.log(this.dialogImageUrl);
         if(this.testValue()){
           this.toEmployeeAdd()
         }
