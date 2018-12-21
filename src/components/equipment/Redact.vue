@@ -628,13 +628,13 @@ export default {
       if(this.fileList1.length > 0){
         data.deviceDataInfo=JSON.stringify(this.fileList1);
       }
-      if(this.sizeForm.outputDate.length !== 0 )  {
+      if(this.sizeForm.outputDate != null )  {
         data.outputDate = this.sizeForm.outputDate;
       }
-      if(this.sizeForm.buyDate.length !== 0){
+      if(this.sizeForm.buyDate != null ){
         data.buyDate = this.sizeForm.buyDate;
       }
-      if(this.sizeForm.enterFactoryDate.length !== 0){
+      if(this.sizeForm.enterFactoryDate != null ){
         data.enterFactoryDate = this.sizeForm.enterFactoryDate;
       }
       data=qs.stringify(data);
@@ -644,7 +644,7 @@ export default {
           params: data,
           type: "post",
           option: {
-            enableMsg: false
+            enableMsg:false
           }
         },
         this
@@ -828,7 +828,11 @@ export default {
         {
           url: ["/organize/allOrganize", "/deviceCategory/all"],
           type: ["get","get"],
-          params:[{},{}]
+          params:[{},{}],
+          option:{
+            enableMsg:false,
+          }
+
         },
         this
       ).then(

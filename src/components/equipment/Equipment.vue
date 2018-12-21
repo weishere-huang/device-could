@@ -429,9 +429,10 @@ export default {
             manufacturer: this.manufacturer,
             deviceSates: this.deviceSates
           },
-          // option: {
-          //   enableMsg: false
-          // },
+          option: {
+            enableMsg:true,
+            successMsg:'设备信息加载完成~',
+          },
           type: "get",
           url: "/device/select"
           // loadingConfig: {
