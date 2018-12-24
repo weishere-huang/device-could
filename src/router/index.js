@@ -263,17 +263,7 @@ const router = new Router({
       ]
     },
 
-    {
-      path: '/UpkeepAmend/:id/',
-      name: 'UpkeepAmend',
-      props: {
-        pageName: '保养计划修改'
-      },
-      component: UpkeepAmend,
-      meta: {
-        requireAuth: true
-      },
-    },
+
     {
       path: '/AmendPlan',
       name: 'AmendPlan',
@@ -301,51 +291,34 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
+      children:[
+        {
+          path: 'UpkeepAdd',
+          name: 'UpkeepAdd',
+          props: {
+            pageName: '新增保养计划'
+          },
+          component: UpkeepAdd,
+          meta: {
+            requireAuth: true
+          },
+        },
+        {
+          path: 'UpkeepAmend/:id/',
+          name: 'UpkeepAmend',
+          props: {
+            pageName: '保养计划修改'
+          },
+          component: UpkeepAmend,
+          meta: {
+            requireAuth: true
+          },
+        },
+      ]
     },
-    {
-      path: '/UpkeepAdd',
-      name: 'UpkeepAdd',
-      props: {
-        pageName: '新增保养计划'
-      },
-      component: UpkeepAdd,
-      meta: {
-        requireAuth: true
-      },
-    },
-    {
-      path: '/TurnaroundPlansAdd',
-      name: 'TurnaroundPlansAdd',
-      props: {
-        pageName: '新增检修计划'
-      },
-      component: TurnaroundPlansAdd,
-      meta: {
-        requireAuth: true
-      },
-    },
-    {
-      path: '/TurnaroundPlansAmend/:id/',
-      name: 'TurnaroundPlansAmend',
-      props: {
-        pageName: '检修计划修改'
-      },
-      component: TurnaroundPlansAmend,
-      meta: {
-        requireAuth: true
-      },
-    },
-    {
-      path: '/BreakDetails/:id/',
-      name: 'BreakDetails',
-      props: {
-        pageName: '故障详情'
-      },
-      component: BreakDetails,
-      meta: {
-        requireAuth: true
-      },
-    },
+
+
+
     {
       path: '/Breakdown',
       name: 'Breakdown',
@@ -356,6 +329,19 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
+      children:[
+        {
+          path: 'BreakDetails/:id/',
+          name: 'BreakDetails',
+          props: {
+            pageName: '故障详情'
+          },
+          component: BreakDetails,
+          meta: {
+            requireAuth: true
+          },
+        },
+      ]
     },
     {
       path: '/TurnaroundPlans',
@@ -367,6 +353,30 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
+      children:[
+        {
+          path: 'TurnaroundPlansAdd',
+          name: 'TurnaroundPlansAdd',
+          props: {
+            pageName: '新增检修计划'
+          },
+          component: TurnaroundPlansAdd,
+          meta: {
+            requireAuth: true
+          },
+        },
+        {
+          path: 'TurnaroundPlansAmend/:id/',
+          name: 'TurnaroundPlansAmend',
+          props: {
+            pageName: '检修计划修改'
+          },
+          component: TurnaroundPlansAmend,
+          meta: {
+            requireAuth: true
+          },
+        },
+      ]
     },
     {
       path: '/Organization',
@@ -397,28 +407,30 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
-    },
-    {
-      path: '/PersnnelAdd',
-      name: 'PersnnelAdd',
-      props: {
-        pageName: '员工添加'
-      },
-      component: PersnnelAdd,
-      meta: {
-        requireAuth: true
-      },
-    },
-    {
-      path: '/Modification/:id/',
-      name: 'Modification',
-      props: {
-        pageName: '员工修改'
-      },
-      component: Modification,
-      meta: {
-        requireAuth: true
-      },
+      children:[
+        {
+          path: 'PersnnelAdd',
+          name: 'PersnnelAdd',
+          props: {
+            pageName: '员工添加'
+          },
+          component: PersnnelAdd,
+          meta: {
+            requireAuth: true
+          },
+        },
+        {
+          path: 'Modification/:id/',
+          name: 'Modification',
+          props: {
+            pageName: '员工修改'
+          },
+          component: Modification,
+          meta: {
+            requireAuth: true
+          },
+        },
+      ]
     },
     {
       path: '/User',
@@ -449,29 +461,32 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
+      children:[
+        {
+          path: 'BreakdownOrder/:id/',
+          name: 'BreakdownOrder',
+          props: {
+            pageName: '故障工单详情'
+          },
+          component: BreakdownOrder,
+          meta: {
+            requireAuth: true
+          },
+        },
+        {
+          path: 'UpkeepAndTurnaroundPlans/:id/',
+          name: 'UpkeepAndTurnaroundPlans',
+          props: {
+            pageName: '检修&保养计划工单详情'
+          },
+          component: UpkeepAndTurnaroundPlans,
+          meta: {
+            requireAuth: true
+          },
+        },
+      ]
     },
-    {
-      path: '/BreakdownOrder/:id/',
-      name: 'BreakdownOrder',
-      props: {
-        pageName: '故障工单详情'
-      },
-      component: BreakdownOrder,
-      meta: {
-        requireAuth: true
-      },
-    },
-    {
-      path: '/UpkeepAndTurnaroundPlans/:id/',
-      name: 'UpkeepAndTurnaroundPlans',
-      props: {
-        pageName: '检修&保养计划工单详情'
-      },
-      component: UpkeepAndTurnaroundPlans,
-      meta: {
-        requireAuth: true
-      },
-    },
+
     {
       path: '/KnowledgeBase',
       name: 'KnowledgeBase',
