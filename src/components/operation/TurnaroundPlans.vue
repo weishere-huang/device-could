@@ -1,12 +1,14 @@
 <template>
   <div class="turnaround-plans">
-    <div class="userCase">
+    <router-view></router-view>
+    <div class="userCase" :class="[{hide:isHideList}]">
       <div class="top">
         <el-button
           size="small"
           type="primary"
           @click="toPansAdd"
         ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</el-button>
+        <el-button size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
         <!--<el-button-->
         <!--size="small"-->
         <!--type="primary"-->
@@ -137,8 +139,12 @@
   import personnel from "./turnaroundPlans/PersonnelTurnaround";
   import Vue from "vue";
   export default {
+    inject: ["reload"],
     data() {
       return {
+        isHideList: this.$route.params.id !== undefined
+          ? true
+          : false,
         disabled:true,
         personShow: false,
         formLabelAlign: {
@@ -292,11 +298,11 @@
       },
       toAmend(rowIndex, rowData, column) {
         // 传值给修改
-        this.$router.push("/TurnaroundPlansAmend/" + rowData.id);
+        this.$router.push({path:"TurnaroundPlans/TurnaroundPlansAmend/" + rowData.id});
       },
       toPansAdd() {
         this.$router.push({
-          path: "/TurnaroundPlansAdd"
+          path: "TurnaroundPlans/TurnaroundPlansAdd"
         });
       },
       selectGroupChange(selection) {
@@ -605,7 +611,15 @@
     components: {
       audit,
       personnel
-    }
+    },
+    watch: {
+      $route() {
+        //debugger
+        let a=this.$route.matched.find(item=>(item.name==="TurnaroundPlansAdd"))?true:false;
+        let b=this.$route.params.id !== undefined ? true : false;
+        this.isHideList = a||b ?true:false;
+      }
+    },
   };
   Vue.component("table-turnaroundPlans", {
     template: `<span>
