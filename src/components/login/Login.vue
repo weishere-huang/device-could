@@ -212,7 +212,13 @@
             label="密码："
             prop="userPassword"
           >
-            <el-input placeholder="6~20位字符组成，区分大小写" size="small" type="password" v-model="manager.userPassword" style="width:80%"> </el-input>
+            <el-input
+              placeholder="6~20位字符组成，区分大小写"
+              size="small"
+              type="password"
+              v-model="manager.userPassword"
+              style="width:80%">
+            </el-input>
           </el-form-item>
           <el-form-item
             label="手机号："
