@@ -14,7 +14,7 @@
           <el-form :label-position="labelPosition" label-width="100px" style="width:100%;margin-top:26px"  size="mini">
             <el-col :span="14">
               <el-form-item label="姓名：" style="">
-                <el-input type="text" style="width:70%"  v-model="persnneladd.name"></el-input>
+                <el-input type="text" style="width:70%" autofocus  v-model="persnneladd.name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
