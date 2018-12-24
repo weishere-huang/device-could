@@ -1,6 +1,7 @@
 <template>
   <div class="work-order">
-    <div class="top">
+    <router-view></router-view>
+    <div class="top" :class="[{hide:isHideList}]">
         <!--<el-badge class="item">-->
           <!--<el-button-->
             <!--type="primary"-->
@@ -84,7 +85,7 @@
       >已完成</el-button>
       </el-button-group>
     </div>
-    <div class="bottom">
+    <div class="bottom" :class="[{hide:isHideList}]">
       <v-table
         is-horizontal-resize
         column-width-drag
@@ -208,7 +209,10 @@
             isResize: true,
             overflowTitle: true
           }
-        ]
+        ],
+        isHideList: this.$route.params.id !== undefined
+          ? true
+          : false,
       };
     },
     methods: {
@@ -246,9 +250,9 @@
       },
       Jump(rowIndex, rowData, column) {
         if (rowData.workType === "故障") {
-          this.$router.push("/BreakdownOrder/" + rowData.id);
+          this.$router.push({path:"WorkOrder/BreakdownOrder/" + rowData.id});
         } else {
-          this.$router.push("/UpkeepAndTurnaroundPlans/" + rowData.id);
+          this.$router.push({path:"WorkOrder/UpkeepAndTurnaroundPlans/" + rowData.id});
         }
       },
 
@@ -361,7 +365,13 @@
     created() {
       this.load();
     },
-    mounted() {}
+    mounted() {},
+    watch: {
+      $route() {
+        //debugger
+        this.isHideList=this.$route.params.id !== undefined ? true : false;
+      }
+    },
   };
 </script>
 <style scoped lang="less">
