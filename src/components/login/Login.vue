@@ -644,7 +644,7 @@
           phoneOrName: this.loginList.userName,
           passWord: pass,
           verifyCode: this.loginList.verification
-        });
+      });
         this.Axios(
           {
             url: "/user/login",
