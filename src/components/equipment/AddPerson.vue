@@ -295,7 +295,7 @@ export default {
             condition:this.condition,
           },
           option: {
-            enableMsg: true
+            enableMsg:false
           },
           type: "get",
           url: "/employee/findByOrganizeCode",
@@ -363,9 +363,9 @@ export default {
             page: this.pageIndex,
             size: this.pageSize
           },
-          // option: {
-          //   enableMsg: false
-          // },
+          option: {
+            enableMsg: false
+          },
           type: "get",
           url: "/organize/allOrganize"
           // loadingConfig: {

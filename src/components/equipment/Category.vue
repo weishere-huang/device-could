@@ -257,7 +257,10 @@ export default {
         {
           params: {},
           type: "get",
-          url: "/deviceCategory/all"
+          url: "/deviceCategory/all",
+          option:{
+            enableMsg:false
+          }
         },
         this
       )

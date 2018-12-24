@@ -243,7 +243,6 @@
           locationNo: "",
           buyPrice: "",
           buyDate: "",
-          dataInfo: "",
           deviceCategory: "",
           deviceCategoryName: "",
           deviceModel: "",
@@ -423,7 +422,6 @@
           // location: null,
           locationNo: this.sizeForm.locationNo,
           buyPrice: this.sizeForm.buyPrice * 100,
-          dataInfo: this.sizeForm.dataInfo,
           deviceModel: this.sizeForm.deviceModel,
           deviceState: this.sizeForm.deviceState,
 
@@ -604,20 +602,7 @@
 
         //如果提交通过, 则弹出提示框
         if(subok){
-          this.$confirm('确认添加设备吗?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.add1();
-            // this.add2();
-
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '取消保存'
-            });
-          });
+          this.add1();
         }else{
           this.$message.error("请完善设备信息");
         }
