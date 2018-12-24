@@ -66,6 +66,8 @@
           </div>
 
         </el-dialog>
+
+
         <div slot="footer" class="dialog-footer">
           <el-button @click="goExit" size="mini">
             <i style='font-size:12px' class='iconfont'>&#xe729;</i>&nbsp;取 消</el-button>
@@ -177,9 +179,6 @@
               row-height=35
             ></v-table>
           </div>
-          <!--<div slot="footer" class="dialog-footer">-->
-            <!--<el-button size="small" type="primary" @click="dialogVisible1=false">确定</el-button>-->
-          <!--</div>-->
         </el-dialog>
         <!-- 设备对象人员查看弹框结束 -->
         <div class="supplies">
@@ -1077,10 +1076,13 @@
       },
       //保存备品备件页面并传值到详情页
       deleteBasic(){
-        console.log("ok");
         this.dialogVisible2 = false;
+
         this.workSheetMaterialTableData = (this.workSheetMaterialTableData||[]).concat(this.personListValue);
-        this.workSheetMaterialTableData.forEach(function (item){item.planCount = 0});
+        this.workSheetMaterialTableData.forEach((item)=>{
+            if(item.planCount == "" || item.planCount ==null)item.planCount =0
+        });
+
         this.workSheetMaterialTableData = Array.from(new Set(this.workSheetMaterialTableData))
       },
       //保存工单物料到数据库

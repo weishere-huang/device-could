@@ -1,9 +1,9 @@
 <template>
   <div class="breakdown-order">
     <div class="top">
-          <el-button @click="toBack" type="primary" size="small" icon="el-icon-arrow-left">返回</el-button>
-          <el-button size="small" type="primary" @click="outerVisible=true" v-if="isOk">
-            <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;提交审核</el-button>
+      <el-button @click="toBack" type="primary" size="small" icon="el-icon-arrow-left">返回</el-button>
+      <el-button size="small" type="primary" @click="outerVisible=true" v-if="isOk">
+        <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;提交审核</el-button>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
         <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
@@ -159,10 +159,10 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-              <el-button size="mini" type="primary" @click=" listBasicInfo">
-                <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加物料</el-button>
-              <el-button type="primary" @click="insertPart" size="mini">
-                <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存列表</el-button>
+            <el-button size="mini" type="primary" @click=" listBasicInfo">
+              <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加物料</el-button>
+            <el-button type="primary" @click="insertPart" size="mini">
+              <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存列表</el-button>
           </div>
           <v-table
             is-horizontal-resize
@@ -885,6 +885,8 @@
 
       },
 
+
+
       //保存工单物料到数据库
       insertPart(){
         for (let i in this.suppliesTableData) {
@@ -1055,9 +1057,16 @@
       //关闭备品备件页面并传值到详情页
       deleteBasic(){
         this.dialogVisible2 = false;
+        this.personListValue = this.personListValue.filter(item=>item.partNo!==
+         this.suppliesTableData.forEach((item)=>{
+          return item.partNo;
+        }));
         this.suppliesTableData = (this.suppliesTableData||[]).concat(this.personListValue);
-        this.suppliesTableData.forEach(function (item){item.planCount = 0});
+        this.suppliesTableData.forEach((item)=>{
+          if(item.planCount == "" || item.planCount ==null) item.planCount =0
+        });
         this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
+
       },
 
       //双击删除指定的备品备件
@@ -1158,7 +1167,7 @@
           this.formLabelAlign.faultLevel = "高";
         }
         if(this.formLabelAlign.img!==null){
-            this.imgPath = this.formLabelAlign.img.split(",").map((item)=>{
+          this.imgPath = this.formLabelAlign.img.split(",").map((item)=>{
             return this.global.imgPath+item.split("img:")[1];
           });
         }
