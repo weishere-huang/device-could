@@ -329,7 +329,7 @@ export default {
       if (res1.data.data.length) {
         this.organizationTreeData = initTreeDataForOrganization(
           res1.data.data,
-          "0"
+          res1.data.data.find(item=>item.organizeType===1).parentCode
         );
         this.$store.commit("getCode", res1.data.data[0].code);
 

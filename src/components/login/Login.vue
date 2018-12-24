@@ -40,6 +40,7 @@
             <i
               class='iconfont icon-password'
               slot="suffix"
+             
             >
             </i></el-input>
         </el-form-item>
@@ -215,10 +216,11 @@
             <el-input
               placeholder="6~20位字符组成，区分大小写"
               size="small"
-              type="password"
+              :type="see"
               v-model="manager.userPassword"
               style="width:80%"
-            ></el-input>
+            >
+            <i class="el-icon-view" slot="suffix" style="" @click="seePassword"></i></el-input>
           </el-form-item>
           <el-form-item
             label="手机号："
@@ -290,6 +292,7 @@
     name: "Login",
     data() {
       return {
+        see:'password',
         time: 60, // 发送验证码倒计时
         sendMsgDisabled: false,
         labelPosition: "right",
@@ -457,7 +460,7 @@
                   console.log(res)
                   callback()
                 }, ({type, info}) => {
-                  console.log(info)
+                  // console.log(info)
                   callback(new Error("该用户名已存在"))
                 })
               },
@@ -544,6 +547,18 @@
     },
 
     methods: {
+      seePassword(e){
+        if (this.see==="text") {
+          this.see='password'
+          e.target.style.color=""
+          console.log(this.see);
+        }
+        else if (this.see==="password") {
+          this.see='text'
+          e.target.style.color="blue"
+          console.log(e.target);
+        }
+      },
       checkData(rule, value, callback) {
         if (value) {
           if (/[\u4E00-\u9FA5]/g.test(value)) {
@@ -652,6 +667,7 @@
               // sessionStorage.user = result.data.data.employeeName;
               this.$store.commit("user", sessionStorage.getItem("user"));
               this.$store.commit("tokenSrc", result.data.data.tokenStr);
+              console.log(this.$store.state.token.toeknNub);
               this.$router.replace("/Home");
               location.reload();
             }

@@ -362,7 +362,7 @@ export default {
     border-radius: 5px;
     //max-height: 500px;
     .left {
-      width: 100%;
+      width: 95%;
       // padding: 10px;
       overflow: hidden;
       float: left;
