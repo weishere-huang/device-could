@@ -564,7 +564,7 @@
               maintenanceId: this.maintenanceIds,
               isEndAudit: this.formLabelAlign.type,
               auditOpinion: this.formLabelAlign.desc,
-              nextUserId: this.toAudit.id
+              nextUserId: this.toAudit.userId
             },
             type: "get",
             url: "/mplan/maintenanceAudit"

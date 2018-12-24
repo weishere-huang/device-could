@@ -35,7 +35,7 @@
                 let rList = [{ path: '/Home', meta: { pageName: '工作台' }}];
                 matched.forEach(item => {
                     if(item.path!=='/Home')
-                        rList.push({ path: item.path, meta: { pageName: item.props.default.title}});
+                        rList.push({ path: item.path, meta: { pageName: item.props.default.pageName}});
                 });
                 this.levelList = rList;
             }

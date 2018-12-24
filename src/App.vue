@@ -275,7 +275,8 @@ export default {
           type: "get",
           option:{
             requestTarget:"m",
-            enableMsg: false
+            enableMsg: false,
+            enableLoad:false,
           }
         },
         this

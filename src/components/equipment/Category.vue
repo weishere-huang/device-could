@@ -96,6 +96,7 @@
               <el-input
                 v-model="addname"
                 size="mini"
+                maxlength="80"
               ></el-input>
             </el-form-item>
             <el-form-item label="备注：">
@@ -256,7 +257,10 @@ export default {
         {
           params: {},
           type: "get",
-          url: "/deviceCategory/all"
+          url: "/deviceCategory/all",
+          option:{
+            enableMsg:false
+          }
         },
         this
       )
@@ -462,7 +466,7 @@ export default {
 @border: 1px solid #dde2eb;
 
 .category {
-  
+
   border: @border;
   border-radius: 5px;
   font-size: 12px;

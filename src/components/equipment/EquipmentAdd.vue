@@ -243,7 +243,6 @@
           locationNo: "",
           buyPrice: "",
           buyDate: "",
-          dataInfo: "",
           deviceCategory: "",
           deviceCategoryName: "",
           deviceModel: "",
@@ -423,7 +422,6 @@
           // location: null,
           locationNo: this.sizeForm.locationNo,
           buyPrice: this.sizeForm.buyPrice * 100,
-          dataInfo: this.sizeForm.dataInfo,
           deviceModel: this.sizeForm.deviceModel,
           deviceState: this.sizeForm.deviceState,
 
@@ -537,17 +535,6 @@
         }
         return tree;
       },
-      getparaentcode(data){
-        let pcode;
-        let tempcode = 50;
-        for(let b in data){
-          if(data[b].parentCode.length < tempcode){
-            tempcode=data[b].parentCode.length;
-            pcode=data[b].parentCode;
-          }
-        }
-        return pcode;
-      },
       filterArray2(data, parent) {
         //编辑设备类别数据为树状结构方法
         let vm = this;
@@ -578,7 +565,8 @@
           this
         ).then(
           ([res1, res2]) => {
-            this.orgoptions = this.filterArray(res1.data.data, this.getparaentcode(res1.data.data));
+            let arr = Math.min.apply(null, (res1.data.data).map((item)=>{return item.parentCode}));
+            this.orgoptions = this.filterArray(res1.data.data, arr);
             this.ctgoptions= this.filterArray2(res2.data.data,0);
           },
           () => {}
@@ -614,20 +602,7 @@
 
         //如果提交通过, 则弹出提示框
         if(subok){
-          this.$confirm('确认添加设备吗?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.add1();
-            // this.add2();
-
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '取消保存'
-            });
-          });
+          this.add1();
         }else{
           this.$message.error("请完善设备信息");
         }
