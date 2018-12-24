@@ -5,7 +5,7 @@
         <el-button size="small"
                    type="primary" @click="tback" icon="el-icon-arrow-left">返回</el-button>
         <el-button size="small"
-                   type="primary" @click="employeeAdd">
+                   type="primary" @click="employeeAdd" >
           <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
       </div>
       <div class="botton">
@@ -76,7 +76,7 @@
             </el-col>
             <el-col :span="11">
               <el-form-item label="岗位：" style="">
-                <el-input type="text"  v-model="persnneladd.position"></el-input>
+                <el-input type="text"  v-model="persnneladd.position" ref="position"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
@@ -447,7 +447,7 @@
           this.$message.error("手机号码不能为空");
           this.$refs.phone.focus();
           return false;
-        }else if(!(/^1[34578]\d{9}$/.test(this.persnneladd.phone))){
+        }else if(!(/^1[0-9]\d{9}$/.test(this.persnneladd.phone))){
             this.$message.error("手机号码有误，请重填");
           this.$refs.phone.focus();
             return false;
@@ -493,11 +493,10 @@
       ).then(response => {
           this.role = response.data.data;
           this.persnneladd.entryTime = this.date;
-          // this.persnneladd.birthday =this.date.replace(this.date.split("-")[0], parseInt(this.date.split("-")[0])-20);
           this.persnneladd.birthday = parseInt(this.date.split("-")[0])-30+"-01-01";
         },
         ({type, info}) => {
-        })
+        });
     }
   };
 </script>

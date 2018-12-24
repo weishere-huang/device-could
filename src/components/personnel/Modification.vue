@@ -378,7 +378,7 @@
         if(this.persnneladd.phone===""){
           this.$message.error("手机号码不能为空");
           return false;
-        }else if(!(/^1[34578]\d{9}$/.test(this.persnneladd.phone))){
+        }else if(!(/^1[0-9]\d{9}$/.test(this.persnneladd.phone))){
           this.$message.error("手机号码有误，请重填");
           return false;
         }
@@ -571,7 +571,7 @@
         },
         ({type, info}) => {
 
-        })
+        });
     }
   };
 </script>
