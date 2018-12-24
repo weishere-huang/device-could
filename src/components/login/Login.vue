@@ -604,7 +604,7 @@
               this.nextshow = !this.nextshow;
               this.backshow = !this.backshow;
             } else {
-              this.$message.error("请完善信息");
+              this.$message.error("对不起，信息提交失败，请检查后重新提交");
               return false;
             }
           });
