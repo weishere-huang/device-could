@@ -50,6 +50,7 @@ import SparePartAmend from '@/components/sparePart/addAndAmend/SparePartAmend'
 import WarehousingDetail from '@/components/sparePart/WarehousingDetail'
 import OutboundDetails from '@/components/sparePart/OutboundDetails'
 import SparePartsClassification from '@/components/sparePart/SparePartsClassification'
+
 Vue.use(Router)
 const router = new Router({
   mode: 'history',
@@ -153,6 +154,9 @@ const router = new Router({
       path: '/Monit',
       name: 'Monit',
       component: Monit,
+      meta: {
+        requireAuth: true
+      },
       props: {
         pageName: '设备监控'
       },
@@ -160,6 +164,9 @@ const router = new Router({
         path: ':deviceId',
         name: 'MonitSingle',
         component: MonitSingle,
+        meta: {
+          requireAuth: true
+        },
         props: {
           pageName: '设备详细数据'
         }
@@ -169,6 +176,9 @@ const router = new Router({
       path: '/Oee',
       name: 'Oee',
       component: Oee,
+      meta: {
+        requireAuth: true
+      },
       props: {
         pageName: 'OEE'
       },
@@ -176,6 +186,9 @@ const router = new Router({
           path: 'End/:equId',
           name: 'OeeEnd',
           component: OeeEnd,
+          meta: {
+            requireAuth: true
+          },
           props: {
             pageName: '任务结束'
           }
@@ -184,6 +197,9 @@ const router = new Router({
           path: 'Add',
           name: 'OeeAdd',
           component: OeeAdd,
+          meta: {
+            requireAuth: true
+          },
           props: {
             pageName: '任务新增'
           }
@@ -192,6 +208,9 @@ const router = new Router({
           path: 'Details/:equId',
           name: 'OeeDetails',
           component: OeeDetails,
+          meta: {
+            requireAuth: true
+          },
           props: {
             pageName: '任务详情'
           },
@@ -199,6 +218,9 @@ const router = new Router({
             path: 'End',
             name: 'OeeEnd2',
             component: OeeEnd,
+            meta: {
+              requireAuth: true
+            },
             props: {
               pageName: '任务结束'
             }

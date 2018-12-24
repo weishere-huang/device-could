@@ -40,6 +40,7 @@
             <i
               class='iconfont icon-password'
               slot="suffix"
+             
             >
             </i></el-input>
         </el-form-item>
@@ -215,8 +216,11 @@
             <el-input
               placeholder="6~20位字符组成，区分大小写"
               size="small"
-              type="password"
+              :type="see"
               v-model="manager.userPassword"
+              style="width:80%"
+            >
+            <i class="el-icon-view" slot="suffix" style="" @click="seePassword"></i></el-input>
               style="width:80%">
             </el-input>
           </el-form-item>
@@ -248,7 +252,7 @@
 
           </el-form-item>
           <el-form-item label="">
-            <el-checkbox v-model="checked">您已阅读<a href="">《长虹设备云用户注册协议》</a></el-checkbox>
+            <el-checkbox v-model="checked">您已阅读<a href="" style="text-decoration: none;">《长虹设备云用户注册协议》</a></el-checkbox>
           </el-form-item>
         </el-form>
         <el-button
@@ -290,6 +294,7 @@
     name: "Login",
     data() {
       return {
+        see:'password',
         time: 60, // 发送验证码倒计时
         sendMsgDisabled: false,
         labelPosition: "right",
@@ -457,7 +462,7 @@
                   console.log(res)
                   callback()
                 }, ({type, info}) => {
-                  console.log(info)
+                  // console.log(info)
                   callback(new Error("该用户名已存在"))
                 })
               },
@@ -544,6 +549,18 @@
     },
 
     methods: {
+      seePassword(e){
+        if (this.see==="text") {
+          this.see='password'
+          e.target.style.color=""
+          console.log(this.see);
+        }
+        else if (this.see==="password") {
+          this.see='text'
+          e.target.style.color="blue"
+          console.log(e.target);
+        }
+      },
       checkData(rule, value, callback) {
         if (value) {
           if (/[\u4E00-\u9FA5]/g.test(value)) {
@@ -629,7 +646,7 @@
           phoneOrName: this.loginList.userName,
           passWord: pass,
           verifyCode: this.loginList.verification
-        });
+      });
         this.Axios(
           {
             url: "/user/login",
@@ -652,6 +669,7 @@
               // sessionStorage.user = result.data.data.employeeName;
               this.$store.commit("user", sessionStorage.getItem("user"));
               this.$store.commit("tokenSrc", result.data.data.tokenStr);
+              console.log(this.$store.state.token.toeknNub);
               this.$router.replace("/Home");
               location.reload();
             }
@@ -1085,5 +1103,6 @@
   position: absolute !important;
   top: 0px !important;
   right: 14px !important;
+  
 }
 </style>
