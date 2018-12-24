@@ -65,16 +65,6 @@ const router = new Router({
       meta: {
         requireAuth: false
       },
-      children: [
-        {
-          path: '/Reginster',
-          name: 'Reginster',
-          meta: {
-            requireAuth: false
-          },
-          component: resolve => require(['@/components/login/Reginster'], resolve)
-        }
-      ]
     },
     {
       path: '/Home',
@@ -159,8 +149,7 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
-      children:[
-        {
+      children: [{
           path: 'EquipmentAdd',
           name: 'EquipmentAdd',
           props: {
@@ -528,8 +517,7 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
-      children:[
-        {
+      children: [{
           path: 'SparePartAdd',
           name: 'SparePartAdd',
           props: {
@@ -606,7 +594,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) { // 判断是否需要登录权限
     if (isLogin) { // 判断是否登录
       next()
-    } else  { // 没登录则跳转到登录界面
+    } else { // 没登录则跳转到登录界面
       next({
         path: '/Login',
         query: {

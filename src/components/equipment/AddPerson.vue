@@ -49,7 +49,7 @@
               :vertical-resize-offset='100'
               column-width-drag
               :multiple-sort="false"
-              style="width:100%;min-height:250px;"
+              style="width:100%;height:350px;"
               :columns="columns"
               :table-data="tableData"
               :row-dblclick="getRowData"
@@ -88,7 +88,7 @@
               @tab-click="getNode"
               v-model="editableTabsValue"
               :tab-position="tabPosition"
-              style="height: 350px;"
+              style="height: 350px;overflow:scroll;"
             >
               <el-tab-pane
                 :key="item.name"
