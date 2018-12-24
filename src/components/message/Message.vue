@@ -399,7 +399,10 @@ export default {
         {
           url: "/message/UpdateAllMsgRead/",
           type: "get",
-          option:{requestTarget:"m"}
+          option:{
+            requestTarget:"m",
+            enableMsg: false,
+          }
         },
         this
       )

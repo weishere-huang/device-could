@@ -149,6 +149,30 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
+      children:[
+        {
+          path: 'EquipmentAdd',
+          name: 'EquipmentAdd',
+          props: {
+            title: '设备添加'
+          },
+          component: EquipmentAdd,
+          meta: {
+            requireAuth: true
+          },
+        },
+        {
+          path: 'Redact/:id/',
+          name: 'Redact',
+          component: Redact,
+          props: {
+            title: '设备详情'
+          },
+          meta: {
+            requireAuth: true
+          },
+        },
+      ]
     },
     {
       path: '/Monit',
@@ -228,17 +252,7 @@ const router = new Router({
         }
       ]
     },
-    {
-      path: '/EquipmentAdd',
-      name: 'EquipmentAdd',
-      props: {
-        pageName: '设备添加'
-      },
-      component: EquipmentAdd,
-      meta: {
-        requireAuth: true
-      },
-    },
+
     {
       path: '/UpkeepAmend/:id/',
       name: 'UpkeepAmend',
@@ -258,17 +272,7 @@ const router = new Router({
         requireAuth: true
       },
     },
-    {
-      path: '/Redact/:id/',
-      name: 'Redact',
-      component: Redact,
-      props: {
-        pageName: '设备详情'
-      },
-      meta: {
-        requireAuth: true
-      },
-    },
+
     {
       path: '/Operation',
       name: 'Operation',
@@ -514,29 +518,32 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
+      children:[
+        {
+          path: 'SparePartAdd',
+          name: 'SparePartAdd',
+          props: {
+            title: '备品备件添加'
+          },
+          component: SparePartAdd,
+          meta: {
+            requireAuth: true
+          },
+        },
+        {
+          path: 'SparePartAmend/:id/',
+          name: 'SparePartAmend',
+          props: {
+            title: '备品备件详情页'
+          },
+          component: SparePartAmend,
+          meta: {
+            requireAuth: true
+          },
+        },
+      ]
     },
-    {
-      path: '/SparePartAdd',
-      name: 'SparePartAdd',
-      props: {
-        pageName: '备品备件添加'
-      },
-      component: SparePartAdd,
-      meta: {
-        requireAuth: true
-      },
-    },
-    {
-      path: '/SparePartAmend/:id/',
-      name: 'SparePartAmend',
-      props: {
-        pageName: '备品备件详情页'
-      },
-      component: SparePartAmend,
-      meta: {
-        requireAuth: true
-      },
-    },
+
     {
       path: '/SparePartsWarehouse',
       name: 'SparePartsWarehouse',
