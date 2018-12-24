@@ -1,11 +1,14 @@
 <template>
-  <div class="spare-part">
-    <div class="top">
+
+  <div class="spare-part" >
+    <router-view></router-view>
+    <div class="top" :class="[{hide:isHideList}]">
       <el-button
         size="small"
         type="primary"
         @click="toAdd"
       ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</el-button>
+      <el-button size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
       <!-- <el-button size="small" type="primary" @click="btisok">删除</el-button> -->
       <div class="search">
         <span>关键字：</span>
@@ -18,7 +21,7 @@
         <el-button size="small" type="primary" @click="baselist"><i class='el-icon-search'></i> 搜索</el-button>
       </div>
     </div>
-    <div class="bottom">
+    <div class="bottom" :class="[{hide:isHideList}]">
       <div>
         <v-table
           :row-dblclick="toDetails"
@@ -49,6 +52,7 @@
       </div>
     </div>
   </div>
+
 </template>
 <script>
 import Vue from "vue";
@@ -176,15 +180,15 @@ export default {
       ],
       //条件查询
       basekeyword:"",
-
+      isHideList: this.$route.params.id !== undefined
+        ? true
+        : false,
 
     };
   },
   methods: {
     toAdd() {
-      this.$router.push({
-        path: "/SparePartAdd"
-      });
+      this.$router.push({path: "SparePart/SparePartAdd"});
     },
     customCompFunc(params) {
        console.log(params);
@@ -194,12 +198,12 @@ export default {
         console.log(this.ids);
         // this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
-        this.$router.push("/SparePartAmend/" + params.rowData.id);
+        this.$router.push("SparePart/SparePartAmend/" + params.rowData.id);
         // this.$delete(this.tableData, params.index);
       }
     },
     toDetails(rowIndex, rowData, column) {
-      this.$router.push("/SparePartAmend/" + rowData.id);
+      this.$router.push("SparePart/SparePartAmend/" + rowData.id);
       // this.$store.commit("equipmentRedact", rowData);
       console.log(rowData);
     },
@@ -327,7 +331,15 @@ export default {
     //默认加载
     this.baselist();
 
-  }
+  },
+  watch: {
+    $route() {
+      //debugger
+      let a=this.$route.matched.find(item=>(item.name==="SparePartAdd"))?true:false;
+      let b=this.$route.params.id !== undefined ? true : false;
+      this.isHideList = a||b ?true:false;
+    }
+  },
 };
 Vue.component("table-sparePart", {
   template: `<span>

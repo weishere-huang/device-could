@@ -35,11 +35,11 @@
             type="password"
             placeholder="密码"
             v-model="loginList.password"
-            @keyup.enter.native="login"
           >
             <i
               class='iconfont icon-password'
               slot="suffix"
+             
             >
             </i></el-input>
         </el-form-item>
@@ -75,6 +75,7 @@
           isshow=!isshow
           ishide=!ishide
           }">企业注册</span>
+          <!-- <span v-on:click="this.$router.push({path:'/Reginster'})">企业注册</span> -->
       </p>
     </div>
     <div
@@ -215,10 +216,11 @@
             <el-input
               placeholder="6~20位字符组成，区分大小写"
               size="small"
-              type="password"
+              :type="see"
               v-model="manager.userPassword"
               style="width:80%"
-            ></el-input>
+            >
+            <i class="el-icon-view" slot="suffix" style="" @click="seePassword"></i></el-input>
           </el-form-item>
           <el-form-item
             label="手机号："
@@ -248,7 +250,7 @@
 
           </el-form-item>
           <el-form-item label="">
-            <el-checkbox v-model="checked">您已阅读<a href="">《长虹设备云用户注册协议》</a></el-checkbox>
+            <el-checkbox v-model="checked">您已阅读<a href="" style="text-decoration: none;">《长虹设备云用户注册协议》</a></el-checkbox>
           </el-form-item>
         </el-form>
         <el-button
@@ -290,6 +292,7 @@
     name: "Login",
     data() {
       return {
+        see:'password',
         time: 60, // 发送验证码倒计时
         sendMsgDisabled: false,
         labelPosition: "right",
@@ -457,7 +460,7 @@
                   console.log(res)
                   callback()
                 }, ({type, info}) => {
-                  console.log(info)
+                  // console.log(info)
                   callback(new Error("该用户名已存在"))
                 })
               },
@@ -544,6 +547,18 @@
     },
 
     methods: {
+      seePassword(e){
+        if (this.see==="text") {
+          this.see='password'
+          e.target.style.color=""
+          console.log(this.see);
+        }
+        else if (this.see==="password") {
+          this.see='text'
+          e.target.style.color="blue"
+          console.log(e.target);
+        }
+      },
       checkData(rule, value, callback) {
         if (value) {
           if (/[\u4E00-\u9FA5]/g.test(value)) {
@@ -576,7 +591,7 @@
         });
       },
       registerNext(formName) {
-        if (this.company.dialogImageUrl === "") {
+      if (this.company.dialogImageUrl === "") {
           this.$message({
             message: "请上传营业执照",
             type: "error"
@@ -588,7 +603,7 @@
               this.nextshow = !this.nextshow;
               this.backshow = !this.backshow;
             } else {
-              this.$message.error("请完善信息");
+              this.$message.error("对不起，信息提交失败，请检查后重新提交");
               return false;
             }
           });
@@ -629,7 +644,7 @@
           phoneOrName: this.loginList.userName,
           passWord: pass,
           verifyCode: this.loginList.verification
-        });
+      });
         this.Axios(
           {
             url: "/user/login",
@@ -652,6 +667,7 @@
               // sessionStorage.user = result.data.data.employeeName;
               this.$store.commit("user", sessionStorage.getItem("user"));
               this.$store.commit("tokenSrc", result.data.data.tokenStr);
+              console.log(this.$store.state.token.toeknNub);
               this.$router.replace("/Home");
               location.reload();
             }
@@ -1080,5 +1096,6 @@
   position: absolute !important;
   top: 0px !important;
   right: 14px !important;
+  
 }
 </style>

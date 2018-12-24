@@ -47,6 +47,7 @@
                     class='transferStyle' 
                     v-model="selectedEquList" 
                     :data="equList" 
+                    @change="equipmentChange"
                     :titles="['可选设备', '已选设备']"
                     filterable></el-transfer>
                 </div>
@@ -135,6 +136,7 @@ const initTreeDataForEquType = function(nodeData, parentCode) {
     });
 };
 export default {
+    inject:['reload'],
   data() {
     return {
       dialogVisible: true,
@@ -154,7 +156,7 @@ export default {
         shutdownTime:'',
         changeTime:'',
         planProdTime:'',
-        deviceIds:'103,104',
+        deviceIds:'',
         describeInfo: ""
       },
       addOeeWrap: {},
@@ -197,6 +199,10 @@ export default {
       
   },
   methods: {
+      equipmentChange(value){
+          this.form.deviceIds=this.selectedEquList.join(',')
+        console.log(this.form.deviceIds);
+      },
     dialogBack: function() {
       this.dialogVisible = false;
       window.setTimeout(() => {
@@ -208,12 +214,14 @@ export default {
     },
     handleOK: function() {
       //consol.log(this.form.region);
+      let ids=this.selectedEquList.join(',')
+      console.log(ids);
       const _params=Object.assign({
               organizeCode:JSON.parse(sessionStorage.getItem('user')).organizeCode,
               organizeName:JSON.parse(sessionStorage.getItem('user')).organizeName,
               startDate:new Date(this.form.region[0]).format("yyyy/MM/dd"),
               endDate:new Date(this.form.region[1]).format("yyyy/MM/dd"),
-              deviceIds:this.selectedEquList.join(','),
+              deviceIds:this.form.deviceIds,
               shorthandName:this.form.shorthandName,
               calendarHours:this.form.calendarHours,
               shutdownTime:this.form.shutdownTime,
@@ -221,6 +229,7 @@ export default {
               planProdTime:this.form.planProdTime,
               describeInfo:this.form.describeInfo,
            },this.form);
+           console.log(_params.deviceIds);
            delete _params.region;
       this.Axios(
         {
@@ -234,6 +243,7 @@ export default {
         this
       ).then(
         response => {
+            this.reload();
           this.dialogBack();
         });
     },
@@ -285,7 +295,7 @@ export default {
         ).then(
         ([res1, res2]) => {
             if(res1.data.data.length){
-                this.organizationTreeData = initTreeDataForOrganization(res1.data.data,"0");
+                this.organizationTreeData = initTreeDataForOrganization(res1.data.data,res1.data.data.find(item=>item.organizeType===1).parentCode);
                 this.deviceList()
             }else{
                 this.organizationEmptytTxt='暂无数据';

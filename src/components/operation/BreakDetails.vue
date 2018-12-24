@@ -120,14 +120,15 @@
                   <el-carousel trigger="click" :autoplay=false height="260px" style="width: 94%">
                     <el-carousel-item v-for="item in imgPath" :key="item" >
                       <i @click="imgIsOk" :id="item"><img :src="item" style="width: 100%;"></i>
-                      <!--<a :href="item" target="_blank"><img :src="item" style="width: 100%;"></a>-->
                     </el-carousel-item>
                   </el-carousel>
                     <el-dialog
                       width="75%"
                       :visible.sync="imgShow"
                       center>
-                      <img :src="lookImg" style="max-width: 100%;  "/>
+                      <div style="text-align: center; width: 100%; height: 100%">
+                        <img :src="lookImg" style="max-width: 100%;"/>
+                      </div>
                     </el-dialog>
                 </template>
               </el-form-item>
@@ -211,7 +212,6 @@
     },
     methods: {
       imgIsOk(event){
-        console.log(event.path);
         this.lookImg = event.path[1].id;
         this.imgShow=true
       },
@@ -485,4 +485,5 @@
   .el-carousel__item:nth-child(2n + 1) {
     background-color: #d3dce6;
   }
+
 </style>

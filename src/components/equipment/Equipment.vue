@@ -1,6 +1,7 @@
 <template>
   <div class="equipment">
-    <div class="equipmentContent">
+    <router-view></router-view>
+    <div class="equipmentContent" :class="[{hide:isHideList}]">
       <div class="classifylist">
         <div class="classify">
           <ul>
@@ -53,7 +54,7 @@
         </div>
       </div>
     </div>
-    <div class="content">
+    <div class="content" :class="[{hide:isHideList}]">
       <div class="search">
         <el-button
           size="small"
@@ -61,6 +62,7 @@
           @click="toAdd"
         ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp; 添加
         </el-button>
+        <el-button size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
         <!-- <el-button
           size="small"
           type="primary"
@@ -125,6 +127,7 @@
         </div>
       </div>
     </div>
+
     <advanced
       class="adsearch"
       v-on:isHide="isHide"
@@ -140,6 +143,9 @@ export default {
   name: "equipment",
   data() {
     return {
+      isHideList: this.$route.params.id !== undefined
+        ? true
+        : false,
       organiza: "",
       totalnum: "",
       defaultProps: "",
@@ -289,7 +295,7 @@ export default {
         this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
         // do edit operation
-        this.$router.push("/Redact/" + params.rowData.id);
+        this.$router.push({path:"Equipment/Redact/" + params.rowData.id});
         //alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
       } else if (params.type === "audit") {
         // do edit operation
@@ -324,18 +330,18 @@ export default {
       $(".adsearch")[0].style.right = params;
     },
     toAdd() {
-      this.$router.push("/EquipmentAdd");
+      this.$router.push({path:"Equipment/EquipmentAdd"});
     },
     editShow() {
       if (this.edbt.length == 1) {
-        this.$router.push("/Redact/" + this.edbt[0].id);
+        this.$router.push({path:"Equipment/Redact/" + this.edbt[0].id});
         this.$store.commit("equipmentRedact", this.edbt);
       } else {
         this.$message("只能选择选择一行数据!!!");
       }
     },
     redactShow(rowIndex, rowData, column) {
-      this.$router.push("/Redact/" + rowData.id);
+      this.$router.push({path:"Equipment/Redact/" + rowData.id});
       this.$store.commit("equipmentRedact", rowData);
       console.log(rowData);
     },
@@ -631,7 +637,15 @@ export default {
   },
   components: {
     advanced
-  }
+  },
+  watch: {
+    $route() {
+      //debugger
+      let a=this.$route.matched.find(item=>(item.name==="EquipmentAdd"))?true:false;
+      let b=this.$route.params.id !== undefined ? true : false;
+      this.isHideList = a||b ?true:false;
+    }
+  },
 };
 Vue.component("table-equipment", {
   template: `<span>
@@ -697,6 +711,9 @@ Vue.component("table-equipment", {
       border: 1px solid @Info;
       padding: 10px;
       border-radius: 5px;
+      .category{
+        border: none;
+      }
       h5 {
         width: 100%;
         text-align: left;

@@ -12,7 +12,7 @@
             <el-radio v-model="examine.radio" :label="1">驳回</el-radio>
           </el-form-item>
           <el-form-item label="审批意见：">
-            <el-input type="textarea" v-model="examine.desc"></el-input>
+            <el-input type="textarea" autofocus v-model="examine.desc"></el-input>
           </el-form-item>
           <div v-if="examine.radio!=1">
             <el-form-item label="是否终审：">
@@ -66,6 +66,8 @@
           </div>
 
         </el-dialog>
+
+
         <div slot="footer" class="dialog-footer">
           <el-button @click="goExit" size="mini">
             <i style='font-size:12px' class='iconfont'>&#xe729;</i>&nbsp;取 消</el-button>
@@ -177,9 +179,6 @@
               row-height=35
             ></v-table>
           </div>
-          <!--<div slot="footer" class="dialog-footer">-->
-            <!--<el-button size="small" type="primary" @click="dialogVisible1=false">确定</el-button>-->
-          <!--</div>-->
         </el-dialog>
         <!-- 设备对象人员查看弹框结束 -->
         <div class="supplies">
@@ -242,7 +241,6 @@
                 row-hover-color="#eee"
                 row-click-color="#edf7ff"
                 :row-dblclick="basicInfo"
-
                 row-height=24
 
               ></v-table>
@@ -790,7 +788,7 @@
         return tree;
       },
       basicInfo(rowIndex, rowData, column){
-        if( this.personListValue.find(i => i.id === rowData.id)){
+        if( this.personListValue.find(i => i.partNo === rowData.partNo)){
           this.$message.error("请勿重复添加物料");
         }else{
           this.personListValue.push(rowData);
@@ -956,6 +954,7 @@
       },
       //备品备件信息
       listBasicInfo(){
+        this.personListValue=[];
         this.dialogVisible2=true;
         this.Axios(
           {
@@ -969,6 +968,7 @@
             this.findAlldeviceClassify();
             this.addMaterielValue(response.data.data.content);
             this.pageNumber = response.data.data.totalElements;
+            this.personListValue = (this.personListValue||[]).concat(this.workSheetMaterialTableData);
           },
           ({type, info}) => {
 
@@ -1077,10 +1077,13 @@
       },
       //保存备品备件页面并传值到详情页
       deleteBasic(){
-        console.log("ok");
         this.dialogVisible2 = false;
+        this.workSheetMaterialTableData=[];
         this.workSheetMaterialTableData = (this.workSheetMaterialTableData||[]).concat(this.personListValue);
-        this.workSheetMaterialTableData.forEach(function (item){item.planCount = 0});
+        this.workSheetMaterialTableData.forEach((item)=>{
+            if(item.planCount == "" || item.planCount ==null)item.planCount =0
+        });
+
         this.workSheetMaterialTableData = Array.from(new Set(this.workSheetMaterialTableData))
       },
       //保存工单物料到数据库

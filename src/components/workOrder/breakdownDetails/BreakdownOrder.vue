@@ -1,9 +1,9 @@
 <template>
   <div class="breakdown-order">
     <div class="top">
-          <el-button @click="toBack" type="primary" size="small" icon="el-icon-arrow-left">返回</el-button>
-          <el-button size="small" type="primary" @click="outerVisible=true" v-if="isOk">
-            <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;提交审核</el-button>
+      <el-button @click="toBack" type="primary" size="small" icon="el-icon-arrow-left">返回</el-button>
+      <el-button size="small" type="primary" @click="outerVisible=true" v-if="isOk">
+        <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;提交审核</el-button>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
         <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
@@ -12,7 +12,7 @@
             <el-radio v-model="examine.radio" :label="1">驳回</el-radio>
           </el-form-item>
           <el-form-item label="审批意见：">
-            <el-input type="textarea" v-model="examine.desc"></el-input>
+            <el-input type="textarea" autofocus v-model="examine.desc"></el-input>
           </el-form-item>
           <div v-if="examine.radio!=1">
             <el-form-item label="是否终审：">
@@ -159,10 +159,10 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-              <el-button size="mini" type="primary" @click=" listBasicInfo">
-                <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加物料</el-button>
-              <el-button type="primary" @click="insertPart" size="mini">
-                <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存列表</el-button>
+            <el-button size="mini" type="primary" @click=" listBasicInfo">
+              <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加物料</el-button>
+            <el-button type="primary" @click="insertPart" size="mini">
+              <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存列表</el-button>
           </div>
           <v-table
             is-horizontal-resize
@@ -289,7 +289,7 @@
       return {
         isOk:true,
         imgPath:[],
-        imgPaths:['http://img.zcool.cn/community/0188915805cc66a84a0e282b933a57.jpg@1280w_1l_2o_100sh.png','http://img.zcool.cn/community/0188915805cc66a84a0e282b933a57.jpg@1280w_1l_2o_100sh.png'],
+        imgPaths:[],
         examine:{
           desc:"",
           type:"",
@@ -683,7 +683,6 @@
         let _suppliesTableData=require('clone')(this.suppliesTableData);
         _suppliesTableData[rowIndex][field] = newValue;
         this.suppliesTableData=_suppliesTableData;
-        //this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
         this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
       },
       selectGroupChange(selection) {
@@ -723,7 +722,7 @@
         return tree;
       },
       basicInfo(rowIndex, rowData, column){
-        if( this.personListValue.find(i => i.id === rowData.id)){
+        if( this.personListValue.find(i => i.partNo === rowData.partNo)){
           this.$message.error("请勿重复添加物料");
         }else{
           this.personListValue.push(rowData);
@@ -885,6 +884,8 @@
 
       },
 
+
+
       //保存工单物料到数据库
       insertPart(){
         for (let i in this.suppliesTableData) {
@@ -962,6 +963,7 @@
       //备品备件信息
       listBasicInfo(){
         this.dialogVisible2=true;
+        this.personListValue=[];
         this.Axios(
           {
             params: {page:this.pageIndex,size:this.pageSize},
@@ -974,6 +976,7 @@
             this.findAlldeviceClassify();
             this.addMaterielValue(response.data.data.content);
             this.pageNumber = response.data.data.totalElements;
+            this.personListValue = (this.personListValue||[]).concat(this.suppliesTableData);
           },
           ({type, info}) => {
 
@@ -1055,14 +1058,17 @@
       //关闭备品备件页面并传值到详情页
       deleteBasic(){
         this.dialogVisible2 = false;
+        this.suppliesTableData =[];
         this.suppliesTableData = (this.suppliesTableData||[]).concat(this.personListValue);
-        this.suppliesTableData.forEach(function (item){item.planCount = 0});
+        this.suppliesTableData.forEach((item)=>{
+          if(item.planCount == "" || item.planCount ==null) item.planCount =0
+        });
         this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
       },
 
       //双击删除指定的备品备件
       basicAdd(event){
-        this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id);
+       this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id);
       },
 
       //备品模糊查询
@@ -1158,7 +1164,7 @@
           this.formLabelAlign.faultLevel = "高";
         }
         if(this.formLabelAlign.img!==null){
-            this.imgPath = this.formLabelAlign.img.split(",").map((item)=>{
+          this.imgPath = this.formLabelAlign.img.split(",").map((item)=>{
             return this.global.imgPath+item.split("img:")[1];
           });
         }

@@ -1,6 +1,7 @@
 <template>
   <div class="turnaround-plans">
-    <div class="userCase">
+    <router-view></router-view>
+    <div class="userCase" :class="[{hide:isHideList}]">
       <div class="top">
         <el-button
           size="small"
@@ -26,6 +27,7 @@
           >
             <el-form-item label="故障持续时间：">
               <el-input
+                autofocus
                 v-model="formLabelAlign.time"
                 size="mini"
                 style="width:30%"
@@ -185,6 +187,9 @@
   export default {
     data() {
       return {
+        isHideList: this.$route.params.id !== undefined
+          ? true
+          : false,
         arr: [],
         dialogVisible: false,
         toAuditName: "",
@@ -321,7 +326,7 @@
         }
       },
       toDetails(rowIndex, rowData, column) {
-        this.$router.push("/BreakDetails/" + rowData.id);
+        this.$router.push({path:"Breakdown/BreakDetails/" + rowData.id});
       },
       auditHide(params) {
         this.auditShow = params;
@@ -653,7 +658,13 @@
     components: {
       audit,
       personnel
-    }
+    },
+    watch: {
+      $route() {
+        //debugger
+        this.isHideList=this.$route.params.id !== undefined ? true : false;
+      }
+    },
   };
   Vue.component("table-breakdown", {
     template: `<span>
