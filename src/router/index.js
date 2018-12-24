@@ -50,6 +50,7 @@ import SparePartAmend from '@/components/sparePart/addAndAmend/SparePartAmend'
 import WarehousingDetail from '@/components/sparePart/WarehousingDetail'
 import OutboundDetails from '@/components/sparePart/OutboundDetails'
 import SparePartsClassification from '@/components/sparePart/SparePartsClassification'
+
 Vue.use(Router)
 const router = new Router({
   mode: 'history',
@@ -70,7 +71,7 @@ const router = new Router({
       name: 'Home',
       component: Home,
       props: {
-        title: '默认工作台'
+        pageName: '默认工作台'
       },
       meta: {
         requireAuth: true
@@ -96,7 +97,7 @@ const router = new Router({
       path: '/Company',
       name: 'Company',
       props: {
-        title: '企业管理'
+        pageName: '企业管理'
       },
       component: Company,
       meta: {
@@ -123,7 +124,7 @@ const router = new Router({
       path: '/Category',
       name: 'Category',
       props: {
-        title: '设备分类'
+        pageName: '设备分类'
       },
       component: Category,
       meta: {
@@ -142,7 +143,7 @@ const router = new Router({
       path: '/Equipment',
       name: 'Equipment',
       props: {
-        title: '设备列表'
+        pageName: '设备列表'
       },
       component: Equipment,
       meta: {
@@ -177,15 +178,21 @@ const router = new Router({
       path: '/Monit',
       name: 'Monit',
       component: Monit,
+      meta: {
+        requireAuth: true
+      },
       props: {
-        title: '设备监控'
+        pageName: '设备监控'
       },
       children: [{
         path: ':deviceId',
         name: 'MonitSingle',
         component: MonitSingle,
+        meta: {
+          requireAuth: true
+        },
         props: {
-          title: '设备详细数据'
+          pageName: '设备详细数据'
         }
       }]
     },
@@ -193,38 +200,53 @@ const router = new Router({
       path: '/Oee',
       name: 'Oee',
       component: Oee,
+      meta: {
+        requireAuth: true
+      },
       props: {
-        title: 'OEE'
+        pageName: 'OEE'
       },
       children: [{
           path: 'End/:equId',
           name: 'OeeEnd',
           component: OeeEnd,
+          meta: {
+            requireAuth: true
+          },
           props: {
-            title: '任务结束'
+            pageName: '任务结束'
           }
         },
         {
           path: 'Add',
           name: 'OeeAdd',
           component: OeeAdd,
+          meta: {
+            requireAuth: true
+          },
           props: {
-            title: '任务新增'
+            pageName: '任务新增'
           }
         },
         {
           path: 'Details/:equId',
           name: 'OeeDetails',
           component: OeeDetails,
+          meta: {
+            requireAuth: true
+          },
           props: {
-            title: '任务详情'
+            pageName: '任务详情'
           },
           children: [{
             path: 'End',
             name: 'OeeEnd2',
             component: OeeEnd,
+            meta: {
+              requireAuth: true
+            },
             props: {
-              title: '任务结束'
+              pageName: '任务结束'
             }
           }]
         }
@@ -235,7 +257,7 @@ const router = new Router({
       path: '/UpkeepAmend/:id/',
       name: 'UpkeepAmend',
       props: {
-        title: '保养计划修改'
+        pageName: '保养计划修改'
       },
       component: UpkeepAmend,
       meta: {
@@ -263,7 +285,7 @@ const router = new Router({
       path: '/Upkeep',
       name: 'Upkeep',
       props: {
-        title: '保养计划列表'
+        pageName: '保养计划列表'
       },
       component: Upkeep,
       meta: {
@@ -274,7 +296,7 @@ const router = new Router({
       path: '/UpkeepAdd',
       name: 'UpkeepAdd',
       props: {
-        title: '新增保养计划'
+        pageName: '新增保养计划'
       },
       component: UpkeepAdd,
       meta: {
@@ -285,7 +307,7 @@ const router = new Router({
       path: '/TurnaroundPlansAdd',
       name: 'TurnaroundPlansAdd',
       props: {
-        title: '新增检修计划'
+        pageName: '新增检修计划'
       },
       component: TurnaroundPlansAdd,
       meta: {
@@ -296,7 +318,7 @@ const router = new Router({
       path: '/TurnaroundPlansAmend/:id/',
       name: 'TurnaroundPlansAmend',
       props: {
-        title: '检修计划修改'
+        pageName: '检修计划修改'
       },
       component: TurnaroundPlansAmend,
       meta: {
@@ -307,7 +329,7 @@ const router = new Router({
       path: '/BreakDetails/:id/',
       name: 'BreakDetails',
       props: {
-        title: '故障详情'
+        pageName: '故障详情'
       },
       component: BreakDetails,
       meta: {
@@ -318,7 +340,7 @@ const router = new Router({
       path: '/Breakdown',
       name: 'Breakdown',
       props: {
-        title: '设备故障列表'
+        pageName: '设备故障列表'
       },
       component: Breakdown,
       meta: {
@@ -329,7 +351,7 @@ const router = new Router({
       path: '/TurnaroundPlans',
       name: 'TurnaroundPlans',
       props: {
-        title: '检修计划列表'
+        pageName: '检修计划列表'
       },
       component: TurnaroundPlans,
       meta: {
@@ -341,7 +363,7 @@ const router = new Router({
       name: 'Organization',
       component: Organization,
       props: {
-        title: '组织机构'
+        pageName: '组织机构'
       },
       meta: {
         requireAuth: true
@@ -360,7 +382,7 @@ const router = new Router({
       name: 'Personnel',
       component: Personnel,
       props: {
-        title: '员工管理'
+        pageName: '员工管理'
       },
       meta: {
         requireAuth: true
@@ -370,7 +392,7 @@ const router = new Router({
       path: '/PersnnelAdd',
       name: 'PersnnelAdd',
       props: {
-        title: '员工添加'
+        pageName: '员工添加'
       },
       component: PersnnelAdd,
       meta: {
@@ -381,7 +403,7 @@ const router = new Router({
       path: '/Modification/:id/',
       name: 'Modification',
       props: {
-        title: '员工修改'
+        pageName: '员工修改'
       },
       component: Modification,
       meta: {
@@ -393,7 +415,7 @@ const router = new Router({
       name: 'User',
       component: User,
       props: {
-        title: '用户管理'
+        pageName: '用户管理'
       },
       meta: {
         requireAuth: true
@@ -411,7 +433,7 @@ const router = new Router({
       path: '/WorkOrder',
       name: 'WorkOrder',
       props: {
-        title: '工单列表'
+        pageName: '工单列表'
       },
       component: WorkOrder,
       meta: {
@@ -422,7 +444,7 @@ const router = new Router({
       path: '/BreakdownOrder/:id/',
       name: 'BreakdownOrder',
       props: {
-        title: '故障工单详情'
+        pageName: '故障工单详情'
       },
       component: BreakdownOrder,
       meta: {
@@ -433,7 +455,7 @@ const router = new Router({
       path: '/UpkeepAndTurnaroundPlans/:id/',
       name: 'UpkeepAndTurnaroundPlans',
       props: {
-        title: '检修&保养计划工单详情'
+        pageName: '检修&保养计划工单详情'
       },
       component: UpkeepAndTurnaroundPlans,
       meta: {
@@ -452,7 +474,7 @@ const router = new Router({
       path: '/Message',
       name: 'Message',
       props: {
-        title: '消息列表'
+        pageName: '消息列表'
       },
       component: Message,
       meta: {
@@ -471,7 +493,7 @@ const router = new Router({
       path: '/RoleManagement',
       name: 'RoleManagement',
       props: {
-        title: '角色管理'
+        pageName: '角色管理'
       },
       component: RoleManagement,
       meta: {
@@ -490,7 +512,7 @@ const router = new Router({
       path: '/SparePart',
       name: 'SparePart',
       props: {
-        title: '备品备件列表'
+        pageName: '备品备件列表'
       },
       component: SparePart,
       meta: {
@@ -526,7 +548,7 @@ const router = new Router({
       path: '/SparePartsWarehouse',
       name: 'SparePartsWarehouse',
       props: {
-        title: '备件入库'
+        pageName: '备件入库'
       },
       component: SparePartsWarehouse,
       meta: {
@@ -537,7 +559,7 @@ const router = new Router({
       path: '/WarehousingDetail',
       name: 'WarehousingDetail',
       props: {
-        title: '入库明细'
+        pageName: '入库明细'
       },
       component: WarehousingDetail,
       meta: {
@@ -548,7 +570,7 @@ const router = new Router({
       path: '/OutboundDetails',
       name: 'OutboundDetails',
       props: {
-        title: '出库明细'
+        pageName: '出库明细'
       },
       component: OutboundDetails,
       meta: {
@@ -559,7 +581,7 @@ const router = new Router({
       path: '/SparePartsClassification',
       name: 'SparePartsClassification',
       props: {
-        title: '备件分类'
+        pageName: '备件分类'
       },
       component: SparePartsClassification,
       meta: {
