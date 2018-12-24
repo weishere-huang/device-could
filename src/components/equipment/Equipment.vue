@@ -62,6 +62,7 @@
           @click="toAdd"
         ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp; 添加
         </el-button>
+        <el-button size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
         <!-- <el-button
           size="small"
           type="primary"
