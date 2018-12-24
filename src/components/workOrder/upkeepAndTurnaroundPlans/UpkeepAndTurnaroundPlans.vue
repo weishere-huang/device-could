@@ -241,7 +241,6 @@
                 row-hover-color="#eee"
                 row-click-color="#edf7ff"
                 :row-dblclick="basicInfo"
-
                 row-height=24
 
               ></v-table>
@@ -789,7 +788,7 @@
         return tree;
       },
       basicInfo(rowIndex, rowData, column){
-        if( this.personListValue.find(i => i.id === rowData.id)){
+        if( this.personListValue.find(i => i.partNo === rowData.partNo)){
           this.$message.error("请勿重复添加物料");
         }else{
           this.personListValue.push(rowData);
@@ -955,6 +954,7 @@
       },
       //备品备件信息
       listBasicInfo(){
+        this.personListValue=[];
         this.dialogVisible2=true;
         this.Axios(
           {
@@ -968,6 +968,7 @@
             this.findAlldeviceClassify();
             this.addMaterielValue(response.data.data.content);
             this.pageNumber = response.data.data.totalElements;
+            this.personListValue = (this.personListValue||[]).concat(this.workSheetMaterialTableData);
           },
           ({type, info}) => {
 
@@ -1077,7 +1078,7 @@
       //保存备品备件页面并传值到详情页
       deleteBasic(){
         this.dialogVisible2 = false;
-
+        this.workSheetMaterialTableData=[];
         this.workSheetMaterialTableData = (this.workSheetMaterialTableData||[]).concat(this.personListValue);
         this.workSheetMaterialTableData.forEach((item)=>{
             if(item.planCount == "" || item.planCount ==null)item.planCount =0

@@ -289,7 +289,7 @@
       return {
         isOk:true,
         imgPath:[],
-        imgPaths:['http://img.zcool.cn/community/0188915805cc66a84a0e282b933a57.jpg@1280w_1l_2o_100sh.png','http://img.zcool.cn/community/0188915805cc66a84a0e282b933a57.jpg@1280w_1l_2o_100sh.png'],
+        imgPaths:[],
         examine:{
           desc:"",
           type:"",
@@ -683,7 +683,6 @@
         let _suppliesTableData=require('clone')(this.suppliesTableData);
         _suppliesTableData[rowIndex][field] = newValue;
         this.suppliesTableData=_suppliesTableData;
-        //this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
         this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
       },
       selectGroupChange(selection) {
@@ -723,7 +722,7 @@
         return tree;
       },
       basicInfo(rowIndex, rowData, column){
-        if( this.personListValue.find(i => i.id === rowData.id)){
+        if( this.personListValue.find(i => i.partNo === rowData.partNo)){
           this.$message.error("请勿重复添加物料");
         }else{
           this.personListValue.push(rowData);
@@ -964,6 +963,7 @@
       //备品备件信息
       listBasicInfo(){
         this.dialogVisible2=true;
+        this.personListValue=[];
         this.Axios(
           {
             params: {page:this.pageIndex,size:this.pageSize},
@@ -976,6 +976,7 @@
             this.findAlldeviceClassify();
             this.addMaterielValue(response.data.data.content);
             this.pageNumber = response.data.data.totalElements;
+            this.personListValue = (this.personListValue||[]).concat(this.suppliesTableData);
           },
           ({type, info}) => {
 
@@ -1057,21 +1058,20 @@
       //关闭备品备件页面并传值到详情页
       deleteBasic(){
         this.dialogVisible2 = false;
-        this.personListValue = this.personListValue.filter(item=>item.partNo!==
-         this.suppliesTableData.forEach((item)=>{
-          return item.partNo;
-        }));
+        this.suppliesTableData =[];
         this.suppliesTableData = (this.suppliesTableData||[]).concat(this.personListValue);
         this.suppliesTableData.forEach((item)=>{
           if(item.planCount == "" || item.planCount ==null) item.planCount =0
         });
         this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
-
       },
 
       //双击删除指定的备品备件
       basicAdd(event){
-        this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id);
+        let isOk = this.suppliesTableData.forEach((item)=>{
+          return item.partNo==event.target.partNo ? false:true;
+        });
+        isOk ? this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id) : this.$message.error('工单已保存的物料请到详情页删除！');
       },
 
       //备品模糊查询
