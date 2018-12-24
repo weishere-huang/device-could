@@ -1,5 +1,5 @@
 <script>
-  const apiSrc = "http://127.0.0.1:8080/api";
+  const apiSrc = "http://192.168.1.104:8080";
   const imgPath = "http://192.168.1.104:8080/";
   const apiImg = "http://192.168.1.104:9886/upload";
   // const apiSrc = "http://118.25.217.48:9880";
