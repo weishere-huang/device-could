@@ -65,6 +65,16 @@ const router = new Router({
       meta: {
         requireAuth: false
       },
+      children: [
+        {
+          path: '/Reginster',
+          name: 'Reginster',
+          meta: {
+            requireAuth: false
+          },
+          component: resolve => require(['@/components/login/Reginster'], resolve)
+        }
+      ]
     },
     {
       path: '/Home',
