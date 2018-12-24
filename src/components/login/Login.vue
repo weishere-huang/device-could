@@ -248,7 +248,7 @@
 
           </el-form-item>
           <el-form-item label="">
-            <el-checkbox v-model="checked">您已阅读<a href="">《长虹设备云用户注册协议》</a></el-checkbox>
+            <el-checkbox v-model="checked">您已阅读<a href="" style="text-decoration: none;">《长虹设备云用户注册协议》</a></el-checkbox>
           </el-form-item>
         </el-form>
         <el-button
@@ -1080,5 +1080,6 @@
   position: absolute !important;
   top: 0px !important;
   right: 14px !important;
+  
 }
 </style>

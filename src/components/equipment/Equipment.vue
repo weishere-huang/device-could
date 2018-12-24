@@ -697,6 +697,9 @@ Vue.component("table-equipment", {
       border: 1px solid @Info;
       padding: 10px;
       border-radius: 5px;
+      .category{
+        border: none;
+      }
       h5 {
         width: 100%;
         text-align: left;

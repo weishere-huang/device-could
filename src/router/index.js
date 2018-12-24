@@ -153,6 +153,9 @@ const router = new Router({
       path: '/Monit',
       name: 'Monit',
       component: Monit,
+      meta: {
+        requireAuth: true
+      },
       props: {
         pageName: '设备监控'
       },
