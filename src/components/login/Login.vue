@@ -212,13 +212,7 @@
             label="密码："
             prop="userPassword"
           >
-            <el-input
-              placeholder="6~20位字符组成，区分大小写"
-              size="small"
-              type="password"
-              v-model="manager.userPassword"
-              style="width:80%"
-            ></el-input>
+            <el-input placeholder="6~20位字符组成，区分大小写" size="small" type="password" v-model="manager.userPassword" style="width:80%"> </el-input>
           </el-form-item>
           <el-form-item
             label="手机号："
@@ -766,6 +760,9 @@
       },
       //注册验证码
       registerSecuritycode() {
+        if(this.manager.phone===""){
+          this.$message.error("请先输入手机号码")
+        }
         this.Axios(
           {
             params: Object.assign({phone: this.manager.phone}),
@@ -785,7 +782,9 @@
           },
           ({type, info}) => {
             console.log(info)
-            this.$message.error("服务器异常，请联系管理员");
+            if (info.cod===503) {
+              this.$message.error("服务器异常，请联系管理员");
+            }
           }
         );
       },
