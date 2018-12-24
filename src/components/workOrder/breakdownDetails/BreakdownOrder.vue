@@ -12,7 +12,7 @@
             <el-radio v-model="examine.radio" :label="1">驳回</el-radio>
           </el-form-item>
           <el-form-item label="审批意见：">
-            <el-input type="textarea" v-model="examine.desc"></el-input>
+            <el-input type="textarea" autofocus v-model="examine.desc"></el-input>
           </el-form-item>
           <div v-if="examine.radio!=1">
             <el-form-item label="是否终审：">
@@ -1068,10 +1068,7 @@
 
       //双击删除指定的备品备件
       basicAdd(event){
-        let isOk = this.suppliesTableData.forEach((item)=>{
-          return item.partNo==event.target.partNo ? false:true;
-        });
-        isOk ? this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id) : this.$message.error('工单已保存的物料请到详情页删除！');
+       this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id);
       },
 
       //备品模糊查询
