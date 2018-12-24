@@ -1,12 +1,14 @@
 <template>
   <div class="turnaround-plans">
-    <div class="userCase">
+    <router-view></router-view>
+    <div class="userCase" :class="[{hide:isHideList}]">
       <div class="top">
         <el-button
           size="small"
           type="primary"
           @click="toUpkeepAdd"
         ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</el-button>
+        <el-button size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
         <!--<el-button-->
           <!--size="small"-->
           <!--type="primary"-->
@@ -139,6 +141,7 @@ import audit from "./AuditUPkeep";
 import personnel from "./PersonnelUpkeep";
 import Vue from "vue";
 export default {
+  inject: ["reload"],
   data() {
     return {
       disabled:true,
@@ -264,7 +267,10 @@ export default {
           componentName: "table-upkeep"
           // isResize: true
         }
-      ]
+      ],
+      isHideList: this.$route.params.id !== undefined
+        ? true
+        : false,
     };
   },
   methods: {
@@ -296,11 +302,11 @@ export default {
       }
     },
     toAmend(rowIndex, rowData, column) {
-        this.$router.push("/UpkeepAmend/" + rowData.id);
+        this.$router.push({path:"Upkeep/UpkeepAmend/" + rowData.id});
     },
     toUpkeepAdd() {
       this.$router.push({
-        path: "/UpkeepAdd"
+        path: "Upkeep/UpkeepAdd"
       });
     },
     selectGroupChange(selection) {
@@ -609,7 +615,15 @@ export default {
   components: {
     audit,
     personnel
-  }
+  },
+  watch: {
+    $route() {
+      //debugger
+      let a=this.$route.matched.find(item=>(item.name==="UpkeepAdd"))?true:false;
+      let b=this.$route.params.id !== undefined ? true : false;
+      this.isHideList = a||b ?true:false;
+    }
+  },
 };
 Vue.component("table-upkeep", {
   template: `<span>

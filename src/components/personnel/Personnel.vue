@@ -1,12 +1,13 @@
 <template>
   <div class="userManagement">
-    <div class="userCase">
+    <div class="userCase" :class="[{hide:isHideList}]">
       <div class="top">
         <el-button
           size="small"
           type="primary"
           @click="PersnnelAdd"
         ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</el-button>
+        <el-button size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
         <!-- <el-button
           size="small"
           type="primary"
@@ -75,11 +76,13 @@
         </div>
       </div>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 <script>
 import Vue from "vue";
 export default {
+  inject: ["reload"],
   data() {
     return {
       isPageOk:true,
@@ -186,7 +189,10 @@ export default {
           componentName: "table-person"
           // isResize: true
         }
-      ]
+      ],
+      isHideList: this.$route.params.id !== undefined
+        ? true
+        : false,
     };
   },
   methods: {
@@ -197,11 +203,11 @@ export default {
         if (params.rowData.state === "1") {
           this.choice = params.rowData.id;
           this.enable();
-          
+
         } else if (params.rowData.state === "0") {
           this.choice = params.rowData.id;
           this.disable();
-          
+
         }
       }
       if (params.type === "delete") {
@@ -236,7 +242,7 @@ export default {
             this.tableData = response.data.data.content;
             for (let i in this.tableData) {
               this.tableData[i].state =String(this.tableData[i].state)
-              
+
             }
             this.tableDate = this.tableData;
           } else {
@@ -248,11 +254,11 @@ export default {
     },
     PersnnelAdd() {
       this.$router.push({
-        path: "/PersnnelAdd"
+        path: "Personnel/PersnnelAdd"
       });
     },
     modefication(rowIndex, rowData, column) {
-      this.$router.push("/Modification/" + rowData.id);
+      this.$router.push({path:"Personnel/Modification/" + rowData.id});
     },
     disable() {
       let qs = require("qs");
@@ -419,7 +425,15 @@ export default {
   },
   created() {
     this.load();
-  }
+  },
+  watch: {
+    $route() {
+      //debugger
+      let a=this.$route.matched.find(item=>(item.name==="PersnnelAdd"))?true:false;
+      let b=this.$route.params.id !== undefined ? true : false;
+      this.isHideList = a||b ?true:false;
+    }
+  },
 };
 Vue.component("switch-personnel", {
   template: `<span>
