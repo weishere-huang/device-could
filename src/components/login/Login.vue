@@ -76,6 +76,7 @@
           isshow=!isshow
           ishide=!ishide
           }">企业注册</span>
+          <!-- <span v-on:click="this.$router.push({path:'/Reginster'})">企业注册</span> -->
       </p>
     </div>
     <div
