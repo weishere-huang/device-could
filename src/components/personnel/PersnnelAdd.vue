@@ -14,12 +14,12 @@
           <el-form :label-position="labelPosition" label-width="100px" style="width:100%;margin-top:26px"  size="mini">
             <el-col :span="14">
               <el-form-item label="姓名：" style="">
-                <el-input type="text" style="width:70%" autofocus  v-model="persnneladd.name"></el-input>
+                <el-input type="text" style="width:70%" autofocus  v-model="persnneladd.name" ref="name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
               <el-form-item label="账号：" style="display:none">
-                <el-input type="text"  v-model="persnneladd.name"></el-input>
+                <el-input type="text"  v-model="persnneladd.name" ></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
@@ -30,12 +30,12 @@
             </el-col>
             <el-col :span="11">
               <el-form-item label="身份证：" style="">
-                <el-input type="text"  v-model="persnneladd.idCardNo" ></el-input>
+                <el-input type="text"  v-model="persnneladd.idCardNo" ref="idCardNo" ></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
               <el-form-item label="员工编号：" style="">
-                <el-input type="text"  v-model="persnneladd.employeeNo"></el-input>
+                <el-input type="text" ref="employeeNo"  v-model="persnneladd.employeeNo"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
@@ -48,7 +48,7 @@
             </el-col>
             <el-col :span="11">
               <el-form-item label="手机号码：" style="">
-                <el-input type="text"  v-model="persnneladd.phone"></el-input>
+                <el-input type="text" ref="phone" v-model="persnneladd.phone"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
@@ -119,7 +119,7 @@
               </el-col>
               <el-col :span="14">
                 <el-form-item label="电子邮箱：">
-                  <el-input type="text"  v-model="persnneladd.email"></el-input>
+                  <el-input type="text"  v-model="persnneladd.email" ref="email"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="14">
@@ -421,18 +421,22 @@
         let nameValue=/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/im;
         if (this.persnneladd.name == ""){
           this.$message.error("员工名不能为空");
+          this.$refs.name.focus();
           return false;
         }else if(nameValue.test(this.persnneladd.name)){
           this.$message.error("员工名不能有特殊字符");
+          this.$refs.name.focus();
           return false;
         }
         if(this.persnneladd.employeeNo == ""){
           this.$message.error("员工编号不能为空");
+          this.$refs.employeeNo.focus();
           return false;
         }
         let regIdNo = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
         if (!regIdNo.test(this.persnneladd.idCardNo)){
           this.$message.error("身份证号填写有误");
+          this.$refs.idCardNo.focus();
           return false;
         }
         if (this.persnneladd.roleId == ""){
@@ -441,9 +445,11 @@
         }
         if(this.persnneladd.phone===""){
           this.$message.error("手机号码不能为空");
+          this.$refs.phone.focus();
           return false;
         }else if(!(/^1[34578]\d{9}$/.test(this.persnneladd.phone))){
             this.$message.error("手机号码有误，请重填");
+          this.$refs.phone.focus();
             return false;
         }
         if(this.persnneladd.birthday == ""){
@@ -456,12 +462,14 @@
         }
         if(this.persnneladd.position==""){
           this.$message.error("请输入岗位");
+          this.$refs.position.focus();
           return false;
         }
         let regEmail= /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
         if(this.persnneladd.email!==""){
           if(!regEmail.test(this.persnneladd.email)){
             this.$message.error("邮箱格式不正确");
+            this.$refs.email.focus();
             return false;
           }
         }
