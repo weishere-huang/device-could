@@ -26,6 +26,7 @@
           >
             <el-form-item label="故障持续时间：">
               <el-input
+                autofocus
                 v-model="formLabelAlign.time"
                 size="mini"
                 style="width:30%"

@@ -8,7 +8,7 @@
             <el-radio v-model="formLabelAlign.radio" label="2">驳回</el-radio>
           </el-form-item>
           <el-form-item label="审批意见：">
-            <el-input type="textarea" v-model="formLabelAlign.desc"></el-input>
+            <el-input type="textarea" autofocus v-model="formLabelAlign.desc"></el-input>
             </el-form-item>
             <div v-if="radio!=2">
               <el-form-item label="是否终审：">

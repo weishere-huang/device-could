@@ -10,7 +10,7 @@
         <h5>检修计划</h5>
         <el-form label-width="100px">
           <el-form-item label="计划名称：">
-            <el-input v-model="companyName.planName" size="mini"></el-input>
+            <el-input v-model="companyName.planName" autofocus size="mini"></el-input>
           </el-form-item>
           <el-form-item label="检修分类：">
             <el-select v-model="companyName.maintenanceClassify" placeholder="请选择" size="mini">
@@ -152,7 +152,7 @@
           maintenanceClassify:"",
           maintenanceLevel:"",
           maintenanceType:0,
-          planType:"",
+          planType:"单次",
           startTime:"",
           endTime:"",
           executeTime:"",

@@ -125,7 +125,7 @@
     <el-dialog title="角色添加" :visible.sync="dialogFormVisible" width="40%" :beforeClose="toCancel">
       <el-form :model="form" style="padding:10px 30px;">
         <el-form-item label="角色名称" label-width="120px">
-          <el-input v-model="form.name" autocomplete="off" @keyup.enter.native="roleAdd"></el-input>
+          <el-input v-model="form.name"  autofocus  autocomplete="off" @keyup.enter.native="roleAdd"></el-input>
         </el-form-item>
         <el-form-item label="角色描述" label-width="120px">
           <el-input type="textarea" v-model="form.desc" @keyup.enter.native="roleAdd"></el-input>
@@ -228,7 +228,10 @@
         },
       };
     },
-    methods: {
+      methods: {
+        focus: function (el) {
+          el.focus();
+        },
       expurgate(event){
         this.$confirm('此操作将删除该角色, 是否继续?', '提示')
           .then(_=>{
@@ -613,6 +616,9 @@
             this.user.checkedSystem=[];
             this.message.checkedSystem=[];
           })
+      },
+      cancel(){
+        this.form.name = "";
       },
       toCancel(){
         this.dialogFormVisible = false;

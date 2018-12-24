@@ -35,7 +35,6 @@
             type="password"
             placeholder="密码"
             v-model="loginList.password"
-            @keyup.enter.native="login"
           >
             <i
               class='iconfont icon-password'
@@ -592,7 +591,7 @@
         });
       },
       registerNext(formName) {
-        if (this.company.dialogImageUrl === "") {
+      if (this.company.dialogImageUrl === "") {
           this.$message({
             message: "请上传营业执照",
             type: "error"
@@ -604,7 +603,7 @@
               this.nextshow = !this.nextshow;
               this.backshow = !this.backshow;
             } else {
-              this.$message.error("请完善信息");
+              this.$message.error("对不起，信息提交失败，请检查后重新提交");
               return false;
             }
           });

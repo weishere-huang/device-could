@@ -9,7 +9,7 @@
         <h5>保养计划</h5>
         <el-form label-width="100px">
           <el-form-item label="计划名称：">
-            <el-input v-model="companyName.planName" size="mini"></el-input>
+            <el-input v-model="companyName.planName" autofocus size="mini"></el-input>
           </el-form-item>
           <el-form-item label="保养分类：">
             <el-select v-model="companyName.maintenanceClassify" placeholder="请选择" size="mini">

@@ -62,8 +62,8 @@
                       ref="oeeTable"
               ></v-table>
               <div class="pagerWrap">
-                <v-pagination 
-                    :total="totalElements" 
+                <v-pagination
+                    :total="totalElements"
                     @page-change="pageChange"
                     @page-size-change="pageSizeChange"
                     :page-size="pageSize"
@@ -95,13 +95,13 @@ Vue.component("table-operation", {
           <a href="javascript:;" class='g-link' @click="oeeTaskDetails"><i style='font-size:16px' class='iconfont'>&#xe734;</i></a>
         </el-tooltip>
         &nbsp;
-        
+
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
             <a href="javascript:;"  class='g-link' @click.stop.prevent="deleteRow(rowData,index)"><i style='font-size:16px;color:#F56C6C' class='iconfont'>&#xe66b;</i></a>
           </el-tooltip>
         </span>`,
-  
-  
+
+
   props: {
     rowData: {
       type: Object
@@ -134,7 +134,7 @@ Vue.component("table-operation", {
     blurHandler:function(){
     },
     deleteOeeTask:function(){
-      Message.wran({message:'此OEE任务不允许删除'});
+      Message.warning({message:'此OEE任务不允许删除'});
       deleteVisible = false;
     }
   }
@@ -186,7 +186,7 @@ export default {
         ]
       },
       tableData: [
-       
+
       ],
       hasLoaded:false,
       columns: [
@@ -318,8 +318,8 @@ export default {
             oeePlans:this.oeePlans
          }) ,
           type: "post",
-          option: { 
-            requestTarget:'r' 
+          option: {
+            requestTarget:'r'
           }
         },
         this
@@ -334,7 +334,7 @@ export default {
         ({ type, info }) => {}
       );
         })
-        
+
       }
     },
     pageChange(pageIndex) {
