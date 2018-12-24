@@ -76,6 +76,7 @@
           isshow=!isshow
           ishide=!ishide
           }">企业注册</span>
+          <!-- <span v-on:click="this.$router.push({path:'/Reginster'})">企业注册</span> -->
       </p>
     </div>
     <div
@@ -221,8 +222,6 @@
               style="width:80%"
             >
             <i class="el-icon-view" slot="suffix" style="" @click="seePassword"></i></el-input>
-              style="width:80%">
-            </el-input>
           </el-form-item>
           <el-form-item
             label="手机号："
@@ -784,9 +783,6 @@
       },
       //注册验证码
       registerSecuritycode() {
-        if(this.manager.phone===""){
-          this.$message.error("请先输入手机号码")
-        }
         this.Axios(
           {
             params: Object.assign({phone: this.manager.phone}),
@@ -806,9 +802,7 @@
           },
           ({type, info}) => {
             console.log(info)
-            if (info.cod===503) {
-              this.$message.error("服务器异常，请联系管理员");
-            }
+            this.$message.error("服务器异常，请联系管理员");
           }
         );
       },

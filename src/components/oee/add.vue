@@ -76,7 +76,7 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="计划日工时">
-                    <el-input size="small" maxlength="2" v-model="form.calendarHours" type='number' placeholder="每日的单台设备预计生产工时（小时/日）例如：8">
+                    <el-input size="small" maxlength="2" v-model="form.calendarHours" type='number' min="0" placeholder="每日的单台设备预计生产工时（小时/日）例如：8">
                         <template slot="append">小时/日</template>
                     </el-input>
                 </el-form-item>
