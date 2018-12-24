@@ -30,7 +30,7 @@
             </el-col>
             <el-col :span="11">
               <el-form-item label="身份证：" style="">
-                <el-input type="text"  v-model="persnneladd.idCardNo"></el-input>
+                <el-input type="text"  v-model="persnneladd.idCardNo" ></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
@@ -468,7 +468,6 @@
         return true;
       },
       employeeAdd(){
-        console.log(this.dialogImageUrl);
         if(this.testValue()){
           this.toEmployeeAdd()
         }
@@ -486,7 +485,7 @@
       ).then(response => {
           this.role = response.data.data;
           this.persnneladd.entryTime = this.date;
-        // this.persnneladd.birthday =this.date.replace(this.date.split("-")[0], parseInt(this.date.split("-")[0])-20);
+          // this.persnneladd.birthday =this.date.replace(this.date.split("-")[0], parseInt(this.date.split("-")[0])-20);
           this.persnneladd.birthday = parseInt(this.date.split("-")[0])-30+"-01-01";
         },
         ({type, info}) => {
