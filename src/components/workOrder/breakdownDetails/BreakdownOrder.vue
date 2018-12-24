@@ -884,10 +884,22 @@
 
       },
 
-
-
       //保存工单物料到数据库
       insertPart(){
+        let isOk= "";
+        for (let i in this.suppliesTableData){
+          if(this.suppliesTableData[i].planCount==0){
+            isOk = false;
+            this.$message.error(this.suppliesTableData[i].partName+'物料未填入计划数量');
+            break;
+          }else{
+            isOk=true;
+          }
+        }
+        if(isOk)this.toInsertPart()
+      },
+
+      toInsertPart(){
         for (let i in this.suppliesTableData) {
           if(this.suppliesTableData[i].partCategory === "普通件"){
             this.suppliesTableData[i].partCategory = 1;
@@ -1068,7 +1080,7 @@
 
       //双击删除指定的备品备件
       basicAdd(event){
-       this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id);
+        this.personListValue = this.personListValue.filter(item=>item.id!=event.target.id);
       },
 
       //备品模糊查询

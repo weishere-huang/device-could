@@ -612,14 +612,14 @@
         <el-tooltip class="item" effect="dark" content="修改" placement="top">
             <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i></a>
         </el-tooltip>
+          &nbsp;
+        <el-tooltip class="item" effect="dark" content="审核" placement="top">
+            <a href="" style="text-decoration: none;color:#409EFF"><i @click.stop.prevent="submitAudit(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe61d;</i></a>
+          </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="停止" placement="top">
             <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="stop(rowData,index)" style='font-size:16px' class='iconfont'>&#xe603;</i></a>
         </el-tooltip>
-         &nbsp;
-        <el-tooltip class="item" effect="dark" content="审核" placement="top">
-            <a href="" style="text-decoration: none;color:#409EFF"><i @click.stop.prevent="submitAudit(rowData,index)" style='font-size:16px' class='iconfont'>&#xe61d;</i></a>
-          </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
             <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>

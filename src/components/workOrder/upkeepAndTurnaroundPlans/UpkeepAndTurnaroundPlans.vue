@@ -1083,16 +1083,29 @@
         this.workSheetMaterialTableData.forEach((item)=>{
             if(item.planCount == "" || item.planCount ==null)item.planCount =0
         });
-
         this.workSheetMaterialTableData = Array.from(new Set(this.workSheetMaterialTableData))
       },
       //保存工单物料到数据库
       insertPart(){
+        let isOk= "";
+        for (let i in this.workSheetMaterialTableData){
+          if(this.workSheetMaterialTableData[i].planCount==0){
+            isOk = false;
+            this.$message.error(this.workSheetMaterialTableData[i].partName+'物料未填入计划数量');
+            break;
+          }else{
+            isOk=true;
+          }
+        }
+        if(isOk)this.toInsertPart()
+      },
+
+      toInsertPart(){
         for (let i in this.workSheetMaterialTableData) {
-          if(this.workSheetMaterialTableData[i].partCategory === "普通件"){
+          if (this.workSheetMaterialTableData[i].partCategory === "普通件") {
             this.workSheetMaterialTableData[i].partCategory = 1;
           }
-          if(this.workSheetMaterialTableData[i].partCategory === "关键件"){
+          if (this.workSheetMaterialTableData[i].partCategory === "关键件") {
             this.workSheetMaterialTableData[i].partCategory = 2;
           }
         }
