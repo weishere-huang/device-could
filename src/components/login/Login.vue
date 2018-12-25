@@ -702,7 +702,6 @@ export default {
       ).then(
         result => {
           if (result.data.code === 200) {
-            location.reload();
             console.log(result.data);
             sessionStorage.token = result.data.data.tokenStr;
             sessionStorage.user = JSON.stringify(result.data.data);
@@ -714,7 +713,7 @@ export default {
             console.log(this.$store.state.token.toeknNub);
             // location.reload();
             this.$router.replace("/Home");
-            // location.reload();
+            location.reload();
           }
         },
         ({ type, info }) => {
@@ -815,7 +814,7 @@ export default {
         },
         ({ type, info }) => {
           console.log(info);
-          if (info.code == 406) {
+          if (info.code == 400) {
             this.$message.error("用户名或手机号错误");
           } else {
             this.$message.error("服务器异常，请联系管理员");
