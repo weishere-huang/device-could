@@ -221,3 +221,573 @@
     </div>
   </div>
 </template>
+<script>
+  import md5 from "js-md5/src/md5.js";
+  import CryptoJS from "crypto-js/crypto-js.js";
+
+  export default {
+    inject: ["reload"],
+    name: "Login",
+    data() {
+      return {
+        see:'password',
+        time: 60, // 发送验证码倒计时
+        sendMsgDisabled: false,
+        labelPosition: "right",
+        dialogVisible: false,
+        isshow: true,
+        ishide: false,
+        nextshow: false,
+        backshow: true,
+        registerRules: {
+          name: [
+            {required: true, message: "企业名不能为空", trigger: "blur"},
+            {min: 1, max: 100, message: "企业名称长度不能超过30字符"},
+            {
+              validator: (rule, value, callback) => {
+                if (/^(?!(\d+)$)[\u4e00-\u9fffa-zA-Z\d\-_\(\)\（\）\s]+$/.test(value) == false) {
+                  callback(new Error("请输入正确的企业名称"))
+                } else {
+                  callback()
+                }
+              }, trigger: "blur"
+            },
+            {
+              validator: (rule, value, callback) => {
+                this.Axios(
+                  {
+                    params: Object.assign({name: this.company.name}),
+                    url: "/enterprise/findByName",
+                    type: "get",
+                    option: {enableMsg: false,enableLoad:false}
+                  }
+                ).then(res => {
+                  console.log(res)
+                  callback()
+                }, ({type, info}) => {
+                  console.log(info)
+                  callback(new Error("企业名称已存在"))
+                })
+              },
+              trigger: 'blur'
+            }
+          ],
+          address: [
+            {required: true, message: "地址不能为空", trigger: "blur"},
+            {max: 30, message: "企业地址长度不能超过30字符"}
+          ],
+          phone: [
+            {required: true, message: "电话不能为空", trigger: "blur"},
+            {
+              validator: (rule, value, callback) => {
+                if (
+                  /^((0\d{2,3}-\d{7,8})||(1[34578]\d{9}))$/.test(value) == false
+                ) {
+                  callback(new Error("您输入的电话号码有误，请重新输入"));
+                } else {
+                  callback();
+                }
+              },
+              trigger: "blur"
+            }
+          ],
+          corporation: [
+            {required: true, message: "法人代表不能为空", trigger: "blur"},
+            {max: 30, message: "法人代表长度不能超过30个字符"},
+            {
+              validator: (rule, value, callback) => {
+                // if(/^(?!(\d+)$)[\u4e00-\u9fffa-zA-Z\d\-_]+$/.test(value)==false){
+                if (/^([\u4E00-\u9FA5]+|[a-zA-Z\s?]+)$/.test(value) == false) {
+                  callback(new Error("请填写正确的法人代表"))
+                } else {
+                  callback()
+                }
+              }, trigger: "blur"
+            },
+          ],
+          companyID: [
+            {
+              required: true,
+              message: "统一社会信用代码不能为空",
+              trigger: "blur"
+            },
+            {
+              validator: (rule, value, callback) => {
+                if (
+                  // /^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$/.test(
+                  /^[1-9A-GY]{1}[1239]{1}[\d]{6}[\dA-Z]{10}$/.test(
+                    value
+                  ) == false
+                ) {
+                  callback(new Error("您输入的统一社会信用代码有误，请重新输入"));
+                } else {
+                  callback();
+                }
+              },
+              trigger: "blur"
+            },
+            {
+              validator: (rule, value, callback) => {
+                this.Axios(
+                  {
+                    params: Object.assign({creditCode: this.company.companyID}),
+                    url: "/enterprise/findByCreditCode",
+                    type: "get",
+                    option: {enableMsg: false,enableLoad:false}
+                  }
+                ).then(res => {
+                  console.log(res)
+                  callback()
+                }, ({type, info}) => {
+                  console.log(info)
+                  callback(new Error("统一社会信用代码已存在"))
+                })
+              },
+              trigger: 'blur'
+            }
+          ]
+        },
+        managerRules: {
+          userName: [
+            {required: true, message: "用户名不能为空", trigger: "blur"},
+            {
+              validator: (rule, value, callback) => {
+                if (/^[a-zA-Z0-9_-]{6,20}$/.test(value) == false) {
+                  callback(new Error("用户名格式不正确，请输入6~20位字符"));
+                } else {
+                  callback();
+                }
+              },
+              trigger: "blur"
+            },
+            {
+              min: 6,
+              max: 20,
+              message: "请输入6到20位的字母和数字组合",
+              trigger: "blur"
+            },
+            {
+              validator: (rule, value, callback) => {
+                this.Axios(
+                  {
+                    params: Object.assign({userName: this.manager.userName}),
+                    url: "/user/userNameIsSingle",
+                    type: "get",
+                    option: {enableMsg: false,enableLoad:false}
+                  }
+                ).then(res => {
+                  console.log(res)
+                  callback()
+                }, ({type, info}) => {
+                  // console.log(info)
+                  callback(new Error("该用户名已存在"))
+                })
+              },
+              trigger: 'blur'
+            }
+          ],
+          userPassword: [
+            {required: true, message: "密码不能为空", trigger: "blur"},
+            {
+              validator: (rule, value, callback) => {
+                if (
+                  /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/.test(value) ==
+                  false
+                ) {
+                  callback(
+                    new Error("密码不能全是数字，字母，不能少于6位且小于20位")
+                  );
+                } else {
+                  callback();
+                }
+              },
+              trigger: "blur"
+            }
+          ],
+          phone: [
+            {required: true, message: "电话不能为空", trigger: "blur"},
+            {
+              validator: (rule, value, callback) => {
+                if (/^[1][0-9]{10}$/.test(value) == false) {
+                  callback(new Error("您输入的手机号有误，请重新输入"));
+                } else {
+                  callback();
+                }
+              },
+              trigger: "blur"
+            },
+            {
+              validator: (rule, value, callback) => {
+                this.Axios(
+                  {
+                    params: Object.assign({phone: this.manager.phone}),
+                    url: "/user/phoneIsSingle",
+                    type: "get",
+                    option: {enableMsg: false,enableLoad:false}
+                  }
+                ).then(res => {
+                  console.log(res)
+                  callback()
+                }, ({type, info}) => {
+                  console.log(info)
+                  callback(new Error("该手机号码已存在"))
+                })
+              },
+              trigger: 'blur'
+            }
+          ],
+          validate: [
+            {required: false, message: "验证码不能为空", trigger: "blur"}
+          ]
+        },
+        fileList: [
+          {
+            name: "",
+            url: ""
+          }
+        ],
+        company: {
+          name: "",
+          address: "",
+          phone: "",
+          corporation: "",
+          companyID: "",
+          dialogImageUrl: ""
+        },
+        manager: {
+          userName: "",
+          userPassword: "",
+          // password: "",
+          phone: "",
+          validate: ""
+        },
+        checked: true
+      };
+    },
+
+    methods: {
+      seePassword(e){
+        if (this.see==="text") {
+          this.see='password'
+          e.target.style.color=""
+          console.log(this.see);
+        }
+        else if (this.see==="password") {
+          this.see='text'
+          e.target.style.color="blue"
+          console.log(e.target);
+        }
+      },
+      checkData(rule, value, callback) {
+        if (value) {
+          if (/[\u4E00-\u9FA5]/g.test(value)) {
+            callback(new Error("编码不能输入汉字!"));
+          } else {
+            callback();
+          }
+        }
+        callback();
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
+        this.company.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      },
+      // let instance = axios.create({
+      //   headers: { "content-type": "application/x-www-form-urlencoded" }
+      // });
+      submitForm(formName) {
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            // alert("submit!");
+            this.login();
+          } else {
+            console.log("error submit!!");
+            return false;
+          }
+        });
+      },
+      registerNext(formName) {
+        if (this.company.dialogImageUrl === "") {
+          this.$message({
+            message: "请上传营业执照",
+            type: "error"
+          });
+        } else {
+          this.$refs[formName].validate(valid => {
+            if (valid) {
+              // alert("submit!");
+              this.nextshow = !this.nextshow;
+              this.backshow = !this.backshow;
+            } else {
+              this.$message.error("对不起，信息提交失败，请检查后重新提交");
+              return false;
+            }
+          });
+        }
+      },
+      registerInfo(formName) {
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            // alert("submit!");
+            this.register();
+          } else {
+            this.$message.error("请填写完信息");
+            return false;
+          }
+        });
+      },
+      encryptByDES(message, key) {
+        // const keyHex = CryptoJS.enc.Utf8.parse(key);
+        const keyHex = CryptoJS.enc.Utf8.parse(key);
+        const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
+          mode: CryptoJS.mode.ECB,
+          padding: CryptoJS.pad.Pkcs7
+        });
+        return encrypted.toString();
+      },
+
+      send() {
+        let me = this;
+        me.sendMsgDisabled = true;
+        let interval = window.setInterval(function() {
+          if ((me.time--) <= 0) {
+            me.time = 60;
+            me.sendMsgDisabled = false;
+            window.clearInterval(interval);
+          }
+        }, 1000);
+      },
+      register() {
+        let pass = this.manager.userPassword;
+        pass = md5(pass);
+        // alert(this.manager.userPassword);
+        console.log(this.manager.userPassword);
+        let key = "*chang_hong_device_cloud";
+        pass = this.encryptByDES(pass, key);
+        // alert(this.manager.userPassword)
+        console.log(this.manager.userPassword);
+        let qs = require("qs");
+        let data = qs.stringify({
+          enterpriseName: this.company.name,
+          enterpriseAddress: this.company.address,
+          enterprisePhone: this.company.phone,
+          legalPerson: this.company.corporation,
+          creditCode: this.company.companyID,
+          businessLicenseImg: this.company.dialogImageUrl,
+          userName: this.manager.userName,
+          passWord: pass,
+          phone: this.manager.phone,
+          verifyCode: this.manager.validate,
+          returnForget() {
+            this.forgetShow = true;
+            this.isshow = false;
+          }
+        });
+        this.Axios(
+          {
+            url: "/enterprise/add",
+            params: data,
+            type: "post",
+            option: {enableMsg: false,enableLoad:false}
+          },
+          this
+        ).then(
+          result => {
+            if (result.data.code === 200) {
+              this.$alert(
+                "恭喜您，企业注册信息已提交成功。审核结果将以短信的方式通知到您绑定的手机号。",
+                "提示",
+                {
+                  confirmButtonText: "确定",
+                  callback: action => {
+                    location.reload();
+                  }
+                }
+              );
+            }
+          },
+          ({type, info}) => {
+          }
+        );
+      },
+
+      //注册验证码
+      registerSecuritycode() {
+        this.Axios(
+          {
+            params: Object.assign({phone: this.manager.phone}),
+            url: "/enterprise/getVerifyCode",
+            type: "get",
+            option: {
+              enableMsg: false,
+              enableLoad: false
+            }
+          },
+          this
+        ).then(
+          response => {
+            console.log(1111);
+            this.$message.success("短信验证码已发送至您的手机，请注意查收");
+            this.send()
+          },
+          ({type, info}) => {
+            console.log(info)
+            this.$message.error("服务器异常，请联系管理员");
+          }
+        );
+      },
+      uploadUrl() {
+        let url = this.global.apiImg;
+        return url;
+      },
+      handleAvatarSuccess(res, file) {
+        console.log(res.data);
+        this.$message.success("上传图片成功")
+        this.company.dialogImageUrl = res.data;
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === "image/jpeg";
+        const isPNG = file.type === "image/png";
+        const isLt1M = file.size / 1024 / 1024 < 1;
+        let isOK = true;
+        if (!(isJPG || isPNG)) {
+          this.$message.error("仅支持jpg/png格式");
+          isOK = false;
+        }
+        if (!isLt1M) {
+          this.$message.error("图片大小不能超过1M");
+        }
+        return isOK && isLt1M;
+      },
+      handleRemove(file, fileList) {
+        console.log(file);
+        console.log(fileList)
+        this.company.dialogImageUrl = ""
+
+        console.log(file)
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      handleExceed(files, fileList) {
+        this.$message.warning(
+          `当前限制选择 3 个文件，本次选择了 ${
+            files.length
+            } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+        );
+      },
+      beforeRemove(file, fileList) {
+        return this.$confirm(`确定移除 ${file.name}？`);
+      },
+      encryptByDES(message, key) {
+        const keyHex = CryptoJS.enc.Utf8.parse(key);
+        const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
+          mode: CryptoJS.mode.ECB,
+          padding: CryptoJS.pad.Pkcs7
+        });
+        return encrypted.toString();
+      }
+    },
+    mounted() {
+    }
+  };
+</script>
+<style lang="less">
+  @import url("../../assets/font/font.css");
+
+  @blue: #409eff;
+  @Success: #67c23a;
+  @Warning: #e6a23c;
+  @Danger: #f56c6c;
+  @Info: #909399;
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  .register {
+    position: absolute;
+    right: 10%;
+    width: 35%;
+    background-color: white;
+    box-shadow: 10px 10px 10px @Info;
+    border-radius: 10px;
+    padding-bottom: 30px;
+    .next {
+      margin-top: 30px;
+    }
+    h2 {
+      letter-spacing: 2px;
+      font-weight: 500;
+      padding: 10px 0;
+    }
+    .el-form-item {
+      text-align: left;
+      margin-bottom: 16px;
+      .el-upload--picture-card {
+        width: 80px;
+        height: 80px;
+      }
+    }
+    ul {
+      li {
+        list-style-type: none;
+        margin-bottom: 5px;
+        .el-upload {
+          width: 80px !important;
+          height: 80px !important;
+          overflow: hidden;
+        }
+        label {
+          display: inline-block;
+          width: 31%;
+          text-align: right;
+        }
+        .validate {
+          width: 30%;
+        }
+        a {
+          text-decoration: none;
+          color: @blue;
+        }
+      }
+    }
+    .el-input {
+      width: 50%;
+      padding: 0;
+    }
+    .titleText {
+      width: 100%;
+      font-size: 12px;
+      color: #909399;
+      text-align: center;
+      padding: 10px 0 10px 0px;
+    }
+    .upload-demo {
+      width: 50%;
+      display: inline-block;
+      padding: 0;
+    }
+    .registerBtn {
+      width: 75%;
+      height: 32px;
+    }
+    .loginSkip {
+      padding-right: 40px;
+      margin-top: 20px;
+      text-align: right;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+  }
+  .el-icon-upload-success {
+    position: absolute !important;
+    top: 0px !important;
+    right: 14px !important;
+
+  }
+</style>
