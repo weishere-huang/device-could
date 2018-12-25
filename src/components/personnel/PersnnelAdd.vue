@@ -5,16 +5,16 @@
         <el-button size="small"
                    type="primary" @click="tback" icon="el-icon-arrow-left">返回</el-button>
         <el-button size="small"
-                   type="primary" @click="employeeAdd" >
+                   type="primary" @click="employeeAdd('persnneladd')" >
           <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
       </div>
       <div class="botton">
         <div class="essential">
           <p class="title">基本信息（必填）</p>
-          <el-form :label-position="labelPosition" label-width="100px" style="width:100%;margin-top:26px"  size="mini">
+          <el-form :label-position="labelPosition"  label-width="100px" style="width:100%;margin-top:26px"  size="mini">
             <el-col :span="14">
               <el-form-item label="姓名：" style="">
-                <el-input type="text" @change="validateValue" style="width:70%" autofocus  v-model="persnneladd.name" ref="name"></el-input>
+                <el-input type="text" style="width:70%" autofocus @blur="validateName"  v-model="persnneladd.name" ref="name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
@@ -30,17 +30,17 @@
             </el-col>
             <el-col :span="11">
               <el-form-item label="身份证：" style="">
-                <el-input type="text"  v-model="persnneladd.idCardNo" ref="idCardNo" ></el-input>
+                <el-input type="text" @blur="validateIdCardNo"  v-model="persnneladd.idCardNo"  ref="idCardNo" ></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
               <el-form-item label="员工编号：" style="">
-                <el-input type="text" ref="employeeNo"  v-model="persnneladd.employeeNo"></el-input>
+                <el-input type="text" ref="employeeNo" @blur="validateEmployeeNo"  v-model="persnneladd.employeeNo"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
               <el-form-item label="角色权限：" style="">
-                <el-select v-model="persnneladd.roleId" placeholder="请选择" style="width:100%">
+                <el-select v-model="persnneladd.roleId" @blur="validateRole" placeholder="请选择" style="width:100%">
                   <el-option v-for="item in role" :key="item.value" :label="item.name" :value="item.id">
                   </el-option>
                 </el-select>
@@ -48,17 +48,17 @@
             </el-col>
             <el-col :span="11">
               <el-form-item label="手机号码：" style="">
-                <el-input type="text" ref="phone" v-model="persnneladd.phone"></el-input>
+                <el-input type="text" ref="phone" @blur="validatePhone" v-model="persnneladd.phone"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
               <el-form-item label="出生日期：" style="">
-                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.birthday"
+                <el-date-picker type="date" placeholder="选择日期" @blur="validateBirthday" value-format="yyyy/MM/dd" v-model="persnneladd.birthday"
                                 style="width:100%"     ></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="组织单位："  prop="defaultProps">
+              <el-form-item label="组织单位：" prop="defaultProps">
                 <el-cascader
                   placeholder="搜索"
                   :options="options"
@@ -76,7 +76,7 @@
             </el-col>
             <el-col :span="11">
               <el-form-item label="岗位：" style="">
-                <el-input type="text"  v-model="persnneladd.position" ref="position"></el-input>
+                <el-input type="text"  v-model="persnneladd.position" @blur="validatePosition"  ref="position"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
@@ -119,7 +119,7 @@
               </el-col>
               <el-col :span="14">
                 <el-form-item label="电子邮箱：">
-                  <el-input type="text"  v-model="persnneladd.email" ref="email"></el-input>
+                  <el-input type="text"  v-model="persnneladd.email" @blur="validateEmail" ref="email"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="14">
@@ -231,12 +231,18 @@
           qualificationInfo:"",
           roleId: ""
         },
+        personValidate:{
+          name: [
+            {required: true, message: "员工名不能为空", trigger: "blur"},
+          ],
+        },
         options: [],
         role: [],
         defaultProps: {
           value: "code",
           label: "name"
         },
+        validateIsOk:true,
       };
     },
     methods: {
@@ -418,69 +424,108 @@
       },
 
       testValue(){
-
-        if(this.persnneladd.employeeNo == ""){
-          this.$message.error("员工编号不能为空");
-          this.$refs.employeeNo.focus();
-          return false;
-        }
-        let regIdNo = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-        if (!regIdNo.test(this.persnneladd.idCardNo)){
-          this.$message.error("身份证号填写有误");
-          this.$refs.idCardNo.focus();
-          return false;
-        }
-        if (this.persnneladd.roleId == ""){
-          this.$message.error("请选择角色权限");
-          return false;
-        }
-        if(this.persnneladd.phone===""){
-          this.$message.error("手机号码不能为空");
-          this.$refs.phone.focus();
-          return false;
-        }else if(!(/^1[0-9]\d{9}$/.test(this.persnneladd.phone))){
-            this.$message.error("手机号码有误，请重填");
-          this.$refs.phone.focus();
-            return false;
-        }
-        if(this.persnneladd.birthday == ""){
-          this.$message.error("请选择出生日期");
-          return false;
-        }
-        if(this.persnneladd.organizationName == " "){
-          this.$message.error("请选择组织机构");
-          return false;
-        }
-        if(this.persnneladd.position==""){
-          this.$message.error("请输入岗位");
-          this.$refs.position.focus();
-          return false;
-        }
-        let regEmail= /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
-        if(this.persnneladd.email!==""){
-          if(!regEmail.test(this.persnneladd.email)){
-            this.$message.error("邮箱格式不正确");
-            this.$refs.email.focus();
-            return false;
-          }
-        }
-        return true;
+        this.validateOrganizationName();
+        return this.validateIsOk;
       },
       employeeAdd(){
         if(this.testValue()){
           this.toEmployeeAdd()
         }
       },
-      validateValue(){
+      validateName(){
         let nameValue=/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/im;
         if (this.persnneladd.name == ""){
           this.$message.error("员工名不能为空");
           this.$refs.name.focus();
-          return false;
+          this.validateIsOk=false;
         }else if(nameValue.test(this.persnneladd.name)){
           this.$message.error("员工名不能有特殊字符");
           this.$refs.name.focus();
-          return false;
+          this.validateIsOk=false;
+        }else{
+          this.validateIsOk=true;
+        }
+      },
+      validateEmployeeNo(){
+        if(this.persnneladd.employeeNo == ""){
+          this.$message.error("员工编号不能为空");
+          this.$refs.employeeNo.focus();
+          this.validateIsOk=false;
+        }else{
+          this.validateIsOk=true;
+        }
+      },
+      validateIdCardNo(){
+        let regIdNo = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if (!regIdNo.test(this.persnneladd.idCardNo)){
+          this.$message.error("身份证号填写有误");
+          this.$refs.idCardNo.focus();
+          this.validateIsOk=false;
+        }else{
+          let date = this.persnneladd.idCardNo;
+          this.persnneladd.birthday = date.substr(6,4)+"-"+date.substr(10,2)+"-"+date.substr(12,2);
+          date.substr(16,1)%2===0 ? this.persnneladd.gender = "0": this.persnneladd.gender = "1";
+          this.validateIsOk=true;
+        }
+      },
+      validateRole(){
+        if (this.persnneladd.roleId == ""){
+          this.$message.error("请选择角色权限");
+          this.validateIsOk=false;
+        }else{
+          this.validateIsOk=true;
+        }
+      },
+      validatePhone(){
+        if(this.persnneladd.phone===""){
+          this.$message.error("手机号码不能为空");
+          this.$refs.phone.focus();
+          this.validateIsOk=false;
+        }else if(!(/^1[0-9]\d{9}$/.test(this.persnneladd.phone))){
+          this.$message.error("手机号码有误，请重填");
+          this.$refs.phone.focus();
+          this.validateIsOk=false;
+        }else{
+          this.validateIsOk=true;
+        }
+      },
+      validateBirthday(){
+        if(this.persnneladd.birthday == ""){
+          this.$message.error("请选择出生日期");
+          this.validateIsOk= false;
+        }else{
+            this.validateIsOk=true
+        }
+      },
+      validateOrganizationName(){
+        if(this.persnneladd.organizationName == ""){
+          this.$message.error("请选择组织机构");
+          this.validateIsOk=false;
+        }else{
+          this.validateIsOk=true;
+        }
+      },
+      validatePosition(){
+        if(this.persnneladd.position==""){
+          this.$message.error("请输入岗位");
+          this.$refs.position.focus();
+          this.validateIsOk=false;
+        }else{
+          this.validateIsOk=true;
+        }
+      },
+      validateEmail(){
+        let regEmail= /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
+        if(this.persnneladd.email!==""){
+          if(!regEmail.test(this.persnneladd.email)){
+            this.$message.error("邮箱格式不正确");
+            this.$refs.email.focus();
+            this.validateIsOk=false;
+          }else{
+            this.validateIsOk=true;
+          }
+        }else{
+          this.validateIsOk=true;
         }
       }
     },
