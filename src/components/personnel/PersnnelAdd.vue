@@ -14,7 +14,7 @@
           <el-form :label-position="labelPosition" label-width="100px" style="width:100%;margin-top:26px"  size="mini">
             <el-col :span="14">
               <el-form-item label="姓名：" style="">
-                <el-input type="text" style="width:70%" autofocus  v-model="persnneladd.name" ref="name"></el-input>
+                <el-input type="text" @change="validateValue" style="width:70%" autofocus  v-model="persnneladd.name" ref="name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
@@ -418,16 +418,7 @@
       },
 
       testValue(){
-        let nameValue=/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/im;
-        if (this.persnneladd.name == ""){
-          this.$message.error("员工名不能为空");
-          this.$refs.name.focus();
-          return false;
-        }else if(nameValue.test(this.persnneladd.name)){
-          this.$message.error("员工名不能有特殊字符");
-          this.$refs.name.focus();
-          return false;
-        }
+
         if(this.persnneladd.employeeNo == ""){
           this.$message.error("员工编号不能为空");
           this.$refs.employeeNo.focus();
@@ -478,6 +469,18 @@
       employeeAdd(){
         if(this.testValue()){
           this.toEmployeeAdd()
+        }
+      },
+      validateValue(){
+        let nameValue=/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/im;
+        if (this.persnneladd.name == ""){
+          this.$message.error("员工名不能为空");
+          this.$refs.name.focus();
+          return false;
+        }else if(nameValue.test(this.persnneladd.name)){
+          this.$message.error("员工名不能有特殊字符");
+          this.$refs.name.focus();
+          return false;
         }
       }
     },
