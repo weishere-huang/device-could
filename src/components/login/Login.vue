@@ -768,13 +768,13 @@
           this
         ).then(
           response => {
-            console.log(1111);
+            console.log(response);
             this.$message.success("短信验证码已发送至您的手机，请注意查收");
             this.send()
           },
           ({type, info}) => {
             console.log(info);
-            if (info.code == 406) {
+            if (info.code == 400) {
               this.$message.error("用户名或手机号错误");
             }
             else {
