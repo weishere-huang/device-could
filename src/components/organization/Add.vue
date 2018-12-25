@@ -39,28 +39,127 @@ export default {
   name: "",
   props:["nodedata"],
   data() {
+    let option=[]
+    debugger
+    if (this.nodedata.organizeType=="企业") {
+       option=[
+        {
+          value: 1,
+          label: "公司"
+        },
+        {
+          value: 2,
+          label: "工厂"
+        },
+        {
+          value: 3,
+          label: "部门"
+        },
+        {
+          value: 4,
+          label: "车间"
+        },
+        {
+          value: 5,
+          label: "产线"
+        }
+      ]
+    }else if (this.nodedata.organizeType=="公司") {
+       option=[
+        {
+          value: 2,
+          label: "工厂"
+        },
+        {
+          value: 3,
+          label: "部门"
+        },
+        {
+          value: 4,
+          label: "车间"
+        },
+        {
+          value: 5,
+          label: "产线"
+        }
+      ]
+    }else if (this.nodedata.organizeType=="工厂") {
+       option=[
+        {
+          value: 3,
+          label: "部门"
+        },
+        {
+          value: 4,
+          label: "车间"
+        },
+        {
+          value: 5,
+          label: "产线"
+        }
+      ]
+    }else if (this.nodedata.organizeType=="部门") {
+       option=[
+        {
+          value: 4,
+          label: "车间"
+        },
+        {
+          value: 5,
+          label: "产线"
+        }
+      ]
+    }else if (this.nodedata.organizeType=="车间") {
+       option=[
+        {
+          value: 3,
+          label: "部门"
+        },
+        {
+          value: 5,
+          label: "产线"
+        }
+      ]
+    }else if (this.nodedata.organizeType=="产线") {
+       option=[
+        {
+          value: 3,
+          label: "部门"
+        },
+        {
+          value: 4,
+          label: "车间"
+        }
+      ]
+    }
+    console.log(this.nodedata);
     return {
       show: true,
       type: "",
       // pcode:this.nodedata,
-      options: [
-      {
-        value: 1,
-        label: "公司"
-      },
-      {
-        value: 2,
-        label: "工厂"
-      },
-      {
-        value: 3,
-        label: "部门"
-      },
-      {
-        value: 4,
-        label: "车间"
-      }
-    ],
+      options:option,
+      // options: [
+      //   {
+      //     value: 1,
+      //     label: "公司"
+      //   },
+      //   {
+      //     value: 2,
+      //     label: "工厂"
+      //   },
+      //   {
+      //     value: 3,
+      //     label: "部门"
+      //   },
+      //   {
+      //     value: 4,
+      //     label: "车间"
+      //   },
+      //   {
+      //     value: 5,
+      //     label: "产线"
+      //   }
+      // ],
       value: "",
       orgname:"",
       orgInfo:""

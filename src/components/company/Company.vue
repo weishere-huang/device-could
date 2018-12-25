@@ -533,7 +533,7 @@ Vue.component("table-company", {
   template: `
         <span v-if="rowData.state === '0'">
           <el-tooltip class="item" effect="dark" content="审核" placement="top">
-            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="audit(rowData,index)" style='font-size:16px' class='iconfont'>&#xe61d;</i></a>
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="audit(rowData,index)" style='font-size:16px' class='iconfont'>&#xe689;</i></a>
           </el-tooltip>
         </span>
         <span v-else-if="rowData.state ==='1'||rowData.state === '2'">

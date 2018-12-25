@@ -123,7 +123,7 @@ export default {
       this.addShow = params;
     },
     toAdd(data) {
-      console.log(data);
+      console.log(this.nodedata);
       this.nodedata=data
       this.addShow = true;
       return false;
@@ -215,6 +215,9 @@ export default {
               }
               if (result.data.data[i].organizeType === 4) {
                 result.data.data[i].organizeType = "车间";
+              }
+              if (result.data.data[i].organizeType === 5) {
+                result.data.data[i].organizeType = "产线";
               }
             }
             let arr = Math.min.apply(null, (result.data.data).map((item)=>{return item.parentCode}));
