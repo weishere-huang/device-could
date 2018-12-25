@@ -299,7 +299,7 @@ export default {
     $route() {
       //debugger
       this.isHideList=this.$route.matched.find(item=>(item.name==="OeeDetails"))?true:false;
-      if(!this.hasLoaded)this.dataInit();
+      //if(!this.hasLoaded)this.dataInit();
     }
   },
   methods: {
