@@ -11,14 +11,14 @@
       <div class="botton">
         <div class="essential">
           <p class="title">基本信息（必填）</p>
-          <el-form :label-position="labelPosition"  label-width="100px" style="width:100%;margin-top:26px"  size="mini">
+          <el-form :label-position="labelPosition"  ref="persnneladd" :model="persnneladd" :rules="personValidate" label-width="100px" style="width:100%;margin-top:26px"  size="mini">
             <el-col :span="14">
-              <el-form-item label="姓名：" style="">
-                <el-input type="text" style="width:70%" autofocus @blur="validateName"  v-model="persnneladd.name" ref="name"></el-input>
+              <el-form-item label="姓名：" prop="name" style="">
+                <el-input type="text" style="width:70%" autofocus v-model="persnneladd.name" ref="name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="账号：" style="display:none">
+              <el-form-item label="账号："   style="display:none">
                 <el-input type="text"  v-model="persnneladd.name" ></el-input>
               </el-form-item>
             </el-col>
@@ -29,36 +29,36 @@
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="身份证：" style="">
-                <el-input type="text" @blur="validateIdCardNo"  v-model="persnneladd.idCardNo"  ref="idCardNo" ></el-input>
+              <el-form-item label="身份证：" prop="idCardNo" style="">
+                <el-input type="text"   v-model="persnneladd.idCardNo"  ref="idCardNo" ></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="员工编号：" style="">
-                <el-input type="text" ref="employeeNo" @blur="validateEmployeeNo"  v-model="persnneladd.employeeNo"></el-input>
+              <el-form-item label="员工编号：" prop="employeeNo" style="">
+                <el-input type="text" ref="employeeNo" v-model="persnneladd.employeeNo"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="角色权限：" style="">
-                <el-select v-model="persnneladd.roleId" @blur="validateRole" placeholder="请选择" style="width:100%">
+              <el-form-item label="角色权限：" prop="roleId" style="">
+                <el-select v-model="persnneladd.roleId" placeholder="请选择" style="width:100%">
                   <el-option v-for="item in role" :key="item.value" :label="item.name" :value="item.id">
                   </el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="手机号码：" style="">
-                <el-input type="text" ref="phone" @blur="validatePhone" v-model="persnneladd.phone"></el-input>
+              <el-form-item label="手机号码：" prop="phone" style="">
+                <el-input type="text" ref="phone"  v-model="persnneladd.phone"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="出生日期：" style="">
-                <el-date-picker type="date" placeholder="选择日期" @blur="validateBirthday" value-format="yyyy/MM/dd" v-model="persnneladd.birthday"
-                                style="width:100%"     ></el-date-picker>
+              <el-form-item label="出生日期：" prop="birthday" style="">
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.birthday"
+                                style="width:100%"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="组织单位：" prop="defaultProps">
+              <el-form-item label="组织单位：" prop="defaultProps" >
                 <el-cascader
                   placeholder="搜索"
                   :options="options"
@@ -75,8 +75,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="岗位：" style="">
-                <el-input type="text"  v-model="persnneladd.position" @blur="validatePosition"  ref="position"></el-input>
+              <el-form-item label="岗位：" prop="position" style="">
+                <el-input type="text"  v-model="persnneladd.position" ref="position"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
@@ -96,7 +96,7 @@
         <div class="more-msg">
           <p class="title">更多信息（选填）</p>
           <div style="overflow: hidden;">
-            <el-form :label-position="labelPosition" label-width="100px" style="width:100%;margin-top:26px"  size="mini">
+            <el-form :label-position="labelPosition" ref="persnneladd" :model="persnneladd" :rules="personValidate"  label-width="100px" style="width:100%;margin-top:26px"  size="mini">
               <el-col :span="11">
                 <el-form-item label="工作年限：">
                   <el-input type="text" style="width:50%" v-model="persnneladd.workingYears"></el-input>&nbsp;年
@@ -118,8 +118,8 @@
                 </el-form-item>
               </el-col>
               <el-col :span="14">
-                <el-form-item label="电子邮箱：">
-                  <el-input type="text"  v-model="persnneladd.email" @blur="validateEmail" ref="email"></el-input>
+                <el-form-item label="电子邮箱：" prop="email">
+                  <el-input type="text"  v-model="persnneladd.email"  ref="email"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="14">
@@ -187,7 +187,6 @@
               </el-col>
             </el-form>
           </div>
-
         </div>
       </div>
     </div>
@@ -233,8 +232,71 @@
         },
         personValidate:{
           name: [
-            {required: true, message: "员工名不能为空", trigger: "blur"},
+            {required: true, message: "员工姓名不能为空",  trigger: "blur",focus},
+            {
+              validator: (rule, value, callback) => {
+                let nameValue=/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/im;
+                if (nameValue.test(value)) {
+                  this.$refs.name.focus();
+                  callback(new Error("请输入正确的员工姓名"));
+                } else {
+                  callback();
+                }
+              },
+              trigger: "blur"
+            },
           ],
+          idCardNo: [
+            {required: true, message: "身份证号不能为空", trigger: "blur"},
+            {
+              validator: (rule, value, callback) => {
+                let regIdNo = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+                if (!regIdNo.test(value)) {
+                  this.$refs.idCardNo.focus();
+                  callback(new Error("身份证号填写有误"));
+                } else {
+                  callback();
+                  let date = this.persnneladd.idCardNo;
+                  this.persnneladd.birthday = date.substr(6,4)+"-"+date.substr(10,2)+"-"+date.substr(12,2);
+                  date.substr(16,1)%2===0 ? this.persnneladd.gender = "0": this.persnneladd.gender = "1";
+                }
+              },
+              trigger: "blur"
+            },
+          ],
+          employeeNo: [{required: true, message: "员工编号不能为空", trigger: "blur"}],
+          roleId:[{required: true, message: "角色权限不能为空", trigger: "blur"}],
+          phone:[{required: true, message: "手机号码不能为空", trigger: "blur"},
+            {
+              validator: (rule, value, callback) => {
+                if (!(/^1[0-9]\d{9}$/.test(this.persnneladd.phone))) {
+                  callback(new Error("手机号码有误"));
+                  this.$refs.phone.focus();
+                } else {
+                  callback();
+                }
+              },
+              trigger: "blur"
+            }],
+          birthday:[{required: true, message: "请选择出生日期", trigger: "blur"}],
+          position:[{required: true, message: "岗位不能为空", trigger: "blur"}],
+          email:[
+            {
+            validator: (rule, value, callback) => {
+              let regEmail= /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
+              if(value!=="") {
+                if (!regEmail.test(this.persnneladd.email)) {
+                  callback(new Error("请输入正确的邮箱"));
+                  this.$refs.email.focus();
+                }else{
+                  callback();
+                }
+              }else {
+                callback();
+              }
+            },
+            trigger: "blur"
+          }],
         },
         options: [],
         role: [],
@@ -366,6 +428,20 @@
         }
         return tree;
       },
+      employeeAdd(formName){
+        if(this.persnneladd.organizationName == ""){
+          this.$message.error("请选择组织机构");
+        }else {
+          this.$refs[formName].validate(valid => {
+            if (valid) {
+              this.toEmployeeAdd();
+            } else {
+              this.$message.error("请填写完信息");
+              return false;
+            }
+          });
+        }
+      },
       toEmployeeAdd() {
         console.log(this.fileList);
         let file = [];
@@ -423,15 +499,9 @@
         });
       },
 
-      testValue(){
-        this.validateOrganizationName();
-        return this.validateIsOk;
-      },
-      employeeAdd(){
-        if(this.testValue()){
-          this.toEmployeeAdd()
-        }
-      },
+      // testValue(){
+      //   this.validateOrganizationName();
+      // },
       validateName(){
         let nameValue=/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/im;
         if (this.persnneladd.name == ""){
