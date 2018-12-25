@@ -302,6 +302,9 @@ export default {
       }
     }
   },
+  computed: {
+    
+  },
   created () {
     this.user=JSON.parse(sessionStorage.getItem("user")).name
     // this.user=this.$store.state.token.userMsg.name
