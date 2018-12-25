@@ -91,6 +91,15 @@ export default {
       orginfo:""
     };
   },
+  // created () {
+  //   this.optionSet()
+  // },
+  // watch: {
+  //   changeData(){
+  //     this.optionSet()
+  //   }
+    
+  // },
   methods: {
     reviseHide() {
       this.$emit("reviseHide",false)
@@ -142,6 +151,101 @@ export default {
           console.log(err);
         });
     },
+    // optionSet(){
+    //   let option=[]
+    //   if (this.chengedata.organizeType=="企业") {
+    //     option=[
+    //       {
+    //         value: 1,
+    //         label: "公司"
+    //       },
+    //       {
+    //         value: 2,
+    //         label: "工厂"
+    //       },
+    //       {
+    //         value: 3,
+    //         label: "部门"
+    //       },
+    //       {
+    //         value: 4,
+    //         label: "车间"
+    //       },
+    //       {
+    //         value: 5,
+    //         label: "产线"
+    //       }
+    //     ]
+    //   }else if (this.chengedata.organizeType=="公司") {
+    //     option=[
+    //       {
+    //         value: 2,
+    //         label: "工厂"
+    //       },
+    //       {
+    //         value: 3,
+    //         label: "部门"
+    //       },
+    //       {
+    //         value: 4,
+    //         label: "车间"
+    //       },
+    //       {
+    //         value: 5,
+    //         label: "产线"
+    //       }
+    //     ]
+    //   }else if (this.chengedata.organizeType=="工厂") {
+    //     option=[
+    //       {
+    //         value: 3,
+    //         label: "部门"
+    //       },
+    //       {
+    //         value: 4,
+    //         label: "车间"
+    //       },
+    //       {
+    //         value: 5,
+    //         label: "产线"
+    //       }
+    //     ]
+    //   }else if (this.chengedata.organizeType=="部门") {
+    //     option=[
+    //       {
+    //         value: 4,
+    //         label: "车间"
+    //       },
+    //       {
+    //         value: 5,
+    //         label: "产线"
+    //       }
+    //     ]
+    //   }else if (this.chengedata.organizeType=="车间") {
+    //     option=[
+    //       {
+    //         value: 3,
+    //         label: "部门"
+    //       },
+    //       {
+    //         value: 5,
+    //         label: "产线"
+    //       }
+    //     ]
+    //   }else if (this.chengedata.organizeType=="产线") {
+    //     option=[
+    //       {
+    //         value: 3,
+    //         label: "部门"
+    //       },
+    //       {
+    //         value: 4,
+    //         label: "车间"
+    //       }
+    //     ]
+    //   }
+    //   this.options=option;
+    // }
   }
 };
 </script>
