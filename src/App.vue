@@ -304,6 +304,7 @@ export default {
   },
   created () {
     this.user=JSON.parse(sessionStorage.getItem("user")).name
+    // this.user=this.$store.state.token.userMsg.name
     this.MsgCount();
   },
   components: {
