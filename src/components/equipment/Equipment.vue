@@ -21,6 +21,7 @@
             :props="defaultProps"
             @node-click="handleNodeClick"
             :expand-on-click-node="false"
+            style="max-height:300px;overflow:scroll"
           >
             <span
               class="custom-tree-node"
@@ -630,6 +631,12 @@ export default {
         );
     }
   },
+  mounted() {
+    $('.classifylist li').click(function (e) { 
+      console.log(this);
+      $(this).toggleClass("active-color").siblings().removeClass("active-color")
+    });
+  },
   created() {
     this.findall();
     //this.findDeviceState();
@@ -727,7 +734,7 @@ Vue.component("table-equipment", {
         letter-spacing: 1px;
         cursor: pointer;
         &:hover {
-          background-color: @Info;
+          background-color: #f5f7fa;
         }
       }
       .transitlist {
@@ -780,5 +787,8 @@ Vue.component("table-equipment", {
   position: absolute;
   right: -310px;
   transition: all 0.3s ease-in;
+}
+.active-color{
+  background-color: #f5f7fa;
 }
 </style>
