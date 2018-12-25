@@ -174,7 +174,7 @@ export default {
           isResize: true,
           overflowTitle: true,
           formatter: function(rowData, rowIndex, pagingIndex, field) {
-            return rowData.state === "0"
+              return rowData.state === "0"
               ? "正常"
               : "停用"
           },
@@ -297,7 +297,9 @@ export default {
         response => {
           this.load();
         },
-        ({ type, info }) => {}
+        ({ type, info }) => {
+          this.load()
+        }
       );
     },
     selectGroupChange(selection) {
@@ -370,7 +372,8 @@ export default {
         {
           params: { page: this.pageIndex, size: this.pageSize },
           type: "get",
-          url: "/employee/findEmployeeList"
+          url: "/employee/findEmployeeList",
+          option:{enableMsg: false}
         },
         this
       ).then(

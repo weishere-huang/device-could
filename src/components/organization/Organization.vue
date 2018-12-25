@@ -123,7 +123,7 @@ export default {
       this.addShow = params;
     },
     toAdd(data) {
-      console.log(data);
+      console.log(this.nodedata);
       this.nodedata=data
       this.addShow = true;
       return false;
