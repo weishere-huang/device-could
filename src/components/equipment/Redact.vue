@@ -50,9 +50,10 @@
               title="修改部门"
               :visible.sync="dialogVisible1"
               width="300px"
-              style="overflow: hidden;"
+              
             >
-            <el-col :span="24" style="text-align:center;">
+            <div style="overflow: hidden;">
+              <el-col :span="24" style="text-align:center;">
               <el-cascader
                 placeholder="请选择"
                 :options="orgoptions"
@@ -64,16 +65,19 @@
                 :show-all-levels="false"
                 v-model="qqqqq"
                 @change="handleChange"
-                style="padding:10px;width:90%"
+                style="padding:10px 20px;width:100%"
               ></el-cascader>
             </el-col>
-              <div style="text-align:right;padding:10px;">
+            
+              <div style="text-align:right;padding:10px 20px;">
                 <el-button @click="dialogVisible1 = false;chengeOrgCode='';chengeOrgname=''">取 消</el-button>
               <el-button
                 type="primary"
                 @click="orgsave"
               >确 定</el-button>
               </div>
+            </div>
+            
             </el-dialog>
 
           </el-form-item>
@@ -124,10 +128,10 @@
                       :show-all-levels="false"
                       v-model="classfynm"
                       @change="handleChange2"
-                      style="padding:10px;width:90%"
+                      style="padding:10px 20px;width:100%"
                     ></el-cascader>
                 </el-col>
-                  <div style="text-align:right;padding:10px;">
+                  <div style="text-align:right;padding:10px 20px;">
                    <el-button @click="dialogVisible3 = false;chengectg='';chengectgname=''" >取 消</el-button>
                     <el-button
                       type="primary"
