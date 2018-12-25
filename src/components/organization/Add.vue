@@ -7,18 +7,35 @@
       <ul>
         <li>
           <label for="">名称：</label>
-          <el-input type="text" size="small" v-model="orgname"></el-input>
+          <el-input
+            type="text"
+            size="small"
+            v-model="orgname"
+          ></el-input>
         </li>
         <li>
           <label for="">类型：</label>
-          <el-select style="width:70%" v-model="value" placeholder="请选择">
-            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+          <el-select
+            style="width:70%"
+            v-model="value"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
             </el-option>
           </el-select>
         </li>
         <li>
           <label style="display:inline-block;height:60px;vertical-align:top;">备注：</label>
-          <textarea type="textarea" style="width:70%;height:60px;" v-model="orgInfo"></textarea>
+          <textarea
+            type="textarea"
+            style="width:70%;height:60px;"
+            v-model="orgInfo"
+          ></textarea>
 
         </li>
         <li style="text-align:center;">
@@ -26,7 +43,11 @@
             size="small"
             @click="addHide"
           >取消</el-button>
-          <el-button size="small" @click="add" type="primary">保存</el-button>
+          <el-button
+            size="small"
+            @click="add"
+            type="primary"
+          >保存</el-button>
         </li>
       </ul>
     </div>
@@ -62,9 +83,9 @@ export default {
           value: 5,
           label: "产线"
         }
-      ]
-    }else if (this.nodedata.organizeType=="公司") {
-       option=[
+      ];
+    } else if (this.nodedata.organizeType == "公司") {
+      option = [
         {
           value: 2,
           label: "工厂"
@@ -81,9 +102,9 @@ export default {
           value: 5,
           label: "产线"
         }
-      ]
-    }else if (this.nodedata.organizeType=="工厂") {
-       option=[
+      ];
+    } else if (this.nodedata.organizeType == "工厂") {
+      option = [
         {
           value: 3,
           label: "部门"
@@ -96,9 +117,9 @@ export default {
           value: 5,
           label: "产线"
         }
-      ]
-    }else if (this.nodedata.organizeType=="部门") {
-       option=[
+      ];
+    } else if (this.nodedata.organizeType == "部门") {
+      option = [
         {
           value: 4,
           label: "车间"
@@ -107,9 +128,9 @@ export default {
           value: 5,
           label: "产线"
         }
-      ]
-    }else if (this.nodedata.organizeType=="车间") {
-       option=[
+      ];
+    } else if (this.nodedata.organizeType == "车间") {
+      option = [
         {
           value: 3,
           label: "部门"
@@ -118,9 +139,9 @@ export default {
           value: 5,
           label: "产线"
         }
-      ]
-    }else if (this.nodedata.organizeType=="产线") {
-       option=[
+      ];
+    } else if (this.nodedata.organizeType == "产线") {
+      option = [
         {
           value: 3,
           label: "部门"
@@ -160,9 +181,8 @@ export default {
       //   }
       // ],
       value: "",
-      orgname:"",
-      orgInfo:""
-
+      orgname: "",
+      orgInfo: ""
     };
   },
   created:function(){
@@ -185,10 +205,10 @@ export default {
       console.log(value);
     },
     addHide() {
-      this.orgname=""
-      this.value=""
-      this.orgInfo=""
-      this.$emit("addHide",false)
+      this.orgname = "";
+      this.value = "";
+      this.orgInfo = "";
+      this.$emit("addHide", false);
     },
     add() {
       //添加组织机构
@@ -200,23 +220,26 @@ export default {
         organizeInfo: this.orgInfo
       });
       console.log(this.nodedata);
-      this.Axios({
-        url: "/organize/add",
-        params: data,
-        type: "post",
-        // option: {
-        //   enableMsg: false
-        // }
-      },this)
+      this.Axios(
+        {
+          url: "/organize/add",
+          params: data,
+          type: "post"
+          // option: {
+          //   enableMsg: false
+          // }
+        },
+        this
+      )
         //.post(this.global.apiSrc + "/organize/add", data)
         .then(result => {
-          if(result.data.code === 200){
+          if (result.data.code === 200) {
             console.log(result.data);
-            this.orgname=""
-            this.value=""
-            this.orgInfo=""
+            this.orgname = "";
+            this.value = "";
+            this.orgInfo = "";
             this.reload();
-          }else{
+          } else {
             this.$message("添加失败");
             console.log(result.data);
           }
