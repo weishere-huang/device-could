@@ -19,6 +19,7 @@
           <el-input
             placeholder="用户名/手机号"
             v-model="loginList.userName"
+            autofocus
           >
             <i
               class='iconfont icon-fonts-user'
