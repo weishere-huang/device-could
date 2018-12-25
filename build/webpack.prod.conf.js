@@ -29,6 +29,11 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
+    //打包优化
+    // new webpack.DllReferencePlugin({
+    //   context: '.',
+    //   manifest: require("./dist/bundle.manifest.json"),
+    // }),
     new webpack.DefinePlugin({
       'process.env': env,
       versionInfo:new Date().getTime()

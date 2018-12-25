@@ -357,15 +357,17 @@ export default {
     left: 50%;
   }
   .content {
-    overflow: scroll;
+    overflow: auto;
+    padding: 10px;
     border: @border;
     border-radius: 5px;
     //max-height: 500px;
     .left {
-      width: 95%;
+      width: 99%;
       // padding: 10px;
       overflow: hidden;
-      float: left;
+      //float: left;
+      display: inline-block;
       margin-left: 5px;
       // text-align: center;
       // border: @border;
