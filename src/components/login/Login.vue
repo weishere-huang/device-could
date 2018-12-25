@@ -692,7 +692,7 @@ export default {
           url: "/user/login",
           params: data,
           type: "post",
-          option: { enableMsg: false, enableLoad: false },
+          option: { enableMsg: false },
           loadingConfig: {
             target: document.querySelector(".login")
           }
@@ -701,6 +701,7 @@ export default {
       ).then(
         result => {
           if (result.data.code === 200) {
+            location.reload();
             console.log(result.data);
             sessionStorage.token = result.data.data.tokenStr;
             sessionStorage.user = JSON.stringify(result.data.data);
@@ -710,8 +711,9 @@ export default {
             this.$store.commit("user", sessionStorage.getItem("user"));
             this.$store.commit("tokenSrc", result.data.data.tokenStr);
             console.log(this.$store.state.token.toeknNub);
+            // location.reload();
             this.$router.replace("/Home");
-            location.reload();
+            // location.reload();
           }
         },
         ({ type, info }) => {

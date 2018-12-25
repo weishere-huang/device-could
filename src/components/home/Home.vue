@@ -216,7 +216,10 @@ export default {
   methods: {},
   created() {
     this.userMsg=JSON.parse(sessionStorage.getItem("user"))
-    console.log(this.userMsg.name);
+    console.log(sessionStorage.getItem("user"));
+    this.$store.commit('tokenSrc',sessionStorage.getItem("token"))
+    console.log(this.$store.state.token.tokenNub);
+    console.log(this.$store.state.token.userMsg)
   }
 };
 </script>
