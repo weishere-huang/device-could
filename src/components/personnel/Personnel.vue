@@ -167,10 +167,10 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           componentName: "table-person"
-          // isResize: true
         }
       ],
       isHideList: false,
+      isPageIndex:1,
     };
   },
   methods: {
@@ -198,32 +198,29 @@ export default {
       }
     },
     search() {
-      if(this.searchs==""){
-        this.isPageOk=true;
-      }else{
-        this.isPageOk=false;
-      }
-      this.pageIndex = 1;
+      this.searchs==="" ?this.isPageOk=true :this.isPageOk=false;
+      this.isPageIndex===1 ?this.pageIndex = this.isPageIndex : this.pageIndex;
+      this.isPageIndex++;
       this.Axios(
         {
-          params: { condition: this.searchs },
+          params: { condition: this.searchs,
+            page:this.pageIndex,
+            size:this.pageSize
+          },
           type: "get",
           url: "/employee/search"
         },
         this
       ).then(
         response => {
-          if (this.searchs !== "") {
             this.pageNumber = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             for (let i in this.tableData) {
-              this.tableData[i].state =String(this.tableData[i].state)
-
+              this.tableData[i].state =String(this.tableData[i].state);
+              let date =  new Date(this.tableData[i].entryTime);
+              this.tableData[i].entryTime=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
             }
             this.tableDate = this.tableData;
-          } else {
-            this.pageChange(1);
-          }
         },
         ({ type, info }) => {}
       );
@@ -310,6 +307,9 @@ export default {
       this.getTableData();
       if (this.isPageOk) {
         this.load();
+        this.isPageIndex=1;
+      }else{
+        this.search();
       }
     },
     pageSizeChange(pageSize) {
@@ -317,6 +317,8 @@ export default {
       this.pageSize = pageSize;
       if (this.isPageOk) {
         this.load();
+      }else{
+        this.search();
       }
       this.getTableData();
     },
