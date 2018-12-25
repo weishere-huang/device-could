@@ -402,14 +402,16 @@ export default {
   },
   created() {
     this.load();
-    this.$route.matched[this.$route.matched.length-1].name ==="PersnnelAdd" ? this.isHideList=true:this.isHideList=false;
-    this.$route.params.id === undefined ? this.isHideList=false:this.isHideList=true;
+    if(this.$route.matched[this.$route.matched.length-1].name ==="PersnnelAdd"){
+      this.isHideList=true;
+    }else{
+      this.$route.params.id === undefined ? this.isHideList=false:this.isHideList=true
+    }
   },
   watch: {
     $route() {
-      let a=this.$route.matched.find(item=>(item.name==="PersnnelAdd"))?true:false;
-      let b=this.$route.params.id !== undefined ? true : false;
-      this.isHideList = a||b ?true:false;
+      this.$route.matched[this.$route.matched.length-1].name ==="PersnnelAdd"||
+      this.$route.params.id !== undefined ? this.isHideList =true: this.isHideList =false;
     }
   },
 };
