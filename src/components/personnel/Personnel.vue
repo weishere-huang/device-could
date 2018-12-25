@@ -412,6 +412,7 @@ export default {
     $route() {
       this.$route.matched[this.$route.matched.length-1].name ==="PersnnelAdd"||
       this.$route.params.id !== undefined ? this.isHideList =true: this.isHideList =false;
+      this.$refs.personnelTable.resize();
     }
   },
 };
