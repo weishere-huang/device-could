@@ -1,7 +1,9 @@
+let tokenNub = sessionStorage.getItem('token')
+let userMsg=JSON.parse(sessionStorage.getItem("user"))
 export default {
   state: {
-    tokenNub: "",
-    userMsg:""
+    tokenNub: tokenNub,
+    userMsg: userMsg
   },
   mutations: {
     tokenSrc(state, data) {

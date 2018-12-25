@@ -80,6 +80,10 @@ export default {
         {
           value: 4,
           label: "车间"
+        },
+        {
+          value: 5,
+          label: "产线"
         }
       ],
       orgname:"",

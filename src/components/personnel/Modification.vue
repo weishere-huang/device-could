@@ -420,13 +420,6 @@
           })
 
       },
-      // codeToName(organizeCode){
-      //   for (let i =0;i<this.options.length;i++){
-      //     if(this.options[i].code === organizeCode){
-      //       this.persnneladd.organizationName = this.options[i].name;
-      //     }
-      //   }
-      // },
       Personnel() {
         this.$router.push({
           path: "/Personnel"

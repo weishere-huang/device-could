@@ -8,26 +8,6 @@
           @click="PersnnelAdd"
         ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</el-button>
         <el-button size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
-        <!-- <el-button
-          size="small"
-          type="primary"
-          @click="updateEmployee"
-        >修改</el-button>
-        <el-button
-          size="small"
-          type="primary"
-          @click="disable"
-        >启用</el-button>
-        <el-button
-          size="small"
-          type="primary"
-          @click="enable"
-        >禁用</el-button>
-        <el-button
-          size="small"
-          type="primary"
-          @click="deleteEmployee"
-        >删除</el-button> -->
         <div class="search">
           <el-input
             type="search"
@@ -190,22 +170,18 @@ export default {
           // isResize: true
         }
       ],
-      isHideList: this.$route.params.id !== undefined
-        ? true
-        : false,
+      isHideList: false,
     };
   },
   methods: {
     customCompFunc(params) {
       this.userIds = params.rowData["id"];
       if (params.type === "change") {
-        console.log(params);
         if (params.rowData.state === "1") {
-          this.choice = params.rowData.id;
+          // this.choice = params.rowData.id;
           this.enable();
-
         } else if (params.rowData.state === "0") {
-          this.choice = params.rowData.id;
+          // this.choice = params.rowData.id;
           this.disable();
 
         }
@@ -253,9 +229,7 @@ export default {
       );
     },
     PersnnelAdd() {
-      this.$router.push({
-        path: "Personnel/PersnnelAdd"
-      });
+      this.$router.push({path: "Personnel/PersnnelAdd"});
     },
     modefication(rowIndex, rowData, column) {
       this.$router.push({path:"Personnel/Modification/" + rowData.id});
@@ -425,10 +399,11 @@ export default {
   },
   created() {
     this.load();
+    this.$route.matched[this.$route.matched.length-1].name ==="PersnnelAdd" ? this.isHideList=true:this.isHideList=false;
+    this.$route.params.id === undefined ? this.isHideList=false:this.isHideList=true;
   },
   watch: {
     $route() {
-      //debugger
       let a=this.$route.matched.find(item=>(item.name==="PersnnelAdd"))?true:false;
       let b=this.$route.params.id !== undefined ? true : false;
       this.isHideList = a||b ?true:false;
