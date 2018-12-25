@@ -680,6 +680,8 @@
             } else if (info.code === 400) {
               this.$message.error("账号或密码错误");
               this.$router.push({path: "/Login"});
+            }else{
+              this.$message.error("服务器异常，请稍后再试")
             }
           }
         );
@@ -776,7 +778,7 @@
               this.$message.error("用户名或手机号错误");
             }
             else {
-              this.$message.error("服务器异常，请联系管理员");
+              this.$message.error("服务器异常，请稍后再试");
             }
           }
         );
