@@ -607,6 +607,9 @@
     created() {
       this.listMaintenanceLevel();
       this.load();
+      let a=this.$route.matched.find(item=>(item.name==="TurnaroundPlansAdd"))?true:false;
+      let b=this.$route.params.id !== undefined ? true : false;
+      this.isHideList = a||b ?true:false;
     },
     components: {
       audit,
@@ -618,6 +621,7 @@
         let a=this.$route.matched.find(item=>(item.name==="TurnaroundPlansAdd"))?true:false;
         let b=this.$route.params.id !== undefined ? true : false;
         this.isHideList = a||b ?true:false;
+        this.$refs.turnaroundPlansTable.resize();
       }
     },
   };

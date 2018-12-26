@@ -611,6 +611,9 @@ export default {
   created() {
     this.listMaintenanceLevel();
     this.load();
+    let a=this.$route.matched.find(item=>(item.name==="UpkeepAdd"))?true:false;
+    let b=this.$route.params.id !== undefined ? true : false;
+    this.isHideList = a||b ?true:false;
   },
   components: {
     audit,
@@ -622,6 +625,7 @@ export default {
       let a=this.$route.matched.find(item=>(item.name==="UpkeepAdd"))?true:false;
       let b=this.$route.params.id !== undefined ? true : false;
       this.isHideList = a||b ?true:false;
+      this.$refs.upkeepTable.resize();
     }
   },
 };

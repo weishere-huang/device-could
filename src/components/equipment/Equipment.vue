@@ -159,12 +159,12 @@ export default {
       tableData: [{}],
       tableDate: [],
       columns: [
-        {
-          width: 40,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
+        // {
+        //   width: 40,
+        //   titleAlign: "center",
+        //   columnAlign: "center",
+        //   type: "selection"
+        // },
         {
           field: "deviceNo",
           title: "设备编号",
@@ -632,7 +632,7 @@ export default {
     }
   },
   mounted() {
-    $('.classifylist li').click(function (e) { 
+    $('.classifylist li').click(function (e) {
       console.log(this);
       $(this).toggleClass("active-color").siblings().removeClass("active-color")
     });
@@ -641,6 +641,9 @@ export default {
     this.findall();
     //this.findDeviceState();
     this.findAlldeviceClassify();
+    let a=this.$route.matched.find(item=>(item.name==="EquipmentAdd"))?true:false;
+    let b=this.$route.params.id !== undefined ? true : false;
+
   },
   components: {
     advanced
@@ -651,6 +654,7 @@ export default {
       let a=this.$route.matched.find(item=>(item.name==="EquipmentAdd"))?true:false;
       let b=this.$route.params.id !== undefined ? true : false;
       this.isHideList = a||b ?true:false;
+      this.$refs.equipmentTable.resize();
     }
   },
 };
