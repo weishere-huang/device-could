@@ -51,9 +51,9 @@
                 </el-tooltip>
                 </el-button>
               </span>
-            </span>
+            </span >
             <span class="state">{{ data.organizeType }}</span>
-            <span class="organizeInfo">{{ data.organizeInfo }}</span>
+            <span class="organizeInfo"  :title="data.organizeInfo">{{ data.organizeInfo }}</span>
           </span>
         </el-tree>
       </div>
