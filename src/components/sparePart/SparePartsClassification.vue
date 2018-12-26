@@ -131,7 +131,7 @@
           <el-button
             size="small"
             type="primary"
-            @click="Supdate"
+            @click="beforeUpdate"
           >确认修改</el-button>
         </el-form-item>
       </el-form>
@@ -166,7 +166,7 @@
           >取消</el-button>
           <el-button
             size="small"
-            @click="Sadd"
+            @click="beforeadd"
             type="primary"
           >保存</el-button>
         </el-form-item>
@@ -243,6 +243,22 @@ export default {
           ({type, info}) => {
           }
         );
+
+    },
+    beforeadd(){
+      if(this.addname===""){
+        this.$message.warning("请填写备件名称");
+      }else{
+        this.Sadd();
+      }
+
+    },
+    beforeUpdate(){
+      if(this.nodeCname ==="" ){
+        this.$message.warning("请填写备件名称");
+      }else{
+        this.Supdate();
+      }
 
     },
     Sadd(){

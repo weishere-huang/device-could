@@ -45,7 +45,7 @@
           >取消</el-button>
           <el-button
             size="small"
-            @click="add"
+            @click="beforeAdd"
             type="primary"
           >保存</el-button>
         </li>
@@ -343,6 +343,14 @@ export default {
         ]
       }
       this.options=option;
+    },
+    beforeAdd(){
+      if(this.orgname ==="" || this.value ===""){
+        this.$message.warning("请完整填写信息");
+      }else{
+        this.add();
+      }
+
     }
   }
 };

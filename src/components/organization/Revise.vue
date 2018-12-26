@@ -48,7 +48,7 @@
           >取消</el-button>
           <el-button
             size="small"
-            @click="update"
+            @click="beforeUpdate"
             type="primary"
           >保存</el-button>
         </li>
@@ -155,6 +155,14 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    beforeUpdate(){
+      if(this.chengedata.name ==="" || this.chengedata.organizeType ===""){
+        this.$message.warning("请完整填写信息");
+      }else{
+        this.update();
+      }
+
     }
   }
 };
