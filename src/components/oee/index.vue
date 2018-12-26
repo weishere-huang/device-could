@@ -299,6 +299,7 @@ export default {
     $route() {
       //debugger
       this.isHideList=this.$route.matched.find(item=>(item.name==="OeeDetails"))?true:false;
+      this.$refs.oeeTable.resize();
       //if(!this.hasLoaded)this.dataInit();
     }
   },
@@ -368,6 +369,7 @@ export default {
         }, 500);
       });
       this.hasLoaded=true;
+      this.isHideList=this.$route.matched.find(item=>(item.name==="OeeDetails"))?true:false;
       this.Axios(
         {
           params: {
@@ -398,7 +400,7 @@ export default {
             pageNumber:_d.pageable.pageNumber,
             pageSize:_d.pageable.pageSize,
             total:_d.totalElements}
-            this.isHideList=this.$route.matched.find(item=>(item.name==="OeeDetails"))?true:false;
+            //this.isHideList=this.$route.matched.find(item=>(item.name==="OeeDetails"))?true:false;
         },
         ({ type, info }) => {}
       );
