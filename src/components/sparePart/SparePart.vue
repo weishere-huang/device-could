@@ -36,6 +36,7 @@
           row-hover-color="#eee"
           row-click-color="#edf7ff"
           @on-custom-comp="customCompFunc"
+          ref="sparePartTable"
         ></v-table>
         <div
           class="mt20 mb20 bold"
@@ -254,6 +255,7 @@ export default {
     //备品备件接口
     basedelete(){
       //批量删除备件基础信息接口1
+
       let qs = require("qs");
       let data = qs.stringify({
         ids: this.ids
@@ -280,6 +282,11 @@ export default {
     },
     baselist(){
       //备品备件列表接口1
+      EventBus.$on("sideBarTroggleHandle", isCollapse => {
+        window.setTimeout(() => {
+          this.$refs.sparePartTable.resize();
+        }, 500);
+      });
       this.Axios({
         params: {
           page: this.pageIndex,
@@ -330,7 +337,9 @@ export default {
   created(){
     //默认加载
     this.baselist();
-
+    let a=this.$route.matched.find(item=>(item.name==="SparePartAdd"))?true:false;
+    let b=this.$route.params.id !== undefined ? true : false;
+    this.isHideList = a||b ?true:false;
   },
   watch: {
     $route() {
@@ -338,6 +347,7 @@ export default {
       let a=this.$route.matched.find(item=>(item.name==="SparePartAdd"))?true:false;
       let b=this.$route.params.id !== undefined ? true : false;
       this.isHideList = a||b ?true:false;
+      this.$refs.sparePartTable.resize();
     }
   },
 };

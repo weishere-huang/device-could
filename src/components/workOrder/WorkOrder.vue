@@ -370,6 +370,7 @@
       $route() {
         //debugger
         this.isHideList=this.$route.params.id !== undefined ? true : false;
+        this.$refs.workOrderTable.resize();
       }
     },
   };
