@@ -109,7 +109,7 @@
                       slot="header"
                       class="clearfix"
                     >
-                      <span class="cardItem-header">
+                      <span :title="item.deviceName" class="cardItem-header ellipsis">
                         <el-tooltip
                           v-if="item.warnLevel===1"
                           class="item"
@@ -141,9 +141,13 @@
                       </span>
                       <router-link
                         :class="'g-link f14'"
-                        style="float: right; padding: 3px 0"
+                        style="float: right; "
                         :to="{path:'/Monit/'+item.id}"
-                      >运行日志</router-link>
+                      >
+                      <el-tooltip effect="dark" content="查看日志" placement="top">
+                        <i style="font-size:18px" class="iconfont">&#xe60d;</i>
+                      </el-tooltip>
+                      </router-link>
                     </div>
                     <div class="text item">
                       <p :style="'border-color:'+(item.runState===0?'green':item.runState===1?'red':item.runState===2?'yellow':item.runState===3?'darkgray':'#CEC9C9')">编号：{{item.deviceNo}}</p>
@@ -621,6 +625,8 @@ export default {
     margin: 5px;
     .cardItem-header {
       font-size: 16px;
+      display: inline-block;
+      width: calc(100% - 20px);
     }
     p {
       padding-bottom: 10px;
