@@ -1146,7 +1146,7 @@ export default {
   top: 0px !important;
   right: 14px !important;
 }
-.v-modal{
-  z-index: -1 !important;
-}
+// .v-modal{
+//   z-index: -1 !important;
+// }
 </style>

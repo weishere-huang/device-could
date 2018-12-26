@@ -75,12 +75,12 @@ export default {
       userIds: "",
       values: "",
       columns: [
-        {
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
+        // {
+        //   width: 50,
+        //   titleAlign: "center",
+        //   columnAlign: "center",
+        //   type: "selection"
+        // },
         {
           field: "employeeNo",
           title: "员工编号",
@@ -103,16 +103,16 @@ export default {
         {
           field: "phone",
           title: "手机号",
-          width: 80,
+          width: 100,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true,
           overflowTitle: true
         },
         {
           field: "userName",
           title: "用户名",
-          width: 80,
+          width: 120,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
@@ -121,7 +121,7 @@ export default {
         {
           field: "organizeName",
           title: "组织单位/部门",
-          width: 250,
+          width: 180,
           titleAlign: "center",
           columnAlign: "left",
           isResize: true,
@@ -139,11 +139,11 @@ export default {
         {
           field: "entryTime",
           title: "入职日期",
-          width: 80,
+          width: 100,
           titleAlign: "center",
-          columnAlign: "left",
+          columnAlign: "center",
           isResize: true,
-          overflowTitle: true
+          overflowTitle: true,
         },
         {
           field: "state",
@@ -163,7 +163,7 @@ export default {
         {
           field: "custome-adv",
           title: "操作",
-          width: 130,
+          width: 80,
           titleAlign: "center",
           columnAlign: "center",
           componentName: "table-person"
@@ -190,7 +190,7 @@ export default {
        this.deleteEmployee();
         this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
-        this.$router.push("/Modification/"+this.userIds);
+        this.$router.push({path:"Personnel/Modification/" +this.userIds});
       } else if (params.type === "stop") {
         this.enable();
       } else if (params.type === "start") {

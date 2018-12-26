@@ -1,7 +1,7 @@
 
 <template>
   <div class="redact">
-    <div class="addCase">
+    <div class="add-case">
       <div class="top">
         <el-row>
           <el-button
@@ -482,27 +482,27 @@ export default {
 
       editableTabs: [
         {
-          workerTypeName: "负责人员",
+          workerTypeName: "负责",
           workerType: '0',
           content: []
         },
         {
-          workerTypeName: "维修人员",
+          workerTypeName: "维修",
           workerType: '1',
           content: []
         },
         {
-          workerTypeName: "检修人员",
+          workerTypeName: "检修",
           workerType: '2',
           content: []
         },
         {
-          workerTypeName: "保养人员",
+          workerTypeName: "保养",
           workerType: '3',
           content: []
         },
         {
-          workerTypeName: "操作人员",
+          workerTypeName: "操作",
           workerType: '4',
           content: []
         }
@@ -877,7 +877,7 @@ export default {
 @border: 1px solid #dde2eb;
 .redact {
   // padding-left: 180px;
-  .addCase {
+  .add-case {
     padding: 10px;
     .top {
       padding: 10px;
@@ -966,6 +966,7 @@ export default {
   }
   .el-cascader__label{
     top:10px !important;
+    left: 18px !important;
   }
 }
 </style>

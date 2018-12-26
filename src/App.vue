@@ -415,9 +415,7 @@ export default {
 .el-dialog__body {
   padding: 0px !important;
 }
-.el-tabs__item {
-  padding: 0 7.5px;
-}
+
 .el-submenu__title {
   height: 50px !important;
   line-height: 50px !important;
