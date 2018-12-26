@@ -143,7 +143,7 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-          overflowTitle: true
+          overflowTitle: true,
         },
         {
           field: "state",
