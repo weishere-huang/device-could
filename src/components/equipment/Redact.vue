@@ -659,7 +659,7 @@ export default {
               console.log(result);
               console.log("update");
               console.log(result.data);
-              this.$router.push("/Equipment");
+              this.$router.push({path:"/Equipment"});
             } else if (result.data.code == 410) {
               this.fileList1= JSON.parse(this.fileList1);
               this.$message.warning("该设备编号以存在,请修改!!!");
