@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "dll":"webpack --config build/webpack.dll.config.js",
+    "dll": "webpack --config build/webpack.dll.config.js",
     "build": "node build/build.js"
   },
   "dependencies": {
@@ -16,6 +16,7 @@
     "element-ui": "^2.4.9",
     "jquery": "^3.3.1",
     "normalize.css": "^8.0.1",
+    "pinyin": "^2.8.3",
     "vue": "^2.5.2",
     "vue-lazyload": "^1.2.6",
     "vue-router": "^3.0.1",
