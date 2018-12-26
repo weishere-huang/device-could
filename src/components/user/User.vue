@@ -91,16 +91,16 @@ export default {
       totalNub: "",
       tableDate: [],
       columns: [
-        {
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
+        // {
+        //   width: 50,
+        //   titleAlign: "center",
+        //   columnAlign: "center",
+        //   type: "selection"
+        // },
         {
           field: "enterpriseName",
           title: "企业名称",
-          width: 40,
+          width: 180,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
@@ -147,7 +147,7 @@ export default {
         {
           field: "state",
           title: "用户状态",
-          width: 80,
+          width: 40,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
@@ -162,7 +162,7 @@ export default {
         {
           field: "custome-adv",
           title: "操作",
-          width: 100,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           componentName: "table-user"

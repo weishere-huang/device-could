@@ -75,12 +75,12 @@ export default {
       userIds: "",
       values: "",
       columns: [
-        {
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
+        // {
+        //   width: 50,
+        //   titleAlign: "center",
+        //   columnAlign: "center",
+        //   type: "selection"
+        // },
         {
           field: "employeeNo",
           title: "员工编号",

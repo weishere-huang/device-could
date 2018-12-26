@@ -192,7 +192,10 @@ export default {
         {
           params: {},
           type: "get",
-          url: "/organize/allOrganize"
+          url: "/organize/allOrganize",
+          option: {
+            enableMsg: false
+          }
         },
         this
       )
@@ -293,7 +296,7 @@ export default {
       this.revise1 = !this.revise1;
     },
     warningdelete(nodeId) {
-      this.$confirm("确定要删除吗?", "提示", {
+      this.$confirm("该操作将会删除(如设备、员工、计划等)数据，确认删除吗？", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
