@@ -195,7 +195,7 @@
             </div>
             <div class="center-list">
               <div style="padding:10px;">
-                <el-input type="search" size="mini" v-model="searchPerson" style="width:50%;" placeholder="关键词：设备编号、备件名称、型号/规格"></el-input>
+                <el-input type="search" size="mini" v-model="searchPerson" style="width:55%;" placeholder="关键词：设备编号、备件名称、型号/规格"></el-input>
                 <el-button @click="goDownEntryInfo" type="primary"  size="mini">
                   <i class='el-icon-search'></i>&nbsp;查询</el-button>
               </div>

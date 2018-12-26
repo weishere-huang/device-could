@@ -81,7 +81,7 @@
       // border-radius: 5px;
       // box-shadow: 4px 4px 10px #999999;
       .top {
-        width: 100%;
+        width: 40%;
         height: 30px;
         line-height: 30px;
         padding: 0 10px;

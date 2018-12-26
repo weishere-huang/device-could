@@ -441,6 +441,8 @@
         }
       },
       toRoleAdd(){
+        this.form.name = this.form.name.split(/ /g,"");
+        this.form.desc = this.form.desc.split(/ /g,"");
         this.dialogFormVisible = false;
         let qs = require("qs");
         let data = qs.stringify({

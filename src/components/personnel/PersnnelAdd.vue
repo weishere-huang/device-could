@@ -5,19 +5,18 @@
         <el-button size="small"
                    type="primary" @click="tback" icon="el-icon-arrow-left">返回</el-button>
         <el-button size="small"
-                   type="primary" @click="employeeAdd('persnneladd')" >
+                   type="primary" @click="employeeAdd('persnnelAdd')" >
           <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
       </div>
       <div class="botton">
         <div class="essential">
           <p class="title">基本信息（必填）</p>
-          <el-form :label-position="labelPosition"  ref="persnneladd" :model="persnneladd" :rules="personValidate" label-width="100px" style="width:100%;margin-top:26px"  size="mini">
+          <el-form :label-position="labelPosition"  ref="persnnelAdd" :model="persnneladd" :rules="personValidate" label-width="100px" style="width:100%;margin-top:26px"  size="mini">
             <el-col :span="14">
               <el-form-item label="姓名：" prop="name" style="">
                 <el-input type="text" style="width:70%" autofocus v-model="persnneladd.name" ref="name"></el-input>
               </el-form-item>
             </el-col>
-            <span style="font-size: 15px">默认密码为：<i style="color: #666666">123456</i></span>
             <el-col :span="11">
               <el-form-item label="性别：" style="">
                 <el-radio v-model="persnneladd.gender" label="1">男</el-radio>
@@ -280,8 +279,7 @@
             }],
           birthday:[{required: true, message: "请选择出生日期", trigger: "blur"}],
           position:[{required: true, message: "岗位不能为空", trigger: "blur"}],
-          email:[
-            {
+          email:[{
             validator: (rule, value, callback) => {
               let regEmail= /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
               if(value!=="") {
@@ -430,21 +428,22 @@
         return tree;
       },
       employeeAdd(formName){
-        if(this.persnneladd.organizationName == ""){
+        console.log(formName)
+        if(this.persnneladd.organizationName === ""){
           this.$message.error("请选择组织机构");
         }else {
+          console.log(this.$refs[formName].validate())
           this.$refs[formName].validate(valid => {
+            console.log(valid);
             if (valid) {
               this.toEmployeeAdd();
             } else {
               this.$message.error("请填写完信息");
-              return false;
             }
           });
         }
       },
       toEmployeeAdd() {
-        console.log(this.fileList);
         let file = [];
         for(let i in this.fileList){
           file.push({
@@ -499,6 +498,7 @@
         this.$router.push({
           path: "/Personnel"
         });
+        this.$store.commit("personnel","y")
       },
     },
     created() {

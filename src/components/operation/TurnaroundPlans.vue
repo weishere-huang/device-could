@@ -9,22 +9,6 @@
           @click="toPansAdd"
         ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</el-button>
         <el-button size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
-        <!--<el-button-->
-        <!--size="small"-->
-        <!--type="primary"-->
-        <!--@click="outerVisibleIsOk"-->
-        <!--:disabled="disabled"-->
-        <!--&gt;审核</el-button>-->
-        <!-- <el-button
-          size="small"
-          type="primary"
-          @click="stopDiscontinuation"
-        >停止</el-button>
-        <el-button
-          size="small"
-          type="primary"
-          @click="deleteMaintenance"
-        >删除</el-button> -->
       </div>
       <div class="bottom">
         <div>
@@ -384,7 +368,6 @@
         ).then(
           response => {
             this.pageNumber = response.data.data.totalElements;
-            // console.log(response.data.data);
             this.loadValue(response.data.data.content);
           },
           ({ type, info }) => {}
@@ -427,12 +410,10 @@
           if (this.tableData[i].state === 14) {
             this.tableData[i].state = "已完成";
           }
-          if (this.tableData[i].maintenanceType === 0) {
-            this.tableData[i].maintenanceType = "维修";
-          }
-          if (this.tableData[i].maintenanceType === 1) {
+          this.tableData[i].maintenanceType === 0 ?
+            this.tableData[i].maintenanceType = "维修" :
             this.tableData[i].maintenanceType = "保养";
-          }
+
           if (this.tableData[i].frequencyType === -1) {
             this.tableData[i].frequencyType = "单次";
           }
@@ -445,11 +426,9 @@
           if (this.tableData[i].frequencyType === 3) {
             this.tableData[i].frequencyType = "月";
           }
-          for (let j in this.planLevel) {
-            if (this.tableData[i].maintenanceLevel === this.planLevel[j].id) {
-              this.tableData[i].maintenanceLevel = this.planLevel[j].levelDesc;
-            }
-          }
+          this.planLevel.forEach((item)=>{
+            this.tableData[i].maintenanceLevel === item.id ? this.tableData[i].maintenanceLevel=item.levelDesc:"";
+          });
         }
       },
       listMaintenanceLevel() {
@@ -550,11 +529,8 @@
       //审核操作
       submitAudit(){
         if (this.formLabelAlign.radio!==1){
-          if (this.formLabelAlign.type ||this.toAudit !=="") {
-            this.toSubmitAudit();
-          }else{
-            this.$message.error('请选择终审或添加下一审核人')
-          }
+          this.formLabelAlign.type ||this.toAudit !=="" ?
+            this.toSubmitAudit() : this.$message.error('请选择终审或添加下一审核人');
         }else if(this.formLabelAlign.desc!==""){
           this.toSubmitAudit();
         }else{
@@ -617,7 +593,6 @@
     },
     watch: {
       $route() {
-        //debugger
         let a=this.$route.matched.find(item=>(item.name==="TurnaroundPlansAdd"))?true:false;
         let b=this.$route.params.id !== undefined ? true : false;
         this.isHideList = a||b ?true:false;
@@ -684,7 +659,6 @@
   @Danger: #f56c6c;
   @Info: #dde2eb;
   .turnaround-plans {
-    // padding-left: 220px;
     .userCase {
       width: 100%;
       padding: 10px;

@@ -225,7 +225,7 @@
                   type="search"
                   size="mini"
                   v-model="searchPerson"
-                  style="width:50%;"
+                  style="width:55%;"
                   placeholder="关键词：设备编号、备件名称、型号/规格"
                 ></el-input>
                 <el-button type="primary" @click="goDownEntryInfo" size="mini">
