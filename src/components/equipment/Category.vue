@@ -485,7 +485,7 @@ export default {
     .remarks {
       float: right;
       width: 400px;
-      padding: 0 20px;
+      padding: 0 ;
       //   border-bottom: 1px solid #dde2eb;
     }
   }
