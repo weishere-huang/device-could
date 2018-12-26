@@ -414,13 +414,13 @@ export default {
             console.log("查询所有组织机构");
             console.log(result.data);
             console.log(result.data.data);
-            let pcode = Math.min.apply(null, (result.data.data).map((item)=>{return item.parentCode}));
+            let pcode = Math.min.apply(null, (result.data.data).map((item)=>{return item.parentCode }));
             let arr = this.filterArray(result.data.data, pcode);
             console.log(arr);
             //this.data2 = this.filterArray(result.data.data,1000);
             this.data2 = arr;
 
-            this.orgcode=result.data.data[0].code;
+            this.orgcode=result.data.data.find(item=>item.organizeType===1).code;
             this.findpeopler();
           },
           ({ type, info }) => {
