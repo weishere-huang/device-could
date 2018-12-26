@@ -264,7 +264,7 @@
               </div>
               <ul>
                 <h6>已选择</h6>
-                <li v-model="personListValue" v-for="value in personListValue" :key="value">
+                <li v-for="(value,index) in personListValue" :key="index">
                   {{value.partName}}
                   <span :id="value.id" @click="basicAdd($event)" class="el-icon-circle-close-outline"></span>
                 </li>
@@ -968,7 +968,9 @@
             this.findAlldeviceClassify();
             this.addMaterielValue(response.data.data.content);
             this.pageNumber = response.data.data.totalElements;
-            this.personListValue = (this.personListValue||[]).concat(this.workSheetMaterialTableData);
+            this.workSheetMaterialTableData.map((item)=>{
+              this.personListValue.push(item)
+            });
           },
           ({type, info}) => {
 
@@ -1088,16 +1090,20 @@
       //保存工单物料到数据库
       insertPart(){
         let isOk= "";
-        for (let i in this.workSheetMaterialTableData){
-          if(this.workSheetMaterialTableData[i].planCount==0){
-            isOk = false;
-            this.$message.error(this.workSheetMaterialTableData[i].partName+'物料未填入计划数量');
-            break;
-          }else{
-            isOk=true;
+        if(this.workSheetMaterialTableData.length>0) {
+          for (let i in this.workSheetMaterialTableData) {
+            if (this.workSheetMaterialTableData[i].planCount == 0) {
+              isOk = false;
+              this.$message.error(this.workSheetMaterialTableData[i].partName + '物料未填入计划数量');
+              break;
+            }else{
+              isOk=true;
+            }
           }
+          isOk? this.toInsertPart():"";
+        }else if(isOk){
+          this.toInsertPart()
         }
-        if(isOk)this.toInsertPart()
       },
 
       toInsertPart(){
