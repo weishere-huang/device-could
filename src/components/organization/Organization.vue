@@ -123,7 +123,7 @@ export default {
       this.addShow = params;
     },
     toAdd(data) {
-      console.log(data);
+      console.log(this.nodedata);
       this.nodedata=data
       this.addShow = true;
       return false;
@@ -215,6 +215,9 @@ export default {
               }
               if (result.data.data[i].organizeType === 4) {
                 result.data.data[i].organizeType = "车间";
+              }
+              if (result.data.data[i].organizeType === 5) {
+                result.data.data[i].organizeType = "产线";
               }
             }
             let arr = Math.min.apply(null, (result.data.data).map((item)=>{return item.parentCode}));
@@ -357,15 +360,17 @@ export default {
     left: 50%;
   }
   .content {
-    overflow: scroll;
+    overflow: auto;
+    padding: 10px;
     border: @border;
     border-radius: 5px;
     //max-height: 500px;
     .left {
-      width: 95%;
+      width: 99%;
       // padding: 10px;
       overflow: hidden;
-      float: left;
+      //float: left;
+      display: inline-block;
       margin-left: 5px;
       // text-align: center;
       // border: @border;

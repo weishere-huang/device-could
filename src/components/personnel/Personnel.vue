@@ -8,26 +8,6 @@
           @click="PersnnelAdd"
         ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</el-button>
         <el-button size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
-        <!-- <el-button
-          size="small"
-          type="primary"
-          @click="updateEmployee"
-        >修改</el-button>
-        <el-button
-          size="small"
-          type="primary"
-          @click="disable"
-        >启用</el-button>
-        <el-button
-          size="small"
-          type="primary"
-          @click="enable"
-        >禁用</el-button>
-        <el-button
-          size="small"
-          type="primary"
-          @click="deleteEmployee"
-        >删除</el-button> -->
         <div class="search">
           <el-input
             type="search"
@@ -174,7 +154,7 @@ export default {
           isResize: true,
           overflowTitle: true,
           formatter: function(rowData, rowIndex, pagingIndex, field) {
-            return rowData.state === "0"
+              return rowData.state === "0"
               ? "正常"
               : "停用"
           },
@@ -187,25 +167,21 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           componentName: "table-person"
-          // isResize: true
         }
       ],
-      isHideList: this.$route.params.id !== undefined
-        ? true
-        : false,
+      isHideList: false,
+      isPageIndex:1,
     };
   },
   methods: {
     customCompFunc(params) {
       this.userIds = params.rowData["id"];
       if (params.type === "change") {
-        console.log(params);
         if (params.rowData.state === "1") {
-          this.choice = params.rowData.id;
+          // this.choice = params.rowData.id;
           this.enable();
-
         } else if (params.rowData.state === "0") {
-          this.choice = params.rowData.id;
+          // this.choice = params.rowData.id;
           this.disable();
 
         }
@@ -222,40 +198,35 @@ export default {
       }
     },
     search() {
-      if(this.searchs==""){
-        this.isPageOk=true;
-      }else{
-        this.isPageOk=false;
-      }
-      this.pageIndex = 1;
+      this.searchs==="" ?this.isPageOk=true :this.isPageOk=false;
+      this.isPageIndex===1 ?this.pageIndex = this.isPageIndex : this.pageIndex;
+      this.isPageIndex++;
       this.Axios(
         {
-          params: { condition: this.searchs },
+          params: { condition: this.searchs,
+            page:this.pageIndex,
+            size:this.pageSize
+          },
           type: "get",
           url: "/employee/search"
         },
         this
       ).then(
         response => {
-          if (this.searchs !== "") {
             this.pageNumber = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             for (let i in this.tableData) {
-              this.tableData[i].state =String(this.tableData[i].state)
-
+              this.tableData[i].state =String(this.tableData[i].state);
+              let date =  new Date(this.tableData[i].entryTime);
+              this.tableData[i].entryTime=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
             }
             this.tableDate = this.tableData;
-          } else {
-            this.pageChange(1);
-          }
         },
         ({ type, info }) => {}
       );
     },
     PersnnelAdd() {
-      this.$router.push({
-        path: "Personnel/PersnnelAdd"
-      });
+      this.$router.push({path: "Personnel/PersnnelAdd"});
     },
     modefication(rowIndex, rowData, column) {
       this.$router.push({path:"Personnel/Modification/" + rowData.id});
@@ -297,7 +268,9 @@ export default {
         response => {
           this.load();
         },
-        ({ type, info }) => {}
+        ({ type, info }) => {
+          this.load()
+        }
       );
     },
     selectGroupChange(selection) {
@@ -336,6 +309,9 @@ export default {
       this.getTableData();
       if (this.isPageOk) {
         this.load();
+        this.isPageIndex=1;
+      }else{
+        this.search();
       }
     },
     pageSizeChange(pageSize) {
@@ -343,6 +319,8 @@ export default {
       this.pageSize = pageSize;
       if (this.isPageOk) {
         this.load();
+      }else{
+        this.search();
       }
       this.getTableData();
     },
@@ -370,7 +348,8 @@ export default {
         {
           params: { page: this.pageIndex, size: this.pageSize },
           type: "get",
-          url: "/employee/findEmployeeList"
+          url: "/employee/findEmployeeList",
+          option:{enableMsg: false}
         },
         this
       ).then(
@@ -425,13 +404,17 @@ export default {
   },
   created() {
     this.load();
+    if(this.$route.matched[this.$route.matched.length-1].name ==="PersnnelAdd"){
+      this.isHideList=true;
+    }else{
+      this.$route.params.id === undefined ? this.isHideList=false:this.isHideList=true
+    }
   },
   watch: {
     $route() {
-      //debugger
-      let a=this.$route.matched.find(item=>(item.name==="PersnnelAdd"))?true:false;
-      let b=this.$route.params.id !== undefined ? true : false;
-      this.isHideList = a||b ?true:false;
+      this.$route.matched[this.$route.matched.length-1].name ==="PersnnelAdd"||
+      this.$route.params.id !== undefined ? this.isHideList =true: this.isHideList =false;
+      this.$refs.personnelTable.resize();
     }
   },
 };

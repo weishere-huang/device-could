@@ -13,19 +13,21 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        // target: 'http://www.hyazi.com:9881',
+        //target: 'http://www.hyazi.com:9881',
         //target: 'http://localhost:8888',
         target: 'http://118.25.217.48:9880',
+        //target:'http://192.168.1.104:9880',
         pathRewrite: {
           "^/api": ""
-        },
+        }, 
+
         changeOrigin: true,
         secure: false
       }
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '192.168.1.134', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,

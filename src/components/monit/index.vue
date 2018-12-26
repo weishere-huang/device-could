@@ -376,7 +376,7 @@ export default {
         chartLeft.setOption({
           title: {
             text: "设备基本状态",
-            subtext: "统计设备量：" + baseState.count || 0,
+            subtext: "统计设备量：" + (baseState.count || 0),
             x: "center"
           },
           tooltip: {
@@ -390,11 +390,11 @@ export default {
           },
           series: [
             {
-              name: "设备状态",
+              name: "设备基本状态",
               type: "pie",
               radius: "55%",
               center: ["50%", "60%"],
-              stillShowZeroSum: false,
+              //stillShowZeroSum: false,
               data: [
                 {
                   value: baseState.normal || 0,
@@ -435,7 +435,7 @@ export default {
         chartRight.setOption({
           title: {
             text: "设备预警状态",
-            subtext: "统计设备量：" + warnState.count,
+            subtext: "统计设备量：" + (warnState.count || 0),
             x: "center"
           },
           tooltip: {
@@ -449,7 +449,7 @@ export default {
           },
           series: [
             {
-              name: "设备状态",
+              name: "设备报警状态",
               type: "pie",
               radius: "55%",
               center: ["50%", "60%"],
@@ -490,12 +490,6 @@ export default {
             }
           ]
         });
-        // eConsole(param) {
-        //   if (param.data.name === "正常运行") {
-        //     this.basicStateCount = 0;
-        //   }
-        //   console.log(param.data.name);
-        // }
         chartLeft.on("click", function (param) { 
           if (param.data.name === "正常运行") {
             self.basicStateCount = 0;
@@ -509,7 +503,7 @@ export default {
             self.basicStateCount = 4;
           }
           self.type=0
-          console.log(param.data.name,self.basicStateCount);
+          //console.log(param.data.name,self.basicStateCount);
           self.getEquList()
          });
          chartRight.on("click", function (param) { 

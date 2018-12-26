@@ -49,12 +49,16 @@ export default ({ url, type, params, config, option, loadingConfig }, vue) => {
                             //success && success(res.data);
                             //option.enableMsg && Message.success({message:option.successMsg, customClass:'e-message', duration:1500});
                             resolve(res);
+                        } else if(res.status === 200 && res.data.code >= 300&&res.data.code < 400){
+                            Message.error({ message: `登录失效，即将跳转至登录页`, customClass: 'e-message', duration: 5000 });
+                            window.setTimeout(()=>{
+                                vue.$router.replace("/Login");
+                            },1000);
                         } else {
                             //console.log(res.data.msg);
                             Message.error({ message: `${res.data.msg}(${res.data.code})`, customClass: 'e-message', duration: 5000 });
                             reject({ type: 'faild', info: res.data });
                         }
-                        
                     }).catch(res => {
                         //error && error(res);
                         loading.close();
@@ -91,6 +95,11 @@ export default ({ url, type, params, config, option, loadingConfig }, vue) => {
                         option.enableMsg && Message.success({ message: option.successMsg, customClass: 'e-message', duration: 2000 });
                         //option.enableMsg && Message.success({message:option.successMsg, customClass:'e-message', duration:1500});
                         resolve(res);
+                    }else if(res.status === 200 && res.data.code >= 300&&res.data.code < 400){
+                        Message.error({ message: `登录失效，即将跳转至登录页`, customClass: 'e-message', duration: 5000 });
+                        window.setTimeout(()=>{
+                            vue.$router.replace("/Login");
+                        },1000);
                     } else {
                         //faild && faild(res.data);
                         console.log(res.data.msg);

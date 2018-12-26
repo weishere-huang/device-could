@@ -71,27 +71,35 @@
                 <el-dialog
                   title="修改类别"
                   :visible.sync="dialogVisible3"
-                  width="30%"
+                  width="20%"
+                  
                 >
-                  <el-cascader
-                    placeholder=""
-                    :options="orgoptions"
-                    :props="defaultProps"
-                    filterable
-                    ref="getName"
-                    expand-trigger="hover"
-                    change-on-select
-                    :show-all-levels="false"
-                    v-model="qqqqq"
-                    @change="handleChange"
-                    style="width:215px;padding:1px;"
-                  ></el-cascader>
-                  <el-button @click="dialogVisible3 = false" >取 消</el-button>
-                  <el-button
-                    type="primary"
-                    @click="orgsave"
-                  >确 定</el-button>
+                <div style="overflow: hidden;padding:10px 20px">
 
+                
+                  <el-col :span="24" style="text-align:center">
+                    <el-cascader
+                      placeholder=""
+                      :options="orgoptions"
+                      :props="defaultProps"
+                      filterable
+                      ref="getName"
+                      expand-trigger="hover"
+                      change-on-select
+                      :show-all-levels="false"
+                      v-model="qqqqq"
+                      @change="handleChange"
+                      style="width:100%;padding:1px;margin-bottom:10px;"
+                    ></el-cascader>
+                  </el-col>
+                  <el-col :span="24" style="text-align:right">
+                    <el-button @click="dialogVisible3 = false" >取 消</el-button>
+                    <el-button
+                      type="primary"
+                      @click="orgsave"
+                    >确 定</el-button>
+                  </el-col>
+                  </div>
                 </el-dialog>
               </el-form-item>
             </el-col>
@@ -378,7 +386,7 @@
         if(this.persnneladd.phone===""){
           this.$message.error("手机号码不能为空");
           return false;
-        }else if(!(/^1[34578]\d{9}$/.test(this.persnneladd.phone))){
+        }else if(!(/^1[0-9]\d{9}$/.test(this.persnneladd.phone))){
           this.$message.error("手机号码有误，请重填");
           return false;
         }
@@ -420,13 +428,6 @@
           })
 
       },
-      // codeToName(organizeCode){
-      //   for (let i =0;i<this.options.length;i++){
-      //     if(this.options[i].code === organizeCode){
-      //       this.persnneladd.organizationName = this.options[i].name;
-      //     }
-      //   }
-      // },
       Personnel() {
         this.$router.push({
           path: "/Personnel"
@@ -571,7 +572,7 @@
         },
         ({type, info}) => {
 
-        })
+        });
     }
   };
 </script>
@@ -667,6 +668,7 @@
             line-height: 60px;
             .el-input {
               width: 70%;
+              
             }
           }
         }
