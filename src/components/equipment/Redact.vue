@@ -482,27 +482,27 @@ export default {
 
       editableTabs: [
         {
-          workerTypeName: "负责人员",
+          workerTypeName: "负责",
           workerType: '0',
           content: []
         },
         {
-          workerTypeName: "维修人员",
+          workerTypeName: "维修",
           workerType: '1',
           content: []
         },
         {
-          workerTypeName: "检修人员",
+          workerTypeName: "检修",
           workerType: '2',
           content: []
         },
         {
-          workerTypeName: "保养人员",
+          workerTypeName: "保养",
           workerType: '3',
           content: []
         },
         {
-          workerTypeName: "操作人员",
+          workerTypeName: "操作",
           workerType: '4',
           content: []
         }

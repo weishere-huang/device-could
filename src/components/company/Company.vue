@@ -216,17 +216,19 @@ export default {
             return rowData.state ==0
               ? "待审核"
               : rowData.state ==1?"正常":rowData.state ==2?"禁用":"驳回"
-          }
+          },
+          componentName: "table-company",
+           overflowTitle: true
         },
-        {
-          field: "custome-adv",
-          title: "操作",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
-          componentName: "table-company"
-          // isResize: true
-        }
+        // {
+        //   field: "custome-adv",
+        //   title: "操作",
+        //   width: 100,
+        //   titleAlign: "center",
+        //   columnAlign: "center",
+        //   componentName: "table-company"
+        //   // isResize: true
+        // }
       ]
     };
   },

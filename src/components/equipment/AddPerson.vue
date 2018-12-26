@@ -52,10 +52,9 @@
               style="width:100%;height:350px;"
               :columns="columns"
               :table-data="tableData"
-              :row-dblclick="getRowData"
               row-hover-color="#eee"
               row-click-color="#edf7ff"
-
+              @on-custom-comp="customCompFunc"
             ></v-table>
             <div
               class="mt20 mb20 bold"
@@ -127,6 +126,32 @@ var tabComponent = Vue.component("tab-component", {
   template:
     '<ul class="workerList"><li v-for="item in items.content">{{ item.workerName }}<i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>'
 });
+Vue.component("table-addPerson", {
+  template: `<span>
+        <el-tooltip class="item" effect="dark" content="添加" placement="top">
+            <i style='font-size:16px;cursor: pointer;' class='el-icon-circle-plus-outline' @click.stop.prevent="add(rowData,index)"></i>
+        </el-tooltip>
+
+        </span>`,
+  props: {
+    rowData: {
+      type: Object
+    },
+    field: {
+      type: String
+    },
+    index: {
+      type: Number
+    }
+  },
+  methods: {
+    add() {
+      let params = { type: "add", index: this.index, rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    },
+    
+  }
+});
 export default {
   inject: ["reload"],
   name: "",
@@ -170,7 +195,7 @@ export default {
       editableTabsValue: "0",
       tabPosition: "top",
       pageIndex: 1,
-      pageSize: 5,
+      pageSize: 10,
       toValue: "",
       tableData: [],
       tableDate: [],
@@ -203,11 +228,12 @@ export default {
         },
         {
           field: "details",
-          title: "分配情况",
-          width: 150,
+          title: "操作",
+          width: 80,
           titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
+          columnAlign: "center",
+          isResize: true,
+          componentName: "table-addPerson"
         }
       ],
       tablenum: 0,
@@ -222,7 +248,15 @@ export default {
     };
   },
   methods: {
-    getRowData(a, b, c) {
+    customCompFunc(params) {
+      if (params.type === "add") {
+        // do delete operation
+        console.log(params);
+        this.getRowData(params.rowData)
+      
+      } 
+    },
+    getRowData(b) {
       //console.log(b.name);
       //console.log(this.editableTabs[this.editableTabsValue]);
       //this.editableTabs[this.editableTabsValue].content += b.name + ",";
