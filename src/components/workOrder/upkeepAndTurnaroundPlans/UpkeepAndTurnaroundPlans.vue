@@ -262,8 +262,8 @@
                 <el-button type="primary" @click="deleteBasic" size="mini">
                   <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
               </div>
+              <h6 style="margin:10px 0 0;">已选择：</h6>
               <ul>
-                <h6>已选择</h6>
                 <li v-model="personListValue" v-for="value in personListValue" :key="value">
                   {{value.partName}}
                   <span :id="value.id" @click="basicAdd($event)" class="el-icon-circle-close-outline"></span>
@@ -1411,11 +1411,15 @@
 
       width: 18%;
       float: left;
+      height: 426px;
       border: @border;
       padding: 10px;
       border-radius: 5px;
       ul {
         margin-top: 10px;
+        border: 1px solid @Info;
+        height: 340px;
+        overflow:scroll;
         li {
           list-style-type: none;
           height: 24px;

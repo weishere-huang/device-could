@@ -100,9 +100,9 @@ export default {
         {
           field: "enterpriseName",
           title: "企业名称",
-          width: 180,
+          width: 200,
           titleAlign: "center",
-          columnAlign: "center",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },

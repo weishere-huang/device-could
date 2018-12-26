@@ -117,10 +117,10 @@ export default {
         {
           field: "isRead",
           title: "是否阅读",
-          width: 50,
+          width: 80,
           titleAlign: "center",
           columnAlign: "center",
-          isResize: true,
+          // isResize: true,
           overflowTitle: true,
           formatter: function(rowData, rowIndex, pagingIndex, field) {
             return rowData.state === "0"
@@ -140,7 +140,7 @@ export default {
         {
           field: "custome-adv",
           title: "操作",
-          width: 100,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           componentName: "table-message"
