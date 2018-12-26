@@ -153,7 +153,7 @@ const router = new Router({
           path: 'EquipmentAdd',
           name: 'EquipmentAdd',
           props: {
-            title: '设备添加'
+            pageName: '设备添加'
           },
           component: EquipmentAdd,
           meta: {
@@ -165,7 +165,7 @@ const router = new Router({
           name: 'Redact',
           component: Redact,
           props: {
-            title: '设备详情'
+            pageName: '设备详情'
           },
           meta: {
             requireAuth: true
@@ -536,7 +536,7 @@ const router = new Router({
           path: 'SparePartAdd',
           name: 'SparePartAdd',
           props: {
-            title: '备品备件添加'
+            pageName: '备品备件添加'
           },
           component: SparePartAdd,
           meta: {
@@ -547,7 +547,7 @@ const router = new Router({
           path: 'SparePartAmend/:id/',
           name: 'SparePartAmend',
           props: {
-            title: '备品备件详情页'
+            pageName: '备品备件详情页'
           },
           component: SparePartAmend,
           meta: {

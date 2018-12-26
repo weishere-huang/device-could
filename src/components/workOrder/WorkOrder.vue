@@ -364,6 +364,7 @@
     },
     created() {
       this.load();
+      this.isHideList=this.$route.params.id !== undefined ? true : false;
     },
     mounted() {},
     watch: {

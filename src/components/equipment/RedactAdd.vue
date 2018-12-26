@@ -382,7 +382,7 @@ export default {
           console.log(arr);
           //this.data2 = this.filterArray(result.data.data,1000);
           this.data2 = arr;
-          this.orgcode = result.data.data[0].code;
+          this.orgcode = result.data.data.find(item=>item.organizeType===1).code;
           this.findpeopler();
         },
         ({ type, info }) => {

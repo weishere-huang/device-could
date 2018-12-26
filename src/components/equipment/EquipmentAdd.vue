@@ -21,7 +21,6 @@
               placeholder="搜索"
               :options="orgoptions"
               :props="defaultProps"
-              expand-trigger="hover"
               filterable
               ref="getName"
               change-on-select

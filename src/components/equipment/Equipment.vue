@@ -643,7 +643,7 @@ export default {
     this.findAlldeviceClassify();
     let a=this.$route.matched.find(item=>(item.name==="EquipmentAdd"))?true:false;
     let b=this.$route.params.id !== undefined ? true : false;
-
+    this.isHideList = a||b ?true:false;
   },
   components: {
     advanced
