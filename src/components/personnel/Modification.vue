@@ -72,33 +72,33 @@
                   title="修改类别"
                   :visible.sync="dialogVisible3"
                   width="20%"
-                  
-                >
-                <div style="overflow: hidden;padding:10px 20px">
 
-                
-                  <el-col :span="24" style="text-align:center">
-                    <el-cascader
-                      placeholder=""
-                      :options="orgoptions"
-                      :props="defaultProps"
-                      filterable
-                      ref="getName"
-                      expand-trigger="hover"
-                      change-on-select
-                      :show-all-levels="false"
-                      v-model="qqqqq"
-                      @change="handleChange"
-                      style="width:100%;padding:1px;margin-bottom:10px;"
-                    ></el-cascader>
-                  </el-col>
-                  <el-col :span="24" style="text-align:right">
-                    <el-button @click="dialogVisible3 = false" >取 消</el-button>
-                    <el-button
-                      type="primary"
-                      @click="orgsave"
-                    >确 定</el-button>
-                  </el-col>
+                >
+                  <div style="overflow: hidden;padding:10px 20px">
+
+
+                    <el-col :span="24" style="text-align:center">
+                      <el-cascader
+                        placeholder=""
+                        :options="orgoptions"
+                        :props="defaultProps"
+                        filterable
+                        ref="getName"
+                        expand-trigger="hover"
+                        change-on-select
+                        :show-all-levels="false"
+                        v-model="qqqqq"
+                        @change="handleChange"
+                        style="width:100%;padding:1px;margin-bottom:10px;"
+                      ></el-cascader>
+                    </el-col>
+                    <el-col :span="24" style="text-align:right">
+                      <el-button @click="dialogVisible3 = false" >取 消</el-button>
+                      <el-button
+                        type="primary"
+                        @click="orgsave"
+                      >确 定</el-button>
+                    </el-col>
                   </div>
                 </el-dialog>
               </el-form-item>
@@ -236,6 +236,7 @@
           id:"",
           employeeNo: "",
           name: "",
+          roleName:"",
           gender: "",
           birthday: "",
           phone: "",
@@ -463,13 +464,17 @@
                 url:this.global.imgPath+arr[i].img.split(":")[1]
               })
             }
+            this.role.push({
+              id:this.persnneladd.roleId,
+              name:this.persnneladd.roleName
+            });
           },
           ({type, info}) => {
 
           })
       },
       updateEmployee(){
-         // this.codeToName(this.persnneladd.organizeCode);
+        // this.codeToName(this.persnneladd.organizeCode);
         if(this.testValue()){
           this.toUpdateEmployee()
         }
@@ -558,8 +563,8 @@
       },
     },
     created() {
-      this.organize();
       this.selectOne(this.$route.params.id);
+      this.organize();
       this.Axios(
         {
           params:{},
@@ -568,7 +573,10 @@
         },
         this
       ).then(response => {
-          this.role = response.data.data;
+         response.data.data.map((item)=>{
+           item.id==this.persnneladd.roleId ? "":this.role.push(item);
+         });
+         console.log(this.role);
         },
         ({type, info}) => {
 
@@ -668,7 +676,7 @@
             line-height: 60px;
             .el-input {
               width: 70%;
-              
+
             }
           }
         }
