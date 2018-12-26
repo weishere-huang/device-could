@@ -149,7 +149,7 @@ Vue.component("table-addPerson", {
       let params = { type: "add", index: this.index, rowData: this.rowData };
       this.$emit("on-custom-comp", params);
     },
-    
+
   }
 });
 export default {
@@ -253,8 +253,8 @@ export default {
         // do delete operation
         console.log(params);
         this.getRowData(params.rowData)
-      
-      } 
+
+      }
     },
     getRowData(b) {
       //console.log(b.name);
@@ -408,19 +408,18 @@ export default {
         },
         this
       )
-      // .get(this.global.apiSrc + "/organize/allOrganize")
         .then(
           result => {
             console.log("查询所有组织机构");
             console.log(result.data);
             console.log(result.data.data);
-            let pcode = Math.min.apply(null, (result.data.data).map((item)=>{return item.parentCode}));
+            let pcode = Math.min.apply(null, (result.data.data).map((item)=>{return item.parentCode }));
             let arr = this.filterArray(result.data.data, pcode);
             console.log(arr);
             //this.data2 = this.filterArray(result.data.data,1000);
             this.data2 = arr;
 
-            this.orgcode=result.data.data[0].code;
+            this.orgcode=result.data.data.find(item=>item.organizeType===1).code;
             this.findpeopler();
           },
           ({ type, info }) => {

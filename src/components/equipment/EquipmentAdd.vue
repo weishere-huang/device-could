@@ -21,7 +21,6 @@
               placeholder="搜索"
               :options="orgoptions"
               :props="defaultProps"
-              expand-trigger="hover"
               filterable
               ref="getName"
               change-on-select
@@ -61,7 +60,7 @@
             <el-form-item label="设备状况" prop="dzk">
               <el-select v-model="sizeForm.deviceState" placeholder="点击选择" style="width:215px">
 
-                <el-option v-for="(item,index) in options4" :key="index" :label="item.label"
+                <el-option v-for="(item,index) in options4" :key="index"  :label="item.label"
                            :value="item.value" @chenge="devstate"></el-option>
 
               </el-select>
@@ -221,6 +220,10 @@
           value:"code",
           label:"name"
         },
+        eqState:{
+          value:"1",
+          label:"在用"
+        },
         defaultProps2:{
           value:"categoryNo",
           label:"categoryName"
@@ -246,7 +249,7 @@
           deviceCategory: "",
           deviceCategoryName: "",
           deviceModel: "",
-          deviceState: "",
+          deviceState: "1",
           enterFactoryDate: ""
         },
         options2: [

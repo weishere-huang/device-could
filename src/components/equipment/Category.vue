@@ -113,7 +113,7 @@
             <el-button @click="dialogVisible3 = false">取 消</el-button>
             <el-button
               type="primary"
-              @click="addFirst"
+              @click="checkFirstForm"
             >确 定</el-button>
           </span>
         </el-dialog>
@@ -150,7 +150,7 @@
           <el-button
             size="small"
             type="primary"
-            @click="updateCategory"
+            @click="checkUpdateForm"
           >确认修改</el-button>
         </div>
       </el-form>
@@ -185,7 +185,7 @@
           >取消</el-button>
           <el-button
             size="small"
-            @click="addCategory"
+            @click="checkAddForm"
             type="primary"
           >保存</el-button>
         </div>
@@ -449,7 +449,43 @@ export default {
             message: "已取消删除"
           });
         });
-    }
+    },
+    checkAddForm(){
+      let subok = true;
+      if(this.addname === ""){
+        subok=false;
+      }
+      if(subok){
+        this.addCategory();
+      }else{
+        this.$message.warning("请填写类别名称")
+      }
+
+    },
+    checkUpdateForm(){
+      let subok = true;
+      if(this.addname === ""){
+        subok=false;
+      }
+      if(subok){
+        this.updateCategory();
+      }else{
+        this.$message.warning("请填写类别名称")
+      }
+
+    },
+    checkFirstForm(){
+      let subok = true;
+      if(this.nodeCname === ""){
+        subok=false;
+      }
+      if(subok){
+        this.addFirst();
+      }else{
+        this.$message.warning("请填写类别名称")
+      }
+
+    },
   },
   created() {
     this.findAlldeviceClassify();
@@ -485,7 +521,7 @@ export default {
     .remarks {
       float: right;
       width: 400px;
-      padding: 0 20px;
+      padding: 0 ;
       //   border-bottom: 1px solid #dde2eb;
     }
   }

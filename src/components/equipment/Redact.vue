@@ -966,6 +966,7 @@ export default {
   }
   .el-cascader__label{
     top:10px !important;
+    left: 18px !important;
   }
 }
 </style>

@@ -51,6 +51,7 @@
         label-position=right
         label-width="120px"
         :model="formLabelAlign"
+        style="padding:10px;"
       >
         <el-form-item label="审批结果：">
           <el-radio
@@ -66,6 +67,7 @@
           <el-input
             type="textarea"
             v-model="formLabelAlign.desc"
+            style="width:90%;"
           ></el-input>
         </el-form-item>
         <div v-if="formLabelAlign.radio!=1">
@@ -107,12 +109,12 @@
       >
         <el-button
           @click="toCancel"
-          size="mini"
+          size="small"
         >取 消</el-button>
         <el-button
           @click="submitAudit"
           type="primary"
-          size="mini"
+          size="small"
         >提 交</el-button>
       </div>
     </el-dialog>

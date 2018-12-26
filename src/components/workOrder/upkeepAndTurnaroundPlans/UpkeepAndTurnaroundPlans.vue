@@ -30,7 +30,7 @@
         <el-dialog title="人员添加" :visible.sync="innerVisible" append-to-body>
           <div style="padding:10px">
             <div class="search" style="padding:10px 0">
-              <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
+              <el-input type="search" size="mini" placeholder="如姓名，手机号" v-model="key" style="width:30%;"></el-input>
               <el-button type="primary" size="mini" @click="search"><i class='el-icon-search'></i>&nbsp;搜索</el-button>
               <span style="padding:0 10px;">最近搜索：</span>
               <span style="text-decoration: underline;"></span>
@@ -262,8 +262,8 @@
                 <el-button type="primary" @click="deleteBasic" size="mini">
                   <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
               </div>
+              <h6 style="margin:10px 0 0;">已选择：</h6>
               <ul>
-                <h6>已选择</h6>
                 <li v-for="(value,index) in personListValue" :key="index">
                   {{value.partName}}
                   <span :id="value.id" @click="basicAdd($event)" class="el-icon-circle-close-outline"></span>
@@ -1417,27 +1417,33 @@
 
       width: 18%;
       float: left;
+      height: 426px;
       border: @border;
       padding: 10px;
       border-radius: 5px;
       ul {
         margin-top: 10px;
+        border: 1px solid @Info;
+        height: 340px;
+        overflow:scroll;
         li {
           list-style-type: none;
           height: 24px;
           line-height: 24px;
           width: 100%;
           padding: 0 5px;
+          position: relative;
           span {
-            float: right;
+            display: inline-block;
+            position: absolute;
+            right: 0px;
+            top: 5px;
             cursor: pointer;
-          }
-          &:hover {
-            span {
-              display: block;
+            &:hover {
               color: red;
-            }
           }
+          }
+          
         }
       }
     }

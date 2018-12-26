@@ -160,7 +160,7 @@
             title: "工单状态",
             width: 70,
             titleAlign: "center",
-            columnAlign: "left",
+            columnAlign: "center",
             isResize: true,
             overflowTitle: true
           },
@@ -178,7 +178,7 @@
             title: "工单描述",
             width: 200,
             titleAlign: "center",
-            columnAlign: "center",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -187,7 +187,7 @@
             title: "原因分析",
             width: 80,
             titleAlign: "center",
-            columnAlign: "center",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -196,7 +196,7 @@
             title: "设备名称",
             width: 120,
             titleAlign: "center",
-            columnAlign: "center",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -364,6 +364,7 @@
     },
     created() {
       this.load();
+      this.isHideList=this.$route.params.id !== undefined ? true : false;
     },
     mounted() {},
     watch: {

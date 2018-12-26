@@ -51,9 +51,9 @@
                 </el-tooltip>
                 </el-button>
               </span>
-            </span>
+            </span >
             <span class="state">{{ data.organizeType }}</span>
-            <span class="organizeInfo">{{ data.organizeInfo }}</span>
+            <span class="organizeInfo"  :title="data.organizeInfo">{{ data.organizeInfo }}</span>
           </span>
         </el-tree>
       </div>
@@ -390,7 +390,7 @@ export default {
         float: left;
         // border: @border;
         line-height: 30px;
-        text-align: center;
+        text-align: left;
       }
       .classify {
         padding-right: 10px;
@@ -438,7 +438,7 @@ export default {
       }
       .organizeInfo {
         display: inline-block;
-        text-align: center;
+        text-align: left;
         width: 400px;
         line-height: 28px;
         // border: @border;

@@ -2,7 +2,7 @@
   <div class="turnaround-plans">
     <router-view></router-view>
     <div class="userCase" :class="[{hide:isHideList}]">
-      <div class="top">
+      <div class="tob">
         <el-button
           size="small"
           type="primary"
@@ -18,6 +18,7 @@
             label-position=right
             label-width="120px"
             :model="formLabelAlign"
+            style="padding:10px;"
           >
             <el-form-item label="审批结果：">
               <el-radio
@@ -33,6 +34,7 @@
               <el-input
                 type="textarea"
                 v-model="formLabelAlign.desc"
+                style="width:90%;"
               ></el-input>
             </el-form-item>
             <div v-if="formLabelAlign.radio!=1">
@@ -74,13 +76,13 @@
           >
             <el-button
               @click="cancel"
-              type="primary"
-              size="mini"
+            
+              size="small"
             >取 消</el-button>
             <el-button
               @click="submitAudit"
               type="primary"
-              size="mini"
+              size="small"
             >提交</el-button>
           </div>
         </el-dialog>
@@ -235,7 +237,7 @@ export default {
         {
           field: "creator",
           title: "计划制定人",
-          width: 60,
+          width: 80,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
@@ -671,9 +673,10 @@ Vue.component("table-upkeep", {
   .userCase {
     width: 100%;
     padding: 10px;
-    .top {
-      height: 60px;
-      line-height: 60px;
+    .tob {
+      // height: 60px;
+      // line-height: 60px;
+      padding: 10px;
       border: 1px solid @Info;
       border-radius: 5px;
       padding-left: 10px;
