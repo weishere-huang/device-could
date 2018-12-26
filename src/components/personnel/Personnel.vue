@@ -190,7 +190,7 @@ export default {
        this.deleteEmployee();
         this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
-        this.$router.push("/Modification/"+this.userIds);
+        this.$router.push({path:"Personnel/Modification/" +this.userIds});
       } else if (params.type === "stop") {
         this.enable();
       } else if (params.type === "start") {

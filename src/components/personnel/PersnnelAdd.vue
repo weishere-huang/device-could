@@ -17,11 +17,7 @@
                 <el-input type="text" style="width:70%" autofocus v-model="persnneladd.name" ref="name"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="11">
-              <el-form-item label="账号："   style="display:none">
-                <el-input type="text"  v-model="persnneladd.name" ></el-input>
-              </el-form-item>
-            </el-col>
+            <span style="font-size: 15px">默认密码为：<i style="color: #666666">123456</i></span>
             <el-col :span="11">
               <el-form-item label="性别：" style="">
                 <el-radio v-model="persnneladd.gender" label="1">男</el-radio>
@@ -205,6 +201,7 @@
         date:new Date().toLocaleString().split(" ")[0].replace(/\//g, "-"),
         nameAndImg:[{name:"", img:""}],
         persnneladd: {
+          userName:"",
           employeeNo: "",
           name: "",
           gender: "1",
@@ -240,6 +237,9 @@
                   this.$refs.name.focus();
                   callback(new Error("请输入正确的员工姓名"));
                 } else {
+                  let pinyin = require("pinyin");
+                  this.persnneladd.userName =pinyin(this.persnneladd.name,{style:pinyin.STYLE_NORMAL}) ;
+                  this.persnneladd.userName = this.persnneladd.userName.toString().replace(/,/g,"");
                   callback();
                 }
               },
@@ -393,6 +393,7 @@
         }
       },
 
+
       tback(){
         this.$router.back(-1)
       },
@@ -455,6 +456,7 @@
         this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
         let qs = require("qs");
         let data = qs.stringify({
+          userName:this.persnneladd.userName,
           employeeNo: this.persnneladd.employeeNo,
           name:this.persnneladd.name,
           gender:this.persnneladd.gender,
@@ -498,106 +500,6 @@
           path: "/Personnel"
         });
       },
-
-      // testValue(){
-      //   this.validateOrganizationName();
-      // },
-      validateName(){
-        let nameValue=/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/im;
-        if (this.persnneladd.name == ""){
-          this.$message.error("员工名不能为空");
-          this.$refs.name.focus();
-          this.validateIsOk=false;
-        }else if(nameValue.test(this.persnneladd.name)){
-          this.$message.error("员工名不能有特殊字符");
-          this.$refs.name.focus();
-          this.validateIsOk=false;
-        }else{
-          this.validateIsOk=true;
-        }
-      },
-      validateEmployeeNo(){
-        if(this.persnneladd.employeeNo == ""){
-          this.$message.error("员工编号不能为空");
-          this.$refs.employeeNo.focus();
-          this.validateIsOk=false;
-        }else{
-          this.validateIsOk=true;
-        }
-      },
-      validateIdCardNo(){
-        let regIdNo = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-        if (!regIdNo.test(this.persnneladd.idCardNo)){
-          this.$message.error("身份证号填写有误");
-          this.$refs.idCardNo.focus();
-          this.validateIsOk=false;
-        }else{
-          let date = this.persnneladd.idCardNo;
-          this.persnneladd.birthday = date.substr(6,4)+"-"+date.substr(10,2)+"-"+date.substr(12,2);
-          date.substr(16,1)%2===0 ? this.persnneladd.gender = "0": this.persnneladd.gender = "1";
-          this.validateIsOk=true;
-        }
-      },
-      validateRole(){
-        if (this.persnneladd.roleId == ""){
-          this.$message.error("请选择角色权限");
-          this.validateIsOk=false;
-        }else{
-          this.validateIsOk=true;
-        }
-      },
-      validatePhone(){
-        if(this.persnneladd.phone===""){
-          this.$message.error("手机号码不能为空");
-          this.$refs.phone.focus();
-          this.validateIsOk=false;
-        }else if(!(/^1[0-9]\d{9}$/.test(this.persnneladd.phone))){
-          this.$message.error("手机号码有误，请重填");
-          this.$refs.phone.focus();
-          this.validateIsOk=false;
-        }else{
-          this.validateIsOk=true;
-        }
-      },
-      validateBirthday(){
-        if(this.persnneladd.birthday == ""){
-          this.$message.error("请选择出生日期");
-          this.validateIsOk= false;
-        }else{
-            this.validateIsOk=true
-        }
-      },
-      validateOrganizationName(){
-        if(this.persnneladd.organizationName == ""){
-          this.$message.error("请选择组织机构");
-          this.validateIsOk=false;
-        }else{
-          this.validateIsOk=true;
-        }
-      },
-      validatePosition(){
-        if(this.persnneladd.position==""){
-          this.$message.error("请输入岗位");
-          this.$refs.position.focus();
-          this.validateIsOk=false;
-        }else{
-          this.validateIsOk=true;
-        }
-      },
-      validateEmail(){
-        let regEmail= /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
-        if(this.persnneladd.email!==""){
-          if(!regEmail.test(this.persnneladd.email)){
-            this.$message.error("邮箱格式不正确");
-            this.$refs.email.focus();
-            this.validateIsOk=false;
-          }else{
-            this.validateIsOk=true;
-          }
-        }else{
-          this.validateIsOk=true;
-        }
-      }
     },
     created() {
       this.organize();
