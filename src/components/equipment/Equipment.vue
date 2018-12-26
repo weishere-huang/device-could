@@ -159,12 +159,12 @@ export default {
       tableData: [{}],
       tableDate: [],
       columns: [
-        {
-          width: 40,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
+        // {
+        //   width: 40,
+        //   titleAlign: "center",
+        //   columnAlign: "center",
+        //   type: "selection"
+        // },
         {
           field: "deviceNo",
           title: "设备编号",

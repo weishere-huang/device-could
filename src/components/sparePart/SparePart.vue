@@ -67,12 +67,12 @@ export default {
       tableData: [],
       tableDate: [],
       columns: [
-        {
-          width: 50,
-          titleAlign: "center",
-          columnAlign: "center",
-          type: "selection"
-        },
+        // {
+        //   width: 50,
+        //   titleAlign: "center",
+        //   columnAlign: "center",
+        //   type: "selection"
+        // },
         {
           field: "partNo",
           title: "备件编号",

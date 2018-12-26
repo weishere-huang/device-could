@@ -19,6 +19,8 @@
             style="width:70%"
             v-model="chengedata.organizeType"
             placeholder="请选择"
+            size="small"
+            disabled
           >
             <el-option
               v-for="item in options"
@@ -44,7 +46,11 @@
             size="small"
             @click="reviseHide"
           >取消</el-button>
-          <el-button size="small" @click="update" type="primary">保存</el-button>
+          <el-button
+            size="small"
+            @click="update"
+            type="primary"
+          >保存</el-button>
         </li>
       </ul>
     </div>
@@ -53,14 +59,14 @@
 </template>
 <script>
 export default {
-  inject:['reload'],
+  inject: ["reload"],
   name: "",
-  props:["chengedata"],
+  props: ["chengedata"],
   data() {
     return {
-      aaa:{
-        value:"chengedata.organizeType",
-        label:""
+      aaa: {
+        value: "chengedata.organizeType",
+        label: ""
       },
       show: true,
       // Cnode:chengedata,
@@ -86,23 +92,15 @@ export default {
           label: "产线"
         }
       ],
-      orgname:"",
-      orgtype:"",
-      orginfo:""
+      orgname: "",
+      orgtype: "",
+      orginfo: ""
     };
   },
-  // created () {
-  //   this.optionSet()
-  // },
-  // watch: {
-  //   changeData(){
-  //     this.optionSet()
-  //   }
-    
-  // },
+
   methods: {
     reviseHide() {
-      this.$emit("reviseHide",false)
+      this.$emit("reviseHide", false);
     },
     update() {
       //修改组织机构
@@ -127,125 +125,37 @@ export default {
         organizeInfo: this.chengedata.organizeInfo
       });
       console.log(data);
-      this.Axios({
-        url: "/organize/update",
-        params: data,
-        type: "post",
-        option: {
-          enableMsg: false
-        }
-      },this)
+      this.Axios(
+        {
+          url: "/organize/update",
+          params: data,
+          type: "post",
+          option: {
+            enableMsg: false
+          }
+        },
+        this
+      )
         //.post(this.global.apiSrc + "/organize/update", data)
         .then(result => {
-          if(result.data.code === 200){
+          if (result.data.code === 200) {
             console.log(result.data);
             // location.reload();
-            this.$message("修改成功");
+            this.$message({
+              showClose: true,
+              message: "修改成功",
+              type: "success"
+            });
             this.reload();
-          }else{
+          } else {
             this.$message("修改失败");
             console.log(result.data);
-           }
+          }
         })
         .catch(err => {
           console.log(err);
         });
-    },
-    // optionSet(){
-    //   let option=[]
-    //   if (this.chengedata.organizeType=="企业") {
-    //     option=[
-    //       {
-    //         value: 1,
-    //         label: "公司"
-    //       },
-    //       {
-    //         value: 2,
-    //         label: "工厂"
-    //       },
-    //       {
-    //         value: 3,
-    //         label: "部门"
-    //       },
-    //       {
-    //         value: 4,
-    //         label: "车间"
-    //       },
-    //       {
-    //         value: 5,
-    //         label: "产线"
-    //       }
-    //     ]
-    //   }else if (this.chengedata.organizeType=="公司") {
-    //     option=[
-    //       {
-    //         value: 2,
-    //         label: "工厂"
-    //       },
-    //       {
-    //         value: 3,
-    //         label: "部门"
-    //       },
-    //       {
-    //         value: 4,
-    //         label: "车间"
-    //       },
-    //       {
-    //         value: 5,
-    //         label: "产线"
-    //       }
-    //     ]
-    //   }else if (this.chengedata.organizeType=="工厂") {
-    //     option=[
-    //       {
-    //         value: 3,
-    //         label: "部门"
-    //       },
-    //       {
-    //         value: 4,
-    //         label: "车间"
-    //       },
-    //       {
-    //         value: 5,
-    //         label: "产线"
-    //       }
-    //     ]
-    //   }else if (this.chengedata.organizeType=="部门") {
-    //     option=[
-    //       {
-    //         value: 4,
-    //         label: "车间"
-    //       },
-    //       {
-    //         value: 5,
-    //         label: "产线"
-    //       }
-    //     ]
-    //   }else if (this.chengedata.organizeType=="车间") {
-    //     option=[
-    //       {
-    //         value: 3,
-    //         label: "部门"
-    //       },
-    //       {
-    //         value: 5,
-    //         label: "产线"
-    //       }
-    //     ]
-    //   }else if (this.chengedata.organizeType=="产线") {
-    //     option=[
-    //       {
-    //         value: 3,
-    //         label: "部门"
-    //       },
-    //       {
-    //         value: 4,
-    //         label: "车间"
-    //       }
-    //     ]
-    //   }
-    //   this.options=option;
-    // }
+    }
   }
 };
 </script>

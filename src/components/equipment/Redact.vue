@@ -1,7 +1,7 @@
 
 <template>
   <div class="redact">
-    <div class="addCase">
+    <div class="add-case">
       <div class="top">
         <el-row>
           <el-button
@@ -877,7 +877,7 @@ export default {
 @border: 1px solid #dde2eb;
 .redact {
   // padding-left: 180px;
-  .addCase {
+  .add-case {
     padding: 10px;
     .top {
       padding: 10px;

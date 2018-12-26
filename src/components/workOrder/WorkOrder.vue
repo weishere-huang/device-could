@@ -139,12 +139,12 @@
         tableData: [],
         tableDate: [],
         columns: [
-          {
-            width: 50,
-            titleAlign: "center",
-            columnAlign: "center",
-            type: "selection"
-          },
+          // {
+          //   width: 50,
+          //   titleAlign: "center",
+          //   columnAlign: "center",
+          //   type: "selection"
+          // },
           {
             field: "workNo",
             title: "工单编号",

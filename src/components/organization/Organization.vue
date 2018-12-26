@@ -192,7 +192,10 @@ export default {
         {
           params: {},
           type: "get",
-          url: "/organize/allOrganize"
+          url: "/organize/allOrganize",
+          option: {
+            enableMsg: false
+          }
         },
         this
       )
