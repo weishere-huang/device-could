@@ -126,7 +126,7 @@ var tabComponent = Vue.component("tab-component", {
   template:
     '<ul class="workerList"><li v-for="item in items.content">{{ item.workerName }}<i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>'
 });
-Vue.component("table-addPerson", {
+Vue.component("table-add-person", {
   template: `<span>
         <el-tooltip class="item" effect="dark" content="添加" placement="top">
             <i style='font-size:16px;cursor: pointer;' class='el-icon-circle-plus-outline' @click.stop.prevent="add(rowData,index)"></i>
@@ -233,7 +233,7 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-          componentName: "table-addPerson"
+          componentName: "table-add-person"
         }
       ],
       tablenum: 0,
