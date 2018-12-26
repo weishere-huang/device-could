@@ -30,7 +30,7 @@
         <el-dialog title="人员添加" :visible.sync="innerVisible" append-to-body>
           <div style="padding:10px">
             <div class="search" style="padding:10px 0">
-              <el-input type="search" size="mini" v-model="key" style="width:30%;"></el-input>
+              <el-input type="search" size="mini" placeholder="如姓名，手机号" v-model="key" style="width:30%;"></el-input>
               <el-button type="primary" size="mini" @click="search"><i class='el-icon-search'></i>&nbsp;搜索</el-button>
               <span style="padding:0 10px;">最近搜索：</span>
               <span style="text-decoration: underline;"></span>
