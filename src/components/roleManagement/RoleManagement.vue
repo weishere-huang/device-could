@@ -227,10 +227,10 @@
         },
       };
     },
-      methods: {
-        focus: function (el) {
-          el.focus();
-        },
+    methods: {
+      focus: function (el) {
+        el.focus();
+      },
       expurgate(event){
         this.$confirm('此操作将删除该角色, 是否继续?', '提示')
           .then(_=>{
@@ -417,7 +417,6 @@
         this.message.sHide = !this.message.sHide;
       },
 
-
       roleAdd(){
         if (this.form.name === ""){
           this.$message.error("请输入角色名称");
@@ -600,7 +599,7 @@
             this.personnel.checkedSystem = arr3;
             this.user.checkedSystem = arr4;
             this.message.checkedSystem = arr5;
-          
+
             this.system.adminKey = adminKey;
             this.information.adminKey = adminKey1;
             this.equipment.adminKey = adminKey2;
@@ -784,7 +783,7 @@
         min-height: 500px;
         margin-left: 30px;
         padding: 10px;
-        
+
         &>div{
           margin: 10px 0;
         }
