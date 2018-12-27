@@ -16,7 +16,6 @@
       <div class="right">
         <div class="roleName">
           <h6>权限分配</h6>
-
         </div>
         <div>
           <div class="system">
@@ -984,4 +983,3 @@
     font-size: 14px !important;
   }
 </style>
-

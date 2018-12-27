@@ -52,7 +52,6 @@
               :page-size="pageSize"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
-            <!--<span style="font-size: 20px;">温馨提示：新添加的员工，初始密码为：<i style="color: #666666">123456</i></span>-->
           </div>
         </div>
       </div>
