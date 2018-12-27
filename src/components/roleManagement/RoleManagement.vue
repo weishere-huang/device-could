@@ -196,7 +196,7 @@
             this.power = response.data.data.map((item)=>{
               return item.id
             });
-            console.log(this.power );
+            this.$refs.tree.setCheckedKeys(this.power);
           },
           ({type, info}) => {
 
