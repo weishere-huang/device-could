@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <div class="left">
+    <div>主控面板，欢迎您：{{userMsg.name}}！</div>
+    <div class="left hide">
       <div class="personal-information">
         <div class="user-msg">
           <span>个人信息</span>
@@ -129,7 +130,7 @@
         </div>
       </div>
     </div>
-    <div class="right">
+    <div class="right hide">
       <div class="backlog">
         <span>待办事项</span>
         <ul>

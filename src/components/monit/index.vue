@@ -154,6 +154,18 @@
                       <!-- <div class="separate"></div> -->
                       <ul>
                         <li>
+                          <i class="iconfont">&#xe68b;</i>{{itemName(item.organizeCode,0)}}：
+                          <span>{{item.collectData1}}</span>
+                        </li>
+                        <li>
+                          <i class="iconfont">&#xe68b;</i>{{itemName(item.organizeCode,1)}}：
+                          <span>{{item.collectData2}}</span>
+                        </li>
+                        <!-- <li>
+                          <i class="iconfont">&#xe68b;</i>{{itemName(item.organizeCode,2)}}：
+                          <span>{{item.collectData3}}</span>
+                        </li> -->
+                        <!-- <li>
                           <i class="iconfont">&#xe658;</i>温度：
                           <span>{{item.temperature}}</span>
                         </li>
@@ -172,7 +184,7 @@
                         <li>
                           <i class="iconfont">&#xe641;</i>振动频率：
                           <span>{{item.vibrationFrequency}}</span>
-                        </li>
+                        </li> -->
                       </ul>
                     </div>
                   </el-card>
@@ -309,6 +321,7 @@ export default {
       deviceCategory: "",
       basicStateCount: "",
       type:"",
+      //itemName:["参数1","参数2","参数3"]
     };
   },
   watch: {
@@ -320,7 +333,6 @@ export default {
   },
   created: function() {
     console.log();
-
     this.Axios(
       {
         url: ["/organize/allOrganize", "/deviceCategory/all"],
@@ -564,6 +576,24 @@ export default {
       this.deviceCategory = data.id;
       this.setPinOption();
       this.getEquList();
+    },
+    itemName(organizeCode,index){
+      let names=[];
+      let _organizeCode=organizeCode.substring(0,7);
+      if(_organizeCode==='1015001'){
+        //技佳
+        names=["计划数量","实际数量"];
+      }else if(_organizeCode==='1015002'){
+        //精密
+        names=["最近上料","物料描述"];
+      }else if(_organizeCode==='1015003'){
+        //多媒体
+        names=["当前屏ID","当前产品"];
+      }
+      if(names.length===0||index>2){
+        return "参数"+(index+1);
+      }
+      return names[index];
     }
   }
 };
@@ -623,6 +653,7 @@ export default {
   }
   .cardItem {
     margin: 5px;
+    height: 200px;
     .cardItem-header {
       font-size: 16px;
       display: inline-block;
