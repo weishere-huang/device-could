@@ -27,3 +27,8 @@ textarea {
 .v-table-body-cell {
   padding: 0 10px !important;
 }
+.el-icon-upload-success {
+  position: absolute !important;
+  top: 0px !important;
+  right: 14px !important;
+}

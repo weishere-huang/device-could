@@ -22,16 +22,16 @@ import {
 } from 'vue-easytable'
 import global from './components/global/Global'
 import base from "./base.js";
-// import {
-//   addCookie,
-//   getCookie,
-//   delCookie
-// } from './cookie.js';
-// Vue.prototype.$cookieStore = {
-//   addCookie,
-//   getCookie,
-//   delCookie
-// }
+import {
+  addCookie,
+  getCookie,
+  delCookie
+} from './cookie.js';
+Vue.prototype.$cookieStore = {
+  addCookie,
+  getCookie,
+  delCookie
+}
 Vue.use(base)
 // import {
 //   Message,

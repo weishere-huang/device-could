@@ -7,7 +7,6 @@ export function addCookie(objName, objValue, objHours) { //添加cookie
     str += "; expires=" + date.toGMTString();
   }
   document.cookie = str;
-  alert("添加cookie成功");
 }
 
 export function getCookie(objName) { //获取指定名称的cookie的值
@@ -25,12 +24,5 @@ export function delCookie(name) { //为了删除指定名称的cookie，可以�
   document.cookie = name + "=a; expires=" + date.toGMTString();
 }
 
-function allCookie() { //读取所有保存的cookie字符串
-  var str = document.cookie;
-  if (str == "") {
-    str = "没有保存任何cookie";
-  }
-  alert(str);
-}
 
 

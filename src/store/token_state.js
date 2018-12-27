@@ -1,9 +1,7 @@
-let tokenNub = localStorage.getItem('token')
-let userMsg=JSON.parse(localStorage.getItem("user"))
 export default {
   state: {
-    tokenNub: tokenNub,
-    userMsg: userMsg
+    tokenNub: '',
+    userMsg: ''
   },
   mutations: {
     tokenSrc(state, data) {

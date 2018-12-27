@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
-    <el-container class="mainWrapper">
-      <el-aside class="siderWrapper">
+  <div id="app" >
+    <el-container class="mainWrapper" >
+      <el-aside class="siderWrapper" >
         <div class="logoWrap">
           <img src='./assets/image/logo.png' />
         </div>
@@ -137,7 +137,7 @@
         </div>
       </el-aside>
       <el-container>
-        <el-header>
+        <el-header >
           <el-header style="background-color:#efefef;">
             <div class="breadcrumbWrap">
               <breadCrumb></breadCrumb>
@@ -233,6 +233,7 @@ export default {
   name: "App",
   data() {
     return {
+      token:'',
       user: "",
       show: true,
       isCollapse: false,
@@ -303,8 +304,6 @@ export default {
       )
         .then(result => {
           this.msgcount = result.data.data;
-          console.log("msgcount");
-          console.log(result.data);
         })
         .catch(err => {
           console.log(err);
@@ -325,7 +324,9 @@ export default {
   computed: {},
   created() {
     this.user = JSON.parse(localStorage.getItem("user")).name;
+    // this.token = localStorage.getItem("token")
     // this.user=this.$store.state.token.userMsg.name
+    // this.token=this.$store.state.token.tokenNub
     this.MsgCount();
   },
   components: {
@@ -333,10 +334,10 @@ export default {
   },
   mounted() {
     // 关闭浏览器窗口的时候清空浏览器缓存在localStorage的数据
-    window.onbeforeunload = function(e) {
-      var storage = window.localStorage;
-      storage.clear();
-    };
+    // window.onbeforeunload = function(e) {
+    //   var storage = window.localStorage;
+    //   storage.clear();
+    // };
   }
 };
 </script>
