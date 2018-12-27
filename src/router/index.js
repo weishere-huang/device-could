@@ -280,8 +280,7 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
-      children:[
-        {
+      children: [{
           path: 'UpkeepAdd',
           name: 'UpkeepAdd',
           props: {
@@ -318,19 +317,17 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
-      children:[
-        {
-          path: 'BreakDetails/:id/',
-          name: 'BreakDetails',
-          props: {
-            pageName: '故障详情'
-          },
-          component: BreakDetails,
-          meta: {
-            requireAuth: true
-          },
+      children: [{
+        path: 'BreakDetails/:id/',
+        name: 'BreakDetails',
+        props: {
+          pageName: '故障详情'
         },
-      ]
+        component: BreakDetails,
+        meta: {
+          requireAuth: true
+        },
+      }, ]
     },
     {
       path: '/TurnaroundPlans',
@@ -342,8 +339,7 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
-      children:[
-        {
+      children: [{
           path: 'TurnaroundPlansAdd',
           name: 'TurnaroundPlansAdd',
           props: {
@@ -396,8 +392,7 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
-      children:[
-        {
+      children: [{
           path: 'PersnnelAdd',
           name: 'PersnnelAdd',
           props: {
@@ -450,8 +445,7 @@ const router = new Router({
       meta: {
         requireAuth: true
       },
-      children:[
-        {
+      children: [{
           path: 'BreakdownOrder/:id/',
           name: 'BreakdownOrder',
           props: {
@@ -604,32 +598,4 @@ const router = new Router({
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  let isLogin = sessionStorage.getItem('token')
-  if (to.meta.requireAuth) { // 判断是否需要登录权限
-    if (isLogin) { // 判断是否登录
-      next()
-    } else { // 没登录则跳转到登录界面
-      next({
-        path: '/Login',
-        query: {
-          redirect: to.fullPath
-        }
-      })
-    }
-  } else {
-    next()
-  }
-  // if (to.path === '/Login') {
-  //   next();
-  // } else {
-  //   let token = sessionStorage.getItem('token');
-
-  //   if (token === 'null' || token === '') {
-  //     next('/Login');
-  //   } else {
-  //     next();
-  //   }
-  // }
-});
 export default router

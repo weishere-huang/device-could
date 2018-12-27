@@ -711,7 +711,6 @@ export default {
             this.$store.commit("user", sessionStorage.getItem("user"));
             this.$store.commit("tokenSrc", result.data.data.tokenStr);
             console.log(this.$store.state.token.toeknNub);
-            // location.reload();
             this.$router.replace("/Home");
             location.reload();
           }

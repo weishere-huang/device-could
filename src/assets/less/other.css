@@ -24,6 +24,6 @@ textarea {
 .el-tabs__item {
   padding: 0 7.5px !important;
 }
-.v-table-body-ce {
-  padding: 0 10px;
+.v-table-body-cell {
+  padding: 0 10px !important;
 }
