@@ -42,7 +42,7 @@
           ></v-table>
           <div
             class="mt20 mb20 bold"
-            style="text-align:left;margin-top:20px"
+            style="text-align: left;margin-top:10px"
           >
             <v-pagination
               @page-change="pageChange"
@@ -52,6 +52,7 @@
               :page-size="pageSize"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
+            <!--<span style="font-size: 20px;">温馨提示：新添加的员工，初始密码为：<i style="color: #666666">123456</i></span>-->
           </div>
         </div>
       </div>
@@ -296,7 +297,7 @@ export default {
       }
     },
     selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
+      // console.log("select-change", selection, rowData);
     },
     getTableData() {
       this.tableData = this.tableDate.slice(
@@ -388,7 +389,7 @@ export default {
           );
         })
         .catch(_=>{
-          console.log("stop")
+          // console.log("stop")
         })
 
 
@@ -415,6 +416,7 @@ export default {
       this.$route.matched[this.$route.matched.length-1].name ==="PersnnelAdd"||
       this.$route.params.id !== undefined ? this.isHideList =true: this.isHideList =false;
       this.$refs.personnelTable.resize();
+      this.$store.state.personnel.imId==="y" ?  this.reload():"";
     }
   },
 };

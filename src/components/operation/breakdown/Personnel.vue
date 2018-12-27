@@ -104,13 +104,13 @@ export default {
   },
   methods: {
     selectGroupChange(selection) {
-      console.log("select-group-change", selection);
+      // console.log("select-group-change", selection);
     },
     selectALL(selection) {
-      console.log("select-aLL", selection);
+      // console.log("select-aLL", selection);
     },
     selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
+      // console.log("select-change", selection, rowData);
     },
     getTableData() {
       this.tableData = this.tableDate.slice(

@@ -122,15 +122,15 @@
 
       },
       selectGroupChange(selection) {
-        console.log("select-group-change", selection);
+        // console.log("select-group-change", selection);
       },
       selectALL(selection) {
-        console.log("select-aLL", selection);
+        // console.log("select-aLL", selection);
       },
       selectChange(selection, rowData) {
-        console.log(selection);
-        console.log(rowData);
-        console.log("select-change", selection, rowData);
+        // console.log(selection);
+        // console.log(rowData);
+        // console.log("select-change", selection, rowData);
       },
       getTableData() {
         this.tableData = this.tableDate.slice(
@@ -141,7 +141,7 @@
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
         this.getTableData();
-        console.log(pageIndex);
+        // console.log(pageIndex);
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;

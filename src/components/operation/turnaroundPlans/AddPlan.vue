@@ -322,7 +322,7 @@
             this.data2= this.filterArray2(result.data.data,0);
           })
           .catch(err => {
-            console.log(err);
+            // console.log(err);
           });
       },
     },

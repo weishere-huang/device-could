@@ -385,6 +385,7 @@
         this.$router.push({
           path: "/Upkeep"
         });
+        this.$store.commit("upkeepAmend","y")
       },
       //通过设备ID查找相关负责人员
       findByDeviceId(deviceId){

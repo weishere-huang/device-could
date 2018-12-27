@@ -334,7 +334,7 @@
         this.fileList = this.fileList.filter(item=>item.name!=file.name);
       },
       handlePreview1(file) {
-        console.log(file);
+        // console.log(file);
       },
       handleExceed1(files,fileList) {
         this.$message.warning(`当前限制选择 10 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
@@ -346,7 +346,6 @@
         this.persnneladd.img = "";
         this.imgPath = "";
         this.dialogImageUrl=[];
-        console.log(this.persnneladd.img );
       },
       handlePictureCardPreview(file) {
         this.imgPath = file.url;
@@ -433,6 +432,7 @@
         this.$router.push({
           path: "/Personnel"
         });
+        this.$store.commit("personnel","y")
       },
       tback(){
         this.$router.back(-1)
@@ -576,7 +576,6 @@
          response.data.data.map((item)=>{
            item.id==this.persnneladd.roleId ? "":this.role.push(item);
          });
-         console.log(this.role);
         },
         ({type, info}) => {
 
