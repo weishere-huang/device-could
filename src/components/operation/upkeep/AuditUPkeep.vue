@@ -1,16 +1,6 @@
 <template>
   <div class="audit">
     <div class="case">
-      <!-- <div class="top">
-        <span>审核</span>
-        <span>
-          <el-button
-            size="mini"
-            style="padding:0px 3px;font-size:18px"
-            @click="auditHide"
-          >×</el-button>
-        </span>
-      </div> -->
       <div class="bottom">
         <el-form label-position=right label-width="120px" :model="formLabelAlign">
           <el-form-item label="审批结果：">
@@ -86,7 +76,7 @@ export default {
     // border-radius: 5px;
     // box-shadow: 4px 4px 10px #999999;
     .top {
-      width: 100%;
+      width: 50%;
       height: 30px;
       line-height: 30px;
       padding: 0 10px;

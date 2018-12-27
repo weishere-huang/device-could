@@ -119,6 +119,7 @@
 </template>
 <script>
   export default {
+    inject: ["reload"],
     name: "Test",
     data() {
       return {
@@ -217,13 +218,13 @@
     },
     methods: {
       selectGroupChange(selection) {
-        console.log("select-group-change", selection);
+        // console.log("select-group-change", selection);
       },
       selectALL(selection) {
-        console.log("select-aLL", selection);
+        // console.log("select-aLL", selection);
       },
       selectChange(selection, rowData) {
-        console.log("select-change", selection, rowData);
+        // console.log("select-change", selection, rowData);
       },
       getTableData() {
         this.tableData = this.tableDate.slice(
@@ -263,31 +264,6 @@
           }, 500);
         });
         this.stateNum = stateNum;
-        // if (stateNum == "") {
-        //   this.audited = "";
-        //   this.inAudit = "";
-        //   this.handle = "";
-        // }
-        // if (stateNum == 0) {
-        //   this.audited = "";
-        //   this.pageIsOk = false;
-        // }
-        // if (stateNum == 4) {
-        //   this.inAudit = "";
-        //   this.pageIsOk = false;
-        // } else if (stateNum == 15) {
-        //   this.handle = "";
-        //   this.pageIsOk = false;
-        // }
-        // if (stateNum == 7) {
-        //   this.pageIsOk = false;
-        // }
-        // if (stateNum == 10) {
-        //   this.pageIsOk = false;
-        // }
-        // if (stateNum == 13) {
-        //   this.pageIsOk = false;
-        // }
         this.Axios(
           {
             params: {
@@ -364,14 +340,14 @@
     },
     created() {
       this.load();
-      this.isHideList=this.$route.params.id !== undefined ? true : false;
+      this.$route.params.id !== undefined ? this.isHideList=true : this.isHideList=false;
     },
     mounted() {},
     watch: {
       $route() {
-        //debugger
-        this.isHideList=this.$route.params.id !== undefined ? true : false;
+        this.$route.params.id !== undefined ? this.isHideList=true : this.isHideList=false;
         this.$refs.workOrderTable.resize();
+        this.$store.state.operation.work==="y"? this.reload():"";
       }
     },
   };

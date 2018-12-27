@@ -225,7 +225,7 @@
                   type="search"
                   size="mini"
                   v-model="searchPerson"
-                  style="width:50%;"
+                  style="width:55%;"
                   placeholder="关键词：设备编号、备件名称、型号/规格"
                 ></el-input>
                 <el-button type="primary" @click="goDownEntryInfo" size="mini">
@@ -714,13 +714,13 @@
         this.workSheetMaterialTableData = Array.from(new Set(this.workSheetMaterialTableData))
       },
       selectGroupChange(selection) {
-        console.log("select-group-change", selection);
+        // console.log("select-group-change", selection);
       },
       selectALL(selection) {
-        console.log("select-aLL", selection);
+        // console.log("select-aLL", selection);
       },
       selectChange(selection, rowData) {
-        console.log("select-change", selection, rowData);
+        // console.log("select-change", selection, rowData);
       },
       getPersonnel(rowIndex, rowData, column) {
         this.toExamine = rowData;
@@ -891,6 +891,7 @@
             this.examine.radio = 0;
             this.examine.type = false;
             this.toBack();
+            this.$store.commit("workOrders","y");
           },
           ({ type, info }) => {
             this.pageNumber = "";
@@ -1020,7 +1021,7 @@
             this.data2= this.filterArray2(result.data.data,0);
           })
           .catch(err => {
-            console.log(err);
+            // console.log(err);
           });
       },
       //通过备品类别ID查询相关备品
@@ -1129,7 +1130,7 @@
           this
         ).then(
           response => {
-            console.log(response.data);
+            // console.log(response.data);
           },
           ({type, info}) => {
             this.addMaterielValue();

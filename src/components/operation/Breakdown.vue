@@ -6,14 +6,8 @@
         <el-button
           size="small"
           type="primary"
-          @click="load"
+          @click="reload()"
         ><i style='font-size:12px' class='iconfont'>&#xe614;</i>&nbsp;刷新</el-button>
-        <!--<el-button-->
-          <!--size="small"-->
-          <!--type="primary"-->
-          <!--@click="dispel"-->
-        <!--&gt;故障消除</el-button>-->
-        <!-- 故障消除弹框 -->
         <el-dialog
           title="故障消除"
           :visible.sync="dialogVisible"
@@ -185,6 +179,7 @@
   import personnel from "./breakdown/Personnel";
   import Vue from "vue";
   export default {
+    inject: ["reload"],
     data() {
       return {
         isHideList: this.$route.params.id !== undefined
@@ -661,9 +656,9 @@
     },
     watch: {
       $route() {
-        //debugger
         this.isHideList=this.$route.params.id !== undefined ? true : false;
         this.$refs.breakdownTable.resize();
+        this.$store.state.operation.breakList==="y"? this.reload():"";
       }
     },
   };

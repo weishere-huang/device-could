@@ -285,6 +285,7 @@
         this.$router.push({
           path: "/TurnaroundPlans"
         });
+        this.$store.commit("turnaroundPlans","y")
       },
       addPlan(){
         this.deviceIds = this.tableData.map(item=>item.id).toString();
@@ -460,7 +461,7 @@
 
       },
       selectChange(selection, rowData) {
-        console.log("select-change", selection, rowData);
+        // console.log("select-change", selection, rowData);
       },
       getTableData() {
         this.tableData = this.tableDate.slice(

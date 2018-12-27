@@ -149,7 +149,7 @@ Vue.component("table-add-person", {
       let params = { type: "add", index: this.index, rowData: this.rowData };
       this.$emit("on-custom-comp", params);
     },
-    
+
   }
 });
 export default {
@@ -253,8 +253,8 @@ export default {
         // do delete operation
         console.log(params);
         this.getRowData(params.rowData)
-      
-      } 
+
+      }
     },
     getRowData(b) {
       //console.log(b.name);
@@ -408,7 +408,6 @@ export default {
         },
         this
       )
-      // .get(this.global.apiSrc + "/organize/allOrganize")
         .then(
           result => {
             console.log("查询所有组织机构");

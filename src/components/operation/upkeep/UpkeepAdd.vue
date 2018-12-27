@@ -464,6 +464,7 @@
         this.$router.push({
           path: "/Upkeep"
         });
+        this.$store.commit("upkeepAmend","y")
       },
 
 

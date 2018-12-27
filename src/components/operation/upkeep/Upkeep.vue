@@ -9,12 +9,6 @@
           @click="toUpkeepAdd"
         ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</el-button>
         <el-button size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
-        <!--<el-button-->
-          <!--size="small"-->
-          <!--type="primary"-->
-          <!--@click="outerVisibleIsOk"-->
-          <!--:disabled="disabled"-->
-        <!--&gt;审核</el-button>-->
         <el-dialog
           title="审核"
           :beforeClose="cancel"
@@ -92,17 +86,6 @@
             >提交</el-button>
           </div>
         </el-dialog>
-        <!-- <el-button
-          size="small"
-          type="primary"
-          @click="stopDiscontinuation"
-          style="margin-left: 10px;"
-        >停止</el-button>
-        <el-button
-          size="small"
-          type="primary"
-          @click="deleteMaintenance"
-        >删除</el-button> -->
       </div>
       <div class="bottom">
         <div>
@@ -337,7 +320,7 @@ export default {
       }
     },
     selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
+      // console.log("select-change", selection, rowData);
     },
     getTableData() {
       this.tableData = this.tableDate.slice(
@@ -434,12 +417,11 @@ export default {
         if (this.tableData[i].state === 14) {
           this.tableData[i].state = "已完成";
         }
-        if (this.tableData[i].maintenanceType === 0) {
-          this.tableData[i].maintenanceType = "维修";
-        }
-        if (this.tableData[i].maintenanceType === 1) {
+
+        this.tableData[i].maintenanceType === 0 ?
+          this.tableData[i].maintenanceType = "维修" :
           this.tableData[i].maintenanceType = "保养";
-        }
+
         if (this.tableData[i].frequencyType === -1) {
           this.tableData[i].frequencyType = "单次";
         }
@@ -452,11 +434,9 @@ export default {
         if (this.tableData[i].frequencyType === 3) {
           this.tableData[i].frequencyType = "月";
         }
-        for (let j in this.planLevel) {
-          if (this.tableData[i].maintenanceLevel === this.planLevel[j].id) {
-            this.tableData[i].maintenanceLevel = this.planLevel[j].levelDesc;
-          }
-        }
+        this.planLevel.forEach((item)=>{
+          this.tableData[i].maintenanceLevel === item.id ? this.tableData[i].maintenanceLevel=item.levelDesc:"";
+        });
       }
     },
     listMaintenanceLevel() {
@@ -572,7 +552,7 @@ export default {
     },
 
     toSubmitAudit() {
-      console.log(this.toAudit);
+      // console.log(this.toAudit);
       this.formLabelAlign.type ? (this.formLabelAlign.type = 0) : (this.formLabelAlign.type = 1);
       this.Axios(
         {
@@ -623,11 +603,11 @@ export default {
   },
   watch: {
     $route() {
-      //debugger
       let a=this.$route.matched.find(item=>(item.name==="UpkeepAdd"))?true:false;
       let b=this.$route.params.id !== undefined ? true : false;
       this.isHideList = a||b ?true:false;
       this.$refs.upkeepTable.resize();
+      this.$store.state.operation.upkeep==="y"? this.reload():"";
     }
   },
 };
