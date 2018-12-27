@@ -18,12 +18,12 @@
                 </span>
                 </template>
             </el-submenu> -->
-          <el-submenu index="/Home">
-            <template slot="title">
-              <i class="iconfont">&#xe606;</i>
-              <span slot="title">默认工作台</span></template>
-            <el-menu-item index="/Home">默认工作台</el-menu-item>
-          </el-submenu>
+          <!-- <el-submenu index="/Home"> -->
+            <!-- <template slot="title"> -->
+              
+              <!-- <span slot="title">默认工作台</span></template> -->
+            <el-menu-item index="/Home"><i class="iconfont">&#xe606;</i>&nbsp;默认工作台</el-menu-item>
+          <!-- </el-submenu> -->
           <!-- <router-link to="默认工作台"></router-link> -->
           <el-submenu index="2">
             <template slot="title">
