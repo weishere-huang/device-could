@@ -288,7 +288,7 @@ export default {
         }, 500);
       });
       let id = this.$route.params.deviceId
-      let code=JSON.parse(sessionStorage.getItem('user')).organizeCode
+      let code=JSON.parse(localStorage.getItem('user')).organizeCode
       console.log(code);
       console.log(id);
       this.Axios(

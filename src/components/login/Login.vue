@@ -703,16 +703,16 @@ export default {
         result => {
           if (result.data.code === 200) {
             console.log(result.data);
-            sessionStorage.token = result.data.data.tokenStr;
-            sessionStorage.user = JSON.stringify(result.data.data);
-            // sessionStorage.Cookie =result.data.data;
+            localStorage.token = result.data.data.tokenStr;
+            localStorage.user = JSON.stringify(result.data.data);
+            // localStorage.Cookie =result.data.data;
             // this.$cookieStore.addCookie('JSESSIONID', result.data.data.jsessionid)
-            // sessionStorage.user = result.data.data.employeeName;
-            this.$store.commit("user", sessionStorage.getItem("user"));
+            // localStorage.user = result.data.data.employeeName;
+            this.$store.commit("user", localStorage.getItem("user"));
             this.$store.commit("tokenSrc", result.data.data.tokenStr);
             console.log(this.$store.state.token.toeknNub);
             this.$router.replace("/Home");
-            location.reload();
+            // location.reload();
           }
         },
         ({ type, info }) => {

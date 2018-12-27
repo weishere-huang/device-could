@@ -305,7 +305,7 @@ export default {
       ],
       refreshValue: "60",
       equipmentOperationalCondition: [],
-      organizeCode: JSON.parse(sessionStorage.getItem("user")).organizeCode,
+      organizeCode: JSON.parse(localStorage.getItem("user")).organizeCode,
       deviceCategory: "",
       basicStateCount: "",
       type:"",

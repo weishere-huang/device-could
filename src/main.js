@@ -52,14 +52,14 @@ axios.defaults.withCredentials = true;
 window.EventBus = new Vue();
 
 let AUTH_TOKEN = (function () {
-  // return sessionStorage.getItem("token");
+  // return localStorage.getItem("token");
   return store.state.token.tokenNub;
 })();
 var instance = axios.create({});
 instance.defaults.headers.common["token"] = AUTH_TOKEN;
 // 登录拦截
 router.beforeEach((to, from, next) => {
-  let isLogin = sessionStorage.getItem('token')
+  let isLogin = localStorage.getItem('token')
   if (to.meta.requireAuth) { // 判断是否需要登录权限
     if (isLogin) { // 判断是否登录
       next()
