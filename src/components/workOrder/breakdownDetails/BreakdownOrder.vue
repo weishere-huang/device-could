@@ -686,13 +686,13 @@
         this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
       },
       selectGroupChange(selection) {
-        console.log("select-group-change", selection);
+        // console.log("select-group-change", selection);
       },
       selectALL(selection) {
-        console.log("select-aLL", selection);
+        // console.log("select-aLL", selection);
       },
       selectChange(selection, rowData) {
-        console.log("select-change", selection, rowData);
+        // console.log("select-change", selection, rowData);
       },
       getPersonnel(rowIndex, rowData, column) {
         this.toExamine = rowData;
@@ -927,7 +927,7 @@
           this
         ).then(
           response => {
-            console.log(response.data);
+            // console.log(response.data);
           },
           ({type, info}) => {
             this.addMaterielValue();
@@ -945,7 +945,7 @@
           this
         ).then(
           response => {
-            console.log(response.data.data.devices);
+            // console.log(response.data.data.devices);
             this.workInfoValue(response.data.data.work);
             this.formLabelAlignValue(response.data.data.fault);
             this.equipmentTableDataValue(response.data.data.devices);
@@ -1047,7 +1047,7 @@
             this.spareParts= this.filterArray2(result.data.data,0);
           })
           .catch(err => {
-            console.log(err);
+            // console.log(err);
           });
       },
 
@@ -1191,7 +1191,7 @@
       //设备
       equipmentTableDataValue(value){
         this.equipmentTableData = value;
-        console.log(this.equipmentTableData)
+        // console.log(this.equipmentTableData)
       },
       //工单物料
       suppliesTableDataValue(value){
