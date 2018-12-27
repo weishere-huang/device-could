@@ -31,7 +31,7 @@
                     <el-tag type="info ellipsis" :title="runningLog.deviceModel">型号：{{runningLog.deviceModel}}</el-tag>
                     <el-tag type="info ellipsis" :title="runningLog.deviceNo">编号：{{runningLog.deviceNo}}</el-tag>
                     <el-tag type="info ellipsis" :title="runningLog.location">位置：{{runningLog.location}}</el-tag>
-                    <el-tag type="info ellipsis" :title="runningLog.deviceState">当前状态：{{runningLog.deviceState}}</el-tag>
+                    <el-tag type="info ellipsis" :title="runningLog.deviceState">当前状态：{{runningLog.runState}}</el-tag>
                     <el-tag type="info ellipsis" title="">报警状态：
                       <i class="iconfont c-green" v-if="runningLog.warnLevel===0">&#xe651;</i>
                       <i class="iconfont c-yellow" v-else-if="runningLog.warnLevel===1">&#xe651;</i>
@@ -288,7 +288,7 @@ export default {
         }, 500);
       });
       let id = this.$route.params.deviceId
-      let code=JSON.parse(sessionStorage.getItem('user')).organizeCode
+      let code=JSON.parse(localStorage.getItem('user')).organizeCode
       console.log(code);
       console.log(id);
       this.Axios(
@@ -309,14 +309,16 @@ export default {
       ).then(
         ([res1,res2]) => {
           this.runningLog=res2.data.data
-          if (this.runningLog.deviceState===0) {
-            this.runningLog.deviceState="正常"
-          }else if (this.runningLog.deviceState===1) {
-            this.runningLog.deviceState="故障"
-          }else if (this.runningLog.deviceState===2) {
-            this.runningLog.deviceState="维保"
-          }else if (this.runningLog.deviceState===3) {
-            this.runningLog.deviceState="关机"
+          if (this.runningLog.runState===0) {
+            this.runningLog.runState="正常"
+          }else if (this.runningLog.runState===1) {
+            this.runningLog.runState="故障"
+          }else if (this.runningLog.runState===2) {
+            this.runningLog.runState="维保"
+          }else if (this.runningLog.runState===3) {
+            this.runningLog.runState="关机"
+          }else if (this.runningLog.runState===4) {
+            this.runningLog.runState="断线"
           }
           console.log(this.runningLog);
           let days=new Array()

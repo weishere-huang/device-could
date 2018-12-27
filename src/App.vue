@@ -257,8 +257,8 @@ export default {
             message: "您已退出登录",
             type:"success"
           })
-          sessionStorage.removeItem('token');
-          sessionStorage.removeItem('user')
+          localStorage.removeItem('token');
+          localStorage.removeItem('user')
           this.$router.push({
             path: "/Login",
             redirect: "/Login"
@@ -306,7 +306,7 @@ export default {
     
   },
   created () {
-    this.user=JSON.parse(sessionStorage.getItem("user")).name
+    this.user=JSON.parse(localStorage.getItem("user")).name
     // this.user=this.$store.state.token.userMsg.name
     this.MsgCount();
   },

@@ -217,8 +217,8 @@ export default {
       let ids=this.selectedEquList.join(',')
       console.log(ids);
       const _params=Object.assign({
-              organizeCode:JSON.parse(sessionStorage.getItem('user')).organizeCode,
-              organizeName:JSON.parse(sessionStorage.getItem('user')).organizeName,
+              organizeCode:JSON.parse(localStorage.getItem('user')).organizeCode,
+              organizeName:JSON.parse(localStorage.getItem('user')).organizeName,
               startDate:new Date(this.form.region[0]).format("yyyy/MM/dd"),
               endDate:new Date(this.form.region[1]).format("yyyy/MM/dd"),
               deviceIds:this.form.deviceIds,
@@ -280,7 +280,7 @@ export default {
                 })
     },
     equChooseHandler:function(){
-        this.organizeCode=JSON.parse(sessionStorage.getItem('user')).organizeCode
+        this.organizeCode=JSON.parse(localStorage.getItem('user')).organizeCode
         this.innerVisible=true;
         this.Axios(
         {

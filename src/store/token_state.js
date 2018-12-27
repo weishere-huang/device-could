@@ -1,5 +1,5 @@
-let tokenNub = sessionStorage.getItem('token')
-let userMsg=JSON.parse(sessionStorage.getItem("user"))
+let tokenNub = localStorage.getItem('token')
+let userMsg=JSON.parse(localStorage.getItem("user"))
 export default {
   state: {
     tokenNub: tokenNub,

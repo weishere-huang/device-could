@@ -288,7 +288,7 @@ export default {
       pageable:{pageNumber:0,pageSize:0,total:0},
       totalElements:"",
       oeePlans:"",
-      organizeCode:JSON.parse(sessionStorage.getItem('user')).organizeCode,
+      organizeCode:JSON.parse(localStorage.getItem('user')).organizeCode,
     };
   },
   created: function() {
@@ -373,7 +373,7 @@ export default {
       this.Axios(
         {
           params: {
-            organizeCode:JSON.parse(sessionStorage.getItem('user')).organizeCode,
+            organizeCode:JSON.parse(localStorage.getItem('user')).organizeCode,
             planNo:this.planNo,
             shorthandName:this.formInline.user,
             startDate:this.dateRange[0],

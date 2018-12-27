@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <div class="left">
+    <div>主控面板，欢迎您：{{userMsg.name}}！</div>
+    <div class="left hide">
       <div class="personal-information">
         <div class="user-msg">
           <span>个人信息</span>
@@ -129,7 +130,7 @@
         </div>
       </div>
     </div>
-    <div class="right">
+    <div class="right hide">
       <div class="backlog">
         <span>待办事项</span>
         <ul>
@@ -215,9 +216,9 @@ export default {
   },
   methods: {},
   created() {
-    this.userMsg=JSON.parse(sessionStorage.getItem("user"))
-    console.log(sessionStorage.getItem("user"));
-    this.$store.commit('tokenSrc',sessionStorage.getItem("token"))
+    this.userMsg=JSON.parse(localStorage.getItem("user"))
+    console.log(localStorage.getItem("user"));
+    this.$store.commit('tokenSrc',localStorage.getItem("token"))
     console.log(this.$store.state.token.tokenNub);
     console.log(this.$store.state.token.userMsg)
   }
