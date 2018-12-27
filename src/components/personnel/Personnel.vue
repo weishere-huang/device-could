@@ -42,7 +42,7 @@
           ></v-table>
           <div
             class="mt20 mb20 bold"
-            style="text-align: left;margin-top:10px"
+            style="text-align: left;margin-top:10px;overflow: hidden;"
           >
             <v-pagination
               @page-change="pageChange"
@@ -52,6 +52,7 @@
               :page-size="pageSize"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
+            <span style="font-size: 12px; color:#e6a23c;float:right;padding-right:5px;">温馨提示：新添加的员工，初始密码为：<i style="color: #666666">123456</i></span>
           </div>
         </div>
       </div>
