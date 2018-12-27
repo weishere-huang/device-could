@@ -891,6 +891,7 @@
             this.examine.radio = 0;
             this.examine.type = false;
             this.toBack();
+            this.$store.commit("workOrders","y");
           },
           ({ type, info }) => {
             this.pageNumber = "";

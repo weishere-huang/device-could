@@ -320,7 +320,7 @@ export default {
       }
     },
     selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
+      // console.log("select-change", selection, rowData);
     },
     getTableData() {
       this.tableData = this.tableDate.slice(
@@ -552,7 +552,7 @@ export default {
     },
 
     toSubmitAudit() {
-      console.log(this.toAudit);
+      // console.log(this.toAudit);
       this.formLabelAlign.type ? (this.formLabelAlign.type = 0) : (this.formLabelAlign.type = 1);
       this.Axios(
         {
@@ -607,6 +607,7 @@ export default {
       let b=this.$route.params.id !== undefined ? true : false;
       this.isHideList = a||b ?true:false;
       this.$refs.upkeepTable.resize();
+      this.$store.state.operation.upkeep==="y"? this.reload():"";
     }
   },
 };

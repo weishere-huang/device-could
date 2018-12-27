@@ -319,7 +319,7 @@
       handleAvatarSuccess(res, file) {
         this.$message.success('图片成功上传');
         this.dialogImageUrl= file.response.data;
-        console.log(this.dialogImageUrl);
+        // console.log(this.dialogImageUrl);
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
@@ -363,7 +363,7 @@
         this.fileList = this.fileList.filter(item=>item.name!==file.name);
       },
       handlePreview1(file) {
-        console.log(file);
+        // console.log(file);
       },
       handleExceed1(files,fileList) {
         this.$message.warning(`当前限制选择 10 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
@@ -374,8 +374,8 @@
       },
       handleRemove(file, fileList) {
         this.dialogImageUrl=fileList;
-        console.log(file);
-        console.log(fileList);
+        // console.log(file);
+        // console.log(fileList);
       },
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
@@ -428,13 +428,13 @@
         return tree;
       },
       employeeAdd(formName){
-        console.log(formName)
+        // console.log(formName)
         if(this.persnneladd.organizationName === ""){
           this.$message.error("请选择组织机构");
         }else {
-          console.log(this.$refs[formName].validate())
+          // console.log(this.$refs[formName].validate())
           this.$refs[formName].validate(valid => {
-            console.log(valid);
+            // console.log(valid);
             if (valid) {
               this.toEmployeeAdd();
             } else {

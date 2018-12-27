@@ -333,6 +333,7 @@
         this.$router.push({
           path: "/TurnaroundPlans"
         });
+        this.$store.commit("turnaroundPlans","y")
       },
       loadSelect(number){
         let arr=new Array()
@@ -353,7 +354,7 @@
           })
       },
       updatePlan(){
-        console.log(this.tableData);
+        // console.log(this.tableData);
         this.deviceIds = this.tableData.map(item=>item.id).toString();
         if(this.companyName.state===0){
           if(this.deviceIds!==""){
@@ -424,7 +425,7 @@
       },
 
       selectChange(selection, rowData) {
-        console.log("select-change", selection, rowData);
+        // console.log("select-change", selection, rowData);
       },
       getTableData() {
         this.tableData = this.tableDate.slice(
@@ -435,7 +436,7 @@
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
         this.getTableData();
-        console.log(pageIndex);
+        // console.log(pageIndex);
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;

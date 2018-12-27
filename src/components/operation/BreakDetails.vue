@@ -219,6 +219,7 @@
         this.$router.push({
           path: "/Breakdown"
         });
+        this.$store.commit("breakDetails","y")
       },
       toback() {
         this.$router.back(-1)

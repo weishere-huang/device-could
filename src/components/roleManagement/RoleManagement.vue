@@ -238,7 +238,7 @@
             this.deleteRole(event.target.parentNode.attributes.label.textContent);
           })
           .catch(_=>{
-            console.log("stop")
+            // console.log("stop")
           })
       },
       systemCheckAllChange(val) {
@@ -354,7 +354,7 @@
         this.personnel.sHide = !this.personnel.sHide;
       },
       personnelHide() {
-        console.log("no");
+        // console.log("no");
         document.querySelectorAll(".personnel-slist")[0].style.height = 0;
         this.personnel.sShow = !this.personnel.sShow;
         this.personnel.sHide = !this.personnel.sHide;

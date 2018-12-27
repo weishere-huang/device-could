@@ -297,7 +297,7 @@ export default {
       }
     },
     selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
+      // console.log("select-change", selection, rowData);
     },
     getTableData() {
       this.tableData = this.tableDate.slice(
@@ -389,7 +389,7 @@ export default {
           );
         })
         .catch(_=>{
-          console.log("stop")
+          // console.log("stop")
         })
 
 
@@ -416,7 +416,7 @@ export default {
       this.$route.matched[this.$route.matched.length-1].name ==="PersnnelAdd"||
       this.$route.params.id !== undefined ? this.isHideList =true: this.isHideList =false;
       this.$refs.personnelTable.resize();
-      this.load();
+      this.$store.state.personnel.imId==="y" ?  this.reload():"";
     }
   },
 };
