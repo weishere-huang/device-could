@@ -34,20 +34,18 @@
               <span :title="data.name" class="listcontent">
                 {{ data.name }}
               </span >
-              
             </span>
           </el-tree>
         </div>
-
       </div>
     </div>
     <el-dialog title="角色添加" :visible.sync="dialogFormVisible" width="30%" :beforeClose="toCancel">
       <el-form :model="form" style="padding:10px 20px;" label-width="70px">
         <el-form-item label="角色名称" >
-          <el-input v-model="form.name" size="small"  autofocus  autocomplete="off" @keyup.enter.native="roleAdd"></el-input>
+          <el-input v-model="form.name" size="small"  autofocus  autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="角色描述" >
-          <el-input type="textarea" v-model="form.desc" @keyup.enter.native="roleAdd"></el-input>
+          <el-input type="textarea" v-model="form.desc"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -83,10 +81,9 @@
     },
     methods: {
       getCheckedKeys() {
-        console.log(this.$refs.tree.getCheckedKeys().join(','));
         this.systemID = "";
         this.systemID =this.$refs.tree.getCheckedKeys().join(',');
-        this.update();
+        this.roleId == "" ? this.$message.error("请选择角色"):this.update();
       },
       focus: function (el) {
         el.focus();
@@ -194,6 +191,7 @@
             this.power = response.data.data.map((item)=>{
               return item.id
             });
+            this.$refs.tree.setCheckedKeys(this.power);
           },
           ({type, info}) => {
 
