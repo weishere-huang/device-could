@@ -10,7 +10,7 @@
       <div class="left">
         <h6>角色列表</h6>
         <ul>
-          <li v-for="item in role" :label="item.id" :key="item.id" ><span :label="item.id" @click="getName($event)">{{item.name}}</span> <span @click="expurgate" :label="item.id"><i class='iconfont icon-shanchu1'></i></span></li>
+          <li v-for="item in role" :label="item.id" :key="item.id" ><span :label="item.id" @click="getName($event)">{{item.name}}</span> <span :label="item.id" @click="expurgate($event)" class='iconfont icon-shanchu1'></span></li>
         </ul>
       </div>
       <div class="right">
@@ -94,10 +94,9 @@
       expurgate(event){
         this.$confirm('此操作将删除该角色, 是否继续?', '提示')
           .then(_=>{
-            this.deleteRole(event.target.parentNode.attributes.label.textContent);
+            this.deleteRole(event.target.getAttribute("label"));
           })
           .catch(_=>{
-            // console.log("stop")
           })
       },
       roleAdd(){
@@ -192,11 +191,9 @@
           this
         ).then(
           response => {
-            console.log(response.data.data)
             this.power = response.data.data.map((item)=>{
               return item.id
             });
-            console.log(this.power );
           },
           ({type, info}) => {
 
@@ -245,11 +242,8 @@
           })
       },
       getName(event){
-
         this.roleId = event.target.getAttribute("label");
-        console.log(this.roleId)
         this.listPermissionByRoleId(this.roleId);
-
       },
       deleteRole(value){
         let qs = require("qs");
