@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-container class="mainWrapper">
+    <el-container v-if="user!==''" class="mainWrapper">
       <el-aside class="siderWrapper">
         <div class="logoWrap">
           <img src='./assets/image/logo.png' />
@@ -218,7 +218,11 @@
         <el-footer>长虹智能终端设备生产管理云平台({{version?(new Date(version).format("yyyy/MM/dd hh:mm:ss")):'no version'}})</el-footer>
       </el-container>
     </el-container>
-
+    <el-container v-else>
+      <transition>
+            <router-view v-if="isRouterAlive" />
+          </transition>
+    </el-container>
   </div>
 </template>
 
@@ -320,6 +324,11 @@ export default {
       } else if (a === 2) {
         this.$router.push({ path: "/WorkOrder" });
       }
+    }
+  },
+  watch: {
+    $route() {
+      this.user = JSON.parse(localStorage.getItem("user")).name;
     }
   },
   computed: {},
