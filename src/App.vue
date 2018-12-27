@@ -1,17 +1,19 @@
 <template>
   <div id="app">
-      <el-container class="mainWrapper">
-        <el-aside class="siderWrapper">
-          <div class="logoWrap">
-            <img src='./assets/image/logo.png'/>
-          </div>
-          <el-menu :router=true :default-active="$route.name"
-              class="el-menu-vertical-demo"
-              text-color="#fff"
-              active-text-color="#ffd04b"
-              :collapse="isCollapse"
-              >
-            <!-- <el-submenu index="/">
+    <el-container class="mainWrapper">
+      <el-aside class="siderWrapper">
+        <div class="logoWrap">
+          <img src='./assets/image/logo.png' />
+        </div>
+        <el-menu
+          :router=true
+          :default-active="$route.name"
+          class="el-menu-vertical-demo"
+          text-color="#fff"
+          active-text-color="#ffd04b"
+          :collapse="isCollapse"
+        >
+          <!-- <el-submenu index="/">
               <template slot="title" class="logoWrap">
                 <span slot="title">
 
@@ -19,10 +21,10 @@
                 </template>
             </el-submenu> -->
           <!-- <el-submenu index="/Home"> -->
-            <!-- <template slot="title"> -->
-              
-              <!-- <span slot="title">默认工作台</span></template> -->
-            <el-menu-item index="/Home"><i class="iconfont">&#xe606;</i>&nbsp;默认工作台</el-menu-item>
+          <!-- <template slot="title"> -->
+
+          <!-- <span slot="title">默认工作台</span></template> -->
+          <el-menu-item index="/Home"><i class="iconfont">&#xe606;</i>&nbsp;默认工作台</el-menu-item>
           <!-- </el-submenu> -->
           <!-- <router-link to="默认工作台"></router-link> -->
           <el-submenu index="2">
@@ -32,50 +34,50 @@
             <el-menu-item index="/Company">企业管理</el-menu-item>
           </el-submenu>
           <el-submenu index="5">
-              <template slot="title">
-                <i class="iconfont">&#xe62e;</i>
-                <span slot="title">组织机构</span></template>
-                <el-menu-item index="/Organization">组织机构管理</el-menu-item>
-            </el-submenu>
+            <template slot="title">
+              <i class="iconfont">&#xe62e;</i>
+              <span slot="title">组织机构</span></template>
+            <el-menu-item index="/Organization">组织机构管理</el-menu-item>
+          </el-submenu>
           <el-submenu index="6">
-              <template slot="title">
-                <i class="iconfont">&#xe68d;</i>
-                <span slot="title">员工管理</span></template>
-                <el-menu-item index="/Personnel">员工管理</el-menu-item>
-            </el-submenu>
+            <template slot="title">
+              <i class="iconfont">&#xe68d;</i>
+              <span slot="title">员工管理</span></template>
+            <el-menu-item index="/Personnel">员工管理</el-menu-item>
+          </el-submenu>
           <el-submenu index="3">
             <template slot="title">
               <i class="iconfont">&#xe61c;</i>
               <span slot="title">设备管理</span></template>
-              <el-menu-item index="/Equipment">设备列表</el-menu-item>
-              <el-menu-item index="/Category">类别管理</el-menu-item>
-            </el-submenu>
-            <el-submenu index="monit">
+            <el-menu-item index="/Equipment">设备列表</el-menu-item>
+            <el-menu-item index="/Category">类别管理</el-menu-item>
+          </el-submenu>
+          <el-submenu index="monit">
             <template slot="title">
               <i class="iconfont">&#xe6a0;</i>
               <span slot="title">设备监控</span></template>
-              <el-menu-item index="/Monit">设备实时状态</el-menu-item>
-              <el-menu-item index="/Oee">设备OEE分析</el-menu-item>
-            </el-submenu>
-            <el-submenu index="4">
-              <template slot="title">
-                <i class="iconfont">&#xe73a;</i>
-                <span slot="title">运维管理</span></template>
-                <el-menu-item index="/Breakdown">设备故障</el-menu-item>
-                <el-menu-item index="/TurnaroundPlans">检修计划</el-menu-item>
-                <el-menu-item index="/Upkeep">保养计划</el-menu-item>
-            </el-submenu>
-            <el-submenu index="14">
-              <template slot="title">
-                <i class="iconfont">&#xe690;</i>
-                <span slot="title">备品备件</span></template>
-              <el-menu-item index="/SparePart">备件基础信息</el-menu-item>
-              <!-- <el-menu-item index="/OutboundDetails">出库明细</el-menu-item> -->
-              <el-menu-item index="/SparePartsClassification">备件分类</el-menu-item>
-              <el-menu-item index="/SparePartsWarehouse">备件入库</el-menu-item>
-              <el-menu-item index="/WarehousingDetail">入库明细</el-menu-item>
-            </el-submenu>
-            <!-- <el-submenu index="8">
+            <el-menu-item index="/Monit">设备实时状态</el-menu-item>
+            <el-menu-item index="/Oee">设备OEE分析</el-menu-item>
+          </el-submenu>
+          <el-submenu index="4">
+            <template slot="title">
+              <i class="iconfont">&#xe73a;</i>
+              <span slot="title">运维管理</span></template>
+            <el-menu-item index="/Breakdown">设备故障</el-menu-item>
+            <el-menu-item index="/TurnaroundPlans">检修计划</el-menu-item>
+            <el-menu-item index="/Upkeep">保养计划</el-menu-item>
+          </el-submenu>
+          <el-submenu index="14">
+            <template slot="title">
+              <i class="iconfont">&#xe690;</i>
+              <span slot="title">备品备件</span></template>
+            <el-menu-item index="/SparePart">备件基础信息</el-menu-item>
+            <!-- <el-menu-item index="/OutboundDetails">出库明细</el-menu-item> -->
+            <el-menu-item index="/SparePartsClassification">备件分类</el-menu-item>
+            <el-menu-item index="/SparePartsWarehouse">备件入库</el-menu-item>
+            <el-menu-item index="/WarehousingDetail">入库明细</el-menu-item>
+          </el-submenu>
+          <!-- <el-submenu index="8">
               <template slot="title">
                 <i class="iconfont">&#xe62d;</i>
               <span slot="title">设备档案</span></template>
@@ -91,7 +93,7 @@
             <!-- <el-menu-item index="/BreakdownOrder">故障工单详情</el-menu-item> -->
             <!-- <el-menu-item index="/UpkeepAndTurnaroundPlans">检修&保养计划工单详情</el-menu-item> -->
           </el-submenu>
-          
+
           <!-- <el-submenu index="10">
             <template slot="title">
               <i class="iconfont">&#xe602;</i>
@@ -150,7 +152,10 @@
                     content="设备状态"
                     placement="bottom-end"
                   >
-                    <i class="iconfont" @click="pathto(0)">&#xe609;</i>
+                    <i
+                      class="iconfont"
+                      @click="pathto(0)"
+                    >&#xe609;</i>
                   </el-tooltip>
                 </li>
                 <li>
@@ -160,8 +165,15 @@
                     content="我的消息"
                     placement="bottom-end"
                   >
-                    <el-badge :value="msgcount" :max="99" class="item">
-                      <i class="iconfont" @click="pathto(1)">&#xe601;</i>
+                    <el-badge
+                      :value="msgcount"
+                      :max="99"
+                      class="item"
+                    >
+                      <i
+                        class="iconfont"
+                        @click="pathto(1)"
+                      >&#xe601;</i>
                     </el-badge>
                   </el-tooltip>
                 </li>
@@ -172,7 +184,10 @@
                     content="我的工单"
                     placement="bottom-end"
                   >
-                    <i class="iconfont" @click="pathto(2)">&#xe61d;</i>
+                    <i
+                      class="iconfont"
+                      @click="pathto(2)"
+                    >&#xe61d;</i>
                   </el-tooltip>
                 </li>
                 <li>
@@ -182,14 +197,20 @@
                     content="退出"
                     placement="bottom-end"
                   >
-                    <i class="iconfont" @click="out">&#xe6af;</i>
+                    <i
+                      class="iconfont"
+                      @click="out"
+                    >&#xe6af;</i>
                   </el-tooltip>
                 </li>
               </ul>
             </div>
           </el-header>
         </el-header>
-        <el-main class="mainContentWrapper" style="padding:8px;">
+        <el-main
+          class="mainContentWrapper"
+          style="padding:8px;"
+        >
           <transition>
             <router-view v-if="isRouterAlive" />
           </transition>
@@ -202,36 +223,36 @@
 </template>
 
 <script>
-import breadCrumb from './BreadCrumb.vue'
+import breadCrumb from "./BreadCrumb.vue";
 export default {
-  provide(){
-    return{
-      reload:this.reload
-    }
+  provide() {
+    return {
+      reload: this.reload
+    };
   },
   name: "App",
   data() {
     return {
-      user:"",
+      user: "",
       show: true,
       isCollapse: false,
       pictLoading: true,
-      isRouterAlive:true,
-      msgcount:0,
-      version:versionInfo
+      isRouterAlive: true,
+      msgcount: 0,
+      version: versionInfo
     };
   },
   methods: {
-    reload(){
-      this.isRouterAlive=false;
-      this.$nextTick(function () {
-        this.isRouterAlive=true;
-      })
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(function() {
+        this.isRouterAlive = true;
+      });
     },
     TroggleHandle(key, keyPath) {
       // console.log(key, keyPath);
       this.isCollapse = !this.isCollapse;
-      EventBus.$emit('sideBarTroggleHandle', this.isCollapse);
+      EventBus.$emit("sideBarTroggleHandle", this.isCollapse);
     },
     // handleOpen(key, keyPath) {
     //   console.log(key, keyPath);
@@ -240,7 +261,7 @@ export default {
     //   console.log(key, keyPath);
     // }
 
-    out(){
+    out() {
       // this.Axios(
       //   {
       //     url: "/user/logout",
@@ -248,35 +269,34 @@ export default {
       //     option:{enableMsg:false}
       //   },
       // ).then(response=>{
-        this.$confirm("您确定要退出登录吗？","确认",{
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(()=>{
-          this.$message({
-            message: "您已退出登录",
-            type:"success"
-          })
-          localStorage.removeItem('token');
-          localStorage.removeItem('user')
-          this.$router.push({
-            path: "/Login",
-            redirect: "/Login"
-          });
-        })
+      this.$confirm("您确定要退出登录吗？", "确认", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.$message({
+          message: "您已退出登录",
+          type: "success"
+        });
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        this.$router.push({
+          path: "/Login",
+          redirect: "/Login"
+        });
+      });
       // },({type,info})=>{})
-
     },
     //未读消息数
-    MsgCount(){
+    MsgCount() {
       this.Axios(
         {
           url: "/message/NotReadMsgCount/",
           type: "get",
-          option:{
-            requestTarget:"m",
+          option: {
+            requestTarget: "m",
             enableMsg: false,
-            enableLoad:false,
+            enableLoad: false
           }
         },
         this
@@ -291,28 +311,33 @@ export default {
         });
     },
     //路径跳转
-    pathto(a){
+    pathto(a) {
       //0跳转设备状态,1跳转消息,2跳转工单
-      if(a===0){
-        this.$router.push({path:'/Monit'})
-      }else if(a===1){
-        this.$router.push({path:'/Message'})
-      }else if(a===2){
-        this.$router.push({path:'/WorkOrder'})
+      if (a === 0) {
+        this.$router.push({ path: "/Monit" });
+      } else if (a === 1) {
+        this.$router.push({ path: "/Message" });
+      } else if (a === 2) {
+        this.$router.push({ path: "/WorkOrder" });
       }
     }
   },
-  computed: {
-    
-  },
-  created () {
-    this.user=JSON.parse(localStorage.getItem("user")).name
+  computed: {},
+  created() {
+    this.user = JSON.parse(localStorage.getItem("user")).name;
     // this.user=this.$store.state.token.userMsg.name
     this.MsgCount();
   },
   components: {
     breadCrumb
-    }
+  },
+  mounted() {
+    // 关闭浏览器窗口的时候清空浏览器缓存在localStorage的数据
+    window.onbeforeunload = function(e) {
+      var storage = window.localStorage;
+      storage.clear();
+    };
+  }
 };
 </script>
 
@@ -333,14 +358,14 @@ export default {
 * {
   margin: 0;
   padding: 0;
-  font-family: '微软雅黑';
+  font-family: "微软雅黑";
 }
 .el-header {
   overflow: hidden;
   position: relative;
   font-size: 12px;
 }
-.breadcrumbWrap{
+.breadcrumbWrap {
   position: absolute;
   left: 20px;
   bottom: 0;
@@ -442,5 +467,4 @@ export default {
   border-radius: 3px;
   //-webkit-box-shadow: inset 0 0 6px rgba(7, 7, 7, 0.3);
 } /*定义滑块 内阴影+圆角*/
-
 </style>
