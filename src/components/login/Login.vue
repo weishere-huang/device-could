@@ -711,7 +711,6 @@ export default {
             this.$store.commit("user", sessionStorage.getItem("user"));
             this.$store.commit("tokenSrc", result.data.data.tokenStr);
             console.log(this.$store.state.token.toeknNub);
-            // location.reload();
             this.$router.replace("/Home");
             location.reload();
           }
@@ -1131,9 +1130,7 @@ export default {
     font-size: 12px;
     cursor: pointer;
   }
-  .el-dialog__wrapper{
-    background-color: rgba(51, 51, 51, 0.479)
-  }
+  
   .el-dialog__header{
     height: 30px;
   }
@@ -1146,7 +1143,5 @@ export default {
   top: 0px !important;
   right: 14px !important;
 }
-// .v-modal{
-//   z-index: -1 !important;
-// }
+
 </style>
