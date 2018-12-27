@@ -9,8 +9,8 @@
       </div>
       <div class="left">
         <h6>角色列表</h6>
-        <ul @click="getName($event)">
-          <li v-for="item in role" :label="item.id" :key="item.id" ><span :label="item.id">{{item.name}}</span> <span @click="expurgate" :label="item.id"><i class='iconfont icon-shanchu1'></i></span></li>
+        <ul>
+          <li v-for="item in role" :label="item.id" :key="item.id" ><span :label="item.id" @click="getName($event)">{{item.name}}</span> <span @click="expurgate" :label="item.id"><i class='iconfont icon-shanchu1'></i></span></li>
         </ul>
       </div>
       <div class="right">
@@ -38,7 +38,7 @@
             </span>
           </el-tree>
         </div>
-     
+
       </div>
     </div>
     <el-dialog title="角色添加" :visible.sync="dialogFormVisible" width="30%" :beforeClose="toCancel">
@@ -84,9 +84,12 @@
     methods: {
       getCheckedKeys() {
         console.log(this.$refs.tree.getCheckedKeys().join(','));
+        this.systemID = "";
+        this.systemID =this.$refs.tree.getCheckedKeys().join(',');
+        this.update();
       },
       focus: function (el) {
-          el.focus();
+        el.focus();
       },
       expurgate(event){
         this.$confirm('此操作将删除该角色, 是否继续?', '提示')
@@ -158,50 +161,7 @@
 
           })
       },
-      list(value,toValues,key,number){
-        let toKey = "";
-        for(let i in value){
-          for (let j in toValues){
-            if(value[i] === toValues[j]) {
-              if (toKey === "") {
-                toKey = key[j];
-              } else if(toValues!==""){
-                toKey += "," + key[j];
-              }
-            }
-          }
-        }
-        switch(number){
-          case 1:
-            this.system.adminKey = toKey;
-            break;
-          case 2:
-            this.information.adminKey = toKey;
-            break;
-          case 3:
-            this.equipment.adminKey = toKey;
-            break;
-          case 4:
-            this.personnel.adminKey = toKey;
-            break;
-          case 5:
-            this.user.adminKey = toKey;
-            break;
-          case 6:
-            this.message.adminKey = toKey;
-            break;
-          default:
-            break;
-        }
-      },
       update(){
-        this.systemID = "";
-        this.systemID = this.system.adminKey.toString();
-        this.systemID == "" ? this.systemID = this.information.adminKey : this.information.adminKey!="" ? this.systemID +=","+this.information.adminKey:"";
-        this.systemID == "" ? this.systemID = this.equipment.adminKey : this.equipment.adminKey!="" ? this.systemID +=","+this.equipment.adminKey:"";
-        this.systemID == "" ? this.systemID = this.personnel.adminKey : this.personnel.adminKey!="" ? this.systemID +=","+this.personnel.adminKey:"";
-        this.systemID == "" ? this.systemID = this.user.adminKey : this.user.adminKey!="" ? this.systemID +=","+this.user.adminKey:"";
-        this.systemID == "" ? this.systemID = this.message.adminKey : this.message.adminKey!="" ? this.systemID +=","+this.message.adminKey:"";
         let qs = require("qs");
         let data = qs.stringify({
           id:this.roleId,
@@ -223,7 +183,6 @@
           })
       },
       listPermissionByRoleId(value){
-
         this.Axios(
           {
             params:{roleId:value} ,
@@ -233,15 +192,19 @@
           this
         ).then(
           response => {
-           
-            
+            console.log(response.data.data)
+            this.power = response.data.data.map((item)=>{
+              return item.id
+            });
+            console.log(this.power );
           },
           ({type, info}) => {
-            
+
           })
       },
       cancel(){
         this.form.name = "";
+        this.form.desc = "";
       },
       toCancel(){
         this.dialogFormVisible = false;
@@ -249,10 +212,6 @@
         this.form.desc = "";
       },
       filterArray(data, parent) {
-        // let pcode = data.find(function (data) {data.parentCode.length === 1;});
-        // console.log(pcode);
-        // console.log('pcode');
-
         let vm = this;
         var tree = [];
         var temp;
@@ -286,13 +245,11 @@
           })
       },
       getName(event){
-        this.roleName = event.target.innerHTML;
-        for(let i =0;i<this.role.length;i++){
-          if(this.roleName  === this.role[i].name){
-            this.roleId = this.role[i].id;
-            this.listPermissionByRoleId(this.roleId);
-          }
-        }
+
+        this.roleId = event.target.getAttribute("label");
+        console.log(this.roleId)
+        this.listPermissionByRoleId(this.roleId);
+
       },
       deleteRole(value){
         let qs = require("qs");
@@ -390,7 +347,7 @@
         height: 500px;
         margin-left: 30px;
         padding: 10px;
-        
+
         .tree-case{
           width: 100%;
           height: 480px;
@@ -410,7 +367,7 @@
             left: 10px;
           }
         }
-        
+
       }
     }
   }
