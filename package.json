@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
     "echarts": "^4.2.0-rc.2",
     "element-ui": "^2.4.9",
     "jquery": "^3.3.1",
