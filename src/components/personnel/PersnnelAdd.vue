@@ -404,8 +404,8 @@
           },
           this
         ).then(response => {
-          let arr = Math.min.apply(null, (response.data.data).map((item)=>{return item.code}));
-          this.options = this.filterArray(response.data.data,arr);
+          let code = Math.min.apply(null, (response.data.data).map((item)=>{return item.code}));
+          this.options = this.filterArray(response.data.data,code);
           },
           ({type, info}) => {
           })

@@ -250,10 +250,10 @@
           this
         )
           .then(result => {
-            this.data2 = this.filterArray2(result.data.data, 0);
+            let code = Math.min.apply(null, (result.data.data).map((item)=>{return item.categoryParentNo}));
+            this.data2 = this.filterArray2(result.data.data, code);
           })
           .catch(err => {
-            // console.log(err);
           });
       },
       toLoad() {
