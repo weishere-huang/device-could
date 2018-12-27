@@ -14,7 +14,7 @@
           <el-form :label-position="labelPosition"  ref="persnnelAdd" :model="persnneladd" :rules="personValidate" label-width="100px" style="width:100%;margin-top:26px"  size="mini">
             <el-col :span="14">
               <el-form-item label="姓名：" prop="name" style="">
-                <el-input type="text" style="width:70%" autofocus v-model="persnneladd.name" ref="name"></el-input>
+                <el-input type="text" style="width:70%" v-model="persnneladd.name" ref="name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="11">
@@ -432,9 +432,7 @@
         if(this.persnneladd.organizationName === ""){
           this.$message.error("请选择组织机构");
         }else {
-          // console.log(this.$refs[formName].validate())
           this.$refs[formName].validate(valid => {
-            // console.log(valid);
             if (valid) {
               this.toEmployeeAdd();
             } else {

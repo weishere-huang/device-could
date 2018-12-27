@@ -136,16 +136,10 @@
         pageIsOk: true,
         pageIndex: 1,
         pageSize: 10,
-        totalNub: "",
+        totalNub: '',
         tableData: [],
         tableDate: [],
         columns: [
-          // {
-          //   width: 50,
-          //   titleAlign: "center",
-          //   columnAlign: "center",
-          //   type: "selection"
-          // },
           {
             field: "workNo",
             title: "工单编号",
