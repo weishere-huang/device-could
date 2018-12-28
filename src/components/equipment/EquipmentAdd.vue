@@ -569,8 +569,7 @@
           this
         ).then(
           ([res1, res2]) => {
-            let arr = Math.min.apply(null, (res1.data.data).map((item)=>{return item.parentCode}));
-            this.orgoptions = this.filterArray(res1.data.data, arr);
+            this.orgoptions = this.filterArray(res1.data.data, res1.data.data.find(item=>item.organizeType===1).parentCode);
             this.ctgoptions= this.filterArray2(res2.data.data,0);
           },
           () => {}
