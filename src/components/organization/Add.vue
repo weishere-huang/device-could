@@ -38,7 +38,8 @@
           ></textarea>
 
         </li>
-        <li style="text-align:center;">
+      </ul>
+      <div style="text-align:center;margin-top:20px">
           <el-button
             size="small"
             @click="addHide"
@@ -48,8 +49,7 @@
             @click="beforeAdd"
             type="primary"
           >保存</el-button>
-        </li>
-      </ul>
+        </div>
     </div>
 
   </div>

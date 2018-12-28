@@ -147,8 +147,8 @@ export default {
       isHideList: this.$route.params.id !== undefined
         ? true
         : false,
-      organiza: "",
-      totalnum: "",
+      organiza: [],
+      totalnum: 0,
       defaultProps: "",
       keyWord: "",
       deviceId: "",
