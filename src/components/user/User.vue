@@ -205,39 +205,39 @@ export default {
         this.choice = "";
       }
     },
-    selectGroupChange(selection) {
-      console.log("select-group-change", selection);
-      this.choice = "";
-      for (let i = 0; i < selection.length; i++) {
-        if (this.choice === "") {
-          this.choice += selection[i].id;
-        } else {
-          this.choice += "," + selection[i].id;
-        }
-      }
-    },
-    selectALL(selection) {
-      this.choice = "";
-      for (let i = 0; i < selection.length; i++) {
-        if (this.choice === "") {
-          this.choice += selection[i].id;
-        } else {
-          this.choice += "," + selection[i].id;
-        }
-      }
-      console.log("select-aLL", selection);
-    },
-    selectChange(selection, rowData) {
-      this.choice = "";
-      for (let i = 0; i < selection.length; i++) {
-        if (this.choice === "") {
-          this.choice += selection[i].id;
-        } else {
-          this.choice += "," + selection[i].id;
-        }
-      }
-      console.log("select-change", selection, rowData);
-    },
+    // selectGroupChange(selection) {
+    //   console.log("select-group-change", selection);
+    //   this.choice = "";
+    //   for (let i = 0; i < selection.length; i++) {
+    //     if (this.choice === "") {
+    //       this.choice += selection[i].id;
+    //     } else {
+    //       this.choice += "," + selection[i].id;
+    //     }
+    //   }
+    // },
+    // selectALL(selection) {
+    //   this.choice = "";
+    //   for (let i = 0; i < selection.length; i++) {
+    //     if (this.choice === "") {
+    //       this.choice += selection[i].id;
+    //     } else {
+    //       this.choice += "," + selection[i].id;
+    //     }
+    //   }
+    //   console.log("select-aLL", selection);
+    // },
+    // selectChange(selection, rowData) {
+    //   this.choice = "";
+    //   for (let i = 0; i < selection.length; i++) {
+    //     if (this.choice === "") {
+    //       this.choice += selection[i].id;
+    //     } else {
+    //       this.choice += "," + selection[i].id;
+    //     }
+    //   }
+    //   console.log("select-change", selection, rowData);
+    // },
     getTableData() {
       this.tableData = this.tableDate.slice(
         (this.pageIndex - 1) * this.pageSize,
