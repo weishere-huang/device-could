@@ -595,6 +595,7 @@ const router = new Router({
 })
 
 export default router
+
 // export const constantRouterMap = [
 //   {
 //     path: '/',
@@ -633,6 +634,7 @@ export default router
 // ]
 
 // export default new Router({
+//   mode: 'history',
 //   routes: constantRouterMap
 // });
 //异步挂载的路由
@@ -780,40 +782,8 @@ export default router
 //       pageName: 'OEE'
 //     },
 //     children: [{
-//       path: 'End/:equId',
-//       name: 'OeeEnd',
-//       component: OeeEnd,
-//       meta: {
-//         requireAuth: true
-//       },
-//       props: {
-//         pageName: '任务结束'
-//       }
-//     },
-//     {
-//       path: 'Add',
-//       name: 'OeeAdd',
-//       component: OeeAdd,
-//       meta: {
-//         requireAuth: true
-//       },
-//       props: {
-//         pageName: '任务新增'
-//       }
-//     },
-//     {
-//       path: 'Details/:equId',
-//       name: 'OeeDetails',
-//       component: OeeDetails,
-//       meta: {
-//         requireAuth: true
-//       },
-//       props: {
-//         pageName: '任务详情'
-//       },
-//       children: [{
-//         path: 'End',
-//         name: 'OeeEnd2',
+//         path: 'End/:equId',
+//         name: 'OeeEnd',
 //         component: OeeEnd,
 //         meta: {
 //           requireAuth: true
@@ -821,8 +791,40 @@ export default router
 //         props: {
 //           pageName: '任务结束'
 //         }
-//       }]
-//     }
+//       },
+//       {
+//         path: 'Add',
+//         name: 'OeeAdd',
+//         component: OeeAdd,
+//         meta: {
+//           requireAuth: true
+//         },
+//         props: {
+//           pageName: '任务新增'
+//         }
+//       },
+//       {
+//         path: 'Details/:equId',
+//         name: 'OeeDetails',
+//         component: OeeDetails,
+//         meta: {
+//           requireAuth: true
+//         },
+//         props: {
+//           pageName: '任务详情'
+//         },
+//         children: [{
+//           path: 'End',
+//           name: 'OeeEnd2',
+//           component: OeeEnd,
+//           meta: {
+//             requireAuth: true
+//           },
+//           props: {
+//             pageName: '任务结束'
+//           }
+//         }]
+//       }
 //     ]
 //   },
 //   {
@@ -837,27 +839,27 @@ export default router
 //       role: ['maintain_lookup']
 //     },
 //     children: [{
-//       path: 'UpkeepAdd',
-//       name: 'UpkeepAdd',
-//       props: {
-//         pageName: '新增保养计划'
+//         path: 'UpkeepAdd',
+//         name: 'UpkeepAdd',
+//         props: {
+//           pageName: '新增保养计划'
+//         },
+//         component: UpkeepAdd,
+//         meta: {
+//           requireAuth: true
+//         },
 //       },
-//       component: UpkeepAdd,
-//       meta: {
-//         requireAuth: true
+//       {
+//         path: 'UpkeepAmend/:id/',
+//         name: 'UpkeepAmend',
+//         props: {
+//           pageName: '保养计划修改'
+//         },
+//         component: UpkeepAmend,
+//         meta: {
+//           requireAuth: true
+//         },
 //       },
-//     },
-//     {
-//       path: 'UpkeepAmend/:id/',
-//       name: 'UpkeepAmend',
-//       props: {
-//         pageName: '保养计划修改'
-//       },
-//       component: UpkeepAmend,
-//       meta: {
-//         requireAuth: true
-//       },
-//     },
 //     ]
 //   },
 //   {
@@ -881,7 +883,7 @@ export default router
 //       meta: {
 //         requireAuth: true
 //       },
-//     },]
+//     }, ]
 //   },
 //   {
 //     path: '/TurnaroundPlans',
@@ -895,27 +897,27 @@ export default router
 //       role: ['overhaul_lookup']
 //     },
 //     children: [{
-//       path: 'TurnaroundPlansAdd',
-//       name: 'TurnaroundPlansAdd',
-//       props: {
-//         pageName: '新增检修计划'
+//         path: 'TurnaroundPlansAdd',
+//         name: 'TurnaroundPlansAdd',
+//         props: {
+//           pageName: '新增检修计划'
+//         },
+//         component: TurnaroundPlansAdd,
+//         meta: {
+//           requireAuth: true
+//         },
 //       },
-//       component: TurnaroundPlansAdd,
-//       meta: {
-//         requireAuth: true
+//       {
+//         path: 'TurnaroundPlansAmend/:id/',
+//         name: 'TurnaroundPlansAmend',
+//         props: {
+//           pageName: '检修计划修改'
+//         },
+//         component: TurnaroundPlansAmend,
+//         meta: {
+//           requireAuth: true
+//         },
 //       },
-//     },
-//     {
-//       path: 'TurnaroundPlansAmend/:id/',
-//       name: 'TurnaroundPlansAmend',
-//       props: {
-//         pageName: '检修计划修改'
-//       },
-//       component: TurnaroundPlansAmend,
-//       meta: {
-//         requireAuth: true
-//       },
-//     },
 //     ]
 //   },
 //   {
@@ -930,27 +932,27 @@ export default router
 //       role: ['partInfo_lookup']
 //     },
 //     children: [{
-//       path: 'SparePartAdd',
-//       name: 'SparePartAdd',
-//       props: {
-//         pageName: '备品备件添加'
+//         path: 'SparePartAdd',
+//         name: 'SparePartAdd',
+//         props: {
+//           pageName: '备品备件添加'
+//         },
+//         component: SparePartAdd,
+//         meta: {
+//           requireAuth: true
+//         },
 //       },
-//       component: SparePartAdd,
-//       meta: {
-//         requireAuth: true
+//       {
+//         path: 'SparePartAmend/:id/',
+//         name: 'SparePartAmend',
+//         props: {
+//           pageName: '备品备件详情页'
+//         },
+//         component: SparePartAmend,
+//         meta: {
+//           requireAuth: true
+//         },
 //       },
-//     },
-//     {
-//       path: 'SparePartAmend/:id/',
-//       name: 'SparePartAmend',
-//       props: {
-//         pageName: '备品备件详情页'
-//       },
-//       component: SparePartAmend,
-//       meta: {
-//         requireAuth: true
-//       },
-//     },
 //     ]
 //   },
 //   {
@@ -1001,28 +1003,52 @@ export default router
 //       role: ['work_lookup']
 //     },
 //     children: [{
-//       path: 'BreakdownOrder/:id/',
-//       name: 'BreakdownOrder',
-//       props: {
-//         pageName: '故障工单详情'
+//         path: 'BreakdownOrder/:id/',
+//         name: 'BreakdownOrder',
+//         props: {
+//           pageName: '故障工单详情'
+//         },
+//         component: BreakdownOrder,
+//         meta: {
+//           requireAuth: true
+//         },
 //       },
-//       component: BreakdownOrder,
-//       meta: {
-//         requireAuth: true
+//       {
+//         path: 'UpkeepAndTurnaroundPlans/:id/',
+//         name: 'UpkeepAndTurnaroundPlans',
+//         props: {
+//           pageName: '检修&保养计划工单详情'
+//         },
+//         component: UpkeepAndTurnaroundPlans,
+//         meta: {
+//           requireAuth: true
+//         },
 //       },
-//     },
-//     {
-//       path: 'UpkeepAndTurnaroundPlans/:id/',
-//       name: 'UpkeepAndTurnaroundPlans',
-//       props: {
-//         pageName: '检修&保养计划工单详情'
-//       },
-//       component: UpkeepAndTurnaroundPlans,
-//       meta: {
-//         requireAuth: true
-//       },
-//     },
 //     ]
+//   },
+//   {
+//     path: '/RoleManagement',
+//     name: 'RoleManagement',
+//     props: {
+//       pageName: '角色管理'
+//     },
+//     component: RoleManagement,
+//     meta: {
+//       requireAuth: true,
+//       role: ['role_lookup']
+//     },
+//   },
+//   {
+//     path: '/User',
+//     name: 'User',
+//     component: User,
+//     props: {
+//       pageName: '用户管理'
+//     },
+//     meta: {
+//       requireAuth: true,
+//       role: ['user_lookup']
+//     },
 //   },
 //   {
 //     path: '*',

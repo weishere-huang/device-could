@@ -1,9 +1,12 @@
-let tokenNub = JSON.parse(localStorage.getItem("user"))
-let userMsg=JSON.parse(localStorage.getItem("user"))
+// let tokenNub = JSON.parse(localStorage.getItem("user"))
+let userMsg = JSON.parse(localStorage.getItem("user"))
+let tokenStr = localStorage.getItem("token")
+let permissionUrl = localStorage.getItem("permissionUrl")
 export default {
   state: {
-    tokenNub: '',
-    userMsg: ''
+    tokenNub: tokenStr,
+    userMsg: userMsg,
+    permissionUrl: permissionUrl,
   },
   mutations: {
     // tokenSrc(state, data) {
@@ -12,6 +15,7 @@ export default {
     user(state, data) {
       state.userMsg = data
       state.tokenNub = data.tokenStr
+      state.permissionUrl = data.permissionUrl
     }
   }
 }
