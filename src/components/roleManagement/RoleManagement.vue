@@ -232,6 +232,7 @@
           this
         ).then(
           response => {
+            console.log(response);
             let arr = Math.min.apply(null, (response.data.data).map((item)=>{return item.parentCode}));
             this.data = this.filterArray(response.data.data,arr);
           },

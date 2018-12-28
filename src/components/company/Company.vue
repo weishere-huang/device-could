@@ -312,47 +312,47 @@ export default {
       console.log(rowData);
       this.innerVisibleImg=rowData.businessLicenseImg
     },
-    selectGroupChange(selection) {
-      console.log("select-group-change", selection);
-      this.auditValue = selection[0];
-      this.choice = "";
-      this.states == [];
-      for (let i = 0; i < selection.length; i++) {
-        if (this.choice == "") {
-          this.choice = selection[i].id;
-          this.states[i] = selection[i].state;
-          this.auditValue == selection[0];
-        } else {
-          this.choice += "," + selection[i].id;
-          // this.auditValue +=","+selection[i]
-        }
-      }
-      console.log(this.choice);
-      console.log(this.states);
-      console.log(this.auditValue);
-    },
-    selectALL(selection) {
-      this.choice = "";
-      for (let i = 0; i < selection.length; i++) {
-        if (this.choice == "") {
-          this.choice = selection[i].id;
-        } else {
-          this.choice += "," + selection[i].id;
-        }
-      }
-      console.log("select-aLL", selection);
-    },
-    selectChange(selection, rowData) {
-      this.choice = "";
-      for (let i = 0; i < selection.length; i++) {
-        if (this.choice === "") {
-          this.choice += selection[i].id;
-        } else {
-          this.choice += "," + selection[i].id;
-        }
-      }
-      console.log("select-change", selection, rowData);
-    },
+    // selectGroupChange(selection) {
+    //   console.log("select-group-change", selection);
+    //   this.auditValue = selection[0];
+    //   this.choice = "";
+    //   this.states == [];
+    //   for (let i = 0; i < selection.length; i++) {
+    //     if (this.choice == "") {
+    //       this.choice = selection[i].id;
+    //       this.states[i] = selection[i].state;
+    //       this.auditValue == selection[0];
+    //     } else {
+    //       this.choice += "," + selection[i].id;
+    //       // this.auditValue +=","+selection[i]
+    //     }
+    //   }
+    //   console.log(this.choice);
+    //   console.log(this.states);
+    //   console.log(this.auditValue);
+    // },
+    // selectALL(selection) {
+    //   this.choice = "";
+    //   for (let i = 0; i < selection.length; i++) {
+    //     if (this.choice == "") {
+    //       this.choice = selection[i].id;
+    //     } else {
+    //       this.choice += "," + selection[i].id;
+    //     }
+    //   }
+    //   console.log("select-aLL", selection);
+    // },
+    // selectChange(selection, rowData) {
+    //   this.choice = "";
+    //   for (let i = 0; i < selection.length; i++) {
+    //     if (this.choice === "") {
+    //       this.choice += selection[i].id;
+    //     } else {
+    //       this.choice += "," + selection[i].id;
+    //     }
+    //   }
+    //   console.log("select-change", selection, rowData);
+    // },
     getTableData() {
       this.tableData = this.tableDate.slice(
         (this.pageIndex - 1) * this.pageSize,
@@ -464,7 +464,7 @@ export default {
       ).then(
         response => {
          this.$message.success("启用成功")
-          // this.load();
+          this.load();
           console.log("请求参数：" + data);
         },
         ({ type, info }) => {this.$message.error("服务器忙，请稍后再试")}
@@ -489,7 +489,7 @@ export default {
           this.$message.success("禁用成功，已经禁用该企业以及该企业下所有员工账号")
           this.load();
         },
-        ({ type, info }) => {}
+        ({ type, info }) => {this.$message.error("服务器忙，请稍后再试")}
       );
     },
     adsearch() {

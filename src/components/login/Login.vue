@@ -677,7 +677,6 @@ export default {
       // this.submitForm('loginList')
       let pass = this.loginList.password;
       pass = md5(pass);
-      console.log(this.password);
       let key = "*chang_hong_device_cloud";
       let a = pass;
       pass = this.encryptByDES(a, key);
@@ -702,15 +701,18 @@ export default {
       ).then(
         result => {
           if (result.data.code === 200) {
-            console.log(result.data);
+           
+            // console.log(result.data);
             localStorage.token = result.data.data.tokenStr;
             localStorage.user = JSON.stringify(result.data.data);
-            // localStorage.Cookie =result.data.data;
-            // this.$cookieStore.addCookie('JSESSIONID', result.data.data.jsessionid)
-            // localStorage.user = result.data.data.employeeName;
-            this.$store.commit("user", localStorage.getItem("user"));
-            this.$store.commit("tokenSrc", result.data.data.tokenStr);
-            console.log(this.$store.state.token.toeknNub);
+
+            // this.$cookieStore.addCookie('token', JSON.stringify(result.data.data.tokenStr),168)
+            // this.$cookieStore.addCookie('user',JSON.stringify(result.data.data),168)
+          
+            this.$store.commit("user",JSON.parse(localStorage.getItem('user')));
+            // this.$store.commit("tokenSrc",result.data.data.tokenStr);
+            console.log(this.$store.state.token.tokenNub);
+            console.log(this.$store.state.token.userMsg);
             this.$router.replace("/Home");
             // location.reload();
           }
@@ -807,7 +809,6 @@ export default {
         this
       ).then(
         response => {
-          console.log(1111);
           this.$message.success("短信验证码已发送至您的手机，请注意查收");
           this.send();
         },
@@ -1138,10 +1139,6 @@ export default {
     top: 6px;
   }
 }
-.el-icon-upload-success {
-  position: absolute !important;
-  top: 0px !important;
-  right: 14px !important;
-}
+
 
 </style>

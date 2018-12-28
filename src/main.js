@@ -22,16 +22,16 @@ import {
 } from 'vue-easytable'
 import global from './components/global/Global'
 import base from "./base.js";
-// import {
-//   addCookie,
-//   getCookie,
-//   delCookie
-// } from './cookie.js';
-// Vue.prototype.$cookieStore = {
-//   addCookie,
-//   getCookie,
-//   delCookie
-// }
+import {
+  addCookie,
+  getCookie,
+  delCookie
+} from './cookie.js';
+Vue.prototype.$cookieStore = {
+  addCookie,
+  getCookie,
+  delCookie
+}
 Vue.use(base)
 // import {
 //   Message,
@@ -52,14 +52,15 @@ axios.defaults.withCredentials = true;
 window.EventBus = new Vue();
 
 let AUTH_TOKEN = (function () {
-  // return localStorage.getItem("token");
-  return store.state.token.tokenNub;
+  return localStorage.getItem("token");
+  // return store.state.token.tokenNub;
 })();
 var instance = axios.create({});
-instance.defaults.headers.common["token"] = AUTH_TOKEN;
+
 // 登录拦截
 router.beforeEach((to, from, next) => {
   let isLogin = localStorage.getItem('token')
+  instance.defaults.headers.common["token"] = isLogin;
   if (to.meta.requireAuth) { // 判断是否需要登录权限
     if (isLogin) { // 判断是否登录
       next()
