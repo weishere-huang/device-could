@@ -290,7 +290,81 @@
             this.$router.push("/Upkeep");
             break;
         }
+      },
+      //记事本方法
+      addNode(){
+        let qs = require("qs");
+        let data = qs.stringify({
+          content:""
+        });
+        this.Axios({
+          url:"/workbench/addNote",
+          type:"post",
+          params: data ,
+          option:{
+            enableMsg:false
+          }
+        },this).then(
+          result =>{
+            console.log(result.data);
+          },
+          () => {}
+        )
+      },
+      deleteNode(){
+        let qs = require("qs");
+        let data = qs.stringify({
+          id:""
+        });
+        this.Axios({
+          url:"/workbench/addNote",
+          type:"post",
+          params:data,
+          option:{
+            enableMsg:false
+          }
+        },this).then(
+          result =>{
+            console.log(result.data);
+          },
+          () => {}
+        )
+      },
+      updateNode(){
+        let qs = require("qs");
+        let data = qs.stringify({
+          id:"",
+          content:""
+        });
+        this.Axios({
+          url:"/workbench/addNote",
+          type:"post",
+          params:data,
+          option:{
+            enableMsg:false
+          }
+        },this).then(
+          result =>{
+            console.log(result.data);
+          },
+          () => {}
+        )
+      },
+      findNotes(){
+        this.Axios({
+          url:"/workbench/findNotes",
+          type:"get",
+          option:{
+            enableMsg:false
+          }
+        },this).then(
+          result =>{
+            console.log(result.data);
+          },
+          () => {}
+        )
       }
+
     },
     created() {
       this.userMsg = JSON.parse(localStorage.getItem("user"))
