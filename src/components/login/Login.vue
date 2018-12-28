@@ -702,15 +702,15 @@ export default {
         result => {
           if (result.data.code === 200) {
            
-            console.log(result.data);
+            // console.log(result.data);
             localStorage.token = result.data.data.tokenStr;
             localStorage.user = JSON.stringify(result.data.data);
-       
-            this.$cookieStore.addCookie('token', JSON.stringify(result.data.data.tokenStr),168)
-            this.$cookieStore.addCookie('user',JSON.stringify(result.data.data),168)
+
+            // this.$cookieStore.addCookie('token', JSON.stringify(result.data.data.tokenStr),168)
+            // this.$cookieStore.addCookie('user',JSON.stringify(result.data.data),168)
           
-            this.$store.commit("user",JSON.parse(this.$cookieStore.getCookie('user')));
-            this.$store.commit("tokenSrc", JSON.parse(this.$cookieStore.getCookie('token')));
+            this.$store.commit("user",JSON.parse(localStorage.getItem('user')));
+            // this.$store.commit("tokenSrc",result.data.data.tokenStr);
             console.log(this.$store.state.token.tokenNub);
             console.log(this.$store.state.token.userMsg);
             this.$router.replace("/Home");

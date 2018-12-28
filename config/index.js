@@ -15,8 +15,8 @@ module.exports = {
       '/api': {
         //target: 'http://www.hyazi.com:9881',
         //target: 'http://localhost:8888',
-        target: 'http://118.25.217.48:9880',
-        //target:'http://192.168.1.104:9880',
+        // target: 'http://118.25.217.48:9880',
+        target:'http://192.168.1.104:9881',
         pathRewrite: {
           "^/api": ""
         }, 
@@ -27,7 +27,7 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: '127.0.0.1', // can be overwritten by process.env.HOST
+    host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,

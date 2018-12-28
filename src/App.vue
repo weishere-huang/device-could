@@ -1,7 +1,7 @@
 <template>
-  <div id="app" >
-    <el-container class="mainWrapper" >
-      <el-aside class="siderWrapper" >
+  <div id="app">
+    <el-container v-if="token!==''" class="mainWrapper">
+      <el-aside class="siderWrapper">
         <div class="logoWrap">
           <img src='./assets/image/logo.png' />
         </div>
@@ -218,7 +218,11 @@
         <el-footer>长虹智能终端设备生产管理云平台({{version?(new Date(version).format("yyyy/MM/dd hh:mm:ss")):'no version'}})</el-footer>
       </el-container>
     </el-container>
-
+    <el-container v-else>
+      <transition>
+            <router-view v-if="isRouterAlive" />
+          </transition>
+    </el-container>
   </div>
 </template>
 
@@ -321,10 +325,16 @@ export default {
       }
     }
   },
+  watch: {
+    $route() {
+      this.token = localStorage.getItem("token");
+      this.user = JSON.parse(localStorage.getItem("user")).name;
+    }
+  },
   computed: {},
   created() {
     this.user = JSON.parse(localStorage.getItem("user")).name;
-    // this.token = localStorage.getItem("token")
+    this.token = localStorage.getItem("token")
     // this.user=this.$store.state.token.userMsg.name
     // this.token=this.$store.state.token.tokenNub
     this.MsgCount();
