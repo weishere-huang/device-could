@@ -705,6 +705,7 @@ export default {
             // console.log(result.data);
             localStorage.token = result.data.data.tokenStr;
             localStorage.user = JSON.stringify(result.data.data);
+            localStorage.permissionUrl=result.data.data.permissionUrl
 
             // this.$cookieStore.addCookie('token', JSON.stringify(result.data.data.tokenStr),168)
             // this.$cookieStore.addCookie('user',JSON.stringify(result.data.data),168)
