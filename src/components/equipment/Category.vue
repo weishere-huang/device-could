@@ -464,7 +464,7 @@ export default {
     },
     checkUpdateForm(){
       let subok = true;
-      if(this.addname === ""){
+      if(this.nodeCname === ""){
         subok=false;
       }
       if(subok){
@@ -476,7 +476,7 @@ export default {
     },
     checkFirstForm(){
       let subok = true;
-      if(this.nodeCname === ""){
+      if(this.addname === ""){
         subok=false;
       }
       if(subok){
