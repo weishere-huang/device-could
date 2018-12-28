@@ -483,6 +483,7 @@
               console.log("add");
               console.log(result.data);
               this.$router.push("/Equipment");
+              this.reload();
             }
           },({type, info}) => {
           })

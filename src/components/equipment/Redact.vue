@@ -50,7 +50,7 @@
               title="修改部门"
               :visible.sync="dialogVisible1"
               width="300px"
-              
+
             >
             <div style="overflow: hidden;">
               <el-col :span="24" style="text-align:center;">
@@ -68,7 +68,7 @@
                 style="padding:10px 20px;width:100%"
               ></el-cascader>
             </el-col>
-            
+
               <div style="text-align:right;padding:10px 20px;">
                 <el-button @click="dialogVisible1 = false;chengeOrgCode='';chengeOrgname=''">取 消</el-button>
               <el-button
@@ -77,7 +77,7 @@
               >确 定</el-button>
               </div>
             </div>
-            
+
             </el-dialog>
 
           </el-form-item>
@@ -660,6 +660,7 @@ export default {
               console.log("update");
               console.log(result.data);
               this.$router.push({path:"/Equipment"});
+              this.reload();
             } else if (result.data.code == 410) {
               this.fileList1= JSON.parse(this.fileList1);
               this.$message.warning("该设备编号以存在,请修改!!!");
