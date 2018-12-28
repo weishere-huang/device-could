@@ -217,10 +217,9 @@ export default {
   methods: {},
   created() {
     this.userMsg=JSON.parse(localStorage.getItem("user"))
-    console.log(localStorage.getItem("user"));
-    this.$store.commit('tokenSrc',localStorage.getItem("token"))
     console.log(this.$store.state.token.tokenNub);
     console.log(this.$store.state.token.userMsg)
+    console.log(this.$store.state.token.permissionUrl)
   }
 };
 </script>
