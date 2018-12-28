@@ -289,17 +289,17 @@ export default {
     replace() {
       this.reload();
     },
-    auditblock() {
-      if (this.choice.length == 0 || this.choice.length > 1) {
-        this.$message({
-          message: "请选择一个企业进行审核",
-          type: "error"
-        });
-      } else {
-        this.auditShow = true;
-
-      }
-    },
+    // auditblock() {
+    //   if (this.choice.length == 0 || this.choice.length > 1) {
+    //     this.$message({
+    //       message: "请选择一个企业进行审核",
+    //       type: "error"
+    //     });
+    //   } else {
+    //     this.auditShow = true;
+    //
+    //   }
+    // },
     auditByValue: function(params) {
       this.auditShow = params;
     },
@@ -463,14 +463,11 @@ export default {
         },
       ).then(
         response => {
-          this.$message({
-            message: "启用成功",
-            type: "success"
-          });
-          this.load();
+         this.$message.success("启用成功")
+          // this.load();
           console.log("请求参数：" + data);
         },
-        ({ type, info }) => {}
+        ({ type, info }) => {this.$message.error("服务器忙，请稍后再试")}
       );
     },
     forbidden() {
@@ -489,10 +486,7 @@ export default {
         this
       ).then(
         response => {
-          this.$message({
-            message: "禁用成功",
-            type: "success"
-          });
+          this.$message.success("禁用成功，已经禁用该企业以及该企业下所有员工账号")
           this.load();
         },
         ({ type, info }) => {}

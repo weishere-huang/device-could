@@ -7,7 +7,6 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
@@ -15,17 +14,11 @@ module.exports = {
       '/api': {
         //target: 'http://www.hyazi.com:9881',
         //target: 'http://localhost:8888',
-<<<<<<< HEAD
         //target: 'http://118.25.217.48:9880',
         target:'http://192.168.1.104:9880',
-=======
-        // target: 'http://118.25.217.48:9880',
-        target:'http://192.168.1.104:9881',
->>>>>>> a97c51b566b16a77f228838033952abe1f5f13a9
         pathRewrite: {
           "^/api": ""
-        }, 
-
+        },
         changeOrigin: true,
         secure: false
       }
