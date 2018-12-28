@@ -10,15 +10,15 @@
           :data="organize"
           :props="defaultProps"
           @node-click="handleNodeClick"
-          node-key="id"
-          :expand-on-click-node="false"
+          node-key="categoryParentNo"
+
         >
           <span
             class="custom-tree-node"
             slot-scope="{ node, data }"
           >
             <span class="content">{{ data.categoryName}}
-              <span class="addCase">
+              <span class="addCase" @click.stop>
                 <el-tooltip
                   class="item"
                   effect="dark"
