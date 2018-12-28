@@ -117,7 +117,7 @@
             class="mt20 mb20 bold"
             style="text-align:left;margin-top:20px"
           >
-            <v-pagination
+            <v-pagination 
               @page-change="pageChange"
               @page-size-change="pageSizeChange"
               :total="totalnum"
