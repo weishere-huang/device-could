@@ -10,15 +10,15 @@
           :data="organize"
           :props="defaultProps"
           @node-click="handleNodeClick"
-          node-key="id"
-          :expand-on-click-node="false"
+          node-key="categoryParentNo"
+
         >
           <span
             class="custom-tree-node"
             slot-scope="{ node, data }"
           >
             <span class="content">{{ data.categoryName}}
-              <span class="addCase">
+              <span class="addCase" @click.stop>
                 <el-tooltip
                   class="item"
                   effect="dark"
@@ -113,7 +113,7 @@
             <el-button @click="dialogVisible3 = false">取 消</el-button>
             <el-button
               type="primary"
-              @click="checkFirstForm"
+              @click="addFirst"
             >确 定</el-button>
           </span>
         </el-dialog>
@@ -464,7 +464,7 @@ export default {
     },
     checkUpdateForm(){
       let subok = true;
-      if(this.addname === ""){
+      if(this.nodeCname === ""){
         subok=false;
       }
       if(subok){
@@ -476,7 +476,7 @@ export default {
     },
     checkFirstForm(){
       let subok = true;
-      if(this.nodeCname === ""){
+      if(this.addname === ""){
         subok=false;
       }
       if(subok){

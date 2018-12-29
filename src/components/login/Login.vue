@@ -87,7 +87,7 @@
           isshow=!isshow
           ishide=!ishide
           }">企业注册</span>
-        
+
         <!-- <span @click="toReginster">企业注册</span> -->
       </p>
     </div>
@@ -711,7 +711,7 @@ export default {
       ).then(
         result => {
           if (result.data.code === 200) {
-           
+
             // console.log(result.data);
             localStorage.token = result.data.data.tokenStr;
             localStorage.user = JSON.stringify(result.data.data);
@@ -719,7 +719,7 @@ export default {
 
             // this.$cookieStore.addCookie('token', JSON.stringify(result.data.data.tokenStr),168)
             // this.$cookieStore.addCookie('user',JSON.stringify(result.data.data),168)
-          
+
             this.$store.commit("user",JSON.parse(localStorage.getItem('user')));
             // this.$store.commit("tokenSrc",result.data.data.tokenStr);
             console.log(this.$store.state.token.tokenNub);
@@ -1142,7 +1142,7 @@ export default {
     font-size: 12px;
     cursor: pointer;
   }
-  
+
   .el-dialog__header{
     height: 30px;
   }

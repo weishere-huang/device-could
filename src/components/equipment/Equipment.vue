@@ -117,7 +117,7 @@
             class="mt20 mb20 bold"
             style="text-align:left;margin-top:20px"
           >
-            <v-pagination
+            <v-pagination 
               @page-change="pageChange"
               @page-size-change="pageSizeChange"
               :total="totalnum"
@@ -399,7 +399,7 @@ export default {
       if (this.keyorall === 0) {
         this.findall();
       } else if (this.keyorall === 1) {
-
+        this.findByKeyWord();
       } else {
         this.leftfind();
       }
@@ -463,9 +463,6 @@ export default {
             //error && error(type, info);
           }
         );
-      // .catch(err => {
-      //   console.log(err);
-      // });
     },
     findByKeyWord() {
       this.keyorall = 1;
@@ -485,7 +482,6 @@ export default {
         result => {
           this.totalnum = result.data.data.totalElements;
           this.tableData = result.data.data.content;
-
           console.log(result.data.data.content);
         },
         ({ type, info }) => {}
@@ -615,7 +611,6 @@ export default {
         },
         this
       )
-        //.get(this.global.apiSrc + "/device/select", {params:{ page: this.pageIndex,size: this.pageSize}})
         .then(
           result => {
             this.totalnum = result.data.data.totalElements;
