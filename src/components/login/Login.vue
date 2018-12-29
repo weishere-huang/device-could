@@ -19,6 +19,7 @@
           <el-input
             placeholder="用户名/手机号"
             v-model="loginList.userName"
+            maxlength="30"
             autofocus
           >
             <i
@@ -36,6 +37,7 @@
             type="password"
             placeholder="密码"
             v-model="loginList.password"
+            maxlength="30"
           >
             <i
               class='iconfont icon-password'
@@ -111,6 +113,7 @@
               placeholder="营业执照主体单位名称"
               size="small"
               v-model="company.name"
+              maxlength="30"
               style="width:80%"
             ></el-input>
           </el-form-item>
@@ -123,6 +126,7 @@
               size="small"
               v-model="company.corporation"
               style="width:80%"
+              maxlength="30"
             ></el-input>
           </el-form-item>
           <el-form-item
@@ -133,6 +137,7 @@
               placeholder="如：028-XXXXXXXX"
               size="small"
               v-model="company.phone"
+              maxlength="13"
               style="width:80%"
             ></el-input>
           </el-form-item>
@@ -143,6 +148,7 @@
             <el-input
               placeholder="企业现在所处的详细地址"
               size="small"
+              maxlength="100"
               v-model="company.address"
               style="width:80%"
             ></el-input>
@@ -156,6 +162,7 @@
               size="small"
               v-model="company.companyID"
               style="width:80%"
+              maxlength="18"
             ></el-input>
           </el-form-item>
           <el-form-item
@@ -218,6 +225,7 @@
               size="small"
               v-model="manager.userName"
               style="width:80%"
+              maxlength="20"
             ></el-input>
           </el-form-item>
           <el-form-item
@@ -229,6 +237,7 @@
               size="small"
               :type="see"
               v-model="manager.userPassword"
+              maxlength="20"
               style="width:80%"
             >
               <i
@@ -246,6 +255,7 @@
               placeholder="11位手机号（仅国内）"
               size="small"
               v-model="manager.phone"
+              maxlength="11"
               style="width:80%"
             ></el-input>
           </el-form-item>
@@ -356,7 +366,7 @@ export default {
       registerRules: {
         name: [
           { required: true, message: "企业名不能为空", trigger: "blur" },
-          { min: 1, max: 100, message: "企业名称长度不能超过30字符" },
+          { min: 1, max: 100, message: "企业名称长度不能超过100字符" },
           {
             validator: (rule, value, callback) => {
               if (
