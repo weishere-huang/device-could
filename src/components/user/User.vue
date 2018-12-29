@@ -20,6 +20,12 @@
           <!--@click="deleteUser"-->
         <!--&gt;删除-->
         <!--</el-button>-->
+        <el-button
+          type="primary"
+          size="small"
+          @click="replace"
+        ><i style='font-size:12px' class='iconfont'>&#xe614;</i> &nbsp;刷新
+        </el-button>
         <div class="search">
           <el-input
             type="search"
@@ -168,6 +174,9 @@ export default {
     };
   },
   methods: {
+    replace() {
+      this.reload()
+    },
     customCompFunc(params) {
       if (params.type === "change") {
         console.log(params);
