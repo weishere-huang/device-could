@@ -83,11 +83,7 @@ export default {
       pageSize: 10,
       userIds: "",
       keyWord: "",
-      tableData: [
-        {
-          companyName: ""
-        }
-      ],
+      tableData: [],
       totalNub: "",
       tableDate: [],
       columns: [

@@ -732,9 +732,15 @@ export default {
           console.log(info);
           if (info.code === 408) {
             this.$message.error("验证码错误");
-          } else if (info.code === 400) {
+          }
+          if (info.code === 400) {
             this.$message.error("账号或密码错误");
-            this.$router.push({ path: "/Login" });
+          }
+          if (info.code === 0) {
+            this.$message.error('对不起，您的账户已被禁用')
+          }
+          if (info.code === 406) {
+            this.$message.error('对不起，您的企业正在审核中，请审核通过后再登录')
           }
         }
       );
@@ -854,7 +860,10 @@ export default {
         },
         ({ type, info }) => {
           console.log(info);
-          this.$message.error("服务器异常，请联系管理员");
+          if (info.code === 401) {
+            this.$message.error("对不起，该用户不存在，请检查用户名或手机号是否填写正确");
+
+          }
         }
       );
     },
