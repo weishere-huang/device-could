@@ -545,7 +545,10 @@ export default {
     handleRemove1(file, fileList) {
       console.log(file);
       console.log(fileList);
-      this.fileList1.filter(item >= item.name !== file.name);
+      console.log(this.fileList1);
+      this.fileList1 = this.fileList1.filter(item => item.name !== file.name);
+      console.log(this.fileList1);
+
     },
     handlePreview1(file) {
       console.log(file);
