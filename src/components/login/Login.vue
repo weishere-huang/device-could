@@ -19,6 +19,7 @@
           <el-input
             placeholder="用户名/手机号"
             v-model="loginList.userName"
+            maxlength="30"
             autofocus
           >
             <i
@@ -36,6 +37,7 @@
             type="password"
             placeholder="密码"
             v-model="loginList.password"
+            maxlength="30"
           >
             <i
               class='iconfont icon-password'
@@ -111,6 +113,7 @@
               placeholder="营业执照主体单位名称"
               size="small"
               v-model="company.name"
+              maxlength="30"
               style="width:80%"
             ></el-input>
           </el-form-item>
@@ -123,6 +126,7 @@
               size="small"
               v-model="company.corporation"
               style="width:80%"
+              maxlength="30"
             ></el-input>
           </el-form-item>
           <el-form-item
@@ -133,6 +137,7 @@
               placeholder="如：028-XXXXXXXX"
               size="small"
               v-model="company.phone"
+              maxlength="13"
               style="width:80%"
             ></el-input>
           </el-form-item>
@@ -143,6 +148,7 @@
             <el-input
               placeholder="企业现在所处的详细地址"
               size="small"
+              maxlength="100"
               v-model="company.address"
               style="width:80%"
             ></el-input>
@@ -156,6 +162,7 @@
               size="small"
               v-model="company.companyID"
               style="width:80%"
+              maxlength="18"
             ></el-input>
           </el-form-item>
           <el-form-item
@@ -218,6 +225,7 @@
               size="small"
               v-model="manager.userName"
               style="width:80%"
+              maxlength="20"
             ></el-input>
           </el-form-item>
           <el-form-item
@@ -229,6 +237,7 @@
               size="small"
               :type="see"
               v-model="manager.userPassword"
+              maxlength="20"
               style="width:80%"
             >
               <i
@@ -246,6 +255,7 @@
               placeholder="11位手机号（仅国内）"
               size="small"
               v-model="manager.phone"
+              maxlength="11"
               style="width:80%"
             ></el-input>
           </el-form-item>
@@ -356,7 +366,7 @@ export default {
       registerRules: {
         name: [
           { required: true, message: "企业名不能为空", trigger: "blur" },
-          { min: 1, max: 100, message: "企业名称长度不能超过30字符" },
+          { min: 1, max: 100, message: "企业名称长度不能超过100字符" },
           {
             validator: (rule, value, callback) => {
               if (
@@ -722,9 +732,15 @@ export default {
           console.log(info);
           if (info.code === 408) {
             this.$message.error("验证码错误");
-          } else if (info.code === 400) {
+          }
+          if (info.code === 400) {
             this.$message.error("账号或密码错误");
-            this.$router.push({ path: "/Login" });
+          }
+          if (info.code === 0) {
+            this.$message.error('对不起，您的账户已被禁用')
+          }
+          if (info.code === 406) {
+            this.$message.error('对不起，您的企业正在审核中，请审核通过后再登录')
           }
         }
       );
@@ -844,7 +860,10 @@ export default {
         },
         ({ type, info }) => {
           console.log(info);
-          this.$message.error("服务器异常，请联系管理员");
+          if (info.code === 401) {
+            this.$message.error("对不起，该用户不存在，请检查用户名或手机号是否填写正确");
+
+          }
         }
       );
     },

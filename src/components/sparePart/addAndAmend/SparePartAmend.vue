@@ -250,6 +250,7 @@
                 console.log("update");
                 console.log(result.data);
                 this.$router.push("/SparePart");
+                this.reload();
               } else if (result.data.code == 410) {
                 this.$message("该设备编号以存在,请修改!!!");
               }
