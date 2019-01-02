@@ -75,13 +75,13 @@
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="入职时间：" style="">
+              <el-form-item label="入职时间：" prop="entryTime" style="">
                 <el-date-picker type="date" placeholder="选择日期" value-format="yyyy/MM/dd" v-model="persnneladd.entryTime"
                                 style="width:100%"         ></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="婚姻状况：" style="">
+              <el-form-item label="婚姻状况：" prop="marital" style="">
                 <el-radio v-model="persnneladd.marital" label="1">已婚</el-radio>
                 <el-radio v-model="persnneladd.marital" label="0">未婚</el-radio>
               </el-form-item>
@@ -279,6 +279,8 @@
             }],
           birthday:[{required: true, message: "请选择出生日期", trigger: "blur"}],
           position:[{required: true, message: "岗位不能为空", trigger: "blur"}],
+          entryTime:[{required: true, message: "入职日期不能为空", trigger: "blur"}],
+          marital:[{required: true, message: "婚姻状况不能为空", trigger: "blur"}],
           email:[{
             validator: (rule, value, callback) => {
               let regEmail= /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
@@ -428,16 +430,11 @@
         return tree;
       },
       employeeAdd(formName){
-        // console.log(formName)
         if(this.persnneladd.organizationName === ""){
           this.$message.error("请选择组织机构");
         }else {
           this.$refs[formName].validate(valid => {
-            if (valid) {
-              this.toEmployeeAdd();
-            } else {
-              this.$message.error("请填写完信息");
-            }
+            valid ? this.toEmployeeAdd() :  this.$message.error("请填写完信息");
           });
         }
       },
