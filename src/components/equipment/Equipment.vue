@@ -117,11 +117,12 @@
             class="mt20 mb20 bold"
             style="text-align:left;margin-top:20px"
           >
-            <v-pagination 
+            <v-pagination
               @page-change="pageChange"
               @page-size-change="pageSizeChange"
               :total="totalnum"
               :page-size="pageSize"
+              :pageIndex="pageIndex"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
           </div>
