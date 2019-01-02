@@ -45,7 +45,7 @@ export default ({ url, type, params, config, option, loadingConfig }, vue) => {
                 //window.setTimeout(() => {
                     axios[_type](_url, _type === "get" ? { params: _params } : _params, config || {}).then(res => {
                         loading.close();
-                        if (res.status === 200 && res.data.code === 200) {
+                        if (res.status === 200 && (res.data.code === 200||res.data.code === 204)) {
                             //success && success(res.data);
                             //option.enableMsg && Message.success({message:option.successMsg, customClass:'e-message', duration:1500});
                             resolve(res);
@@ -89,8 +89,7 @@ export default ({ url, type, params, config, option, loadingConfig }, vue) => {
             //window.setTimeout(() => {
                 const loading = loadInit();
                 axios[type || 'post'](url, type === 'get' ? { params: params } : params, config || {}).then(res => {
-                    
-                    if (res.status === 200 && res.data.code === 200) {
+                    if (res.status === 200 && (res.data.code === 200||res.data.code === 204)) {
                         //success && success(res.data);
                         option.enableMsg && Message.success({ message: option.successMsg, customClass: 'e-message', duration: 2000 });
                         //option.enableMsg && Message.success({message:option.successMsg, customClass:'e-message', duration:1500});
