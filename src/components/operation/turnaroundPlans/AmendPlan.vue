@@ -94,7 +94,7 @@
         searchs: "",
         clickId:"",
         pageIndex: 1,
-        pageNumber:"",
+        pageNumber:0,
         pageSize: 10,
         toValue: "",
         tableData: [],
