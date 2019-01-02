@@ -177,7 +177,7 @@ export default {
     },
     customCompFunc(params) {
       if (params.type === "change") {
-        console.log(params);
+        // console.log(params);
         if (params.rowData.state === "1") {
           this.choice = params.rowData.id;
           this.prohibit();
@@ -250,7 +250,7 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
+      // console.log(pageIndex);
       this.load();
     },
     pageSizeChange(pageSize) {
@@ -330,8 +330,8 @@ export default {
       let data = qs.stringify({
         userIds: this.choice
       });
-      console.log(111)
-      console.log(this.choice)
+      // console.log(111)
+      // console.log(this.choice)
       this.Axios({
         url: "/user/deleteUsers",
         params: data,
@@ -342,7 +342,7 @@ export default {
         this.$message.success("您已经删除该用户")
         this.load()
       },({type,info})=>{
-        console.log(info)
+        // console.log(info)
       })
     },
     findByKeyWord() {
@@ -366,8 +366,8 @@ export default {
           for (let i = 0; i < this.tableData.length; i++) {
             this.tableData[i].state =String(this.tableData[i].state)
           }
-          console.log(this.pageIndex);
-          console.log(response);
+          // console.log(this.pageIndex);
+          // console.log(response);
         },
         ({ type, info }) => {}
       );
@@ -395,7 +395,7 @@ export default {
         this
       ).then(
         response => {
-          console.log(response);
+          // console.log(response);
           // this.pageIndex=1
           this.totalNub = response.data.data.totalElements;
           this.tableData = response.data.data.content;
@@ -403,7 +403,7 @@ export default {
           for (let i = 0; i < this.tableData.length; i++) {
             this.tableData[i].state =String(this.tableData[i].state)
           }
-          console.log(this.tableDate);
+          // console.log(this.tableDate);
         },
         ({ type, info }) => {}
       );
