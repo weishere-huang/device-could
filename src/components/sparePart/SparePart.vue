@@ -47,6 +47,7 @@
             @page-size-change="pageSizeChange"
             :total="pageNumber"
             :page-size="pageSize"
+            :pageIndex="pageIndex"
             :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
           ></v-pagination>
         </div>
