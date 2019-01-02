@@ -45,8 +45,6 @@
       <div class="bottom">
         <div>
           <v-table
-            :select-all="selectALL"
-            :select-group-change="selectGroupChange"
             is-horizontal-resize
             column-width-drag
             :multiple-sort="false"
@@ -90,7 +88,7 @@ export default {
       userIds: "",
       keyWord: "",
       tableData: [],
-      totalNub: "",
+      totalNub: 0,
       tableDate: [],
       columns: [
         // {

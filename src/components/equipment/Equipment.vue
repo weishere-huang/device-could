@@ -584,11 +584,14 @@ export default {
       this.keyorall = 2;
       if (c === "") {
         this.leftclass = a;
+        this.leftcate = null;
+        this.leftstate = null;
+      }else{
+        this.leftclass = null;
+        this.leftcate = null;
+        this.leftstate = c;
       }
-      this.leftcate = "";
-      this.leftstate = c;
       this.pageIndex = 1;
-
       this.leftfind();
     },
     leftfind() {

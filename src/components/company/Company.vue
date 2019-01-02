@@ -57,8 +57,6 @@
             :columns="columns"
             :table-data="tableData"
             row-hover-color="#eee"
-            :select-all="selectALL"
-            :select-group-change="selectGroupChange"
             :row-dblclick="details"
             row-click-color="#edf7ff"
             @on-custom-comp="customCompFunc"
@@ -148,7 +146,7 @@ export default {
       pageIndex: 1,
       pageSize: 10,
       name: "",
-      totalNub: "",
+      totalNub: 0,
       states: [],
       tableData: [
         {
