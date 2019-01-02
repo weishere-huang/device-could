@@ -206,6 +206,7 @@ export default {
             for (let i = 0; i < result.data.data.length; i++) {
               if (result.data.data[i].organizeType === 0) {
                 result.data.data[i].organizeType = "企业";
+                result.data.data[i].name = "组织机构";
               }
               if (result.data.data[i].organizeType === 1) {
                 result.data.data[i].organizeType = "公司";
