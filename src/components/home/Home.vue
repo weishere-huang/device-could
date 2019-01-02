@@ -221,12 +221,12 @@
         },
         //设备信息
         deviceData:{
-          showdownPer:"",
+          showdownPer:0,
           warn:"",
-          unlinePer:"",
+          unlinePer:0,
           normalPer:0,
           faultPer:0,
-          maintenancePer:"",
+          maintenancePer:0,
           AllDevice:"",
           fault:"",
           normal:"",
