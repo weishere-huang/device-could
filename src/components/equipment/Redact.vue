@@ -784,12 +784,6 @@ export default {
       if(this.sizeForm.deviceNo ==="" ||this.sizeForm.deviceName === ""){
         subok = false;
       }
-      if(!(this.devicePersonnelInfoBase.find(item=> item.workerType==='0') || this.devicePersonnelInfoBase.find(item=> item.workerType==='1') || this.devicePersonnelInfoBase.find(item=> item.workerType==='2') || this.devicePersonnelInfoBase.find(item=> item.workerType==='3'))){
-        subok = false;
-      }
-      if(this.sizeForm.deviceClassify==="" || this.sizeForm.organizeCode === "" || this.sizeForm.deviceState === "" || this.sizeForm.deviceSpec===""){
-        subok = false;
-      }
       if(subok){
         this.update();
       }else{
