@@ -58,7 +58,7 @@
               :table-data="tableData"
               row-hover-color="#eee"
               row-click-color="#edf7ff"
-              
+
               :select-all="selectALL"
               :select-group-change="selectGroupChange"
               @on-custom-comp="customCompFunc"
@@ -153,7 +153,7 @@ Vue.component("table-RedactAdd", {
       let params = { type: "add", index: this.index, rowData: this.rowData };
       this.$emit("on-custom-comp", params);
     },
-    
+
   }
 });
 export default {
@@ -253,15 +253,11 @@ export default {
   methods: {
     customCompFunc(params) {
       if (params.type === "add") {
-        // do delete operation
-        console.log(params);
         this.getRowData(params.rowData)
-      
-      } 
+
+      }
     },
     getRowData(b) {
-      console.log(b.name);
-      console.log(this.editableTabs[this.editableTabsValue]);
       if (
         this.editableTabs[this.editableTabsValue].content.find(
           i => i.id === b.id
@@ -276,12 +272,8 @@ export default {
       }
     },
     getNode(a) {
-      console.log(a);
-      console.log(this.editableTabsValue);
     },
     handleNodeClick(data) {
-      console.log(data);
-      console.log(data.code);
       this.orgcode = data.code;
       this.findpeopler();
     },
@@ -312,7 +304,6 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
       this.findpeopler();
     },
     pageSizeChange(pageSize) {
@@ -351,36 +342,24 @@ export default {
           },
           type: "get",
           url: "/employee/findByOrganizeCode"
-          // loadingConfig: {
-          //   target: document.querySelector("#mainContentWrapper")
-          // }
         },
         this
       )
-        //.get(this.global.apiSrc + "/employee/findByOrganizeCode", {params:{organizeCode:code}})
         .then(
           result => {
             if (result.data.code === 204) {
               this.tableData = [];
             } else {
-              console.log("按照组织机构编号查询人");
-              console.log(result.data);
               this.tableData = result.data.data.content;
               this.tablenum = result.data.data.totalElements;
             }
           },
-          ({ type, info }) => {
-            //错误类型 type=faild / error
-            //error && error(type, info);
-          }
+          ({ type, info }) => {}
         );
-      // .catch(err => {
-      //   console.log(err);
-      // });
+
     },
 
     toAdd() {
-      // this.$props.personAddHandler(this.editableTabs);
       let params={
         data:this.editableTabs,
         isHide:false

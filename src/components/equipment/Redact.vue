@@ -411,10 +411,6 @@ export default {
         organizeCode: "",
         enterFactoryDate: ""
       },
-      // defaultProps:{
-      //   value:"organizeCode",
-      //   label:"organizeName"
-      // },
       defaultProps2: {
         value: "categoryNo",
         label: "categoryName"
@@ -520,36 +516,22 @@ export default {
       return this.global.apiImg;
     },
     beforeAvatarUpload(file){
-      console.log("beforeAvatarUpload");
-      console.log(file);
       const isLt10M = file.size/1024/1024<10;
       if(!isLt10M){
         this.$message.error('上传文件大小不能超过10MB!');
       }
     },
     handleAvatarSuccess(res, file) {
-      // this.upcode = res.code;
-      console.log(res);
-      console.log("handleAvatarSuccess")
-      console.log(file);
-      console.log(this.fileList);
       this.fileList1.push({
         img:res.data,
         name:file.name
       })
-      console.log(this.fileList);
-
     },
     handleRemove1(file, fileList) {
-      console.log(file);
-      console.log(fileList);
-      console.log(this.fileList1);
       this.fileList1 = this.fileList1.filter(item => item.name !== file.name);
-      console.log(this.fileList1);
-
     },
     handlePreview1(file) {
-      console.log(file);
+
     },
     handleExceed1(files, fileList) {
       this.$message.warning(`当前限制选择 20 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
@@ -578,12 +560,10 @@ export default {
       // this.sizeForm.deviceCategoryName = name;
     },
     classf(value) {
-      console.log(value);
       let obj = {};
       obj = this.options2.find(item => {
         return item.value === value;
       });
-      console.log(obj.label);
       this.sizeForm.deviceClassifyName = obj.label;
     },
     tback() {
@@ -657,9 +637,6 @@ export default {
         .then(
           result => {
             if (result.data.code == 200) {
-              console.log(result);
-              console.log("update");
-              console.log(result.data);
               this.$router.push({path:"/Equipment"});
               this.reload();
             } else if (result.data.code == 410) {
@@ -739,10 +716,8 @@ export default {
         );
     },
     personAddHandler(data){
-      console.log(data);
       this.devicePersonnelInfoBase=data;
       this.dialogVisible=false;
-      console.log(data);
     },
     updatewarning(){
       let subok = true;
@@ -826,7 +801,6 @@ export default {
   created() {
     this.urlid = this.$route.params.id;
     this.detail(this.urlid);
-    console.log("letid:" + this.urlid);
     this.organdcls();
   }
 };
