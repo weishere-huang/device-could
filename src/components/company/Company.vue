@@ -240,12 +240,12 @@ export default {
       this.inVisible=params
     },
     picShow(params){
-      console.log(params)
+      // console.log(params)
       this.innerVisible=params
     },
     customCompFunc(params) {
-      console.log("params");
-      console.log(params);
+      // console.log("params");
+      // console.log(params);
       if (params.type === "change") {
         if (params.rowData.state === "1") {
           this.choice = params.rowData.id;
@@ -307,7 +307,7 @@ export default {
     details(rowIndex, rowData, column) {
       this.dialogVisible = true;
       this.detailsValue = rowData;
-      console.log(rowData);
+      // console.log(rowData);
       this.innerVisibleImg=rowData.businessLicenseImg
     },
     // selectGroupChange(selection) {
@@ -360,7 +360,7 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
+      // console.log(pageIndex);
       this.load();
     },
     pageSizeChange(pageSize) {
@@ -408,7 +408,7 @@ export default {
         this
       ).then(
         response => {
-          console.log(response);
+          // console.log(response);
           this.totalNub = response.data.data.totalElements;
           this.tableData = response.data.data.content;
           for (let i = 0; i < this.tableData.length; i++) {
@@ -444,7 +444,7 @@ export default {
           for (let i = 0; i < this.tableData.length; i++) {
             this.tableData[i].state = String(this.tableData[i].state);
           }
-          console.log(this.pageIndex);
+          // console.log(this.pageIndex);
         },
         ({ type, info }) => {}
       );
@@ -463,7 +463,7 @@ export default {
         response => {
          this.$message.success("启用成功")
           this.load();
-          console.log("请求参数：" + data);
+          // console.log("请求参数：" + data);
         },
         ({ type, info }) => {this.$message.error("服务器忙，请稍后再试")}
       );
@@ -473,7 +473,7 @@ export default {
       let data = qs.stringify({
         enterpriseIds: this.choice
       });
-      console.log("请求参数：" + data);
+      // console.log("请求参数：" + data);
       this.Axios(
         {
           params: data,
