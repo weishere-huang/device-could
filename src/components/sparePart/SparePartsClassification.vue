@@ -185,7 +185,7 @@ export default {
       //修改节点
       nodeCname: "",
       nodeCMsg: "",
-      organize: "",
+      organize: [],
       // data5: this.organize,
       form: {
         name: "",
