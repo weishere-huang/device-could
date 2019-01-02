@@ -203,7 +203,7 @@ export default {
       dialogVisible: false,
       nodeCname: "",
       nodeCMsg: "",
-      organize: "",
+      organize: [],
       // data5: this.organize,
       form: {
         name: "",
