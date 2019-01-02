@@ -71,7 +71,7 @@
         searchs: "",
         pageIndex: 1,
         pageSize: 10,
-        pageNumber: "",
+        pageNumber: 0,
         tableData: [],
         tableDate: [],
         userIds: "",
