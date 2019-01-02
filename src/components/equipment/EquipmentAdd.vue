@@ -230,8 +230,8 @@
         },
         dialogVisible:false,
         addShow: false,
-        ogrname:"",
-        classfynm:"",
+        ogrname:[],
+        classfynm:[],
         sizeForm: {
           deviceNo: "",
           deviceName: "",

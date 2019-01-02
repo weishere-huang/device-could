@@ -98,7 +98,7 @@ export default {
       organizeInfo: [1, 2, 3, 4, 5, 6, 7, 8],
       pushtext: [],
       code: "id",
-      data: "",
+      data: [],
       defaultProps: {
         children: "children",
         label: "name"
@@ -134,22 +134,6 @@ export default {
       // console.log( this.nodedata);
       this.chengedata = data;
     },
-    //添加组织结构
-    // append(data) {
-    //   const newChild = { id: id++, label: "text", children: [] };
-    //   if (!data.children) {
-    //     this.$set(data, "children", []);
-    //   }
-    //   data.children.push(newChild);
-    // },
-    //删除组织机构
-    // remove(node, data) {
-    //   const parent = node.parent;
-    //   const children = parent.data.children || parent.data;
-    //   const index = children.findIndex(d => d.id === data.id);
-    //   children.splice(index, 1);
-    //   this.delete();
-    // },
     orgdelete(nodeId) {
       //删除组织机构
       let qs = require("qs");
@@ -168,7 +152,6 @@ export default {
         },
         this
       )
-        // .post(this.global.apiSrc + "/organize/delete/"+this.orgID,data)
         .then(
           result => {
             if (result.data.code == 200) {
@@ -182,10 +165,6 @@ export default {
           },
           ({ type, info }) => {}
         );
-      // .catch(err => {
-      //   console.log(err);
-      //   console.log(this.userName);
-      // });
     },
     allOrganize() {
       this.Axios(
@@ -199,7 +178,6 @@ export default {
         },
         this
       )
-        // .get(this.global.apiSrc + "/organize/allOrganize")
         .then(
           result => {
             console.log(result.data);
@@ -227,25 +205,10 @@ export default {
             let arr = Math.min.apply(null, (result.data.data).map((item)=>{return item.parentCode}));
             this.data = this.filterArray(result.data.data,arr);
             console.log(this.data);
-            // console.log(this.name1[0].children);
 
-            // "id": 328,
-            // "code": "1000001",
-            //   "parentCode": "1000",
-            //   "enterpriseId": 313,
-            //   "name": "工程与技术中心",
-            //   "organizeType": 1,
-            //   "organizeInfo": "暂无",
-            //   "gmtCreate": "2018-11-14T05:46:01.000+0000",
-            //   "gmtModified": "2018-11-14T05:46:01.000+0000",
-            //   "state": 1
           },
           ({ type, info }) => {}
         );
-      // .catch(err => {
-      //   console.log(err);
-      //   console.log(this.userName);
-      // });
     },
     findOneOrganize(id) {
       //查询单个组织机构
@@ -260,7 +223,6 @@ export default {
         },
         this
       )
-        //.put(this.global.apiSrc + "/organize/update", data)
         .then(result => {
           this.chengedata = result.data.data;
           console.log(result.data);
@@ -271,10 +233,6 @@ export default {
         });
     },
     filterArray(data, parent) {
-      // let pcode = data.find(function (data) {data.parentCode.length === 1;});
-      // console.log(pcode);
-      // console.log('pcode');
-
       let vm = this;
       var tree = [];
       var temp;
@@ -330,10 +288,6 @@ export default {
   },
   created() {
     this.allOrganize();
-    //this.findOneOrganize();
-    //this.delete();
-    //this.add();
-    //this.update();
   },
   components: {
     revise,
