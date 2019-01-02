@@ -968,9 +968,10 @@
             this.findAlldeviceClassify();
             this.addMaterielValue(response.data.data.content);
             this.pageNumber = response.data.data.totalElements;
+            this.workSheetMaterialTableData != [] ?
             this.workSheetMaterialTableData.map((item)=>{
               this.personListValue.push(item)
-            });
+            }):"";
           },
           ({type, info}) => {
 
@@ -1083,7 +1084,7 @@
         this.workSheetMaterialTableData=[];
         this.workSheetMaterialTableData = (this.workSheetMaterialTableData||[]).concat(this.personListValue);
         this.workSheetMaterialTableData.forEach((item)=>{
-            if(item.planCount == "" || item.planCount ==null)item.planCount =0
+            if(item.planCount == "" || item.planCount ==null)item.planCount =1
         });
         this.workSheetMaterialTableData = Array.from(new Set(this.workSheetMaterialTableData))
       },

@@ -192,7 +192,7 @@
     name: "",
     data() {
       return {
-        ogrname:"",
+        ogrname:[],
         labelPosition:"right",
         fileList: [],
         dialogImageUrl: '',
