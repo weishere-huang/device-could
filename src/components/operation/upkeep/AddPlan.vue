@@ -93,7 +93,7 @@
         arr:new Array(),
         clickId: 0,
         key: "",
-        pageNumber:"",
+        pageNumber:0,
         searchs: "",
         pageIndex: 1,
         pageSize: 10,

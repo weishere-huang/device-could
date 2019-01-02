@@ -24,7 +24,7 @@
         isPageOk:true,
         key: "",
         searchs:"",
-        pageNumber:"",
+        pageNumber:0,
         pageIndex: 1,
         isPageIndex:1,
         pageSize: 10,
