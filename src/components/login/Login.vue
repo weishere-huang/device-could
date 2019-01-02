@@ -276,7 +276,7 @@
               style="width:38%;"
               size="small"
               v-if="!sendMsgDisabled"
-              @click="registerSecuritycode"
+              @click="registerSecuritycode('manager')"
             >获取验证码</el-button>
             <el-button
               type="primary"
@@ -645,10 +645,7 @@ export default {
     },
     registerNext(formName) {
       if (this.company.dialogImageUrl === "") {
-        this.$message({
-          message: "请上传营业执照",
-          type: "error"
-        });
+        this.$message.error('请上传营业执照')
       } else {
         this.$refs[formName].validate(valid => {
           if (valid) {
@@ -733,7 +730,7 @@ export default {
           if (info.code === 408) {
             this.$message.error("验证码错误");
           }
-          if (info.code === 400) {
+          if (info.code === 402) {
             this.$message.error("账号或密码错误");
           }
           if (info.code === 0) {
@@ -831,16 +828,16 @@ export default {
         },
         ({ type, info }) => {
           console.log(info);
-          if (info.code == 400) {
+          if (info.code === 401 || info.code === 406) {
             this.$message.error("用户名或手机号错误");
           } else {
-            this.$message.error("服务器异常，请联系管理员");
+            this.$message.error("服务器异常，请稍后再试");
           }
         }
       );
     },
     //注册验证码
-    registerSecuritycode() {
+    registerSecuritycode(formName) {
       this.Axios(
         {
           params: Object.assign({ phone: this.manager.phone }),
@@ -855,15 +852,20 @@ export default {
       ).then(
         response => {
           console.log(1111);
-          this.$message.success("短信验证码已发送至您的手机，请注意查收");
-          this.send();
+
+          this.$refs[formName].validate(valid => {
+            if (valid) {
+              this.$message.success("短信验证码已发送至您的手机，请注意查收");
+              this.send();
+            } else {
+              this.$message.error("对不起,获取验证码失败，请检查信息填写是否正确后再重新获取");
+              return false;
+            }
+          });
+
         },
         ({ type, info }) => {
           console.log(info);
-          if (info.code === 401) {
-            this.$message.error("对不起，该用户不存在，请检查用户名或手机号是否填写正确");
-
-          }
         }
       );
     },
