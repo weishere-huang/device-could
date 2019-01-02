@@ -545,7 +545,10 @@ export default {
     handleRemove1(file, fileList) {
       console.log(file);
       console.log(fileList);
-      this.fileList1.filter(item >= item.name !== file.name);
+      console.log(this.fileList1);
+      this.fileList1 = this.fileList1.filter(item => item.name !== file.name);
+      console.log(this.fileList1);
+
     },
     handlePreview1(file) {
       console.log(file);
@@ -779,12 +782,6 @@ export default {
 
       //判断人员
       if(this.sizeForm.deviceNo ==="" ||this.sizeForm.deviceName === ""){
-        subok = false;
-      }
-      if(!(this.devicePersonnelInfoBase.find(item=> item.workerType==='0') || this.devicePersonnelInfoBase.find(item=> item.workerType==='1') || this.devicePersonnelInfoBase.find(item=> item.workerType==='2') || this.devicePersonnelInfoBase.find(item=> item.workerType==='3'))){
-        subok = false;
-      }
-      if(this.sizeForm.deviceClassify==="" || this.sizeForm.organizeCode === "" || this.sizeForm.deviceState === "" || this.sizeForm.deviceSpec===""){
         subok = false;
       }
       if(subok){
