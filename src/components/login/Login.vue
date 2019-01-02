@@ -650,7 +650,7 @@ export default {
         if (valid) {
           this.register();
         } else {
-          this.$message.error("请填写完信息");
+          this.$message.error("对不起，信息提交失败，请检查后重新提交");
           return false;
         }
       });
