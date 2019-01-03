@@ -295,10 +295,10 @@ export default {
         .then(
           result => {
             if (result.data.code === 200) {
-              this.$message("添加成功");
+              this.$message.success("添加成功");
               this.reload();
             } else {
-              this.$message("添加失败,请重新添加");
+              this.$message.error("添加失败,请重新添加");
             }
           },
           ({ type, info }) => {}
@@ -327,10 +327,10 @@ export default {
         .then(
           result => {
             if (result.data.code === 200) {
-              this.$message("添加成功");
+              this.$message.success("添加成功");
               this.reload();
             } else {
-              this.$message("添加失败,请重新添加");
+              this.$message.error("添加失败,请重新添加");
             }
           },
           ({ type, info }) => {}
@@ -358,10 +358,10 @@ export default {
         .then(
           result => {
             if (result.data.code === 200) {
-              this.$message("修改成功");
+              this.$message.success("修改成功");
               this.reload();
             } else {
-              this.$message("修改失败,请重新尝试");
+              this.$message.error("修改失败,请重新尝试");
             }
 
           },
@@ -395,7 +395,7 @@ export default {
               });
               this.reload();
             } else {
-              this.$message.info("删除失败,请重新尝试");
+              this.$message.error("删除失败,请重新尝试");
             }
           },
           ({ type, info }) => {}

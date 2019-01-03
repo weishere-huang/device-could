@@ -66,6 +66,7 @@
                 v-model="qqqqq"
                 @change="handleChange"
                 style="padding:10px 20px;width:100%"
+
               ></el-cascader>
             </el-col>
 
@@ -740,6 +741,7 @@ export default {
       for (var i = 0; i < data.length; i++) {
         if (data[i].parentCode == parent) {
           var obj = data[i];
+          if(obj.organizeType)
           temp = this.filterArray(data, data[i].code);
           if (temp.length > 0) {
             obj.children = temp;
