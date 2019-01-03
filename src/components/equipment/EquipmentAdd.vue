@@ -381,7 +381,7 @@
         this.addpersondata();
         //添加设备信息接口
         //上传文件
-        debugger
+
         let qs = require("qs");
         let _devicePersonnelInfo=[];
         this.devicePersonnelInfoBase.forEach(items => {
