@@ -55,7 +55,7 @@
             <el-col :span="11">
               <el-form-item label="组织单位：" prop="defaultProps" >
                 <el-cascader
-                  placeholder="搜索"
+                  placeholder="请选择"
                   :options="options"
                   :props="defaultProps"
                   expand-trigger="hover"
@@ -192,7 +192,7 @@
     name: "",
     data() {
       return {
-        ogrname:"",
+        ogrname:[],
         labelPosition:"right",
         fileList: [],
         dialogImageUrl: '',
@@ -481,6 +481,9 @@
             params:data,
             type: "post",
             url: "/employee/add",
+            option: {
+              successMsg:"保存成功"
+            }
           },
           this
         ).then(response => {
