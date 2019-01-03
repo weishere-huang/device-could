@@ -58,7 +58,6 @@
               :table-data="tableData"
               row-hover-color="#eee"
               row-click-color="#edf7ff"
-
               :select-all="selectALL"
               :select-group-change="selectGroupChange"
               @on-custom-comp="customCompFunc"
@@ -89,7 +88,7 @@
             @click="toAdd"
           >保存</el-button>
           <div class="personList">
-            <el-tabs
+            <!-- <el-tabs
               type="border-card"
               @tab-click="getNode"
               v-model="editableTabsValue"
@@ -107,16 +106,110 @@
                   :deleteWorker="workerDelete"
                 ></tab-component>
               </el-tab-pane>
-            </el-tabs>
+            </el-tabs> -->
+            <div
+              v-for="(item,index) of editableTabs=personAddHandler"
+              :key="index"
+            >
+              <tab-component
+                :items="item"
+                :deleteWorker="workerDelete"
+                :values="item.workerType"
+                v-on:changeTpye="changeTpye"
+              ></tab-component>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+    <!-- <el-dialog
+      width="300px"
+      title="请选择管理人员类型"
+      :visible.sync="innerVisible"
+      append-to-body
+    > -->
+    <div
+      append-to-body
+      class="person-type"
+      style="padding:10px; overflow: hidden;width:240px;"
+      v-show="innerVisible"
+    >
+      <el-select
+        v-model="value1"
+        placeholder="请选择"
+        style="width:100%"
+      >
+        <el-option
+          v-for="item of options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
+        </el-option>
+      </el-select>
+      <div style="margin-top:10px;float:right;">
+        <el-button
+          size="mini"
+          @click="innerVisible=flase"
+        >取消</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          @click="addPerson"
+        >确定</el-button>
       </div>
     </div>
   </div>
 </template>
 <script>
 import Vue from "vue";
-var tabComponent = Vue.component("tab-component", {
+Vue.component("tab-component", {
+  template: `<ul class="workerList"><li v-for="(item,index) of items.content">{{ item.workerName }}
+      <span style="display:inline;margin-left:5%;" >
+        <el-select
+          v-model="value=values"
+          placeholder="请选择"
+          style="width:50%"
+          size="mini"
+          @change="changeValue(value,item,items)"
+        >
+          <el-option
+            v-for="item of options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </span>
+  <i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>`,
+  data() {
+    return {
+      options: [
+        {
+          value: "0",
+          label: "负责人员"
+        },
+        {
+          value: "1",
+          label: "维修人员"
+        },
+        {
+          value: "2",
+          label: "检修人员"
+        },
+        {
+          value: "3",
+          label: "保养人员"
+        },
+        {
+          value: "4",
+          label: "操作人员"
+        }
+      ],
+      value: ""
+    };
+  },
   props: {
     items: {
       type: Object,
@@ -125,18 +218,32 @@ var tabComponent = Vue.component("tab-component", {
     deleteWorker: {
       type: Function,
       required: true
+    },
+    values: {},
+    changeTpye:{
+      
     }
   },
-  template:
-    '<ul class="workerList"><li v-for="item in items.content">{{ item.workerName }}<i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>'
+  methods: {
+    changeValue(data, rowdata,oldvalue) {
+      this.value = data;
+      let params = {};
+      params = {
+        value: data,
+        person: rowdata,
+        oldvalue:oldvalue
+      };
+      this.$emit("changeTpye", params);
+    }
+  }
 });
 Vue.component("table-RedactAdd", {
   template: `<span>
-        <el-tooltip class="item" effect="dark" content="添加" placement="top">
-            <i style='font-size:16px;cursor: pointer;' class='el-icon-circle-plus-outline' @click.stop.prevent="add(rowData,index)"></i>
-        </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="添加" placement="top">
+                <i style='font-size:16px;cursor: pointer;' class='el-icon-circle-plus-outline' @click.stop.prevent="add(rowData,index)"></i>
+              </el-tooltip>
+            </span>`,
 
-        </span>`,
   props: {
     rowData: {
       type: Object
@@ -152,8 +259,7 @@ Vue.component("table-RedactAdd", {
     add() {
       let params = { type: "add", index: this.index, rowData: this.rowData };
       this.$emit("on-custom-comp", params);
-    },
-
+    }
   }
 });
 export default {
@@ -161,12 +267,14 @@ export default {
   name: "",
   props: {
     personAddHandler: {
-      type: Function,
+      type: Array,
       required: true
     }
   },
   data() {
     return {
+      innerVisible: false,
+      personnelMsg: "",
       condition: "",
       editableTabs: [
         {
@@ -247,15 +355,66 @@ export default {
       },
       orgcode: "",
       //分页total
-      tablenum: ""
+      tablenum: "",
+      options: [
+        {
+          value: "0",
+          label: "负责人员"
+        },
+        {
+          value: "1",
+          label: "维修人员"
+        },
+        {
+          value: "2",
+          label: "检修人员"
+        },
+        {
+          value: "3",
+          label: "保养人员"
+        },
+        {
+          value: "4",
+          label: "操作人员"
+        }
+      ],
+      value1: ""
     };
   },
   methods: {
+    changeTpye(params) {
+      console.log(params);
+      for (let i = 0; i < this.editableTabs.length; i++) {
+        this.editableTabs[i].content;
+        if (this.editableTabs[i].workerType===params.oldvalue.workerType) {
+         
+          this.editableTabs[i].content.splice(item=>item.id===this.editableTabs[i].content.id,1)
+          // console.log(this.editableTabs[i].content.indexOf(params.person));
+          console.log(this.editableTabs[i]);
+        }
+        if (this.editableTabs[i].workerType === params.value) {
+          this.editableTabs[i].content.push({
+            workerName: params.person.workerName,
+            id: params.person.id
+          });
+          // console.log(this.editableTabs[i]);
+        }
+        // console.log(this.editableTabs[i].content.find(item=>item.id===params.person.id));
+      }
+    },
     customCompFunc(params) {
       if (params.type === "add") {
-        this.getRowData(params.rowData)
-
+        // do delete operation
+        console.log(params);
+        this.personnelMsg = params;
+        this.innerVisible = true;
+        // this.getRowData(params.rowData)
       }
+    },
+    addPerson() {
+      this.innerVisible = false;
+      this.editableTabsValue = this.value1;
+      this.getRowData(this.personnelMsg.rowData);
     },
     getRowData(b) {
       if (
@@ -360,21 +519,30 @@ export default {
     },
 
     toAdd() {
-      let params={
-        data:this.editableTabs,
-        isHide:false
-      }
-      this.$emit("personData",params)
+      // this.$props.personAddHandler(this.editableTabs);
+      let params = {
+        data: this.editableTabs,
+        isHide: false
+      };
+      this.$emit("personData", params);
     },
     deletes() {
-      this.editableTabs[this.editableTabsValue].content = [];
+      for (let i = 0; i < this.editableTabs.length; i++) {
+        this.editableTabs[i].content = [];
+      }
     },
 
     workerDelete(data) {
       //debugger;
-      this.editableTabs[this.editableTabsValue].content = this.editableTabs[
-        this.editableTabsValue
-      ].content.filter(item => item.id !== data.id);
+      console.log(data);
+      for (let i = 0; i < this.editableTabs.length; i++) {
+        this.editableTabs[i].content = this.editableTabs[i].content.filter(
+          item => item.id !== data.id
+        );
+      }
+      // this.editableTabs[this.editableTabsValue].content = this.editableTabs[
+      //   this.editableTabsValue
+      // ].content.filter(item => item.id !== data.id);
     }
   },
   created() {
@@ -392,12 +560,19 @@ export default {
           console.log("查询所有组织机构");
           console.log(result.data);
           console.log(result.data.data);
-          let pcode = Math.min.apply(null, (result.data.data).map((item)=>{return item.parentCode}));
+          let pcode = Math.min.apply(
+            null,
+            result.data.data.map(item => {
+              return item.parentCode;
+            })
+          );
           let arr = this.filterArray(result.data.data, pcode);
           console.log(arr);
           //this.data2 = this.filterArray(result.data.data,1000);
           this.data2 = arr;
-          this.orgcode = result.data.data.find(item=>item.organizeType===1).code;
+          this.orgcode = result.data.data.find(
+            item => item.organizeType === 1
+          ).code;
           this.findpeopler();
         },
         ({ type, info }) => {
@@ -443,6 +618,7 @@ export default {
         display: inline-block;
         float: right;
         font-size: 20px;
+
         button {
           font-size: 16px;
           width: 18px;
@@ -550,5 +726,14 @@ export default {
       }
     }
   }
+}
+.person-type {
+  position: absolute;
+  top: 200px;
+  left: 800px;
+  z-index: 1000000;
+  background-color: white;
+  border: @border;
+  border-radius: 5px;
 }
 </style>

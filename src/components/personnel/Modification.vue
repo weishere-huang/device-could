@@ -549,6 +549,9 @@
             params:data,
             type: "post",
             url: "/employee/update",
+            option: {
+              successMsg:"修改成功"
+            }
           },
           this
         ).then(response => {
