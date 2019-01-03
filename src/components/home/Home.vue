@@ -157,10 +157,10 @@
         </div>
         <ul class="message-details">
           <li
-            v-for="(item, index) in 10000"
+            v-for="(item, index) in massgageData"
             :key="index"
             @click="$router.push('/Message')"
-          ><span>11</span><span>{{item}}</span></li>
+          ><span>{{item.msgTitle}}</span><span>{{item.msgContent}}</span></li>
         </ul>
       </div>
       <div class="frequent-contacts">
@@ -168,39 +168,39 @@
         <ul>
           <li>
             <span>IT服务热线1：</span>
-            <span>11111</span>
+            <span>12230</span>
           </li>
           <li>
             <span>IT服务热线2：</span>
-            <span>11111</span>
+            <span>12345</span>
           </li>
           <li>
             <span>MAIL、ERP后台：</span>
-            <span>11111</span>
+            <span>12630</span>
           </li>
           <li>
             <span>网络组：</span>
-            <span>11111</span>
+            <span>13500</span>
           </li>
           <li>
             <span>桌面维护：</span>
-            <span>11111</span>
+            <span>14790</span>
           </li>
           <li>
             <span>桌面维护：</span>
-            <span>11111</span>
+            <span>12580</span>
           </li>
           <li>
             <span>IT服务QQ群：</span>
-            <span>11111</span>
+            <span>892596095</span>
           </li>
           <li>
             <span>投诉电话：</span>
-            <span>11111</span>
+            <span>99553</span>
           </li>
           <li>
             <span>技术支持：</span>
-            <span>11111</span>
+            <span>13547911497</span>
           </li>
         </ul>
       </div>
@@ -224,13 +224,15 @@
           showdownPer:"",
           warn:"",
           unlinePer:"",
-          normalPer:"",
-          faultPer:"",
+          normalPer:0,
+          faultPer:0,
           maintenancePer:"",
           AllDevice:"",
           fault:"",
           normal:"",
         },
+        //消息
+        massgageData:[],
       };
     },
     methods: {
@@ -290,6 +292,34 @@
             this.$router.push("/Upkeep");
             break;
         }
+      },
+      allNotReadMsg() {
+        this.Axios(
+          {
+            params: {
+              page: 1,
+              size: 20
+            },
+            type: "get",
+            url: "/message/allNotReadMsg",
+            // loadingConfig: {
+            //   target: document.querySelector("#mainContentWrapper")
+            // }
+            option:{
+              requestTarget:"m",
+              enableMsg:false
+            }
+          },
+          this
+        )
+          .then(result => {
+            console.log(result);
+            console.log(result.data);
+            this.massgageData = result.data.data.content;
+          })
+          .catch(err => {
+            console.log(err);
+          });
       },
       //记事本方法
       addNode(){
@@ -374,6 +404,7 @@
       console.log(this.$store.state.token.userMsg);
       this.getworksCount();
       this.getdeviceData();
+
     }
   };
 </script>

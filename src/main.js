@@ -41,6 +41,14 @@ Vue.prototype.global = global;
 // Vue.pototyype.message = function (msg) {
 //   this.$message('这是一条消息提示')
 // }
+// 富文本引入
+import VueQuillEditor from 'vue-quill-editor'
+// require styles 引入样式
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+Vue.use(VueQuillEditor)
+
 Vue.use(ElementUI)
 Vue.component(VTable.name, VTable)
 Vue.component(VPagination.name, VPagination)
