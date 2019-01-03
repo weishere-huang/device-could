@@ -385,6 +385,7 @@ export default {
       fileList:[],
       fileList1:[],
       qqqqq: "",
+      innerVisible:false,
       dialogVisible3: false,
       dialogVisible1: false,
       dialogVisible: false,

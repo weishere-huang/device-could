@@ -626,6 +626,9 @@
         }
       }
     }
+   .el-form-item--mini .el-form-item__content, .el-form-item--mini .el-form-item__label{
+      line-height:39px;
+    }
   }
 
 </style>
