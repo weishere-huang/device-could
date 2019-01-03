@@ -58,10 +58,6 @@
               :table-data="tableData"
               row-hover-color="#eee"
               row-click-color="#edf7ff"
-<<<<<<< HEAD
-=======
-
->>>>>>> 51d1ea64c0681dc3916e71162f96368230005c54
               :select-all="selectALL"
               :select-group-change="selectGroupChange"
               @on-custom-comp="customCompFunc"
