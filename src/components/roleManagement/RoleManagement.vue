@@ -134,8 +134,7 @@
             type: "post",
             url: "/role/add",
             option: {
-              enableMsg:false,
-              successMsg:"保存成功"
+              successMsg:"成功新增角色"
             },
           },
           this
@@ -180,13 +179,15 @@
             params:data ,
             type: "post",
             url: "/role/update",
+            option: {
+              successMsg:"保存成功"
+            }
           },
           this
         ).then(
           response => {
           },
           ({type, info}) => {
-
           })
       },
       listPermissionByRoleId(value){
