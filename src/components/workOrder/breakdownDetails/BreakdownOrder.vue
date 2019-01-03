@@ -134,7 +134,7 @@
       <div class="right">
         <div class="equipment">
           <h5>设备信息</h5>
-          <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;" :columns="equipmentTable" :table-data="equipmentTableData" row-hover-color="#eee" row-click-color="#edf7ff" row-height=24 :height="160" :row-click="checkPerson">
+          <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;" :columns="equipmentTable" :table-data="equipmentTableData" row-hover-color="#eee" row-click-color="#edf7ff" :row-height=24 :height="160" :row-click="checkPerson">
           </v-table>
         </div>
         <!-- 设备对象人员查看弹框 -->
@@ -150,7 +150,7 @@
               row-hover-color="#eee"
               row-click-color="#edf7ff"
               :cell-edit-done="cellEditDone"
-              row-height=35
+              :row-height=35
               :height="230"
             ></v-table>
           </div>
@@ -174,7 +174,7 @@
             row-hover-color="#eee"
             row-click-color="#edf7ff"
             :cell-edit-done="cellEditDone"
-            row-height=24
+            :row-height=24
             :height="140"
             @on-custom-comp="customCompFunc"
           >
@@ -210,7 +210,7 @@
                 row-click-color="#edf7ff"
                 :row-dblclick="basicInfo"
                 :cell-edit-done="cellEditDone"
-                row-height=24
+                :row-height=24
                 :height="230"
               ></v-table>
               <div
@@ -274,7 +274,7 @@
             row-hover-color="#eee"
             row-click-color="#edf7ff"
             :cell-edit-done="cellEditDone"
-            row-height=24
+            :row-height=24
             :height="230"
           ></v-table>
         </div>
@@ -289,7 +289,6 @@
       return {
         isOk:true,
         imgPath:[],
-        imgPaths:[],
         examine:{
           desc:"",
           type:"",
@@ -895,7 +894,12 @@
               this.$message.error(this.suppliesTableData[i].partName + '物料未填入计划数量');
               break;
             }else{
-              isOk=true;
+              if (/^[0-9]*$/.test(this.suppliesTableData[i].planCount)) {
+                isOk=true;
+              }else{
+                this.$message.error("请正确输入计划数量");
+                isOk = false;
+              }
             }
           }
           isOk? this.toInsertPart():"";
@@ -903,7 +907,6 @@
           this.toInsertPart()
         }
       },
-
       toInsertPart(){
         for (let i in this.suppliesTableData) {
           if(this.suppliesTableData[i].partCategory === "普通件"){
@@ -927,7 +930,6 @@
           this
         ).then(
           response => {
-            // console.log(response.data);
           },
           ({type, info}) => {
             this.addMaterielValue();
@@ -993,9 +995,10 @@
             this.findAlldeviceClassify();
             this.addMaterielValue(response.data.data.content);
             this.pageNumber = response.data.data.totalElements;
-            this.suppliesTableData.map((item)=>{
-              this.personListValue.push(item)
-            });
+            this.suppliesTableData != [] ?
+              this.suppliesTableData.map((item)=>{this.personListValue.push(item)}):
+              "";
+
           },
           ({type, info}) => {
 
@@ -1080,7 +1083,7 @@
         this.suppliesTableData =[];
         this.suppliesTableData = (this.suppliesTableData||[]).concat(this.personListValue);
         this.suppliesTableData.forEach((item)=>{
-          if(item.planCount == "" || item.planCount ==null) item.planCount =0
+          if(item.planCount == "" || item.planCount ==null) item.planCount =1
         });
         this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
       },

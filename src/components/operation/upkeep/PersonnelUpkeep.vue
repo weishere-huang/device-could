@@ -21,10 +21,12 @@
   export default {
     data() {
       return {
+        isPageOk:true,
         key: "",
         searchs:"",
-        pageNumber:"",
+        pageNumber:0,
         pageIndex: 1,
+        isPageIndex:1,
         pageSize: 10,
         tableData: [],
         tableDate: [],
@@ -91,36 +93,41 @@
 
           })
       },
-
       search() {
         if(/^1\d{10}$/ .test(this.key)) {
           if (!(/^1[345789]\d{9}$/.test(this.key))) {
-            alert("手机号码有误，请重填");
+            this.$message.error("手机号码有误，请重填");
+          }else{
+            this.toSearch();
           }
-        }if(this.key===""){
-          this.load();
         }else{
-          this.pageIndex =1;
-          this.Axios(
-            {
-              params: {condition: this.key},
-              type: "get",
-              url: "/employee/search",
-            },
-            this
-          ).then(response => {
-              if(this.key!==""){
-                this.pageNumber = response.data.data.totalElements;
-                this.tableData = response.data.data.content;
-                this.tableDate = this.tableData;
-              }else{
-                this.pageChange(1);
-              }
-            },
-            ({type, info}) => {
-            })
+          this.toSearch();
         }
-
+      },
+      toSearch(){
+        this.key==="" ?this.isPageOk=true :this.isPageOk=false;
+        this.isPageIndex===1 ?this.pageIndex = this.isPageIndex : this.pageIndex;
+        this.isPageIndex++;
+        this.Axios(
+          {
+            params: {condition: this.key,
+              page:this.pageIndex,
+              size:this.pageSize},
+            type: "get",
+            url: "/employee/search",
+          },
+          this
+        ).then(response => {
+            if(this.key!==""){
+              this.pageNumber = response.data.data.totalElements;
+              this.tableData = response.data.data.content;
+              this.tableDate = this.tableData;
+            }else{
+              this.pageChange(1);
+            }
+          },
+          ({type, info}) => {
+          })
       },
       selectGroupChange(selection) {
         // console.log("select-group-change", selection);
@@ -140,12 +147,23 @@
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
         this.getTableData();
-        this.load();
+        if (this.isPageOk) {
+          this.load();
+          this.isPageIndex=1;
+        }else{
+          this.search();
+        }
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
         this.pageSize = pageSize;
         this.getTableData();
+        if (this.isPageOk) {
+          this.load();
+          this.isPageIndex=1;
+        }else{
+          this.search();
+        }
       },
       personHide() {
         this.$emit("personHide", false);

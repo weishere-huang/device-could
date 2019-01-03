@@ -410,9 +410,6 @@ export default {
       this.getRowData(this.personnelMsg.rowData);
     },
     getRowData(b) {
-      //console.log(b.name);
-      //console.log(this.editableTabs[this.editableTabsValue]);
-      //this.editableTabs[this.editableTabsValue].content += b.name + ",";
       if (
         this.editableTabs[this.editableTabsValue].content.find(
           i => i.id === b.id
@@ -427,11 +424,8 @@ export default {
       }
     },
     getNode(a) {
-      console.log(a);
-      console.log(this.editableTabsValue);
     },
     handleNodeClick(data) {
-      console.log(data);
       this.orgcode=data.code
       this.findpeopler();
     },
@@ -447,7 +441,6 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
       this.findpeopler();
     },
     pageSizeChange(pageSize) {
@@ -497,20 +490,13 @@ export default {
           if (result.data.code === 204) {
             this.tableData = [];
           } else {
-            console.log("按照组织机构编号查询人");
-            console.log(result.data);
             this.tableData = result.data.data.content;
             this.tablenum = result.data.data.totalElements;
           }
         },
         ({ type, info }) => {
-          //错误类型 type=faild / error
-          //error && error(type, info);
         }
       );
-      // .catch(err => {
-      //   console.log(err);
-      // });
     },
     toAdd() {
 
@@ -521,17 +507,12 @@ export default {
       this.editableTabs[this.editableTabsValue].content=[];
     },
     workerDelete(data) {
-      //debugger;
       this.editableTabs[this.editableTabsValue].content = this.editableTabs[
         this.editableTabsValue
       ].content.filter(item => item.id !== data.id);
     },
 
     psearch(){
-      //条件模糊查询,前端控制
-      // this.pkeyword =""
-      console.log(this.tableData);
-      console.log("---");
       let newarr = new Array();
       for(let i=0;i<this.tableData.length;i++){
         // this.tableData = this.tableData[i]
@@ -541,7 +522,7 @@ export default {
         }
       }
       this.tableData = newarr;
-      console.log(this.tableData);
+
     },
     getorg(){
       this.Axios(
@@ -565,20 +546,13 @@ export default {
           result => {
             console.log("查询所有组织机构");
             console.log(result.data);
-            console.log(result.data.data);
             let pcode = Math.min.apply(null, (result.data.data).map((item)=>{return item.parentCode }));
             let arr = this.filterArray(result.data.data, pcode);
-            console.log(arr);
-            //this.data2 = this.filterArray(result.data.data,1000);
             this.data2 = arr;
-
             this.orgcode=result.data.data.find(item=>item.organizeType===1).code;
             this.findpeopler();
           },
-          ({ type, info }) => {
-            //错误类型 type=faild / error
-            //error && error(type, info);
-          }
+          ({ type, info }) => {}
         )
         .catch(err => {
           console.log(err);

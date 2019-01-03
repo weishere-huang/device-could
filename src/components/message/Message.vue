@@ -154,19 +154,12 @@ export default {
   },
   methods: {
     customCompFunc(params) {
-      console.log(params);
-
       if (params.type === "delete") {
-        // do delete operation
-
         this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
-        // do edit operation
         this.ids = params.rowData.id;
         this.dtwarning();
       } else if (params.type === "stop") {
-        // do edit operation
-
         alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
       }
     },
@@ -205,7 +198,6 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
       if(this.readkey === 0){
         this.allMsg();
       }else{
@@ -274,15 +266,10 @@ export default {
         },
         this
       )
-        //.post(apiMsg + "/message/UpdateMsgState/", data)
         .then(result => {
           this.reload();
           this.$message("成功删除!!!");
-          console.log(result.data);
         })
-        .catch(err => {
-          console.log(err);
-        });
     },
     allMsg() {
       //查询该用户所有消息
@@ -300,9 +287,6 @@ export default {
           },
           type: "get",
           url: "/message/allMsg",
-          // loadingConfig: {
-          //   target: document.querySelector("#mainContentWrapper")
-          // }
           option:{
             requestTarget:"m",
             enableMsg:false
@@ -312,8 +296,6 @@ export default {
       )
         .then(result => {
           console.log(result.data);
-          console.log(result.data.data);
-
           this.tableData = result.data.data.content;
           this.totoelement = result.data.data.totalElements;
           this.NotReadMsgCount();
@@ -332,9 +314,6 @@ export default {
           },
           type: "get",
           url: "/message/allNotReadMsg",
-          // loadingConfig: {
-          //   target: document.querySelector("#mainContentWrapper")
-          // }
           option:{
             requestTarget:"m",
             enableMsg:false
@@ -343,7 +322,6 @@ export default {
         this
       )
         .then(result => {
-          console.log(result);
           console.log(result.data);
           this.tableData = result.data.data.content;
           this.totoelement = result.data.data.totalElements;
@@ -366,10 +344,8 @@ export default {
         },
         this
       )
-        // .get(apiMsg + "/message/NotReadMsgCount/")
         .then(result => {
           this.msgcount = result.data.data;
-          console.log(result.data);
         })
         .catch(err => {
           console.log(err);
@@ -387,7 +363,6 @@ export default {
         this
       )
         .then(result => {
-          console.log(result.data);
         })
         .catch(err => {
           console.log(err);
@@ -406,12 +381,10 @@ export default {
         },
         this
       )
-        //.get(apiMsg + "/message/UpdateAllMsgRead/")
         .then(result => {
           if(result.data.code === 200){
             this.reload();
           }
-          console.log(result.data.code);
         })
         .catch(err => {
           console.log(err);

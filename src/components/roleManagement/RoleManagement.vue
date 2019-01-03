@@ -109,7 +109,11 @@
             this
           ).then(
             response => {
-              this.toRoleAdd();
+              if (this.form.name.indexOf(" ")===-1){
+                response.data.data? this.toRoleAdd():this.$message.error("请勿重复添加");
+              } else{
+                this.$message.error("对不起、不能输入空格");
+              }
             },
             ({type, info}) => {
 
@@ -129,11 +133,14 @@
             params:data ,
             type: "post",
             url: "/role/add",
+            option: {
+              successMsg:"成功新增角色"
+            },
           },
           this
         ).then(
           response => {
-            this.load();
+            this.reload();
             this.form.name = "";
             this.form.desc = "";
           },
@@ -147,11 +154,15 @@
             params: {},
             type: "get",
             url: "/role/listAllRole",
+            option: {
+              enableMsg:false,
+            },
           },
           this
         ).then(
           response => {
             this.role = response.data.data;
+            this.PermissionsList();
           },
           ({type, info}) => {
 
@@ -168,14 +179,15 @@
             params:data ,
             type: "post",
             url: "/role/update",
+            option: {
+              successMsg:"保存成功"
+            }
           },
           this
         ).then(
           response => {
-            this.load()
           },
           ({type, info}) => {
-
           })
       },
       listPermissionByRoleId(value){
@@ -228,11 +240,13 @@
             params: {},
             type: "get",
             url: "/permission/listAllPermission",
+            option: {
+              enableMsg:false,
+            },
           },
           this
         ).then(
           response => {
-            console.log(response);
             let arr = Math.min.apply(null, (response.data.data).map((item)=>{return item.parentCode}));
             this.data = this.filterArray(response.data.data,arr);
           },
@@ -254,6 +268,9 @@
             params:data ,
             type: "post",
             url: "/role/delete",
+            option: {
+              successMsg:"成功删除角色"
+            },
           },
           this
         ).then(
@@ -272,7 +289,6 @@
     },
     created() {
       this.load();
-      this.PermissionsList();
     }
   };
 </script>

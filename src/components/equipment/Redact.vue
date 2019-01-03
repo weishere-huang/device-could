@@ -65,6 +65,7 @@
                 v-model="qqqqq"
                 @change="handleChange"
                 style="padding:10px 20px;width:100%"
+
               ></el-cascader>
             </el-col>
 
@@ -410,10 +411,6 @@ export default {
         organizeCode: "",
         enterFactoryDate: ""
       },
-      // defaultProps:{
-      //   value:"organizeCode",
-      //   label:"organizeName"
-      // },
       defaultProps2: {
         value: "categoryNo",
         label: "categoryName"
@@ -474,11 +471,9 @@ export default {
       //解除双向绑定
       chengeOrgCode:"",
       chengeOrgname:"",
-
       chengectg:"",
       chengectgname:"",
       devicePersonnelInfoBase:[],
-
       editableTabs: [
         {
           workerTypeName: "负责",
@@ -521,33 +516,22 @@ export default {
       return this.global.apiImg;
     },
     beforeAvatarUpload(file){
-      console.log("beforeAvatarUpload");
-      console.log(file);
       const isLt10M = file.size/1024/1024<10;
       if(!isLt10M){
         this.$message.error('上传文件大小不能超过10MB!');
       }
     },
     handleAvatarSuccess(res, file) {
-      // this.upcode = res.code;
-      console.log(res);
-      console.log("handleAvatarSuccess")
-      console.log(file);
-      console.log(this.fileList);
       this.fileList1.push({
         img:res.data,
         name:file.name
       })
-      console.log(this.fileList);
-
     },
     handleRemove1(file, fileList) {
-      console.log(file);
-      console.log(fileList);
-      this.fileList1.filter(item >= item.name !== file.name);
+      this.fileList1 = this.fileList1.filter(item => item.name !== file.name);
     },
     handlePreview1(file) {
-      console.log(file);
+
     },
     handleExceed1(files, fileList) {
       this.$message.warning(`当前限制选择 20 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
@@ -576,12 +560,10 @@ export default {
       // this.sizeForm.deviceCategoryName = name;
     },
     classf(value) {
-      console.log(value);
       let obj = {};
       obj = this.options2.find(item => {
         return item.value === value;
       });
-      console.log(obj.label);
       this.sizeForm.deviceClassifyName = obj.label;
     },
     tback() {
@@ -655,9 +637,6 @@ export default {
         .then(
           result => {
             if (result.data.code == 200) {
-              console.log(result);
-              console.log("update");
-              console.log(result.data);
               this.$router.push({path:"/Equipment"});
               this.reload();
             } else if (result.data.code == 410) {
@@ -688,36 +667,11 @@ export default {
       let newarrr= new Array();
       newarrr =this.editableTabs;
       for(let i=0;i<data.length;i++){
-        if(data[i].workerType === 0){
-          newarrr[0].content.push({
-              id:data[i].workerId,
-              workerName:data[i].workerName
-            })
-        }
-        if(data[i].workerType === 1){
-          newarrr[1].content.push({
-              id:data[i].workerId,
-              workerName:data[i].workerName
-            })
-        }
-        if(data[i].workerType === 2){
-          newarrr[2].content.push({
-              id:data[i].workerId,
-              workerName:data[i].workerName
-            })
-        }
-        if(data[i].workerType === 3){
-          newarrr[3].content.push({
-              id:data[i].workerId,
-              workerName:data[i].workerName
-            })
-        }
-        if(data[i].workerType === 4){
-          newarrr[4].content.push({
-              id:data[i].workerId,
-              workerName:data[i].workerName
-            })
-        }
+        if(data[i].workerType === 0){newarrr[0].content.push({id:data[i].workerId, workerName:data[i].workerName})}
+        if(data[i].workerType === 1){newarrr[1].content.push({id:data[i].workerId, workerName:data[i].workerName})}
+        if(data[i].workerType === 2){newarrr[2].content.push({id:data[i].workerId, workerName:data[i].workerName})}
+        if(data[i].workerType === 3){newarrr[3].content.push({id:data[i].workerId, workerName:data[i].workerName})}
+        if(data[i].workerType === 4){newarrr[4].content.push({id:data[i].workerId, workerName:data[i].workerName})}
       }
       this.devicePersonnelInfoBase = newarrr ;
     },
@@ -749,7 +703,6 @@ export default {
           if (this.sizeForm.outputDate != null) {
             this.sizeForm.outputDate = this.sizeForm.outputDate.replace(/-/g, "/");
           }
-
             this.jsontoarr(result.data.data.devicePersonnelInfo);
             //this.aaaa.value = this.sizeForm.deviceState;
           this.personAddHandler = this.devicePersonnelInfoBase;
@@ -757,33 +710,19 @@ export default {
           this.fileList = JSON.parse(result.data.data.deviceDataInfo);
           this.fileList1 = JSON.parse(result.data.data.deviceDataInfo);
 
-          console.log(this.fileList);
-          console.log(this.fileList1);
-          console.log("---------------");
         },
           ({type, info}) => {
-
           }
         );
-
     },
     personAddHandler(data){
-      console.log(data);
       this.devicePersonnelInfoBase=data;
       this.dialogVisible=false;
-      console.log(data);
     },
     updatewarning(){
       let subok = true;
-
       //判断人员
       if(this.sizeForm.deviceNo ==="" ||this.sizeForm.deviceName === ""){
-        subok = false;
-      }
-      if(!(this.devicePersonnelInfoBase.find(item=> item.workerType==='0') || this.devicePersonnelInfoBase.find(item=> item.workerType==='1') || this.devicePersonnelInfoBase.find(item=> item.workerType==='2') || this.devicePersonnelInfoBase.find(item=> item.workerType==='3'))){
-        subok = false;
-      }
-      if(this.sizeForm.deviceClassify==="" || this.sizeForm.organizeCode === "" || this.sizeForm.deviceState === "" || this.sizeForm.deviceSpec===""){
         subok = false;
       }
       if(subok){
@@ -795,6 +734,7 @@ export default {
     },
     filterArray(data, parent) {
       //编辑组织机构数据为树状结构方法
+      debugger
       let vm = this;
       var tree = [];
       var temp;
@@ -862,7 +802,6 @@ export default {
   created() {
     this.urlid = this.$route.params.id;
     this.detail(this.urlid);
-    console.log("letid:" + this.urlid);
     this.organdcls();
   }
 };

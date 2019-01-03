@@ -71,7 +71,7 @@
         searchs: "",
         pageIndex: 1,
         pageSize: 10,
-        pageNumber: "",
+        pageNumber: 0,
         tableData: [],
         tableDate: [],
         userIds: "",
@@ -360,67 +360,35 @@
           ({ type, info }) => {}
         );
       },
-      organize(){
-        this.Axios(
-          {
-            params:{},
-            type: "get",
-            url: "/organize/allOrganize",
-          },
-          this
-        ).then(response => {
-            let arr = Math.min.apply(null, (response.data.data).map((item)=>{return item.code}));
-            this.options = this.filterArray(response.data.data, arr);
-          },
-          ({type, info}) => {
-          })
-      },
-      filterArray(data, parent) {
-        //编辑组织机构数据为树状结构方法
-        let vm = this;
-        var tree = [];
-        var temp;
-        for (var i = 0; i < data.length; i++) {
-          if (data[i].parentCode == parent) {
-            var obj = data[i];
-            temp = this.filterArray(data, data[i].code);
-            if (temp.length > 0) {
-              obj.children = temp;
-            }
-            tree.push(obj);
-          }
-        }
-        return tree;
-      },
       deleteEmployee() {
         this.$confirm('此操作将删除该角色, 是否继续?', '提示')
           .then(_=>{
-            let qs = require("qs");
-            let data = qs.stringify({
-              employeeIds: this.userIds,
-              enableOrDisable: 2
-            });
-
-            this.Axios(
-              {
-                params: data,
-                type: "post",
-                url: "/employee/enableOrDisable"
-              },
-              this
-            ).then(
-              response => {
-                this.load();
-              },
-              ({ type, info }) => {}
-            );
+            this.userIds ==JSON.parse(localStorage.getItem("user")).employeeId ?
+              this.$message.error("对不起、不能删除当前登录用户"):this.toDeleteEmployee();
           })
           .catch(_=>{
-            // console.log("stop")
           })
+      },
+      toDeleteEmployee(){
+        let qs = require("qs");
+        let data = qs.stringify({
+          employeeIds: this.userIds,
+          enableOrDisable: 2
+        });
 
-
-
+        this.Axios(
+          {
+            params: data,
+            type: "post",
+            url: "/employee/enableOrDisable"
+          },
+          this
+        ).then(
+          response => {
+            this.load();
+          },
+          ({ type, info }) => {}
+        );
       },
       updateEmployee() {
         if (this.values.length === 1) {
@@ -431,7 +399,6 @@
       }
     },
     created() {
-      this.organize();
       this.load();
       if(this.$route.matched[this.$route.matched.length-1].name ==="PersnnelAdd"){
         this.isHideList=true;

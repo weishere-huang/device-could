@@ -276,7 +276,7 @@
               style="width:38%;"
               size="small"
               v-if="!sendMsgDisabled"
-              @click="registerSecuritycode"
+              @click="registerSecuritycode('manager')"
             >获取验证码</el-button>
             <el-button
               type="primary"
@@ -390,11 +390,11 @@ export default {
                 option: { enableMsg: false, enableLoad: false }
               }).then(
                 res => {
-                  console.log(res);
+                  // console.log(res);
                   callback();
                 },
                 ({ type, info }) => {
-                  console.log(info);
+                  // console.log(info);
                   callback(new Error("企业名称已存在"));
                 }
               );
@@ -426,7 +426,6 @@ export default {
           { max: 30, message: "法人代表长度不能超过30个字符" },
           {
             validator: (rule, value, callback) => {
-              // if(/^(?!(\d+)$)[\u4e00-\u9fffa-zA-Z\d\-_]+$/.test(value)==false){
               if (/^([\u4E00-\u9FA5]+|[a-zA-Z\s?]+)$/.test(value) == false) {
                 callback(new Error("请填写正确的法人代表"));
               } else {
@@ -445,7 +444,6 @@ export default {
           {
             validator: (rule, value, callback) => {
               if (
-                // /^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$/.test(
                 /^[1-9A-GY]{1}[1239]{1}[\d]{6}[\dA-Z]{10}$/.test(value) == false
               ) {
                 callback(new Error("您输入的统一社会信用代码有误，请重新输入"));
@@ -464,11 +462,9 @@ export default {
                 option: { enableMsg: false, enableLoad: false }
               }).then(
                 res => {
-                  console.log(res);
                   callback();
                 },
                 ({ type, info }) => {
-                  console.log(info);
                   callback(new Error("统一社会信用代码已存在"));
                 }
               );
@@ -505,11 +501,9 @@ export default {
                 option: { enableMsg: false, enableLoad: false }
               }).then(
                 res => {
-                  console.log(res);
                   callback();
                 },
                 ({ type, info }) => {
-                  // console.log(info)
                   callback(new Error("该用户名已存在"));
                 }
               );
@@ -589,7 +583,6 @@ export default {
       manager: {
         userName: "",
         userPassword: "",
-        // password: "",
         phone: "",
         validate: ""
       },
@@ -622,13 +615,6 @@ export default {
       }
       callback();
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePictureCardPreview(file) {
-      this.company.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
     // let instance = axios.create({
     //   headers: { "content-type": "application/x-www-form-urlencoded" }
     // });
@@ -638,17 +624,14 @@ export default {
           // alert("submit!");
           this.login();
         } else {
-          console.log("error submit!!");
+          // console.log("error submit!!");
           return false;
         }
       });
     },
     registerNext(formName) {
       if (this.company.dialogImageUrl === "") {
-        this.$message({
-          message: "请上传营业执照",
-          type: "error"
-        });
+        this.$message.error('请上传营业执照')
       } else {
         this.$refs[formName].validate(valid => {
           if (valid) {
@@ -665,16 +648,14 @@ export default {
     registerInfo(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          // alert("submit!");
           this.register();
         } else {
-          this.$message.error("请填写完信息");
+          this.$message.error("对不起，信息提交失败，请检查后重新提交");
           return false;
         }
       });
     },
     encryptByDES(message, key) {
-      // const keyHex = CryptoJS.enc.Utf8.parse(key);
       const keyHex = CryptoJS.enc.Utf8.parse(key);
       const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
         mode: CryptoJS.mode.ECB,
@@ -722,18 +703,17 @@ export default {
 
             this.$store.commit("user",JSON.parse(localStorage.getItem('user')));
             // this.$store.commit("tokenSrc",result.data.data.tokenStr);
-            console.log(this.$store.state.token.tokenNub);
-            console.log(this.$store.state.token.userMsg);
+            // console.log(this.$store.state.token.tokenNub);
+            // console.log(this.$store.state.token.userMsg);
             this.$router.replace("/Home");
             // location.reload();
           }
         },
         ({ type, info }) => {
-          console.log(info);
           if (info.code === 408) {
             this.$message.error("验证码错误");
           }
-          if (info.code === 400) {
+          if (info.code === 402) {
             this.$message.error("账号或密码错误");
           }
           if (info.code === 0) {
@@ -759,12 +739,8 @@ export default {
     register() {
       let pass = this.manager.userPassword;
       pass = md5(pass);
-      // alert(this.manager.userPassword);
-      console.log(this.manager.userPassword);
       let key = "*chang_hong_device_cloud";
       pass = this.encryptByDES(pass, key);
-      // alert(this.manager.userPassword)
-      console.log(this.manager.userPassword);
       let qs = require("qs");
       let data = qs.stringify({
         enterpriseName: this.company.name,
@@ -830,17 +806,17 @@ export default {
           this.send();
         },
         ({ type, info }) => {
-          console.log(info);
-          if (info.code == 400) {
+          // console.log(info);
+          if (info.code === 401 || info.code === 406) {
             this.$message.error("用户名或手机号错误");
           } else {
-            this.$message.error("服务器异常，请联系管理员");
+            this.$message.error("服务器异常，请稍后再试");
           }
         }
       );
     },
     //注册验证码
-    registerSecuritycode() {
+    registerSecuritycode(formName) {
       this.Axios(
         {
           params: Object.assign({ phone: this.manager.phone }),
@@ -854,16 +830,17 @@ export default {
         this
       ).then(
         response => {
-          console.log(1111);
-          this.$message.success("短信验证码已发送至您的手机，请注意查收");
-          this.send();
+          this.$refs[formName].validate(valid => {
+            if (valid) {
+              this.$message.success("短信验证码已发送至您的手机，请注意查收");
+              this.send();
+            } else {
+              this.$message.error("对不起,获取验证码失败，请检查信息填写是否正确后再重新获取");
+              return false;
+            }
+          });
         },
         ({ type, info }) => {
-          console.log(info);
-          if (info.code === 401) {
-            this.$message.error("对不起，该用户不存在，请检查用户名或手机号是否填写正确");
-
-          }
         }
       );
     },
@@ -872,7 +849,7 @@ export default {
       return url;
     },
     handleAvatarSuccess(res, file) {
-      console.log(res.data);
+      // console.log(res.data);
       this.$message.success("上传图片成功");
       this.company.dialogImageUrl = res.data;
     },
@@ -890,25 +867,12 @@ export default {
       }
       return isOK && isLt1M;
     },
+    handlePictureCardPreview(file) {
+      this.company.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
     handleRemove(file, fileList) {
-      console.log(file);
-      console.log(fileList);
       this.company.dialogImageUrl = "";
-
-      console.log(file);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${
-          files.length
-        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
-      );
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`);
     },
     encryptByDES(message, key) {
       const keyHex = CryptoJS.enc.Utf8.parse(key);

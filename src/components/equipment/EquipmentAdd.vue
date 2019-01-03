@@ -230,15 +230,15 @@
         },
         dialogVisible:false,
         addShow: false,
-        ogrname:"",
-        classfynm:"",
+        ogrname:[],
+        classfynm:[],
         sizeForm: {
           deviceNo: "",
           deviceName: "",
           organizeName: "",
           organizeCode: "",
-          deviceClassify: "",
-          deviceClassifyName: "",
+          deviceClassify: "1",
+          deviceClassifyName: "生产设备",
           deviceSpec: "",
           outputDate: "",
           manufacturer: "",
@@ -323,18 +323,12 @@
         return this.global.apiImg;
       },
       beforeAvatarUpload(file){
-        console.log("beforeAvatarUpload");
-        console.log(file);
         const isLt10M = file.size/1024/1024<10;
         if(!isLt10M){
           this.$message.error('上传文件大小不能超过10MB!');
         }
       },
       handleAvatarSuccess(res, file) {
-        // this.upcode = res.code;
-        console.log(res);
-        console.log("handleAvatarSuccess")
-        console.log(file);
         this.fileList1.push({
           img:res.data,
           name:file.name
@@ -342,13 +336,9 @@
         console.log(this.fileList);
       },
       handleRemove1(file, fileList) {
-        console.log(file);
-        console.log(fileList);
-        console.log(this.fileList);
-        this.fileList1.filter(item >= item.name !== file.name);
+        this.fileList1 = this.fileList1.filter(item => item.name !== file.name);
       },
       handlePreview1(file) {
-        console.log(file);
       },
       handleExceed1(files, fileList) {
         this.$message.warning(`当前限制选择 20 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
@@ -357,30 +347,23 @@
         return this.$confirm(`确定移除 ${ file.name }？`);
       },
       classf(value){
-        console.log(value);
         let obj = {};
         obj = this.options2.find((item)=>{//这里的userList就是上面遍历的数据源
           return item.value === value;//筛选出匹配数据
         });
-        console.log(obj.label);//我这边的name就是对应label的
         this.sizeForm.deviceClassifyName=obj.label;
       },
       handleChange(value) {
         let name=this.$refs['getName'].currentLabels
         name=name[(name.length)-1]
         let id=value[(value.length)-1]
-        console.log(id,name);
         this.sizeForm.organizeCode=id;
         this.sizeForm.organizeName=name;
-
       },
       handleChange2(value) {
         let name=this.$refs['getName2'].currentLabels
         name=name[(name.length)-1]
         let id=value[(value.length)-1]
-        console.log(id,name);
-        console.log(value);
-
         this.sizeForm.deviceCategory=id;
         this.sizeForm.deviceCategoryName=name;
       },
@@ -394,8 +377,11 @@
         this.addShow = params;
       },
       add1() {
+        //判断人员,如果哪个人没有,就把当前的登陆人的信息赋值上去
+        this.addpersondata();
         //添加设备信息接口
         //上传文件
+        debugger
         let qs = require("qs");
         let _devicePersonnelInfo=[];
         this.devicePersonnelInfoBase.forEach(items => {
@@ -407,9 +393,6 @@
               workerTypeName: items.workerTypeName
             }}));
         });
-        console.log(_devicePersonnelInfo);
-
-
         let data ={
           deviceNo: this.sizeForm.deviceNo,
           deviceName: this.sizeForm.deviceName,
@@ -476,20 +459,14 @@
         },this)
           .then(result => {
             console.log(result.data);
-
             if (result.data.code == 410) {
               this.$message.warning("该设备号已存在,请重新编辑!!!")
             } else if (result.data.code == 200) {
-              console.log("add");
-              console.log(result.data);
               this.$router.push("/Equipment");
               this.reload();
             }
           },({type, info}) => {
           })
-          // .catch(err => {
-          //   console.log(err);
-          // });
       },
       add2(){
         this.$refs.upload.submit();
@@ -518,7 +495,6 @@
         obj = this.options4.find((item)=>{//这里的userList就是上面遍历的数据源
           return item.value === value;//筛选出匹配数据
         });
-        console.log(obj.label);//我这边的name就是对应label的
         this.sizeForm.deviceState = data.value
       },
 
@@ -577,11 +553,22 @@
       },
 
       personAddHandler(data){
-        console.log(data);
         this.devicePersonnelInfoBase=data;
         this.dialogVisible=false;
       },
 
+      addpersondata(){
+        let user = JSON.parse(localStorage.getItem("user"));
+        if(this.devicePersonnelInfoBase.find(item=> item.workerType==='0')==null){
+          this.devicePersonnelInfoBase.push(
+            {workerTypeName: "负责", workerType: "0", content:[{workerName:user.name, id:user.employeeId,}]},
+            {workerTypeName: "维修", workerType: "1", content:[{workerName:user.name, id:user.employeeId,}]},
+            {workerTypeName: "检修", workerType: "2", content:[{workerName:user.name, id:user.employeeId,}]},
+            {workerTypeName: "保养", workerType: "3", content:[{workerName:user.name, id:user.employeeId,}]},
+            {workerTypeName: "操作", workerType: "4", content:[{workerName:user.name, id:user.employeeId,}]}
+          );
+        };
+      },
       addwarning(){
         let subok = true;
         this.$refs['baseform'].validate((valid) => {
@@ -591,18 +578,9 @@
             return false;
           }
         });
-        if(this.sizeForm.deviceClassify==="" || this.sizeForm.organizeCode === "" || this.sizeForm.deviceState === "" || this.sizeForm.deviceSpec === ""){
+        if(this.sizeForm.deviceClassify==="" || this.sizeForm.organizeCode === "" ||this.sizeForm.deviceCategory === ""){
           subok = false;
         }
-        console.log(this.sizeForm.deviceSpec === "");
-        console.log(this.sizeForm.deviceClassify === "");
-        console.log(this.sizeForm.organizeCode === "");
-        console.log(this.sizeForm.deviceState === "");
-        //判断人员
-        if(!(this.devicePersonnelInfoBase.find(item=> item.workerType==='0') || this.devicePersonnelInfoBase.find(item=> item.workerType==='1') || this.devicePersonnelInfoBase.find(item=> item.workerType==='2') || this.devicePersonnelInfoBase.find(item=> item.workerType==='3'))){
-          subok = false;
-        }
-
         //如果提交通过, 则弹出提示框
         if(subok){
           this.add1();
@@ -614,9 +592,6 @@
     },
     created() {
       this.organdcls();
-      // this.findAlldeviceClassify();
-      // this.allOrganize();
-      // console.log(this.options);
     },
     components: {
       addPerson

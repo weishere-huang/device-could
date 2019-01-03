@@ -69,14 +69,11 @@
                   style="float: right;"
                 >点击修改</el-button>
                 <el-dialog
-                  title="修改类别"
+                  title="请选择"
                   :visible.sync="dialogVisible3"
                   width="20%"
-
                 >
                   <div style="overflow: hidden;padding:10px 20px">
-
-
                     <el-col :span="24" style="text-align:center">
                       <el-cascader
                         placeholder=""
@@ -552,6 +549,9 @@
             params:data,
             type: "post",
             url: "/employee/update",
+            option: {
+              successMsg:"修改成功"
+            }
           },
           this
         ).then(response => {
