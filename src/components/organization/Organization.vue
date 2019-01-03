@@ -131,7 +131,6 @@ export default {
     handleNodeClick(data) {
       console.log(data);
       this.nodedata = data;
-      // console.log( this.nodedata);
       this.chengedata = data;
     },
     orgdelete(nodeId) {
@@ -140,7 +139,6 @@ export default {
       let data = qs.stringify({
         organizeId: nodeId
       });
-      console.log("delete" + this.orgID);
       this.Axios(
         {
           url: "/organize/delete/" + nodeId,
@@ -155,8 +153,6 @@ export default {
         .then(
           result => {
             if (result.data.code == 200) {
-              console.log("delete");
-              console.log(result.data);
               this.reload();
             } else {
               this.$message("删除失败");
@@ -204,8 +200,6 @@ export default {
             }
             let arr = Math.min.apply(null, (result.data.data).map((item)=>{return item.parentCode}));
             this.data = this.filterArray(result.data.data,arr);
-            console.log(this.data);
-
           },
           ({ type, info }) => {}
         );
@@ -275,7 +269,6 @@ export default {
     let li = document.querySelectorAll(".left li");
     for (let i = 0; i < li.length; i++) {
       li[i].onmouseover = function(event) {
-        // console.log("ok");
         document.querySelectorAll(".content li span")[i].style.display =
           "inline-block";
         event.stopPropagation();
