@@ -59,7 +59,6 @@
                 :options="orgoptions"
                 :props="defaultProps"
                 expand-trigger="hover"
-                filterable
                 ref="getName"
                 change-on-select
                 :show-all-levels="false"
@@ -120,7 +119,6 @@
                   <el-cascader
                       placeholder=""
                       :options="ctgoptions"
-                      filterable
                       ref="getName2"
                       expand-trigger="hover"
                       :props="defaultProps2"
@@ -735,13 +733,13 @@ export default {
     },
     filterArray(data, parent) {
       //编辑组织机构数据为树状结构方法
+      debugger
       let vm = this;
       var tree = [];
       var temp;
       for (var i = 0; i < data.length; i++) {
         if (data[i].parentCode == parent) {
           var obj = data[i];
-          if(obj.organizeType)
           temp = this.filterArray(data, data[i].code);
           if (temp.length > 0) {
             obj.children = temp;
