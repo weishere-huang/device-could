@@ -123,7 +123,7 @@ export default {
           // isResize: true,
           overflowTitle: true,
           formatter: function(rowData, rowIndex, pagingIndex, field) {
-            return rowData.state === "0"
+            return rowData.state === 0
               ?`<span style="color:#ff6600">未读</span>`
               :`<span>已读</span>`
           },
@@ -419,7 +419,10 @@ export default {
         {
           url: "/message/findOneMsg/" + this.ids,
           type: "get",
-          option:{requestTarget:"m"}
+          option:{
+            requestTarget:"m",
+            enableMsg:false
+          }
         },
         this
       )

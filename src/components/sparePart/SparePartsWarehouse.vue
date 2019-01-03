@@ -33,10 +33,10 @@
           >
             <el-date-picker
               v-model="formInline.time"
-              type="date"
+              type="datetime"
               size="small"
-              value-format="yyyy/MM/dd"
-              placeholder="选择日期"
+              value-format="yyyy/MM/dd HH:mm:ss"
+              placeholder="选择日期时间"
             >
             </el-date-picker>
 
@@ -139,8 +139,9 @@ export default {
   inject: ["reload"],
   data() {
     return {
+
       formInline: {
-        time: new Date().toLocaleDateString()
+         time: new Date().toLocaleString()
       },
       //入库单号
       godownEntryNo: "",
@@ -555,6 +556,7 @@ export default {
     },
 
     insertBT(){
+      console.log(this.formInline.time);
       let subok = true;
 
       if(this.godownEntryNo === "" || this.tableData1.length === 0){
