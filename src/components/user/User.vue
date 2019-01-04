@@ -155,7 +155,7 @@ export default {
           formatter: function(rowData, rowIndex, pagingIndex, field) {
             return rowData.state === "0"
               ? "正常"
-              : "禁用"
+              : rowData.enterpriseState === 2 ? "该用户所在企业正在审核中，暂不可操作":"禁用"
           },
           componentName: "switch-user"
         },
@@ -477,7 +477,8 @@ Vue.component("switch-user", {
     changeValue() {
       let params = { type: "change", rowData: this.rowData };
       this.$emit("on-custom-comp", params);
-    }
+    },
+
   }
 });
 </script>
