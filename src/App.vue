@@ -236,7 +236,7 @@ export default {
   created() {
     this.user = JSON.parse(localStorage.getItem("user")).name;
     this.token = localStorage.getItem("token");
-    const permissionUrl = JSON.parse(localStorage.getItem("permissionUrl"));
+    const permissionUrl = JSON.parse(localStorage.getItem("permissionUrl")||'[]');
     // this.user=this.$store.state.token.userMsg.name
     // this.token=this.$store.state.token.tokenNub
     this.MsgCount();
