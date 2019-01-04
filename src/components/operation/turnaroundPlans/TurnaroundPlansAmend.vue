@@ -329,7 +329,6 @@
       this.loadSelect(this.$route.params.id);
     },
     methods: {
-
       //通过设备ID查找相关负责人员
       findByDeviceId(deviceId){
         this.Axios(
