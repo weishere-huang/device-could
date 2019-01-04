@@ -364,7 +364,10 @@ export default {
           params: {
             page: this.pageIndex,
             size: this.pageSize,
-            maintenanceType: 1
+            maintenanceType: 1,
+            option: {
+              enableMsg:false,
+            },
           },
           type: "get",
           url: "/mplan/allPlan"
@@ -444,7 +447,10 @@ export default {
         {
           params: {},
           type: "get",
-          url: "/mplan/listMaintenanceLevel"
+          url: "/mplan/listMaintenanceLevel",
+          option: {
+            enableMsg:false,
+          },
         },
         this
       ).then(
