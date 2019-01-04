@@ -292,7 +292,6 @@ export default {
             type: "success"
           });
           // this.load();
-          this.load();
         },
         ({ type, info }) => {}
       );
@@ -316,7 +315,7 @@ export default {
             message: "禁用成功",
             type: "success"
           });
-          this.load();
+          // this.load();
         },
         ({ type, info }) => {}
       );

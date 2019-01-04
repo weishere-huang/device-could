@@ -427,11 +427,11 @@ export default {
       this.Axios(
         {
           url: "/enterprise/findByNameOrState",
-          params: Object.assign(this.searchParams, {
+          params: {
             enterpriseName: this.name,
             page: 1,
             size: this.pageSize
-          }),
+          },
           type: "get",
           option:{enableMsg:false}
         },
@@ -462,8 +462,6 @@ export default {
       ).then(
         response => {
          this.$message.success("启用成功")
-          this.load();
-          // console.log("请求参数：" + data);
         },
         ({ type, info }) => {this.$message.error("服务器忙，请稍后再试")}
       );
@@ -484,8 +482,7 @@ export default {
         this
       ).then(
         response => {
-          this.$message.success("禁用成功，已经禁用该企业以及该企业下所有员工账号")
-          this.load();
+          this.$message.success("禁用成功，已禁用该企业及其所有员工账号")
         },
         ({ type, info }) => {this.$message.error("服务器忙，请稍后再试")}
       );
