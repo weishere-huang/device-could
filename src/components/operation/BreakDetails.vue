@@ -5,6 +5,7 @@
         <el-button size="small" type="primary" @click="toback"  icon="el-icon-arrow-left">返回</el-button>
         <!--<el-button size="small" @click="commitAudit">提交审核</el-button>-->
         <el-button size="small" type="primary" @click="dispel" v-if="isOk"><i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;故障消除</el-button>
+        <el-button size="small" type="primary" @click="auditInfo" icon="el-icon-search">审核详情</el-button>
         <!-- 故障消除弹框 -->
         <el-dialog
           title="故障消除"
@@ -130,6 +131,25 @@
                         <img :src="lookImg" style="max-width: 100%;"/>
                       </div>
                     </el-dialog>
+                  <el-dialog
+                    title="审核详情"
+                    :visible.sync="submitAuditInfo"
+                    width="50%"
+                  >
+                    <div style="padding:10px">
+                      <v-table
+                        is-horizontal-resize
+                        column-width-drag
+                        :multiple-sort="false"
+                        style="width:100%;"
+                        :columns="submitAuditTable"
+                        :table-data="submitAuditData"
+                        row-hover-color="#eee"
+                        row-click-color="#edf7ff"
+                        :row-height=30
+                      ></v-table>
+                    </div>
+                  </el-dialog>
                 </template>
               </el-form-item>
             </el-form>
@@ -144,6 +164,63 @@
     name: "",
     data() {
       return {
+        submitAuditInfo:false,
+        submitAuditTable:[
+          {
+            field: "name",
+            title: "审核人",
+            width: 40,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "state",
+            title: "审核状态",
+            width: 30,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            formatter:function (rowData) {
+              if(rowData.state===0)return`<span>待处理</span>`;
+              if(rowData.state===1)return`<span>已通过</span>`;
+              if(rowData.state===2)return`<span>已驳回</span>`;
+            }
+          },
+          {
+            field: "startTime",
+            title: "提交时间",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "endTime",
+            title: "审核时间",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+          },
+          {
+            field: "phone",
+            title: "手机号",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "opinion",
+            title: "审核意见",
+            width: 180,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          }
+        ],
+        submitAuditData:[],
         lookImg:"",
         imgShow:false,
         isOk:true,
@@ -211,6 +288,23 @@
       });
     },
     methods: {
+      auditInfo(){
+        this.submitAuditInfo = true;
+        this.Axios(
+          {
+            params:{maintenanceId:this.companyName.id},
+            type: "get",
+            url: "/mplan/auditList",
+            option:{enableMsg:false}
+          },
+          this
+        ).then(response => {
+            this.submitAuditData = response.data.data.content;
+          },
+          ({type, info}) => {
+
+          })
+      },
       imgIsOk(event){
         this.lookImg = event.path[1].id;
         this.imgShow=true
