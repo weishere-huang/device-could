@@ -311,7 +311,6 @@ export default {
           this.msgcount = result.data.data;
         })
         .catch(err => {
-          console.log(err);
         });
     },
     //路径跳转
