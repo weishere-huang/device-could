@@ -60,7 +60,7 @@ export default [
             menu:'添加员工',
             route:"Personnel/PersnnelAdd",
             visible:true,
-            permissionCode:'employee_add'
+            permissionCode:'employee_add_lookup'
         }
       ]
     },

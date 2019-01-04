@@ -11,7 +11,7 @@
         ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</permission-button>
         <permission-button 
           permCode='employee_lookup.employee_refresh'
-          banType='disable' 
+          banType='alert' 
           size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</permission-button >
         <div class="search">
           <el-input
@@ -433,7 +433,7 @@
         active-color="#13ce66"
         inactive-color="#ff4949"
         banType='alert'
-        permCode='employee_lookup.employee_enable||employee_lookup.employee_disabled'
+        permCode='employee_lookup.employee_enable&&employee_lookup.employeeww_disabled'
         @change.stop="changeValue(rowData,index)"
         @resetBack="resetBackHandler"
         >
