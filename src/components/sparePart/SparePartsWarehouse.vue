@@ -343,7 +343,6 @@ export default {
     },
     customCompFunc(params) {
       if (params.type === "delete") {
-        console.log(params.rowData);
         this.tableData1 = this.tableData1.filter(
           item => item.partId !== params.rowData.partId
         );
@@ -352,7 +351,6 @@ export default {
       }
     },
     toDetails(rowIndex, rowData, column) {
-      console.log(rowData);
       //this.getuserbatch(rowData.id);
       if (this.tableData1.find(i => i.partId === rowData.id)) {
         this.$message("不能添加重复的配件");
@@ -374,18 +372,15 @@ export default {
       }
     },
     toDetails2(rowIndex, rowData, column) {
-      console.log(rowData);
     },
     handleChange2(value) {
       let name = this.$refs["getName2"].currentLabels;
       name = name[name.length - 1];
       let id = value[value.length - 1];
-      console.log(id, name);
       this.classifyId = id;
       this.findbyclassifyId();
     },
     gezhongconso() {
-      console.log(this.tableData1);
     },
     findbyclassifyId() {
       //根据备件分类查询备件列表1
@@ -408,7 +403,6 @@ export default {
         this
       ).then(
         result => {
-          console.log(result.data);
           this.tableData = result.data.data.content;
           for (let i = 0; i < this.tableData.length; i++) {
             if (this.tableData[i].partCategory === 2) {
@@ -444,8 +438,6 @@ export default {
         this
       ).then(
         result => {
-          console.log(result);
-          console.log(result.data);
           if (result.data.code === 200) {
             this.$message("添加成功");
             this.reload();
@@ -474,7 +466,6 @@ export default {
         this
       ).then(
         result => {
-          console.log(result.data);
           this.tableData = result.data.data;
           for (let i = 0; i < this.tableData.length; i++) {
             if (this.tableData[i].partCategory === 2) {
@@ -521,10 +512,7 @@ export default {
         this
       ).then(
         result => {
-          console.log(result.data);
-          console.log(result.data.data);
           this.ctgoptions = this.filterArray(result.data.data, 0);
-          console.log(this.ctgoptions);
         },
         ({ type, info }) => {}
       );
@@ -549,14 +537,12 @@ export default {
         this
       ).then(
         result => {
-          console.log(result.data);
         },
         ({ type, info }) => {}
       );
     },
 
     insertBT(){
-      console.log(this.formInline.time);
       let subok = true;
 
       if(this.godownEntryNo === "" || this.tableData1.length === 0){

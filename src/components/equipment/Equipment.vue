@@ -436,7 +436,6 @@ export default {
         .then(
           result => {
             this.totalnum = result.data.data.totalElements;
-            console.log(result.data);
             this.tableData = result.data.data.content;
           },
           ({ type, info }) => {
@@ -463,7 +462,6 @@ export default {
         result => {
           this.totalnum = result.data.data.totalElements;
           this.tableData = result.data.data.content;
-          console.log(result.data.data.content);
         },
         ({ type, info }) => {}
       );
@@ -528,8 +526,6 @@ export default {
         .then(
           result => {
             this.organiza = this.filterArray(result.data.data, 0);
-            console.log("查找全部设备类别");
-            console.log(result.data);
           },
           ({ type, info }) => {}
         );
@@ -583,9 +579,7 @@ export default {
         .then(
           result => {
             this.totalnum = result.data.data.totalElements;
-            console.log(result.data);
             this.tableData = result.data.data.content;
-
           },
           ({ type, info }) => {}
         );
@@ -593,7 +587,6 @@ export default {
   },
   mounted() {
     $('.classifylist li').click(function (e) {
-      console.log(this);
       $(this).toggleClass("active-color").siblings().removeClass("active-color")
     });
   },

@@ -197,13 +197,10 @@ export default {
   },
   methods: {
     selectGroupChange(selection) {
-      console.log(selection);
     },
     selectALL(selection) {
-      console.log(selection);
     },
     selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
     },
     getTableData() {
       this.tableData = this.tableDate.slice(
@@ -244,7 +241,6 @@ export default {
       },this)
         .then(
           result => {
-            console.log(result.data);
             this.tableData=result.data.data.content;
             this.pageNumber=result.data.data.totalElements;
             for(let i=0;i<this.tableData.length;i++){
