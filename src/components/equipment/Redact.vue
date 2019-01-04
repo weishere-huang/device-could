@@ -734,7 +734,7 @@ export default {
     },
     filterArray(data, parent) {
       //编辑组织机构数据为树状结构方法
-      debugger
+
       let vm = this;
       var tree = [];
       var temp;
