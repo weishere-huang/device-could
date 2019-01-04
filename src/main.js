@@ -17,6 +17,7 @@ import 'normalize.css'
 import './assets/less/layout.less'
 import './assets/less/other.less'
 import defaultMenuSource from "./router/routeMap";
+import permissionPacker from "./PermissionPacker.js"
 
 import {
   VTable,
@@ -45,7 +46,8 @@ Vue.prototype.global = global;
 // }
 Vue.use(ElementUI)
 Vue.component(VTable.name, VTable)
-Vue.component(VPagination.name, VPagination)
+
+Vue.use(permissionPacker);
 Vue.use(vuex);
 Vue.config.productionTip = false
 Vue.prototype.axios = axios;
@@ -70,7 +72,8 @@ router.beforeEach((to, from, next) => {
       for(let i=0,l=defaultMenuSource.length;i<l;i++){
         for(let m=0,n=defaultMenuSource[i].subMenu.length;m<n;m++){
           let isCheck=permissionUrl.find(p=>p.module===defaultMenuSource[i].subMenu[m].permissionCode)?true:false;
-          if(defaultMenuSource[i].subMenu[m].route===to.path&&(isCheck||defaultMenuSource[i].defaultDock)){
+          let isRoute=defaultMenuSource[i].subMenu[m].routeReg?defaultMenuSource[i].subMenu[m].routeReg.test(to.fullPath):(defaultMenuSource[i].subMenu[m].route===to.path)?true:false;
+          if(isRoute&&(isCheck||defaultMenuSource[i].defaultDock)){
             isHasPermission=true;
             break;
           }

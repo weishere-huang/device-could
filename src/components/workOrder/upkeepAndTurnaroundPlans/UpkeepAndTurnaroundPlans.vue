@@ -154,7 +154,7 @@
             :table-data="devicesTableData"
             row-hover-color="#eee"
             row-click-color="#edf7ff"
-            row-height=24
+            :row-height=24
             :height="160"
             :row-click="checkPerson"
           >
@@ -176,7 +176,7 @@
               :table-data="personData"
               row-hover-color="#eee"
               row-click-color="#edf7ff"
-              row-height=35
+              :row-height=35
             ></v-table>
           </div>
         </el-dialog>
@@ -200,7 +200,7 @@
             row-hover-color="#eee"
             row-click-color="#edf7ff"
             :cell-edit-done="cellEditDone"
-            row-height=24
+            :row-height=24
             @on-custom-comp="customCompFunc"
           >
           </v-table>
@@ -241,7 +241,7 @@
                 row-hover-color="#eee"
                 row-click-color="#edf7ff"
                 :row-dblclick="basicInfo"
-                row-height=24
+                :row-height=24
 
               ></v-table>
               <div
@@ -318,8 +318,7 @@
             :table-data="flowInfoData"
             row-hover-color="#eee"
             row-click-color="#edf7ff"
-
-            row-height=24
+            :row-height=24
             :height="230"
           ></v-table>
         </div>
@@ -1093,12 +1092,17 @@
         let isOk= "";
         if(this.workSheetMaterialTableData.length>0) {
           for (let i in this.workSheetMaterialTableData) {
-            if (this.workSheetMaterialTableData[i].planCount == 0) {
+            if (this.workSheetMaterialTableData[i].planCount === 0) {
               isOk = false;
               this.$message.error(this.workSheetMaterialTableData[i].partName + '物料未填入计划数量');
               break;
             }else{
-              isOk=true;
+              if (/^[0-9]*$/.test(this.workSheetMaterialTableData[i].planCount)) {
+                isOk=true;
+              }else{
+                this.$message.error("请正确输入计划数量");
+                isOk = false;
+              }
             }
           }
           isOk? this.toInsertPart():"";

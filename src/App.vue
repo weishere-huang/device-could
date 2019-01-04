@@ -243,15 +243,17 @@ export default {
     this.MsgCount();
     let _menuSource=[];
     defaultMenuSource.forEach(per => {
-      if(per.defaultDock){
-        _menuSource.push(per);
-      }else{
-        const willShowMenu = per.subMenu.filter(m => {
-          return permissionUrl.find(p=>p.module===m.permissionCode) ? true : false;
-        });
-        if(willShowMenu.length!==0){
-          per.subMenu=willShowMenu;
+      if(!per.visible){
+        if(per.defaultDock){
           _menuSource.push(per);
+        }else{
+          const willShowMenu = per.subMenu.filter(m => {
+            return permissionUrl.find(p=>p.module===m.permissionCode) ? true : false;
+          });
+          if(willShowMenu.length!==0){
+            per.subMenu=willShowMenu;
+            _menuSource.push(per);
+          }
         }
       }
     });

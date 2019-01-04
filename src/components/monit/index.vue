@@ -49,10 +49,10 @@
               </div>
             </el-collapse-item>
             <!-- <el-collapse-item title="设备状态" name="3">
-              <el-tree 
+              <el-tree
                   ref='tree2'
-                  :data="equStatusTreeData" 
-                  :props="defaultProps" 
+                  :data="equStatusTreeData"
+                  :props="defaultProps"
                   highlight-current
                   default-expand-all
                   node-key="id"
@@ -346,7 +346,7 @@ export default {
       if (res1.data.data.length) {
         this.organizationTreeData = initTreeDataForOrganization(
           res1.data.data,
-          res1.data.data.find(item=>item.organizeType===1).parentCode
+          res1.data.data.find(item=>item.organizeType===0).code
         );
         this.$store.commit("getCode", res1.data.data[0].code);
 
@@ -507,7 +507,7 @@ export default {
             }
           ]
         });
-        chartLeft.on("click", function (param) { 
+        chartLeft.on("click", function (param) {
           if (param.data.name === "正常运行") {
             self.basicStateCount = 0;
           }else if (param.data.name === "故障待处理") {
@@ -523,7 +523,7 @@ export default {
           //console.log(param.data.name,self.basicStateCount);
           self.getEquList()
          });
-         chartRight.on("click", function (param) { 
+         chartRight.on("click", function (param) {
           if (param.data.name === "正常") {
             self.basicStateCount = 0;
           }else if (param.data.name === "黄色预警") {
@@ -541,7 +541,7 @@ export default {
          });
       });
     },
-    
+
     getEquList(selectOrganizeCode) {
       this.Axios(
         {

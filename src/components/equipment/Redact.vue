@@ -50,7 +50,7 @@
               title="修改部门"
               :visible.sync="dialogVisible1"
               width="300px"
-              
+
             >
             <div style="overflow: hidden;">
               <el-col :span="24" style="text-align:center;">
@@ -68,7 +68,7 @@
                 style="padding:10px 20px;width:100%"
               ></el-cascader>
             </el-col>
-            
+
               <div style="text-align:right;padding:10px 20px;">
                 <el-button @click="dialogVisible1 = false;chengeOrgCode='';chengeOrgname=''">取 消</el-button>
               <el-button
@@ -77,7 +77,7 @@
               >确 定</el-button>
               </div>
             </div>
-            
+
             </el-dialog>
 
           </el-form-item>
@@ -475,11 +475,9 @@ export default {
       //解除双向绑定
       chengeOrgCode:"",
       chengeOrgname:"",
-
       chengectg:"",
       chengectgname:"",
       devicePersonnelInfoBase:[],
-
       editableTabs: [
         {
           workerTypeName: "负责",
@@ -545,7 +543,10 @@ export default {
     handleRemove1(file, fileList) {
       console.log(file);
       console.log(fileList);
-      this.fileList1.filter(item >= item.name !== file.name);
+      console.log(this.fileList1);
+      this.fileList1 = this.fileList1.filter(item => item.name !== file.name);
+      console.log(this.fileList1);
+
     },
     handlePreview1(file) {
       console.log(file);
@@ -660,6 +661,7 @@ export default {
               console.log("update");
               console.log(result.data);
               this.$router.push({path:"/Equipment"});
+              this.reload();
             } else if (result.data.code == 410) {
               this.fileList1= JSON.parse(this.fileList1);
               this.$message.warning("该设备编号以存在,请修改!!!");
@@ -688,36 +690,11 @@ export default {
       let newarrr= new Array();
       newarrr =this.editableTabs;
       for(let i=0;i<data.length;i++){
-        if(data[i].workerType === 0){
-          newarrr[0].content.push({
-              id:data[i].workerId,
-              workerName:data[i].workerName
-            })
-        }
-        if(data[i].workerType === 1){
-          newarrr[1].content.push({
-              id:data[i].workerId,
-              workerName:data[i].workerName
-            })
-        }
-        if(data[i].workerType === 2){
-          newarrr[2].content.push({
-              id:data[i].workerId,
-              workerName:data[i].workerName
-            })
-        }
-        if(data[i].workerType === 3){
-          newarrr[3].content.push({
-              id:data[i].workerId,
-              workerName:data[i].workerName
-            })
-        }
-        if(data[i].workerType === 4){
-          newarrr[4].content.push({
-              id:data[i].workerId,
-              workerName:data[i].workerName
-            })
-        }
+        if(data[i].workerType === 0){newarrr[0].content.push({id:data[i].workerId, workerName:data[i].workerName})}
+        if(data[i].workerType === 1){newarrr[1].content.push({id:data[i].workerId, workerName:data[i].workerName})}
+        if(data[i].workerType === 2){newarrr[2].content.push({id:data[i].workerId, workerName:data[i].workerName})}
+        if(data[i].workerType === 3){newarrr[3].content.push({id:data[i].workerId, workerName:data[i].workerName})}
+        if(data[i].workerType === 4){newarrr[4].content.push({id:data[i].workerId, workerName:data[i].workerName})}
       }
       this.devicePersonnelInfoBase = newarrr ;
     },
@@ -749,7 +726,6 @@ export default {
           if (this.sizeForm.outputDate != null) {
             this.sizeForm.outputDate = this.sizeForm.outputDate.replace(/-/g, "/");
           }
-
             this.jsontoarr(result.data.data.devicePersonnelInfo);
             //this.aaaa.value = this.sizeForm.deviceState;
           this.personAddHandler = this.devicePersonnelInfoBase;
@@ -757,15 +733,10 @@ export default {
           this.fileList = JSON.parse(result.data.data.deviceDataInfo);
           this.fileList1 = JSON.parse(result.data.data.deviceDataInfo);
 
-          console.log(this.fileList);
-          console.log(this.fileList1);
-          console.log("---------------");
         },
           ({type, info}) => {
-
           }
         );
-
     },
     personAddHandler(data){
       console.log(data);
@@ -775,15 +746,8 @@ export default {
     },
     updatewarning(){
       let subok = true;
-
       //判断人员
       if(this.sizeForm.deviceNo ==="" ||this.sizeForm.deviceName === ""){
-        subok = false;
-      }
-      if(!(this.devicePersonnelInfoBase.find(item=> item.workerType==='0') || this.devicePersonnelInfoBase.find(item=> item.workerType==='1') || this.devicePersonnelInfoBase.find(item=> item.workerType==='2') || this.devicePersonnelInfoBase.find(item=> item.workerType==='3'))){
-        subok = false;
-      }
-      if(this.sizeForm.deviceClassify==="" || this.sizeForm.organizeCode === "" || this.sizeForm.deviceState === "" || this.sizeForm.deviceSpec===""){
         subok = false;
       }
       if(subok){
@@ -841,8 +805,7 @@ export default {
         this
       ).then(
         ([res1, res2]) => {
-          let arr = Math.min.apply(null, (res1.data.data).map((item)=>{return item.parentCode}));
-          this.orgoptions = this.filterArray(res1.data.data, arr);
+          this.orgoptions = this.filterArray(res1.data.data, res1.data.data.find(item=>item.organizeType===1).parentCode);
           this.ctgoptions= this.filterArray2(res2.data.data,0);
         },
         () => {}

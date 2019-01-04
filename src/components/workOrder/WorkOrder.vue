@@ -136,7 +136,7 @@
         pageIsOk: true,
         pageIndex: 1,
         pageSize: 10,
-        totalNub: '',
+        totalNub: 0,
         tableData: [],
         tableDate: [],
         columns: [

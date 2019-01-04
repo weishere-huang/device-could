@@ -249,6 +249,7 @@ export default {
             if(result.data.code ===200){
               this.$message("添加成功");
               this.$router.push("/SparePart");
+              this.reload();
             }
 
             console.log("请求参数：" + data);

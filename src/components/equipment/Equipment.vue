@@ -122,6 +122,7 @@
               @page-size-change="pageSizeChange"
               :total="totalnum"
               :page-size="pageSize"
+              :pageIndex="pageIndex"
               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
             ></v-pagination>
           </div>
@@ -399,7 +400,7 @@ export default {
       if (this.keyorall === 0) {
         this.findall();
       } else if (this.keyorall === 1) {
-
+        this.findByKeyWord();
       } else {
         this.leftfind();
       }
@@ -463,9 +464,6 @@ export default {
             //error && error(type, info);
           }
         );
-      // .catch(err => {
-      //   console.log(err);
-      // });
     },
     findByKeyWord() {
       this.keyorall = 1;
@@ -485,7 +483,6 @@ export default {
         result => {
           this.totalnum = result.data.data.totalElements;
           this.tableData = result.data.data.content;
-
           console.log(result.data.data.content);
         },
         ({ type, info }) => {}
@@ -587,11 +584,14 @@ export default {
       this.keyorall = 2;
       if (c === "") {
         this.leftclass = a;
+        this.leftcate = null;
+        this.leftstate = null;
+      }else{
+        this.leftclass = null;
+        this.leftcate = null;
+        this.leftstate = c;
       }
-      this.leftcate = "";
-      this.leftstate = c;
       this.pageIndex = 1;
-
       this.leftfind();
     },
     leftfind() {
@@ -615,7 +615,6 @@ export default {
         },
         this
       )
-        //.get(this.global.apiSrc + "/device/select", {params:{ page: this.pageIndex,size: this.pageSize}})
         .then(
           result => {
             this.totalnum = result.data.data.totalElements;

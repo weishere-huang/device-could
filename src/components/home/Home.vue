@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <div>主控面板，欢迎您：{{userMsg.name}}！</div>
-    <div class="left hide">
+    <div class="hide">主控面板，欢迎您：{{userMsg.name}}！</div>
+    <div class="left">
       <div class="personal-information">
         <div class="user-msg">
           <span>个人信息</span>
@@ -26,15 +26,15 @@
           </div>
           <ul class="case">
             <li title="设备总数">
-              <p style="color:#409eff">100</p>
+              <p style="color:#409eff">{{deviceData.AllDevice}}</p>
               <p>设备总数</p>
             </li>
             <li title="正常运行">
-              <p style="color:#67c23a">100</p>
+              <p style="color:#67c23a">{{deviceData.normal}}</p>
               <p>正常运行</p>
             </li>
             <li title="设备故障">
-              <p style="color:#f56c6c">100</p>
+              <p style="color:#f56c6c">{{deviceData.fault}}</p>
               <p>设备故障</p>
             </li>
           </ul>
@@ -53,7 +53,9 @@
             v-for="(item, index) in entryList"
             :key="index"
             :title="item"
-          >{{item}}</li>
+            @click="turnurl(index)"
+          >{{item}}
+          </li>
         </ul>
       </div>
       <div class="device-operation-Status">
@@ -63,35 +65,35 @@
             <el-form label-position='top'>
               <el-form-item label="正常运行">
                 <el-progress
-                  :percentage="70"
+                  :percentage="deviceData.normalPer"
                   :stroke-width="10"
                   color="#67c23a"
                 ></el-progress>
               </el-form-item>
               <el-form-item label="故障待处理">
                 <el-progress
-                  :percentage="70"
+                  :percentage="deviceData.faultPer"
                   :stroke-width="10"
                   color="#f56c6c"
                 ></el-progress>
               </el-form-item>
               <el-form-item label="维修中">
                 <el-progress
-                  :percentage="70"
+                  :percentage="deviceData.maintenancePer"
                   :stroke-width="10"
                   color="#e6a23c"
                 ></el-progress>
               </el-form-item>
               <el-form-item label="关机中">
                 <el-progress
-                  :percentage="70"
+                  :percentage="deviceData.showdownPer"
                   :stroke-width="10"
                   color="#939393"
                 ></el-progress>
               </el-form-item>
               <el-form-item label="未连接">
                 <el-progress
-                  :percentage="70"
+                  :percentage="deviceData.unlinePer"
                   :stroke-width="10"
                   color="#D7D7D7"
                 ></el-progress>
@@ -111,7 +113,7 @@
               </span>
               <div>
                 <p>总数</p>
-                <p style="font-size:20px;font-weight:600;">100台</p>
+                <p style="font-size:20px;font-weight:600;">{{deviceData.AllDevice}}</p>
               </div>
             </li>
             <li>
@@ -123,28 +125,28 @@
               </span>
               <div>
                 <p>预警</p>
-                <p style="font-size:20px;font-weight:600;">100台</p>
+                <p style="font-size:20px;font-weight:600;">{{deviceData.warn}}</p>
               </div>
             </li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="right hide">
+    <div class="right ">
       <div class="backlog">
         <span>待办事项</span>
         <ul>
-          <li title="故障工单">
+          <li title="故障工单" @click="$router.push('/Breakdown')">
             <span>故障工单</span>
-            <span>0</span>
+            <span>{{worksList.fault}}</span>
           </li>
-          <li title="检修工单">
+          <li title="检修工单" @click="$router.push('/TurnaroundPlans')">
             <span>检修工单</span>
-            <span>0</span>
+            <span>{{worksList.overhaul}}</span>
           </li>
-          <li title="保养工单">
+          <li title="保养工单" @click="$router.push('/Upkeep')">
             <span>保养工单</span>
-            <span>0</span>
+            <span>{{worksList.maintain}}</span>
           </li>
         </ul>
       </div>
@@ -155,9 +157,10 @@
         </div>
         <ul class="message-details">
           <li
-            v-for="(item, index) in 10000"
+            v-for="(item, index) in massgageData"
             :key="index"
-          ><span>11</span><span>{{item}}</span></li>
+            @click="$router.push('/Message')"
+          ><span>{{item.msgTitle}}</span><span>{{item.msgContent}}</span></li>
         </ul>
       </div>
       <div class="frequent-contacts">
@@ -165,39 +168,39 @@
         <ul>
           <li>
             <span>IT服务热线1：</span>
-            <span>11111</span>
+            <span>12230</span>
           </li>
           <li>
             <span>IT服务热线2：</span>
-            <span>11111</span>
+            <span>12345</span>
           </li>
           <li>
             <span>MAIL、ERP后台：</span>
-            <span>11111</span>
+            <span>12630</span>
           </li>
           <li>
             <span>网络组：</span>
-            <span>11111</span>
+            <span>13500</span>
           </li>
           <li>
             <span>桌面维护：</span>
-            <span>11111</span>
+            <span>14790</span>
           </li>
           <li>
             <span>桌面维护：</span>
-            <span>11111</span>
+            <span>12580</span>
           </li>
           <li>
             <span>IT服务QQ群：</span>
-            <span>11111</span>
+            <span>892596095</span>
           </li>
           <li>
             <span>投诉电话：</span>
-            <span>11111</span>
+            <span>99553</span>
           </li>
           <li>
             <span>技术支持：</span>
-            <span>11111</span>
+            <span>13547911497</span>
           </li>
         </ul>
       </div>
@@ -205,309 +208,493 @@
   </div>
 </template>
 <script>
-export default {
-  data() {
-    return {
-      entryList: ["设备管理", "故障管理", "备品备件", "检修计划", "保养计划"],
-      userMsg:{
-        
+  export default {
+    data() {
+      return {
+        entryList: ["设备管理", "故障管理", "备品备件", "检修计划", "保养计划"],
+        userMsg: {},
+        //各工单数量
+        worksList:{
+          maintain:0,
+          fault:0,
+          overhaul:0
+        },
+        //设备信息
+        deviceData:{
+          showdownPer:0,
+          warn:"",
+          unlinePer:0,
+          normalPer:0,
+          faultPer:0,
+          maintenancePer:0,
+          AllDevice:"",
+          fault:"",
+          normal:"",
+        },
+        //消息
+        massgageData:[],
+      };
+    },
+    methods: {
+      getworksCount(){
+        this.Axios(
+          {
+            url: "/workbench/findWorks",
+            type: "get",
+            option:{
+              enableMsg:false
+            }
+          },
+          this
+        ).then(
+          result => {
+            console.log(result.data);
+            this.worksList = result.data.data;
+          },
+          () => {}
+        );
+      },
+      getdeviceData(){
+        this.Axios(
+          {
+            url: "/deviceState/findDeviceDate",
+            type: "get",
+            params:{organizeCode:JSON.parse(localStorage.getItem("user")).organizeCode},
+            option:{
+              enableMsg:false,
+              requestTarget: 'r',
+            }
+          },
+          this
+        ).then(
+          result => {
+            console.log(result.data);
+            this.deviceData = result.data.data;
+          },
+          () => {}
+        );
+      },
+      turnurl(index){
+        switch (index){
+          case 0:
+            this.$router.push("/Equipment");
+            break;
+          case 1:
+            this.$router.push("/Breakdown");
+            break;
+          case 2:
+            this.$router.push("/SparePart");
+            break;
+          case 3:
+            this.$router.push("/TurnaroundPlans");
+            break;
+          case 4:
+            this.$router.push("/Upkeep");
+            break;
+        }
+      },
+      allNotReadMsg() {
+        this.Axios(
+          {
+            params: {
+              page: 1,
+              size: 20
+            },
+            type: "get",
+            url: "/message/allNotReadMsg",
+            // loadingConfig: {
+            //   target: document.querySelector("#mainContentWrapper")
+            // }
+            option:{
+              requestTarget:"m",
+              enableMsg:false
+            }
+          },
+          this
+        )
+          .then(result => {
+            console.log(result);
+            console.log(result.data);
+            this.massgageData = result.data.data.content;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      //记事本方法
+      addNode(){
+        let qs = require("qs");
+        let data = qs.stringify({
+          content:""
+        });
+        this.Axios({
+          url:"/workbench/addNote",
+          type:"post",
+          params: data ,
+          option:{
+            enableMsg:false
+          }
+        },this).then(
+          result =>{
+            console.log(result.data);
+          },
+          () => {}
+        )
+      },
+      deleteNode(){
+        let qs = require("qs");
+        let data = qs.stringify({
+          id:""
+        });
+        this.Axios({
+          url:"/workbench/addNote",
+          type:"post",
+          params:data,
+          option:{
+            enableMsg:false
+          }
+        },this).then(
+          result =>{
+            console.log(result.data);
+          },
+          () => {}
+        )
+      },
+      updateNode(){
+        let qs = require("qs");
+        let data = qs.stringify({
+          id:"",
+          content:""
+        });
+        this.Axios({
+          url:"/workbench/addNote",
+          type:"post",
+          params:data,
+          option:{
+            enableMsg:false
+          }
+        },this).then(
+          result =>{
+            console.log(result.data);
+          },
+          () => {}
+        )
+      },
+      findNotes(){
+        this.Axios({
+          url:"/workbench/findNotes",
+          type:"get",
+          option:{
+            enableMsg:false
+          }
+        },this).then(
+          result =>{
+            console.log(result.data);
+          },
+          () => {}
+        )
       }
-    };
-  },
-  methods: {},
-  created() {
-    this.userMsg=JSON.parse(localStorage.getItem("user"))
-    console.log(this.$store.state.token.tokenNub);
-    console.log(this.$store.state.token.userMsg)
-    console.log(this.$store.state.token.permissionUrl)
-  }
-};
+
+    },
+    created() {
+      this.userMsg = JSON.parse(localStorage.getItem("user"))
+      console.log(localStorage.getItem("user"));
+      this.$store.commit('tokenSrc', localStorage.getItem("token"))
+      console.log(this.$store.state.token.tokenNub);
+      console.log(this.$store.state.token.userMsg);
+      this.getworksCount();
+      this.getdeviceData();
+
+    }
+  };
 </script>
 <style lang="less">
-@import url("../../assets/font/font.css");
-@blue: #409eff;
-@Success: #67c23a;
-@Warning: #e6a23c;
-@Danger: #f56c6c;
-@Info: #dde2eb;
-@border: 1px solid #dde2eb;
-.case-style {
-  padding: 10px;
-  border-radius: 5px;
-  border: @border;
-  box-shadow: 4px 4px 10px #c0bfbf;
-}
-.home {
-  overflow: hidden;
-  font-size: 12px;
-  .left {
-    width: 70%;
-    float: left;
+  @import url("../../assets/font/font.css");
+
+  @blue: #409eff;
+  @Success: #67c23a;
+  @Warning: #e6a23c;
+  @Danger: #f56c6c;
+  @Info: #dde2eb;
+  @border: 1px solid #dde2eb;
+  .case-style {
     padding: 10px;
-    // border: @border;
-    .personal-information {
-      .case-style;
-      height: 194px;
-      overflow: hidden;
-      .user-msg {
-        float: left;
-        .case {
-          padding: 10px;
-          overflow: hidden;
-          margin-top: 10px;
-          .photo {
-            width: 90px;
-            height: 90px;
-            float: left;
-            font-size: 0;
-            border-radius: 5px;
+    border-radius: 5px;
+    border: @border;
+    box-shadow: 4px 4px 10px #c0bfbf;
+  }
+
+  .home {
+    overflow: hidden;
+    font-size: 12px;
+    .left {
+      width: 70%;
+      float: left;
+      padding: 10px;
+      // border: @border;
+      .personal-information {
+        .case-style;
+        height: 194px;
+        overflow: hidden;
+        .user-msg {
+          float: left;
+          .case {
+            padding: 10px;
             overflow: hidden;
-            img {
-              width: 100%;
-              height: 100%;
+            margin-top: 10px;
+            .photo {
+              width: 90px;
+              height: 90px;
+              float: left;
+              font-size: 0;
+              border-radius: 5px;
+              overflow: hidden;
+              img {
+                width: 100%;
+                height: 100%;
+              }
+            }
+            .message {
+              float: left;
+              width: 130px;
+              margin-left: 10px;
+              padding: 10px 0;
+              p {
+                padding: 8px 0;
+              }
             }
           }
-          .message {
-            float: left;
-            width: 130px;
-            margin-left: 10px;
-            padding: 10px 0;
-            p {
-              padding: 8px 0;
+        }
+        .equipment-data {
+          .top {
+            padding-right: 10px;
+            i {
+              float: right;
+              display: none;
+              cursor: pointer;
+              &:hover {
+                color: #f56c6c;
+              }
+            }
+            &:hover {
+              i {
+                display: block;
+              }
+            }
+          }
+          .case {
+            margin-top: 10px;
+            // border: @border;
+            overflow: hidden;
+            padding: 10px;
+            li {
+              float: left;
+              list-style-type: none;
+              width: 32.5%;
+              // min-width: 130px;
+              background-color: #eeeeee;
+              height: 136px;
+              padding-top: 35px;
+              cursor: pointer;
+              p {
+                width: 100%;
+                line-height: 30px;
+                text-align: center;
+              }
+              p:nth-child(1) {
+                font-size: 20px;
+                font-weight: 600;
+              }
+            }
+            li:not(:last-child) {
+              margin-right: 1%;
             }
           }
         }
       }
-      .equipment-data {
+      .quick-entry {
+        .case-style;
+        margin-top: 10px;
+        min-height: 160px;
         .top {
-          padding-right: 10px;
-          i {
-            float: right;
-            display: none;
-            cursor: pointer;
-            &:hover {
-              color: #f56c6c;
-            }
-          }
+          height: 20px;
+          line-height: 20px;
+          overflow: hidden;
           &:hover {
-            i {
+            .addIcon {
               display: block;
             }
           }
-        }
-        .case {
-          margin-top: 10px;
-          // border: @border;
-          overflow: hidden;
-          padding: 10px;
-          li {
-            float: left;
-            list-style-type: none;
-            width: 32.5%;
-            // min-width: 130px;
-            background-color: #eeeeee;
-            height: 136px;
-            padding-top: 35px;
-            cursor: pointer;
-            p {
-              width: 100%;
-              line-height: 30px;
-              text-align: center;
-            }
-            p:nth-child(1) {
-              font-size: 20px;
-              font-weight: 600;
+          .addIcon {
+            width: 80px;
+            float: right;
+            display: none;
+            i {
+              display: inline-block;
+              width: 20px;
+              margin-left: 10px;
+              cursor: pointer;
+              &:hover {
+                color: #f56c6c;
+              }
             }
           }
-          li:not(:last-child) {
+        }
+        .bottom {
+          margin-top: 10px;
+          overflow: scroll;
+          padding: 0 10px;
+          li {
+            list-style-type: none;
+            float: left;
+            width: 32.5%;
+            text-align: center;
+            height: 38px;
+            line-height: 38px;
+            background-color: #eeeeee;
+            margin-bottom: 16px;
+            cursor: pointer;
+          }
+          li:not(:nth-child(3n)) {
             margin-right: 1%;
           }
         }
       }
-    }
-    .quick-entry {
-      .case-style;
-      margin-top: 10px;
-      min-height: 160px;
-      .top {
-        height: 20px;
-        line-height: 20px;
-        overflow: hidden;
-        &:hover {
-          .addIcon {
-            display: block;
+      .device-operation-Status {
+        .case-style;
+        margin-top: 10px;
+        height: 400px;
+        .left {
+          width: 65%;
+          .state {
+            margin-top: 10px;
+            border-right: @border;
+            padding: 10px;
+            .el-form-item__label {
+              height: 30px;
+              line-height: 30px;
+              font-size: 12px;
+            }
+            .el-progress {
+              width: 100%;
+            }
+            .el-form-item {
+              margin-bottom: 10px;
+            }
           }
         }
-        .addIcon {
-          width: 80px;
-          float: right;
-          display: none;
-          i {
-            display: inline-block;
-            width: 20px;
-            margin-left: 10px;
-            cursor: pointer;
-            &:hover {
-              color: #f56c6c;
+        .right {
+          width: 35%;
+          padding: 40px 10px 10px;
+          ul {
+            li {
+              list-style-type: none;
+              height: 120px;
+              line-height: 120px;
+              width: 100%;
+              overflow: hidden;
+              text-align: center;
+              i {
+                font-size: 40px;
+              }
+              div {
+                display: inline-block;
+                margin-left: 30px;
+                p {
+                  text-align: left;
+                  line-height: 20px;
+                }
+              }
+            }
+            li:not(:last-child) {
+              border-bottom: @border;
             }
           }
         }
       }
-      .bottom {
-        margin-top: 10px;
-        overflow: scroll;
-        padding: 0 10px;
-        li {
-          list-style-type: none;
-          float: left;
-          width: 32.5%;
-          text-align: center;
-          height: 38px;
-          line-height: 38px;
-          background-color: #eeeeee;
-          margin-bottom: 16px;
-          cursor: pointer;
-        }
-        li:not(:nth-child(3n)) {
-          margin-right: 1%;
-        }
-      }
     }
-    .device-operation-Status {
-      .case-style;
-      margin-top: 10px;
-      height: 400px;
-      .left {
-        width: 65%;
-        .state {
-          margin-top: 10px;
-          border-right: @border;
-          padding: 10px;
-          .el-form-item__label {
-            height: 30px;
-            line-height: 30px;
-            font-size: 12px;
-          }
-          .el-progress {
-            width: 100%;
-          }
-          .el-form-item {
-            margin-bottom: 10px;
-          }
-        }
-      }
-      .right {
-        width: 35%;
-        padding: 40px 10px 10px;
+    .right {
+      float: left;
+      width: 30%;
+      padding: 10px 10px 10px 0px;
+      overflow: hidden;
+      .backlog {
+        .case-style;
+        height: 194px;
         ul {
           li {
             list-style-type: none;
-            height: 120px;
-            line-height: 120px;
             width: 100%;
-            overflow: hidden;
-            text-align: center;
-            i {
-              font-size: 40px;
+            height: 40px;
+            line-height: 40px;
+            background-color: #eeeeee;
+            margin-top: 10px;
+            padding: 0px 30px 0px 10px;
+            cursor: pointer;
+            &:hover {
+              color: #409eff;
             }
-            div {
-              display: inline-block;
-              margin-left: 30px;
-              p {
-                text-align: left;
-                line-height: 20px;
-              }
+            span:nth-child(2) {
+              float: right;
+              font-size: 16px;
+              font-weight: 600;
             }
-          }
-          li:not(:last-child) {
-            border-bottom: @border;
           }
         }
       }
-    }
-  }
-  .right {
-    float: left;
-    width: 30%;
-    padding: 10px 10px 10px 0px;
-    overflow: hidden;
-    .backlog {
-      .case-style;
-      height: 194px;
-      ul {
-        li {
-          list-style-type: none;
-          width: 100%;
-          height: 40px;
-          line-height: 40px;
-          background-color: #eeeeee;
-          margin-top: 10px;
-          padding: 0px 30px 0px 10px;
-          cursor: pointer;
-          &:hover{
-            color: #409eff;
-          }
+      .message-notification {
+        .case-style;
+        margin-top: 10px;
+        height: 300px;
+        .top {
           span:nth-child(2) {
             float: right;
-            font-size: 16px;
-            font-weight: 600;
+            cursor: pointer;
+            &:hover {
+              color: @Danger;
+            }
+          }
+        }
+        .message-details {
+          border: @border;
+          height: 256px;
+          margin-top: 10px;
+          overflow: scroll;
+          li {
+            list-style-type: none;
+            width: 100%;
+            padding: 0 10px;
+            height: 18px;
+            line-height: 18px;
+            background-color: #eeeeee;
+            margin-top: 4px;
+            cursor: pointer;
+            &:hover {
+              color: #409eff;
+            }
+            span:nth-child(1) {
+              margin-right: 16px;
+            }
           }
         }
       }
-    }
-    .message-notification {
-      .case-style;
-      margin-top: 10px;
-      height: 300px;
-      .top {
-        span:nth-child(2) {
-          float: right;
-          cursor: pointer;
-          &:hover {
-            color: @Danger;
-          }
-        }
-      }
-      .message-details {
-        border: @border;
-        height: 256px;
+      .frequent-contacts {
+        .case-style;
+        height: 270px;
         margin-top: 10px;
-        overflow: scroll;
-        li {
-          list-style-type: none;
-          width: 100%;
-          padding: 0 10px;
-          height: 18px;
-          line-height: 18px;
-          background-color: #eeeeee;
-          margin-top: 4px;
-          cursor: pointer;
-          &:hover{
-            color: #409eff;
-          }
-          span:nth-child(1) {
-            margin-right: 16px;
-          }
-        }
-      }
-    }
-    .frequent-contacts {
-      .case-style;
-      height: 270px;
-      margin-top: 10px;
-      ul{
-        margin-top:10px; 
-        li{
-          list-style-type: none;
-          height: 20px;
-          line-height: 20px;
-          padding: 0 10px;
-          span:nth-child(1){
-            margin-right: 10px;
+        ul {
+          margin-top: 10px;
+          li {
+            list-style-type: none;
+            height: 20px;
+            line-height: 20px;
+            padding: 0 10px;
+            span:nth-child(1) {
+              margin-right: 10px;
+            }
           }
         }
       }
     }
   }
-}
 </style>
