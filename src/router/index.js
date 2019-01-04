@@ -53,6 +53,9 @@ import SparePartsClassification from '@/components/sparePart/SparePartsClassific
 import Agreement from '@/components/system/Agreement'
 
 Vue.use(Router)
+
+
+
 const router = new Router({
   mode: 'history',
   routes: [{
@@ -607,464 +610,570 @@ const router = new Router({
 })
 
 export default router
+/*
+export const constantRouterMap = [
+  {
+    path: '/',
+    redirect: '/Login',
+  },
+  {
+    path: '/Login',
+    name: 'Login',
+    component: Login,
+    meta: {
+      requireAuth: false,
+    },
+  },
+  {
+    path: '/Home',
+    name: 'Home',
+    component: Home,
+    props: {
+      pageName: '默认工作台'
+    },
+    {
+      path: '/Login',
+      name: 'Login',
+      component: Login,
+      meta: {
+        requireAuth: false,
+      },
+    },
+    {
+      path: '/Home',
+      name: 'Home',
+      component: Home,
+      props: {
+        pageName: '默认工作台'
+      },
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/ForgetThePassword',
+      name: 'ForgetThePassword',
+      component: ForgetThePassword,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/Information',
+      name: 'Information',
+      component: Information,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/Company',
+      name: 'Company',
+      props: {
+        pageName: '企业管理'
+      },
+      component: Company,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/Audit',
+      name: 'Audit',
+      component: Audit,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/AdvancedSearch',
+      name: 'AdvancedSearch',
+      component: AdvancedSearch,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/Category',
+      name: 'Category',
+      props: {
+        pageName: '设备分类'
+      },
+      component: Category,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/BusinessDetails',
+      name: 'BusinessDetails',
+      component: BusinessDetails,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/Equipment',
+      name: 'Equipment',
+      props: {
+        pageName: '设备列表'
+      },
+      component: Equipment,
+      meta: {
+        requireAuth: true
+      },
+      children: [{
+          path: 'EquipmentAdd',
+          name: 'EquipmentAdd',
+          props: {
+            pageName: '设备添加'
+          },
+          component: EquipmentAdd,
+          meta: {
+            requireAuth: true
+          },
+        },
+        {
+          path: 'Redact/:id/',
+          name: 'Redact',
+          component: Redact,
+          props: {
+            pageName: '设备详情'
+          },
+          meta: {
+            requireAuth: true
+          },
+        },
+      ]
+    },
+    {
+      path: '/Monit',
+      name: 'Monit',
+      component: Monit,
+      meta: {
+        requireAuth: true
+      },
+      props: {
+        pageName: '设备监控'
+      },
+      children: [{
+        path: ':deviceId',
+        name: 'MonitSingle',
+        component: MonitSingle,
+        meta: {
+          requireAuth: true
+        },
+        props: {
+          pageName: '设备详细数据'
+        }
+      }]
+    },
+    {
+      path: '/Oee',
+      name: 'Oee',
+      component: Oee,
+      meta: {
+        requireAuth: true
+      },
+      props: {
+        pageName: 'OEE'
+      },
+      children: [{
+          path: 'End/:equId',
+          name: 'OeeEnd',
+          component: OeeEnd,
+          meta: {
+            requireAuth: true
+          },
+          props: {
+            pageName: '任务结束'
+          }
+        },
+        {
+          path: 'Add',
+          name: 'OeeAdd',
+          component: OeeAdd,
+          meta: {
+            requireAuth: true
+          },
+          props: {
+            pageName: '任务新增'
+          }
+        },
+        {
+          path: 'Details/:equId',
+          name: 'OeeDetails',
+          component: OeeDetails,
+          meta: {
+            requireAuth: true
+          },
+          props: {
+            pageName: '任务详情'
+          },
+          children: [{
+            path: 'End',
+            name: 'OeeEnd2',
+            component: OeeEnd,
+            meta: {
+              requireAuth: true
+            },
+            props: {
+              pageName: '任务结束'
+            }
+          }]
+        }
+      ]
+    },
 
-// export const constantRouterMap = [
-//   {
-//     path: '/',
-//     redirect: '/Login',
-//   },
-//   {
-//     path: '/Login',
-//     name: 'Login',
-//     component: Login,
-//     meta: {
-//       requireAuth: false,
-//     },
-//   },
-//   {
-//     path: '/Home',
-//     name: 'Home',
-//     component: Home,
-//     props: {
-//       pageName: '默认工作台'
-//     },
-//     meta: {
-//       requireAuth: true
-//     },
-//   },
-//   {
-//     path: '/Message',
-//     name: 'Message',
-//     props: {
-//       pageName: '消息列表'
-//     },
-//     component: Message,
-//     meta: {
-//       requireAuth: true
-//     },
-//   },
-// ]
 
-// export default new Router({
-//   mode: 'history',
-//   routes: constantRouterMap
-// });
-//异步挂载的路由
-//动态需要根据权限加载的路由表 
-// export const asyncRouterMap = [
-//   {
-//     path: '/Company',
-//     name: 'Company',
-//     props: {
-//       pageName: '企业管理'
-//     },
-//     component: Company,
-//     meta: {
-//       requireAuth: true,
-//       role: ['enterprise_lookup']
-//     },
-//   },
-//   {
-//     path: '/Organization',
-//     name: 'Organization',
-//     component: Organization,
-//     props: {
-//       pageName: '组织机构'
-//     },
-//     meta: {
-//       requireAuth: true,
-//       role: ['organize_lookup']
-//     },
-//   },
-//   {
-//     path: '/Personnel',
-//     name: 'Personnel',
-//     component: Personnel,
-//     props: {
-//       pageName: '员工管理'
-//     },
-//     meta: {
-//       requireAuth: true,
-//       role: ['employee_lookup']
-//     },
-//     children: [{
-//         path: 'PersnnelAdd',
-//         name: 'PersnnelAdd',
-//         props: {
-//           pageName: '员工添加'
-//         },
-//         component: PersnnelAdd,
-//         meta: {
-//           requireAuth: true
-//         },
-//       },
-//       {
-//         path: 'Modification/:id/',
-//         name: 'Modification',
-//         props: {
-//           pageName: '员工修改'
-//         },
-//         component: Modification,
-//         meta: {
-//           requireAuth: true
-//         },
-//       },
+    {
+      path: '/AmendPlan',
+      name: 'AmendPlan',
+      component: AmendPlan,
+      meta: {
+        requireAuth: true
+      },
+    },
 
-//     ]
-//   },
-//   {
-//     path: '/Equipment',
-//     name: 'Equipment',
-//     props: {
-//       pageName: '设备列表'
-//     },
-//     component: Equipment,
-//     meta: {
-//       requireAuth: true,
-//       role: ['device_lookup']
-//     },
-//     children: [{
-//         path: 'EquipmentAdd',
-//         name: 'EquipmentAdd',
-//         props: {
-//           pageName: '设备添加'
-//         },
-//         component: EquipmentAdd,
-//         meta: {
-//           requireAuth: true
-//         },
-//       },
-//       {
-//         path: 'Redact/:id/',
-//         name: 'Redact',
-//         component: Redact,
-//         props: {
-//           pageName: '设备详情'
-//         },
-//         meta: {
-//           requireAuth: true
-//         },
-//       },
-//     ]
-//   },
-//   {
-//     path: '/Category',
-//     name: 'Category',
-//     props: {
-//       pageName: '设备分类'
-//     },
-//     component: Category,
-//     meta: {
-//       requireAuth: true,
-//       role: ['deviceCate_lookup']
-//     },
-//   },
-//   {
-//     path: '/Monit',
-//     name: 'Monit',
-//     component: Monit,
-//     meta: {
-//       requireAuth: true,
-//       role: ['deviceState_lookup']
-//     },
-//     props: {
-//       pageName: '设备监控'
-//     },
-//     children: [{
-//       path: ':deviceId',
-//       name: 'MonitSingle',
-//       component: MonitSingle,
-//       meta: {
-//         requireAuth: true
-//       },
-//       props: {
-//         pageName: '设备详细数据'
-//       }
-//     }]
-//   },
-//   {
-//     path: '/Oee',
-//     name: 'Oee',
-//     component: Oee,
-//     meta: {
-//       requireAuth: true,
-//       role: ['deviceOEE_lookup']
-//     },
-//     props: {
-//       pageName: 'OEE'
-//     },
-//     children: [{
-//         path: 'End/:equId',
-//         name: 'OeeEnd',
-//         component: OeeEnd,
-//         meta: {
-//           requireAuth: true
-//         },
-//         props: {
-//           pageName: '任务结束'
-//         }
-//       },
-//       {
-//         path: 'Add',
-//         name: 'OeeAdd',
-//         component: OeeAdd,
-//         meta: {
-//           requireAuth: true
-//         },
-//         props: {
-//           pageName: '任务新增'
-//         }
-//       },
-//       {
-//         path: 'Details/:equId',
-//         name: 'OeeDetails',
-//         component: OeeDetails,
-//         meta: {
-//           requireAuth: true
-//         },
-//         props: {
-//           pageName: '任务详情'
-//         },
-//         children: [{
-//           path: 'End',
-//           name: 'OeeEnd2',
-//           component: OeeEnd,
-//           meta: {
-//             requireAuth: true
-//           },
-//           props: {
-//             pageName: '任务结束'
-//           }
-//         }]
-//       }
-//     ]
-//   },
-//   {
-//     path: '/Upkeep',
-//     name: 'Upkeep',
-//     props: {
-//       pageName: '保养计划列表'
-//     },
-//     component: Upkeep,
-//     meta: {
-//       requireAuth: true,
-//       role: ['maintain_lookup']
-//     },
-//     children: [{
-//         path: 'UpkeepAdd',
-//         name: 'UpkeepAdd',
-//         props: {
-//           pageName: '新增保养计划'
-//         },
-//         component: UpkeepAdd,
-//         meta: {
-//           requireAuth: true
-//         },
-//       },
-//       {
-//         path: 'UpkeepAmend/:id/',
-//         name: 'UpkeepAmend',
-//         props: {
-//           pageName: '保养计划修改'
-//         },
-//         component: UpkeepAmend,
-//         meta: {
-//           requireAuth: true
-//         },
-//       },
-//     ]
-//   },
-//   {
-//     path: '/Breakdown',
-//     name: 'Breakdown',
-//     props: {
-//       pageName: '设备故障列表'
-//     },
-//     component: Breakdown,
-//     meta: {
-//       requireAuth: true,
-//       role: ['fault_lookup']
-//     },
-//     children: [{
-//       path: 'BreakDetails/:id/',
-//       name: 'BreakDetails',
-//       props: {
-//         pageName: '故障详情'
-//       },
-//       component: BreakDetails,
-//       meta: {
-//         requireAuth: true
-//       },
-//     }, ]
-//   },
-//   {
-//     path: '/TurnaroundPlans',
-//     name: 'TurnaroundPlans',
-//     props: {
-//       pageName: '检修计划列表'
-//     },
-//     component: TurnaroundPlans,
-//     meta: {
-//       requireAuth: true,
-//       role: ['overhaul_lookup']
-//     },
-//     children: [{
-//         path: 'TurnaroundPlansAdd',
-//         name: 'TurnaroundPlansAdd',
-//         props: {
-//           pageName: '新增检修计划'
-//         },
-//         component: TurnaroundPlansAdd,
-//         meta: {
-//           requireAuth: true
-//         },
-//       },
-//       {
-//         path: 'TurnaroundPlansAmend/:id/',
-//         name: 'TurnaroundPlansAmend',
-//         props: {
-//           pageName: '检修计划修改'
-//         },
-//         component: TurnaroundPlansAmend,
-//         meta: {
-//           requireAuth: true
-//         },
-//       },
-//     ]
-//   },
-//   {
-//     path: '/SparePart',
-//     name: 'SparePart',
-//     props: {
-//       pageName: '备品备件列表'
-//     },
-//     component: SparePart,
-//     meta: {
-//       requireAuth: true,
-//       role: ['partInfo_lookup']
-//     },
-//     children: [{
-//         path: 'SparePartAdd',
-//         name: 'SparePartAdd',
-//         props: {
-//           pageName: '备品备件添加'
-//         },
-//         component: SparePartAdd,
-//         meta: {
-//           requireAuth: true
-//         },
-//       },
-//       {
-//         path: 'SparePartAmend/:id/',
-//         name: 'SparePartAmend',
-//         props: {
-//           pageName: '备品备件详情页'
-//         },
-//         component: SparePartAmend,
-//         meta: {
-//           requireAuth: true
-//         },
-//       },
-//     ]
-//   },
-//   {
-//     path: '/SparePartsWarehouse',
-//     name: 'SparePartsWarehouse',
-//     props: {
-//       pageName: '备件入库'
-//     },
-//     component: SparePartsWarehouse,
-//     meta: {
-//       requireAuth: true,
-//       role: ['partWarehouse_lookup']
-//     },
-//   },
-//   {
-//     path: '/WarehousingDetail',
-//     name: 'WarehousingDetail',
-//     props: {
-//       pageName: '入库明细'
-//     },
-//     component: WarehousingDetail,
-//     meta: {
-//       requireAuth: true,
-//       role: ['partWarehouseInfo_lookup']
-//     },
-//   },
-//   {
-//     path: '/SparePartsClassification',
-//     name: 'SparePartsClassification',
-//     props: {
-//       pageName: '备件分类'
-//     },
-//     component: SparePartsClassification,
-//     meta: {
-//       requireAuth: true,
-//       role: ['partCate_lookup']
-//     },
-//   },
-//   {
-//     path: '/WorkOrder',
-//     name: 'WorkOrder',
-//     props: {
-//       pageName: '工单列表'
-//     },
-//     component: WorkOrder,
-//     meta: {
-//       requireAuth: true,
-//       role: ['work_lookup']
-//     },
-//     children: [{
-//         path: 'BreakdownOrder/:id/',
-//         name: 'BreakdownOrder',
-//         props: {
-//           pageName: '故障工单详情'
-//         },
-//         component: BreakdownOrder,
-//         meta: {
-//           requireAuth: true
-//         },
-//       },
-//       {
-//         path: 'UpkeepAndTurnaroundPlans/:id/',
-//         name: 'UpkeepAndTurnaroundPlans',
-//         props: {
-//           pageName: '检修&保养计划工单详情'
-//         },
-//         component: UpkeepAndTurnaroundPlans,
-//         meta: {
-//           requireAuth: true
-//         },
-//       },
-//     ]
-//   },
-//   {
-//     path: '/RoleManagement',
-//     name: 'RoleManagement',
-//     props: {
-//       pageName: '角色管理'
-//     },
-//     component: RoleManagement,
-//     meta: {
-//       requireAuth: true,
-//       role: ['role_lookup']
-//     },
-//   },
-//   {
-//     path: '/User',
-//     name: 'User',
-//     component: User,
-//     props: {
-//       pageName: '用户管理'
-//     },
-//     meta: {
-//       requireAuth: true,
-//       role: ['user_lookup']
-//     },
-//   },
-//   {
-//     path: '*',
-//     redirect: '/404',
-//     hidden: true
-//   }
-// ];
+    {
+      path: '/Operation',
+      name: 'Operation',
+      component: Operation,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/Upkeep',
+      name: 'Upkeep',
+      props: {
+        pageName: '保养计划列表'
+      },
+      component: Upkeep,
+      meta: {
+        requireAuth: true
+      },
+      children: [{
+          path: 'UpkeepAdd',
+          name: 'UpkeepAdd',
+          props: {
+            pageName: '新增保养计划'
+          },
+          component: UpkeepAdd,
+          meta: {
+            requireAuth: true
+          },
+        },
+        {
+          path: 'UpkeepAmend/:id/',
+          name: 'UpkeepAmend',
+          props: {
+            pageName: '保养计划修改'
+          },
+          component: UpkeepAmend,
+          meta: {
+            requireAuth: true
+          },
+        },
+      ]
+    },
+    {
+      path: '/Breakdown',
+      name: 'Breakdown',
+      props: {
+        pageName: '设备故障列表'
+      },
+      component: Breakdown,
+      meta: {
+        requireAuth: true
+      },
+      children: [{
+        path: 'BreakDetails/:id/',
+        name: 'BreakDetails',
+        props: {
+          pageName: '故障详情'
+        },
+        component: BreakDetails,
+        meta: {
+          requireAuth: true
+        },
+      }, ]
+    },
+    {
+      path: '/TurnaroundPlans',
+      name: 'TurnaroundPlans',
+      props: {
+        pageName: '检修计划列表'
+      },
+      component: TurnaroundPlans,
+      meta: {
+        requireAuth: true
+      },
+      children: [{
+          path: 'TurnaroundPlansAdd',
+          name: 'TurnaroundPlansAdd',
+          props: {
+            pageName: '新增检修计划'
+          },
+          component: TurnaroundPlansAdd,
+          meta: {
+            requireAuth: true
+          },
+        },
+        {
+          path: 'TurnaroundPlansAmend/:id/',
+          name: 'TurnaroundPlansAmend',
+          props: {
+            pageName: '检修计划修改'
+          },
+          component: TurnaroundPlansAmend,
+          meta: {
+            requireAuth: true
+          },
+        },
+      ]
+    },
+    {
+      path: '/Organization',
+      name: 'Organization',
+      component: Organization,
+      props: {
+        pageName: '组织机构'
+      },
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/Add',
+      name: 'Add',
+      component: Add,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/Personnel',
+      name: 'Personnel',
+      component: Personnel,
+      props: {
+        pageName: '员工管理'
+      },
+      meta: {
+        requireAuth: true
+      },
+      children: [{
+          path: 'PersnnelAdd',
+          name: 'PersnnelAdd',
+          props: {
+            pageName: '员工添加'
+          },
+          component: PersnnelAdd,
+          meta: {
+            requireAuth: true
+          },
+        },
+        {
+          path: 'Modification/:id/',
+          name: 'Modification',
+          props: {
+            pageName: '员工修改'
+          },
+          component: Modification,
+          meta: {
+            requireAuth: true
+          },
+        },
+      ]
+    },
+    {
+      path: '/User',
+      name: 'User',
+      component: User,
+      props: {
+        pageName: '用户管理'
+      },
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/EquipmentArchives',
+      name: 'EquipmentArchives',
+      component: EquipmentArchives,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/WorkOrder',
+      name: 'WorkOrder',
+      props: {
+        pageName: '工单列表'
+      },
+      component: WorkOrder,
+      meta: {
+        requireAuth: true
+      },
+      children: [{
+          path: 'BreakdownOrder/:id/',
+          name: 'BreakdownOrder',
+          props: {
+            pageName: '故障工单详情'
+          },
+          component: BreakdownOrder,
+          meta: {
+            requireAuth: true
+          },
+        },
+        {
+          path: 'UpkeepAndTurnaroundPlans/:id/',
+          name: 'UpkeepAndTurnaroundPlans',
+          props: {
+            pageName: '检修&保养计划工单详情'
+          },
+          component: UpkeepAndTurnaroundPlans,
+          meta: {
+            requireAuth: true
+          },
+        },
+      ]
+    },
+
+    {
+      path: '/KnowledgeBase',
+      name: 'KnowledgeBase',
+      component: KnowledgeBase,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/Message',
+      name: 'Message',
+      props: {
+        pageName: '消息列表'
+      },
+      component: Message,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/MsgDetails',
+      name: 'MsgDetails',
+      component: MsgDetails,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/RoleManagement',
+      name: 'RoleManagement',
+      props: {
+        pageName: '角色管理'
+      },
+      component: RoleManagement,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/System',
+      name: 'System',
+      component: System,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/SparePart',
+      name: 'SparePart',
+      props: {
+        pageName: '备品备件列表'
+      },
+      component: SparePart,
+      meta: {
+        requireAuth: true
+      },
+      children: [{
+          path: 'SparePartAdd',
+          name: 'SparePartAdd',
+          props: {
+            pageName: '备品备件添加'
+          },
+          component: SparePartAdd,
+          meta: {
+            requireAuth: true
+          },
+        },
+        {
+          path: 'SparePartAmend/:id/',
+          name: 'SparePartAmend',
+          props: {
+            pageName: '备品备件详情页'
+          },
+          component: SparePartAmend,
+          meta: {
+            requireAuth: true
+          },
+        },
+      ]
+    },
+    {
+      path: '/SparePartsWarehouse',
+      name: 'SparePartsWarehouse',
+      props: {
+        pageName: '备件入库'
+      },
+      component: SparePartsWarehouse,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/WarehousingDetail',
+      name: 'WarehousingDetail',
+      props: {
+        pageName: '入库明细'
+      },
+      component: WarehousingDetail,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/OutboundDetails',
+      name: 'OutboundDetails',
+      props: {
+        pageName: '出库明细'
+      },
+      component: OutboundDetails,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/SparePartsClassification',
+      name: 'SparePartsClassification',
+      props: {
+        pageName: '备件分类'
+      },
+      component: SparePartsClassification,
+      meta: {
+        requireAuth: true
+      },
+    },
+    meta: {
+      requireAuth: true,
+      role: ['user_lookup']
+    },
+  },
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
+  }
+];
+
+*/
