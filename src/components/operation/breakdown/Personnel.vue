@@ -144,7 +144,8 @@ export default {
         {
           params: { page: this.pageIndex, size: this.pageSize },
           type: "get",
-          url: "/employee/findEmployeeList"
+          url: "/employee/findEmployeeList",
+          option:{enableMsg:false}
         },
         this
       ).then(
@@ -165,7 +166,8 @@ export default {
           {
             params: { condition: this.key },
             type: "get",
-            url: "/employee/search"
+            url: "/employee/search",
+            option:{successMsg:"查询成功"}
           },
           this
         ).then(

@@ -2,12 +2,17 @@
   <div class="userManagement">
     <div class="userCase" :class="[{hide:isHideList}]">
       <div class="top">
-        <el-button
+        <permission-button 
+          permCode='employee_lookup.employee_add'
+          banType='alert'
           size="small"
           type="primary"
           @click="PersnnelAdd"
-        ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</el-button>
-        <el-button size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
+        ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</permission-button>
+        <permission-button 
+          permCode='employee_lookup.employee_refresh'
+          banType='alert' 
+          size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</permission-button >
         <div class="search">
           <el-input
             type="search"
@@ -204,7 +209,8 @@
               size:this.pageSize
             },
             type: "get",
-            url: "/employee/search"
+            url: "/employee/search",
+            option:{successMsg:"查询成功"}
           },
           this
         ).then(
@@ -237,7 +243,8 @@
           {
             params: data,
             type: "post",
-            url: "/employee/enableOrDisable"
+            url: "/employee/enableOrDisable",
+            option:{successMsg:"启用成功"}
           },
           this
         ).then(
@@ -257,7 +264,8 @@
           {
             params: data,
             type: "post",
-            url: "/employee/enableOrDisable"
+            url: "/employee/enableOrDisable",
+            option:{successMsg:"禁用成功"}
           },
           this
         ).then(
@@ -361,10 +369,10 @@
         );
       },
       deleteEmployee() {
-        this.$confirm('此操作将删除该角色, 是否继续?', '提示')
+        this.$confirm('此操作将删除该角色,是否继续?', '提示')
           .then(_=>{
             this.userIds ==JSON.parse(localStorage.getItem("user")).employeeId ?
-              this.$message.error("对不起、不能删除当前登录用户"):this.toDeleteEmployee();
+              this.$message.error("对不起,不能删除当前登录用户"):this.toDeleteEmployee();
           })
           .catch(_=>{
           })
@@ -380,7 +388,8 @@
           {
             params: data,
             type: "post",
-            url: "/employee/enableOrDisable"
+            url: "/employee/enableOrDisable",
+            option:{successMsg:"删除成功"}
           },
           this
         ).then(
@@ -394,7 +403,7 @@
         if (this.values.length === 1) {
           this.$router.push("/Modification/" + this.values[0].id);
         } else {
-          alert("抱歉、只能单个修改");
+          this.$message.error("抱歉、只能单个修改");
         }
       }
     },
@@ -417,15 +426,18 @@
   };
   Vue.component("switch-personnel", {
     template: `<span>
-      <el-switch
+      <permission-switch
         v-model="rowData.state"
         active-value="0"
         inactive-value="1"
         active-color="#13ce66"
         inactive-color="#ff4949"
-        @change="changeValue(rowData,index)"
+        banType='alert'
+        permCode='employee_lookup.employee_enable&&employee_lookup.employeeww_disabled'
+        @change.stop="changeValue(rowData,index)"
+        @resetBack="resetBackHandler"
         >
-      </el-switch>
+      </permission-switch>
   </span>`,
     props: {
       rowData: {
@@ -442,6 +454,9 @@
       changeValue() {
         let params = { type: "change", rowData: this.rowData };
         this.$emit("on-custom-comp", params);
+      },
+      resetBackHandler(newState){
+        this.rowData.state=(newState==="1"?"0":"1");
       }
     }
   });

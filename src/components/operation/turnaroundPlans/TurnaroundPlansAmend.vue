@@ -336,6 +336,7 @@
             params: {deviceId:deviceId},
             type: "get",
             url: "/device/findDeviceWorker",
+            option:{enableMsg:false}
           },
           this
         ).then(
@@ -370,6 +371,7 @@
           {
             type: "get",
             url: "/mplan/findOne/"+number,
+            option:{enableMsg:false}
           },
           this
         ).then(response => {
@@ -413,6 +415,7 @@
             params:{maintenanceId:number},
             type: "get",
             url: "/mplan/listDevice",
+            option:{enableMsg:false}
           },
           this
         ).then(response => {
@@ -482,6 +485,7 @@
             params:data,
             type: "post",
             url: "/mplan/updateMaintenancePlan",
+            option:{successMsg:"操作成功"}
           },
           this
         ).then(response => {

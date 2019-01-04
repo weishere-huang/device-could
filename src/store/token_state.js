@@ -1,7 +1,7 @@
 // let tokenNub = JSON.parse(localStorage.getItem("user"))
 let userMsg = JSON.parse(localStorage.getItem("user"))
 let tokenStr = localStorage.getItem("token")
-let permissionUrl = localStorage.getItem("permissionUrl")
+let permissionUrl = JSON.parse(localStorage.getItem("permissionUrl"));
 export default {
   state: {
     tokenNub: tokenStr,

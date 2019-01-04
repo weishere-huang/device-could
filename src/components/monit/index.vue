@@ -65,7 +65,7 @@
         </el-aside>
         <el-main class="monitMainContent">
           <section class="topWrap">
-            <div>当前设备组：常减压产线组 / 数量（台）：{{pageEquCount}}</div>
+            <div>{{organizeName}} / 数量（台）：{{pageEquCount}}</div>
             <div>刷新频次：
               <el-select
                 v-model="refreshValue"
@@ -318,6 +318,7 @@ export default {
       refreshValue: "60",
       equipmentOperationalCondition: [],
       organizeCode: JSON.parse(localStorage.getItem("user")).organizeCode,
+      organizeName: JSON.parse(localStorage.getItem("user")).organizeName,
       deviceCategory: "",
       basicStateCount: "",
       type:"",
@@ -566,14 +567,16 @@ export default {
       console.log(val);
     },
     treeNodeClick(data) {
-      console.log(data);
+      //console.log(data);
       this.organizeCode = data.id;
+      this.organizeName=data.label;
       this.setPinOption();
       this.getEquList();
     },
     classifyNodeclick(data) {
-      console.log(data);
+      //console.log(data);
       this.deviceCategory = data.id;
+      this.organizeName=data.label;
       this.setPinOption();
       this.getEquList();
     },
@@ -582,7 +585,7 @@ export default {
       let _organizeCode=organizeCode.substring(0,7);
       if(_organizeCode==='1015001'){
         //技佳
-        names=["计划数量","实际数量"];
+        names=["最近计划","实际产出"];
       }else if(_organizeCode==='1015002'){
         //精密
         names=["最近上料","物料描述"];

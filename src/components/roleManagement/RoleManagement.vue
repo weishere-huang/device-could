@@ -105,6 +105,9 @@
               params: {roleName:this.form.name},
               type: "get",
               url: "/role/findOnlyByRoleName",
+              option: {
+                enableMsg:false,
+              }
             },
             this
           ).then(
@@ -134,7 +137,7 @@
             type: "post",
             url: "/role/add",
             option: {
-              successMsg:"成功新增角色"
+              successMsg:"新增成功"
             },
           },
           this
@@ -180,7 +183,7 @@
             type: "post",
             url: "/role/update",
             option: {
-              successMsg:"保存成功"
+              successMsg:"修改成功"
             }
           },
           this
@@ -196,11 +199,14 @@
             params:{roleId:value} ,
             type: "get",
             url: "/role/listPermissionByRole",
+            option: {
+              enableMsg:false,
+            },
           },
           this
         ).then(
           response => {
-            this.power = response.data.data.map((item)=>{
+            this.power = response.data.data.map(item=>{
               return item.id
             });
             this.$refs.tree.setCheckedKeys(this.power);
@@ -269,7 +275,7 @@
             type: "post",
             url: "/role/delete",
             option: {
-              successMsg:"成功删除角色"
+              successMsg:"删除成功"
             },
           },
           this

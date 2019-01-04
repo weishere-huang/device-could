@@ -157,6 +157,7 @@
             params: { page: this.pageIndex, size: this.pageSize },
             type: "get",
             url: "/device/select",
+            option:{enableMsg:false},
             loadingConfig:{
               target:document.querySelector('.el-dialog')
             }
@@ -180,7 +181,8 @@
           {
             params: { deviceCategory: this.clickId},
             type: "get",
-            url: "/device/select"
+            url: "/device/select",
+            option:{enableMsg:false}
           },
           this
         ).then(
@@ -208,7 +210,8 @@
           {
             params: { keyWord: this.key },
             type: "get",
-            url: "/device/findByKeyWord"
+            url: "/device/findByKeyWord",
+            option:{successMsg:"查询成功"}
           },
           this
         ).then(
@@ -317,6 +320,7 @@
           },
           type: "get",
           url: "/deviceCategory/all",
+          option:{enableMsg:false}
         },this)
           .then(result => {
             let code = Math.min.apply(null, (result.data.data).map((item)=>{return item.categoryParentNo}));
