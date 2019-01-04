@@ -221,10 +221,10 @@ export default {
         {
           url: "/organize/add",
           params: data,
-          type: "post"
-          // option: {
-          //   enableMsg: false
-          // }
+          type: "post",
+          option: {
+            enableMsg: false
+          }
         },
         this
       )
@@ -234,6 +234,7 @@ export default {
             this.orgname = "";
             this.value = "";
             this.orgInfo = "";
+            this.$message.success("添加成功");
             this.reload();
           } else {
             this.$message("添加失败");
