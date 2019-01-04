@@ -185,7 +185,8 @@
           {
             params: { deviceCategory: this.clickId},
             type: "get",
-            url: "/device/select"
+            url: "/device/select",
+            option:{enableMsg:false}
           },
           this
         ).then(
@@ -213,7 +214,8 @@
           {
             params: { keyWord: this.key },
             type: "get",
-            url: "/device/findByKeyWord"
+            url: "/device/findByKeyWord",
+            option:{enableMsg:false}
           },
           this
         ).then(

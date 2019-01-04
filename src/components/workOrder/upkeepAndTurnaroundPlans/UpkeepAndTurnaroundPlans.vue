@@ -877,7 +877,8 @@
               passOrTurn:this.examine.radio
             },
             type: "get",
-            url: "/maintenanceWork/workAudit"
+            url: "/maintenanceWork/workAudit",
+            option:{successMsg:"操作成功"}
           },
           this
         ).then(
@@ -1016,6 +1017,7 @@
           params: {},
           type: "get",
           url: "/part/list",
+          option:{enableMsg:false}
         },this)
           .then(result => {
             this.data2= this.filterArray2(result.data.data,0);
@@ -1131,6 +1133,7 @@
             params:data,
             type: "post",
             url: "/maintenanceWork/insertPart",
+            option:{successMsg:"操作成功"}
           },
           this
         ).then(
