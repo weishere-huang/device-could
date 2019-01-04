@@ -30,10 +30,11 @@
           :table-data="tableData"
           row-hover-color="#eee"
           row-click-color="#edf7ff"
+          :row-height='30'
         ></v-table>
         <div
           class="mt20 mb20 bold"
-          style="text-align:center;"
+          style="text-align:center;margin-top:10px;"
         >
           <v-pagination
             @page-change="pageChange"

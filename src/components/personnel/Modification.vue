@@ -66,7 +66,7 @@
                   size="mini"
                   type="primary"
                   @click="dialogVisible3=true"
-                  style="float: right;"
+                  style="float: right; margin-top:5px;"
                 >点击修改</el-button>
                 <el-dialog
                   title="请选择"

@@ -8,11 +8,8 @@
 Form 组件提供了表单验证的功能，只需要通过 rule 属性传入约定的验证规则，并 Form-Item 的 prop 属性设置为需校验的字段名即可。具体可以参考官网：http://element.eleme.io/#/zh-CN/component/form
 -->
    <el-col :span="24" class="warp-main">
-    <el-form ref="infoForm" :model="infoForm" :rules="rules" label-width="60px">
-     <el-form-item label="标题" prop="a_title">
-      <el-input v-model="infoForm.a_title"></el-input>
-     </el-form-item>
-     <el-form-item label="详细">
+    <el-form ref="infoForm" :model="infoForm" :rules="rules" >
+     <el-form-item>
       <div class="edit_container">
        <quill-editor v-model="infoForm.a_content"
               ref="myQuillEditor"
@@ -41,9 +38,7 @@ Form 组件提供了表单验证的功能，只需要通过 rule 属性传入约
     },
     //表单验证
     rules: {
-     a_title: [
-      {required: true, message: '请输入标题', trigger: 'blur'}
-     ],
+     
      a_content: [
       {required: true, message: '请输入详细内容', trigger: 'blur'}
      ]

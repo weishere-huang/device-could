@@ -18,11 +18,24 @@
               <p>TEL：{{userMsg.phone}}</p>
             </div>
           </div>
+          <span class="jurisdiction" @click="dialogVisible=true"><i class="el-icon-edit" style="color:blue"></i>&nbsp;我的权限</span>
         </div>
+        <el-dialog
+          title="提示"
+          :visible.sync="dialogVisible"
+          width="300"
+          
+          >
+          <div style="height:200px;width:100%;overflow:scroll;">
+        
+          </div>
+          
+        </el-dialog>
+
         <div class="equipment-data">
           <div class="top">
             <span>设备数据</span>
-            <i style='font-size:16px' class='iconfont'>&#xe614;</i>
+            <i style='font-size:16px' class='iconfont' @click="reload">&#xe614;</i>
           </div>
           <ul class="case">
             <li title="设备总数">
@@ -209,8 +222,10 @@
 </template>
 <script>
   export default {
+    inject:['reload'],
     data() {
       return {
+        dialogVisible:false,
         entryList: ["设备管理", "故障管理", "备品备件", "检修计划", "保养计划"],
         userMsg: {},
         //各工单数量
@@ -438,10 +453,17 @@
         overflow: hidden;
         .user-msg {
           float: left;
+          .jurisdiction{
+              cursor: pointer;
+              position: relative;
+              top: -18px;
+              left: 15px;
+            }
           .case {
             padding: 10px;
             overflow: hidden;
             margin-top: 10px;
+            
             .photo {
               width: 90px;
               height: 90px;
@@ -695,6 +717,9 @@
           }
         }
       }
+    }
+    .el-progress-bar{
+      width: 90%;
     }
   }
 </style>

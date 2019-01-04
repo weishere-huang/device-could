@@ -121,6 +121,7 @@
             </template>
             <el-menu-item index="/User">用户管理</el-menu-item>
             <el-menu-item index="/Agreement">用户注册协议</el-menu-item>
+            <el-menu-item index="/FrequentContacts">常用联系人</el-menu-item>
           </el-submenu>
         </el-menu>
         <div

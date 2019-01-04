@@ -3,14 +3,14 @@
     <div class="personTable">
 
       <div class="search">
-        <el-input type="search" size="mini"placeholder="只能输入姓名或手机号" v-model="key" style="width:30%;"></el-input>
+        <el-input type="search" size="mini" placeholder="只能输入姓名或手机号" v-model="key" style="width:30%;"></el-input>
         <el-button size="mini" type="primary" @click="search" icon="el-icon-search">搜索</el-button>
         <span style="padding:0 10px;">最近搜索：{{searchs}}</span>
         <span style="text-decoration: underline;"></span>
       </div>
       <div class="tableList">
-        <v-table :row-dblclick="getPersonnel" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:300px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-        <div class="mt20 mb20 bold" style="text-align:center;">
+        <v-table :row-height='30' :row-dblclick="getPersonnel" :select-all="selectALL" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:300px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+        <div class="mt20 mb20 bold" style="text-align:center;margin-top:10px;">
           <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="pageNumber" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
         </div>
       </div>
@@ -19,6 +19,7 @@
 </template>
 <script>
   export default {
+    inject:['reload'],
     data() {
       return {
         isPageOk:true,
