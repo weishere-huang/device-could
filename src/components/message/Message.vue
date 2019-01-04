@@ -123,7 +123,7 @@ export default {
           // isResize: true,
           overflowTitle: true,
           formatter: function(rowData, rowIndex, pagingIndex, field) {
-            return rowData.state === "0"
+            return rowData.state === 0
               ?`<span style="color:#ff6600">未读</span>`
               :`<span>已读</span>`
           },
@@ -154,19 +154,12 @@ export default {
   },
   methods: {
     customCompFunc(params) {
-      console.log(params);
-
       if (params.type === "delete") {
-        // do delete operation
-
         this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
-        // do edit operation
         this.ids = params.rowData.id;
         this.dtwarning();
       } else if (params.type === "stop") {
-        // do edit operation
-
         alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
       }
     },
@@ -180,7 +173,6 @@ export default {
         }
       }
       this.rowData = selection[0];
-      console.log("select-group-change", selection);
     },
     selectALL(selection) {
       this.ids = "";
@@ -191,10 +183,8 @@ export default {
           this.ids += selection[i].id;
         }
       }
-      console.log("select-aLL", selection);
     },
     selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
     },
     getTableData() {
       this.tableData = this.tableDate.slice(
@@ -205,7 +195,6 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
       if(this.readkey === 0){
         this.allMsg();
       }else{
@@ -238,7 +227,6 @@ export default {
     },
 
     dtwarning() {
-      console.log(this.ids);
       if (this.ids === "") {
         this.$message.warning("至少选择一条数据")
       } else {
@@ -274,15 +262,10 @@ export default {
         },
         this
       )
-        //.post(apiMsg + "/message/UpdateMsgState/", data)
         .then(result => {
           this.reload();
           this.$message("成功删除!!!");
-          console.log(result.data);
         })
-        .catch(err => {
-          console.log(err);
-        });
     },
     allMsg() {
       //查询该用户所有消息
@@ -300,9 +283,6 @@ export default {
           },
           type: "get",
           url: "/message/allMsg",
-          // loadingConfig: {
-          //   target: document.querySelector("#mainContentWrapper")
-          // }
           option:{
             requestTarget:"m",
             enableMsg:false
@@ -311,15 +291,11 @@ export default {
         this
       )
         .then(result => {
-          console.log(result.data);
-          console.log(result.data.data);
-
           this.tableData = result.data.data.content;
           this.totoelement = result.data.data.totalElements;
           this.NotReadMsgCount();
         })
         .catch(err => {
-          console.log(err);
         });
     },
     allNotReadMsg() {
@@ -332,9 +308,6 @@ export default {
           },
           type: "get",
           url: "/message/allNotReadMsg",
-          // loadingConfig: {
-          //   target: document.querySelector("#mainContentWrapper")
-          // }
           option:{
             requestTarget:"m",
             enableMsg:false
@@ -343,13 +316,10 @@ export default {
         this
       )
         .then(result => {
-          console.log(result);
-          console.log(result.data);
           this.tableData = result.data.data.content;
           this.totoelement = result.data.data.totalElements;
         })
         .catch(err => {
-          console.log(err);
         });
     },
 
@@ -366,13 +336,10 @@ export default {
         },
         this
       )
-        // .get(apiMsg + "/message/NotReadMsgCount/")
         .then(result => {
           this.msgcount = result.data.data;
-          console.log(result.data);
         })
         .catch(err => {
-          console.log(err);
         });
     },
     updateMessageRead() {
@@ -387,10 +354,8 @@ export default {
         this
       )
         .then(result => {
-          console.log(result.data);
         })
         .catch(err => {
-          console.log(err);
         });
     },
     updateAllMessageRead() {
@@ -406,15 +371,12 @@ export default {
         },
         this
       )
-        //.get(apiMsg + "/message/UpdateAllMsgRead/")
         .then(result => {
           if(result.data.code === 200){
             this.reload();
           }
-          console.log(result.data.code);
         })
         .catch(err => {
-          console.log(err);
         });
     },
     btwarning(){
@@ -434,7 +396,6 @@ export default {
     },
 
     details(rowIndex, rowData, column) {
-      console.log(rowData.id);
       this.msgDetail = rowData;
       this.detailsShow = true;
       this.ids = rowData.id;
@@ -446,20 +407,18 @@ export default {
         {
           url: "/message/findOneMsg/" + this.ids,
           type: "get",
-          option:{requestTarget:"m"}
+          option:{
+            requestTarget:"m",
+            enableMsg:false
+          }
         },
         this
       )
       // .get(apiMsg + "/message/findOneMsg/" + this.ids)
         .then(result => {
-          console.log(result);
           this.msgDetail = result.data.data;
-          if (this.msgDetail.isRead === 0) {
-            //this.reload();
-          }
         })
         .catch(err => {
-          console.log(err);
         });
     },
     detailsIsHide: function(params) {

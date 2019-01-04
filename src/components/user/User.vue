@@ -155,7 +155,7 @@ export default {
           formatter: function(rowData, rowIndex, pagingIndex, field) {
             return rowData.state === "0"
               ? "正常"
-              : "禁用"
+              : rowData.enterpriseState === 2 ? "该用户所在企业正在审核中，暂不可操作":"禁用"
           },
           componentName: "switch-user"
         },
@@ -177,7 +177,7 @@ export default {
     },
     customCompFunc(params) {
       if (params.type === "change") {
-        console.log(params);
+        // console.log(params);
         if (params.rowData.state === "1") {
           this.choice = params.rowData.id;
           this.prohibit();
@@ -189,13 +189,13 @@ export default {
         }
       }
       if (params.type === "delete") {
-        this.$confirm("确定删除该用户吗？","提示").then(_=>{
+          this.$confirm("确定删除该用户吗？","提示").then(_=>{
           this.choice = params.rowData.id;
           this.deleteUser()
-        }).catch(_=>{})
-        this.choice = "";
-        // do delete operation
-        this.$delete(this.tableData, params.index);
+        }).catch(_=>{});
+          this.choice = "";
+          // do delete operation
+          this.$delete(this.tableData, params.index);
       } else if (params.type === "start") {
         this.choice = params.rowData.id;
         this.enable();
@@ -250,7 +250,7 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
+      // console.log(pageIndex);
       this.load();
     },
     pageSizeChange(pageSize) {
@@ -292,7 +292,6 @@ export default {
             type: "success"
           });
           // this.load();
-          this.load();
         },
         ({ type, info }) => {}
       );
@@ -317,7 +316,6 @@ export default {
             type: "success"
           });
           // this.load();
-          this.load();
         },
         ({ type, info }) => {}
       );
@@ -330,8 +328,8 @@ export default {
       let data = qs.stringify({
         userIds: this.choice
       });
-      console.log(111)
-      console.log(this.choice)
+      // console.log(111)
+      // console.log(this.choice)
       this.Axios({
         url: "/user/deleteUsers",
         params: data,
@@ -342,7 +340,9 @@ export default {
         this.$message.success("您已经删除该用户")
         this.load()
       },({type,info})=>{
-        console.log(info)
+        if (info.code == 400) {
+          this.$message.error('该用户所在的企业正在审核中，暂不能删除')
+        }
       })
     },
     findByKeyWord() {
@@ -366,8 +366,8 @@ export default {
           for (let i = 0; i < this.tableData.length; i++) {
             this.tableData[i].state =String(this.tableData[i].state)
           }
-          console.log(this.pageIndex);
-          console.log(response);
+          // console.log(this.pageIndex);
+          // console.log(response);
         },
         ({ type, info }) => {}
       );
@@ -395,15 +395,16 @@ export default {
         this
       ).then(
         response => {
-          console.log(response);
+          // console.log(response);
           // this.pageIndex=1
           this.totalNub = response.data.data.totalElements;
           this.tableData = response.data.data.content;
 
           for (let i = 0; i < this.tableData.length; i++) {
             this.tableData[i].state =String(this.tableData[i].state)
+
           }
-          console.log(this.tableDate);
+          // console.log(this.tableDate);
         },
         ({ type, info }) => {}
       );
@@ -455,6 +456,7 @@ Vue.component("switch-user", {
         inactive-value="1"
         active-color="#13ce66"
         inactive-color="#ff4949"
+        :disabled="rowData.enterpriseState=='2'?true:false"
         @change="changeValue(rowData,index)"
         >
       </el-switch>
@@ -474,7 +476,8 @@ Vue.component("switch-user", {
     changeValue() {
       let params = { type: "change", rowData: this.rowData };
       this.$emit("on-custom-comp", params);
-    }
+    },
+
   }
 });
 </script>

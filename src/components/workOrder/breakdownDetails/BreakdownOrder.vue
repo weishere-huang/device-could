@@ -289,7 +289,6 @@
       return {
         isOk:true,
         imgPath:[],
-        imgPaths:[],
         examine:{
           desc:"",
           type:"",
@@ -895,7 +894,7 @@
               this.$message.error(this.suppliesTableData[i].partName + '物料未填入计划数量');
               break;
             }else{
-              if (/^[0-9]*$/.test(this.workSheetMaterialTableData[i].planCount)) {
+              if (/^[0-9]*$/.test(this.suppliesTableData[i].planCount)) {
                 isOk=true;
               }else{
                 this.$message.error("请正确输入计划数量");
@@ -927,11 +926,11 @@
             params:data,
             type: "post",
             url: "/maintenanceWork/insertPart",
+            option:{successMsg:"操作成功"}
           },
           this
         ).then(
           response => {
-            // console.log(response.data);
           },
           ({type, info}) => {
             this.addMaterielValue();
@@ -997,9 +996,10 @@
             this.findAlldeviceClassify();
             this.addMaterielValue(response.data.data.content);
             this.pageNumber = response.data.data.totalElements;
-            this.suppliesTableData.map((item)=>{
-              this.personListValue.push(item)
-            });
+            this.suppliesTableData != [] ?
+              this.suppliesTableData.map((item)=>{this.personListValue.push(item)}):
+              "";
+
           },
           ({type, info}) => {
 
@@ -1046,6 +1046,7 @@
           params: {},
           type: "get",
           url: "/part/list",
+          option:{enableMsg:false}
         },this)
           .then(result => {
             this.spareParts= this.filterArray2(result.data.data,0);
@@ -1084,7 +1085,7 @@
         this.suppliesTableData =[];
         this.suppliesTableData = (this.suppliesTableData||[]).concat(this.personListValue);
         this.suppliesTableData.forEach((item)=>{
-          if(item.planCount == "" || item.planCount ==null) item.planCount =0
+          if(item.planCount == "" || item.planCount ==null) item.planCount =1
         });
         this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
       },

@@ -414,6 +414,7 @@
             params:{},
             type: "get",
             url: "/organize/allOrganize",
+            option:{enableMsg: false}
           },
           this
         ).then(response => {
@@ -440,6 +441,7 @@
             params:{employeeId:employeeId},
             type: "get",
             url: "/employee/selectOne",
+            option:{enableMsg: false}
           },
           this
         ).then(response => {
@@ -471,7 +473,6 @@
           })
       },
       updateEmployee(){
-        // this.codeToName(this.persnneladd.organizeCode);
         if(this.testValue()){
           this.toUpdateEmployee()
         }
@@ -549,6 +550,9 @@
             params:data,
             type: "post",
             url: "/employee/update",
+            option: {
+              successMsg:"修改成功"
+            }
           },
           this
         ).then(response => {
@@ -567,6 +571,7 @@
           params:{},
           type: "get",
           url: "/role/listAllRole",
+          option:{enableMsg: false}
         },
         this
       ).then(response => {

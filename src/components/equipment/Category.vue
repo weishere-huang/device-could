@@ -220,7 +220,6 @@ export default {
   },
   methods: {
     handleNodeClick(data) {
-      console.log(data);
       this.nodedata = data;
     },
     append(data) {
@@ -264,21 +263,12 @@ export default {
         },
         this
       )
-        // .get(this.global.apiSrc + "/deviceCategory/all", data)
         .then(
           result => {
             this.organize = this.filterArray(result.data.data, 0);
-            console.log(this.organize);
-            console.log(result.data);
           },
-          ({ type, info }) => {
-            //错误类型 type=faild / error
-            //error && error(type, info);
-          }
+          ({ type, info }) => {}
         );
-      // .catch(err => {
-      //   console.log(err);
-      // });
     },
     addCategory() {
       //添加设备类别
@@ -300,23 +290,17 @@ export default {
         },
         this
       )
-        //.post(this.global.apiSrc + "/deviceCategory/add", data)
         .then(
           result => {
             if (result.data.code === 200) {
-              this.$message("添加成功");
+              this.$message.success("添加成功");
               this.reload();
             } else {
-              this.$message("添加失败,请重新添加");
+              this.$message.error("添加失败,请重新添加");
             }
-            console.log("addCategory");
-            console.log(result.data);
           },
           ({ type, info }) => {}
         );
-      // .catch(err => {
-      //   console.log(err);
-      // });
     },
     addFirst() {
       //添加根类
@@ -327,8 +311,6 @@ export default {
         categoryName: this.addname,
         categoryMsg: this.addmsg
       });
-      console.log("添加根类");
-      console.log(data);
       this.Axios(
         {
           url: "/deviceCategory/add",
@@ -340,17 +322,14 @@ export default {
         },
         this
       )
-        //.post(this.global.apiSrc + "/deviceCategory/add", data)
         .then(
           result => {
             if (result.data.code === 200) {
-              this.$message("添加成功");
+              this.$message.success("添加成功");
               this.reload();
             } else {
-              this.$message("添加失败,请重新添加");
+              this.$message.error("添加失败,请重新添加");
             }
-            console.log("addCategory");
-            console.log(result.data);
           },
           ({ type, info }) => {}
         );
@@ -374,30 +353,22 @@ export default {
         },
         this
       )
-        // .post(this.global.apiSrc + "/deviceCategory/update", data)
         .then(
           result => {
             if (result.data.code === 200) {
-              this.$message("修改成功");
+              this.$message.success("修改成功");
               this.reload();
             } else {
-              this.$message("修改失败,请重新尝试");
+              this.$message.error("修改失败,请重新尝试");
             }
-            console.log("修改设备类别");
-            console.log(result.data);
+
           },
           ({ type, info }) => {}
         );
-      // .catch(err => {
-      //   console.log(err);
-      // });
       this.nodeCname = "";
       this.nodeCMsg = "";
     },
     deleteCategory(nodeId) {
-      console.log(nodeId + "nodeiddd");
-      //  删除设备类别
-      console.log(this.nodedata.id);
       let qs = require("qs");
       let data = qs.stringify({
         categoryId: nodeId
@@ -413,7 +384,6 @@ export default {
         },
         this
       )
-        // .post(this.global.apiSrc + "/deviceCategory/delete/"+this.nodedata.id)
         .then(
           result => {
             if (result.data.code === 200) {
@@ -423,16 +393,11 @@ export default {
               });
               this.reload();
             } else {
-              this.$message.info("删除失败,请重新尝试");
+              this.$message.error("删除失败,请重新尝试");
             }
-            console.log("删除设备类别");
-            console.log(result.data);
           },
           ({ type, info }) => {}
         );
-      // .catch(err => {
-      //   console.log(err);
-      // });
     },
     warningdelete(nodeId) {
       this.$confirm("确定要删除吗?", "提示", {

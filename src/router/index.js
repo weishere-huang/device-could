@@ -50,6 +50,7 @@ import SparePartAmend from '@/components/sparePart/addAndAmend/SparePartAmend'
 import WarehousingDetail from '@/components/sparePart/WarehousingDetail'
 import OutboundDetails from '@/components/sparePart/OutboundDetails'
 import SparePartsClassification from '@/components/sparePart/SparePartsClassification'
+import Agreement from '@/components/system/Agreement'
 
 Vue.use(Router)
 
@@ -590,6 +591,17 @@ const router = new Router({
         pageName: '备件分类'
       },
       component: SparePartsClassification,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/Agreement',
+      name: 'Agreement',
+      props: {
+        pageName: '用户注册协议'
+      },
+      component: Agreement,
       meta: {
         requireAuth: true
       },

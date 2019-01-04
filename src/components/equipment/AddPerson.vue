@@ -82,7 +82,7 @@
             @click="toAdd"
           >保存</el-button>
           <div class="personList">
-            <el-tabs
+            <!-- <el-tabs
               type="border-card"
               @tab-click="getNode"
               v-model="editableTabsValue"
@@ -95,24 +95,91 @@
                 :label="item.workerTypeName"
                 :name="item.workerType"
               >
-                <!-- <span>{{item.content}}
-                  <label><i class="iconfont icon-cha"></i></label>
-                </span> -->
+
                 <tab-component
                   :items="item"
                   :deleteWorker="workerDelete"
                 ></tab-component>
               </el-tab-pane>
-            </el-tabs>
+            </el-tabs> -->
+            <div
+              v-for="(item,index) of editableTabs"
+              :key="index"
+            >
+              <tab-component
+                :items="item"
+                :deleteWorker="workerDelete"
+                :values="item.workerType"
+                v-on:changeTpye="changeTpye"
+              ></tab-component>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div
+      append-to-body
+      class="person-type"
+      style="padding:10px; overflow: hidden;width:240px;"
+      v-show="innerVisible"
+    >
+      <el-select
+        v-model="value1"
+        placeholder="请选择"
+        style="width:100%"
+      >
+        <el-option
+          v-for="item of options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
+        </el-option>
+      </el-select>
+      <div style="margin-top:10px;float:right;">
+        <el-button
+          size="mini"
+          @click="innerVisible=false"
+        >取消</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          @click="addPerson"
+        >确定</el-button>
       </div>
     </div>
   </div>
 </template>
 <script>
 import Vue from "vue";
-var tabComponent = Vue.component("tab-component", {
+Vue.component("tab-component", {
+  data() {
+    return {
+      options: [
+        {
+          value: "0",
+          label: "负责人员"
+        },
+        {
+          value: "1",
+          label: "维修人员"
+        },
+        {
+          value: "2",
+          label: "检修人员"
+        },
+        {
+          value: "3",
+          label: "保养人员"
+        },
+        {
+          value: "4",
+          label: "操作人员"
+        }
+      ],
+      value: []
+    };
+  },
   props: {
     items: {
       type: Object,
@@ -121,10 +188,44 @@ var tabComponent = Vue.component("tab-component", {
     deleteWorker: {
       type: Function,
       required: true
+    },
+    values: {},
+    changeTpye:{
+
     }
   },
   template:
-    '<ul class="workerList"><li v-for="item in items.content">{{ item.workerName }}<i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>'
+     `<ul class="workerList"><li v-for="(item,index) of items.content">{{ item.workerName }}
+      <span style="display:inline;margin-left:5%;" >
+        <el-select
+          v-model="value"
+          placeholder="请选择"
+          style="width:50%"
+          size="mini"
+          @change="changeValue(value,item,items)"
+        >
+          <el-option
+            v-for="item of options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </span>
+  <i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>`,
+  methods: {
+    changeValue(data, rowdata,oldvalue) {
+      this.value = data;
+      let params = {};
+      params = {
+        value: data,
+        person: rowdata,
+        oldvalue:oldvalue
+      };
+      this.$emit("changeTpye", params);
+    }
+  }
 });
 Vue.component("table-add-person", {
   template: `<span>
@@ -142,7 +243,7 @@ Vue.component("table-add-person", {
     },
     index: {
       type: Number
-    }
+    },
   },
   methods: {
     add() {
@@ -163,6 +264,8 @@ export default {
   },
   data() {
     return {
+      personnelMsg:"",
+      innerVisible: false,
       //搜索
       pkeyword:"",
       editableTabs: [
@@ -244,22 +347,65 @@ export default {
       },
       value: "",
       orgcode:"",
-      condition:""
+      condition:"",
+      options: [
+        {
+          value: "0",
+          label: "负责人员"
+        },
+        {
+          value: "1",
+          label: "维修人员"
+        },
+        {
+          value: "2",
+          label: "检修人员"
+        },
+        {
+          value: "3",
+          label: "保养人员"
+        },
+        {
+          value: "4",
+          label: "操作人员"
+        }
+      ],
+      value1: ""
     };
   },
   methods: {
+    changeTpye(params) {
+      // console.log(params);
+      // console.log(this.editableTabs[params.oldvalue.workerType].content);
+      // console.log(this.editableTabs);
+      // debugger
+        this.editableTabs[params.oldvalue.workerType].content =  this.editableTabs[params.oldvalue.workerType].content.filter(item => item.id !== params.person.id)
+        // console.log("------")
+        // console.log(this.editableTabs[params.oldvalue.workerType].content);
+        // console.log(this.editableTabs);
+        this.editableTabs[params.value].content.push({
+          workerName: params.person.workerName,
+          id: params.person.id
+        });
+        // console.log("------")
+        // console.log(this.editableTabs);
+    },
     customCompFunc(params) {
       if (params.type === "add") {
         // do delete operation
-        console.log(params);
-        this.getRowData(params.rowData)
+        // console.log(params);
+        this.personnelMsg = params;
+        this.innerVisible = true;
+        // this.getRowData(params.rowData)
 
       }
     },
+    addPerson() {
+      this.innerVisible = false;
+      this.editableTabsValue = this.value1;
+      this.getRowData(this.personnelMsg.rowData);
+    },
     getRowData(b) {
-      //console.log(b.name);
-      //console.log(this.editableTabs[this.editableTabsValue]);
-      //this.editableTabs[this.editableTabsValue].content += b.name + ",";
       if (
         this.editableTabs[this.editableTabsValue].content.find(
           i => i.id === b.id
@@ -274,11 +420,8 @@ export default {
       }
     },
     getNode(a) {
-      console.log(a);
-      console.log(this.editableTabsValue);
     },
     handleNodeClick(data) {
-      console.log(data);
       this.orgcode=data.code
       this.findpeopler();
     },
@@ -294,7 +437,6 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
       this.findpeopler();
     },
     pageSizeChange(pageSize) {
@@ -344,20 +486,13 @@ export default {
           if (result.data.code === 204) {
             this.tableData = [];
           } else {
-            console.log("按照组织机构编号查询人");
-            console.log(result.data);
             this.tableData = result.data.data.content;
             this.tablenum = result.data.data.totalElements;
           }
         },
         ({ type, info }) => {
-          //错误类型 type=faild / error
-          //error && error(type, info);
         }
       );
-      // .catch(err => {
-      //   console.log(err);
-      // });
     },
     toAdd() {
 
@@ -368,17 +503,12 @@ export default {
       this.editableTabs[this.editableTabsValue].content=[];
     },
     workerDelete(data) {
-      //debugger;
       this.editableTabs[this.editableTabsValue].content = this.editableTabs[
         this.editableTabsValue
       ].content.filter(item => item.id !== data.id);
     },
 
     psearch(){
-      //条件模糊查询,前端控制
-      // this.pkeyword =""
-      console.log(this.tableData);
-      console.log("---");
       let newarr = new Array();
       for(let i=0;i<this.tableData.length;i++){
         // this.tableData = this.tableData[i]
@@ -388,7 +518,7 @@ export default {
         }
       }
       this.tableData = newarr;
-      console.log(this.tableData);
+
     },
     getorg(){
       this.Axios(
@@ -410,26 +540,14 @@ export default {
       )
         .then(
           result => {
-            console.log("查询所有组织机构");
-            console.log(result.data);
-            console.log(result.data.data);
             let pcode = Math.min.apply(null, (result.data.data).map((item)=>{return item.parentCode }));
             let arr = this.filterArray(result.data.data, pcode);
-            console.log(arr);
-            //this.data2 = this.filterArray(result.data.data,1000);
             this.data2 = arr;
-
             this.orgcode=result.data.data.find(item=>item.organizeType===1).code;
             this.findpeopler();
           },
-          ({ type, info }) => {
-            //错误类型 type=faild / error
-            //error && error(type, info);
-          }
+          ({ type, info }) => {}
         )
-        .catch(err => {
-          console.log(err);
-        });
     }
 
   },
@@ -578,5 +696,14 @@ export default {
       }
     }
   }
+}
+.person-type {
+  position: absolute;
+  top: 200px;
+  left: 800px;
+  z-index: 1000000;
+  background-color: white;
+  border: @border;
+  border-radius: 5px;
 }
 </style>

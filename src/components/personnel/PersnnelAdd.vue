@@ -55,7 +55,7 @@
             <el-col :span="11">
               <el-form-item label="组织单位：" prop="defaultProps" >
                 <el-cascader
-                  placeholder="搜索"
+                  placeholder="请选择"
                   :options="options"
                   :props="defaultProps"
                   expand-trigger="hover"
@@ -192,7 +192,7 @@
     name: "",
     data() {
       return {
-        ogrname:"",
+        ogrname:[],
         labelPosition:"right",
         fileList: [],
         dialogImageUrl: '',
@@ -376,8 +376,6 @@
       },
       handleRemove(file, fileList) {
         this.dialogImageUrl=fileList;
-        // console.log(file);
-        // console.log(fileList);
       },
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
@@ -393,7 +391,6 @@
         }
       },
 
-
       tback(){
         this.$router.back(-1)
       },
@@ -403,6 +400,7 @@
             params:{},
             type: "get",
             url: "/organize/allOrganize",
+            option:{enableMsg: false}
           },
           this
         ).then(response => {
@@ -481,6 +479,9 @@
             params:data,
             type: "post",
             url: "/employee/add",
+            option: {
+              successMsg:"添加成功"
+            }
           },
           this
         ).then(response => {
@@ -503,6 +504,7 @@
           params:{},
           type: "get",
           url: "/role/listAllRole",
+          option:{enableMsg: false}
         },
         this
       ).then(response => {
@@ -622,6 +624,9 @@
 
         }
       }
+    }
+   .el-form-item--mini .el-form-item__content, .el-form-item--mini .el-form-item__label{
+      line-height:39px;
     }
   }
 

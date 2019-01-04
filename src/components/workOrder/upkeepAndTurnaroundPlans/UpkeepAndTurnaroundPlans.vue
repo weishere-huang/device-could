@@ -877,7 +877,8 @@
               passOrTurn:this.examine.radio
             },
             type: "get",
-            url: "/maintenanceWork/workAudit"
+            url: "/maintenanceWork/workAudit",
+            option:{successMsg:"操作成功"}
           },
           this
         ).then(
@@ -968,9 +969,10 @@
             this.findAlldeviceClassify();
             this.addMaterielValue(response.data.data.content);
             this.pageNumber = response.data.data.totalElements;
+            this.workSheetMaterialTableData != [] ?
             this.workSheetMaterialTableData.map((item)=>{
               this.personListValue.push(item)
-            });
+            }):"";
           },
           ({type, info}) => {
 
@@ -1015,6 +1017,7 @@
           params: {},
           type: "get",
           url: "/part/list",
+          option:{enableMsg:false}
         },this)
           .then(result => {
             this.data2= this.filterArray2(result.data.data,0);
@@ -1083,7 +1086,7 @@
         this.workSheetMaterialTableData=[];
         this.workSheetMaterialTableData = (this.workSheetMaterialTableData||[]).concat(this.personListValue);
         this.workSheetMaterialTableData.forEach((item)=>{
-            if(item.planCount == "" || item.planCount ==null)item.planCount =0
+            if(item.planCount == "" || item.planCount ==null)item.planCount =1
         });
         this.workSheetMaterialTableData = Array.from(new Set(this.workSheetMaterialTableData))
       },
@@ -1130,6 +1133,7 @@
             params:data,
             type: "post",
             url: "/maintenanceWork/insertPart",
+            option:{successMsg:"操作成功"}
           },
           this
         ).then(

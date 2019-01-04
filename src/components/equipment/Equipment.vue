@@ -288,34 +288,25 @@ export default {
   },
   methods: {
     customCompFunc(params) {
-      console.log(params);
-
       if (params.type === "delete") {
-        // do delete operation
         this.ids = params.rowData.id;
         this.warningdelete();
         this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
-        // do edit operation
         this.$router.push({path:"Equipment/Redact/" + params.rowData.id});
-        //alert(`行号：${params.index} 姓名：${params.rowData["name"]}`);
       } else if (params.type === "audit") {
-        // do edit operation
-
         alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
       }
     },
     handleNodeClick(data) {
       this.leftcate = data.categoryNo;
-      this.leftstate = "";
+      this.leftstate = null;
       this.leftclass = null;
       this.keyorall = 2;
       this.pageIndex = 1;
-      console.log(data);
       this.leftfind();
     },
     advanceValue(params) {
-      // this.tableData = params;
       (this.deviceName = params.deviceName),
         (this.locationNo = params.locationNo),
         (this.workerName = params.workerName),
@@ -323,7 +314,6 @@ export default {
         (this.deviceSates = params.deviceSates),
         (this.pageIndex = 1),
         this.findall();
-      console.log(params);
     },
     adsearch() {
       $(".adsearch")[0].style.right = 0;
@@ -345,10 +335,8 @@ export default {
     redactShow(rowIndex, rowData, column) {
       this.$router.push({path:"Equipment/Redact/" + rowData.id});
       this.$store.commit("equipmentRedact", rowData);
-      console.log(rowData);
     },
     selectGroupChange(selection) {
-      console.log("select-group-change", selection);
       this.ids = "";
       for (let i = 0; i < selection.length; i++) {
         if (this.ids != "") {
@@ -358,7 +346,6 @@ export default {
         }
       }
       this.edbt = selection;
-      console.log(this.ids);
     },
     selectALL(selection) {
       this.ids = "";
@@ -369,10 +356,8 @@ export default {
           this.ids += selection[i].id;
         }
       }
-      console.log("select-aLL", selection);
     },
     selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
     },
     getTableData() {
       this.tableData = this.tableDate.slice(
@@ -383,8 +368,6 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      console.log(pageIndex);
-      console.log(this.pageSize);
       if (this.keyorall === 0) {
         this.findall();
       } else if (this.keyorall === 1) {
@@ -453,11 +436,7 @@ export default {
         .then(
           result => {
             this.totalnum = result.data.data.totalElements;
-            console.log("查找设备");
-            console.log(result.data);
             this.tableData = result.data.data.content;
-
-            console.log(result.data);
           },
           ({ type, info }) => {
             //错误类型 type=faild / error
@@ -483,7 +462,6 @@ export default {
         result => {
           this.totalnum = result.data.data.totalElements;
           this.tableData = result.data.data.content;
-          console.log(result.data.data.content);
         },
         ({ type, info }) => {}
       );
@@ -509,15 +487,10 @@ export default {
         this
       ).then(
         result => {
-          console.log("delete");
-          console.log(result);
           this.reload();
         },
         ({ type, info }) => {}
       );
-      // .catch(err => {
-      //   console.log(err);
-      // });
     },
     filterArray(data, parent) {
       let vm = this;
@@ -547,18 +520,12 @@ export default {
           },
           type: "get",
           url: "/deviceCategory/all"
-          // loadingConfig: {
-          //   target: document.querySelector("#mainContentWrapper")
-          // }
         },
         this
       )
-        // .get(this.global.apiSrc + "/deviceCategory/all", data)
         .then(
           result => {
             this.organiza = this.filterArray(result.data.data, 0);
-            console.log("查找全部设备类别");
-            console.log(result.data);
           },
           ({ type, info }) => {}
         );
@@ -604,35 +571,22 @@ export default {
             page: this.pageIndex,
             size: this.pageSize
           },
-          // option: {
-          //   enableMsg: false
-          // },
           type: "get",
           url: "/device/select"
-          // loadingConfig: {
-          //   target: document.querySelector("#mainContentWrapper")
-          // }
         },
         this
       )
         .then(
           result => {
             this.totalnum = result.data.data.totalElements;
-            console.log("++++");
-            console.log(result.data);
             this.tableData = result.data.data.content;
-
           },
-          ({ type, info }) => {
-            //错误类型 type=faild / error
-            //error && error(type, info);
-          }
+          ({ type, info }) => {}
         );
     }
   },
   mounted() {
     $('.classifylist li').click(function (e) {
-      console.log(this);
       $(this).toggleClass("active-color").siblings().removeClass("active-color")
     });
   },

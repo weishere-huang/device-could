@@ -280,6 +280,7 @@
             params:{faultId: number},
             type: "get",
             url: "/fault/detail",
+            option:{enableMsg:false}
           },
           this
         ).then(response => {
@@ -298,7 +299,7 @@
         if (this.companyName.state !=="已删除"&&this.companyName.state!=="待审核"){
           this.dialogVisible=true;
         }else{
-          alert("对不起、不能消除待审核或已删除状态的数据")
+          this.$message.error("对不起、不能消除待审核或已删除状态的数据")
         }
       },
       toDispel(){
@@ -315,6 +316,7 @@
             params:data,
             type: "post",
             url: "/fault/dispel",
+            option:{successMsg:"消除成功"}
           },
           this
         ).then(response => {
