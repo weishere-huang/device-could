@@ -191,7 +191,7 @@
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
                 :auto-upload="true"
-                :file-list="fileList">
+                :file-list="fileList1">
                 <el-button size="mini" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">只能上传不超过10M的文件,且不能超过20个文件</div>
               </el-upload>
@@ -333,7 +333,6 @@
           img:res.data,
           name:file.name
         })
-        console.log(this.fileList);
       },
       handleRemove1(file, fileList) {
         this.fileList1 = this.fileList1.filter(item => item.name !== file.name);
@@ -458,7 +457,6 @@
           // }
         },this)
           .then(result => {
-            console.log(result.data);
             if (result.data.code == 410) {
               this.$message.warning("该设备号已存在,请重新编辑!!!")
             } else if (result.data.code == 200) {

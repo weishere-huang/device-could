@@ -220,7 +220,6 @@ export default {
   },
   methods: {
     handleNodeClick(data) {
-      console.log(data);
       this.nodedata = data;
     },
     append(data) {
@@ -267,7 +266,6 @@ export default {
         .then(
           result => {
             this.organize = this.filterArray(result.data.data, 0);
-            console.log(result.data);
           },
           ({ type, info }) => {}
         );

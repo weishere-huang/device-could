@@ -123,13 +123,11 @@ export default {
       this.addShow = params;
     },
     toAdd(data) {
-      console.log(this.nodedata);
       this.nodedata=data
       this.addShow = true;
       return false;
     },
     handleNodeClick(data) {
-      console.log(data);
       this.nodedata = data;
       this.chengedata = data;
     },
@@ -156,7 +154,6 @@ export default {
               this.reload();
             } else {
               this.$message("删除失败");
-              console.log(result.data);
             }
           },
           ({ type, info }) => {}
@@ -176,7 +173,6 @@ export default {
       )
         .then(
           result => {
-            console.log(result.data);
             for (let i = 0; i < result.data.data.length; i++) {
               if (result.data.data[i].organizeType === 0) {
                 result.data.data[i].organizeType = "企业";
@@ -219,11 +215,8 @@ export default {
       )
         .then(result => {
           this.chengedata = result.data.data;
-          console.log(result.data);
         })
         .catch(err => {
-          console.log(err);
-          console.log(this.userName);
         });
     },
     filterArray(data, parent) {

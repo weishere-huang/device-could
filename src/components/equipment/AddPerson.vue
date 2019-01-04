@@ -95,7 +95,7 @@
                 :label="item.workerTypeName"
                 :name="item.workerType"
               >
-                
+
                 <tab-component
                   :items="item"
                   :deleteWorker="workerDelete"
@@ -139,7 +139,7 @@
       <div style="margin-top:10px;float:right;">
         <el-button
           size="mini"
-          @click="innerVisible=flase"
+          @click="innerVisible=false"
         >取消</el-button>
         <el-button
           size="mini"
@@ -191,14 +191,14 @@ Vue.component("tab-component", {
     },
     values: {},
     changeTpye:{
-      
+
     }
   },
   template:
      `<ul class="workerList"><li v-for="(item,index) of items.content">{{ item.workerName }}
       <span style="display:inline;margin-left:5%;" >
         <el-select
-          v-model="value[index]"
+          v-model="value"
           placeholder="请选择"
           style="width:50%"
           size="mini"
@@ -375,24 +375,20 @@ export default {
   },
   methods: {
     changeTpye(params) {
-      console.log(params);
-      for (let i = 0; i < this.editableTabs.length; i++) {
-        this.editableTabs[i].content;
-        if (this.editableTabs[i].workerType===params.oldvalue.workerType) {
-         
-          this.editableTabs[i].content.splice(item=>item.id===this.editableTabs[i].content.id,1)
-          // console.log(this.editableTabs[i].content.indexOf(params.person));
-          console.log(this.editableTabs[i]);
-        }
-        if (this.editableTabs[i].workerType === params.value) {
-          this.editableTabs[i].content.push({
-            workerName: params.person.workerName,
-            id: params.person.id
-          });
-          // console.log(this.editableTabs[i]);
-        }
-        // console.log(this.editableTabs[i].content.find(item=>item.id===params.person.id));
-      }
+      // console.log(params);
+      // console.log(this.editableTabs[params.oldvalue.workerType].content);
+      // console.log(this.editableTabs);
+      // debugger
+        this.editableTabs[params.oldvalue.workerType].content =  this.editableTabs[params.oldvalue.workerType].content.filter(item => item.id !== params.person.id)
+        // console.log("------")
+        // console.log(this.editableTabs[params.oldvalue.workerType].content);
+        // console.log(this.editableTabs);
+        this.editableTabs[params.value].content.push({
+          workerName: params.person.workerName,
+          id: params.person.id
+        });
+        // console.log("------")
+        // console.log(this.editableTabs);
     },
     customCompFunc(params) {
       if (params.type === "add") {
@@ -544,8 +540,6 @@ export default {
       )
         .then(
           result => {
-            console.log("查询所有组织机构");
-            console.log(result.data);
             let pcode = Math.min.apply(null, (result.data.data).map((item)=>{return item.parentCode }));
             let arr = this.filterArray(result.data.data, pcode);
             this.data2 = arr;
@@ -554,9 +548,6 @@ export default {
           },
           ({ type, info }) => {}
         )
-        .catch(err => {
-          console.log(err);
-        });
     }
 
   },

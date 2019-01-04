@@ -203,7 +203,6 @@ export default {
   },
   methods: {
     handleNodeClick(data) {
-      console.log(data);
       this.nodedata = data;
     },
     filterArray(data, parent) {
@@ -236,8 +235,6 @@ export default {
       },this)
         .then(
           result => {
-            console.log(result.data);
-            console.log(result.data.data);
             this.organize=this.filterArray(result.data.data,0);
           },
           ({type, info}) => {
@@ -314,9 +311,6 @@ export default {
             } else {
               this.$message("修改失败,请重新尝试");
             }
-            console.log("修改备品备件类别");
-            console.log(result.data);
-            console.log("请求参数：" + data);
           },
           ({type, info}) => {
           }
@@ -346,9 +340,6 @@ export default {
             } else {
               this.$message("删除失败,请重新尝试");
             }
-            console.log("删除备品备件类别");
-            console.log(result.data);
-            console.log("请求参数：" + data);
           },
           ({type, info}) => {
           }
@@ -399,8 +390,6 @@ export default {
             } else {
               this.$message("添加失败,请重新添加");
             }
-            console.log("添加根类");
-            console.log(result.data);
           },
           ({ type, info }) => {}
         );
