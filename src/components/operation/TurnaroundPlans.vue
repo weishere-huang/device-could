@@ -154,12 +154,6 @@
         tableData: [],
         tableDate: [],
         columns: [
-          // {
-          //   width: 50,
-          //   titleAlign: "center",
-          //   columnAlign: "center",
-          //   type: "selection"
-          // },
           {
             field: "planName",
             title: "计划名称",
@@ -317,7 +311,6 @@
         }
       },
       selectChange(selection, rowData) {
-        // console.log("select-change", selection, rowData);
       },
       getTableData() {
         this.tableData = this.tableDate.slice(
@@ -364,7 +357,8 @@
               maintenanceType: 0
             },
             type: "get",
-            url: "/mplan/allPlan"
+            url: "/mplan/allPlan",
+            option:{enableMsg:false}
           },
           this
         ).then(
@@ -403,10 +397,10 @@
           if (this.tableData[i].state === 6) {
             this.tableData[i].state = "已消除";
           }
-          if (this.tableData[i].state === 7) {
+          if (this.tableData[i].state === 10) {
             this.tableData[i].state = "已驳回";
           }
-          if (this.tableData[i].state === 10) {
+          if (this.tableData[i].state === 12) {
             this.tableData[i].state = "已停止";
           }
           if (this.tableData[i].state === 14) {
@@ -438,7 +432,8 @@
           {
             params: {},
             type: "get",
-            url: "/mplan/listMaintenanceLevel"
+            url: "/mplan/listMaintenanceLevel",
+            option:{enableMsg:false}
           },
           this
         ).then(
@@ -456,7 +451,8 @@
             {
               params: data,
               type: "post",
-              url: "/mplan/delete"
+              url: "/mplan/delete",
+              option:{successMsg:"删除成功"}
             },
             this
           ).then(
@@ -475,7 +471,8 @@
             {
               params: data,
               type: "post",
-              url: "/mplan/delete"
+              url: "/mplan/delete",
+              option:{successMsg:"删除成功"}
             },
             this
           ).then(
@@ -494,7 +491,8 @@
             {
               params: data,
               type: "post",
-              url: "/mplan/discontinuation"
+              url: "/mplan/discontinuation",
+              option:{successMsg:"消除成功"}
             },
             this
           ).then(
@@ -514,7 +512,8 @@
               {
                 params: data,
                 type: "post",
-                url: "/mplan/discontinuation"
+                url: "/mplan/discontinuation",
+                option:{successMsg:"操作成功"}
               },
               this
             ).then(
@@ -551,12 +550,12 @@
               nextUserId: this.toAudit.userId
             },
             type: "get",
-            url: "/mplan/maintenanceAudit"
+            url: "/mplan/maintenanceAudit",
+            option:{successMsg:"操作成功"}
           },
           this
         ).then(
           response => {
-            // this.arr = [];
             this.toCancel();
             this.load();
 

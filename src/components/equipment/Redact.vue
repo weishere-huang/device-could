@@ -543,7 +543,6 @@ export default {
       let name = this.$refs["getName"].currentLabels;
       name = name[name.length - 1];
       let id = value[value.length - 1];
-      console.log(id, name);
       this.chengeOrgCode = id;
       this.chengeOrgname = name;
       // this.sizeForm.organizeCode = id;
@@ -553,7 +552,6 @@ export default {
       let name = this.$refs["getName2"].currentLabels;
       name = name[name.length - 1];
       let id = value[value.length - 1];
-      console.log(id, name);
       this.chengectg=id;
       this.chengectgname=name;
       // this.sizeForm.deviceCategory = id;
@@ -689,8 +687,6 @@ export default {
         this
       )
         .then(result => {
-          console.log("detail");
-          console.log(result.data);
           this.sizeForm = result.data.data;
           this.sizeForm.buyPrice = parseInt(this.sizeForm.buyPrice)/100;
           this.placeholder=this.sizeForm.organizeName;

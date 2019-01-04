@@ -227,7 +227,7 @@
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
-            overflowTitle: true
+            overflowTitle: true,
           },
           {
             field: "deviceName",
@@ -254,7 +254,16 @@
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
-            overflowTitle: true
+            overflowTitle: true,
+            formatter:function (rowData) {
+              if (rowData.faultLevel === 1) {
+                return `<span >低</span>`;
+              }else if (rowData.faultLevel === 2) {
+                return `<span >中</span>`;
+              }else if (rowData.faultLevel === 3) {
+                return `<span >高</span>`;
+              }
+            },
           },
           {
             field: "faultSource",
@@ -403,7 +412,8 @@
               size: this.pageSize
             },
             type: "get",
-            url: "/fault/list"
+            url: "/fault/list",
+            option:{enableMsg:false}
           },
           this
         ).then(
@@ -415,6 +425,31 @@
           },
           ({ type, info }) => {}
         );
+      },
+      toDeleteBreak(faultIds) {
+        this.$confirm('此操作将删除该计划、 是否继续?', '提示')
+          .then(_=>{
+            let qs = require("qs");
+            let data = qs.stringify({
+              ids: faultIds
+            });
+            this.Axios(
+              {
+                params: data,
+                type: "post",
+                url: "/fault/delete",
+                option:{successMsg:"操作成功"}
+              },
+              this
+            ).then(
+              response => {
+                this.load();
+              },
+              ({ type, info }) => {}
+            );
+          })
+          .catch(_=>{
+          })
       },
       springReplacement() {
         for (let i = 0; i < this.tableData.length; i++) {
@@ -451,15 +486,6 @@
           if (this.tableData[i].state === 14) {
             this.tableData[i].state = "已完成";
           }
-          if (this.tableData[i].faultLevel === 1) {
-            this.tableData[i].faultLevel = "低";
-          }
-          if (this.tableData[i].faultLevel === 2) {
-            this.tableData[i].faultLevel = "中";
-          }
-          if (this.tableData[i].faultLevel === 3) {
-            this.tableData[i].faultLevel = "高";
-          }
           if (this.tableData[i].faultSource === "0") {
             this.tableData[i].faultSource = "人工提交";
           }
@@ -485,7 +511,8 @@
               size: this.pageSize
             },
             type: "get",
-            url: "/fault/search"
+            url: "/fault/search",
+            option:{enableMsg:false}
           },
           this
         ).then(
@@ -515,7 +542,8 @@
           {
             params: data,
             type: "post",
-            url: "/fault/dispel"
+            url: "/fault/dispel",
+            option:{successMsg:"操作成功"}
           },
           this
         ).then(
@@ -527,42 +555,6 @@
             this.dialogVisible = false;
           }
         );
-      },
-      deleteBreak(faultIds) {
-        if (this.arr.length === 1) {
-          this.toDeleteBreak(faultIds);
-        }
-        if (this.arr.length > 1) {
-          alert("抱歉、只能单个处理");
-        }
-        if (this.arr.length === 0) {
-          alert("请选择要处理的故障");
-        }
-      },
-      toDeleteBreak(faultIds) {
-        this.$confirm('此操作将删除该计划、 是否继续?', '提示')
-          .then(_=>{
-            let qs = require("qs");
-            let data = qs.stringify({
-              ids: faultIds
-            });
-            this.Axios(
-              {
-                params: data,
-                type: "post",
-                url: "/fault/delete"
-              },
-              this
-            ).then(
-              response => {
-                this.load();
-              },
-              ({ type, info }) => {}
-            );
-          })
-          .catch(_=>{
-          })
-
       },
       getPersonnel(params) {
         this.toAuditName = params.person;
@@ -598,7 +590,8 @@
             {
               params: data,
               type: "post",
-              url: "/fault/auditPass"
+              url: "/fault/auditPass",
+              option:{successMsg:"操作成功"}
             },
             this
           ).then(

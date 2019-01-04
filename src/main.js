@@ -16,6 +16,9 @@ import CryptoJS from 'crypto-js'
 import 'normalize.css'
 import './assets/less/layout.less'
 import './assets/less/other.less'
+import defaultMenuSource from "./router/routeMap";
+import permissionPacker from "./PermissionPacker.js"
+
 import {
   VTable,
   VPagination
@@ -51,14 +54,15 @@ Vue.use(VueQuillEditor)
 
 Vue.use(ElementUI)
 Vue.component(VTable.name, VTable)
-Vue.component(VPagination.name, VPagination)
+
+Vue.use(permissionPacker);
 Vue.use(vuex);
 Vue.config.productionTip = false
 Vue.prototype.axios = axios;
 Vue.prototype.Axios = Axios;
 axios.defaults.withCredentials = true;
 window.EventBus = new Vue();
-
+let permissionUrl="";
 let AUTH_TOKEN = (function () {
   return localStorage.getItem("token");
   // return store.state.token.tokenNub;
@@ -67,11 +71,28 @@ var instance = axios.create({});
 
 // 登录拦截
 router.beforeEach((to, from, next) => {
+  if(!permissionUrl) permissionUrl = JSON.parse(localStorage.getItem("permissionUrl"));
   let isLogin = localStorage.getItem('token')
   instance.defaults.headers.common["token"] = isLogin;
   if (to.meta.requireAuth) { // 判断是否需要登录权限
     if (isLogin) { // 判断是否登录
-      next()
+      let isHasPermission=false;
+      for(let i=0,l=defaultMenuSource.length;i<l;i++){
+        for(let m=0,n=defaultMenuSource[i].subMenu.length;m<n;m++){
+          let isCheck=permissionUrl.find(p=>p.module===defaultMenuSource[i].subMenu[m].permissionCode)?true:false;
+          let isRoute=defaultMenuSource[i].subMenu[m].routeReg?defaultMenuSource[i].subMenu[m].routeReg.test(to.fullPath):(defaultMenuSource[i].subMenu[m].route===to.path)?true:false;
+          if(isRoute&&(isCheck||defaultMenuSource[i].defaultDock)){
+            isHasPermission=true;
+            break;
+          }
+        }
+      }
+      if(isHasPermission)
+        next()
+      else
+        next({
+          path: '/Home'
+        })
     } else { // 没登录则跳转到登录界面
       next({
         path: '/Login',

@@ -193,11 +193,9 @@ export default {
       this.$router.push({path: "SparePart/SparePartAdd"});
     },
     customCompFunc(params) {
-       console.log(params);
       if (params.type === "delete") {
         this.ids =params.rowData.id
         this.btisok();
-        console.log(this.ids);
         // this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
         this.$router.push("SparePart/SparePartAmend/" + params.rowData.id);
@@ -206,8 +204,6 @@ export default {
     },
     toDetails(rowIndex, rowData, column) {
       this.$router.push("SparePart/SparePartAmend/" + rowData.id);
-      // this.$store.commit("equipmentRedact", rowData);
-      console.log(rowData);
     },
     selectGroupChange(selection) {
       this.ids = "";
@@ -218,8 +214,6 @@ export default {
           this.ids += selection[i].id;
         }
       }
-      console.log(selection);
-      console.log(this.ids);
     },
     selectALL(selection) {
       this.ids = "";
@@ -230,10 +224,8 @@ export default {
           this.ids += selection[i].id;
         }
       }
-      console.log(selection);
     },
     selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
     },
     getTableData() {
       this.tableData = this.tableDate.slice(
@@ -274,7 +266,6 @@ export default {
       },this)
         .then(
           result => {
-            console.log(result.data);
             this.reload();
           },
           ({type, info}) => {
@@ -305,8 +296,6 @@ export default {
       },this)
         .then(
           result => {
-            console.log(result);
-            console.log(result.data);
             this.tableData=result.data.data.content;
             this.pageNumber = result.data.data.totalElements;
           },
@@ -318,7 +307,6 @@ export default {
 
     //确认按钮
     btisok(){
-      console.log(this.ids);
       if(this.ids === "" || this.ids === undefined){
         this.$message.warning("请至少选择一行数据")
       }else{

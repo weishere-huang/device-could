@@ -328,6 +328,7 @@
             params:data,
             type: "post",
             url: "/mplan/add",
+            option:{successMsg:"操作成功"}
           },
           this
         ).then(response => {
@@ -398,6 +399,7 @@
             params: {deviceId:deviceId},
             type: "get",
             url: "/device/findDeviceWorker",
+            option:{enableMsg:false}
           },
           this
         ).then(
@@ -429,6 +431,7 @@
                 params:data,
                 type: "post",
                 url: "/mplan/submitAudit",
+                option:{successMsg:"操作成功"}
               },
               this
             ).then(response => {
@@ -452,6 +455,7 @@
             params:data,
             type: "post",
             url: "/mplan/submitAudit",
+            option:{successMsg:"操作成功"}
           },
           this
         ).then(response => {

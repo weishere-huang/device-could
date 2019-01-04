@@ -41,7 +41,8 @@
           ></textarea>
 
         </li>
-        <li style="text-align:center;">
+      </ul>
+      <div style="text-align:center;margin-top:20px">
           <el-button
             size="small"
             @click="reviseHide"
@@ -51,8 +52,7 @@
             @click="beforeUpdate"
             type="primary"
           >保存</el-button>
-        </li>
-      </ul>
+        </div>
     </div>
 
   </div>
@@ -116,7 +116,7 @@ export default {
       // if (this.chengedata.organizeType == "车间"){
       //   this.chengedata.organizeType = 4;
       // }
-      console.log(this.chengedata);
+
       let qs = require("qs");
       let data = qs.stringify({
         organizeId: this.chengedata.id,
@@ -124,7 +124,7 @@ export default {
         organizeType: this.chengedata.organizeType,
         organizeInfo: this.chengedata.organizeInfo
       });
-      console.log(data);
+
       this.Axios(
         {
           url: "/organize/update",
@@ -139,7 +139,6 @@ export default {
         //.post(this.global.apiSrc + "/organize/update", data)
         .then(result => {
           if (result.data.code === 200) {
-            console.log(result.data);
             // location.reload();
             this.$message({
               showClose: true,
@@ -149,11 +148,9 @@ export default {
             this.reload();
           } else {
             this.$message("修改失败");
-            console.log(result.data);
           }
         })
         .catch(err => {
-          console.log(err);
         });
     },
     beforeUpdate(){

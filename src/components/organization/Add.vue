@@ -38,7 +38,8 @@
           ></textarea>
 
         </li>
-        <li style="text-align:center;">
+      </ul>
+      <div style="text-align:center;margin-top:20px">
           <el-button
             size="small"
             @click="addHide"
@@ -48,8 +49,7 @@
             @click="beforeAdd"
             type="primary"
           >保存</el-button>
-        </li>
-      </ul>
+        </div>
     </div>
 
   </div>
@@ -152,7 +152,6 @@ export default {
         }
       ]
     }*/
-    console.log(this.nodedata);
     return {
       show: true,
       type: "",
@@ -202,7 +201,6 @@ export default {
       data.children.push(newChild);
     },
     handleChange(value) {
-      console.log(value);
     },
     addHide() {
       this.orgname = "";
@@ -219,7 +217,6 @@ export default {
         organizeType: this.value,
         organizeInfo: this.orgInfo
       });
-      console.log(this.nodedata);
       this.Axios(
         {
           url: "/organize/add",
@@ -234,19 +231,15 @@ export default {
         //.post(this.global.apiSrc + "/organize/add", data)
         .then(result => {
           if (result.data.code === 200) {
-            console.log(result.data);
             this.orgname = "";
             this.value = "";
             this.orgInfo = "";
             this.reload();
           } else {
             this.$message("添加失败");
-            console.log(result.data);
           }
         })
         .catch(err => {
-          console.log(err);
-          console.log(this.userName);
         });
     },
     optionSet(){

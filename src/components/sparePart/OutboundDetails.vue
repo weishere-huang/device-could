@@ -166,13 +166,10 @@ export default {
   },
   methods: {
     selectGroupChange(selection) {
-      console.log(selection);
     },
     selectALL(selection) {
-      console.log(selection);
     },
     selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
     },
     getTableData() {
       this.tableData = this.tableDate.slice(

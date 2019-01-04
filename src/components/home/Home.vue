@@ -263,7 +263,6 @@
           this
         ).then(
           result => {
-            console.log(result.data);
             this.worksList = result.data.data;
           },
           () => {}
@@ -283,7 +282,6 @@
           this
         ).then(
           result => {
-            console.log(result.data);
             this.deviceData = result.data.data;
           },
           () => {}
@@ -328,12 +326,9 @@
           this
         )
           .then(result => {
-            console.log(result);
-            console.log(result.data);
             this.massgageData = result.data.data.content;
           })
           .catch(err => {
-            console.log(err);
           });
       },
       //记事本方法
@@ -351,7 +346,6 @@
           }
         },this).then(
           result =>{
-            console.log(result.data);
           },
           () => {}
         )
@@ -370,7 +364,6 @@
           }
         },this).then(
           result =>{
-            console.log(result.data);
           },
           () => {}
         )
@@ -390,7 +383,6 @@
           }
         },this).then(
           result =>{
-            console.log(result.data);
           },
           () => {}
         )
@@ -404,7 +396,6 @@
           }
         },this).then(
           result =>{
-            console.log(result.data);
           },
           () => {}
         )
@@ -413,10 +404,7 @@
     },
     created() {
       this.userMsg = JSON.parse(localStorage.getItem("user"))
-      console.log(localStorage.getItem("user"));
       this.$store.commit('tokenSrc', localStorage.getItem("token"))
-      console.log(this.$store.state.token.tokenNub);
-      console.log(this.$store.state.token.userMsg);
       this.getworksCount();
       this.getdeviceData();
 

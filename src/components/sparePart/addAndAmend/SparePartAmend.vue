@@ -211,7 +211,6 @@
         let name = this.$refs["getName2"].currentLabels;
         name = name[name.length - 1];
         let code = value[value.length - 1];
-        console.log(code, name);
         this.formInline.partClassify=code;
         this.formInline.partClassifyName=name;
 
@@ -246,15 +245,11 @@
           .then(
             result => {
               if (result.data.code == 200) {
-                console.log(result);
-                console.log("update");
-                console.log(result.data);
                 this.$router.push("/SparePart");
                 this.reload();
               } else if (result.data.code == 410) {
                 this.$message("该设备编号以存在,请修改!!!");
               }
-              console.log("请求参数：" + data);
             },
             ({type, info}) => {
             }
@@ -325,8 +320,6 @@
         }, this)
           .then(
             result => {
-              console.log(result.data);
-              console.log(result.data.data);
               this.ctgoptions = this.filterArray(result.data.data, 0);
             },
             ({type, info}) => {
@@ -352,7 +345,6 @@
               this.formInline = result.data.data;
               this.classfyname=this.formInline.partClassifyName;
               this.classfycode =this.formInline.partClassify;
-              console.log(resule.data.data);
             },
             ({type, info}) => {
             }
@@ -362,7 +354,6 @@
     created() {
       this.urlid = this.$route.params.id;
       this.getinfobyId(this.urlid);
-      console.log("letid:" + this.urlid);
       this.Sgetlist();
     }
   }

@@ -216,7 +216,7 @@
               size: this.pageSize
             },
             type: "get",
-            url: "/maintenanceWork/workList"
+            url: "/maintenanceWork/workList",
           },
           this
         ).then(

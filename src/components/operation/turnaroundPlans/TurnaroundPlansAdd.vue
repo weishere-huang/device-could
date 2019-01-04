@@ -263,6 +263,7 @@
             params: {deviceId:deviceId},
             type: "get",
             url: "/device/findDeviceWorker",
+            option:{enableMsg:false}
           },
           this
         ).then(
@@ -336,58 +337,15 @@
             params:data,
             type: "post",
             url: "/mplan/add",
+            option:{successMsg:"新增成功"}
           },
           this
         ).then(response => {
             this.auditId = response.data.data.id;
             this.TurnaroundPlans();
-            // this.submitAudit();
           },
           ({type, info}) => {
 
-          })
-      },
-      submitAudit(){
-        this.$confirm('计划添加成功,是否立即提交审核', '提示')
-          .then(_=>{
-            let qs = require("qs");
-            let data = qs.stringify({
-              maintenanceId:this.auditId
-            });
-            this.Axios(
-              {
-                params:data,
-                type: "post",
-                url: "/mplan/submitAudit",
-              },
-              this
-            ).then(response => {
-                this.TurnaroundPlans();
-              },
-              ({type, info}) => {
-
-              })
-          })
-          .catch(_=>{
-            this.TurnaroundPlans();
-          })
-      },
-      toSubmitAudit(){
-        let qs = require("qs");
-        let data = qs.stringify({
-          maintenanceId:this.auditId
-        });
-        this.Axios(
-          {
-            params:data,
-            type: "post",
-            url: "/mplan/submitAudit",
-          },
-          this
-        ).then(response => {
-            this.TurnaroundPlans();
-          },
-          ({type, info}) => {
           })
       },
       valueVerification(){
@@ -461,7 +419,6 @@
 
       },
       selectChange(selection, rowData) {
-        // console.log("select-change", selection, rowData);
       },
       getTableData() {
         this.tableData = this.tableDate.slice(
