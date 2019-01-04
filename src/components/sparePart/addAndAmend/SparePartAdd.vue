@@ -202,7 +202,6 @@ export default {
       let name = this.$refs["getName2"].currentLabels;
       name = name[name.length - 1];
       let code = value[value.length - 1];
-      console.log(code, name);
       this.formInline.partClassify=code;
       this.formInline.partClassifyName=name;
     },
@@ -251,8 +250,6 @@ export default {
               this.$router.push("/SparePart");
               this.reload();
             }
-
-            console.log("请求参数：" + data);
           },
           ({type, info}) => {
           }
@@ -261,8 +258,6 @@ export default {
     },
     //按钮控制
     btisok(){
-      console.log(this.formInline.partClassify);
-      console.log(this.formInline.partCategory);
       let subok = true;
 
       this.$refs['baseinfo'].validate((valid) => {
@@ -328,8 +323,6 @@ export default {
       },this)
         .then(
           result => {
-            console.log(result.data);
-            console.log(result.data.data);
             this.ctgoptions=this.filterArray(result.data.data,0);
           },
           ({type, info}) => {

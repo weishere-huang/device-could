@@ -221,7 +221,7 @@ Vue.component("tab-component", {
     },
     values: {},
     changeTpye:{
-      
+
     }
   },
   methods: {
@@ -383,29 +383,15 @@ export default {
   },
   methods: {
     changeTpye(params) {
-      console.log(params);
-      for (let i = 0; i < this.editableTabs.length; i++) {
-        this.editableTabs[i].content;
-        if (this.editableTabs[i].workerType===params.oldvalue.workerType) {
-         
-          this.editableTabs[i].content.splice(item=>item.id===this.editableTabs[i].content.id,1)
-          // console.log(this.editableTabs[i].content.indexOf(params.person));
-          console.log(this.editableTabs[i]);
-        }
-        if (this.editableTabs[i].workerType === params.value) {
-          this.editableTabs[i].content.push({
-            workerName: params.person.workerName,
-            id: params.person.id
-          });
-          // console.log(this.editableTabs[i]);
-        }
-        // console.log(this.editableTabs[i].content.find(item=>item.id===params.person.id));
-      }
+      this.editableTabs[params.oldvalue.workerType].content =  this.editableTabs[params.oldvalue.workerType].content.filter(item => item.id !== params.person.id)
+      this.editableTabs[params.value].content.push({
+        workerName: params.person.workerName,
+        id: params.person.id
+      });
     },
     customCompFunc(params) {
       if (params.type === "add") {
         // do delete operation
-        console.log(params);
         this.personnelMsg = params;
         this.innerVisible = true;
         // this.getRowData(params.rowData)
@@ -445,14 +431,10 @@ export default {
         arr[i] = selection[i].name;
       }
       this.personListValue = arr;
-      console.log(arr);
-      console.log("select-group-change", selection);
     },
     selectALL(selection) {
-      console.log("select-aLL", selection);
     },
     selectChange(selection, rowData) {
-      console.log("select-change", selection, rowData);
     },
     getTableData() {
       this.tableData = this.tableDate.slice(
@@ -534,7 +516,6 @@ export default {
 
     workerDelete(data) {
       //debugger;
-      console.log(data);
       for (let i = 0; i < this.editableTabs.length; i++) {
         this.editableTabs[i].content = this.editableTabs[i].content.filter(
           item => item.id !== data.id
@@ -557,9 +538,6 @@ export default {
       // .get(this.global.apiSrc + "/organize/allOrganize")
       .then(
         result => {
-          console.log("查询所有组织机构");
-          console.log(result.data);
-          console.log(result.data.data);
           let pcode = Math.min.apply(
             null,
             result.data.data.map(item => {
@@ -567,23 +545,14 @@ export default {
             })
           );
           let arr = this.filterArray(result.data.data, pcode);
-          console.log(arr);
-          //this.data2 = this.filterArray(result.data.data,1000);
           this.data2 = arr;
           this.orgcode = result.data.data.find(
             item => item.organizeType === 1
           ).code;
           this.findpeopler();
         },
-        ({ type, info }) => {
-          //错误类型 type=faild / error
-          //error && error(type, info);
-        }
+        ({ type, info }) => {}
       );
-    // .catch(err => {
-    //   console.log(err);
-    //   console.log(this.userName);
-    // });
   }
 };
 </script>
