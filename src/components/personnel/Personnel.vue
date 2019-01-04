@@ -249,7 +249,6 @@
           this
         ).then(
           response => {
-            this.load();
           },
           ({ type, info }) => {}
         );
@@ -270,10 +269,8 @@
           this
         ).then(
           response => {
-            this.load();
           },
           ({ type, info }) => {
-            this.load()
           }
         );
       },
