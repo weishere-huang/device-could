@@ -221,7 +221,7 @@ export default {
         {
           url: "/organize/add",
           params: data,
-          type: "post"
+          type: "post",
           option: {
             enableMsg: false
           }
