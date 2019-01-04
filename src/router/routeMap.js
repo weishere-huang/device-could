@@ -210,6 +210,7 @@ export default [
       menu:'消息管理',
       permissionCode:'msg',
       icon:'&#xe627;',
+      defaultDock:true,
       subMenu:[
         {
           menu:'消息管理',
@@ -222,6 +223,7 @@ export default [
       menu:'角色管理',
       permissionCode:'role',
       icon:'&#xe630;',
+      defaultDock:true,
       subMenu:[
         {
           menu:'角色管理',

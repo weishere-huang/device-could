@@ -71,7 +71,7 @@ var instance = axios.create({});
 
 // 登录拦截
 router.beforeEach((to, from, next) => {
-  if(!permissionUrl) permissionUrl = JSON.parse(localStorage.getItem("permissionUrl"));
+  if(!permissionUrl) permissionUrl = JSON.parse(localStorage.getItem("permissionUrl")||'[]');
   let isLogin = localStorage.getItem('token')
   instance.defaults.headers.common["token"] = isLogin;
   if (to.meta.requireAuth) { // 判断是否需要登录权限
