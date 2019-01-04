@@ -4,6 +4,7 @@
       <el-button size="small" type="primary" @click="toBack" icon="el-icon-arrow-left">返回</el-button>
       <el-button size="small" type="primary" @click="updatePlan" v-if="isOk">
         <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
+      <el-button size="small" type="primary" @click="submitAuditInfo=true" icon="el-icon-search">审核详情</el-button>
     </div>
     <div class="bottom">
       <div class="left">
@@ -127,7 +128,25 @@
     >
       <amend-plan  v-on:isHide="isHide" v-on:toAdd="toAdd"></amend-plan>
     </el-dialog>
-
+    <el-dialog
+      title="审核详情"
+      :visible.sync="submitAuditInfo"
+      width="50%"
+    >
+      <div style="padding:10px">
+        <v-table
+          is-horizontal-resize
+          column-width-drag
+          :multiple-sort="false"
+          style="width:100%;"
+          :columns="submitAuditTable"
+          :table-data="submitAuditData"
+          row-hover-color="#eee"
+          row-click-color="#edf7ff"
+          row-height=30
+        ></v-table>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -249,7 +268,59 @@
         pageIndex: 1,
         pageSize: 10,
         tableData: [],
-        tableDate: []
+        tableDate: [],
+        submitAuditInfo:false,
+        submitAuditTable:[
+          {
+            field: "name",
+            title: "审核人",
+            width: 40,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "phone",
+            title: "手机号",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "organizeName",
+            title: "审核状态",
+            width: 30,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "position",
+            title: "提交时间",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "position",
+            title: "审核时间",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "position",
+            title: "审核意见",
+            width: 180,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          }
+        ],
+        submitAuditData:[],
       };
     },
     created() {

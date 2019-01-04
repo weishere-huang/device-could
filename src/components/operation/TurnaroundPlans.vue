@@ -317,7 +317,6 @@
         }
       },
       selectChange(selection, rowData) {
-        // console.log("select-change", selection, rowData);
       },
       getTableData() {
         this.tableData = this.tableDate.slice(
@@ -551,12 +550,14 @@
               nextUserId: this.toAudit.userId
             },
             type: "get",
-            url: "/mplan/maintenanceAudit"
+            url: "/mplan/maintenanceAudit",
+            option: {
+              enableMsg:false,
+            },
           },
           this
         ).then(
           response => {
-            // this.arr = [];
             this.toCancel();
             this.load();
 
