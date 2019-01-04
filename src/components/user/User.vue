@@ -396,7 +396,7 @@ export default {
         this
       ).then(
         response => {
-          console.log(response);
+          // console.log(response);
           // this.pageIndex=1
           this.totalNub = response.data.data.totalElements;
           this.tableData = response.data.data.content;
