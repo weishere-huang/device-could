@@ -376,8 +376,6 @@
       },
       handleRemove(file, fileList) {
         this.dialogImageUrl=fileList;
-        // console.log(file);
-        // console.log(fileList);
       },
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
@@ -393,7 +391,6 @@
         }
       },
 
-
       tback(){
         this.$router.back(-1)
       },
@@ -403,6 +400,7 @@
             params:{},
             type: "get",
             url: "/organize/allOrganize",
+            option:{enableMsg: false}
           },
           this
         ).then(response => {
@@ -482,7 +480,7 @@
             type: "post",
             url: "/employee/add",
             option: {
-              successMsg:"保存成功"
+              successMsg:"添加成功"
             }
           },
           this
@@ -506,6 +504,7 @@
           params:{},
           type: "get",
           url: "/role/listAllRole",
+          option:{enableMsg: false}
         },
         this
       ).then(response => {

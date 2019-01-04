@@ -161,6 +161,7 @@
             params: { page: this.pageIndex, size: this.pageSize },
             type: "get",
             url: "/device/select",
+            option:{enableMsg:false},
             loadingConfig:{
               target:document.querySelector('.el-dialog')
             }
@@ -193,7 +194,8 @@
           {
             params: { keyWord: this.key },
             type: "get",
-            url: "/device/findByKeyWord"
+            url: "/device/findByKeyWord",
+            option:{successMsg:"查询成功"}
           },
           this
         ).then(
@@ -245,7 +247,8 @@
               enableMsg: false
             },
             type: "get",
-            url: "/deviceCategory/all"
+            url: "/deviceCategory/all",
+            option:{enableMsg:false}
           },
           this
         )
@@ -261,7 +264,8 @@
           {
             params: { deviceCategory: this.clickId},
             type: "get",
-            url: "/device/select"
+            url: "/device/select",
+            option:{enableMsg:false}
           },
           this
         ).then(

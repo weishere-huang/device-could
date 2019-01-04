@@ -926,6 +926,7 @@
             params:data,
             type: "post",
             url: "/maintenanceWork/insertPart",
+            option:{successMsg:"操作成功"}
           },
           this
         ).then(
@@ -1045,6 +1046,7 @@
           params: {},
           type: "get",
           url: "/part/list",
+          option:{enableMsg:false}
         },this)
           .then(result => {
             this.spareParts= this.filterArray2(result.data.data,0);
