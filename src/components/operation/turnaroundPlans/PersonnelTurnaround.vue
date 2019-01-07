@@ -115,6 +115,7 @@
               size:this.pageSize},
             type: "get",
             url: "/employee/search",
+            option:{successMsg:"查询成功"}
           },
           this
         ).then(response => {

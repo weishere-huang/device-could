@@ -4,7 +4,7 @@
       <el-button size="small" type="primary" @click="toback" icon="el-icon-arrow-left">返回</el-button>
       <el-button size="small" type="primary" @click="updatePlan" v-if="isOk">
         <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
-      <el-button size="small" type="primary" @click="submitAuditInfo=true" icon="el-icon-search">审核详情</el-button>
+      <el-button size="small" type="primary" @click="auditInfo" icon="el-icon-search">审核详情</el-button>
     </div>
     <div class="bottom">
       <div class="left">
@@ -115,7 +115,7 @@
           :table-data="personData"
           row-hover-color="#eee"
           row-click-color="#edf7ff"
-          row-height=30
+          :row-height=30
         ></v-table>
       </div>
     </el-dialog>
@@ -134,7 +134,7 @@
             :table-data="submitAuditData"
             row-hover-color="#eee"
             row-click-color="#edf7ff"
-            row-height=30
+            :row-height=30
           ></v-table>
         </div>
       </el-dialog>
@@ -277,43 +277,48 @@
             title: "审核人",
             width: 40,
             titleAlign: "center",
-            columnAlign: "left",
+            columnAlign: "center",
             isResize: true
+          },
+          {
+            field: "state",
+            title: "审核状态",
+            width: 30,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            formatter:function (rowData) {
+              if(rowData.state===0)return`<span>待处理</span>`;
+              if(rowData.state===1)return`<span>已通过</span>`;
+              if(rowData.state===2)return`<span>已驳回</span>`;
+            }
+          },
+          {
+            field: "startTime",
+            title: "提交时间",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "endTime",
+            title: "审核时间",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
           },
           {
             field: "phone",
             title: "手机号",
             width: 80,
             titleAlign: "center",
-            columnAlign: "left",
+            columnAlign: "center",
             isResize: true
           },
           {
-            field: "organizeName",
-            title: "审核状态",
-            width: 30,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "position",
-            title: "提交时间",
-            width: 60,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "position",
-            title: "审核时间",
-            width: 60,
-            titleAlign: "center",
-            columnAlign: "left",
-            isResize: true
-          },
-          {
-            field: "position",
+            field: "opinion",
             title: "审核意见",
             width: 180,
             titleAlign: "center",
@@ -348,7 +353,23 @@
 
           })
       },
+      auditInfo(){
+        this.submitAuditInfo = true;
+        this.Axios(
+          {
+            params:{maintenanceId:this.companyName.id},
+            type: "get",
+            url: "/mplan/auditList",
+            option:{enableMsg:false}
+          },
+          this
+        ).then(response => {
+            this.submitAuditData = response.data.data.content;
+          },
+          ({type, info}) => {
 
+          })
+      },
       customCompFunc(params) {
         if (params.type === "showLook") {
           this.findByDeviceId(params.rowData.id);
@@ -395,11 +416,7 @@
         this.companyName.frequencyType = this.companyName.frequencyType.toString();
         this.date = this.companyName.executeTime.split(" ")[0];
         this.times = this.companyName.executeTime.split(" ")[1].split(".")[0];
-        if(this.companyName.state!==0){
-          this.isOk = false;
-        }else{
-          this.isOk = true;
-        }
+        this.companyName.state ===0 ? this.isOk = true : this.isOk = false;
       },
 
       TurnaroundPlans() {
