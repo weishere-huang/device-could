@@ -733,7 +733,10 @@ export default {
             localStorage.permissionUrl=JSON.stringify(result.data.data.permissionUrl);
 
             // this.$cookieStore.addCookie('token', JSON.stringify(result.data.data.tokenStr),168)
-            // this.$cookieStore.addCookie('user',JSON.stringify(result.data.data),168)
+            this.$cookieStore.addCookie('message',JSON.stringify(result.data.data) ,168)
+           
+            console.log(this.$cookieStore.getCookie('message'));
+            // this.$cookieStore.addCookie('permissionUrl',JSON.stringify(result.data.data.permissionUrl),168)
 
             this.$store.commit("user",JSON.parse(localStorage.getItem('user')));
             // this.$store.commit("tokenSrc",result.data.data.tokenStr);

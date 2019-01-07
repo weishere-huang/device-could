@@ -408,6 +408,9 @@
       this.getworksCount();
       this.getdeviceData();
 
+    },
+    watch: {
+      
     }
   };
 </script>

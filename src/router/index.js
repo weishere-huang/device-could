@@ -529,7 +529,7 @@ const router = new Router({
         requireAuth: true
       },
       children: [{
-          path: 'SparePartAdd',
+          path: '/SparePart/SparePartAdd',
           name: 'SparePartAdd',
           props: {
             pageName: '备品备件添加'
