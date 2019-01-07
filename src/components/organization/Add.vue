@@ -58,127 +58,12 @@
 export default {
   inject: ["reload"],
   name: "",
-  props:["nodedata",'test'],
+  props:["nodedata",'test','addShow'],
   data() {
-    /*let option=[]
-    if (this.nodedata.organizeType=="企业") {
-       option=[
-        {
-          value: 1,
-          label: "公司"
-        },
-        {
-          value: 2,
-          label: "工厂"
-        },
-        {
-          value: 3,
-          label: "部门"
-        },
-        {
-          value: 4,
-          label: "车间"
-        },
-        {
-          value: 5,
-          label: "产线"
-        }
-      ];
-    } else if (this.nodedata.organizeType == "公司") {
-      option = [
-        {
-          value: 2,
-          label: "工厂"
-        },
-        {
-          value: 3,
-          label: "部门"
-        },
-        {
-          value: 4,
-          label: "车间"
-        },
-        {
-          value: 5,
-          label: "产线"
-        }
-      ];
-    } else if (this.nodedata.organizeType == "工厂") {
-      option = [
-        {
-          value: 3,
-          label: "部门"
-        },
-        {
-          value: 4,
-          label: "车间"
-        },
-        {
-          value: 5,
-          label: "产线"
-        }
-      ];
-    } else if (this.nodedata.organizeType == "部门") {
-      option = [
-        {
-          value: 4,
-          label: "车间"
-        },
-        {
-          value: 5,
-          label: "产线"
-        }
-      ];
-    } else if (this.nodedata.organizeType == "车间") {
-      option = [
-        {
-          value: 3,
-          label: "部门"
-        },
-        {
-          value: 5,
-          label: "产线"
-        }
-      ];
-    } else if (this.nodedata.organizeType == "产线") {
-      option = [
-        {
-          value: 3,
-          label: "部门"
-        },
-        {
-          value: 4,
-          label: "车间"
-        }
-      ]
-    }*/
     return {
       show: true,
       type: "",
-      // pcode:this.nodedata,
       options:{},
-      // options: [
-      //   {
-      //     value: 1,
-      //     label: "公司"
-      //   },
-      //   {
-      //     value: 2,
-      //     label: "工厂"
-      //   },
-      //   {
-      //     value: 3,
-      //     label: "部门"
-      //   },
-      //   {
-      //     value: 4,
-      //     label: "车间"
-      //   },
-      //   {
-      //     value: 5,
-      //     label: "产线"
-      //   }
-      // ],
       value: "",
       orgname: "",
       orgInfo: ""
@@ -190,6 +75,13 @@ export default {
   watch: {
     nodedata() {
       this.optionSet();
+    },
+    addShow(){
+      if(this.addShow===false) {
+        this.orgname = "";
+        this.value = "";
+        this.orgInfo = "";
+      }
     }
   },
   methods: {
@@ -203,9 +95,7 @@ export default {
     handleChange(value) {
     },
     addHide() {
-      this.orgname = "";
-      this.value = "";
-      this.orgInfo = "";
+
       this.$emit("addHide", false);
     },
     add() {
@@ -228,7 +118,6 @@ export default {
         },
         this
       )
-        //.post(this.global.apiSrc + "/organize/add", data)
         .then(result => {
           if (result.data.code === 200) {
             this.orgname = "";
@@ -245,7 +134,7 @@ export default {
     },
     optionSet(){
       let option=[]
-      if (this.nodedata.organizeType=="企业") {
+      if (this.nodedata.organizeType==="企业") {
         option=[
           {
             value: 1,
@@ -254,21 +143,9 @@ export default {
           {
             value: 2,
             label: "工厂"
-          },
-          {
-            value: 3,
-            label: "部门"
-          },
-          {
-            value: 4,
-            label: "车间"
-          },
-          {
-            value: 5,
-            label: "产线"
           }
         ]
-      }else if (this.nodedata.organizeType=="公司") {
+      }else if (this.nodedata.organizeType==="公司") {
         option=[
           {
             value: 2,
@@ -287,7 +164,7 @@ export default {
             label: "产线"
           }
         ]
-      }else if (this.nodedata.organizeType=="工厂") {
+      }else if (this.nodedata.organizeType==="工厂") {
         option=[
           {
             value: 3,
@@ -302,7 +179,7 @@ export default {
             label: "产线"
           }
         ]
-      }else if (this.nodedata.organizeType=="部门") {
+      }else if (this.nodedata.organizeType==="部门") {
         option=[
           {
             value: 4,
@@ -313,7 +190,7 @@ export default {
             label: "产线"
           }
         ]
-      }else if (this.nodedata.organizeType=="车间") {
+      }else if (this.nodedata.organizeType==="车间") {
         option=[
           {
             value: 3,
@@ -324,7 +201,7 @@ export default {
             label: "产线"
           }
         ]
-      }else if (this.nodedata.organizeType=="产线") {
+      }else if (this.nodedata.organizeType==="产线") {
         option=[
           {
             value: 3,
@@ -345,8 +222,8 @@ export default {
         this.add();
       }
 
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>

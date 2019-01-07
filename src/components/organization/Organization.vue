@@ -66,6 +66,7 @@
       <add
         v-on:addHide="addHide"
         :nodedata="nodedata"
+        :addShow="addShow"
       ></add>
     </el-dialog>
     <el-dialog
@@ -123,6 +124,7 @@ export default {
       this.addShow = params;
     },
     toAdd(data) {
+
       this.nodedata=data
       this.addShow = true;
       return false;
