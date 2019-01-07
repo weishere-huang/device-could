@@ -480,7 +480,7 @@
           if (this.tableData[i].state === 10) {
             this.tableData[i].state = "已驳回";
           }
-          if (this.tableData[i].state === 10) {
+          if (this.tableData[i].state === 12) {
             this.tableData[i].state = "已停止";
           }
           if (this.tableData[i].state === 14) {

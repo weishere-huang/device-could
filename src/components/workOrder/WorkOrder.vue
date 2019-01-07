@@ -3,36 +3,36 @@
     <router-view></router-view>
     <div class="top" :class="[{hide:isHideList}]">
       <el-button-group>
-      <el-button
-        type="primary"
-        @click="load(toNull)"
-        size="small"
-      >全部工单</el-button>
-      <el-button
-        type="primary"
-        @click="load(0)"
-        size="small"
-      >待审核</el-button>
-      <el-button
-        type="primary"
-        @click="load(4)"
-        size="small"
-      >审核中</el-button>
-      <el-button
-        type="primary"
-        @click="load(15)"
-        size="small"
-      >待处理</el-button>
-      <el-button
-        type="primary"
-        @click="load(10)"
-        size="small"
-      >已驳回</el-button>
-      <el-button
-        type="primary"
-        @click="load(13)"
-        size="small"
-      >已完成</el-button>
+        <el-button
+          type="primary"
+          @click="load(toNull)"
+          size="small"
+        >全部工单</el-button>
+        <el-button
+          type="primary"
+          @click="load(0)"
+          size="small"
+        >待审核</el-button>
+        <el-button
+          type="primary"
+          @click="load(4)"
+          size="small"
+        >审核中</el-button>
+        <el-button
+          type="primary"
+          @click="load(15)"
+          size="small"
+        >待处理</el-button>
+        <el-button
+          type="primary"
+          @click="load(10)"
+          size="small"
+        >已驳回</el-button>
+        <el-button
+          type="primary"
+          @click="load(13)"
+          size="small"
+        >已完成</el-button>
       </el-button-group>
     </div>
     <div class="bottom" :class="[{hide:isHideList}]">
@@ -156,8 +156,8 @@
           }
         ],
         isHideList: this.$route.params.id !== undefined
-          ? true
-          : false,
+          ? true : false,
+        isPage:1,
       };
     },
     methods: {
@@ -208,6 +208,8 @@
           }, 500);
         });
         this.stateNum = stateNum;
+        this.stateNum==null ||this.stateNum==="" ? ""
+          :this.isPage===1 ? this.pageIndex=1:this.pageIndex;
         this.Axios(
           {
             params: {
@@ -242,6 +244,7 @@
           }
           if (value[i].state === 0) {
             this.tableData[i].state = "待审核";
+            this.isOk = false;
             this.audited++;
           }
           if (value[i].state === 1) {
@@ -322,4 +325,3 @@
     }
   }
 </style>
-

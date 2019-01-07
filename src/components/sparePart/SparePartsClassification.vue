@@ -12,18 +12,18 @@
           @node-click="handleNodeClick"
           node-key="id"
           default-expand-all
-          :expand-on-click-node="false"
+
         >
           <span
             class="custom-tree-node"
             slot-scope="{ node, data }"
           >
             <span class="content">{{ data.name}}
-              <span class="addCase">
+              <span class="addCase" @click.stop>
                 <el-button
                   type="text"
                   size="mini"
-                  @click="dialogVisible=true"
+                  @click="dialogVisible=true,addname='',addmsg='',nodedata.code=parseInt(data.code)"
                 >
                   <el-tooltip class="item" effect="dark" content="添加" placement="top">
                     <i style='font-size:16px' class='iconfont'>&#xe62f;</i>
@@ -32,7 +32,7 @@
                 <el-button
                   type="text"
                   size="mini"
-                  @click="dialogVisible1=true,nodeCname=data.name,nodeCMsg=data.remarks"
+                  @click="dialogVisible1=true,nodeCname=data.name,nodeCMsg=data.remarks,nodedata.id=data.id"
                 >
                   <el-tooltip class="item" effect="dark" content="修改" placement="top">
                     <i style='font-size:16px' class='iconfont'>&#xe6b4;</i>
@@ -195,7 +195,7 @@ export default {
         children: "children",
         label: "name"
       },
-      nodedata: "",
+      nodedata:{},
       //添加数据
       addname: "",
       addmsg: ""
@@ -204,6 +204,7 @@ export default {
   methods: {
     handleNodeClick(data) {
       this.nodedata = data;
+      console.log(data);
     },
     filterArray(data, parent) {
       let vm = this;
@@ -273,13 +274,14 @@ export default {
         },
         type: "post",
         url: "/part/add"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
       },this)
         .then(
           result => {
-            this.reload();
+            console.log(result);
+            if(result.data.code===200){
+              this.$message.success("添加成功");
+              this.reload();
+            }
           },
           ({type, info}) => {
           }
@@ -306,10 +308,12 @@ export default {
       },this)
         .then(
           result => {
+            console.log(result);
             if (result.data.code === 200) {
+              this.$message.success("修改成功");
               this.reload();
             } else {
-              this.$message("修改失败,请重新尝试");
+              this.$message.error("修改失败,请重新尝试");
             }
           },
           ({type, info}) => {
@@ -335,10 +339,12 @@ export default {
       },this)
         .then(
           result => {
+            console.log(result);
             if (result.data.code === 200) {
+              this.$message.success("删除成功");
               this.reload();
             } else {
-              this.$message("删除失败,请重新尝试");
+              this.$message.error("删除失败,请重新尝试");
             }
           },
           ({type, info}) => {

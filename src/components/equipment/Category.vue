@@ -28,7 +28,7 @@
                   <el-button
                     type="text"
                     size="mini"
-                    @click="dialogVisible=true"
+                    @click="dialogVisible=true,addname='',addmsg='',nodeCname=data.categoryName,nodeCMsg=data.categoryMsg"
                   >
                     <i style='font-size:16px' class='iconfont'>&#xe62f;</i>
                   </el-button>

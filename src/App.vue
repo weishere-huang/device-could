@@ -248,7 +248,7 @@ export default {
       this.token = localStorage.getItem("token");
       this.user = JSON.parse(localStorage.getItem("user")).name;
       this.permissionUrl = JSON.parse(
-        localStorage.getItem("permissionUrl") || "[]"
+        this.$cookieStore.getCookie("permissionUrl") || "[]"
       );
     }
   },
@@ -257,7 +257,8 @@ export default {
     this.user = JSON.parse(localStorage.getItem("user")).name;
     this.token = localStorage.getItem("token");
     this.permissionUrl = JSON.parse(
-      localStorage.getItem("permissionUrl") || "[]"
+      // localStorage.getItem("permissionUrl") || "[]"
+      this.$cookieStore.getCookie('permissionUrl')||'[]'
     );
     const permissionUrl=this.permissionUrl
     // this.user=this.$store.state.token.userMsg.name
