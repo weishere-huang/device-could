@@ -2,9 +2,13 @@
   <div class="breakDetails">
     <div class="case">
       <div class="top">
-        <el-button size="small" type="primary" @click="toback"  icon="el-icon-arrow-left">返回</el-button>
+        <el-button
+          size="small" type="primary" @click="toback"  icon="el-icon-arrow-left">返回</el-button>
         <!--<el-button size="small" @click="commitAudit">提交审核</el-button>-->
-        <el-button size="small" type="primary" @click="dispel" v-if="isOk"><i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;故障消除</el-button>
+        <permission-button
+          permCode='fault_lookup.fault_dispel'
+          banType='hide'
+          size="small" type="primary" @click="dispel" v-if="isOk"><i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;故障消除</permission-button>
         <el-button size="small" type="primary" @click="auditInfo" icon="el-icon-search">审核详情</el-button>
         <!-- 故障消除弹框 -->
         <el-dialog

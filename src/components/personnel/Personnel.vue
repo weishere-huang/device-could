@@ -2,17 +2,15 @@
   <div class="userManagement">
     <div class="userCase" :class="[{hide:isHideList}]">
       <div class="top">
-        <permission-button 
-          permCode='employee_lookup.employee_add'
-          banType='alert'
+        <permission-button
+          permCode='employee_add_lookup.employee_add_save'
+          banType='hide'
           size="small"
           type="primary"
           @click="PersnnelAdd"
         ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</permission-button>
-        <permission-button 
-          permCode='employee_lookup.employee_refresh'
-          banType='alert' 
-          size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</permission-button >
+        <el-button
+          size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button >
         <div class="search">
           <el-input
             type="search"
@@ -191,7 +189,7 @@
           this.deleteEmployee();
           this.$delete(this.tableData, params.index);
         } else if (params.type === "edit") {
-          this.$router.push({path:"Personnel/Modification/" +this.userIds});
+          this.$router.push({path:"/Personnel/Modification/" +this.userIds});
         } else if (params.type === "stop") {
           this.enable();
         } else if (params.type === "start") {
@@ -430,7 +428,7 @@
         active-color="#13ce66"
         inactive-color="#ff4949"
         banType='alert'
-        permCode='employee_lookup.employee_enable&&employee_lookup.employeeww_disabled'
+        permCode='employee_lookup.employee_enable&&employee_lookup.employee_disabled'
         @change.stop="changeValue(rowData,index)"
         @resetBack="resetBackHandler"
         >
@@ -460,11 +458,22 @@
   Vue.component("table-person", {
     template: `<span>
           <el-tooltip class="item" effect="dark" content="修改" placement="top">
-              <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i></a>
+              <permission-button permCode='employee_modification_lookup.employee_modification_save'
+                     banType='disable' type="text"
+                     style="text-decoration: none;color:#409eff">
+                     <i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+            </permission-button>
           </el-tooltip>
           &nbsp;
-          <el-tooltip class="item" effect="dark" content="删除" placement="top">
-              <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>
+          <el-tooltip
+           class="item" effect="dark" content="删除" placement="top">
+              <permission-button permCode='employee_lookup.employee_delete'
+                     banType='disable'
+                     type="text"
+                     style="text-decoration: none;color:#F56C6C"
+                     >
+            <i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i>
+            </permission-button>
           </el-tooltip>
         </span>`,
     props: {
