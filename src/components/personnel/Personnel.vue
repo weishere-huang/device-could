@@ -249,7 +249,6 @@
           this
         ).then(
           response => {
-            this.load();
           },
           ({ type, info }) => {}
         );
@@ -270,10 +269,8 @@
           this
         ).then(
           response => {
-            this.load();
           },
           ({ type, info }) => {
-            this.load()
           }
         );
       },
@@ -434,7 +431,7 @@
         inactive-color="#ff4949"
         banType='alert'
         permCode='employee_lookup.employee_enable&&employee_lookup.employee_disabled'
-        @change.stop="changeValue(rowData,index)"
+        @change="changeValue(rowData,index)"
         @resetBack="resetBackHandler"
         >
       </permission-switch>

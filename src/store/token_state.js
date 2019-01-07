@@ -1,7 +1,12 @@
+import {
+  addCookie,
+  getCookie,
+  delCookie
+} from '../cookie.js';
 // let tokenNub = JSON.parse(localStorage.getItem("user"))
 let userMsg = JSON.parse(localStorage.getItem("user"))
 let tokenStr = localStorage.getItem("token")
-let permissionUrl = JSON.parse(localStorage.getItem("permissionUrl")||'[]');
+let permissionUrl = JSON.parse(getCookie('permissionUrl') || '[]');
 export default {
   state: {
     tokenNub: tokenStr,
