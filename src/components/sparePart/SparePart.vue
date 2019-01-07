@@ -3,11 +3,13 @@
   <div class="spare-part" >
     <router-view></router-view>
     <div class="top" :class="[{hide:isHideList}]">
-      <el-button
+      <permission-button
+        permCode='partInfo_add_lookup.partInfo_add_save'
+        banType='alert'
         size="small"
         type="primary"
         @click="toAdd"
-      ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</el-button>
+      ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</permission-button>
       <el-button size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
       <!-- <el-button size="small" type="primary" @click="btisok">删除</el-button> -->
       <div class="search">

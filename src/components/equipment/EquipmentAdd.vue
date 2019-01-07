@@ -3,7 +3,8 @@
     <div class="addCase">
       <div class="top">
         <el-row>
-          <el-button  size="small" type="primary" @click="tback" icon="el-icon-arrow-left">返回</el-button>
+          <permission-button
+            permCode='device_add_lookup.device_add_save' banType='hide'  size="small" type="primary" @click="tback" icon="el-icon-arrow-left">返回</permission-button>
           <el-button  size="small" type="primary" @click="addwarning"><i style='font-size:12px' class='iconfont'>&#xe645;</i> &nbsp;保存</el-button>
         </el-row>
       </div>
