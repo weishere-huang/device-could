@@ -53,8 +53,10 @@ export default {
   data() {
     return {
       key: "",
+      isPageOk:true,
       pageNumber: 0,
       pageIndex: 1,
+      isPageIndex:1,
       pageSize: 10,
       tableData: [],
       tableDate: [],
@@ -122,13 +124,23 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      this.load();
+      if (this.isPageOk) {
+        this.load();
+        this.isPageIndex=1;
+      }else{
+        this.search();
+      }
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
-      this.load();
+      if (this.isPageOk) {
+        this.load();
+        this.isPageIndex=1;
+      }else{
+        this.search();
+      }
     },
     personHide() {
       this.$emit("personHide", false);
@@ -170,10 +182,14 @@ export default {
       }
     },
     toSearch(){
-      this.pageIndex = 1;
+      this.key==="" ?this.isPageOk=true :this.isPageOk=false;
+      this.isPageIndex===1 ?this.pageIndex = this.isPageIndex : this.pageIndex;
+      this.isPageIndex++;
       this.Axios(
         {
-          params: { condition: this.key },
+          params: {condition: this.key,
+            page:this.pageIndex,
+            size:this.pageSize},
           type: "get",
           url: "/employee/search",
           option:{successMsg:"查询成功"}
