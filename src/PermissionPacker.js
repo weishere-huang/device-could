@@ -4,7 +4,7 @@
 import { Message,Button,Switch } from 'element-ui';
 
 let permissionUrl = "";
-if(!permissionUrl) permissionUrl = JSON.parse(localStorage.getItem("permissionUrl"));
+if(!permissionUrl) permissionUrl = JSON.parse(localStorage.getItem("permissionUrl")||'[]');
   const validate=(permCode)=>{
   const permCodeArr=permCode.split('.');
   for(let i=0,l=permissionUrl.length;i<l;i++){
@@ -109,6 +109,18 @@ const PermissionPacker={
     install:function(Vue){
         Vue.component('permission-button',hoc(Button));
         Vue.component('permission-switch',hoc(Switch));
+        Vue.component('permission-wrapper',hoc({
+          props: {
+            tag:{
+              type:String
+            }
+          },
+          render: function (createElement) {
+            return createElement(this.tag,
+              this.$slots.default // 子元素数组
+            )
+          }
+        }));
     }
 }
 // 导出

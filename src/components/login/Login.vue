@@ -183,7 +183,7 @@
             >
               <i class="el-icon-plus"></i>
             </el-upload>
-            <el-dialog :visible.sync="dialogVisible">
+            <el-dialog :visible.sync="dialogVisible" append-to-body>
               <img
                 width="100%"
                 :src="company.dialogImageUrl"
@@ -287,12 +287,27 @@
 
           </el-form-item>
           <el-form-item label="">
-            <el-checkbox v-model="checked">您已阅读<a
-                href=""
+            <el-checkbox v-model="checked" >您已阅读<a
+                href="javascript:"
                 style="text-decoration: none;"
+                @click="showDeal=true"
               >《长虹设备云用户注册协议》</a></el-checkbox>
           </el-form-item>
         </el-form>
+        <el-dialog
+          title="用户注册协议"
+          :visible.sync="showDeal"
+          width="600"
+          center
+          append-to-body>
+          <div style="height:600px;width:100%;overflow:scroll" id="deal-content" v-html="deal.content">
+        
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="showDeal = false" size="mini">取 消</el-button>
+            <el-button type="primary" @click="showDeal = false" size="mini">确 定</el-button>
+          </span>
+        </el-dialog>
         <el-button
           type="primary"
           size="small"
@@ -335,6 +350,8 @@ export default {
   name: "Login",
   data() {
     return {
+      deal:"",
+      showDeal:false,
       see: "password",
       time: 60, // 发送验证码倒计时
       sendMsgDisabled: false,
@@ -347,8 +364,8 @@ export default {
       },
       isshow: true,
       ishide: false,
-      nextshow: false,
-      backshow: true,
+      nextshow: true,
+      backshow: false,
       loginRules: {
         userName: [
           { required: true, message: "请输入用户名或手机号", trigger: "blur" },
@@ -591,6 +608,23 @@ export default {
   },
 
   methods: {
+    dealMsg(){
+      this.Axios(
+        {
+          url: "/protocol/find",
+          params: {},
+          type: "get",
+          option: { enableMsg: false, enableLoad: false }
+        },
+        this
+      ).then(
+        result => {
+          // console.log(result.data.data[0]);
+          this.deal=result.data.data[0]
+        },
+        ({ type, info }) => {}
+      );
+    },
     toReginster(){
       this.$router.push({path:'/Reginster'})
     },
@@ -699,7 +733,10 @@ export default {
             localStorage.permissionUrl=JSON.stringify(result.data.data.permissionUrl);
 
             // this.$cookieStore.addCookie('token', JSON.stringify(result.data.data.tokenStr),168)
-            // this.$cookieStore.addCookie('user',JSON.stringify(result.data.data),168)
+            this.$cookieStore.addCookie('message',JSON.stringify(result.data.data) ,168)
+           
+            console.log(this.$cookieStore.getCookie('message'));
+            // this.$cookieStore.addCookie('permissionUrl',JSON.stringify(result.data.data.permissionUrl),168)
 
             this.$store.commit("user",JSON.parse(localStorage.getItem('user')));
             // this.$store.commit("tokenSrc",result.data.data.tokenStr);
@@ -883,7 +920,13 @@ export default {
       return encrypted.toString();
     }
   },
-  mounted() {}
+  mounted() {
+    document.getElementById('deal-content').innerText="<p>你是不是傻</p>"
+    // $("#deal-content").html('你是不是傻')
+  },
+  created () {
+    this.dealMsg()
+  }
 };
 </script>
 <style lang="less">
@@ -1122,7 +1165,10 @@ export default {
   .el-dialog__headerbtn{
     top: 6px;
   }
+  
 }
 
-
+.el-dialog__footer{
+    padding-bottom:10px !important; 
+  }
 </style>
