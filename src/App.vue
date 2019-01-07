@@ -142,7 +142,9 @@
 
 <script>
 import breadCrumb from "./BreadCrumb.vue";
-import defaultMenuSource from "./router/routeMap";
+import menuSourceMap from "./router/routeMap";
+import clone from 'clone';
+
 export default {
   provide() {
     return {
@@ -261,23 +263,21 @@ export default {
     // this.user=this.$store.state.token.userMsg.name
     // this.token=this.$store.state.token.tokenNub
     this.MsgCount();
-    let _menuSource = [];
-    defaultMenuSource.forEach(per => {
-      if (per.defaultDock) {
-        _menuSource.push(per);
-      } else {
-        const willShowMenu = per.subMenu.filter(m => {
-          if (m.visible) {
-            return false;
-          }
-          return permissionUrl.find(p => p.module === m.permissionCode)
-            ? true
-            : false;
-        });
-        if (willShowMenu.length !== 0) {
-          per.subMenu = willShowMenu;
+    let _menuSource=[];
+    clone(menuSourceMap).forEach(per => {
+        if(per.defaultDock){
           _menuSource.push(per);
-        }
+        }else{
+          const willShowMenu = per.subMenu.filter(m => {
+            if(m.visible){
+              return false;
+            }
+            return permissionUrl.find(p=>p.module===m.permissionCode) ? true : false;
+          });
+          if(willShowMenu.length!==0){
+            per.subMenu=willShowMenu;
+            _menuSource.push(per);
+          }
       }
     });
     this.menuSource = _menuSource;
