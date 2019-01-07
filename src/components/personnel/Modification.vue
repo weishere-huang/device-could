@@ -586,7 +586,7 @@
   };
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
   @blue: #409eff;
   @Success: #67c23a;
   @Warning: #e6a23c;
@@ -595,20 +595,22 @@
   .persnnel-add {
     // padding-left: 180px;
     .add-case {
-      padding: 10px;
+      // padding: 10px;
+      // border: 1px solid @Info;
+      // border-radius: 5px;
       .topbtn {
         padding-left: 10px;
         height: 60px;
         line-height: 60px;
-        //   border: 1px solid @Info;
+          border: 1px solid @Info;
         border-radius: 5px;
       }
       .botton {
         font-size: 12px;
         margin-top: 10px;
-        //   border: 1px solid @Info;
+        border: 1px solid @Info;
         border-radius: 5px;
-        padding: 10px 0 0 10px;
+        padding: 10px 0 10px 10px;
         position: relative;
         .essential {
           width: 600px;
@@ -682,6 +684,9 @@
           }
         }
       }
+    }
+    .el-form-item--mini .el-form-item__content, .el-form-item--mini .el-form-item__label{
+      line-height:39px;
     }
   }
 </style>
