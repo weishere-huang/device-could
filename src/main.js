@@ -54,7 +54,7 @@ Vue.use(VueQuillEditor)
 
 Vue.use(ElementUI)
 Vue.component(VTable.name, VTable)
-
+Vue.component(VPagination.name, VPagination)
 Vue.use(permissionPacker);
 Vue.use(vuex);
 Vue.config.productionTip = false
