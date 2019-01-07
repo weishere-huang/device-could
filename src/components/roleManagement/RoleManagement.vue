@@ -26,6 +26,7 @@
             ref="tree"
             :default-expanded-keys="[1]"
             :default-checked-keys="power"
+            render-after-expand="false"
           >
             <span
               class="custom-tree-node"

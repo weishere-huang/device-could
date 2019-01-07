@@ -1,11 +1,13 @@
 <template>
   <div class="spare-parts-warehouse">
     <div class="top">
-      <el-button
+      <permission-button
+        permCode='partWarehouse_lookup.partWarehouse_add'
+        banType='hide'
         size="small"
         type="primary"
         @click="insertBT"
-      ><i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
+      ><i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</permission-button>
     </div>
     <div class="warehouse">
       <h1>备件入库</h1>
