@@ -319,11 +319,6 @@
         this.$router.back(-1)
       },
       toValue(value) {
-        if(this.companyName.state!==0){
-          this.isOk = false;
-        }else{
-          this.isOk = true;
-        }
         if (value.state === 0) {
           this.companyName.state = "待审核";
         }
@@ -351,6 +346,11 @@
         if (value.state === 10) {
           this.companyName.state = "已驳回";
         }
+        if (value.state === 14) {
+          this.companyName.state = "已完成";
+        }
+        this.companyName.state==="待审核" || this.companyName.state==="执行中"?
+          this.isOk = true : this.isOk = false;
         if(value.faultLevel===1){
           this.companyName.faultLevel = "小";
         }

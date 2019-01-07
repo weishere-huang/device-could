@@ -379,11 +379,7 @@
         this.companyName.frequencyType=this.companyName.frequencyType.toString();
         this.date = this.companyName.executeTime.split(" ")[0];
         this.times = this.companyName.executeTime.split(" ")[1].split(".")[0];
-        if(this.companyName.state!==0){
-          this.isOk = false;
-        }else{
-          this.isOk = true;
-        }
+        this.companyName.state===0 ? this.isOk = true : this.isOk = false;
       },
       loadSelect(number){
         let arr=new Array()
@@ -529,17 +525,6 @@
       selectALL(selection) {
         this.deviceIds = selection.map(item=>item.id).toString();
         this.arr = selection.map(item=>item);
-      },
-      eliminateAll(){
-        let aaa = new Array();
-        for (let i in this.tableData){
-          for(let j in this.arr){
-            if(this.tableData[i].id !==this.arr[j].id){
-              aaa[aaa.length] = this.tableData[i];
-            }
-          }
-        }
-        this.tableData = aaa;
       },
       selectChange(selection, rowData) {
         console.log("select-change", selection, rowData);
