@@ -110,10 +110,16 @@ const PermissionPacker={
         Vue.component('permission-button',hoc(Button));
         Vue.component('permission-switch',hoc(Switch));
         Vue.component('permission-wrapper',hoc({
-          data: function () {
-            return {}
+          props: {
+            tag:{
+              type:String
+            }
           },
-          template: '<div><slot></slot></div>'
+          render: function (createElement) {
+            return createElement(this.tag,
+              this.$slots.default // 子元素数组
+            )
+          }
         }));
     }
 }
