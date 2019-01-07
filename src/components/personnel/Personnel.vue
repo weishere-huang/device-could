@@ -3,15 +3,16 @@
     <div class="userCase" :class="[{hide:isHideList}]">
       <div class="top">
         <permission-button 
-          permCode='employee_lookup.employee_add'
+          permCode='employee_add_lookup.employee_add_save'
           banType='alert'
           size="small"
           type="primary"
           @click="PersnnelAdd"
         ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</permission-button>
+        <!-- permCode='employee_lookup.employee_refresh'
+          banType='alert'  -->
         <permission-button 
-          permCode='employee_lookup.employee_refresh'
-          banType='alert' 
+          
           size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</permission-button >
         <div class="search">
           <el-input

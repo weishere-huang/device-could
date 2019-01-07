@@ -2,8 +2,11 @@
   <div class="breakdown-order">
     <div class="top">
         <el-button size="small" type="primary" @click="toBack" icon="el-icon-arrow-left">返回</el-button>
-        <el-button size="small" type="primary" @click="outerVisible=true" v-if="isOk">
-          <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;提交审核</el-button>
+        <permission-button
+          permCode='work_detail_lookup.work_audit'
+          banType='alert'
+          size="small" type="primary" @click="outerVisible=true" v-if="isOk">
+          <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;提交审核</permission-button>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
         <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
@@ -186,8 +189,11 @@
           <div style="padding-bottom:10px;">
               <el-button  type="primary" size="mini" @click="listBasicInfo">
                 <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加物料</el-button>
-              <el-button  type="primary" @click="insertPart" size="mini">
-                <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存列表</el-button>
+              <permission-button
+                permCode='work_detail_lookup.work_edit'
+                banType='alert'
+                type="primary" @click="insertPart" size="mini">
+                <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存列表</permission-button>
           </div>
           <v-table
             is-horizontal-resize

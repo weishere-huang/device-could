@@ -49,7 +49,8 @@ export default [{
       },
       {
         menu: '添加员工',
-        route: "Personnel/PersnnelAdd",
+        // routeReg: /^\/Personnel\/PersnnelAdd\/\d{1,}$/i,
+        route: "/Personnel/PersnnelAdd",
         visible: true,
         permissionCode: 'employee_add_lookup'
       }
