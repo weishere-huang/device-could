@@ -70,7 +70,7 @@
         </el-form-item>
         <el-form-item label="备件分类：">
           <el-cascader
-            placeholder="搜索"
+            placeholder="请选择"
             :options="ctgoptions"
             filterable
             ref="getName2"

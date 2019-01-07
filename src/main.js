@@ -16,7 +16,7 @@ import CryptoJS from 'crypto-js'
 import 'normalize.css'
 import './assets/less/layout.less'
 import './assets/less/other.less'
-import defaultMenuSource from "./router/routeMap";
+import menuSourceMap from "./router/routeMap";
 import permissionPacker from "./PermissionPacker.js"
 
 import {
@@ -54,7 +54,7 @@ Vue.use(VueQuillEditor)
 
 Vue.use(ElementUI)
 Vue.component(VTable.name, VTable)
-
+Vue.component(VPagination.name, VPagination)
 Vue.use(permissionPacker);
 Vue.use(vuex);
 Vue.config.productionTip = false
@@ -77,11 +77,11 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) { // 判断是否需要登录权限
     if (isLogin) { // 判断是否登录
       let isHasPermission=false;
-      for(let i=0,l=defaultMenuSource.length;i<l;i++){
-        for(let m=0,n=defaultMenuSource[i].subMenu.length;m<n;m++){
-          let isCheck=permissionUrl.find(p=>p.module===defaultMenuSource[i].subMenu[m].permissionCode)?true:false;
-          let isRoute=defaultMenuSource[i].subMenu[m].routeReg?defaultMenuSource[i].subMenu[m].routeReg.test(to.fullPath):(defaultMenuSource[i].subMenu[m].route===to.path)?true:false;
-          if(isRoute&&(isCheck||defaultMenuSource[i].defaultDock)){
+      for(let i=0,l=menuSourceMap.length;i<l;i++){
+        for(let m=0,n=menuSourceMap[i].subMenu.length;m<n;m++){
+          let isCheck=permissionUrl.find(p=>p.module===menuSourceMap[i].subMenu[m].permissionCode)?true:false;
+          let isRoute=menuSourceMap[i].subMenu[m].routeReg?menuSourceMap[i].subMenu[m].routeReg.test(to.fullPath):(menuSourceMap[i].subMenu[m].route===to.path)?true:false;
+          if(isRoute&&(isCheck||menuSourceMap[i].defaultDock)){
             isHasPermission=true;
             break;
           }

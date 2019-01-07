@@ -109,6 +109,12 @@ const PermissionPacker={
     install:function(Vue){
         Vue.component('permission-button',hoc(Button));
         Vue.component('permission-switch',hoc(Switch));
+        Vue.component('permission-wrapper',hoc({
+          data: function () {
+            return {}
+          },
+          template: '<div><slot></slot></div>'
+        }));
     }
 }
 // 导出

@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <el-container v-if="token!==''" class="mainWrapper">
+    <el-container
+      v-if="token!==''"
+      class="mainWrapper"
+    >
       <el-aside class="siderWrapper">
         <div class="logoWrap">
           <img src='./assets/image/logo.png' />
@@ -13,13 +16,24 @@
           active-text-color="#ffd04b"
           :collapse="isCollapse"
         >
-          <el-submenu :index="item.permissionCode" :key="item.route" v-for="item in menuSource">
+          <el-submenu
+            :index="item.permissionCode"
+            :key="item.route"
+            v-for="item in menuSource"
+          >
             <template slot="title">
               <!-- <span class="menuItem" v-html="item.icon"></span> -->
-              <i class="iconfont" v-html="item.icon"></i>
+              <i
+                class="iconfont"
+                v-html="item.icon"
+              ></i>
               <span slot="title">{{item.menu}}</span>
             </template>
-            <el-menu-item :index="subItem.route" :key="subItem.route" v-for="subItem in item.subMenu">{{subItem.menu}}</el-menu-item>
+            <el-menu-item
+              :index="subItem.route"
+              :key="subItem.route"
+              v-for="subItem in item.subMenu"
+            >{{subItem.menu}}</el-menu-item>
           </el-submenu>
         </el-menu>
         <div
@@ -37,7 +51,7 @@
         </div>
       </el-aside>
       <el-container>
-        <el-header >
+        <el-header>
           <el-header style="background-color:#efefef;">
             <div class="breadcrumbWrap">
               <breadCrumb></breadCrumb>
@@ -120,15 +134,17 @@
     </el-container>
     <el-container v-else>
       <transition>
-            <router-view v-if="isRouterAlive" />
-          </transition>
+        <router-view v-if="isRouterAlive" />
+      </transition>
     </el-container>
   </div>
 </template>
 
 <script>
 import breadCrumb from "./BreadCrumb.vue";
-import defaultMenuSource from "./router/routeMap";
+import menuSourceMap from "./router/routeMap";
+import clone from 'clone';
+
 export default {
   provide() {
     return {
@@ -138,7 +154,7 @@ export default {
   name: "App",
   data() {
     return {
-      token:'',
+      token: "",
       user: "",
       show: true,
       isCollapse: false,
@@ -146,7 +162,8 @@ export default {
       isRouterAlive: true,
       msgcount: 0,
       version: versionInfo,
-      menuSource:[]
+      menuSource: [],
+      permissionUrl: ""
     };
   },
   methods: {
@@ -187,6 +204,7 @@ export default {
         });
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        localStorage.removeItem("permissionUrl");
         this.$router.push({
           path: "/Login",
           redirect: "/Login"
@@ -211,8 +229,7 @@ export default {
         .then(result => {
           this.msgcount = result.data.data;
         })
-        .catch(err => {
-        });
+        .catch(err => {});
     },
     //路径跳转
     pathto(a) {
@@ -230,18 +247,24 @@ export default {
     $route() {
       this.token = localStorage.getItem("token");
       this.user = JSON.parse(localStorage.getItem("user")).name;
+      this.permissionUrl = JSON.parse(
+        localStorage.getItem("permissionUrl") || "[]"
+      );
     }
   },
   computed: {},
   created() {
     this.user = JSON.parse(localStorage.getItem("user")).name;
     this.token = localStorage.getItem("token");
-    const permissionUrl = JSON.parse(localStorage.getItem("permissionUrl")||'[]');
+    this.permissionUrl = JSON.parse(
+      localStorage.getItem("permissionUrl") || "[]"
+    );
+    const permissionUrl=this.permissionUrl
     // this.user=this.$store.state.token.userMsg.name
     // this.token=this.$store.state.token.tokenNub
     this.MsgCount();
     let _menuSource=[];
-    defaultMenuSource.forEach(per => {
+    clone(menuSourceMap).forEach(per => {
         if(per.defaultDock){
           _menuSource.push(per);
         }else{
@@ -257,7 +280,7 @@ export default {
           }
       }
     });
-    this.menuSource=_menuSource;
+    this.menuSource = _menuSource;
   },
   components: {
     breadCrumb
@@ -304,8 +327,10 @@ export default {
   margin: auto;
   height: 25px;
 }
-.menuItem{
-  i{vertical-align: top}
+.menuItem {
+  i {
+    vertical-align: top;
+  }
 }
 .stateList {
   position: absolute;

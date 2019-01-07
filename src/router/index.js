@@ -51,6 +51,7 @@ import WarehousingDetail from '@/components/sparePart/WarehousingDetail'
 import OutboundDetails from '@/components/sparePart/OutboundDetails'
 import SparePartsClassification from '@/components/sparePart/SparePartsClassification'
 import Agreement from '@/components/system/Agreement'
+import FrequentContacts from '@/components/system/FrequentContacts'
 
 Vue.use(Router)
 
@@ -528,7 +529,7 @@ const router = new Router({
         requireAuth: true
       },
       children: [{
-          path: 'SparePartAdd',
+          path: '/SparePart/SparePartAdd',
           name: 'SparePartAdd',
           props: {
             pageName: '备品备件添加'
@@ -602,6 +603,17 @@ const router = new Router({
         pageName: '用户注册协议'
       },
       component: Agreement,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/FrequentContacts',
+      name: 'FrequentContacts',
+      props: {
+        pageName: '常用联系人'
+      },
+      component: FrequentContacts,
       meta: {
         requireAuth: true
       },

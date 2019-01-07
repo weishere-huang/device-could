@@ -84,11 +84,11 @@
         <el-dialog
           title="备件类别"
           :visible.sync="dialogVisible"
-          width="20%"
+          width="300px"
           :before-close="handleClose">
           <div style="width:100%;text-align:center;padding:20px 0;">
             <el-cascader
-            placeholder="搜索"
+            placeholder="请选择"
             :options="ctgoptions"
             filterable
             ref="getName2"
