@@ -25,13 +25,15 @@
                   content="添加"
                   placement="top"
                 >
-                  <el-button
+                  <permission-button
+                    permCode='deviceCate_lookup.deviceCate_add'
+                    banType='hide'
                     type="text"
                     size="mini"
                     @click="dialogVisible=true,addname='',addmsg='',nodeCname=data.categoryName,nodeCMsg=data.categoryMsg"
                   >
                     <i style='font-size:16px' class='iconfont'>&#xe62f;</i>
-                  </el-button>
+                  </permission-button>
                 </el-tooltip>
                 <el-tooltip
                   class="item"
@@ -39,7 +41,9 @@
                   content="修改"
                   placement="top"
                 >
-                  <el-button
+                  <permission-button
+                    permCode='deviceCate_lookup.deviceCate_edit'
+                    banType='hide'
                     type="text"
                     size="mini"
                     @click="dialogVisible1=true,nodeCname=data.categoryName,nodeCMsg=data.categoryMsg"
@@ -48,7 +52,7 @@
                       style='font-size:16px'
                       class='iconfont'
                     >&#xe6b4;</i>
-                  </el-button>
+                  </permission-button>
                 </el-tooltip>
                 <el-tooltip
                   class="item"
@@ -56,18 +60,19 @@
                   content="删除"
                   placement="top"
                 >
-                  <el-button
+                  <permission-button
+                    permCode='deviceCate_lookup.deviceCate_delete'
+                    banType='hide'
                     type="text"
                     size="mini"
                     @click="() => warningdelete(data.id)"
-
                   >
                     <i
                       style='font-size:16px;color:#F56C6C'
                       class='iconfont'
 
                     >&#xe66b;</i>
-                  </el-button>
+                  </permission-button>
                 </el-tooltip>
               </span>
             </span>
@@ -75,11 +80,13 @@
           </span>
         </el-tree>
         <div style="width:100%;text-align:center">
-          <el-button
+          <permission-button
+            permCode='deviceCate_lookup.deviceCate_add'
+            banType='hide'
             size="small"
             style="width:200px;margin:auto"
             @click="dialogVisible3=true"
-          >添加初始类别</el-button>
+          >添加初始类别</permission-button>
         </div>
         <el-dialog
           title="添加初始类别"

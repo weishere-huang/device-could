@@ -57,12 +57,14 @@
     </div>
     <div class="content" :class="[{hide:isHideList}]">
       <div class="search">
-        <el-button
+        <permission-button
+          permCode='device_add_lookup.device_add_save'
+          banType='hide'
           size="small"
           type="primary"
           @click="toAdd"
         ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp; 添加
-        </el-button>
+        </permission-button>
         <el-button size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
         <!-- <el-button
           size="small"
@@ -614,11 +616,15 @@ export default {
 Vue.component("table-equipment", {
   template: `<span>
           <el-tooltip class="item" effect="dark" content="修改" placement="top">
-            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i></a>
+            <permission-button
+            permCode='device_redact_lookup.device_redact_save'
+            banType='hide' style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i></permission-button>
           </el-tooltip>
           &nbsp;&nbsp;
           <el-tooltip class="item" effect="dark" content="删除" placement="top">
-            <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>
+            <permission-button
+             permCode='device_lookup.device_delete'
+            banType='hide' style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></permission-button>
           </el-tooltip>
         </span>`,
   props: {

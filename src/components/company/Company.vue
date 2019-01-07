@@ -267,7 +267,7 @@ export default {
         this.choice = params.rowData.id;
         this.startUseing();
         this.choice = "";
-        
+
       } else if (params.type === "audit") {
         // do edit operation
         this.auditShow = true;
@@ -538,7 +538,7 @@ Vue.component("table-company", {
           </el-switch>
         </span>
         <span v-else-if="rowData.state === '10'">
-          
+
         </span>
 
         `,

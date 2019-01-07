@@ -68,7 +68,19 @@ export default [{
         menu: '类别管理',
         route: "/Category",
         permissionCode: 'deviceCate_lookup'
-      }
+      },
+      {
+        menu:'设备添加',
+        route:"/Equipment/EquipmentAdd",
+        visible: true,
+        permissionCode:"device_add_lookup",
+      },
+      {
+        menu: '设备详情',
+        routeReg: /^\/Equipment\/Redact\/\d{1,}$/i,
+        visible: true,
+        permissionCode: 'device_redact_lookup'
+      },
     ]
   },
   {
@@ -144,14 +156,15 @@ export default [{
       },
       {
         menu: '备品备件添加',
-        routeReg: /^\/SparePart\/SparePartAdd\/\d{1,}$/i,
-        // route:"/SparePartAdd",
-        permissionCode: 'partInfo_add_lookup'
+        route: "/SparePart/SparePartAdd",
+        permissionCode: 'partInfo_add_lookup',
+        visible: true,
       },
       {
         menu: '备件备件修改',
         routeReg: /^\/SparePart\/SparePartAmend\/\d{1,}$/i,
-        permissionCode: 'partInfo_details_lookup'
+        permissionCode: 'partInfo_detail_lookup',
+        visible: true,
       },
       {
         menu: '备件分类',
