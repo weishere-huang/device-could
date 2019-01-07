@@ -3,11 +3,13 @@
     <router-view></router-view>
     <div class="userCase" :class="[{hide:isHideList}]">
       <div class="top">
-        <el-button
+        <permission-button
+          permCode='overhaul_add_lookup.overhaul_add_save'
+          banType='alert'
           size="small"
           type="primary"
           @click="toPansAdd"
-        ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</el-button>
+        ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</permission-button>
         <el-button size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
       </div>
       <div class="bottom">
@@ -609,15 +611,27 @@
         </el-tooltip>
           &nbsp;
         <el-tooltip class="item" effect="dark" content="审核" placement="top">
-            <a href="" style="text-decoration: none;color:#409EFF"><i @click.stop.prevent="submitAudit(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i></a>
+            <permission-button permCode='overhaul_lookup.overhaul_audit'
+                     banType='disable' type="text"
+                     style="text-decoration: none;color:#409EFF;margin-left: -2px">
+                    <i @click.stop.prevent="submitAudit(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
+            </permission-button>
           </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="停止" placement="top">
-            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="stop(rowData,index)" style='font-size:16px' class='iconfont'>&#xe603;</i></a>
+            <permission-button permCode='overhaul_lookup.overhaul_stop'
+                     banType='disable' type="text"
+                     style="text-decoration: none;color:#409EFF;margin-left: -2px">
+                    <i @click.stop.prevent="stop(rowData,index)" style='font-size:16px' class='iconfont'>&#xe603;</i>
+            </permission-button>
         </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
-            <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>
+            <permission-button permCode='overhaul_lookup.overhaul_delete'
+                     banType='disable' type="text"
+                     style="text-decoration: none;color:#F56C6C;margin-left: -2px">
+                    <i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i>
+            </permission-button>
           </el-tooltip>
         </span>`,
     props: {
