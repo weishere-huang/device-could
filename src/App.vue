@@ -128,7 +128,9 @@
 
 <script>
 import breadCrumb from "./BreadCrumb.vue";
-import defaultMenuSource from "./router/routeMap";
+import menuSourceMap from "./router/routeMap";
+import clone from 'clone';
+
 export default {
   provide() {
     return {
@@ -241,7 +243,7 @@ export default {
     // this.token=this.$store.state.token.tokenNub
     this.MsgCount();
     let _menuSource=[];
-    defaultMenuSource.forEach(per => {
+    clone(menuSourceMap).forEach(per => {
         if(per.defaultDock){
           _menuSource.push(per);
         }else{
