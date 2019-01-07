@@ -434,7 +434,7 @@
         inactive-color="#ff4949"
         banType='alert'
         permCode='employee_lookup.employee_enable&&employee_lookup.employee_disabled'
-        @change.stop="changeValue(rowData,index)"
+        @change="changeValue(rowData,index)"
         @resetBack="resetBackHandler"
         >
       </permission-switch>
