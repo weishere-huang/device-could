@@ -20,16 +20,20 @@
           >
             <span class="content">{{ data.name}}
               <span class="addCase" @click.stop>
-                <el-button
+                <el-tooltip class="item" effect="dark" content="添加" placement="top">
+                <permission-button
+                  permCode='partCate_lookup.partCate_add'
+                  banType='hide'
                   type="text"
                   size="mini"
                   @click="dialogVisible=true,addname='',addmsg='',nodedata.code=parseInt(data.code)"
                 >
-                  <el-tooltip class="item" effect="dark" content="添加" placement="top">
                     <i style='font-size:16px' class='iconfont'>&#xe62f;</i>
-                  </el-tooltip>
-                </el-button>
-                <el-button
+                </permission-button>
+                </el-tooltip>
+                  <permission-button
+                  permCode='partCate_lookup.partCate_edit'
+                  banType='hide'
                   type="text"
                   size="mini"
                   @click="dialogVisible1=true,nodeCname=data.name,nodeCMsg=data.remarks,nodedata.id=data.id"
@@ -37,8 +41,10 @@
                   <el-tooltip class="item" effect="dark" content="修改" placement="top">
                     <i style='font-size:16px' class='iconfont'>&#xe6b4;</i>
                   </el-tooltip>
-                </el-button>
-                <el-button
+                </permission-button>
+                <permission-button
+                  permCode='partCate_lookup.partCate_delete'
+                  banType='hide'
                   type="text"
                   size="mini"
                   @click="() => warningdelete(data.id)"
@@ -47,7 +53,7 @@
                   <el-tooltip class="item" effect="dark" content="删除" placement="top">
                   <i style='font-size:16px' class='iconfont'>&#xe66b;</i>
                 </el-tooltip>
-                </el-button>
+                </permission-button>
               </span>
             </span>
             <span class="content-remarks">{{data.remarks}}</span>
