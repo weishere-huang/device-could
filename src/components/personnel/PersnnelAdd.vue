@@ -404,8 +404,8 @@
           },
           this
         ).then(response => {
-          let code = Math.min.apply(null, (response.data.data).map((item)=>{return item.code}));
-          this.options = this.filterArray(response.data.data,code);
+            let code = Math.min.apply(null, (response.data.data).map((item)=>{return item.code}));
+            this.options = this.filterArray(response.data.data,code);
           },
           ({type, info}) => {
           })
@@ -428,93 +428,92 @@
         return tree;
       },
       employeeAdd(formName){
-        if(this.persnneladd.organizationName === ""){
-          this.$message.error("请选择组织机构");
-        }else {
-          this.$refs[formName].validate(valid => {
-            valid ? this.toEmployeeAdd() :  this.$message.error("请填写完信息");
-          });
-        }
-      },
-      toEmployeeAdd() {
-        let file = [];
-        for(let i in this.fileList){
-          file.push({
-            name:this.fileList[i].name,
-            img:this.fileList[i].img,
-          })
-        }
-        this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
-        this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
-        let qs = require("qs");
-        let data = qs.stringify({
-          userName:this.persnneladd.userName,
-          employeeNo: this.persnneladd.employeeNo,
-          name:this.persnneladd.name,
-          gender:this.persnneladd.gender,
-          birthday:this.persnneladd.birthday,
-          phone:this.persnneladd.phone,
-          position:this.persnneladd.position,
-          organizeCode:this.persnneladd.organizeCode,
-          organizationName :this.persnneladd.organizationName,
-          enterpriseId  :this.persnneladd.enterpriseId,
-          workType:this.persnneladd.workType,
-          entryTime:this.persnneladd.entryTime,
-          email:this.persnneladd.email,
-          marital:this.persnneladd.marital,
-          idCardNo:this.persnneladd.idCardNo,
-          workingYears:this.persnneladd.workingYears,
-          height:this.persnneladd.height,
-          nativePlace:this.persnneladd.nativePlace,
-          nationality:this.persnneladd.nationality,
-          postalAddress:this.persnneladd. postalAddress,
-          graduateSchool:this.persnneladd. graduateSchool,
-          degree:this.persnneladd.degree,
-          img:this.dialogImageUrl,
-          qualificationInfo:JSON.stringify(file),
-          roleId:this.persnneladd.roleId
-        });
-        this.Axios(
-          {
-            params:data,
-            type: "post",
-            url: "/employee/add",
-            option: {
-              successMsg:"添加成功"
-            }
-          },
-          this
-        ).then(response => {
-            this.Personnel();
-          },
-          ({type, info}) => {
-          })
-      },
-      Personnel() {
-        this.$router.push({
-          path: "/Personnel"
-        });
-        this.$store.commit("personnel","y")
-      },
-    },
-    created() {
-      this.organize();
-      this.Axios(
-        {
-          params:{},
-          type: "get",
-          url: "/role/listAllRole",
-          option:{enableMsg: false}
-        },
-        this
-      ).then(response => {
-          this.role = response.data.data;
-          this.persnneladd.entryTime = this.date;
-          this.persnneladd.birthday = parseInt(this.date.split("-")[0])-30+"-01-01";
-        },
-        ({type, info}) => {
-        });
+
+        this.$refs[formName].validate(valid => {
+          if(valid)
+            this.persnneladd.organizationName === "" ?
+              this.toEmployeeAdd() :  this.$message.error("请填写完信息");
+      });
+  },
+  toEmployeeAdd() {
+    let file = [];
+    for(let i in this.fileList){
+      file.push({
+        name:this.fileList[i].name,
+        img:this.fileList[i].img,
+      })
     }
+    this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
+    this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
+    let qs = require("qs");
+    let data = qs.stringify({
+      userName:this.persnneladd.userName,
+      employeeNo: this.persnneladd.employeeNo,
+      name:this.persnneladd.name,
+      gender:this.persnneladd.gender,
+      birthday:this.persnneladd.birthday,
+      phone:this.persnneladd.phone,
+      position:this.persnneladd.position,
+      organizeCode:this.persnneladd.organizeCode,
+      organizationName :this.persnneladd.organizationName,
+      enterpriseId  :this.persnneladd.enterpriseId,
+      workType:this.persnneladd.workType,
+      entryTime:this.persnneladd.entryTime,
+      email:this.persnneladd.email,
+      marital:this.persnneladd.marital,
+      idCardNo:this.persnneladd.idCardNo,
+      workingYears:this.persnneladd.workingYears,
+      height:this.persnneladd.height,
+      nativePlace:this.persnneladd.nativePlace,
+      nationality:this.persnneladd.nationality,
+      postalAddress:this.persnneladd. postalAddress,
+      graduateSchool:this.persnneladd. graduateSchool,
+      degree:this.persnneladd.degree,
+      img:this.dialogImageUrl,
+      qualificationInfo:JSON.stringify(file),
+      roleId:this.persnneladd.roleId
+    });
+    this.Axios(
+      {
+        params:data,
+        type: "post",
+        url: "/employee/add",
+        option: {
+          successMsg:"添加成功"
+        }
+      },
+      this
+    ).then(response => {
+        this.Personnel();
+      },
+      ({type, info}) => {
+      })
+  },
+  Personnel() {
+    this.$router.push({
+      path: "/Personnel"
+    });
+    this.$store.commit("personnel","y")
+  },
+  },
+  created() {
+    this.organize();
+    this.Axios(
+      {
+        params:{},
+        type: "get",
+        url: "/role/listAllRole",
+        option:{enableMsg: false}
+      },
+      this
+    ).then(response => {
+        this.role = response.data.data;
+        this.persnneladd.entryTime = this.date;
+        this.persnneladd.birthday = parseInt(this.date.split("-")[0])-30+"-01-01";
+      },
+      ({type, info}) => {
+      });
+  }
   };
 </script>
 
@@ -625,7 +624,7 @@
         }
       }
     }
-   .el-form-item--mini .el-form-item__content, .el-form-item--mini .el-form-item__label{
+    .el-form-item--mini .el-form-item__content, .el-form-item--mini .el-form-item__label{
       line-height:39px;
     }
   }

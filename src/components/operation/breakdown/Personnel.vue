@@ -7,7 +7,7 @@
           size="mini"
           v-model="key"
           style="width:30%;"
-          placeholder="请输入姓名或手机号"
+          placeholder="关键字:员工编号，姓名，手机号，组织机构，岗位"
         ></el-input>
         <el-button
           size="mini"
@@ -53,8 +53,10 @@ export default {
   data() {
     return {
       key: "",
+      isPageOk:true,
       pageNumber: 0,
       pageIndex: 1,
+      isPageIndex:1,
       pageSize: 10,
       tableData: [],
       tableDate: [],
@@ -122,13 +124,23 @@ export default {
     pageChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.getTableData();
-      this.load();
+      if (this.isPageOk) {
+        this.load();
+        this.isPageIndex=1;
+      }else{
+        this.search();
+      }
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
-      this.load();
+      if (this.isPageOk) {
+        this.load();
+        this.isPageIndex=1;
+      }else{
+        this.search();
+      }
     },
     personHide() {
       this.$emit("personHide", false);
@@ -159,31 +171,42 @@ export default {
       );
     },
     search() {
-      if (!/^1[345789]\d{9}$/.test(this.key)) {
-        alert("手机号码有误，请重填");
-      } else {
-        this.pageIndex = 1;
-        this.Axios(
-          {
-            params: { condition: this.key },
-            type: "get",
-            url: "/employee/search",
-            option:{successMsg:"查询成功"}
-          },
-          this
-        ).then(
-          response => {
-            if (this.key !== "") {
-              this.pageNumber = response.data.data.totalElements;
-              this.tableData = response.data.data.content;
-              this.tableDate = this.tableData;
-            } else {
-              this.pageChange(1);
-            }
-          },
-          ({ type, info }) => {}
-        );
+      if(/^1\d{10}$/ .test(this.key)) {
+        if (!(/^1[345789]\d{9}$/.test(this.key))) {
+          this.$message.error("手机号码有误，请重填");
+        }else{
+          this.toSearch();
+        }
+      }else{
+        this.toSearch();
       }
+    },
+    toSearch(){
+      this.key==="" ?this.isPageOk=true :this.isPageOk=false;
+      this.isPageIndex===1 ?this.pageIndex = this.isPageIndex : this.pageIndex;
+      this.isPageIndex++;
+      this.Axios(
+        {
+          params: {condition: this.key,
+            page:this.pageIndex,
+            size:this.pageSize},
+          type: "get",
+          url: "/employee/search",
+          option:{successMsg:"查询成功"}
+        },
+        this
+      ).then(
+        response => {
+          if (this.key !== "") {
+            this.pageNumber = response.data.data.totalElements;
+            this.tableData = response.data.data.content;
+            this.tableDate = this.tableData;
+          } else {
+            this.pageChange(1);
+          }
+        },
+        ({ type, info }) => {}
+      );
     }
   },
   created() {

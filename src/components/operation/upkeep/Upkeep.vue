@@ -538,9 +538,9 @@
             );
           });
         } else if (state === "停用") {
-          alert("该计划已经停用");
+          this.$message.error("该计划已经停用");
         } else {
-          alert("不能停用待审核状态的计划");
+          this.$message.error("不能停用待审核状态的计划");
         }
       },
       //审核操作
