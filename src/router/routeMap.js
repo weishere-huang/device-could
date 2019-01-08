@@ -83,6 +83,7 @@ export default [{
       {
         menu: '设备运行日志',
         routeReg: /^\/Monit\/\d{1,}$/i,
+        visible: true,
         permissionCode: 'deviceState_log_lookup'
       },
       {
@@ -93,21 +94,25 @@ export default [{
       {
         menu: 'OEE任务新增',
         route: "/Oee/OeeAdd",
+        visible: true,
         permissionCode: 'deviceOEE_add_lookup'
       },
       {
         menu: 'OEE任务详情',
         routeReg: /^\/Oee\/Details\/\d{1,}$/i,
+        visible: true,
         permissionCode: 'deviceOEE_details_lookup'
       },
       {
         menu: 'OEE任务结束',
         routeReg: /^\/Oee\/End\/\d{1,}$/i,
+        visible: true,
         permissionCode: 'deviceOEE_end_lookup'
       },
       {
         menu: 'OEE任务结束',
         routeReg: /^\/Oee\/Details\/\d{1,}\/end$/i,
+        visible: true,
         permissionCode: 'deviceOEE_end2_lookup'
       }
     ]

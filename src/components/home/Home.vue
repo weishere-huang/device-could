@@ -427,9 +427,10 @@
     padding: 10px;
     border-radius: 5px;
     border: @border;
-    box-shadow: 4px 4px 10px #c0bfbf;
+    box-shadow: 2px 2px 3px #c0bfbf;
+    background: #fff;
   }
-
+  
   .home {
     overflow: hidden;
     font-size: 12px;
