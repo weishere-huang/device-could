@@ -741,7 +741,7 @@ export default {
             // console.log(this.$store.state.token.tokenNub);
             // console.log(this.$store.state.token.userMsg);
             this.$router.replace("/Home");
-            // location.reload();
+            location.reload();
           }
         },
         ({ type, info }) => {

@@ -4,11 +4,12 @@
       <div class="topbtn">
         <el-button size="small"
                    type="primary" @click="tback" icon="el-icon-arrow-left">返回</el-button>
-        <el-button size="small"
-                   type="primary" @click="updateEmployee">
-          <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
-        <!--<el-button size="small"-->
-        <!--type="primary" @click="test">测试</el-button>-->
+        <permission-button
+          permCode='employee_modification_lookup.employee_modification_save'
+          banType='hide'
+          size="small"
+          type="primary" @click="updateEmployee">
+          <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</permission-button>
       </div>
       <div class="botton">
         <div class="essential">
@@ -586,7 +587,7 @@
   };
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
   @blue: #409eff;
   @Success: #67c23a;
   @Warning: #e6a23c;
@@ -595,20 +596,22 @@
   .persnnel-add {
     // padding-left: 180px;
     .add-case {
-      padding: 10px;
+      // padding: 10px;
+      // border: 1px solid @Info;
+      // border-radius: 5px;
       .topbtn {
         padding-left: 10px;
         height: 60px;
         line-height: 60px;
-        //   border: 1px solid @Info;
+          border: 1px solid @Info;
         border-radius: 5px;
       }
       .botton {
         font-size: 12px;
         margin-top: 10px;
-        //   border: 1px solid @Info;
+        border: 1px solid @Info;
         border-radius: 5px;
-        padding: 10px 0 0 10px;
+        padding: 10px 0 10px 10px;
         position: relative;
         .essential {
           width: 600px;
@@ -682,6 +685,9 @@
           }
         }
       }
+    }
+    .el-form-item--mini .el-form-item__content, .el-form-item--mini .el-form-item__label{
+      line-height:39px;
     }
   }
 </style>
