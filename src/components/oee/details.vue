@@ -8,7 +8,7 @@
          <el-main class="monitSingleMainContent">
             <section class="topWrap">
                 <div><el-button type="primary" size="small" @click="()=>{this.$router.go(-1) }" icon="el-icon-arrow-left">任务列表</el-button></div>
-                <div><el-button type="primary" size="small" @click="$router.push({ path: '/Oee/Details/'+$route.params.equId+'/End' })"><i class='iconfont'>&#xe603;</i>&nbsp;结束任务</el-button></div>
+                <div><permission-button permCode='device_OEE_termination_lookup.device_OEE_termination_save' banType='disable' type="primary" size="small" @click="$router.push({ path: '/Oee/Details/'+$route.params.equId+'/End' })"><i class='iconfont'>&#xe603;</i>&nbsp;结束任务</permission-button></div>
             </section>
             <section class="mainWrap">
                 <div>

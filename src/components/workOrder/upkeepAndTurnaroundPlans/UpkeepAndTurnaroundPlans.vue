@@ -3,7 +3,7 @@
     <div class="top">
         <el-button size="small" type="primary" @click="toBack" icon="el-icon-arrow-left">返回</el-button>
         <permission-button
-          permCode='work_detail_lookup.work_audit'
+          permCode='work_list_detail_lookup.work_list_detail_audit'
           banType='alert'
           size="small" type="primary" @click="outerVisible=true" v-if="isOk">
           <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;提交审核</permission-button>
@@ -190,7 +190,7 @@
               <el-button  type="primary" size="mini" @click="listBasicInfo">
                 <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加物料</el-button>
               <permission-button
-                permCode='work_detail_lookup.work_edit'
+                permCode='work_list_detail_lookup.work_list_detail_save'
                 banType='alert'
                 type="primary" @click="insertPart" size="mini">
                 <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存列表</permission-button>

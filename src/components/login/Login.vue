@@ -364,8 +364,8 @@ export default {
       },
       isshow: true,
       ishide: false,
-      nextshow: true,
-      backshow: false,
+      nextshow: false,
+      backshow: true,
       loginRules: {
         userName: [
           { required: true, message: "请输入用户名或手机号", trigger: "blur" },

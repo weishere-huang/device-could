@@ -148,7 +148,7 @@
         </el-option>
       </el-select> -->
       <ul v-for="(item,index) in options" :key="index">
-        <li @click="workerTypeValue(item,index)">{{item.label}}</li>
+        <li :class="active==index?'active-bgcolor':''" @click="workerTypeValue(item,index)">{{item.label}}</li>
       </ul>
       <div style="margin-top:10px;float:right;">
         <el-button
@@ -383,12 +383,13 @@ export default {
         }
       ],
       value1: "",
-      active: false,
+      active: -1,
     };
   },
   methods: {
     workerTypeValue(item, index){
       this.value1=item.value
+      this.active=index
     },
     changeTpye(params) {
       this.editableTabs[params.oldvalue.workerType].content =  this.editableTabs[params.oldvalue.workerType].content.filter(item => item.id !== params.person.id)

@@ -36,7 +36,7 @@
             </el-form>
         </section>
         <span slot="footer" class="dialog-footer">
-            <el-button size="small" type="primary" @click="handleOK">结束任务</el-button>
+            <permission-button permCode='device_OEE_termination_lookup.device_OEE_termination_save' banType='disable' size="small" type="primary" @click="handleOK">结束任务</permission-button>
             <el-button size="small" @click="handleClose">取消</el-button>
         </span>
     </el-dialog>
