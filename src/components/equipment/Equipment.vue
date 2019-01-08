@@ -457,7 +457,10 @@ export default {
             keyWord: this.keyWord
           },
           type: "get",
-          url: "/device/findByKeyWord"
+          url: "/device/findByKeyWord",
+          option:{
+            successMsg:'设备信息加载完成~',
+          }
         },
         this
       ).then(
@@ -574,7 +577,10 @@ export default {
             size: this.pageSize
           },
           type: "get",
-          url: "/device/select"
+          url: "/device/select",
+          option:{
+            successMsg:'设备信息加载完成~',
+          }
         },
         this
       )
