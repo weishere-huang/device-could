@@ -2,16 +2,16 @@
 //permissionCode为权限映射码，若permissionCode未对应到用户权限则不显示也无跳转访问权限
 //route和routeReg为匹配路由，二者必须有一个，若都有则为“或”逻辑
 export default [{
-    menu: '工作台',
-    permissionCode: 'workDock_lookUp',
-    defaultDock: true,
-    icon: '&#xe606;',
-    subMenu: [{
-      menu: '默认工作台',
-      route: '/Home',
-      permissionCode: 'Home'
-    }]
-  },
+  menu: '工作台',
+  permissionCode: 'workDock_lookUp',
+  defaultDock: true,
+  icon: '&#xe606;',
+  subMenu: [{
+    menu: '默认工作台',
+    route: '/Home',
+    permissionCode: 'Home'
+  }]
+},
   {
     menu: '企业管理',
     permissionCode: 'enterprise',
@@ -37,10 +37,10 @@ export default [{
     permissionCode: 'personnel"',
     icon: '&#xe68d;',
     subMenu: [{
-        menu: '员工管理',
-        route: '/Personnel',
-        permissionCode: 'employee_lookup'
-      },
+      menu: '员工管理',
+      route: '/Personnel',
+      permissionCode: 'employee_lookup'
+    },
       {
         menu: '员工详情',
         routeReg: /^\/Personnel\/Modification\/\d{1,}$/i,
@@ -49,7 +49,7 @@ export default [{
       },
       {
         menu: '添加员工',
-        route: "Personnel/PersnnelAdd",
+        route: "/Personnel/PersnnelAdd",
         visible: true,
         permissionCode: 'employee_add_lookup'
       }
@@ -60,10 +60,10 @@ export default [{
     permissionCode: 'device',
     icon: '&#xe61c;',
     subMenu: [{
-        menu: '设备管理',
-        route: "/Equipment",
-        permissionCode: 'device_lookup'
-      },
+      menu: '设备管理',
+      route: "/Equipment",
+      permissionCode: 'device_lookup'
+    },
       {
         menu: '类别管理',
         route: "/Category",
@@ -88,13 +88,14 @@ export default [{
     permissionCode: 'monit',
     icon: '&#xe6a0;',
     subMenu: [{
-        menu: '设备实时状态',
-        route: "/Monit",
-        permissionCode: 'deviceState_lookup'
-      },
+      menu: '设备实时状态',
+      route: "/Monit",
+      permissionCode: 'deviceState_lookup'
+    },
       {
         menu: '设备运行日志',
         routeReg: /^\/Monit\/\d{1,}$/i,
+        visible: true,
         permissionCode: 'deviceState_log_lookup'
       },
       {
@@ -104,23 +105,27 @@ export default [{
       },
       {
         menu: 'OEE任务新增',
-        route: "/Oee/OeeAdd",
+        route: "/Oee/Add",
+        visible: true,
         permissionCode: 'deviceOEE_add_lookup'
       },
       {
         menu: 'OEE任务详情',
         routeReg: /^\/Oee\/Details\/\d{1,}$/i,
-        permissionCode: 'deviceOEE_details_lookup'
+        visible: true,
+        permissionCode: 'deviceOEE_detail_lookup'
       },
       {
         menu: 'OEE任务结束',
         routeReg: /^\/Oee\/End\/\d{1,}$/i,
-        permissionCode: 'deviceOEE_end_lookup'
+        visible: true,
+        permissionCode: 'deviceOEE_termination_lookup'
       },
       {
         menu: 'OEE任务结束',
+        visible: true,
         routeReg: /^\/Oee\/Details\/\d{1,}\/end$/i,
-        permissionCode: 'deviceOEE_end2_lookup'
+        permissionCode: 'deviceOEE_termination_lookup'
       }
     ]
   },
@@ -129,9 +134,15 @@ export default [{
     permissionCode: 'ops',
     icon: '&#xe73a;',
     subMenu: [{
-        menu: '设备故障',
-        route: "/Breakdown",
-        permissionCode: 'fault_lookup'
+      menu: '设备故障',
+      route: "/Breakdown",
+      permissionCode: 'fault_lookup',
+      },
+      {
+        menu: '设备故障详情',
+        routeReg: /^\/Breakdown\/BreakDetails\/\d{1,}$/i,
+        visible: true,
+        permissionCode: 'fault_detail_lookup'
       },
       {
         menu: '检修计划',
@@ -139,10 +150,34 @@ export default [{
         permissionCode: 'overhaul_lookup'
       },
       {
+        menu: '添加检修计划',
+        route: "/TurnaroundPlans/TurnaroundPlansAdd",
+        visible: true,
+        permissionCode: 'overhaul_add_lookup'
+      },
+      {
+        menu: '检修计划详情',
+        routeReg: /^\/TurnaroundPlans\/TurnaroundPlansAmend\/\d{1,}$/i,
+        visible: true,
+        permissionCode: 'overhaul_detail_lookup'
+      },
+      {
         menu: '保养计划',
         route: "/Upkeep",
         permissionCode: 'maintain_lookup'
-      }
+      },
+      {
+        menu: '添加保养计划',
+        route: "/Upkeep/UpkeepAdd",
+        visible: true,
+        permissionCode: 'maintain_add_lookup'
+      },
+      {
+        menu: '保养计划详情',
+        routeReg: /^\/Upkeep\/UpkeepAmend\/\d{1,}$/i,
+        visible: true,
+        permissionCode: 'maintain_detail_lookup'
+      },
     ]
   },
   {
@@ -150,10 +185,10 @@ export default [{
     permissionCode: 'partInfo',
     icon: '&#xe690;',
     subMenu: [{
-        menu: '备件基础信息',
-        route: "/SparePart",
-        permissionCode: 'partInfo_lookup'
-      },
+      menu: '备件基础信息',
+      route: "/SparePart",
+      permissionCode: 'partInfo_lookup'
+    },
       {
         menu: '备品备件添加',
         route: "/SparePart/SparePartAdd",
@@ -188,10 +223,10 @@ export default [{
     permissionCode: 'workOrder',
     icon: '&#xe60b;',
     subMenu: [{
-        menu: '工单列表',
-        route: "/WorkOrder",
-        permissionCode: 'work_lookup'
-      },
+      menu: '工单列表',
+      route: "/WorkOrder",
+      permissionCode: 'work_lookup'
+    },
       {
         menu: '故障工单详情',
         routeReg: /^\/WorkOrder\/BreakdownOrder\/\d{1,}$/i,
@@ -235,7 +270,7 @@ export default [{
     subMenu: [{
       menu: '用户管理',
       route: "/User",
-      permissionCode: 'user_lookup'
+      permissionCode: 'system_user_lookup'
     }]
   }
 ]

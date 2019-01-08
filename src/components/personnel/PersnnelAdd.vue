@@ -4,9 +4,11 @@
       <div class="topbtn">
         <el-button size="small"
                    type="primary" @click="tback" icon="el-icon-arrow-left">返回</el-button>
-        <el-button size="small"
+        <permission-button size="small"
+                   permCode='device_add_lookup.device_add_save'
+                   banType='hide'
                    type="primary" @click="employeeAdd('persnnelAdd')" >
-          <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
+          <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</permission-button>
       </div>
       <div class="botton">
         <div class="essential">

@@ -741,7 +741,7 @@ export default {
             // console.log(this.$store.state.token.tokenNub);
             // console.log(this.$store.state.token.userMsg);
             this.$router.replace("/Home");
-            // location.reload();
+            location.reload();
           }
         },
         ({ type, info }) => {
@@ -919,8 +919,6 @@ export default {
     }
   },
   mounted() {
-    document.getElementById('deal-content').innerText="<p>你是不是傻</p>"
-    // $("#deal-content").html('你是不是傻')
   },
   created () {
     this.dealMsg()

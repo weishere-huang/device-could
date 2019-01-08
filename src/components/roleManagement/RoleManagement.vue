@@ -2,15 +2,29 @@
   <div class="roleManagement">
     <div class="case">
       <div class="top">
-        <el-button size="small" type="primary" @click="dialogFormVisible=true">
-          <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加角色</el-button>
-        <el-button size="small" type="primary" @click="getCheckedKeys">
-          <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
+        <permission-button
+          permCode='role_lookup.role_add'
+          banType='hide'
+          size="small" type="primary" @click="dialogFormVisible=true">
+          <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加角色</permission-button>
+        <permission-button
+          permCode='role_lookup.role_edit'
+          banType='hide'
+          size="small" type="primary" @click="getCheckedKeys">
+          <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</permission-button>
       </div>
       <div class="left">
         <h6>角色列表</h6>
         <ul>
-          <li v-for="item in role" :label="item.id" :key="item.id" ><span :label="item.id" @click="getName($event)">{{item.name}}</span> <span :label="item.id" @click="expurgate($event)" class='iconfont icon-shanchu1'></span></li>
+          <li v-for="item in role" :label="item.id" :key="item.id" ><span :label="item.id" @click="getName($event)">{{item.name}}</span>
+            <permission-button
+              permCode='role_lookup.role_delete'
+              banType='hide'
+              style="font-size:14px;"
+              type="text" :label="item.id" @click="expurgate($event)" >
+                <i class="iconfont" style="font-size:14px;">&#xe66b;</i>
+              </permission-button>
+          </li>
         </ul>
       </div>
       <div class="right">
@@ -33,7 +47,7 @@
               slot-scope="{ node, data }"
             >
               <span :title="data.name" class="listcontent">
-                {{ data.name }}
+                {{ data.name +"　("+data.parentCode+")"}}
               </span >
             </span>
           </el-tree>
@@ -343,14 +357,14 @@
           height: 30px;
           line-height: 30px;
           cursor: pointer;
-          span:nth-child(2){
+          button{
             color: #f56c6c;
-            display: none;
+            opacity: 0;
           }
           &:hover {
             color: @blue;
-            span:nth-child(2){
-              display: inline-block;
+            button{
+             opacity:1;
             }
           }
         }

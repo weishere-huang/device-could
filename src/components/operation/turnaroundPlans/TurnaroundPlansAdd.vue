@@ -2,8 +2,10 @@
   <div class="turnaroundPlansAdd">
     <div class="top">
       <el-button size="small" type="primary" @click="toback"  icon="el-icon-arrow-left">返回</el-button>
-      <el-button size="small" type="primary" @click="addPlan"><i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
-      <!--<el-button size="small" @click="test">测试</el-button>-->
+      <permission-button
+        permCode='overhaul_add_lookup.overhaul_add_save'
+        banType='alert'
+        size="small" type="primary" @click="addPlan"><i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</permission-button>
     </div>
     <div class="bottom">
       <div class="left">
