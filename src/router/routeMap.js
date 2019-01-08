@@ -270,7 +270,7 @@ export default [{
     subMenu: [{
       menu: '用户管理',
       route: "/User",
-      permissionCode: 'user_lookup'
+      permissionCode: 'system_user_lookup'
     }]
   }
 ]
