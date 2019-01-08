@@ -662,7 +662,7 @@
         </el-tooltip>
          &nbsp;
         <el-tooltip class="item" effect="dark" content="审核" placement="top">
-            <permission-button permCode='fault_lookup.fault_audit'
+            <permission-button permCode='operation_fault_lookup.operation_fault_audit'
                      banType='disable' type="text"
                      style="text-decoration: none;color:#2474c5;margin-left: -2px">
                      <i @click.stop.prevent="submitAudit(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
@@ -670,7 +670,7 @@
           </el-tooltip>
          &nbsp;
         <el-tooltip class="item" effect="dark" content="消除" placement="top">
-         <permission-button permCode='fault_lookup.fault_dispel'
+         <permission-button permCode='operation_fault_lookup.operation_fault_dispel'
                      banType='disable' type="text"
                      style="text-decoration: none;color:#2474c5;margin-left: -2px">
                      <i @click.stop.prevent="dispel(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe645;</i>
@@ -678,7 +678,7 @@
           </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
-            <permission-button permCode='fault_lookup.fault_delete'
+            <permission-button permCode='operation_fault_lookup.operation_fault_delete'
                      banType='disable' type="text"
                      style="text-decoration: none;color:#F56C6C;margin-left: -2px">
                      <i @click.stop.prevent="deleteRow(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe66b;</i>

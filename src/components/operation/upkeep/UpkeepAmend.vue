@@ -2,9 +2,15 @@
   <div class="turnaroundPlansAdd">
     <div class="top">
       <el-button size="small" type="primary" @click="toBack" icon="el-icon-arrow-left">返回</el-button>
-      <el-button size="small" type="primary" @click="updatePlan" v-if="isOk">
-        <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
-      <el-button size="small" type="primary" @click="auditInfo" icon="el-icon-search">审核详情</el-button>
+      <permission-button
+        permCode='operation_maintain_lookup.operation_maintain_add'
+        banType='hide'
+        size="small" type="primary" @click="updatePlan" v-if="isOk">
+        <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</permission-button>
+      <permission-button
+        permCode='operation_maintain_detail_lookup.operation_maintain_detail_audit'
+        banType='hide'
+        size="small" type="primary" @click="auditInfo" icon="el-icon-search">审核详情</permission-button>
     </div>
     <div class="bottom">
       <div class="left">

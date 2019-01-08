@@ -7,6 +7,7 @@
         banType='alert'
         size="small" type="primary" @click="outerVisible=true" v-if="isOk">
         <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;提交审核</permission-button >
+      <el-button size="small" type="primary" @click="auditInfo" icon="el-icon-search">审核详情</el-button>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
         <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
@@ -137,7 +138,16 @@
       <div class="right">
         <div class="equipment">
           <h5>设备信息</h5>
-          <v-table is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;" :columns="equipmentTable" :table-data="equipmentTableData" row-hover-color="#eee" row-click-color="#edf7ff" :row-height=24 :height="160" :row-click="checkPerson">
+          <v-table @on-custom-comp="isShowWorkPerson"
+                   is-horizontal-resize
+                   column-width-drag
+                   :multiple-sort="false"
+                   style="width:100%;"
+                   :columns="equipmentTable"
+                   :table-data="equipmentTableData"
+                   row-hover-color="#eee"
+                   row-click-color="#edf7ff"
+                   :row-height=24 :height="160">
           </v-table>
         </div>
         <!-- 设备对象人员查看弹框 -->
@@ -284,6 +294,25 @@
             :height="230"
           ></v-table>
         </div>
+        <el-dialog
+          title="审核详情"
+          :visible.sync="submitAuditInfo"
+          width="50%"
+        >
+          <div style="padding:10px">
+            <v-table
+              is-horizontal-resize
+              column-width-drag
+              :multiple-sort="false"
+              style="width:100%;"
+              :columns="submitAuditTable"
+              :table-data="submitAuditData"
+              row-hover-color="#eee"
+              row-click-color="#edf7ff"
+              :row-height=30
+            ></v-table>
+          </div>
+        </el-dialog>
       </div>
     </div>
   </div>
@@ -293,6 +322,63 @@
   export default {
     data() {
       return {
+        submitAuditInfo:false,
+        submitAuditTable:[
+          {
+            field: "name",
+            title: "审核人",
+            width: 40,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "state",
+            title: "审核状态",
+            width: 30,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            formatter:function (rowData) {
+              if(rowData.state===0)return`<span>待处理</span>`;
+              if(rowData.state===1)return`<span>已通过</span>`;
+              if(rowData.state===2)return`<span>已驳回</span>`;
+            }
+          },
+          {
+            field: "startTime",
+            title: "提交时间",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "endTime",
+            title: "审核时间",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+          },
+          {
+            field: "phone",
+            title: "手机号",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "opinion",
+            title: "审核意见",
+            width: 180,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          }
+        ],
+        submitAuditData:[],
         isOk:true,
         imgPath:[],
         examine:{
@@ -419,21 +505,14 @@
             isResize: true
           },
           {
-            field: "charges",
-            title: "设备负责人",
-            width: 80,
+            field: "workerNames",
+            title: "人员",
+            width: 100,
             titleAlign: "center",
             columnAlign: "center",
-            isResize: true
+            isResize: true,
+            componentName: "table-workPerson"
           },
-          {
-            field: "repairs",
-            title: "维修人员",
-            width: 90,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
-          }
         ],
         suppliesTable: [
           {
@@ -502,18 +581,20 @@
           {
             field: "operateDesc",
             title: "工单进度",
-            width: 200,
+            width: 240,
             titleAlign: "center",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "gmtModified",
             title: "处理时间",
-            width: 100,
+            width: 60,
             titleAlign: "center",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           }
         ],
         materielTable:[
@@ -676,7 +757,6 @@
             })
             .catch(_=>{
             })
-
         }
       },
       toBack(){
@@ -702,10 +782,6 @@
       getPersonnel(rowIndex, rowData, column) {
         this.toExamine = rowData;
         this.innerVisible = false;
-      },
-      checkPerson(rowIndex, rowData, column) {
-        this.dialogVisible1 = true;
-        this.findByDeviceId(rowData.id);
       },
       handleNodeClick(data) {
         this.findBasicInfoByTypeId(data.id);
@@ -821,7 +897,27 @@
           }
         );
       },
+      //审核信息查看
+      auditInfo(){
+        this.submitAuditInfo = true;
+        this.Axios(
+          {
+            params:{workId:this.$route.params.id,
+              page:1, size:10
+            },
+            type: "get",
+            url: "/work/workAuditInfo",
+            option:{enableMsg:false}
+          },
+          this
+        ).then(response => {
+            console.log(response.data.data.content);
+            this.submitAuditData=response.data.data.content
+          },
+          ({type, info}) => {
 
+          })
+      },
       //取消审核
       goExit(){
         this.pageNumber = "";
@@ -968,6 +1064,13 @@
       },
 
       //通过设备ID查找相关负责人员
+      isShowWorkPerson(params) {
+        this.dialogVisible1 = true;
+        if (params.type === "showLook") {
+          this.findByDeviceId(params.rowData.id);
+          this.person = true;
+        }
+      },
       findByDeviceId(deviceId){
         this.Axios(
           {
@@ -1224,16 +1327,18 @@
       },
       //回执信息
       workReceiptInfoValue(value){
-        this.workReceiptInfo = value;
-        for(let i in this.workReceiptInfo){
-          if(this.workReceiptInfo[i].dealState==0){
-            this.workReceiptInfo[i].dealState="已处理"
-          }
-          if(this.workReceiptInfo[i].dealState==1){
-            this.workReceiptInfo[i].dealState="未处理"
-          }
-          if(this.workReceiptInfo[i].dealState==2){
-            this.workReceiptInfo[i].dealState="已取消"
+        if(value.length>0){
+          this.workReceiptInfo = value;
+          for(let i in this.workReceiptInfo){
+            if(this.workReceiptInfo[i].dealState==0){
+              this.workReceiptInfo[i].dealState="已处理"
+            }
+            if(this.workReceiptInfo[i].dealState==1){
+              this.workReceiptInfo[i].dealState="未处理"
+            }
+            if(this.workReceiptInfo[i].dealState==2){
+              this.workReceiptInfo[i].dealState="已取消"
+            }
           }
         }
       },
@@ -1246,6 +1351,30 @@
       this.workLoad(this.$route.params.id);
     }
   };
+  Vue.component("table-workPerson", {
+    template: `<span>
+        <el-tooltip class="item" effect="dark" content="查看" placement="top">
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="showLook(rowData,index)" style='font-size:20px' class='iconfont'>&#xe734;</i></a>
+        </el-tooltip>
+        </span>`,
+    props: {
+      rowData: {
+        type: Object
+      },
+      field: {
+        type: String
+      },
+      index: {
+        type: Number
+      }
+    },
+    methods: {
+      showLook() {
+        let params = { type: "showLook", index: this.index, rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      },
+    }
+  });
   Vue.component("table-breakdownOrder", {
     template: `<span>
           <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe635;</i></a>

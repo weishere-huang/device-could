@@ -142,41 +142,41 @@ export default [{
         menu: '设备故障详情',
         routeReg: /^\/Breakdown\/BreakDetails\/\d{1,}$/i,
         visible: true,
-        permissionCode: 'fault_detail_lookup'
+        permissionCode: 'operation_fault_detail_lookup'
       },
       {
         menu: '检修计划',
         route: "/TurnaroundPlans",
-        permissionCode: 'overhaul_lookup'
+        permissionCode: 'operation_overhaul_lookup'
       },
       {
         menu: '添加检修计划',
         route: "/TurnaroundPlans/TurnaroundPlansAdd",
         visible: true,
-        permissionCode: 'overhaul_add_lookup'
+        permissionCode: 'operation_overhaul_add_lookup'
       },
       {
         menu: '检修计划详情',
         routeReg: /^\/TurnaroundPlans\/TurnaroundPlansAmend\/\d{1,}$/i,
         visible: true,
-        permissionCode: 'overhaul_detail_lookup'
+        permissionCode: 'operation_overhaul_detail_lookup'
       },
       {
         menu: '保养计划',
         route: "/Upkeep",
-        permissionCode: 'maintain_lookup'
+        permissionCode: 'operation_maintain_lookup'
       },
       {
         menu: '添加保养计划',
         route: "/Upkeep/UpkeepAdd",
         visible: true,
-        permissionCode: 'maintain_add_lookup'
+        permissionCode: 'operation_maintain_add_lookup'
       },
       {
         menu: '保养计划详情',
         routeReg: /^\/Upkeep\/UpkeepAmend\/\d{1,}$/i,
         visible: true,
-        permissionCode: 'maintain_detail_lookup'
+        permissionCode: 'operation_maintain_detail_lookup'
       },
     ]
   },
