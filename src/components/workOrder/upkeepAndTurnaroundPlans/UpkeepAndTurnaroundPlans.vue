@@ -288,7 +288,7 @@
           >
             <el-form
               label-width="100px"
-              :model="workReceiptInfo"
+              v-model="workReceiptInfo"
               v-for="item of workReceiptInfo"
               :key="item.id"
             >

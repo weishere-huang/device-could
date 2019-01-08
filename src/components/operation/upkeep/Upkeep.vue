@@ -17,7 +17,6 @@
           :visible.sync="outerVisible"
         >
           <el-form
-            
             label-position=right
             label-width="120px"
             :model="formLabelAlign"
@@ -173,15 +172,14 @@
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
-              if(rowData.state ===0 )return `<span>待审核</span>`;
-              if(rowData.state ===1 )return `<span>执行中</span>`;
-              if(rowData.state ===2 )return `<span>已禁用</span>`;
-              if(rowData.state ===3 )return `<span>已删除</span>`;
-              if(rowData.state ===4 )return `<span>审核中</span>`;
-              if(rowData.state ===6 )return `<span>已消除</span>`;
-              if(rowData.state ===10 )return `<span>已驳回</span>`;
-              if(rowData.state ===12 )return `<span>已停止</span>`;
-              if(rowData.state ===14 )return `<span>已完成</span>`;
+              if(rowData.state ===0 )return `<span style="color: #ff6600">待审核</span>`;
+              if(rowData.state ===1 )return `<span style="color: #00b400">执行中</span>`;
+              if(rowData.state ===2 )return `<span style="color: #c48382">已禁用</span>`;
+              if(rowData.state ===4 )return `<span style="color: #409dfe">审核中</span>`;
+              if(rowData.state ===6 )return `<span style="color: #999999">已消除</span>`;
+              if(rowData.state ===10 )return `<span style="color: #59007a">已驳回</span>`;
+              if(rowData.state ===12 )return `<span style="color: #999999">已停止</span>`;
+              if(rowData.state ===14 )return `<span style="color: #999999">已完成</span>`;
             }
           },
           {

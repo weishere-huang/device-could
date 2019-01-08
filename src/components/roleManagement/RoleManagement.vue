@@ -40,7 +40,7 @@
             ref="tree"
             :default-expanded-keys="[1]"
             :default-checked-keys="power"
-            render-after-expand="false"
+            :render-after-expand="treeIsOk"
           >
             <span
               class="custom-tree-node"
@@ -78,6 +78,7 @@
       return {
         data:[],
         power:[],
+        treeIsOk:false,
         defaultProps: {
           children: "children",
           label: "name"
