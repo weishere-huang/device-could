@@ -90,24 +90,24 @@ export default [{
     subMenu: [{
       menu: '设备实时状态',
       route: "/Monit",
-      permissionCode: 'deviceState_lookup'
+      permissionCode: 'device_state_lookup'
     },
       {
         menu: '设备运行日志',
         routeReg: /^\/Monit\/\d{1,}$/i,
         visible: true,
-        permissionCode: 'deviceState_log_lookup'
+        permissionCode: 'device_state_log'
       },
       {
         menu: '设备OEE分析',
         route: "/Oee",
-        permissionCode: 'deviceOEE_lookup'
+        permissionCode: 'device_OEE_lookup'
       },
       {
         menu: 'OEE任务新增',
         route: "/Oee/Add",
         visible: true,
-        permissionCode: 'deviceOEE_add_lookup'
+        permissionCode: 'device_OEE_lookup'
       },
       {
         menu: 'OEE任务详情',
@@ -119,13 +119,13 @@ export default [{
         menu: 'OEE任务结束',
         routeReg: /^\/Oee\/End\/\d{1,}$/i,
         visible: true,
-        permissionCode: 'deviceOEE_termination_lookup'
+        permissionCode: 'device_OEE_termination'
       },
       {
         menu: 'OEE任务结束',
         visible: true,
         routeReg: /^\/Oee\/Details\/\d{1,}\/end$/i,
-        permissionCode: 'deviceOEE_termination_lookup'
+        permissionCode: 'device_OEE_termination'
       }
     ]
   },
@@ -220,24 +220,24 @@ export default [{
   },
   {
     menu: '工单系统',
-    permissionCode: 'workOrder',
+    permissionCode: 'work_list_lookup',
     icon: '&#xe60b;',
     subMenu: [{
       menu: '工单列表',
       route: "/WorkOrder",
-      permissionCode: 'work_lookup'
+      permissionCode: 'work_list_lookup'
     },
       {
         menu: '故障工单详情',
         routeReg: /^\/WorkOrder\/BreakdownOrder\/\d{1,}$/i,
         visible: true,
-        permissionCode: 'work_detail_lookup'
+        permissionCode: 'work_list_detail_lookup'
       },
       {
         menu: '检修保养工单详情',
         routeReg: /^\/WorkOrder\/UpkeepAndTurnaroundPlans\/\d{1,}$/i,
         visible: true,
-        permissionCode: 'work_detail_lookup'
+        permissionCode: 'work_list_detail_lookup'
       }
     ]
   },

@@ -8,7 +8,7 @@
         <el-main class="monitMainContent2">
           <section class="topWrap">
             <div>
-              <permission-button permCode='deviceOEE_add_lookup.deviceOEE_add_save' banType="hide" size="small" type="primary" @click="$router.push({path: '/Oee/Add'})"><i class='el-icon-circle-plus-outline'></i> 新增OEE任务</permission-button>
+              <permission-button permCode='deviceOEE_add_lookup.device_OEE_add' banType="hide" size="small" type="primary" @click="$router.push({path: '/Oee/Add'})"><i class='el-icon-circle-plus-outline'></i> 新增OEE任务</permission-button>
               <el-button size="small" style="margin-left:10px;" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
             </div>
             <div>
