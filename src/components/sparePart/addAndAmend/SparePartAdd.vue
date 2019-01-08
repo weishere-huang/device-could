@@ -1,12 +1,14 @@
 <template>
   <div class="spare-part-add">
     <div class="top">
-      <el-button
+      <permission-button
+        permCode='part_info_add_lookup.part_info_add_save'
+        banType='hide'
         size="small"
         type="primary"
         @click="toBack"
         icon="el-icon-arrow-left"
-      >返回</el-button>
+      >返回</permission-button>
       <el-button size="small" type="primary" @click="btisok">
         <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</el-button>
     </div>

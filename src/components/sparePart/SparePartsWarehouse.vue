@@ -2,7 +2,7 @@
   <div class="spare-parts-warehouse">
     <div class="top">
       <permission-button
-        permCode='partWarehouse_lookup.partWarehouse_add'
+        permCode='part_warehouse_lookup.part_warehouse_add'
         banType='hide'
         size="small"
         type="primary"
