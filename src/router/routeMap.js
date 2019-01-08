@@ -67,7 +67,7 @@ export default [{
       {
         menu: '类别管理',
         route: "/Category",
-        permissionCode: 'deviceCate_lookup'
+        permissionCode: 'device_cate_lookup'
       },
       {
         menu:'设备添加',
@@ -142,41 +142,41 @@ export default [{
         menu: '设备故障详情',
         routeReg: /^\/Breakdown\/BreakDetails\/\d{1,}$/i,
         visible: true,
-        permissionCode: 'fault_detail_lookup'
+        permissionCode: 'operation_fault_detail_lookup'
       },
       {
         menu: '检修计划',
         route: "/TurnaroundPlans",
-        permissionCode: 'overhaul_lookup'
+        permissionCode: 'operation_overhaul_lookup'
       },
       {
         menu: '添加检修计划',
         route: "/TurnaroundPlans/TurnaroundPlansAdd",
         visible: true,
-        permissionCode: 'overhaul_add_lookup'
+        permissionCode: 'operation_overhaul_add_lookup'
       },
       {
         menu: '检修计划详情',
         routeReg: /^\/TurnaroundPlans\/TurnaroundPlansAmend\/\d{1,}$/i,
         visible: true,
-        permissionCode: 'overhaul_detail_lookup'
+        permissionCode: 'operation_overhaul_detail_lookup'
       },
       {
         menu: '保养计划',
         route: "/Upkeep",
-        permissionCode: 'maintain_lookup'
+        permissionCode: 'operation_maintain_lookup'
       },
       {
         menu: '添加保养计划',
         route: "/Upkeep/UpkeepAdd",
         visible: true,
-        permissionCode: 'maintain_add_lookup'
+        permissionCode: 'operation_maintain_add_lookup'
       },
       {
         menu: '保养计划详情',
         routeReg: /^\/Upkeep\/UpkeepAmend\/\d{1,}$/i,
         visible: true,
-        permissionCode: 'maintain_detail_lookup'
+        permissionCode: 'operation_maintain_detail_lookup'
       },
     ]
   },
@@ -187,34 +187,34 @@ export default [{
     subMenu: [{
       menu: '备件基础信息',
       route: "/SparePart",
-      permissionCode: 'partInfo_lookup'
+      permissionCode: 'part_info_lookup'
     },
       {
         menu: '备品备件添加',
         route: "/SparePart/SparePartAdd",
-        permissionCode: 'partInfo_add_lookup',
+        permissionCode: 'part_info_add_lookup',
         visible: true,
       },
       {
         menu: '备件备件修改',
         routeReg: /^\/SparePart\/SparePartAmend\/\d{1,}$/i,
-        permissionCode: 'partInfo_detail_lookup',
+        permissionCode: 'part_info_detail_lookup',
         visible: true,
       },
       {
         menu: '备件分类',
         route: "/SparePartsClassification",
-        permissionCode: 'partCate_lookup'
+        permissionCode: 'part_cate_lookup'
       },
       {
         menu: '备件入库',
         route: "/SparePartsWarehouse",
-        permissionCode: 'partWarehouse_lookup'
+        permissionCode: 'part_warehouse_lookup'
       },
       {
         menu: '入库明细',
         route: "/WarehousingDetail",
-        permissionCode: 'partWarehouseInfo_lookup'
+        permissionCode: 'part_warehouseInfo_lookup'
       }
     ]
   },

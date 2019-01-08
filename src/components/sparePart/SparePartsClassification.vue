@@ -22,7 +22,7 @@
               <span class="addCase" @click.stop>
                 <el-tooltip class="item" effect="dark" content="添加" placement="top">
                 <permission-button
-                  permCode='partCate_lookup.partCate_add'
+                  permCode='part_cate_lookup.part_cate_add'
                   banType='hide'
                   type="text"
                   size="mini"
@@ -32,7 +32,7 @@
                 </permission-button>
                 </el-tooltip>
                   <permission-button
-                  permCode='partCate_lookup.partCate_edit'
+                  permCode='part_cate_lookup.part_cate_edit'
                   banType='hide'
                   type="text"
                   size="mini"
@@ -43,7 +43,7 @@
                   </el-tooltip>
                 </permission-button>
                 <permission-button
-                  permCode='partCate_lookup.partCate_delete'
+                  permCode='part_cate_lookup.part_cate_delete'
                   banType='hide'
                   type="text"
                   size="mini"

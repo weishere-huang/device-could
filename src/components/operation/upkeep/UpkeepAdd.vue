@@ -3,8 +3,8 @@
     <div class="top">
         <el-button size="small" type="primary" @click="toBack"  icon="el-icon-arrow-left">返回</el-button>
         <permission-button
-          permCode='maintain_add_lookup.maintain_add_save'
-          banType='alert'
+          permCode='operation_maintain_add_lookup.operation_maintain_add_save'
+          banType='hide'
           size="small" type="primary" @click="addPlan"><i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</permission-button>
     </div>
     <div class="bottom">
