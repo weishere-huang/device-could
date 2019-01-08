@@ -7,6 +7,7 @@
           banType='alert'
           size="small" type="primary" @click="outerVisible=true" v-if="isOk">
           <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;提交审核</permission-button>
+      <el-button size="small" type="primary" @click="auditInfo" icon="el-icon-search">审核详情</el-button>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
         <el-form label-position=right label-width="120px" :model="examine" style="padding:10px">
@@ -109,7 +110,7 @@
             :model="maintenancePlan"
           >
             <el-form-item label="分类：">
-              <span>{{maintenancePlan.maintenanceType}}</span>
+              <span>{{maintenancePlan.maintenanceClassify}}</span>
             </el-form-item>
             <el-form-item label="级别：">
               <span>{{maintenancePlan.maintenanceLevel}}</span>
@@ -149,6 +150,7 @@
         <div class="equipment">
           <h5>设备对象</h5>
           <v-table
+            @on-custom-comp="isShowWorkPerson"
             is-horizontal-resize
             column-width-drag
             :multiple-sort="false"
@@ -159,7 +161,6 @@
             row-click-color="#edf7ff"
             :row-height=24
             :height="160"
-            :row-click="checkPerson"
           >
           </v-table>
         </div>
@@ -328,6 +329,25 @@
             :height="230"
           ></v-table>
         </div>
+        <el-dialog
+          title="审核详情"
+          :visible.sync="submitAuditInfo"
+          width="50%"
+        >
+          <div style="padding:10px">
+            <v-table
+              is-horizontal-resize
+              column-width-drag
+              :multiple-sort="false"
+              style="width:100%;"
+              :columns="submitAuditTable"
+              :table-data="submitAuditData"
+              row-hover-color="#eee"
+              row-click-color="#edf7ff"
+              :row-height=30
+            ></v-table>
+          </div>
+        </el-dialog>
       </div>
     </div>
   </div>
@@ -387,18 +407,18 @@
         dialogVisible1: false,
         outerVisible: false,
         innerVisible: false,
-        workReceiptInfo:{
-          id:"",
-          workId:"",
-          builderId:"",
-          builder:"",
-          dealState:"",
-          dealTime:"",
-          dealContent:"",
-          gmtCreate:"",
-          gmtModified:"",
-          state:"",
-        },
+        workReceiptInfo:[{
+            id:"",
+            workId:"",
+            builderId:"",
+            builder:"",
+            dealState:"",
+            dealTime:"",
+            dealContent:"",
+            gmtCreate:"",
+            gmtModified:"",
+            state:"",
+          }],
         workSheetMaterialTableData: [],
         devicesTableData: [],
         flowInfoData: [],
@@ -444,21 +464,14 @@
             isResize: true
           },
           {
-            field: "charges",
-            title: "设备负责人",
-            width: 80,
+            field: "workerNames",
+            title: "人员",
+            width: 100,
             titleAlign: "center",
             columnAlign: "center",
-            isResize: true
+            isResize: true,
+            componentName: "table-workPerson"
           },
-          {
-            field: "repairs",
-            title: "维修人员",
-            width: 90,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
-          }
         ],
         workSheetMaterialTable: [
           {
@@ -527,18 +540,20 @@
           {
             field: "operateDesc",
             title: "工单进度",
-            width: 200,
+            width: 240,
             titleAlign: "center",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "gmtModified",
             title: "处理时间",
-            width: 100,
+            width: 60,
             titleAlign: "center",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           }
         ],
         personTable: [
@@ -699,6 +714,63 @@
         },
         personPageIsOk:true,
         basicInfoPageIsOk:true,
+        submitAuditInfo:false,
+        submitAuditTable:[
+          {
+            field: "name",
+            title: "审核人",
+            width: 40,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "state",
+            title: "审核状态",
+            width: 30,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            formatter:function (rowData) {
+              if(rowData.state===0)return`<span>待处理</span>`;
+              if(rowData.state===1)return`<span>已通过</span>`;
+              if(rowData.state===2)return`<span>已驳回</span>`;
+            }
+          },
+          {
+            field: "startTime",
+            title: "提交时间",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "endTime",
+            title: "审核时间",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+          },
+          {
+            field: "phone",
+            title: "手机号",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "opinion",
+            title: "审核意见",
+            width: 180,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          }
+        ],
+        submitAuditData:[],
       };
     },
     methods: {
@@ -730,10 +802,6 @@
       getPersonnel(rowIndex, rowData, column) {
         this.toExamine = rowData;
         this.innerVisible = false;
-      },
-      checkPerson(rowIndex, rowData, column) {
-        this.dialogVisible1 = true;
-        this.findByDeviceId(rowData.id);
       },
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
@@ -910,6 +978,26 @@
           }
         );
       },
+      //审核信息查看
+      auditInfo(){
+        this.submitAuditInfo = true;
+        this.Axios(
+          {
+            params:{workId:this.workId,
+              page:1, size:20
+            },
+            type: "get",
+            url: "/work/workAuditInfo",
+            option:{enableMsg:false}
+          },
+          this
+        ).then(response => {
+            this.submitAuditData=response.data.data.content
+          },
+          ({type, info}) => {
+
+          })
+      },
       //取消审核
       goExit(){
         this.pageNumber = "";
@@ -942,6 +1030,13 @@
           })
       },
       //通过设备ID查找相关负责人员
+      isShowWorkPerson(params) {
+        this.dialogVisible1 = true;
+        if (params.type === "showLook") {
+          this.findByDeviceId(params.rowData.id);
+          this.person = true;
+        }
+      },
       findByDeviceId(deviceId){
         this.Axios(
           {
@@ -1119,7 +1214,6 @@
           this.toInsertPart()
         }
       },
-
       toInsertPart(){
         for (let i in this.workSheetMaterialTableData) {
           if (this.workSheetMaterialTableData[i].partCategory === "普通件") {
@@ -1206,13 +1300,43 @@
       //计划详情
       maintenancePlanValue(value){
         this.maintenancePlan = value;
-        if(this.maintenancePlan.maintenanceType === 0){
-          this.maintenancePlan.maintenanceType = "维修";
-        }
-        if(this.maintenancePlan.maintenanceType === 1){
-          this.maintenancePlan.maintenanceType = "保养";
-        }
+        if(value.maintenanceType===0) {
+          if (this.maintenancePlan.maintenanceClassify === 1) {
+            this.maintenancePlan.maintenanceClassify = "日常检修（DM）";
+          }
+          if (this.maintenancePlan.maintenanceClassify === 2) {
+            this.maintenancePlan.maintenanceClassify = "定期检修（TBM）";
+          }
+          if (this.maintenancePlan.maintenanceClassify === 3) {
+            this.maintenancePlan.maintenanceClassify = "定期检修（TBM）";
+          }
+          if (this.maintenancePlan.maintenanceClassify === 4) {
+            this.maintenancePlan.maintenanceClassify = "定期检修（TBM）";
+          }
+        }else{
+          if (this.maintenancePlan.maintenanceClassify === 1) {
+            this.maintenancePlan.maintenanceClassify = "例行保养";
+          }
+          if (this.maintenancePlan.maintenanceClassify === 2) {
+            this.maintenancePlan.maintenanceClassify = "季节性保养";
+          }
+          if (this.maintenancePlan.maintenanceClassify === 3) {
+            this.maintenancePlan.maintenanceClassify = "换季保养";
+          }
+          if (this.maintenancePlan.maintenanceClassify === 4) {
+            this.maintenancePlan.maintenanceClassify = "磨合期保养";
+          }
+          if (this.maintenancePlan.maintenanceClassify === 5) {
+            this.maintenancePlan.maintenanceClassify = "转移保养";
+          }
+          if (this.maintenancePlan.maintenanceClassify === 6) {
+            this.maintenancePlan.maintenanceClassify = "停放保养";
+          }
+          if (this.maintenancePlan.maintenanceClassify === 7) {
+            this.maintenancePlan.maintenanceClassify = "其他";
+          }
 
+        }
         if(this.maintenancePlan.maintenanceLevel===1){
           this.maintenancePlan.maintenanceLevel = "小";
         }if(this.maintenancePlan.maintenanceLevel===2){
@@ -1261,18 +1385,20 @@
       },
       //回执信息
       workReceiptInfoValue(value){
-        this.workReceiptInfo = value
-        for(let i in this.workReceiptInfo){
-          if(this.workReceiptInfo[i].dealState==0){
-            this.workReceiptInfo[i].dealState="已处理"
-          }
-          if(this.workReceiptInfo[i].dealState==1){
-            this.workReceiptInfo[i].dealState="未处理"
-          }
-          if(this.workReceiptInfo[i].dealState==2){
-            this.workReceiptInfo[i].dealState="已取消"
-          }
-        }
+       if(value.length>0){
+         this.workReceiptInfo = value;
+         for(let i in this.workReceiptInfo){
+           if(this.workReceiptInfo[i].dealState==0){
+             this.workReceiptInfo[i].dealState="已处理"
+           }
+           if(this.workReceiptInfo[i].dealState==1){
+             this.workReceiptInfo[i].dealState="未处理"
+           }
+           if(this.workReceiptInfo[i].dealState==2){
+             this.workReceiptInfo[i].dealState="已取消"
+           }
+         }
+       }
       },
       //流程信息
       flowInfo(value){
@@ -1285,6 +1411,30 @@
       this.overhaulLoad(this.workId);
     }
   };
+  Vue.component("table-workPerson", {
+    template: `<span>
+        <el-tooltip class="item" effect="dark" content="查看" placement="top">
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="showLook(rowData,index)" style='font-size:20px' class='iconfont'>&#xe734;</i></a>
+        </el-tooltip>
+        </span>`,
+    props: {
+      rowData: {
+        type: Object
+      },
+      field: {
+        type: String
+      },
+      index: {
+        type: Number
+      }
+    },
+    methods: {
+      showLook() {
+        let params = { type: "showLook", index: this.index, rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      },
+    }
+  });
   Vue.component("table-upkeepAndTurnaroundPlans", {
     template: `<span>
           <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe635;</i></a>

@@ -170,7 +170,18 @@
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
-            overflowTitle: true
+            overflowTitle: true,
+            formatter:function (rowData) {
+              if(rowData.state ===0 )return `<span>待审核</span>`;
+              if(rowData.state ===1 )return `<span>执行中</span>`;
+              if(rowData.state ===2 )return `<span>已禁用</span>`;
+              if(rowData.state ===3 )return `<span>已删除</span>`;
+              if(rowData.state ===4 )return `<span>审核中</span>`;
+              if(rowData.state ===6 )return `<span>已消除</span>`;
+              if(rowData.state ===10 )return `<span>已驳回</span>`;
+              if(rowData.state ===12 )return `<span>已停止</span>`;
+              if(rowData.state ===14 )return `<span>已完成</span>`;
+            }
           },
           {
             field: "maintenanceType",
@@ -179,7 +190,11 @@
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
-            overflowTitle: true
+            overflowTitle: true,
+            formatter:function (rowData) {
+              if(rowData.maintenanceType ===0 )return `<span>维修</span>`;
+              if(rowData.maintenanceType ===1 )return `<span>保养</span>`;
+            }
           },
           {
             field: "maintenanceLevel",
@@ -224,7 +239,13 @@
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
-            overflowTitle: true
+            overflowTitle: true,
+            formatter:function (rowData) {
+              if(rowData.frequencyType ===-1 )return `<span>单次</span>`;
+              if(rowData.frequencyType ===1 )return `<span>天</span>`;
+              if(rowData.frequencyType ===2 )return `<span>周</span>`;
+              if(rowData.frequencyType ===3 )return `<span>月</span>`;
+            }
           },
           {
             field: "maintenanceCc",
@@ -392,50 +413,6 @@
         }
         this.tableData = arr;
         for (let i = 0; i < this.tableData.length; i++) {
-          if (this.tableData[i].state === 0) {
-            this.tableData[i].state = "待审核";
-          }
-          if (this.tableData[i].state === 1) {
-            this.tableData[i].state = "执行中";
-          }
-          if (this.tableData[i].state === 2) {
-            this.tableData[i].state = "已禁用";
-          }
-          if (this.tableData[i].state === 3) {
-            this.tableData[i].state = "已删除";
-          }
-          if (this.tableData[i].state === 4) {
-            this.tableData[i].state = "审核中";
-          }
-          if (this.tableData[i].state === 6) {
-            this.tableData[i].state = "已消除";
-          }
-          if (this.tableData[i].state === 10) {
-            this.tableData[i].state = "已驳回";
-          }
-          if (this.tableData[i].state === 12) {
-            this.tableData[i].state = "已停止";
-          }
-          if (this.tableData[i].state === 14) {
-            this.tableData[i].state = "已完成";
-          }
-
-          this.tableData[i].maintenanceType === 0 ?
-            this.tableData[i].maintenanceType = "维修" :
-            this.tableData[i].maintenanceType = "保养";
-
-          if (this.tableData[i].frequencyType === -1) {
-            this.tableData[i].frequencyType = "单次";
-          }
-          if (this.tableData[i].frequencyType === 1) {
-            this.tableData[i].frequencyType = "天";
-          }
-          if (this.tableData[i].frequencyType === 2) {
-            this.tableData[i].frequencyType = "周";
-          }
-          if (this.tableData[i].frequencyType === 3) {
-            this.tableData[i].frequencyType = "月";
-          }
           this.planLevel.forEach((item)=>{
             this.tableData[i].maintenanceLevel === item.id ? this.tableData[i].maintenanceLevel=item.levelDesc:"";
           });
@@ -499,31 +476,11 @@
           );
         });
       },
-      stopDiscontinuation() {
-        this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
-          let qs = require("qs");
-          let data = qs.stringify({ maintenanceIds: this.maintenanceIds });
-          this.Axios(
-            {
-              params: data,
-              type: "post",
-              url: "/mplan/discontinuation",
-              option:{successMsg:"操作成功"}
-            },
-            this
-          ).then(
-            response => {
-              this.load();
-            },
-            ({ type, info }) => {}
-          );
-        });
-      },
       stopDiscontinuationOne(maintenanceId, state) {
         if (state !== "待审核") {
           this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
             let qs = require("qs");
-            let data = qs.stringify({ maintenanceIds: maintenanceId });
+            let data = qs.stringify({ maintenanceIds: state });
             this.Axios(
               {
                 params: data,
@@ -534,7 +491,7 @@
               this
             ).then(
               response => {
-                this.load();
+                this.reload();
               },
               ({ type, info }) => {}
             );
@@ -683,7 +640,6 @@
     }
   });
 </script>
-
 <style lang="less" scoped>
   @blue: #409eff;
   @Success: #67c23a;

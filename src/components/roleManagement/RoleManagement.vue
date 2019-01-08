@@ -195,7 +195,7 @@
             type: "post",
             url: "/role/update",
             option: {
-              successMsg:"修改成功"
+              successMsg:"保存成功"
             }
           },
           this

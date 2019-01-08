@@ -296,14 +296,16 @@
         this.submitAuditInfo = true;
         this.Axios(
           {
-            params:{maintenanceId:this.companyName.id},
+            params:{faultId:this.companyName.id,
+              page:1, size:20
+            },
             type: "get",
-            url: "/mplan/auditList",
+            url: "/fault/auditList",
             option:{enableMsg:false}
           },
           this
         ).then(response => {
-            this.submitAuditData = response.data.data.content;
+            this.submitAuditData=response.data.data.content
           },
           ({type, info}) => {
 
