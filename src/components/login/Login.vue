@@ -919,8 +919,6 @@ export default {
     }
   },
   mounted() {
-    document.getElementById('deal-content').innerText="<p>你是不是傻</p>"
-    // $("#deal-content").html('你是不是傻')
   },
   created () {
     this.dealMsg()
