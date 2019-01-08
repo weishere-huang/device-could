@@ -17,6 +17,7 @@
           :visible.sync="outerVisible"
         >
           <el-form
+            
             label-position=right
             label-width="120px"
             :model="formLabelAlign"
