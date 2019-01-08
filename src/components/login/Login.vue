@@ -1163,9 +1163,7 @@ export default {
   }
   
 }
-.el-dialog__header .el-dialog__headerbtn{
-    top: 1px !important;
-  }
+
   .el-dialog__body{
     font-size: 0px;
   }

@@ -172,10 +172,18 @@ body {
 .el-dialog__header {
   background: -webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(rgba(217, 217, 218, 0.5)));
   border-bottom: solid 1px #ddd;
-  padding: 10px !important;
+  padding: 0 0 0 10px !important;
+  height: 40px !important;
+}
+.el-dialog__header .el-dialog__title {
+  font-size: 16px !important;
 }
 .el-dialog__header .el-dialog__headerbtn {
-  top: 14px;
+  top: 11px;
+}
+.el-dialog__body {
+  font-size: 0px !important;
+  line-height: 0px !important;
 }
 .el-upload--picture-card {
   width: 80px;
