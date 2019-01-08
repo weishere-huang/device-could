@@ -228,6 +228,17 @@
             columnAlign: "center",
             isResize: true,
             overflowTitle: true,
+            formatter:function (rowData) {
+              if(rowData.state ===0 )return `<span style="color: #ff6600">待审核</span>`;
+              if(rowData.state ===2 )return `<span style="color: #c48382">已禁用</span>`;
+              if(rowData.state ===4 )return `<span style="color: #409dfe">审核中</span>`;
+              if(rowData.state ===5 )return `<span style="color: #00b400">执行中</span>`;
+              if(rowData.state ===6 )return `<span style="color: #999999">已消除</span>`;
+              if(rowData.state ===7 )return `<span style="color: #c48382">已撤销</span>`;
+              if(rowData.state ===10 )return `<span style="color: #59007a">已驳回</span>`;
+              if(rowData.state ===12 )return `<span style="color: #999999">已停止</span>`;
+              if(rowData.state ===14 )return `<span style="color: #999999">已完成</span>`;
+            }
           },
           {
             field: "deviceName",
@@ -272,7 +283,14 @@
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
-            overflowTitle: true
+            overflowTitle: true,
+            formatter:function (rowData) {
+              if(rowData.faultSource ===0 ){
+                return `<span>人工提交</span>`
+              }else{
+                return `<span>设备采集</span>`
+              }
+            }
           },
           {
             field: "faultDesc",
@@ -420,7 +438,6 @@
           response => {
             this.pageNumber = response.data.data.totalElements;
             this.tableData = response.data.data.content;
-            this.springReplacement();
             this.tableDate = this.tableData;
           },
           ({ type, info }) => {}
@@ -451,49 +468,6 @@
           .catch(_=>{
           })
       },
-      springReplacement() {
-        for (let i = 0; i < this.tableData.length; i++) {
-          if (this.tableData[i].state === 0) {
-            this.tableData[i].state = "待审核";
-          }
-          if (this.tableData[i].state === 1) {
-            this.tableData[i].state = "执行中";
-          }
-          if (this.tableData[i].state === 2) {
-            this.tableData[i].state = "禁用";
-          }
-          if (this.tableData[i].state === 3) {
-            this.tableData[i].state = "已删除";
-          }
-          if (this.tableData[i].state === 4) {
-            this.tableData[i].state = "审核中";
-          }
-          if (this.tableData[i].state === 5) {
-            this.tableData[i].state = "执行中";
-          }
-          if (this.tableData[i].state === 6) {
-            this.tableData[i].state = "已消除";
-          }
-          if (this.tableData[i].state === 7) {
-            this.tableData[i].state = "已撤销";
-          }
-          if (this.tableData[i].state === 10) {
-            this.tableData[i].state = "已驳回";
-          }
-          if (this.tableData[i].state === 12) {
-            this.tableData[i].state = "已停止";
-          }
-          if (this.tableData[i].state === 14) {
-            this.tableData[i].state = "已完成";
-          }
-          if (this.tableData[i].faultSource === "0") {
-            this.tableData[i].faultSource = "人工提交";
-          }
-          if (this.tableData[i].faultSource === "1") {
-            this.tableData[i].faultSource = "设备采集";
-          }
-        }
-      },
       search() {
         if (this.faultKey !== "") {
           this.toSearch();
@@ -519,7 +493,6 @@
           response => {
             this.pageNumber = response.data.data.totalElements;
             this.tableData = response.data.data.content;
-            this.springReplacement();
             this.tableDate = this.tableData;
             this.pageIsOk = false;
           },
