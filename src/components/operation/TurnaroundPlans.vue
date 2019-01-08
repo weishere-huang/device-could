@@ -4,7 +4,7 @@
     <div class="userCase" :class="[{hide:isHideList}]">
       <div class="top">
         <permission-button
-          permCode='overhaul_add_lookup.overhaul_add_save'
+          permCode='operation_overhaul_add_lookup.operation_overhaul_add_save'
           banType='alert'
           size="small"
           type="primary"
@@ -290,10 +290,9 @@
             params.rowData["id"],
             params.rowData["state"]
           );
-          console.log(params.rowData["state"])
         }else if (params.type === "submitAudit") {
           this.maintenanceIds = params.rowData.id;
-          params.rowData.state==="待审核" ? this.outerVisible = true : this.$message.error('对不起、不能审核'+params.rowData.state+'的计划')
+          params.rowData.state===0 ? this.outerVisible = true : this.$message.error('对不起、只能操作待审核的计划')
         }
       },
       getPersonnel(params) {
@@ -467,7 +466,7 @@
         if (state === 1 ) {
           this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
             let qs = require("qs");
-            let data = qs.stringify({ maintenanceIds: state });
+            let data = qs.stringify({ maintenanceIds: maintenanceId });
             this.Axios(
               {
                 params: data,
@@ -478,7 +477,6 @@
               this
             ).then(
               response => {
-                console.log(response);
                 this.reload();
               },
               ({ type, info }) => {}
@@ -570,7 +568,7 @@
         </el-tooltip>
           &nbsp;
         <el-tooltip class="item" effect="dark" content="审核" placement="top">
-            <permission-button permCode='overhaul_lookup.overhaul_audit'
+            <permission-button permCode='operation_overhaul_lookup.operation_overhaul_audit'
                      banType='disable' type="text"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
                     <i @click.stop.prevent="submitAudit(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
@@ -578,7 +576,7 @@
           </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="停止" placement="top">
-            <permission-button permCode='overhaul_lookup.overhaul_stop'
+            <permission-button permCode='operation_overhaul_lookup.operation_overhaul_stop'
                      banType='disable' type="text"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
                     <i @click.stop.prevent="stop(rowData,index)" style='font-size:16px' class='iconfont'>&#xe603;</i>
@@ -586,7 +584,7 @@
         </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
-            <permission-button permCode='overhaul_lookup.overhaul_delete'
+            <permission-button permCode='operation_overhaul_lookup.operation_overhaul_delete'
                      banType='disable' type="text"
                      style="text-decoration: none;color:#F56C6C;margin-left: -2px">
                     <i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i>

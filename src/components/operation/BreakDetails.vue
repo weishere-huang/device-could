@@ -6,10 +6,13 @@
           size="small" type="primary" @click="toback"  icon="el-icon-arrow-left">返回</el-button>
         <!--<el-button size="small" @click="commitAudit">提交审核</el-button>-->
         <permission-button
-          permCode='fault_lookup.fault_dispel'
+          permCode='operation_fault_lookup.operation_fault_dispel'
           banType='hide'
           size="small" type="primary" @click="dispel" v-if="isOk"><i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;故障消除</permission-button>
-        <el-button size="small" type="primary" @click="auditInfo" icon="el-icon-search">审核详情</el-button>
+        <permission-button
+          permCode='operation_fault_detail_lookup.operation_fault_detail_audit'
+          banType='hide'
+          size="small" type="primary" @click="auditInfo" icon="el-icon-search">审核详情</permission-button>
         <!-- 故障消除弹框 -->
         <el-dialog
           title="故障消除"

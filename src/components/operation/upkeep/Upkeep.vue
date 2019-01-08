@@ -4,8 +4,8 @@
     <div class="userCase" :class="[{hide:isHideList}]">
       <div class="tob">
         <permission-button
-          permCode='maintain_add_lookup.maintain_add_save'
-          banType='alert'
+          permCode='operation_maintain_add_lookup.operation_maintain_add_save'
+          banType='hide'
           size="small"
           type="primary"
           @click="toUpkeepAdd"
@@ -305,7 +305,7 @@
           );
         }else if (params.type === "submitAudit") {
           this.maintenanceIds = params.rowData.id;
-          params.rowData.state==="待审核" ? this.outerVisible = true : this.$message.error('对不起、不能审核'+params.rowData.state+'的计划')
+          params.rowData.state===0 ? this.outerVisible = true : this.$message.error('对不起、只能操作待审核的计划')
         }
       },
       toAmend(rowIndex, rowData, column) {
@@ -477,26 +477,27 @@
         });
       },
       stopDiscontinuationOne(maintenanceId, state) {
-        if (state !== "待审核") {
+        if (state !== 0) {
           this.$confirm("计划一旦停用将无法撤销，请确认选择", "提示").then(_ => {
             let qs = require("qs");
-            let data = qs.stringify({ maintenanceIds: state });
+            let data = qs.stringify({ maintenanceIds: maintenanceId });
             this.Axios(
               {
                 params: data,
                 type: "post",
                 url: "/mplan/discontinuation",
-                option:{successMsg:"操作成功"}
+                // option:{successMsg:"操作成功"}
               },
               this
             ).then(
               response => {
+                console.log(response.data);
                 this.reload();
               },
               ({ type, info }) => {}
             );
           });
-        } else if (state === "停用") {
+        } else if (state === 12) {
           this.$message.error("该计划已经停用");
         } else {
           this.$message.error("不能停用待审核状态的计划");
@@ -584,7 +585,7 @@
         </el-tooltip>
          &nbsp;
         <el-tooltip class="item" effect="dark" content="审核" placement="top">
-         <permission-button permCode='maintain_lookup.maintain_audit'
+         <permission-button permCode='operation_maintain_lookup.operation_maintain_audit'
                      banType='disable' type="text"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
                     <i @click.stop.prevent="submitAudit(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
@@ -592,7 +593,7 @@
           </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="停止" placement="top">
-        <permission-button permCode='maintain_lookup.maintain_stop'
+        <permission-button permCode='operation_maintain_lookup.operation_maintain_stop'
                      banType='disable' type="text"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
                     <i @click.stop.prevent="stop(rowData,index)" style='font-size:16px' class='iconfont'>&#xe603;</i>
@@ -600,7 +601,7 @@
         </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
-        <permission-button permCode='maintain_lookup.maintain_delete'
+        <permission-button permCode='operation_maintain_lookup.operation_maintain_delete'
                      banType='disable' type="text"
                      style="text-decoration: none;color:#F56C6C;margin-left: -2px">
                     <i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i>
