@@ -123,7 +123,7 @@ export default {
           // isResize: true,
           overflowTitle: true,
           formatter: function(rowData, rowIndex, pagingIndex, field) {
-            return rowData.state === 0
+            return rowData.isRead === 0
               ?`<span style="color:#ff6600">未读</span>`
               :`<span>已读</span>`
           },
@@ -291,6 +291,7 @@ export default {
         this
       )
         .then(result => {
+          console.log(result.data.data)
           this.tableData = result.data.data.content;
           this.totoelement = result.data.data.totalElements;
           this.NotReadMsgCount();
@@ -349,7 +350,10 @@ export default {
           params:{ids:this.ids},
           url: "/message/UpdateMsgRead/",
           type: "get",
-          option:{requestTarget:"m"}
+          option:{
+            requestTarget:"m",
+            enableMsg:false,
+          }
         },
         this
       )
@@ -399,6 +403,7 @@ export default {
       this.msgDetail = rowData;
       this.detailsShow = true;
       this.ids = rowData.id;
+      console.log(rowData);
       this.updateMessageRead();
       this.findonemsg();
     },
@@ -408,8 +413,8 @@ export default {
           url: "/message/findOneMsg/" + this.ids,
           type: "get",
           option:{
+            enableMsg:false,
             requestTarget:"m",
-            enableMsg:false
           }
         },
         this

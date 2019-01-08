@@ -143,7 +143,7 @@ export default {
     return {
 
       formInline: {
-         time: new Date().toLocaleString()
+         time: new Date().toLocaleString().replace(/[\u4e00-\u9fa5]/g,"")
       },
       //入库单号
       godownEntryNo: "",
@@ -382,8 +382,6 @@ export default {
       this.classifyId = id;
       this.findbyclassifyId();
     },
-    gezhongconso() {
-    },
     findbyclassifyId() {
       //根据备件分类查询备件列表1
       this.Axios(
@@ -441,7 +439,7 @@ export default {
       ).then(
         result => {
           if (result.data.code === 200) {
-            this.$message("添加成功");
+            this.$message.success("添加成功");
             this.reload();
           }
         },
