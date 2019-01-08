@@ -630,7 +630,7 @@ Vue.component("table-equipment", {
           <el-tooltip class="item" effect="dark" content="删除" placement="top">
             <permission-button
              permCode='device_lookup.device_delete'
-            banType='hide' style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></permission-button>
+            banType='alert' style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></permission-button>
           </el-tooltip>
         </span>`,
   props: {

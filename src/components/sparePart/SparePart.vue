@@ -4,8 +4,6 @@
     <router-view></router-view>
     <div class="top" :class="[{hide:isHideList}]">
       <permission-button
-        permCode='partInfo_add_lookup.partInfo_add_save'
-        banType='alert'
         size="small"
         type="primary"
         @click="toAdd"
