@@ -20,7 +20,10 @@
             <permission-button
               permCode='role_lookup.role_delete'
               banType='hide'
-              type="text" :label="item.id" @click="expurgate($event)" class='iconfont icon-shanchu1'></permission-button>
+              style="font-size:14px;"
+              type="text" :label="item.id" @click="expurgate($event)" >
+                <i class="iconfont" style="font-size:14px;">&#xe66b;</i>
+              </permission-button>
           </li>
         </ul>
       </div>
@@ -354,14 +357,14 @@
           height: 30px;
           line-height: 30px;
           cursor: pointer;
-          button:nth-child(2){
+          button{
             color: #f56c6c;
-            display: none;
+            opacity: 0;
           }
           &:hover {
             color: @blue;
-            button:nth-child(2){
-              display: inline-block;
+            button{
+             opacity:1;
             }
           }
         }
