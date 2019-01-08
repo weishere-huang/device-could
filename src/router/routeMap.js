@@ -220,7 +220,7 @@ export default [{
   },
   {
     menu: '工单系统',
-    permissionCode: 'workOrder',
+    permissionCode: 'work_list_lookup',
     icon: '&#xe60b;',
     subMenu: [{
       menu: '工单列表',
@@ -231,13 +231,13 @@ export default [{
         menu: '故障工单详情',
         routeReg: /^\/WorkOrder\/BreakdownOrder\/\d{1,}$/i,
         visible: true,
-        permissionCode: 'work_detail_lookup'
+        permissionCode: 'work_list_detail_lookup'
       },
       {
         menu: '检修保养工单详情',
         routeReg: /^\/WorkOrder\/UpkeepAndTurnaroundPlans\/\d{1,}$/i,
         visible: true,
-        permissionCode: 'work_detail_lookup'
+        permissionCode: 'work_list_detail_lookup'
       }
     ]
   },
