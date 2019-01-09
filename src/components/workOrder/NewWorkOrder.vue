@@ -1,0 +1,422 @@
+<template>
+  <div class="Reported">
+    <div class="top">
+      <permission-button
+        size="small"
+        type="primary"
+      >
+        <i
+          style='font-size:12px'
+          class='iconfont'
+        >&#xe645;</i>&nbsp;保存</permission-button>
+    </div>
+    <div class="bottom">
+      <div class="fault-details">
+        <h5>工单信息</h5>
+        <el-form label-width="90px">
+          <el-form-item label="工单类型：">
+            <el-radio
+              v-model="radio"
+              label="1"
+            >故障</el-radio>
+            <el-radio
+              v-model="radio"
+              label="2"
+            >检修</el-radio>
+            <el-radio
+              v-model="radio"
+              label="3"
+            >保养</el-radio>
+          </el-form-item>
+          <el-form-item label="影响范围：">
+            <el-select
+              v-model="value"
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in scope"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="故障等级：">
+            <el-select
+              v-model="value"
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in grade"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="故障描述：">
+            <el-input
+              type="textarea"
+              :rows="2"
+              placeholder="请输入内容"
+            >
+            </el-input>
+          </el-form-item>
+          <el-form-item label="原因分析：">
+            <el-input
+              type="textarea"
+              :rows="2"
+              placeholder="请输入内容"
+            >
+            </el-input>
+          </el-form-item>
+          <el-form-item label="照片：">
+            <el-upload
+              action="https://jsonplaceholder.typicode.com/posts/"
+              list-type="picture-card"
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove"
+            >
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible">
+              <img
+                width="100%"
+                :src="dialogImageUrl"
+                alt=""
+              >
+            </el-dialog>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div class="list">
+        <h5>设备列表</h5>
+        <div style="padding:0 10px;">
+          <permission-button
+            size="small"
+            type="primary"
+            @click="amendPlanShow=true"
+          ><i
+              style='font-size:12px'
+              class='iconfont'
+            >&#xe62f;</i>&nbsp;设备添加
+          </permission-button>
+          <el-dialog
+            title="添加设备"
+            :visible.sync="amendPlanShow"
+            width="900px"
+          >
+            <amend-plan
+              v-on:isHide="isHide"
+              v-on:toAdd="toAdd"
+            ></amend-plan>
+          </el-dialog>
+        </div>
+        <el-col
+          :span="24"
+          style="padding:0 10px;margin-top:10px;"
+        >
+          <v-table
+            is-vertical-resize
+            is-horizontal-resize
+            :vertical-resize-offset='100'
+            column-width-drag
+            :multiple-sort="false"
+            style="width:100%;"
+            :columns="columns"
+            :table-data="tableData"
+            row-hover-color="#eee"
+            row-click-color="#edf7ff"
+            @on-custom-comp="customCompFunc"
+            ref="ReportedTable"
+          ></v-table>
+        </el-col>
+      </div>
+    </div>
+    <el-dialog
+      title="人员列表"
+      :visible.sync="person"
+      width="50%"
+    >
+      <div style="padding:10px">
+        <v-table
+          is-horizontal-resize
+          column-width-drag
+          :multiple-sort="false"
+          style="width:100%;"
+          :columns="personTable"
+          :table-data="personData"
+          row-hover-color="#eee"
+          row-click-color="#edf7ff"
+          :row-height=30
+        ></v-table>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+<script>
+import amendPlan from "../operation/upkeep/AmendPlan";
+import Vue from "vue";
+Vue.component("table-NewWorkOrder", {
+  template: `<span>
+        <el-tooltip class="item" effect="dark" content="查看" placement="top">
+            <i style='font-size:16px;cursor:pointer;color:#409eff;' class='iconfont'  @click.stop.prevent="add(rowData,index)">&#xe734;</i>
+        </el-tooltip>
+
+        </span>`,
+  props: {
+    rowData: {
+      type: Object
+    },
+    field: {
+      type: String
+    },
+    index: {
+      type: Number
+    }
+  },
+  methods: {
+    add() {
+      let params = { type: "add", index: this.index, rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    }
+  }
+});
+export default {
+  inject: ["reload"],
+  data() {
+    return {
+      radio: "1",
+      person: false,
+      personTable: [
+        {
+          field: "workTypeName",
+          title: "职责",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "name",
+          title: "姓名",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "phone",
+          title: "手机号",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "organizeName",
+          title: "组织单位/部门",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        },
+        {
+          field: "position",
+          title: "岗位",
+          width: 60,
+          titleAlign: "center",
+          columnAlign: "left",
+          isResize: true
+        }
+      ],
+      personData: [],
+      amendPlanShow: false,
+      scope: [
+        {
+          value: 0,
+          label: "停机"
+        },
+        {
+          value: 1,
+          label: "生产波动"
+        },
+        {
+          value: 2,
+          label: "设备本体"
+        },
+        {
+          value: 3,
+          label: "其他"
+        }
+      ],
+      grade: [
+        {
+          value: 0,
+          label: "低"
+        },
+        {
+          value: 1,
+          label: "中"
+        },
+        {
+          value: 2,
+          label: "高"
+        }
+      ],
+      dialogImageUrl: "",
+      dialogVisible: false,
+      columns: [
+        {
+          field: "name",
+          title: "设备编号",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+          // orderBy: ""
+        },
+
+        {
+          field: "position",
+          title: "设备名称",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "ra",
+          title: "型号/规格",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "phone",
+          title: "设备位置",
+          width: 90,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true
+        },
+        {
+          field: "details",
+          title: "人员",
+          width: 40,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true,
+          componentName: "table-NewWorkOrder"
+        }
+      ],
+      tableData: []
+    };
+  },
+  methods: {
+    isHide(params) {
+      this.amendPlanShow = params;
+    },
+    toAdd(params) {
+      this.tableData = params.values;
+      this.amendPlanShow = params.isOk;
+    },
+    findByDeviceId(deviceId) {
+      this.Axios(
+        {
+          params: { deviceId: deviceId },
+          type: "get",
+          url: "/device/findDeviceWorker",
+          option: { enableMsg: false }
+        },
+        this
+      ).then(
+        response => {
+          // console.log(response.data.data);
+          this.personData = response.data.data;
+        },
+        ({ type, info }) => {}
+      );
+    },
+    customCompFunc(params) {
+      if (params.type === "add") {
+        this.findByDeviceId(params.rowData.id);
+        this.person = true;
+      }
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
+    re() {}
+  },
+  created() {
+    EventBus.$on("sideBarTroggleHandle", isCollapse => {
+      window.setTimeout(() => {
+        this.$refs.ReportedTable.resize();
+      }, 500);
+    });
+  },
+  components: {
+    amendPlan
+  }
+};
+</script>
+
+<style lang="less">
+@blue: #409eff;
+@Success: #67c23a;
+@Warning: #e6a23c;
+@Danger: #f56c6c;
+@Info: #dde2eb;
+@border: 1px solid #dde2eb;
+.Reported {
+  width: 100%;
+  .top {
+    width: 100%;
+    padding: 10px;
+    border: @border;
+    border-radius: 5px;
+  }
+  .bottom {
+    width: 100%;
+    padding: 10px;
+    border: @border;
+    border-radius: 5px;
+    margin-top: 10px;
+    overflow: hidden;
+    .fault-details {
+      border: @border;
+      border-radius: 5px;
+      width: 35%;
+      height: 480px;
+      min-width: 300px;
+      float: left;
+      padding: 10px;
+    }
+    .list {
+      border: @border;
+      border-radius: 5px;
+      width: 60%;
+      height: 480px;
+      min-width: 600px;
+      float: left;
+      margin-left: 10px;
+      padding: 10px;
+    }
+    h5 {
+      position: relative;
+      top: -17px;
+      left: 15px;
+    }
+  }
+}
+</style>
