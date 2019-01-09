@@ -183,7 +183,7 @@ body {
   top: 11px;
 }
 .el-dialog__body {
-  line-height: 0px !important;
+  line-height: 0px ;
 }
 .el-upload--picture-card {
   width: 80px;
