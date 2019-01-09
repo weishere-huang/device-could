@@ -147,8 +147,8 @@
         >
         </el-option>
       </el-select> -->
-      <ul v-for="(item,index) in options" :key="index">
-        <li :class="active==index?'active-bgcolor':''" @click="workerTypeValue(item,index)">{{item.label}}</li>
+      <ul class="work-person">
+        <li v-for="(item,index) in options" :key="index" :class="active==index?'active-bgcolor':''" @click="workerTypeValue(item,index)">{{item.label}}</li>
       </ul>
       <div style="margin-top:10px;float:right;">
         <el-button
@@ -699,6 +699,11 @@ export default {
         color: red;
         font-weight: bold;
       }
+    }
+  }
+  .work-person{
+    li{
+      font-size: 14px !important;
     }
   }
 }

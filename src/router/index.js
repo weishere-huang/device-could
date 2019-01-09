@@ -17,6 +17,7 @@ import Category from '@/components/equipment/Category'
 import EquipmentAdd from '@/components/equipment/EquipmentAdd'
 import Redact from '@/components/equipment/Redact'
 import Operation from '@/components/operation/Operation'
+import Reported from '@/components/operation/Reported'
 import Upkeep from '@/components/operation/upkeep/Upkeep'
 import AmendPlan from '@/components/operation/upkeep/AmendPlan'
 import UpkeepAdd from '@/components/operation/upkeep/UpkeepAdd'
@@ -34,6 +35,7 @@ import Modification from '@/components/personnel/Modification'
 import User from '@/components/user/User'
 import EquipmentArchives from '@/components/equipmentArchives/EquipmentArchives'
 import WorkOrder from '@/components/workOrder/WorkOrder'
+import NewWorkOrder from '@/components/workOrder/NewWorkOrder'
 import BreakdownOrder from '@/components/workOrder/breakdownDetails/BreakdownOrder'
 import UpkeepAndTurnaroundPlans from '@/components/workOrder/upkeepAndTurnaroundPlans/UpkeepAndTurnaroundPlans'
 import KnowledgeBase from '@/components/knowledgeBase/KnowledgeBase'
@@ -47,6 +49,7 @@ import SparePart from '@/components/sparePart/SparePart'
 import SparePartsWarehouse from '@/components/sparePart/SparePartsWarehouse'
 import SparePartAdd from '@/components/sparePart/addAndAmend/SparePartAdd'
 import SparePartAmend from '@/components/sparePart/addAndAmend/SparePartAmend'
+import Output from '@/components/sparePart/Output'
 import WarehousingDetail from '@/components/sparePart/WarehousingDetail'
 import OutboundDetails from '@/components/sparePart/OutboundDetails'
 import SparePartsClassification from '@/components/sparePart/SparePartsClassification'
@@ -332,6 +335,17 @@ const router = new Router({
       }, ]
     },
     {
+      path: '/Reported',
+      name: 'Reported',
+      component: Reported,
+      props: {
+        pageName: '故障上报'
+      },
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
       path: '/TurnaroundPlans',
       name: 'TurnaroundPlans',
       props: {
@@ -471,7 +485,17 @@ const router = new Router({
         },
       ]
     },
-
+    {
+      path: '/NewWorkOrder',
+      name: 'NewWorkOrder',
+      props: {
+        pageName: '创建工单'
+      },
+      component: NewWorkOrder,
+      meta: {
+        requireAuth: true
+      },
+    },
     {
       path: '/KnowledgeBase',
       name: 'KnowledgeBase',
@@ -559,6 +583,17 @@ const router = new Router({
         pageName: '备件入库'
       },
       component: SparePartsWarehouse,
+      meta: {
+        requireAuth: true
+      },
+    },
+    {
+      path: '/Output',
+      name: 'Output',
+      props: {
+        pageName: '备件出库'
+      },
+      component: Output,
       meta: {
         requireAuth: true
       },

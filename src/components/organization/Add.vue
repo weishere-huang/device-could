@@ -4,19 +4,18 @@
     v-show="show"
   >
     <div class="addcase">
-      <ul>
-        <li>
-          <label for="">名称：</label>
+      <el-form label-width="100px">
+        <el-form-item label="名称：">
           <el-input
             type="text"
             size="small"
             v-model="orgname"
+            style="width:273px;"
           ></el-input>
-        </li>
-        <li>
-          <label for="">类型：</label>
+        </el-form-item>
+        <el-form-item label="类型：">
           <el-select
-            style="width:70%"
+            style="width:273px;"
             v-model="value"
             placeholder="请选择"
           >
@@ -28,17 +27,17 @@
             >
             </el-option>
           </el-select>
-        </li>
-        <li>
-          <label style="display:inline-block;height:60px;vertical-align:top;">备注：</label>
+        </el-form-item>
+        <el-form-item label="备注：">
+          <!-- <label style="display:inline-block;height:60px;vertical-align:top;">备注：</label> -->
           <textarea
             type="textarea"
-            style="width:70%;height:60px;"
+            style="width:273px;height:60px;"
             v-model="orgInfo"
           ></textarea>
 
-        </li>
-      </ul>
+        </el-form-item>
+      </el-form>
       <div style="text-align:center;margin-top:20px">
           <el-button
             size="small"
