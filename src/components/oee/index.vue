@@ -8,7 +8,7 @@
         <el-main class="monitMainContent2">
           <section class="topWrap">
             <div>
-              <permission-button permCode='deviceOEE_add_lookup.device_OEE_add' banType="hide" size="small" type="primary" @click="$router.push({path: '/Oee/Add'})"><i class='el-icon-circle-plus-outline'></i> 新增OEE任务</permission-button>
+              <permission-button permCode='device_OEE_lookup.device_OEE_add' banType="hide" size="small" type="primary" @click="$router.push({path: '/Oee/Add'})"><i class='el-icon-circle-plus-outline'></i> 新增OEE任务</permission-button>
               <el-button size="small" style="margin-left:10px;" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
             </div>
             <div>
@@ -89,21 +89,23 @@ Vue.component("table-operation", {
   template: `<span>
         <el-tooltip class="item" effect="dark" content="结束" placement="top">
           <permission-button 
-          permCode='deviceOEE_termination_lookup.deviceOEE_termination_save' 
+          permCode='device_OEE_lookup.device_OEE_termination' 
           banType='disable'  
           type="text" @click="endOeeTask"><i style='font-size:16px' class='iconfont'>&#xe603;</i></permission-button>
         </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
           <permission-button 
-          permCode='deviceOEE_detail_lookup' 
+          permCode='device_OEE_lookup.device_OEE_edit' 
           banType='disable'  
           type="text"  @click="oeeTaskDetails"><i style='font-size:16px' class='iconfont'>&#xe734;</i></permission-button>
         </el-tooltip>
         &nbsp;
 
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
-            <permission-button type="text"   @click.stop.prevent="deleteRow(rowData,index)"><i style='font-size:16px;color:#F56C6C' class='iconfont'>&#xe66b;</i></permission-button>
+            <permission-button type="text" 
+            permCode='device_OEE_lookup.device_OEE_delete' 
+            banType='disable'   @click.stop.prevent="deleteRow(rowData,index)"><i style='font-size:16px;color:#F56C6C' class='iconfont'>&#xe66b;</i></permission-button>
           </el-tooltip>
         </span>`,
 

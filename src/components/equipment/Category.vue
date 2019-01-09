@@ -26,7 +26,7 @@
                   placement="top"
                 >
                   <permission-button
-                    permCode='deviceCate_lookup.deviceCate_add'
+                    permCode='device_cate_lookup.device_cate_add'
                     banType='hide'
                     type="text"
                     size="mini"
@@ -42,7 +42,7 @@
                   placement="top"
                 >
                   <permission-button
-                    permCode='deviceCate_lookup.deviceCate_edit'
+                    permCode='device_cate_lookup.device_cate_edit'
                     banType='hide'
                     type="text"
                     size="mini"
@@ -61,7 +61,7 @@
                   placement="top"
                 >
                   <permission-button
-                    permCode='deviceCate_lookup.deviceCate_delete'
+                    permCode='device_cate_lookup.device_cate_delete'
                     banType='hide'
                     type="text"
                     size="mini"

@@ -364,8 +364,8 @@ export default {
       },
       isshow: true,
       ishide: false,
-      nextshow: true,
-      backshow: false,
+      nextshow: false,
+      backshow: true,
       loginRules: {
         userName: [
           { required: true, message: "请输入用户名或手机号", trigger: "blur" },
@@ -1164,6 +1164,9 @@ export default {
   
 }
 
+  .el-dialog__body{
+    font-size: 0px;
+  }
 .el-dialog__footer{
     padding-bottom:10px !important; 
   }

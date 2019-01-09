@@ -107,7 +107,7 @@
             </el-form>
         </section>
         <span slot="footer" class="dialog-footer">
-            <el-button size="small" type="primary" @click="handleOK">立即创建</el-button>
+            <permission-button   permCode='device_OEE_add_lookup.device_OEE_add_save' banType='disable'  size="small" type="primary" @click="handleOK">立即创建</permission-button>
             <el-button size="small" @click="handleClose">取消</el-button>
         </span>
     </el-dialog>

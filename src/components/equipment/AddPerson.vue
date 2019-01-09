@@ -38,7 +38,11 @@
               placeholder="如姓名，电话"
               v-model="condition"
             ></el-input>
-            <el-button size="mini" type="primary" @click="findpeopler">搜索</el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="findpeopler"
+            >搜索</el-button>
             <span style="padding:0 10px;">最近搜索：</span>
             <span style="text-decoration: underline;"></span>
           </div>
@@ -120,22 +124,18 @@
     <div
       append-to-body
       class="person-type"
-      style="padding:10px; overflow: hidden;width:240px;"
+      style="padding:10px; overflow: hidden;width:150px;"
       v-show="innerVisible"
     >
-      <el-select
-        v-model="value1"
-        placeholder="请选择"
-        style="width:100%"
+      <ul
+        v-for="(item,index) in options"
+        :key="index"
       >
-        <el-option
-          v-for="item of options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
+        <li
+          :class="active==index?'active-bgcolor':''"
+          @click="workerTypeValue(item,index)"
+        >{{item.label}}</li>
+      </ul>
       <div style="margin-top:10px;float:right;">
         <el-button
           size="mini"
@@ -190,12 +190,9 @@ Vue.component("tab-component", {
       required: true
     },
     values: {},
-    changeTpye:{
-
-    }
+    changeTpye: {}
   },
-  template:
-     `<ul class="workerList"><li v-for="(item,index) of items.content">{{ item.workerName }}
+  template: `<ul class="workerList"><li v-for="(item,index) of items.content">{{ item.workerName }}
       <span style="display:inline;margin-left:5%;" >
         <el-select
           v-model="value"
@@ -203,6 +200,7 @@ Vue.component("tab-component", {
           style="width:50%"
           size="mini"
           @change="changeValue(value,item,items)"
+          disabled
         >
           <el-option
             v-for="item of options"
@@ -215,13 +213,13 @@ Vue.component("tab-component", {
       </span>
   <i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>`,
   methods: {
-    changeValue(data, rowdata,oldvalue) {
+    changeValue(data, rowdata, oldvalue) {
       this.value = data;
       let params = {};
       params = {
         value: data,
         person: rowdata,
-        oldvalue:oldvalue
+        oldvalue: oldvalue
       };
       this.$emit("changeTpye", params);
     }
@@ -243,14 +241,13 @@ Vue.component("table-add-person", {
     },
     index: {
       type: Number
-    },
+    }
   },
   methods: {
     add() {
       let params = { type: "add", index: this.index, rowData: this.rowData };
       this.$emit("on-custom-comp", params);
-    },
-
+    }
   }
 });
 export default {
@@ -264,10 +261,10 @@ export default {
   },
   data() {
     return {
-      personnelMsg:"",
+      personnelMsg: "",
       innerVisible: false,
       //搜索
-      pkeyword:"",
+      pkeyword: "",
       editableTabs: [
         {
           workerTypeName: "负责",
@@ -346,8 +343,8 @@ export default {
         label: "label"
       },
       value: "",
-      orgcode:"",
-      condition:"",
+      orgcode: "",
+      condition: "",
       options: [
         {
           value: "0",
@@ -370,25 +367,32 @@ export default {
           label: "操作人员"
         }
       ],
-      value1: ""
+      value1: "",
+      active: -1
     };
   },
   methods: {
+    workerTypeValue(item, index) {
+      this.value1 = item.value;
+      this.active = index;
+    },
     changeTpye(params) {
       // console.log(params);
       // console.log(this.editableTabs[params.oldvalue.workerType].content);
       // console.log(this.editableTabs);
       // debugger
-        this.editableTabs[params.oldvalue.workerType].content =  this.editableTabs[params.oldvalue.workerType].content.filter(item => item.id !== params.person.id)
-        // console.log("------")
-        // console.log(this.editableTabs[params.oldvalue.workerType].content);
-        // console.log(this.editableTabs);
-        this.editableTabs[params.value].content.push({
-          workerName: params.person.workerName,
-          id: params.person.id
-        });
-        // console.log("------")
-        // console.log(this.editableTabs);
+      this.editableTabs[params.oldvalue.workerType].content = this.editableTabs[
+        params.oldvalue.workerType
+      ].content.filter(item => item.id !== params.person.id);
+      // console.log("------")
+      // console.log(this.editableTabs[params.oldvalue.workerType].content);
+      // console.log(this.editableTabs);
+      this.editableTabs[params.value].content.push({
+        workerName: params.person.workerName,
+        id: params.person.id
+      });
+      // console.log("------")
+      // console.log(this.editableTabs);
     },
     customCompFunc(params) {
       if (params.type === "add") {
@@ -397,7 +401,6 @@ export default {
         this.personnelMsg = params;
         this.innerVisible = true;
         // this.getRowData(params.rowData)
-
       }
     },
     addPerson() {
@@ -419,10 +422,9 @@ export default {
         });
       }
     },
-    getNode(a) {
-    },
+    getNode(a) {},
     handleNodeClick(data) {
-      this.orgcode=data.code
+      this.orgcode = data.code;
       this.findpeopler();
     },
     isHide() {
@@ -466,12 +468,12 @@ export default {
         {
           params: {
             organizeCode: this.orgcode,
-            page:this.pageIndex,
-            size:this.pageSize,
-            condition:this.condition,
+            page: this.pageIndex,
+            size: this.pageSize,
+            condition: this.condition
           },
           option: {
-            enableMsg:false
+            enableMsg: false
           },
           type: "get",
           url: "/employee/findByOrganizeCode",
@@ -490,37 +492,37 @@ export default {
             this.tablenum = result.data.data.totalElements;
           }
         },
-        ({ type, info }) => {
-        }
+        ({ type, info }) => {}
       );
     },
     toAdd() {
-
       this.$props.personAddHandler(this.editableTabs);
-
     },
     deletes() {
-      this.editableTabs[this.editableTabsValue].content=[];
+      this.editableTabs[this.editableTabsValue].content = [];
     },
-    workerDelete(data) {
-      this.editableTabs[this.editableTabsValue].content = this.editableTabs[
-        this.editableTabsValue
-      ].content.filter(item => item.id !== data.id);
+    workerDelete(value, data) {
+      this.editableTabs[data.workerType].content = this.editableTabs[
+        data.workerType
+      ].content.filter(item => item.id !== value.id);
     },
 
-    psearch(){
+    psearch() {
       let newarr = new Array();
-      for(let i=0;i<this.tableData.length;i++){
+      for (let i = 0; i < this.tableData.length; i++) {
         // this.tableData = this.tableData[i]
         //   .filter(item => item.name.indexOf(this.pkeyword) >= 0  && item.phone.indexOf(this.pkeyword) >= 0 && item.position.indexOf(this.pkeyword) >= 0);
-        if(this.tableData[i].name.indexOf(this.pkeyword) >= 0 || this.tableData[i].phone.indexOf(this.pkeyword) >= 0 || this.tableData[i].position.indexOf(this.pkeyword) >= 0){
+        if (
+          this.tableData[i].name.indexOf(this.pkeyword) >= 0 ||
+          this.tableData[i].phone.indexOf(this.pkeyword) >= 0 ||
+          this.tableData[i].position.indexOf(this.pkeyword) >= 0
+        ) {
           newarr.push(this.tableData[i]);
         }
       }
       this.tableData = newarr;
-
     },
-    getorg(){
+    getorg() {
       this.Axios(
         {
           params: {
@@ -537,22 +539,35 @@ export default {
           // }
         },
         this
-      )
-        .then(
-          result => {
-            let pcode = Math.min.apply(null, (result.data.data).map((item)=>{return item.parentCode }));
-            let arr = this.filterArray(result.data.data, pcode);
-            this.data2 = arr;
-            this.orgcode=result.data.data.find(item=>item.organizeType===1).code;
-            this.findpeopler();
-          },
-          ({ type, info }) => {}
-        )
+      ).then(
+        result => {
+          let pcode = Math.min.apply(
+            null,
+            result.data.data.map(item => {
+              return item.parentCode;
+            })
+          );
+          let arr = this.filterArray(result.data.data, pcode);
+          this.data2 = arr;
+          this.orgcode = result.data.data.find(
+            item => item.organizeType === 1
+          ).code;
+          this.findpeopler();
+        },
+        ({ type, info }) => {}
+      );
     }
-
   },
   created() {
     this.getorg();
+  },
+  mounted() {
+    $(".person-type").on("click", "li", function(event) {
+      $(this)
+        .addClass("active-bgcolor")
+        .siblings()
+        .removeClass("active-bgcolor");
+    });
   }
 };
 </script>
@@ -705,5 +720,20 @@ export default {
   background-color: white;
   border: @border;
   border-radius: 5px;
+  ul {
+    li {
+      list-style-type: none;
+      height: 28px;
+      line-height: 28px;
+      padding: 0 10px;
+      cursor: pointer;
+      &:hover {
+        color: #409eff;
+      }
+    }
+  }
+}
+.active-bgcolor {
+  color: #409eff;
 }
 </style>

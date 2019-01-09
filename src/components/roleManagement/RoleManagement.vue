@@ -21,9 +21,9 @@
               permCode='role_lookup.role_delete'
               banType='hide'
               style="font-size:14px;"
-              type="text" :label="item.id" @click="expurgate($event)" >
-                <i class="iconfont" style="font-size:14px;">&#xe66b;</i>
-              </permission-button>
+              type="text" @click="expurgate($event)" >
+              <i class="iconfont" :label="item.id" style="font-size:14px;">&#xe66b;</i>
+            </permission-button>
           </li>
         </ul>
       </div>
@@ -40,7 +40,7 @@
             ref="tree"
             :default-expanded-keys="[1]"
             :default-checked-keys="power"
-            render-after-expand="false"
+            :render-after-expand="treeIsOk"
           >
             <span
               class="custom-tree-node"
@@ -78,6 +78,7 @@
       return {
         data:[],
         power:[],
+        treeIsOk:false,
         defaultProps: {
           children: "children",
           label: "name"
@@ -198,7 +199,7 @@
             type: "post",
             url: "/role/update",
             option: {
-              successMsg:"修改成功"
+              successMsg:"保存成功"
             }
           },
           this
@@ -281,9 +282,7 @@
       },
       deleteRole(value){
         let qs = require("qs");
-        let data = qs.stringify({
-          roleId:value
-        });
+        let data = qs.stringify({roleId:value});
         this.Axios(
           {
             params:data ,
@@ -364,7 +363,7 @@
           &:hover {
             color: @blue;
             button{
-             opacity:1;
+              opacity:1;
             }
           }
         }
