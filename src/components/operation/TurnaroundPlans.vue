@@ -186,16 +186,18 @@
             }
           },
           {
-            field: "maintenanceType",
+            field: "maintenanceClassify",
             title: "检修分类",
-            width: 60,
+            width: 120,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
-              if(rowData.maintenanceType ===0 )return `<span>维修</span>`;
-              if(rowData.maintenanceType ===1 )return `<span>保养</span>`;
+              if (rowData.maintenanceClassify === 1) return `<span>日常检修（DM）</span>`;
+              if (rowData.maintenanceClassify === 2) return `<span>定期检修（TBM）</span>`;
+              if (rowData.maintenanceClassify === 3) return `<span>改进性检修（PAM）</span>`;
+              if (rowData.maintenanceClassify === 4) return `<span>故障检修（RTF）</span>`;
             }
           },
           {
