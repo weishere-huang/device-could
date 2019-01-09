@@ -47,7 +47,7 @@
               slot-scope="{ node, data }"
             >
               <span :title="data.name" class="listcontent">
-                {{ data.name +"　("+data.parentCode+")"}}
+                {{ data.name +"　("+data.dataUrl+")"}}
               </span >
             </span>
           </el-tree>

@@ -1308,10 +1308,10 @@
             this.maintenancePlan.maintenanceClassify = "定期检修（TBM）";
           }
           if (this.maintenancePlan.maintenanceClassify === 3) {
-            this.maintenancePlan.maintenanceClassify = "定期检修（TBM）";
+            this.maintenancePlan.maintenanceClassify = "改进性检修（PAM）";
           }
           if (this.maintenancePlan.maintenanceClassify === 4) {
-            this.maintenancePlan.maintenanceClassify = "定期检修（TBM）";
+            this.maintenancePlan.maintenanceClassify = "故障检修（RTF）";
           }
         }else{
           if (this.maintenancePlan.maintenanceClassify === 1) {
