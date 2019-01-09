@@ -52,11 +52,8 @@
         :inline="true"
       >
         <el-input
-          type="number"
-          oninput="if(value.length>6)value=value.slice(0,6)"
-          placeholder="验证码"
-          v-model.number="loginList.verification"
-          @keyup.enter.native="login"
+          placeholder="短信验证码"
+          v-model="loginList.verification"
           style="width:60%"
         >
         </el-input>
@@ -138,7 +135,6 @@
           prop="phone"
         >
           <el-input
-            type="number"
             placeholder="如：028-XXXXXXXX"
             size="small"
             v-model="company.phone"
@@ -256,11 +252,9 @@
           prop="phone"
         >
           <el-input
-            type="number"
             placeholder="11位手机号（仅国内）"
             size="small"
             v-model="manager.phone"
-            oninput="if(value.length>11)value=value.slice(0,11)"
             style="width:80%"
           ></el-input>
         </el-form-item>
@@ -270,9 +264,7 @@
         >
           <el-input
             placeholder="短信验证码"
-            type="number"
             v-model="manager.validate"
-            oninput="if(value.length>6)value=value.slice(0,6)"
             size="small"
             style="width:40%"
           >
@@ -385,7 +377,6 @@
           ],
           verification: [
             {required: true, message: "验证码不能为空", trigger: "blur"},
-            {type: "number", message: "验证码错误", trigger: "blur"}
           ]
         },
         registerRules: {
@@ -1166,12 +1157,5 @@
   }
   .el-dialog__footer {
     padding-bottom: 10px !important;
-  }
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-  }
-  input[type="number"] {
-    -moz-appearance: textfield;
   }
 </style>
