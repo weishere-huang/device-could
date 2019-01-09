@@ -29,7 +29,7 @@
               value-format="yyyy/MM/dd"
             >
             </el-date-picker>
-            <el-button size="small">查询</el-button>
+            <el-button size="small" type="primary"><i class='el-icon-search'></i>&nbsp;查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -40,7 +40,7 @@
           placeholder="如编号，名称，型号/规格，单号"
           size="small"
         ></el-input>
-        <el-button size="small">搜索</el-button>
+        <el-button size="small" type="primary"><i class='el-icon-search'></i>&nbsp;搜索</el-button>
       </div>
     </div>
     <div class="bottom">

@@ -2,16 +2,16 @@
 //permissionCode为权限映射码，若permissionCode未对应到用户权限则不显示也无跳转访问权限
 //route和routeReg为匹配路由，二者必须有一个，若都有则为“或”逻辑
 export default [{
-  menu: '工作台',
-  permissionCode: 'workDock_lookUp',
-  defaultDock: true,
-  icon: '&#xe606;',
-  subMenu: [{
-    menu: '默认工作台',
-    route: '/Home',
-    permissionCode: 'Home'
-  }]
-},
+    menu: '工作台',
+    permissionCode: 'workDock_lookUp',
+    defaultDock: true,
+    icon: '&#xe606;',
+    subMenu: [{
+      menu: '默认工作台',
+      route: '/Home',
+      permissionCode: 'Home'
+    }]
+  },
   {
     menu: '企业管理',
     permissionCode: 'enterprise',
@@ -37,10 +37,10 @@ export default [{
     permissionCode: 'personnel"',
     icon: '&#xe68d;',
     subMenu: [{
-      menu: '员工管理',
-      route: '/Personnel',
-      permissionCode: 'employee_lookup'
-    },
+        menu: '员工管理',
+        route: '/Personnel',
+        permissionCode: 'employee_lookup'
+      },
       {
         menu: '员工详情',
         routeReg: /^\/Personnel\/Modification\/\d{1,}$/i,
@@ -60,20 +60,20 @@ export default [{
     permissionCode: 'device',
     icon: '&#xe61c;',
     subMenu: [{
-      menu: '设备管理',
-      route: "/Equipment",
-      permissionCode: 'device_lookup'
-    },
+        menu: '设备管理',
+        route: "/Equipment",
+        permissionCode: 'device_lookup'
+      },
       {
         menu: '类别管理',
         route: "/Category",
         permissionCode: 'device_cate_lookup'
       },
       {
-        menu:'设备添加',
-        route:"/Equipment/EquipmentAdd",
+        menu: '设备添加',
+        route: "/Equipment/EquipmentAdd",
         visible: true,
-        permissionCode:"device_add_lookup",
+        permissionCode: "device_add_lookup",
       },
       {
         menu: '设备详情',
@@ -88,10 +88,10 @@ export default [{
     permissionCode: 'monit',
     icon: '&#xe6a0;',
     subMenu: [{
-      menu: '设备实时状态',
-      route: "/Monit",
-      permissionCode: 'device_state_lookup'
-    },
+        menu: '设备实时状态',
+        route: "/Monit",
+        permissionCode: 'device_state_lookup'
+      },
       {
         menu: '设备运行日志',
         routeReg: /^\/Monit\/\d{1,}$/i,
@@ -134,9 +134,15 @@ export default [{
     permissionCode: 'ops',
     icon: '&#xe73a;',
     subMenu: [{
-      menu: '设备故障',
-      route: "/Breakdown",
-      permissionCode: 'operation_fault_lookup',
+        menu: '设备故障',
+        route: "/Breakdown",
+        permissionCode: 'operation_fault_lookup',
+      },
+      {
+        menu: '故障上报',
+        route: "/Reported",
+        defaultDock: true,
+        permissionCode: 'operation_overhaul_lookup'
       },
       {
         menu: '设备故障详情',
@@ -185,10 +191,10 @@ export default [{
     permissionCode: 'partInfo',
     icon: '&#xe690;',
     subMenu: [{
-      menu: '备件基础信息',
-      route: "/SparePart",
-      permissionCode: 'part_info_lookup'
-    },
+        menu: '备件基础信息',
+        route: "/SparePart",
+        permissionCode: 'part_info_lookup'
+      },
       {
         menu: '备品备件添加',
         route: "/SparePart/SparePartAdd",
@@ -212,8 +218,20 @@ export default [{
         permissionCode: 'part_warehouse_lookup'
       },
       {
+        menu: '备件出库',
+        route: "/Output",
+        defaultDock: true,
+        permissionCode: 'part_warehouse_lookup'
+      },
+      {
         menu: '入库明细',
         route: "/WarehousingDetail",
+        permissionCode: 'part_warehouseInfo_lookup'
+      },
+      {
+        menu: '出库明细',
+        route: "/OutboundDetails",
+        defaultDock: true,
         permissionCode: 'part_warehouseInfo_lookup'
       }
     ]
@@ -223,10 +241,10 @@ export default [{
     permissionCode: 'work_list_lookup',
     icon: '&#xe60b;',
     subMenu: [{
-      menu: '工单列表',
-      route: "/WorkOrder",
-      permissionCode: 'work_list_lookup'
-    },
+        menu: '工单列表',
+        route: "/WorkOrder",
+        permissionCode: 'work_list_lookup'
+      },
       {
         menu: '故障工单详情',
         routeReg: /^\/WorkOrder\/BreakdownOrder\/\d{1,}$/i,
