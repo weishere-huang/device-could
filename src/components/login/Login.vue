@@ -745,7 +745,7 @@ export default {
             // console.log(this.$store.state.token.tokenNub);
             // console.log(this.$store.state.token.userMsg);
             this.$router.replace("/Home");
-            location.reload();
+            //location.reload();
           }
         },
         ({ type, info }) => {
@@ -943,6 +943,18 @@ export default {
 }
 
 .login {
+  &:after {	
+    content: "";
+    width:100%;
+    height:100%;
+    position: absolute;
+    left:0;
+    top:0;
+    background: #686868 url(../../assets/image/login-bg.jpg) no-repeat;
+    background-size: cover;
+    -webkit-filter: blur(4px);
+    z-index: 3;
+}
   .topBar{
     line-height: 40px;
     position: absolute;
@@ -953,6 +965,7 @@ export default {
       width: 200px;
       margin: 5px;
     }
+    z-index: 4;
   }
   .bottomBar{
     line-height: 40px;
@@ -966,13 +979,13 @@ export default {
     border-bottom: solid 1px #a9a7a7;
     text-shadow: 1px 1px 1px #333;
     font-size: 18px;
+    z-index: 4;
   }
   text-align: center;
   width: 100%;
   height: 100vh;
   //background-color: @blue;
-  background: #686868 url(../../assets/image/login-bg.jpg) no-repeat;
-  background-size: cover;
+  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -992,6 +1005,7 @@ export default {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    z-index: 100;
     h1 {
       width: 100%;
       // padding: 20px 0;

@@ -31,7 +31,7 @@
                 //     matched = [{ path: '/dashboard', meta: { title: 'dashboard' }}].concat(matched)
                 // }
                 // this.levelList = matched
-                let matched = this.$route.matched.filter(item => item.name)
+                let matched = this.$route.matched.filter(item => item&&item.name)
                 let rList = [{ path: '/Home', meta: { pageName: '工作台' }}];
                 matched.forEach(item => {
                     if(item.path!=='/Home')

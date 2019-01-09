@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <el-container v-if="token!==''" class="mainWrapper">
+    token:{{token}}
+    <el-container
+      v-if="token"
+      class="mainWrapper"
+    >
       <el-aside class="siderWrapper">
         <div class="logoWrap">
           <img src='./assets/image/logo.png' />
@@ -13,113 +17,24 @@
           active-text-color="#ffd04b"
           :collapse="isCollapse"
         >
-          <!-- <el-submenu index="/">
-              <template slot="title" class="logoWrap">
-                <span slot="title">
-
-                </span>
-                </template>
-            </el-submenu> -->
-          <el-submenu index="/Home">
+          <el-submenu
+            :index="item.permissionCode"
+            :key="item.route"
+            v-for="item in menuSource"
+          >
             <template slot="title">
-              <i class="iconfont">&#xe606;</i>
-              <span slot="title">默认工作台</span></template>
-            <el-menu-item index="/Home">默认工作台</el-menu-item>
-          </el-submenu>
-          <!-- <router-link to="默认工作台"></router-link> -->
-          <el-submenu index="2">
-            <template slot="title">
-              <i class="iconfont">&#xe600;</i>
-              <span slot="title">企业管理</span></template>
-            <el-menu-item index="/Company">企业管理</el-menu-item>
-          </el-submenu>
-          <el-submenu index="5">
-            <template slot="title">
-              <i class="iconfont">&#xe62e;</i>
-              <span slot="title">组织机构</span></template>
-            <el-menu-item index="/Organization">组织机构管理</el-menu-item>
-          </el-submenu>
-          <el-submenu index="6">
-            <template slot="title">
-              <i class="iconfont">&#xe68d;</i>
-              <span slot="title">员工管理</span></template>
-            <el-menu-item index="/Personnel">员工管理</el-menu-item>
-          </el-submenu>
-          <el-submenu index="3">
-            <template slot="title">
-              <i class="iconfont">&#xe61c;</i>
-              <span slot="title">设备管理</span></template>
-            <el-menu-item index="/Equipment">设备列表</el-menu-item>
-            <el-menu-item index="/Category">类别管理</el-menu-item>
-          </el-submenu>
-          <el-submenu index="monit">
-            <template slot="title">
-              <i class="iconfont">&#xe6a0;</i>
-              <span slot="title">设备监控</span></template>
-            <el-menu-item index="/Monit">设备实时状态</el-menu-item>
-            <el-menu-item index="/Oee">设备OEE分析</el-menu-item>
-          </el-submenu>
-          <el-submenu index="4">
-            <template slot="title">
-              <i class="iconfont">&#xe73a;</i>
-              <span slot="title">运维管理</span></template>
-            <el-menu-item index="/Breakdown">设备故障</el-menu-item>
-            <el-menu-item index="/TurnaroundPlans">检修计划</el-menu-item>
-            <el-menu-item index="/Upkeep">保养计划</el-menu-item>
-          </el-submenu>
-          <el-submenu index="14">
-            <template slot="title">
-              <i class="iconfont">&#xe690;</i>
-              <span slot="title">备品备件</span></template>
-            <el-menu-item index="/SparePart">备件基础信息</el-menu-item>
-            <!-- <el-menu-item index="/OutboundDetails">出库明细</el-menu-item> -->
-            <el-menu-item index="/SparePartsClassification">备件分类</el-menu-item>
-            <el-menu-item index="/SparePartsWarehouse">备件入库</el-menu-item>
-            <el-menu-item index="/WarehousingDetail">入库明细</el-menu-item>
-          </el-submenu>
-          <!-- <el-submenu index="8">
-              <template slot="title">
-                <i class="iconfont">&#xe62d;</i>
-              <span slot="title">设备档案</span></template>
-            <el-menu-item index="/EquipmentArchives">选项1</el-menu-item>
-            <el-menu-item index="/EquipmentArchives">选项2</el-menu-item>
-            <el-menu-item index="/EquipmentArchives">选项3</el-menu-item>
-          </el-submenu> -->
-          <el-submenu index="9">
-            <template slot="title">
-              <i class="iconfont">&#xe60b;</i>
-              <span slot="title">工单系统</span></template>
-            <el-menu-item index="/WorkOrder">工单列表</el-menu-item>
-            <!-- <el-menu-item index="/BreakdownOrder">故障工单详情</el-menu-item> -->
-            <!-- <el-menu-item index="/UpkeepAndTurnaroundPlans">检修&保养计划工单详情</el-menu-item> -->
-          </el-submenu>
-
-          <!-- <el-submenu index="10">
-            <template slot="title">
-              <i class="iconfont">&#xe602;</i>
-              <span slot="title">知识库</span></template>
-            <el-menu-item index="/KnowledgeBase">选项1</el-menu-item>
-            <el-menu-item index="/KnowledgeBase">选项2</el-menu-item>
-            <el-menu-item index="/KnowledgeBase">选项3</el-menu-item>
-          </el-submenu> -->
-          <el-submenu index="11">
-            <template slot="title">
-              <i class="iconfont">&#xe627;</i>
-              <span slot="title">消息管理</span></template>
-            <el-menu-item index="/Message">消息管理</el-menu-item>
-          </el-submenu>
-          <el-submenu index="12">
-            <template slot="title">
-              <i class="iconfont">&#xe630;</i>
-              <span slot="title">角色管理</span></template>
-            <el-menu-item index="/RoleManagement">角色管理</el-menu-item>
-          </el-submenu>
-          <el-submenu index="13">
-            <template slot="title">
-              <i class="iconfont">&#xe60a;</i>
-              <span slot="title">系统管理</span>
+              <!-- <span class="menuItem" v-html="item.icon"></span> -->
+              <i
+                class="iconfont"
+                v-html="item.icon"
+              ></i>
+              <span slot="title">{{item.menu}}</span>
             </template>
-            <el-menu-item index="/User">用户管理</el-menu-item>
+            <el-menu-item
+              :index="subItem.route"
+              :key="subItem.route"
+              v-for="subItem in item.subMenu"
+            >{{subItem.menu}}</el-menu-item>
           </el-submenu>
         </el-menu>
         <div
@@ -137,7 +52,7 @@
         </div>
       </el-aside>
       <el-container>
-        <el-header >
+        <el-header>
           <el-header style="background-color:#efefef;">
             <div class="breadcrumbWrap">
               <breadCrumb></breadCrumb>
@@ -220,14 +135,16 @@
     </el-container>
     <el-container v-else>
       <transition>
-            <router-view v-if="isRouterAlive" />
-          </transition>
+        <router-view v-if="isRouterAlive" />
+      </transition>
     </el-container>
   </div>
 </template>
 
 <script>
 import breadCrumb from "./BreadCrumb.vue";
+import menuSourceMap from "./router/routeMap";
+import clone from 'clone';
 export default {
   provide() {
     return {
@@ -237,7 +154,7 @@ export default {
   name: "App",
   data() {
     return {
-      token:'',
+      token: undefined,
       user: "",
       show: true,
       isCollapse: false,
@@ -245,32 +162,8 @@ export default {
       isRouterAlive: true,
       msgcount: 0,
       version: versionInfo,
-      menuSource:[
-        {
-          menu:'工作台',
-          permissionCode:'workDock_lookUp',
-          subMenu:[
-            {
-              menu:'默认工作台',
-              route:'/Home',
-              icon:'&#xe606;',
-              permissionCode:'Home'
-            }
-          ]
-        },
-        {
-          menu:'企业管理',
-          permissionCode:'company_lookUp',
-          subMenu:[
-            {
-              menu:'企业管理',
-              route:'/Company',
-              icon:'&#xe600;',
-              permissionCode:'company'
-            }
-          ]
-        }
-      ]
+      menuSource: [],
+      permissionUrl: ""
     };
   },
   methods: {
@@ -300,6 +193,7 @@ export default {
       //     option:{enableMsg:false}
       //   },
       // ).then(response=>{
+      self=this;
       this.$confirm("您确定要退出登录吗？", "确认", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -309,11 +203,14 @@ export default {
           message: "您已退出登录",
           type: "success"
         });
+        self.token=null;
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        localStorage.removeItem("permissionUrl");
+        
         this.$router.push({
           path: "/Login",
-          redirect: "/Login"
+          //redirect: "/Login"
         });
       });
       // },({type,info})=>{})
@@ -335,9 +232,7 @@ export default {
         .then(result => {
           this.msgcount = result.data.data;
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(err => {});
     },
     //路径跳转
     pathto(a) {
@@ -355,15 +250,43 @@ export default {
     $route() {
       this.token = localStorage.getItem("token");
       this.user = JSON.parse(localStorage.getItem("user")).name;
+      this.permissionUrl = JSON.parse(
+        localStorage.getItem("permissionUrl") || "[]"
+      );
     }
   },
   computed: {},
   created() {
+    debugger
     this.user = JSON.parse(localStorage.getItem("user")).name;
-    this.token = localStorage.getItem("token")
+    this.token = localStorage.getItem("token");
+    console.log(localStorage.getItem("token"));
+    this.permissionUrl = JSON.parse(
+      localStorage.getItem("permissionUrl") || "[]"
+      // this.$cookieStore.getCookie('permissionUrl')||'[]'
+    );
+    const permissionUrl=this.permissionUrl
     // this.user=this.$store.state.token.userMsg.name
     // this.token=this.$store.state.token.tokenNub
     this.MsgCount();
+    let _menuSource=[];
+    clone(menuSourceMap).forEach(per => {
+        if(per.defaultDock){
+          _menuSource.push(per);
+        }else{
+          const willShowMenu = per.subMenu.filter(m => {
+            if(m.visible){
+              return false;
+            }
+            return permissionUrl.find(p=>p.module===m.permissionCode) ? true : false;
+          });
+          if(willShowMenu.length!==0){
+            per.subMenu=willShowMenu;
+            _menuSource.push(per);
+          }
+      }
+    });
+    this.menuSource = _menuSource;
   },
   components: {
     breadCrumb
@@ -409,6 +332,11 @@ export default {
   top: 0;
   margin: auto;
   height: 25px;
+}
+.menuItem {
+  i {
+    vertical-align: top;
+  }
 }
 .stateList {
   position: absolute;

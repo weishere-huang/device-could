@@ -622,13 +622,13 @@ export default {
 Vue.component("table-equipment", {
   template: `<span>
           <el-tooltip class="item" effect="dark" content="修改" placement="top">
-            <permission-button
-            permCode='device_redact_lookup.device_redact_save'
-            banType='hide' style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i></permission-button>
+            <el-button
+            type="text"
+            style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i></el-button>
           </el-tooltip>
-          &nbsp;&nbsp;
           <el-tooltip class="item" effect="dark" content="删除" placement="top">
             <permission-button
+            type="text"
              permCode='device_lookup.device_delete'
             banType='alert' style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></permission-button>
           </el-tooltip>
