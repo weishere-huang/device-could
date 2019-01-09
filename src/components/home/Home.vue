@@ -18,16 +18,26 @@
               <p>TEL：{{userMsg.phone}}</p>
             </div>
           </div>
-          <span class="jurisdiction" @click="dialogVisible=true"><i class="el-icon-edit" style="color:blue"></i>&nbsp;我的权限</span>
+          <span
+            class="jurisdiction"
+            @click="dialogVisible=true"
+          ><i
+              class="el-icon-edit"
+              style="color:blue"
+            ></i>&nbsp;我的权限</span>
         </div>
         <el-dialog
           title="提示"
           :visible.sync="dialogVisible"
           width="300"
-
-          >
-          <div style="height:200px;width:100%;overflow:scroll;">
-
+        >
+          <div style="height:300px;width:100%;overflow:scroll;">
+            <ul class="role_style">
+              <li
+                v-for="(item,index) in role.permissionInfo "
+                :key="index"
+              >{{item.module}}:{{item.permissionItem}}</li>
+            </ul>
           </div>
 
         </el-dialog>
@@ -35,7 +45,11 @@
         <div class="equipment-data">
           <div class="top">
             <span>设备数据</span>
-            <i style='font-size:16px' class='iconfont' @click="reload">&#xe614;</i>
+            <i
+              style='font-size:16px'
+              class='iconfont'
+              @click="reload"
+            >&#xe614;</i>
           </div>
           <ul class="case">
             <li title="设备总数">
@@ -57,8 +71,14 @@
         <div class="top">
           <span>快捷入口</span>
           <span class="addIcon">
-            <i style='font-size:16px' class='iconfont'>&#xe62f;</i>
-            <i style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+            <i
+              style='font-size:16px'
+              class='iconfont'
+            >&#xe62f;</i>
+            <i
+              style='font-size:16px'
+              class='iconfont'
+            >&#xe6b4;</i>
           </span>
         </div>
         <ul class="bottom">
@@ -149,15 +169,24 @@
       <div class="backlog">
         <span>待办事项</span>
         <ul>
-          <li title="故障工单" @click="$router.push('/Breakdown')">
+          <li
+            title="故障工单"
+            @click="$router.push('/Breakdown')"
+          >
             <span>故障工单</span>
             <span>{{worksList.fault}}</span>
           </li>
-          <li title="检修工单" @click="$router.push('/TurnaroundPlans')">
+          <li
+            title="检修工单"
+            @click="$router.push('/TurnaroundPlans')"
+          >
             <span>检修工单</span>
             <span>{{worksList.overhaul}}</span>
           </li>
-          <li title="保养工单" @click="$router.push('/Upkeep')">
+          <li
+            title="保养工单"
+            @click="$router.push('/Upkeep')"
+          >
             <span>保养工单</span>
             <span>{{worksList.maintain}}</span>
           </li>
@@ -221,497 +250,519 @@
   </div>
 </template>
 <script>
-  export default {
-    inject:['reload'],
-    data() {
-      return {
-        dialogVisible:false,
-        entryList: ["设备管理", "故障管理", "备品备件", "检修计划", "保养计划"],
-        userMsg: {},
-        //各工单数量
-        worksList:{
-          maintain:0,
-          fault:0,
-          overhaul:0
+export default {
+  inject: ["reload"],
+  data() {
+    return {
+      role: [],
+      dialogVisible: false,
+      entryList: ["设备管理", "故障管理", "备品备件", "检修计划", "保养计划"],
+      userMsg: {},
+      //各工单数量
+      worksList: {
+        maintain: 0,
+        fault: 0,
+        overhaul: 0
+      },
+      //设备信息
+      deviceData: {
+        showdownPer: 0,
+        warn: "",
+        unlinePer: 0,
+        normalPer: 0,
+        faultPer: 0,
+        maintenancePer: 0,
+        AllDevice: "",
+        fault: "",
+        normal: ""
+      },
+      //消息
+      massgageData: []
+    };
+  },
+  methods: {
+    getworksCount() {
+      this.Axios(
+        {
+          url: "/workbench/findWorks",
+          type: "get",
+          option: {
+            enableMsg: false
+          }
         },
-        //设备信息
-        deviceData:{
-          showdownPer:0,
-          warn:"",
-          unlinePer:0,
-          normalPer:0,
-          faultPer:0,
-          maintenancePer:0,
-          AllDevice:"",
-          fault:"",
-          normal:"",
+        this
+      ).then(
+        result => {
+          this.worksList = result.data.data;
         },
-        //消息
-        massgageData:[],
-      };
+        () => {}
+      );
     },
-    methods: {
-      getworksCount(){
-        this.Axios(
-          {
-            url: "/workbench/findWorks",
-            type: "get",
-            option:{
-              enableMsg:false
-            }
+    getdeviceData() {
+      this.Axios(
+        {
+          url: "/deviceState/findDeviceDate",
+          type: "get",
+          params: {
+            organizeCode: JSON.parse(localStorage.getItem("user")).organizeCode
           },
-          this
-        ).then(
-          result => {
-            this.worksList = result.data.data;
-          },
-          () => {}
-        );
-      },
-      getdeviceData(){
-        this.Axios(
-          {
-            url: "/deviceState/findDeviceDate",
-            type: "get",
-            params:{organizeCode:JSON.parse(localStorage.getItem("user")).organizeCode},
-            option:{
-              enableMsg:false,
-              requestTarget: 'r',
-            }
-          },
-          this
-        ).then(
-          result => {
-            this.deviceData = result.data.data;
-          },
-          () => {}
-        );
-      },
-      turnurl(index){
-        switch (index){
-          case 0:
-            this.$router.push("/Equipment");
-            break;
-          case 1:
-            this.$router.push("/Breakdown");
-            break;
-          case 2:
-            this.$router.push("/SparePart");
-            break;
-          case 3:
-            this.$router.push("/TurnaroundPlans");
-            break;
-          case 4:
-            this.$router.push("/Upkeep");
-            break;
-        }
-      },
-      allNotReadMsg() {
-        this.Axios(
-          {
-            params: {
-              page: 1,
-              size: 20
-            },
-            type: "get",
-            url: "/message/allNotReadMsg",
-            // loadingConfig: {
-            //   target: document.querySelector("#mainContentWrapper")
-            // }
-            option:{
-              requestTarget:"m",
-              enableMsg:false
-            }
-          },
-          this
-        )
-          .then(result => {
-            this.massgageData = result.data.data.content;
-          })
-          .catch(err => {
-          });
-      },
-      //记事本方法
-      addNode(){
-        let qs = require("qs");
-        let data = qs.stringify({
-          content:""
-        });
-        this.Axios({
-          url:"/workbench/addNote",
-          type:"post",
-          params: data ,
-          option:{
-            enableMsg:false
+          option: {
+            enableMsg: false,
+            requestTarget: "r"
           }
-        },this).then(
-          result =>{
-          },
-          () => {}
-        )
-      },
-      deleteNode(){
-        let qs = require("qs");
-        let data = qs.stringify({
-          id:""
-        });
-        this.Axios({
-          url:"/workbench/addNote",
-          type:"post",
-          params:data,
-          option:{
-            enableMsg:false
-          }
-        },this).then(
-          result =>{
-          },
-          () => {}
-        )
-      },
-      updateNode(){
-        let qs = require("qs");
-        let data = qs.stringify({
-          id:"",
-          content:""
-        });
-        this.Axios({
-          url:"/workbench/addNote",
-          type:"post",
-          params:data,
-          option:{
-            enableMsg:false
-          }
-        },this).then(
-          result =>{
-          },
-          () => {}
-        )
-      },
-      findNotes(){
-        this.Axios({
-          url:"/workbench/findNotes",
-          type:"get",
-          option:{
-            enableMsg:false
-          }
-        },this).then(
-          result =>{
-          },
-          () => {}
-        )
+        },
+        this
+      ).then(
+        result => {
+          this.deviceData = result.data.data;
+        },
+        () => {}
+      );
+    },
+    turnurl(index) {
+      switch (index) {
+        case 0:
+          this.$router.push("/Equipment");
+          break;
+        case 1:
+          this.$router.push("/Breakdown");
+          break;
+        case 2:
+          this.$router.push("/SparePart");
+          break;
+        case 3:
+          this.$router.push("/TurnaroundPlans");
+          break;
+        case 4:
+          this.$router.push("/Upkeep");
+          break;
       }
-
     },
-    created() {
-      this.userMsg = JSON.parse(localStorage.getItem("user"))
-      this.$store.commit('tokenSrc', localStorage.getItem("token"))
-      this.getworksCount();
-      this.getdeviceData();
-      this.allNotReadMsg();
+    allNotReadMsg() {
+      this.Axios(
+        {
+          params: {
+            page: 1,
+            size: 20
+          },
+          type: "get",
+          url: "/message/allNotReadMsg",
+          // loadingConfig: {
+          //   target: document.querySelector("#mainContentWrapper")
+          // }
+          option: {
+            requestTarget: "m",
+            enableMsg: false
+          }
+        },
+        this
+      )
+        .then(result => {
+          this.massgageData = result.data.data.content;
+        })
+        .catch(err => {});
     },
-    watch: {
-
+    //记事本方法
+    addNode() {
+      let qs = require("qs");
+      let data = qs.stringify({
+        content: ""
+      });
+      this.Axios(
+        {
+          url: "/workbench/addNote",
+          type: "post",
+          params: data,
+          option: {
+            enableMsg: false
+          }
+        },
+        this
+      ).then(result => {}, () => {});
+    },
+    deleteNode() {
+      let qs = require("qs");
+      let data = qs.stringify({
+        id: ""
+      });
+      this.Axios(
+        {
+          url: "/workbench/addNote",
+          type: "post",
+          params: data,
+          option: {
+            enableMsg: false
+          }
+        },
+        this
+      ).then(result => {}, () => {});
+    },
+    updateNode() {
+      let qs = require("qs");
+      let data = qs.stringify({
+        id: "",
+        content: ""
+      });
+      this.Axios(
+        {
+          url: "/workbench/addNote",
+          type: "post",
+          params: data,
+          option: {
+            enableMsg: false
+          }
+        },
+        this
+      ).then(result => {}, () => {});
+    },
+    findNotes() {
+      this.Axios(
+        {
+          url: "/workbench/findNotes",
+          type: "get",
+          option: {
+            enableMsg: false
+          }
+        },
+        this
+      ).then(result => {}, () => {});
+    },
+    getRoleAndPermissionInfo() {
+      this.Axios(
+        {
+          url: "/role/getRoleAndPermissionInfo",
+          type: "get",
+          option: {
+            enableMsg: false
+          }
+        },
+        this
+      ).then(
+        result => {
+          console.log(result.data.data);
+          this.role = result.data.data;
+          console.log(this.role);
+        },
+        () => {}
+      );
     }
-  };
+  },
+  created() {
+    this.userMsg = JSON.parse(localStorage.getItem("user"));
+    this.$store.commit("tokenSrc", localStorage.getItem("token"));
+    this.getworksCount();
+    this.getdeviceData();
+    this.allNotReadMsg();
+    this.getRoleAndPermissionInfo();
+  },
+  watch: {}
+};
 </script>
 <style lang="less">
-  @import url("../../assets/font/font.css");
+@import url("../../assets/font/font.css");
 
-  @blue: #409eff;
-  @Success: #67c23a;
-  @Warning: #e6a23c;
-  @Danger: #f56c6c;
-  @Info: #dde2eb;
-  @border: 1px solid #dde2eb;
-  .case-style {
+@blue: #409eff;
+@Success: #67c23a;
+@Warning: #e6a23c;
+@Danger: #f56c6c;
+@Info: #dde2eb;
+@border: 1px solid #dde2eb;
+.case-style {
+  padding: 10px;
+  border-radius: 5px;
+  border: @border;
+  box-shadow: 4px 4px 10px #c0bfbf;
+}
+
+.home {
+  overflow: hidden;
+  font-size: 12px;
+  .left {
+    width: 70%;
+    float: left;
     padding: 10px;
-    border-radius: 5px;
-    border: @border;
-    box-shadow: 2px 2px 3px #c0bfbf;
-    background: #fff;
-  }
-  
-  .home {
-    overflow: hidden;
-    font-size: 12px;
-    .left {
-      width: 70%;
-      float: left;
-      padding: 10px;
-      // border: @border;
-      .personal-information {
-        .case-style;
-        height: 194px;
-        overflow: hidden;
-        .user-msg {
-          float: left;
-          .jurisdiction{
-              cursor: pointer;
-              position: relative;
-              top: -18px;
-              left: 15px;
-            }
-          .case {
-            padding: 10px;
-            overflow: hidden;
-            margin-top: 10px;
-
-            .photo {
-              width: 90px;
-              height: 90px;
-              float: left;
-              font-size: 0;
-              border-radius: 5px;
-              overflow: hidden;
-              img {
-                width: 100%;
-                height: 100%;
-              }
-            }
-            .message {
-              float: left;
-              width: 130px;
-              margin-left: 10px;
-              padding: 10px 0;
-              p {
-                padding: 8px 0;
-              }
-            }
-          }
+    // border: @border;
+    .personal-information {
+      .role_style {
+        width: 100%;
+        overflow: scroll;
+        padding: 10px;
+        li {
+          line-height:24px;
         }
-        .equipment-data {
-          .top {
-            padding-right: 10px;
-            i {
-              float: right;
-              display: none;
-              cursor: pointer;
-              &:hover {
-                color: #f56c6c;
-              }
-            }
-            &:hover {
-              i {
-                display: block;
-              }
+      }
+      .case-style;
+      height: 194px;
+      overflow: hidden;
+      .user-msg {
+        float: left;
+        .jurisdiction {
+          cursor: pointer;
+          position: relative;
+          top: -18px;
+          left: 15px;
+        }
+        .case {
+          padding: 10px;
+          overflow: hidden;
+          margin-top: 10px;
+
+          .photo {
+            width: 90px;
+            height: 90px;
+            float: left;
+            font-size: 0;
+            border-radius: 5px;
+            overflow: hidden;
+            img {
+              width: 100%;
+              height: 100%;
             }
           }
-          .case {
-            margin-top: 10px;
-            // border: @border;
-            overflow: hidden;
-            padding: 10px;
-            li {
-              float: left;
-              list-style-type: none;
-              width: 32.5%;
-              // min-width: 130px;
-              background-color: #eeeeee;
-              height: 136px;
-              padding-top: 35px;
-              cursor: pointer;
-              p {
-                width: 100%;
-                line-height: 30px;
-                text-align: center;
-              }
-              p:nth-child(1) {
-                font-size: 20px;
-                font-weight: 600;
-              }
-            }
-            li:not(:last-child) {
-              margin-right: 1%;
+          .message {
+            float: left;
+            width: 130px;
+            margin-left: 10px;
+            padding: 10px 0;
+            p {
+              padding: 8px 0;
             }
           }
         }
       }
-      .quick-entry {
-        .case-style;
-        margin-top: 10px;
-        min-height: 160px;
+      .equipment-data {
         .top {
-          height: 20px;
-          line-height: 20px;
-          overflow: hidden;
+          padding-right: 10px;
+          i {
+            float: right;
+            display: none;
+            cursor: pointer;
+            &:hover {
+              color: #f56c6c;
+            }
+          }
           &:hover {
-            .addIcon {
+            i {
               display: block;
             }
           }
-          .addIcon {
-            width: 80px;
-            float: right;
-            display: none;
-            i {
-              display: inline-block;
-              width: 20px;
-              margin-left: 10px;
-              cursor: pointer;
-              &:hover {
-                color: #f56c6c;
-              }
+        }
+        .case {
+          margin-top: 10px;
+          // border: @border;
+          overflow: hidden;
+          padding: 10px;
+          li {
+            float: left;
+            list-style-type: none;
+            width: 32.5%;
+            // min-width: 130px;
+            background-color: #eeeeee;
+            height: 136px;
+            padding-top: 35px;
+            cursor: pointer;
+            p {
+              width: 100%;
+              line-height: 30px;
+              text-align: center;
+            }
+            p:nth-child(1) {
+              font-size: 20px;
+              font-weight: 600;
             }
           }
-        }
-        .bottom {
-          margin-top: 10px;
-          overflow: scroll;
-          padding: 0 10px;
-          li {
-            list-style-type: none;
-            float: left;
-            width: 32.5%;
-            text-align: center;
-            height: 38px;
-            line-height: 38px;
-            background-color: #eeeeee;
-            margin-bottom: 16px;
-            cursor: pointer;
-          }
-          li:not(:nth-child(3n)) {
+          li:not(:last-child) {
             margin-right: 1%;
           }
         }
       }
-      .device-operation-Status {
-        .case-style;
-        margin-top: 10px;
-        height: 400px;
-        .left {
-          width: 65%;
-          .state {
-            margin-top: 10px;
-            border-right: @border;
-            padding: 10px;
-            .el-form-item__label {
-              height: 30px;
-              line-height: 30px;
-              font-size: 12px;
-            }
-            .el-progress {
-              width: 100%;
-            }
-            .el-form-item {
-              margin-bottom: 10px;
+    }
+    .quick-entry {
+      .case-style;
+      margin-top: 10px;
+      min-height: 160px;
+      .top {
+        height: 20px;
+        line-height: 20px;
+        overflow: hidden;
+        &:hover {
+          .addIcon {
+            display: block;
+          }
+        }
+        .addIcon {
+          width: 80px;
+          float: right;
+          display: none;
+          i {
+            display: inline-block;
+            width: 20px;
+            margin-left: 10px;
+            cursor: pointer;
+            &:hover {
+              color: #f56c6c;
             }
           }
         }
-        .right {
-          width: 35%;
-          padding: 40px 10px 10px;
-          ul {
-            li {
-              list-style-type: none;
-              height: 120px;
-              line-height: 120px;
-              width: 100%;
-              overflow: hidden;
-              text-align: center;
-              i {
-                font-size: 40px;
-              }
-              div {
-                display: inline-block;
-                margin-left: 30px;
-                p {
-                  text-align: left;
-                  line-height: 20px;
-                }
-              }
-            }
-            li:not(:last-child) {
-              border-bottom: @border;
-            }
-          }
+      }
+      .bottom {
+        margin-top: 10px;
+        overflow: scroll;
+        padding: 0 10px;
+        li {
+          list-style-type: none;
+          float: left;
+          width: 32.5%;
+          text-align: center;
+          height: 38px;
+          line-height: 38px;
+          background-color: #eeeeee;
+          margin-bottom: 16px;
+          cursor: pointer;
+        }
+        li:not(:nth-child(3n)) {
+          margin-right: 1%;
         }
       }
     }
-    .right {
-      float: left;
-      width: 30%;
-      padding: 10px 10px 10px 0px;
-      overflow: hidden;
-      .backlog {
-        .case-style;
-        height: 194px;
+    .device-operation-Status {
+      .case-style;
+      margin-top: 10px;
+      height: 400px;
+      .left {
+        width: 65%;
+        .state {
+          margin-top: 10px;
+          border-right: @border;
+          padding: 10px;
+          .el-form-item__label {
+            height: 30px;
+            line-height: 30px;
+            font-size: 12px;
+          }
+          .el-progress {
+            width: 100%;
+          }
+          .el-form-item {
+            margin-bottom: 10px;
+          }
+        }
+      }
+      .right {
+        width: 35%;
+        padding: 40px 10px 10px;
         ul {
           li {
             list-style-type: none;
+            height: 120px;
+            line-height: 120px;
             width: 100%;
-            height: 40px;
-            line-height: 40px;
-            background-color: #eeeeee;
-            margin-top: 10px;
-            padding: 0px 30px 0px 10px;
-            cursor: pointer;
-            &:hover {
-              color: #409eff;
+            overflow: hidden;
+            text-align: center;
+            i {
+              font-size: 40px;
             }
-            span:nth-child(2) {
-              float: right;
-              font-size: 16px;
-              font-weight: 600;
+            div {
+              display: inline-block;
+              margin-left: 30px;
+              p {
+                text-align: left;
+                line-height: 20px;
+              }
             }
+          }
+          li:not(:last-child) {
+            border-bottom: @border;
           }
         }
       }
-      .message-notification {
-        .case-style;
-        margin-top: 10px;
-        height: 300px;
-        .top {
-          span:nth-child(2) {
-            float: right;
-            cursor: pointer;
-            &:hover {
-              color: @Danger;
-            }
-          }
-        }
-        .message-details {
-          border: @border;
-          height: 256px;
-          margin-top: 10px;
-          overflow: scroll;
-          li {
-            list-style-type: none;
-            width: 100%;
-            padding: 0 10px;
-            height: 18px;
-            line-height: 18px;
-            background-color: #eeeeee;
-            margin-top: 4px;
-            cursor: pointer;
-            &:hover {
-              color: #409eff;
-            }
-            span:nth-child(1) {
-              margin-right: 16px;
-            }
-          }
-        }
-      }
-      .frequent-contacts {
-        .case-style;
-        height: 270px;
-        margin-top: 10px;
-        ul {
-          margin-top: 10px;
-          li {
-            list-style-type: none;
-            height: 20px;
-            line-height: 20px;
-            padding: 0 10px;
-            span:nth-child(1) {
-              margin-right: 10px;
-            }
-          }
-        }
-      }
-    }
-    .el-progress-bar{
-      width: 90%;
     }
   }
+  .right {
+    float: left;
+    width: 30%;
+    padding: 10px 10px 10px 0px;
+    overflow: hidden;
+    .backlog {
+      .case-style;
+      height: 194px;
+      ul {
+        li {
+          list-style-type: none;
+          width: 100%;
+          height: 40px;
+          line-height: 40px;
+          background-color: #eeeeee;
+          margin-top: 10px;
+          padding: 0px 30px 0px 10px;
+          cursor: pointer;
+          &:hover {
+            color: #409eff;
+          }
+          span:nth-child(2) {
+            float: right;
+            font-size: 16px;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+    .message-notification {
+      .case-style;
+      margin-top: 10px;
+      height: 300px;
+      .top {
+        span:nth-child(2) {
+          float: right;
+          cursor: pointer;
+          &:hover {
+            color: @Danger;
+          }
+        }
+      }
+      .message-details {
+        border: @border;
+        height: 256px;
+        margin-top: 10px;
+        overflow: scroll;
+        li {
+          list-style-type: none;
+          width: 100%;
+          padding: 0 10px;
+          height: 18px;
+          line-height: 18px;
+          background-color: #eeeeee;
+          margin-top: 4px;
+          cursor: pointer;
+          &:hover {
+            color: #409eff;
+          }
+          span:nth-child(1) {
+            margin-right: 16px;
+          }
+        }
+      }
+    }
+    .frequent-contacts {
+      .case-style;
+      height: 270px;
+      margin-top: 10px;
+      ul {
+        margin-top: 10px;
+        li {
+          list-style-type: none;
+          height: 20px;
+          line-height: 20px;
+          padding: 0 10px;
+          span:nth-child(1) {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+  .el-progress-bar {
+    width: 90%;
+  }
+}
 </style>
