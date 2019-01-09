@@ -262,12 +262,12 @@
           },
           {
             field: "creator",
-            title: "计划制定人",
+            title: "关联工单",
             width: 60,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
-            overflowTitle: true
+            overflowTitle: true,
           },
           {
             field: "custome-adv",
@@ -281,6 +281,9 @@
       };
     },
     methods: {
+      test(){
+        alert("OK");
+      },
       customCompFunc(params) {
         if (params.type === "delete") {
           this.deleteOne(params.rowData["id"]);
@@ -387,6 +390,7 @@
           this
         ).then(
           response => {
+            console.log(response.data.data.content);
             this.pageNumber = response.data.data.totalElements;
             this.loadValue(response.data.data.content);
           },

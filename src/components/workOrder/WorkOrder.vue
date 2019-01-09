@@ -101,6 +101,15 @@
             //   orderBy: ""
           },
           {
+            field: "maintenanceId",
+            title: "关联",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true,
+            overflowTitle: true
+          },
+          {
             field: "state",
             title: "工单状态",
             width: 70,
