@@ -62,7 +62,7 @@ Vue.prototype.axios = axios;
 Vue.prototype.Axios = Axios;
 axios.defaults.withCredentials = true;
 window.EventBus = new Vue();
-let permissionUrl="";
+let permissionUrl=[];
 let AUTH_TOKEN = (function () {
   return localStorage.getItem("token");
   // return store.state.token.tokenNub;
@@ -71,7 +71,7 @@ var instance = axios.create({});
 
 // 登录拦截
 router.beforeEach((to, from, next) => {
-  if(!permissionUrl) permissionUrl = JSON.parse(localStorage.getItem("permissionUrl")||'[]');
+  if(permissionUrl.length===0) permissionUrl = JSON.parse(localStorage.getItem("permissionUrl")||'[]');
   let isLogin = localStorage.getItem('token')
   instance.defaults.headers.common["token"] = isLogin;
   if (to.meta.requireAuth) { // 判断是否需要登录权限
@@ -81,6 +81,9 @@ router.beforeEach((to, from, next) => {
         for(let m=0,n=menuSourceMap[i].subMenu.length;m<n;m++){
           let isCheck=permissionUrl.find(p=>p.module===menuSourceMap[i].subMenu[m].permissionCode)?true:false;
           let isRoute=menuSourceMap[i].subMenu[m].routeReg?menuSourceMap[i].subMenu[m].routeReg.test(to.fullPath):(menuSourceMap[i].subMenu[m].route===to.path)?true:false;
+          if('/Organization'===menuSourceMap[i].subMenu[m].route){
+            
+          }
           if(isRoute&&(isCheck||menuSourceMap[i].defaultDock)){
             isHasPermission=true;
             break;
