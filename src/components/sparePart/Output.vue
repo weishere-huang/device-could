@@ -66,7 +66,7 @@
             label="领用人："
             style="width:24%;"
           >
-            <el-input size="small"></el-input>
+            <el-input size="small" @focus="showTable"></el-input>
           </el-form-item>
             <el-form-item
               label="备注："
@@ -164,14 +164,23 @@
         </div>
       </div>
     </div>
+    <el-dialog
+      title="人员添加"
+      :visible.sync="dialogVisible"
+      width="80%"
+      >
+      <addPerson :personAddHandler="personAddHandler"></addPerson>
+    </el-dialog>
   </div>
 </template>
 <script>
+import addPerson from '../equipment/AddPerson'
 import Vue from "vue";
 export default {
   inject: ["reload"],
   data() {
     return {
+      dialogVisible:false,
       defaultProps: {
         value: "code",
         label: "name"
@@ -333,6 +342,12 @@ export default {
     };
   },
   methods: {
+    showTable(){
+      this.dialogVisible=true
+    },
+    personAddHandler(data){
+      console.log(data);
+    },
     handleChange(value) {
       console.log(value);
       let name = this.$refs["getName"].currentLabels;
@@ -572,6 +587,9 @@ export default {
         this.$refs.classifyTable.resize();
       }, 500);
     });
+  },
+  components:{
+    addPerson
   }
 };
 Vue.component("table-warehouse", {

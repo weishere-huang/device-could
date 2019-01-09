@@ -12,8 +12,22 @@
     </div>
     <div class="bottom">
       <div class="fault-details">
-        <h5>故障信息</h5>
+        <h5>工单信息</h5>
         <el-form label-width="90px">
+          <el-form-item label="工单类型：">
+            <el-radio
+              v-model="radio"
+              label="1"
+            >故障</el-radio>
+            <el-radio
+              v-model="radio"
+              label="2"
+            >检修</el-radio>
+            <el-radio
+              v-model="radio"
+              label="3"
+            >保养</el-radio>
+          </el-form-item>
           <el-form-item label="影响范围：">
             <el-select
               v-model="value"
@@ -145,9 +159,9 @@
   </div>
 </template>
 <script>
-import amendPlan from "./upkeep/AmendPlan";
+import amendPlan from "../operation/upkeep/AmendPlan";
 import Vue from "vue";
-Vue.component("table-reported", {
+Vue.component("table-NewWorkOrder", {
   template: `<span>
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
             <i style='font-size:16px;cursor:pointer;color:#409eff;' class='iconfont'  @click.stop.prevent="add(rowData,index)">&#xe734;</i>
@@ -176,6 +190,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      radio: "1",
       person: false,
       personTable: [
         {
@@ -297,12 +312,10 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-          componentName: "table-reported"
+          componentName: "table-NewWorkOrder"
         }
       ],
-      tableData: [
-      
-      ]
+      tableData: []
     };
   },
   methods: {
@@ -384,7 +397,7 @@ export default {
       border: @border;
       border-radius: 5px;
       width: 35%;
-      height: 420px;
+      height: 480px;
       min-width: 300px;
       float: left;
       padding: 10px;
@@ -393,7 +406,7 @@ export default {
       border: @border;
       border-radius: 5px;
       width: 60%;
-      height: 420px;
+      height: 480px;
       min-width: 600px;
       float: left;
       margin-left: 10px;

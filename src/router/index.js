@@ -35,6 +35,7 @@ import Modification from '@/components/personnel/Modification'
 import User from '@/components/user/User'
 import EquipmentArchives from '@/components/equipmentArchives/EquipmentArchives'
 import WorkOrder from '@/components/workOrder/WorkOrder'
+// import NewWorkOrder from '@/components/workOrder/NewWorkOrder'
 import BreakdownOrder from '@/components/workOrder/breakdownDetails/BreakdownOrder'
 import UpkeepAndTurnaroundPlans from '@/components/workOrder/upkeepAndTurnaroundPlans/UpkeepAndTurnaroundPlans'
 import KnowledgeBase from '@/components/knowledgeBase/KnowledgeBase'
@@ -484,7 +485,17 @@ const router = new Router({
         },
       ]
     },
-
+    // {
+    //   path: '/NewWorkOrder',
+    //   name: 'NewWorkOrder',
+    //   props: {
+    //     pageName: '创建工单'
+    //   },
+    //   component: NewWorkOrder,
+    //   meta: {
+    //     requireAuth: true
+    //   },
+    // },
     {
       path: '/KnowledgeBase',
       name: 'KnowledgeBase',

@@ -244,6 +244,11 @@ export default [{
         menu: '工单列表',
         route: "/WorkOrder",
         permissionCode: 'work_list_lookup'
+    },
+      {
+        menu: '创建工单',
+        route: "/NewWorkOrder",
+        permissionCode: 'work_list_lookup'
       },
       {
         menu: '故障工单详情',
