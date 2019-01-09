@@ -134,7 +134,7 @@
         <div class="inventory-list">
           <el-form label-width="85px">
             <el-form-item
-              label="入库清单："
+              label="出库清单："
               style="margin-bottom:0px;"
             >
             </el-form-item>
@@ -254,7 +254,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "entryCount",
+          field: "outCount",
           title: "*数量",
           width: 80,
           titleAlign: "center",
@@ -265,12 +265,12 @@ export default {
           titleCellClassName: "title-cell-class-name",
           formatter: function(rowData, rowIndex, pagingIndex, field) {
             return `<s class='cell-edit-style'></s><span>${
-              rowData.entryCount
+              rowData.outCount
             }</span>`;
           }
         },
         {
-          field: "entryPrice",
+          field: "price",
           title: "*单价（元）",
           width: 80,
           titleAlign: "center",
@@ -281,12 +281,12 @@ export default {
           titleCellClassName: "title-cell-class-name",
           formatter: function(rowData, rowIndex, pagingIndex, field) {
             return `<s class='cell-edit-style'></s><span>${
-              rowData.entryPrice
+              rowData.price
             }</span>`;
           }
         },
         {
-          field: "faultNo4",
+          field: "subtotal",
           title: "金额",
           width: 80,
           titleAlign: "center",
@@ -294,51 +294,9 @@ export default {
           isResize: true,
           overflowTitle: true,
           formatter: function(rowData, rowIndex, pagingIndex, field) {
-            return rowData.entryCount * rowData.entryPrice;
+            return rowData.outCount * rowData.price;
           }
         },
-        // {
-        //   field: "supplierName",
-        //   title: "*供应商",
-        //   width: 80,
-        //   titleAlign: "center",
-        //   columnAlign: "center",
-        //   isResize: true,
-        //   overflowTitle: true,
-        //   isEdit: true,
-        //   titleCellClassName: "title-cell-class-name",
-        //   formatter: function (rowData,rowIndex,pagingIndex,field) {
-        //     return `<s class='cell-edit-style'></s><span>${rowData.supplierName}</span>`;
-        //   }
-        // },
-        // {
-        //   field: "batchNumber",
-        //   title: "*批次",
-        //   width: 80,
-        //   titleAlign: "center",
-        //   columnAlign: "center",
-        //   isResize: true,
-        //   overflowTitle: true,
-        //   isEdit: true,
-        //   titleCellClassName: "title-cell-class-name",
-        //   formatter: function (rowData,rowIndex,pagingIndex,field) {
-        //     return `<s class='cell-edit-style'></s><span>${rowData.batchNumber}</span>`;
-        //   }
-        // },
-        // {
-        //   field: "saveLocation",
-        //   title: "*存放位置",
-        //   width: 80,
-        //   titleAlign: "center",
-        //   columnAlign: "center",
-        //   isResize: true,
-        //   overflowTitle: true,
-        //   isEdit: true,
-        //   titleCellClassName: "title-cell-class-name",
-        //   formatter: function (rowData,rowIndex,pagingIndex,field) {
-        //     return `<s class='cell-edit-style'></s><span>${rowData.saveLocation}</span>`;
-        //   }
-        // },
         {
           field: "remarks",
           title: "*备注",
@@ -369,7 +327,9 @@ export default {
       tableData1: [],
       classifyId: "",
       //搜索关键字
-      basekeyword: ""
+      basekeyword: "",
+      organizeCode:"",
+      organizeName:"",
     };
   },
   methods: {
@@ -378,6 +338,10 @@ export default {
       let name = this.$refs["getName"].currentLabels;
       name = name[name.length - 1];
       let id = value[value.length - 1];
+      this.organizeCode=id;
+      this.organizeName=name;
+      console.log(this.organizeCode);
+      console.log(this.organizeName);
     },
     columnCellClass(rowIndex, columnName, rowData) {
       // 给三行column为‘Parts1Material’和‘Parts2Material’的列设置className
@@ -401,6 +365,7 @@ export default {
     },
     toDetails(rowIndex, rowData, column) {
       //this.getuserbatch(rowData.id);
+      console.log(rowData);
       if (this.tableData1.find(i => i.partId === rowData.id)) {
         this.$message("不能添加重复的配件");
       } else {
@@ -409,14 +374,10 @@ export default {
           partName: rowData.partName,
           partNo: rowData.partNo,
           partModel: rowData.partModel,
-          entryCount: 0,
-          entryPrice: 0,
-          supplierName: "",
-          //批次ID
-          //batchNumberId:"",
-          batchNumber: "",
-          saveLocation: "",
-          remarks: ""
+          outCount: 0,
+          price: 0,
+          subtotal: 0,
+          remarks: "",
         });
       }
     },
@@ -461,43 +422,97 @@ export default {
         ({ type, info }) => {}
       );
     },
-    Sinsert() {
-      //备件入库接口1
+    //查询类别
+    partOut(){
       let qs = require("qs");
       let data = qs.stringify({
-        godownEntryNo: this.godownEntryNo,
-        godownEntryTime: this.formInline.time,
-        partInfoListJsonStr: JSON.stringify(this.tableData1)
+        outNo:"",
+        outTime:"",
+        organizeCode:"",
+        organizeName:"",
+        userId:"",
+        userName:"",
+        remark:"",
+        partOutDTO:JSON.stringify("")
       });
-      this.Axios(
-        {
-          params: data,
-          option: {
-            enableMsg: false
-          },
-          type: "post",
-          url: "/part/insertPartEntry"
-          // loadingConfig: {
-          //   target: document.querySelector("#mainContentWrapper")
-          // }
-        },
-        this
-      ).then(
-        result => {
-          if (result.data.code === 200) {
-            this.$message.success("添加成功");
-            this.reload();
+      this.Axios({
+        params:data,
+        url:"/part/partOut",
+        type:"post",
+        option:{
+          enableMsg: false
+        }
+      },this).then(result=>{
+        if(result.data.code===200){
+          this.$message.success("入库成功")
+        }else{
+          this.$message.error("入库失败,请重新尝试")
+        }
+      })
+    },
+    insertBT() {
+      let subok = true;
+      if (this.godownEntryNo === "" || this.tableData1.length === 0) {
+        subok = false;
+      }
+      if (subok) {
+        this.$confirm("确定完成出库吗?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            this.partOut();
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消操作"
+            });
+          });
+      } else {
+        this.$message.warning("请完善入库信息");
+      }
+    },
+    filterArray(data, parent) {
+      let vm = this;
+      var tree = [];
+      var temp;
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].parentCode == parent) {
+          var obj = data[i];
+          temp = this.filterArray(data, data[i].code);
+          if (temp.length > 0) {
+            obj.children = temp;
           }
-        },
-        ({ type, info }) => {}
-      );
+          tree.push(obj);
+        }
+      }
+      return tree;
+    },
+    filterArray2(data, parent) {
+      //编辑组织机构数据为树状结构方法
+      let vm = this;
+      var tree = [];
+      var temp;
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].parentCode == parent) {
+          var obj = data[i];
+          temp = this.filterArray(data, data[i].code);
+          if (temp.length > 0) {
+            obj.children = temp;
+          }
+          tree.push(obj);
+        }
+      }
+      return tree;
     },
     baselist() {
       //备品备件列表接口1
       this.Axios(
         {
           params: {
-            page: -1,
+            page:-1,
             keywords: this.basekeyword
           },
           option: {
@@ -524,96 +539,33 @@ export default {
         ({ type, info }) => {}
       );
     },
-
-    //查询类别
-    filterArray(data, parent) {
-      let vm = this;
-      var tree = [];
-      var temp;
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].parentCode == parent) {
-          var obj = data[i];
-          temp = this.filterArray(data, data[i].code);
-          if (temp.length > 0) {
-            obj.children = temp;
-          }
-          tree.push(obj);
-        }
-      }
-      return tree;
-    },
-    Sgetlist() {
-      //获取备品备件分类数据接口1
+    loadall(){
       this.Axios(
         {
-          option: {
-            enableMsg: false
-          },
-          type: "get",
-          url: "/part/list"
-          // loadingConfig: {
-          //   target: document.querySelector("#mainContentWrapper")
-          // }
+          url: ["/organize/allOrganize","/part/list","/part/searchBasicInfo"],
+          type: ["get","get","get"],
+          params:[{},{},{
+            page: -1,
+            keywords: this.basekeyword
+          }],
+          option:{
+            enableMsg:false
+          }
         },
         this
       ).then(
-        result => {
-          this.ctgoptions = this.filterArray(result.data.data, 0);
+        ([res1,res2,res3]) => {
+          this.options = this.filterArray2(res1.data.data, res1.data.data.find(item=>item.organizeType===1).parentCode);
+          this.ctgoptions = this.filterArray(res2.data.data, 0);
+          this.tableData = res3.data.data;
         },
-        ({ type, info }) => {}
+        () => {}
       );
-    },
-    //获取批次
-    getuserbatch(id) {
-      //获取最近使用批次接口
-      this.Axios(
-        {
-          params: {
-            partId: id
-          },
-          option: {
-            enableMsg: false
-          },
-          type: "get",
-          url: "/part/listRecentlyUsedBatch"
-          // loadingConfig: {
-          //   target: document.querySelector("#mainContentWrapper")
-          // }
-        },
-        this
-      ).then(result => {}, ({ type, info }) => {});
-    },
-
-    insertBT() {
-      let subok = true;
-
-      if (this.godownEntryNo === "" || this.tableData1.length === 0) {
-        subok = false;
-      }
-
-      if (subok) {
-        this.$confirm("确定完成入库吗?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            this.Sinsert();
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "已取消操作"
-            });
-          });
-      } else {
-        this.$message.warning("请完善入库信息");
-      }
     }
   },
   created() {
-    this.Sgetlist();
-    this.baselist();
+
+    this.loadall();
     EventBus.$on("sideBarTroggleHandle", isCollapse => {
       window.setTimeout(() => {
         this.$refs.inventoryListTable.resize();

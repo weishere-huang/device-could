@@ -83,42 +83,41 @@ export default {
     return {
       startTime: "",
       endTime: "",
-      pageNumber: "",
+      pageNumber: 0,
       pageIndex: 1,
       pageSize: 10,
       tableData: [],
       tableDate: [],
       columns: [
         {
-          field: "faultNo",
+          field: "no",
           title: "出库单号",
           width: 120,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
           overflowTitle: true
-          //   orderBy: ""
         },
         {
-          field: "state",
+          field: "time",
           title: "出库日期",
-          width: 120,
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
           overflowTitle: true
         },
         {
-          field: "deviceName",
+          field: "name",
           title: "备件名称",
-          width: 120,
+          width: 80,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
           overflowTitle: true
         },
         {
-          field: "deviceSpec",
+          field: "partNo",
           title: "备件编号",
           width: 100,
           titleAlign: "center",
@@ -127,7 +126,7 @@ export default {
           overflowTitle: true
         },
         {
-          field: "faultLevel",
+          field: "Model",
           title: "型号/规格",
           width: 80,
           titleAlign: "center",
@@ -136,8 +135,38 @@ export default {
           overflowTitle: true
         },
         {
-          field: "faultSource",
+          field: "outCount",
           title: "数量",
+          width: 30,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true,
+          overflowTitle: true
+        },
+        {
+          field: "price",
+          title: "单价",
+          width: 30,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true,
+          overflowTitle: true
+        },
+        {
+          field: "money",
+          title: "金额",
+          width: 30,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true,
+          overflowTitle: true,
+          formatter:function (rowData,rowIndex,pagingIndex,field) {
+            return rowData.outCount*rowData.price
+          }
+        },
+        {
+          field: "orgaizeName",
+          title: "领用部门",
           width: 60,
           titleAlign: "center",
           columnAlign: "center",
@@ -145,23 +174,32 @@ export default {
           overflowTitle: true
         },
         {
-          field: "causeAnalysis",
-          title: "备注",
-          width: 150,
+          field: "receiverName",
+          title: "领用人",
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
           overflowTitle: true
         },
         {
-          field: "causeAnalysis",
+          field: "employeeName",
           title: "经手人",
-          width: 80,
+          width: 60,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
           overflowTitle: true
-        }
+        },
+        {
+          field: "remark",
+          title: "备注",
+          width: 120,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true,
+          overflowTitle: true
+        },
       ],
       keywords:"",
     };
@@ -207,38 +245,13 @@ export default {
           successMsg:"出库单加载完成"
         }
       },this).then(result =>{
+          console.log(result);
           this.tableData=result.data.data.content;
           this.pageNumber=result.data.data.totalElements;
       });
     },
     //备件出库
-    partOut(){
-      let qs = require("qs");
-      let data = qs.stringify({
-        outNo:"",
-        outTime:"",
-        organizeCode:"",
-        organizeName:"",
-        userId:"",
-        userName:"",
-        remark:"",
-        partOutDTO:JSON.stringify("")
-      });
-      this.Axios({
-        params:data,
-        url:"/part/partOut",
-        type:"post",
-        option:{
-          enableMsg: false
-        }
-      },this).then(result=>{
-        if(result.data.code===200){
-          this.$message.success("入库成功")
-        }else{
-          this.$message.error("入库失败,请重新尝试")
-        }
-      })
-    }
+
 
   },
   created(){
