@@ -24,12 +24,12 @@
           title="提示"
           :visible.sync="dialogVisible"
           width="300"
-          
+
           >
           <div style="height:200px;width:100%;overflow:scroll;">
-        
+
           </div>
-          
+
         </el-dialog>
 
         <div class="equipment-data">
@@ -407,10 +407,10 @@
       this.$store.commit('tokenSrc', localStorage.getItem("token"))
       this.getworksCount();
       this.getdeviceData();
-
+      this.allNotReadMsg();
     },
     watch: {
-      
+
     }
   };
 </script>
@@ -454,7 +454,7 @@
             padding: 10px;
             overflow: hidden;
             margin-top: 10px;
-            
+
             .photo {
               width: 90px;
               height: 90px;
