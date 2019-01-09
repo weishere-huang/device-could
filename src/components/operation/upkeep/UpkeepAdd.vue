@@ -108,7 +108,17 @@
           <el-button size="small" type="primary" @click="addPlanIsShow"><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;设备添加</el-button>
         </div>
         <h5>设备列表</h5>
-        <v-table :select-all="selectALL" @on-custom-comp="customCompFunc" :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+        <v-table :select-all="selectALL"
+                 @on-custom-comp="customCompFunc"
+                 :select-group-change="selectGroupChange"
+                 is-horizontal-resize
+                 column-width-drag
+                 :multiple-sort="false"
+                 style="width:100%;min-height:318px;"
+                 :columns="columns"
+                 :table-data="tableData"
+                 row-hover-color="#eee"
+                 row-click-color="#edf7ff"></v-table>
       </div>
       <el-dialog
         title="人员列表"

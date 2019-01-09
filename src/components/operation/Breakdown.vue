@@ -341,10 +341,10 @@
           this.toDetails(params.index, params.rowData);
         }else if(params.type === "dispel"){
           this.faultIds = params.rowData.id;
-          params.rowData.state ==="待处理" ?　this.dispel() : this.$message.error('对不起、不能消除'+params.rowData.state+'的计划')
+          params.rowData.state === 5 ?　this.dispel() : this.$message.error('对不起、只能消除执行中的计划')
         }else if(params.type === "submitAudit"){
           this.faultIds = params.rowData.id;
-          params.rowData.state ==="待审核" ?　this.outerVisible = true : this.$message.error('对不起、不能审核'+params.rowData.state+'的计划')
+          params.rowData.state ===0 ?　this.outerVisible = true : this.$message.error('对不起、只能操作待审核的计划')
         }
       },
       toDetails(rowIndex, rowData, column) {
@@ -380,7 +380,6 @@
         }
       },
       selectChange(selection, rowData) {
-        console.log("select-change", selection, rowData);
       },
       getTableData() {
         this.tableData = this.tableDate.slice(

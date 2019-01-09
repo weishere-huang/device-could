@@ -1,32 +1,22 @@
 <template>
   <div id="app">
-    <el-container
-      v-if="token!==''"
-      class="mainWrapper"
-    >
+    <el-container v-if="token" class="mainWrapper">
       <el-aside class="siderWrapper">
         <div class="logoWrap">
-          <img src='./assets/image/logo.png' />
+          <img src="./assets/image/logo.png">
         </div>
         <el-menu
-          :router=true
+          :router="true"
           :default-active="$route.name"
           class="el-menu-vertical-demo"
           text-color="#fff"
           active-text-color="#ffd04b"
           :collapse="isCollapse"
         >
-          <el-submenu
-            :index="item.permissionCode"
-            :key="item.route"
-            v-for="item in menuSource"
-          >
+          <el-submenu :index="item.permissionCode" :key="item.route" v-for="item in menuSource">
             <template slot="title">
               <!-- <span class="menuItem" v-html="item.icon"></span> -->
-              <i
-                class="iconfont"
-                v-html="item.icon"
-              ></i>
+              <i class="iconfont" v-html="item.icon"></i>
               <span slot="title">{{item.menu}}</span>
             </template>
             <el-menu-item
@@ -36,18 +26,9 @@
             >{{subItem.menu}}</el-menu-item>
           </el-submenu>
         </el-menu>
-        <div
-          v-on:click="TroggleHandle"
-          class="isCollapse-group"
-        >
-          <i
-            v-show="isCollapse === true"
-            class="el-icon-arrow-right"
-          ></i>
-          <i
-            v-show="isCollapse === false"
-            class="el-icon-arrow-left"
-          ></i>
+        <div v-on:click="TroggleHandle" class="isCollapse-group">
+          <i v-show="isCollapse === true" class="el-icon-arrow-right"></i>
+          <i v-show="isCollapse === false" class="el-icon-arrow-left"></i>
         </div>
       </el-aside>
       <el-container>
@@ -60,73 +41,34 @@
               <ul>
                 <li>&nbsp;欢迎您：{{user}}</li>
                 <li>
-                  <el-tooltip
-                    class="item"
-                    effect="dark"
-                    content="设备状态"
-                    placement="bottom-end"
-                  >
-                    <i
-                      class="iconfont"
-                      @click="pathto(0)"
-                    >&#xe609;</i>
+                  <el-tooltip class="item" effect="dark" content="设备状态" placement="bottom-end">
+                    <i class="iconfont" @click="pathto(0)">&#xe609;</i>
                   </el-tooltip>
                 </li>
                 <li>
-                  <el-tooltip
-                    class="item"
-                    effect="dark"
-                    content="我的消息"
-                    placement="bottom-end"
-                  >
-                    <el-badge
-                      :value="msgcount"
-                      :max="99"
-                      class="item"
-                    >
-                      <i
-                        class="iconfont"
-                        @click="pathto(1)"
-                      >&#xe601;</i>
+                  <el-tooltip class="item" effect="dark" content="我的消息" placement="bottom-end">
+                    <el-badge :value="msgcount" :max="99" class="item">
+                      <i class="iconfont" @click="pathto(1)">&#xe601;</i>
                     </el-badge>
                   </el-tooltip>
                 </li>
                 <li>
-                  <el-tooltip
-                    class="item"
-                    effect="dark"
-                    content="我的工单"
-                    placement="bottom-end"
-                  >
-                    <i
-                      class="iconfont"
-                      @click="pathto(2)"
-                    >&#xe61d;</i>
+                  <el-tooltip class="item" effect="dark" content="我的工单" placement="bottom-end">
+                    <i class="iconfont" @click="pathto(2)">&#xe61d;</i>
                   </el-tooltip>
                 </li>
                 <li>
-                  <el-tooltip
-                    class="item"
-                    effect="dark"
-                    content="退出"
-                    placement="bottom-end"
-                  >
-                    <i
-                      class="iconfont"
-                      @click="out"
-                    >&#xe6af;</i>
+                  <el-tooltip class="item" effect="dark" content="退出" placement="bottom-end">
+                    <i class="iconfont" @click="out">&#xe6af;</i>
                   </el-tooltip>
                 </li>
               </ul>
             </div>
           </el-header>
         </el-header>
-        <el-main
-          class="mainContentWrapper"
-          style="padding:8px;"
-        >
+        <el-main class="mainContentWrapper" style="padding:8px;">
           <transition>
-            <router-view v-if="isRouterAlive" />
+            <router-view v-if="isRouterAlive"/>
           </transition>
         </el-main>
         <el-footer>长虹智能终端设备生产管理云平台({{version?(new Date(version).format("yyyy/MM/dd hh:mm:ss")):'no version'}})</el-footer>
@@ -134,7 +76,7 @@
     </el-container>
     <el-container v-else>
       <transition>
-        <router-view v-if="isRouterAlive" />
+        <router-view v-if="isRouterAlive"/>
       </transition>
     </el-container>
   </div>
@@ -143,7 +85,7 @@
 <script>
 import breadCrumb from "./BreadCrumb.vue";
 import menuSourceMap from "./router/routeMap";
-import clone from 'clone';
+import clone from "clone";
 
 export default {
   provide() {
@@ -154,7 +96,7 @@ export default {
   name: "App",
   data() {
     return {
-      token: "",
+      token: undefined,
       user: "",
       show: true,
       isCollapse: false,
@@ -193,6 +135,7 @@ export default {
       //     option:{enableMsg:false}
       //   },
       // ).then(response=>{
+      self = this;
       this.$confirm("您确定要退出登录吗？", "确认", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -202,9 +145,11 @@ export default {
           message: "您已退出登录",
           type: "success"
         });
+        self.token = null;
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("permissionUrl");
+
         this.$router.push({
           path: "/Login",
           redirect: "/Login"
@@ -241,47 +186,61 @@ export default {
       } else if (a === 2) {
         this.$router.push({ path: "/WorkOrder" });
       }
+    },
+    initPermission() {
+      this.user = JSON.parse(localStorage.getItem("user")).name;
+      this.token = localStorage.getItem("token");
+      this.permissionUrl = JSON.parse(
+        localStorage.getItem("permissionUrl") || "[]"
+      );
+      const permissionUrl = this.permissionUrl;
+      // this.user=this.$store.state.token.userMsg.name
+      // this.token=this.$store.state.token.tokenNub
+      this.MsgCount();
+      let _menuSource = [];
+      clone(menuSourceMap).forEach(per => {
+        if (per.defaultDock) {
+          _menuSource.push(per);
+        } else {
+          const willShowMenu = per.subMenu.filter(m => {
+            if (m.visible) {
+              return false;
+            }
+            return permissionUrl.find(p => p.module === m.permissionCode)
+              ? true
+              : false;
+          });
+          if (willShowMenu.length !== 0) {
+            per.subMenu = willShowMenu;
+            _menuSource.push(per);
+          }
+        }
+      });
+      this.menuSource = _menuSource;
     }
   },
   watch: {
     $route() {
       this.token = localStorage.getItem("token");
-      this.user = JSON.parse(localStorage.getItem("user")).name;
+      this.user = JSON.parse(localStorage.getItem("user"))&&JSON.parse(localStorage.getItem("user")).name;
       this.permissionUrl = JSON.parse(
         localStorage.getItem("permissionUrl") || "[]"
       );
+    },
+    permissionUrl(){
+
+    },
+    token(val) {
+      if (val) {
+        this.initPermission();
+      } else {
+        this.$router.replace("/Login");
+      }
     }
   },
   computed: {},
   created() {
-    this.user = JSON.parse(localStorage.getItem("user")).name;
-    this.token = localStorage.getItem("token");
-    this.permissionUrl = JSON.parse(
-      localStorage.getItem("permissionUrl") || "[]"
-      // this.$cookieStore.getCookie('permissionUrl')||'[]'
-    );
-    const permissionUrl=this.permissionUrl
-    // this.user=this.$store.state.token.userMsg.name
-    // this.token=this.$store.state.token.tokenNub
-    this.MsgCount();
-    let _menuSource=[];
-    clone(menuSourceMap).forEach(per => {
-        if(per.defaultDock){
-          _menuSource.push(per);
-        }else{
-          const willShowMenu = per.subMenu.filter(m => {
-            if(m.visible){
-              return false;
-            }
-            return permissionUrl.find(p=>p.module===m.permissionCode) ? true : false;
-          });
-          if(willShowMenu.length!==0){
-            per.subMenu=willShowMenu;
-            _menuSource.push(per);
-          }
-      }
-    });
-    this.menuSource = _menuSource;
+    this.initPermission();
   },
   components: {
     breadCrumb

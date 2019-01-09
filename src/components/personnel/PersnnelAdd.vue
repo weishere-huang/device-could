@@ -5,9 +5,9 @@
         <el-button size="small"
                    type="primary" @click="tback" icon="el-icon-arrow-left">返回</el-button>
         <permission-button size="small"
-                   permCode='device_add_lookup.device_add_save'
-                   banType='hide'
-                   type="primary" @click="employeeAdd('persnnelAdd')" >
+                           permCode='device_add_lookup.device_add_save'
+                           banType='hide'
+                           type="primary" @click="employeeAdd('persnnelAdd')" >
           <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</permission-button>
       </div>
       <div class="botton">
@@ -434,88 +434,88 @@
         this.$refs[formName].validate(valid => {
           if(valid)
             this.persnneladd.organizationName === "" ?
-              this.toEmployeeAdd() :  this.$message.error("请填写完信息");
-      });
-  },
-  toEmployeeAdd() {
-    let file = [];
-    for(let i in this.fileList){
-      file.push({
-        name:this.fileList[i].name,
-        img:this.fileList[i].img,
-      })
-    }
-    this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
-    this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
-    let qs = require("qs");
-    let data = qs.stringify({
-      userName:this.persnneladd.userName,
-      employeeNo: this.persnneladd.employeeNo,
-      name:this.persnneladd.name,
-      gender:this.persnneladd.gender,
-      birthday:this.persnneladd.birthday,
-      phone:this.persnneladd.phone,
-      position:this.persnneladd.position,
-      organizeCode:this.persnneladd.organizeCode,
-      organizationName :this.persnneladd.organizationName,
-      enterpriseId  :this.persnneladd.enterpriseId,
-      workType:this.persnneladd.workType,
-      entryTime:this.persnneladd.entryTime,
-      email:this.persnneladd.email,
-      marital:this.persnneladd.marital,
-      idCardNo:this.persnneladd.idCardNo,
-      workingYears:this.persnneladd.workingYears,
-      height:this.persnneladd.height,
-      nativePlace:this.persnneladd.nativePlace,
-      nationality:this.persnneladd.nationality,
-      postalAddress:this.persnneladd. postalAddress,
-      graduateSchool:this.persnneladd. graduateSchool,
-      degree:this.persnneladd.degree,
-      img:this.dialogImageUrl,
-      qualificationInfo:JSON.stringify(file),
-      roleId:this.persnneladd.roleId
-    });
-    this.Axios(
-      {
-        params:data,
-        type: "post",
-        url: "/employee/add",
-        option: {
-          successMsg:"添加成功"
+              this.$message.error("请填写完信息") :  this.toEmployeeAdd();
+        });
+      },
+      toEmployeeAdd() {
+        let file = [];
+        for(let i in this.fileList){
+          file.push({
+            name:this.fileList[i].name,
+            img:this.fileList[i].img,
+          })
         }
+        this.persnneladd.birthday=this.persnneladd.birthday.replace(/-/g, "/");
+        this.persnneladd.entryTime=this.persnneladd.entryTime.replace(/-/g, "/");
+        let qs = require("qs");
+        let data = qs.stringify({
+          userName:this.persnneladd.userName,
+          employeeNo: this.persnneladd.employeeNo,
+          name:this.persnneladd.name,
+          gender:this.persnneladd.gender,
+          birthday:this.persnneladd.birthday,
+          phone:this.persnneladd.phone,
+          position:this.persnneladd.position,
+          organizeCode:this.persnneladd.organizeCode,
+          organizationName :this.persnneladd.organizationName,
+          enterpriseId  :this.persnneladd.enterpriseId,
+          workType:this.persnneladd.workType,
+          entryTime:this.persnneladd.entryTime,
+          email:this.persnneladd.email,
+          marital:this.persnneladd.marital,
+          idCardNo:this.persnneladd.idCardNo,
+          workingYears:this.persnneladd.workingYears,
+          height:this.persnneladd.height,
+          nativePlace:this.persnneladd.nativePlace,
+          nationality:this.persnneladd.nationality,
+          postalAddress:this.persnneladd. postalAddress,
+          graduateSchool:this.persnneladd. graduateSchool,
+          degree:this.persnneladd.degree,
+          img:this.dialogImageUrl,
+          qualificationInfo:JSON.stringify(file),
+          roleId:this.persnneladd.roleId
+        });
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/employee/add",
+            option: {
+              successMsg:"添加成功"
+            }
+          },
+          this
+        ).then(response => {
+            this.Personnel();
+          },
+          ({type, info}) => {
+          })
       },
-      this
-    ).then(response => {
-        this.Personnel();
+      Personnel() {
+        this.$router.push({
+          path: "/Personnel"
+        });
+        this.$store.commit("personnel","y")
       },
-      ({type, info}) => {
-      })
-  },
-  Personnel() {
-    this.$router.push({
-      path: "/Personnel"
-    });
-    this.$store.commit("personnel","y")
-  },
-  },
-  created() {
-    this.organize();
-    this.Axios(
-      {
-        params:{},
-        type: "get",
-        url: "/role/listAllRole",
-        option:{enableMsg: false}
-      },
-      this
-    ).then(response => {
-        this.role = response.data.data;
-        this.persnneladd.entryTime = this.date;
-        this.persnneladd.birthday = parseInt(this.date.split("-")[0])-30+"-01-01";
-      },
-      ({type, info}) => {
-      });
-  }
+    },
+    created() {
+      this.organize();
+      this.Axios(
+        {
+          params:{},
+          type: "get",
+          url: "/role/listAllRole",
+          option:{enableMsg: false}
+        },
+        this
+      ).then(response => {
+          this.role = response.data.data;
+          this.persnneladd.entryTime = this.date;
+          this.persnneladd.birthday = parseInt(this.date.split("-")[0])-30+"-01-01";
+        },
+        ({type, info}) => {
+        });
+    }
   };
 </script>
 
@@ -630,9 +630,9 @@
       line-height:39px;
     }
   }
-// .el-dialog__header .el-dialog__headerbtn{
-//     top: 1px !important;
-//   }
+  .el-dialog__header .el-dialog__headerbtn{
+    top: 1px !important;
+  }
   .el-dialog__body{
     font-size: 0px !important;
     line-height: 0px;
