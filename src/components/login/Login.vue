@@ -1,12 +1,9 @@
 <template>
   <div class="login">
     <div class="topBar">
-      <img src='../../assets/image/changhong.png'/>
+      <img src="../../assets/image/changhong.png">
     </div>
-    <div
-      class="loginBox"
-      v-show="isshow"
-    >
+    <div class="loginBox" v-show="isshow">
       <h1>用户登录</h1>
       <el-form
         :model="loginList"
@@ -14,53 +11,30 @@
         style="width:80%;margin-top:10px;"
         ref="loginList"
       >
-        <el-form-item
-          label=""
-          style="margin-bottom: 20px;"
-          prop="userName"
-        >
-          <el-input
-            placeholder="用户名/手机号"
-            v-model="loginList.userName"
-            maxlength="30"
-            autofocus
-          >
-            <i
-              class='iconfont icon-fonts-user'
-              slot="suffix"
-            >
-            </i></el-input>
+        <el-form-item label style="margin-bottom: 20px;" prop="userName">
+          <el-input placeholder="用户名/手机号" v-model="loginList.userName" maxlength="30" autofocus>
+            <i class="iconfont icon-fonts-user" slot="suffix"></i>
+          </el-input>
+        </el-form-item>
+        <el-form-item label style="margin-bottom: 20px;" prop="password">
+          <el-input type="password" placeholder="密码" v-model="loginList.password" maxlength="30">
+            <i class="iconfont icon-password" slot="suffix"></i>
+          </el-input>
         </el-form-item>
         <el-form-item
-          label=""
-          style="margin-bottom: 20px;"
-          prop="password"
-        >
-          <el-input
-            type="password"
-            placeholder="密码"
-            v-model="loginList.password"
-            maxlength="30"
-          >
-            <i
-              class='iconfont icon-password'
-              slot="suffix"
-            >
-            </i></el-input>
-        </el-form-item>
-        <el-form-item
-          label=""
+          label
           style="width:100%;margin-bottom: 20px;"
           prop="verification"
           :inline="true"
         >
           <el-input
+            type="number"
+            oninput="if(value.length>6)value=value.slice(0,6)"
             placeholder="验证码"
             v-model.number="loginList.verification"
             @keyup.enter.native="login"
             style="width:60%"
-          >
-          </el-input>
+          ></el-input>
           <!--<el-button type="primary" plain style="width:38%;height:40px;" @click="loginSecuritycode">-->
           <el-button
             type="primary"
@@ -77,28 +51,22 @@
         </el-form-item>
       </el-form>
       <p>
-        <el-button
-          type="primary"
-          @click="submitForm('loginList')"
-          @keyup.enter.native="login"
-        >登录
-        </el-button>
+        <el-button type="primary" @click="submitForm('loginList')" @keyup.enter.native="login">登录</el-button>
       </p>
       <p class="registerSkip">
         <span>忘记密码</span>
-        <span v-on:click="function(){
+        <span
+          v-on:click="function(){
           isshow=!isshow
           ishide=!ishide
-          }">企业注册</span>
+          }"
+        >企业注册</span>
 
         <!-- <span @click="toReginster">企业注册</span> -->
       </p>
     </div>
     <div class="bottomBar">长虹智能终端设备生产管理云平台</div>
-    <div
-      class="register"
-      v-show="ishide"
-    >
+    <div class="register" v-show="ishide">
       <div v-show="backshow">
         <h2>企业注册</h2>
         <div class="titleText">（企业注册信息填写）</div>
@@ -109,10 +77,7 @@
           :rules="registerRules"
           ref="company"
         >
-          <el-form-item
-            label="企业名称："
-            prop="name"
-          >
+          <el-form-item label="企业名称：" prop="name">
             <el-input
               placeholder="营业执照主体单位名称"
               size="small"
@@ -121,10 +86,7 @@
               style="width:80%"
             ></el-input>
           </el-form-item>
-          <el-form-item
-            label="法人代表："
-            prop="corporation"
-          >
+          <el-form-item label="法人代表：" prop="corporation">
             <el-input
               placeholder="营业执照法定代表人"
               size="small"
@@ -133,22 +95,16 @@
               maxlength="30"
             ></el-input>
           </el-form-item>
-          <el-form-item
-            label="联系电话："
-            prop="phone"
-          >
+          <el-form-item label="联系电话：" prop="phone">
             <el-input
+              type="number"
               placeholder="如：028-XXXXXXXX"
               size="small"
               v-model="company.phone"
-              maxlength="13"
               style="width:80%"
             ></el-input>
           </el-form-item>
-          <el-form-item
-            label="企业地址："
-            prop="address"
-          >
+          <el-form-item label="企业地址：" prop="address">
             <el-input
               placeholder="企业现在所处的详细地址"
               size="small"
@@ -157,10 +113,7 @@
               style="width:80%"
             ></el-input>
           </el-form-item>
-          <el-form-item
-            label="统一社会信用代码："
-            prop="companyID"
-          >
+          <el-form-item label="统一社会信用代码：" prop="companyID">
             <el-input
               placeholder="18位统一社会信用代码"
               size="small"
@@ -169,15 +122,11 @@
               maxlength="18"
             ></el-input>
           </el-form-item>
-          <el-form-item
-            label="营业执照："
-            props="dialogImageUrl"
-            style="padding-top: 6px;"
-          >
+          <el-form-item label="营业执照：" props="dialogImageUrl" style="padding-top: 6px;">
             <el-upload
               style="display:inline-block;vertical-align:top"
               :action="uploadUrl()"
-              accept="image/jpeg,image/png"
+              accept="image/jpeg, image/png"
               list-type="picture-card"
               :limit="1"
               :on-success="handleAvatarSuccess"
@@ -188,11 +137,7 @@
               <i class="el-icon-plus"></i>
             </el-upload>
             <el-dialog :visible.sync="dialogVisible" append-to-body>
-              <img
-                width="100%"
-                :src="company.dialogImageUrl"
-                alt=""
-              >
+              <img width="100%" :src="company.dialogImageUrl" alt>
             </el-dialog>
           </el-form-item>
           <div style="display:inline-block;margin-left:-20px;color:#fff;">仅支持小于1Mb的jpg或png图片格式</div>
@@ -203,14 +148,10 @@
             size="small"
             class="registerBtn"
             @click="registerNext('company')"
-          >下一步
-          </el-button>
+          >下一步</el-button>
         </div>
       </div>
-      <div
-        v-show="nextshow"
-        style="margin-top:20px"
-      >
+      <div v-show="nextshow" style="margin-top:20px">
         <h2>企业注册</h2>
         <div class="titleText">（管理员信息登记）</div>
         <el-form
@@ -220,10 +161,7 @@
           :rules="managerRules"
           ref="manager"
         >
-          <el-form-item
-            label="用户名："
-            prop="userName"
-          >
+          <el-form-item label="用户名：" prop="userName">
             <el-input
               placeholder="6~20位字符组成，以字母开头"
               size="small"
@@ -232,10 +170,7 @@
               maxlength="20"
             ></el-input>
           </el-form-item>
-          <el-form-item
-            label="密码："
-            prop="userPassword"
-          >
+          <el-form-item label="密码：" prop="userPassword">
             <el-input
               placeholder="6~20位字符组成，区分大小写"
               size="small"
@@ -244,37 +179,28 @@
               maxlength="20"
               style="width:80%"
             >
-              <i
-                class="el-icon-view"
-                slot="suffix"
-                style=""
-                @click="seePassword"
-              ></i></el-input>
+              <i class="el-icon-view" slot="suffix" style @click="seePassword"></i>
+            </el-input>
           </el-form-item>
-          <el-form-item
-            label="手机号："
-            prop="phone"
-          >
+          <el-form-item label="手机号：" prop="phone">
             <el-input
+              type="number"
               placeholder="11位手机号（仅国内）"
               size="small"
               v-model="manager.phone"
-              maxlength="11"
+              oninput="if(value.length>11)value=value.slice(0,11)"
               style="width:80%"
             ></el-input>
           </el-form-item>
-          <el-form-item
-            label="验证码："
-            prop="validate"
-          >
+          <el-form-item label="验证码：" prop="validate">
             <el-input
               placeholder="短信验证码"
-              type="text"
+              type="number"
               v-model="manager.validate"
+              oninput="if(value.length>6)value=value.slice(0,6)"
               size="small"
               style="width:40%"
-            >
-            </el-input>
+            ></el-input>
             <el-button
               type="primary"
               style="width:38%;"
@@ -285,28 +211,27 @@
             <el-button
               type="primary"
               plain
-              style="width:38%;height:40px;"
+              style="width:38%;height:32px;"
+              size="small"
               v-if="sendMsgDisabled"
             >{{time+'秒后获取'}}</el-button>
-
           </el-form-item>
-          <el-form-item label="">
-            <el-checkbox v-model="checked" >您已阅读<a
+          <el-form-item label>
+            <el-checkbox v-model="checked">您已阅读
+              <a
                 href="javascript:"
                 style="text-decoration: none;"
                 @click="showDeal=true"
-              >《长虹设备云用户注册协议》</a></el-checkbox>
+              >《长虹设备云用户注册协议》</a>
+            </el-checkbox>
           </el-form-item>
         </el-form>
-        <el-dialog
-          title="用户注册协议"
-          :visible.sync="showDeal"
-          width="600"
-          center
-          append-to-body>
-          <div style="height:600px;width:100%;overflow:scroll" id="deal-content" v-html="deal.content">
-        
-          </div>
+        <el-dialog title="用户注册协议" :visible.sync="showDeal" width="600" center append-to-body>
+          <div
+            style="height:600px;width:100%;overflow:scroll"
+            id="deal-content"
+            v-html="deal.content"
+          ></div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="showDeal = false" size="mini">取 消</el-button>
             <el-button type="primary" @click="showDeal = false" size="mini">确 定</el-button>
@@ -319,16 +244,14 @@
           style="width:30%;height:32px"
           v-on:click="function(){nextshow=!nextshow
            backshow=!backshow}"
-        >上一步
-        </el-button>
+        >上一步</el-button>
         <el-button
           type="primary"
           size="small"
           class="registerBtn"
           @click="registerInfo('manager')"
           style="width:30%;height:32px"
-        >注册
-        </el-button>
+        >注册</el-button>
       </div>
       <div
         class="loginSkip"
@@ -336,8 +259,7 @@
           isshow=!isshow
           ishide=!ishide
           }"
-      >已有账号，直接登录
-      </div>
+      >已有账号，直接登录</div>
     </div>
     <div v-if="this.$route.params.deviceId!==undefined">
       <router-view></router-view>
@@ -354,8 +276,8 @@ export default {
   name: "Login",
   data() {
     return {
-      deal:"",
-      showDeal:false,
+      deal: "",
+      showDeal: false,
       see: "password",
       time: 60, // 发送验证码倒计时
       sendMsgDisabled: false,
@@ -612,7 +534,7 @@ export default {
   },
 
   methods: {
-    dealMsg(){
+    dealMsg() {
       this.Axios(
         {
           url: "/protocol/find",
@@ -624,13 +546,13 @@ export default {
       ).then(
         result => {
           // console.log(result.data.data[0]);
-          this.deal=result.data.data[0]
+          this.deal = result.data.data[0];
         },
         ({ type, info }) => {}
       );
     },
-    toReginster(){
-      this.$router.push({path:'/Reginster'})
+    toReginster() {
+      this.$router.push({ path: "/Reginster" });
     },
     seePassword(e) {
       if (this.see === "text") {
@@ -669,7 +591,7 @@ export default {
     },
     registerNext(formName) {
       if (this.company.dialogImageUrl === "") {
-        this.$message.error('请上传营业执照')
+        this.$message.error("请上传营业执照");
       } else {
         this.$refs[formName].validate(valid => {
           if (valid) {
@@ -730,17 +652,18 @@ export default {
       ).then(
         result => {
           if (result.data.code === 200) {
-
             // console.log(result.data);
             localStorage.token = result.data.data.tokenStr;
             localStorage.user = JSON.stringify(result.data.data);
-            localStorage.permissionUrl=JSON.stringify(result.data.data.permissionUrl);
+            localStorage.permissionUrl = JSON.stringify(
+              result.data.data.permissionUrl
+            );
 
             // this.$cookieStore.addCookie('token', JSON.stringify(result.data.data.tokenStr),168)
             // this.$cookieStore.addCookie('message',JSON.stringify(result.data.data) ,168)
             // this.$cookieStore.addCookie('permissionUrl',JSON.stringify(result.data.data.permissionUrl),168)
-         
-            this.$store.commit("user",result.data.data);
+
+            this.$store.commit("user", result.data.data);
             // this.$store.commit("tokenSrc",result.data.data.tokenStr);
             // console.log(this.$store.state.token.tokenNub);
             // console.log(this.$store.state.token.userMsg);
@@ -756,10 +679,12 @@ export default {
             this.$message.error("账号或密码错误");
           }
           if (info.code === 0) {
-            this.$message.error('对不起，您的账户已被禁用')
+            this.$message.error("对不起，您的账户已被禁用");
           }
           if (info.code === 406) {
-            this.$message.error('对不起，您的企业正在审核中，请审核通过后再登录')
+            this.$message.error(
+              "对不起，您的企业正在审核中，请审核通过后再登录"
+            );
           }
         }
       );
@@ -874,13 +799,14 @@ export default {
               this.$message.success("短信验证码已发送至您的手机，请注意查收");
               this.send();
             } else {
-              this.$message.error("对不起,获取验证码失败，请检查信息填写是否正确后再重新获取");
+              this.$message.error(
+                "对不起,获取验证码失败，请检查信息填写是否正确后再重新获取"
+              );
               return false;
             }
           });
         },
-        ({ type, info }) => {
-        }
+        ({ type, info }) => {}
       );
     },
     uploadUrl() {
@@ -922,10 +848,9 @@ export default {
       return encrypted.toString();
     }
   },
-  mounted() {
-  },
-  created () {
-    this.dealMsg()
+  mounted() {},
+  created() {
+    this.dealMsg();
   }
 };
 </script>
@@ -943,31 +868,31 @@ export default {
 }
 
 .login {
-  &:after {	
+  &:after {
     content: "";
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
     position: absolute;
-    left:0;
-    top:0;
+    left: 0;
+    top: 0;
     background: #686868 url(../../assets/image/login-bg.jpg) no-repeat;
     background-size: cover;
     -webkit-filter: blur(4px);
     z-index: 3;
-}
-  .topBar{
+  }
+  .topBar {
     line-height: 40px;
     position: absolute;
     top: 0;
     text-align: left;
     width: 100%;
-    img{
+    img {
       width: 200px;
       margin: 5px;
     }
     z-index: 4;
   }
-  .bottomBar{
+  .bottomBar {
     line-height: 40px;
     background: rgba(255, 255, 255, 0.3);
     position: absolute;
@@ -985,7 +910,7 @@ export default {
   width: 100%;
   height: 100vh;
   //background-color: @blue;
-  
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1022,13 +947,14 @@ export default {
     // .el-form-item {
     //   margin-bottom: 20px;
     // }
-    .el-form-item__error{color: red}
+    .el-form-item__error {
+      color: red;
+    }
     p {
       width: 80%;
       padding: 0 0 10px 0;
       button {
         width: 100%;
-        height: 40px;
       }
     }
     .registerSkip {
@@ -1044,27 +970,28 @@ export default {
         }
       }
     }
-    .proving1 {
+    .proving {
+      font-size: 12px;
       text-align: left;
-      width: 60%;
-      .el-input {
-        width: 120%;
+      position: relative;
+      .el-input:nth-child(1) {
+        width: 40%;
       }
-
+      .el-input:nth-child(2) {
+        width: 58.5%;
+      }
       .el-button {
-        width: 160%;
-        height: 38px;
-      }
-      span {
-        margin-left: 3%;
-        display: inline-block;
-        width: 30%;
-        border: 1px solid red;
+        position: absolute;
+        top: 20%;
+        right: 1.5%;
+        width: 70px;
+        height: 36px;
+        margin-left: 4%;
+        border: none;
       }
     }
   }
 }
-
 .adminLogin {
   width: 40%;
   height: auto;
@@ -1092,70 +1019,17 @@ export default {
       width: 100%;
     }
   }
-  .registerSkip {
-    text-align: right;
-    padding-bottom: 50px;
-    font-size: 12px;
-    span {
-      display: inline-block;
-      margin-left: 5px;
-      cursor: pointer;
-      &:hover {
-        color: #0d5196;
-      }
-    }
-  }
-  .proving {
-    font-size: 12px;
-    text-align: left;
-    position: relative;
-    .el-input:nth-child(1) {
-      width: 40%;
-    }
-    .el-input:nth-child(2) {
-      width: 58.5%;
-    }
-    .el-button {
-      position: absolute;
-      top: 20%;
-      right: 1.5%;
-      width: 70px;
-      height: 36px;
-      margin-left: 4%;
-      border: none;
-    }
-  }
 }
-
-.register {
-  position: absolute;
-  //right: 10%;
-  width: 35%;
-  background: rgba(255, 255, 255, 0.45);
-    border-radius: 20px;
-    box-shadow: 0 0 8px #000;
-  padding-bottom: 30px;
-  .next {
-    margin-top: 30px;
-  }
-  .el-form-item__error{color: red}
-  h2 {
-    width: 100%;
-    font-weight: 500;
-    width: 80%;
-    color: #fff;
-    text-align: left;
-    text-shadow: 1px 1px 2px #333;
-    margin: 0 auto;
-    line-height: 60px;
-    font-size: 24px;
-  }
-  .el-form-item {
-    text-align: left;
-    margin-bottom: 16px;
-    .el-upload--picture-card {
-      width: 80px;
-      height: 80px;
+.registerSkip {
+  text-align: right;
+  padding-bottom: 50px;
+  font-size: 12px;
+  span {
+    display: inline-block;
+    margin-left: 5px;
+    cursor: pointer;
+    &:hover {
+      color: #0d5196;
     }
   }
   ul {
@@ -1188,6 +1062,71 @@ export default {
   .titleText {
     width: 100%;
     font-size: 12px;
+    color: #909399;
+    text-align: center;
+    padding: 10px 0 10px 0px;
+  }
+  .upload-demo {
+    width: 50%;
+    display: inline-block;
+    padding: 0;
+  }
+  .registerBtn {
+    width: 75%;
+    height: 32px;
+  }
+  .loginSkip {
+    padding-right: 40px;
+    margin-top: 20px;
+    text-align: right;
+    font-size: 12px;
+    cursor: pointer;
+  }
+}
+.register {
+  position: absolute;
+  //right: 10%;
+  width: 35%;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 20px;
+  box-shadow: 0 0 8px #000;
+  padding-bottom: 30px;
+  z-index: 4;
+  .next {
+    margin-top: 30px;
+  }
+  .el-form-item__error {
+    color: red;
+  }
+  h2 {
+    width: 100%;
+    font-weight: 500;
+    width: 80%;
+    color: #fff;
+    text-align: left;
+    text-shadow: 1px 1px 2px #333;
+    margin: 0 auto;
+    line-height: 60px;
+    font-size: 24px;
+  }
+  .el-form-item {
+    text-align: left;
+    margin-bottom: 16px;
+    .el-upload--picture-card {
+      width: 80px;
+      height: 80px;
+    }
+    .el-dialog__headerbtn {
+      top: 6px;
+    }
+  }
+  .el-input {
+    width: 50%;
+    padding: 0;
+  }
+  .titleText {
+    width: 100%;
+    font-size: 12px;
     color: #fff;
     text-align: center;
     padding: 10px 0 10px 0px;
@@ -1209,19 +1148,22 @@ export default {
     cursor: pointer;
   }
 
-  .el-dialog__header{
-    height: 30px;
-  }
-  .el-dialog__headerbtn{
-    top: 6px;
-  }
-  
-}
-
-  .el-dialog__body{
+  .el-dialog__body {
     font-size: 0px;
   }
-.el-dialog__footer{
-    padding-bottom:10px !important; 
+
+  .el-dialog__footer {
+    padding-bottom: 10px !important;
   }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  .el-form-item__label{color:#fff}
+}
 </style>
