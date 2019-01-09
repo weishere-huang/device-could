@@ -37,6 +37,7 @@
     </div>
     <div class="bottom" :class="[{hide:isHideList}]">
       <v-table
+        @on-custom-comp="workToPlans"
         is-horizontal-resize
         column-width-drag
         :multiple-sort="false"
@@ -68,6 +69,7 @@
   </div>
 </template>
 <script>
+  import Vue from "vue";
   export default {
     inject: ["reload"],
     name: "Test",
@@ -101,13 +103,35 @@
             //   orderBy: ""
           },
           {
+            field: "maintenanceId",
+            title: "来源",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            componentName: "table-workToPlan"
+          },
+          {
             field: "state",
             title: "工单状态",
             width: 70,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
-            overflowTitle: true
+            overflowTitle: true,
+            formatter:function (rowData) {
+              if(rowData.state ===0 )return `<span style="color: #ff6600">待审核</span>`;
+              if(rowData.state ===1 )return `<span style="color: #00b400">已通过</span>`;
+              if(rowData.state ===2 )return `<span style="color: #c48382">已禁用</span>`;
+              if(rowData.state ===4 )return `<span style="color: #409dfe">审核中</span>`;
+              if(rowData.state ===5 )return `<span style="color: #2b63b4">待处理</span>`;
+              if(rowData.state ===6 )return `<span style="color: #999999">已消除</span>`;
+              if(rowData.state ===7 )return `<span style="color: #c48382">已撤销</span>`;
+              if(rowData.state ===10 )return `<span style="color: #59007a">已驳回</span>`;
+              if(rowData.state ===12 )return `<span style="color: #999999">已停止</span>`;
+              if(rowData.state ===13 )return `<span style="color: #999999">已完成</span>`;
+              if(rowData.state ===15 )return `<span style="color: #00b400">待处理</span>`;
+            }
           },
           {
             field: "workType",
@@ -116,7 +140,12 @@
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
-            overflowTitle: true
+            overflowTitle: true,
+            formatter:function (rowData) {
+              if(rowData.workType ===0 )return `<span>检修</span>`;
+              if(rowData.workType ===1 )return `<span>保养</span>`;
+              if(rowData.workType ===2 )return `<span>故障</span>`;
+            }
           },
           {
             field: "workDesc",
@@ -225,65 +254,18 @@
           response => {
             this.totalNub = response.data.data.totalElements;
             this.tableData = response.data.data.content;
-            this.loadValue(response.data.data.content);
             this.tableDate = this.tableData;
           },
           ({ type, info }) => {}
         );
       },
-      loadValue(value) {
-        for (let i in value) {
-          if (value[i].workType === 0) {
-            this.tableData[i].workType = "检修";
-          }
-          if (value[i].workType === 1) {
-            this.tableData[i].workType = "保养";
-          }
-          if (value[i].workType === 2) {
-            this.tableData[i].workType = "故障";
-          }
-          if (value[i].state === 0) {
-            this.tableData[i].state = "待审核";
-            this.isOk = false;
-            this.audited++;
-          }
-          if (value[i].state === 1) {
-            this.tableData[i].state = "已通过";
-          }
-          if (value[i].state === 2) {
-            this.tableData[i].state = "已禁用";
-          }
-          if (value[i].state === 3) {
-            this.tableData[i].state = "已删除";
-          }
-          if (value[i].state === 4) {
-            this.tableData[i].state = "审核中";
-            this.inAudit++;
-          }
-          if (value[i].state === 5) {
-            this.tableData[i].state = "待处理";
-            this.handle++;
-          }
-          if (value[i].state === 6) {
-            this.tableData[i].state = "已消除";
-          }
-          if (value[i].state === 7) {
-            this.tableData[i].state = "已撤销";
-          }
-          if (value[i].state === 10) {
-            this.tableData[i].state = "已驳回";
-          }
-          if (value[i].state === 12) {
-            this.tableData[i].state = "已停止";
-          }
-          if (value[i].state === 13) {
-            this.tableData[i].state = "已完成";
-          }
-          if (value[i].state === 15) {
-            this.tableData[i].state = "待处理";
-          }
+      workToPlans(params){
+        if (params.type === "workToPlans") {
+          if(params.rowData.workType===0)this.$router.push({path:"Upkeep/UpkeepAmend/" + params.rowData.maintenanceId});
+          if(params.rowData.workType===1)this.$router.push({path:"TurnaroundPlans/TurnaroundPlansAmend/" + params.rowData.maintenanceId});
+          if(params.rowData.workType===2)this.$router.push({path:"Breakdown/BreakDetails/" + params.rowData.maintenanceId})
         }
-      }
+      },
     },
     created() {
       this.load();
@@ -298,6 +280,32 @@
       }
     },
   };
+  Vue.component("table-workToPlan", {
+    template: `<span>
+        <el-tooltip class="item" effect="dark" content="查看" placement="top">
+            <a href="" style="text-decoration: none">{{rowData.maintenanceId}}<i @click.stop.prevent="workToPlans(rowData,index)" style='font-size:20px;color:#409eff' class='iconfont'>&#xe734;</i></a>
+        </el-tooltip>
+        </span>`,
+    props: {
+      rowData: {
+        type: Object
+      },
+      field: {
+        type: String
+      },
+      index: {
+        type: Number
+      }
+    },
+    methods: {
+      workToPlans() {
+        // 参数根据业务场景随意构造
+        let params = { type: "workToPlans", index: this.index, rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      },
+    }
+  });
+
 </script>
 <style scoped lang="less">
   @blue: #409eff;
