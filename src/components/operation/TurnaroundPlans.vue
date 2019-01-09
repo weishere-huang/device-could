@@ -390,7 +390,6 @@
           this
         ).then(
           response => {
-            console.log(response.data.data.content);
             this.pageNumber = response.data.data.totalElements;
             this.loadValue(response.data.data.content);
           },

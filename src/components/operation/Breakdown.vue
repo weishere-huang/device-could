@@ -380,7 +380,6 @@
         }
       },
       selectChange(selection, rowData) {
-        console.log("select-change", selection, rowData);
       },
       getTableData() {
         this.tableData = this.tableDate.slice(
