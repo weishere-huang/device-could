@@ -147,7 +147,7 @@
 <script>
 import amendPlan from "./upkeep/AmendPlan";
 import Vue from "vue";
-Vue.component("table-add-person", {
+Vue.component("table-reported", {
   template: `<span>
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
             <i style='font-size:16px;cursor:pointer;color:#409eff;' class='iconfont'  @click.stop.prevent="add(rowData,index)">&#xe734;</i>
@@ -297,7 +297,7 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-          componentName: "table-add-person"
+          componentName: "table-reported"
         }
       ],
       tableData: [
