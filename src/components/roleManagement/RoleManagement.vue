@@ -181,6 +181,10 @@
         ).then(
           response => {
             this.role = response.data.data;
+            this.role.forEach(item=>{
+              item.name===JSON.parse(localStorage.getItem("user")).roleName ?
+                this.listPermissionByRoleId(item.id):"";
+            });
             this.PermissionsList();
           },
           ({type, info}) => {
