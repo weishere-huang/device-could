@@ -281,7 +281,7 @@
             <el-button
               type="primary"
               plain
-              style="width:38%;height:40px;"
+              style="width:38%;height:32px;"
               v-if="sendMsgDisabled"
             >{{time+'秒后获取'}}</el-button>
 
