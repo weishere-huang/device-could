@@ -267,7 +267,7 @@ export default {
         {
           field: "custome-adv",
           title: "操作",
-          width: 70,
+          width: 90,
           titleAlign: "center",
           columnAlign: "center",
           componentName: "table-equipment"
@@ -624,13 +624,14 @@ Vue.component("table-equipment", {
           <el-tooltip class="item" effect="dark" content="修改" placement="top">
             <permission-button
             permCode='device_redact_lookup.device_redact_save'
-            banType='hide' style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i></permission-button>
+            banType='hide' type="text" style="color:#409eff"><i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i></permission-button>
           </el-tooltip>
           &nbsp;&nbsp;
           <el-tooltip class="item" effect="dark" content="删除" placement="top">
             <permission-button
              permCode='device_lookup.device_delete'
-            banType='alert' style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></permission-button>
+             type="text"
+            banType='alert' style="color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></permission-button>
           </el-tooltip>
         </span>`,
   props: {

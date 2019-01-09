@@ -631,7 +631,7 @@
   Vue.component("table-breakdown", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
-            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)"  style='font-size:17px' class='iconfont'>&#xe734;</i></a>
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)"  style='font-size:16px' class='iconfont'>&#xe734;</i></a>
         </el-tooltip>
          &nbsp;
         <el-tooltip class="item" effect="dark" content="审核" placement="top">

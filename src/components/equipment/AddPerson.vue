@@ -127,11 +127,11 @@
       style="padding:10px; overflow: hidden;width:150px;"
       v-show="innerVisible"
     >
-      <ul
-        v-for="(item,index) in options"
-        :key="index"
-      >
+      <ul class="work-person">
         <li
+        style="font-size:14px;"
+          v-for="(item,index) in options"
+          :key="index"
           :class="active==index?'active-bgcolor':''"
           @click="workerTypeValue(item,index)"
         >{{item.label}}</li>
@@ -630,7 +630,7 @@ export default {
         // overflow: scroll;
         h5 {
           position: absolute;
-          top: -10px;
+          top: 0px;
           left: 10px;
           font-size: 14px;
         }
@@ -730,6 +730,11 @@ export default {
       &:hover {
         color: #409eff;
       }
+    }
+  }
+  .work-person{
+    li{
+      font-size: 14px !important;
     }
   }
 }
