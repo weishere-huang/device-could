@@ -262,7 +262,7 @@
         <div class="information-receipt">
           <h5>回执信息</h5>
           <div style="overflow-y:scroll;" class="case">
-            <el-form label-width="100px" :model="workReceiptInfo" v-for="(item,index) of workReceiptInfo" :key="index">
+            <el-form label-width="100px" v-model="workReceiptInfo" v-for="(item,index) of workReceiptInfo" :key="index">
               <el-form-item label="施工人员：">
                 <span>{{item.builder}}</span>
               </el-form-item>

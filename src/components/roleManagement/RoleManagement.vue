@@ -40,14 +40,14 @@
             ref="tree"
             :default-expanded-keys="[1]"
             :default-checked-keys="power"
-            render-after-expand="false"
+            :render-after-expand="treeIsOk"
           >
             <span
               class="custom-tree-node"
               slot-scope="{ node, data }"
             >
               <span :title="data.name" class="listcontent">
-                {{ data.name +"　("+data.parentCode+")"}}
+                {{ data.name +"　("+data.dataUrl+")"}}
               </span >
             </span>
           </el-tree>
@@ -78,6 +78,7 @@
       return {
         data:[],
         power:[],
+        treeIsOk:false,
         defaultProps: {
           children: "children",
           label: "name"
@@ -180,6 +181,10 @@
         ).then(
           response => {
             this.role = response.data.data;
+            this.role.forEach(item=>{
+              item.name===JSON.parse(localStorage.getItem("user")).roleName ?
+                this.listPermissionByRoleId(item.id):"";
+            });
             this.PermissionsList();
           },
           ({type, info}) => {

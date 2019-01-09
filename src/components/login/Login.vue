@@ -1164,6 +1164,9 @@ export default {
   
 }
 
+  .el-dialog__body{
+    font-size: 0px;
+  }
 .el-dialog__footer{
     padding-bottom:10px !important; 
   }

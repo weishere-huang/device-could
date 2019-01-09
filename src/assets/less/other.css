@@ -32,3 +32,6 @@ textarea {
   top: 0px !important;
   right: 14px !important;
 }
+.el-dialog__body {
+  font-size: 0px !important;
+}
