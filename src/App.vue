@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-container
-      v-if="token!==''"
+      v-if="token!==undefined"
       class="mainWrapper"
     >
       <el-aside class="siderWrapper">
@@ -154,7 +154,7 @@ export default {
   name: "App",
   data() {
     return {
-      token: "",
+      token: undefined,
       user: "",
       show: true,
       isCollapse: false,
@@ -193,6 +193,7 @@ export default {
       //     option:{enableMsg:false}
       //   },
       // ).then(response=>{
+      self=this;
       this.$confirm("您确定要退出登录吗？", "确认", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -202,12 +203,14 @@ export default {
           message: "您已退出登录",
           type: "success"
         });
+        self.token=undefined;
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("permissionUrl");
+        
         this.$router.push({
           path: "/Login",
-          redirect: "/Login"
+          //redirect: "/Login"
         });
       });
       // },({type,info})=>{})
@@ -245,7 +248,7 @@ export default {
   },
   watch: {
     $route() {
-      this.token = localStorage.getItem("token");
+      //this.token = localStorage.getItem("token");
       this.user = JSON.parse(localStorage.getItem("user")).name;
       this.permissionUrl = JSON.parse(
         localStorage.getItem("permissionUrl") || "[]"
@@ -256,6 +259,7 @@ export default {
   created() {
     this.user = JSON.parse(localStorage.getItem("user")).name;
     this.token = localStorage.getItem("token");
+    console.log(localStorage.getItem("token"));
     this.permissionUrl = JSON.parse(
       localStorage.getItem("permissionUrl") || "[]"
       // this.$cookieStore.getCookie('permissionUrl')||'[]'

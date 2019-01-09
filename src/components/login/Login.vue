@@ -1,14 +1,17 @@
 <template>
   <div class="login">
+    <div class="topBar">
+      <img src='../../assets/image/changhong.png'/>
+    </div>
     <div
       class="loginBox"
       v-show="isshow"
     >
-      <h1>长虹智能终端设备生产管理云平台</h1>
+      <h1>用户登录</h1>
       <el-form
         :model="loginList"
         :rules="loginRules"
-        style="width:60%;margin-top:10px;"
+        style="width:80%;margin-top:10px;"
         ref="loginList"
       >
         <el-form-item
@@ -91,6 +94,7 @@
         <!-- <span @click="toReginster">企业注册</span> -->
       </p>
     </div>
+    <div class="bottomBar">长虹智能终端设备生产管理云平台</div>
     <div
       class="register"
       v-show="ishide"
@@ -191,7 +195,7 @@
               >
             </el-dialog>
           </el-form-item>
-          <div style="display:inline-block;margin-left:-20px;color:#999999;">仅支持小于1Mb的jpg或png图片格式</div>
+          <div style="display:inline-block;margin-left:-20px;color:#fff;">仅支持小于1Mb的jpg或png图片格式</div>
         </el-form>
         <div class="next">
           <el-button
@@ -939,12 +943,36 @@ export default {
 }
 
 .login {
+  .topBar{
+    line-height: 40px;
+    position: absolute;
+    top: 0;
+    text-align: left;
+    width: 100%;
+    img{
+      width: 200px;
+      margin: 5px;
+    }
+  }
+  .bottomBar{
+    line-height: 40px;
+    background: rgba(255, 255, 255, 0.3);
+    position: absolute;
+    padding: 0 20px;
+    bottom: 0;
+    width: 100%;
+    color: #fff;
+    text-align: right;
+    border-bottom: solid 1px #a9a7a7;
+    text-shadow: 1px 1px 1px #333;
+    font-size: 18px;
+  }
   text-align: center;
   width: 100%;
   height: 100vh;
   //background-color: @blue;
-  background: #686868 url(../../assets/image/login-bg2.png) bottom no-repeat;
-  background-size: 100% auto;
+  background: #686868 url(../../assets/image/login-bg.jpg) no-repeat;
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -952,12 +980,12 @@ export default {
   top: 0;
   left: 0;
   .loginBox {
-    width: 40%;
+    width: 30%;
     height: auto;
     //background-color: white;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 10px;
-    box-shadow: 3px 3px 5px #333;
+    background: rgba(255, 255, 255, 0.45);
+    border-radius: 20px;
+    box-shadow: 0 0 8px #000;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -966,18 +994,23 @@ export default {
     justify-content: center;
     h1 {
       width: 100%;
-      padding: 20px 0;
-      letter-spacing: 2px;
+      // padding: 20px 0;
+      // letter-spacing: 2px;
       //font-family: "和畅惠风 Hiragino Sans GB";
       font-weight: 500;
-      color: @blue;
-      font-size: 120%;
+      width: 80%;
+      color: #fff;
+      text-align: left;
+      text-shadow: 1px 1px 2px #333;
+      //color: @blue;
+      //font-size: 120%;
     }
     // .el-form-item {
     //   margin-bottom: 20px;
     // }
+    .el-form-item__error{color: red}
     p {
-      width: 60%;
+      width: 80%;
       padding: 0 0 10px 0;
       button {
         width: 100%;
@@ -986,14 +1019,14 @@ export default {
     }
     .registerSkip {
       text-align: right;
-      padding-bottom: 50px;
+      line-height: 40px;
       font-size: 12px;
       span {
         display: inline-block;
         margin-left: 5px;
         cursor: pointer;
         &:hover {
-          color: @blue;
+          color: #0d5196;
         }
       }
     }
@@ -1039,7 +1072,7 @@ export default {
     color: @blue;
   }
   p {
-    width: 60%;
+    width: 80%;
     padding: 10px 0;
     button {
       width: 100%;
@@ -1054,7 +1087,7 @@ export default {
       margin-left: 5px;
       cursor: pointer;
       &:hover {
-        color: @blue;
+        color: #0d5196;
       }
     }
   }
@@ -1082,19 +1115,26 @@ export default {
 
 .register {
   position: absolute;
-  right: 10%;
+  //right: 10%;
   width: 35%;
-  background-color: white;
-  box-shadow: 10px 10px 10px @Info;
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.45);
+    border-radius: 20px;
+    box-shadow: 0 0 8px #000;
   padding-bottom: 30px;
   .next {
     margin-top: 30px;
   }
+  .el-form-item__error{color: red}
   h2 {
-    letter-spacing: 2px;
+    width: 100%;
     font-weight: 500;
-    padding: 10px 0;
+    width: 80%;
+    color: #fff;
+    text-align: left;
+    text-shadow: 1px 1px 2px #333;
+    margin: 0 auto;
+    line-height: 60px;
+    font-size: 24px;
   }
   .el-form-item {
     text-align: left;
@@ -1134,7 +1174,7 @@ export default {
   .titleText {
     width: 100%;
     font-size: 12px;
-    color: #909399;
+    color: #fff;
     text-align: center;
     padding: 10px 0 10px 0px;
   }
