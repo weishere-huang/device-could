@@ -185,14 +185,19 @@
           {
             field: "maintenanceType",
             title: "保养分类",
-            width: 60,
+            width: 100,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
-              if(rowData.maintenanceType ===0 )return `<span>维修</span>`;
-              if(rowData.maintenanceType ===1 )return `<span>保养</span>`;
+              if (rowData.maintenanceClassify === 1) return `<span>例行保养</span>`;
+              if (rowData.maintenanceClassify === 2) return `<span>季节性保养</span>`;
+              if (rowData.maintenanceClassify === 3) return `<span>换季保养</span>`;
+              if (rowData.maintenanceClassify === 4) return `<span>磨合期保养</span>`;
+              if (rowData.maintenanceClassify === 5) return `<span>转移保养</span>`;
+              if (rowData.maintenanceClassify === 6) return `<span>停放保养</span>`;
+              if (rowData.maintenanceClassify === 7) return `<span>其他</span>`;
             }
           },
           {
@@ -404,13 +409,13 @@
         );
       },
       loadValue(value) {
-        let arr = new Array();
-        for (let i = 0; i < value.length; i++) {
-          if (value[i].maintenanceType === 1) {
-            arr[arr.length] = value[i];
-          }
-        }
-        this.tableData = arr;
+        // let arr = new Array();
+        // for (let i = 0; i < value.length; i++) {
+        //   if (value[i].maintenanceType === 1) {
+        //     arr[arr.length] = value[i];
+        //   }
+        // }
+        this.tableData = value;
         for (let i = 0; i < this.tableData.length; i++) {
           this.planLevel.forEach((item)=>{
             this.tableData[i].maintenanceLevel === item.id ? this.tableData[i].maintenanceLevel=item.levelDesc:"";

@@ -29,7 +29,7 @@
               value-format="yyyy/MM/dd"
             >
             </el-date-picker>
-            <el-button size="small" type="primary"><i class='el-icon-search'></i>&nbsp;查询</el-button>
+            <el-button size="small" type="primary" @click="beforeFind"><i class='el-icon-search'></i>&nbsp;查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -39,8 +39,9 @@
           type="search"
           placeholder="如编号，名称，型号/规格，单号"
           size="small"
+          v-model="keywords"
         ></el-input>
-        <el-button size="small" type="primary"><i class='el-icon-search'></i>&nbsp;搜索</el-button>
+        <el-button size="small" type="primary" @click="beforeFind"><i class='el-icon-search'></i>&nbsp;搜索</el-button>
       </div>
     </div>
     <div class="bottom">
@@ -161,7 +162,8 @@ export default {
           isResize: true,
           overflowTitle: true
         }
-      ]
+      ],
+      keywords:"",
     };
   },
   methods: {
@@ -187,11 +189,60 @@ export default {
       this.pageSize = pageSize;
       this.getTableData();
     },
-
+    beforeFind(){
+      this.pageIndex=1;
+      this.boundList();
+    },
+    //出库明细
+    boundList(){
+      this.Axios({
+        params:{
+          startTime:this.startTime,
+          endTime:this.endTime,
+          keywords:this.keywords
+        },
+        url:"/part/listOutInfo",
+        type:"get",
+        option:{
+          successMsg:"出库单加载完成"
+        }
+      },this).then(result =>{
+          this.tableData=result.data.data.content;
+          this.pageNumber=result.data.data.totalElements;
+      });
+    },
+    //备件出库
+    partOut(){
+      let qs = require("qs");
+      let data = qs.stringify({
+        outNo:"",
+        outTime:"",
+        organizeCode:"",
+        organizeName:"",
+        userId:"",
+        userName:"",
+        remark:"",
+        partOutDTO:JSON.stringify("")
+      });
+      this.Axios({
+        params:data,
+        url:"/part/partOut",
+        type:"post",
+        option:{
+          enableMsg: false
+        }
+      },this).then(result=>{
+        if(result.data.code===200){
+          this.$message.success("入库成功")
+        }else{
+          this.$message.error("入库失败,请重新尝试")
+        }
+      })
+    }
 
   },
   created(){
-
+    this.boundList();
   }
 };
 </script>

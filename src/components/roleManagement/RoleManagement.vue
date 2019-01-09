@@ -47,7 +47,7 @@
               slot-scope="{ node, data }"
             >
               <span :title="data.name" class="listcontent">
-                {{ data.name +"　("+data.parentCode+")"}}
+                {{ data.name +"　("+data.dataUrl+")"}}
               </span >
             </span>
           </el-tree>
@@ -181,6 +181,10 @@
         ).then(
           response => {
             this.role = response.data.data;
+            this.role.forEach(item=>{
+              item.name===JSON.parse(localStorage.getItem("user")).roleName ?
+                this.listPermissionByRoleId(item.id):"";
+            });
             this.PermissionsList();
           },
           ({type, info}) => {
