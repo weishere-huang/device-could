@@ -8,8 +8,8 @@
         <el-main class="monitMainContent2">
           <section class="topWrap">
             <div>
-              <el-button size="small" type="primary" @click="$router.push({path: '/Oee/Add'})"><i class='el-icon-circle-plus-outline'></i> 新增OEE任务</el-button>
-              <el-button size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
+              <permission-button permCode='deviceOEE_add_lookup.device_OEE_add' banType="hide" size="small" type="primary" @click="$router.push({path: '/Oee/Add'})"><i class='el-icon-circle-plus-outline'></i> 新增OEE任务</permission-button>
+              <el-button size="small" style="margin-left:10px;" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button>
             </div>
             <div>
               搜索：
@@ -61,7 +61,7 @@
                       @on-custom-comp="customCompFunc"
                       ref="oeeTable"
               ></v-table>
-              <div class="pagerWrap">
+              <div class="pagerWrap" style="text-align:left;">
                 <v-pagination
                     :total="totalElements"
                     @page-change="pageChange"
@@ -88,16 +88,22 @@ require("echarts/lib/chart/pie");
 Vue.component("table-operation", {
   template: `<span>
         <el-tooltip class="item" effect="dark" content="结束" placement="top">
-          <a href="javascript:;" class='g-link' @click="endOeeTask"><i style='font-size:16px' class='iconfont'>&#xe603;</i></a>
+          <permission-button 
+          permCode='deviceOEE_termination_lookup.deviceOEE_termination_save' 
+          banType='disable'  
+          type="text" @click="endOeeTask"><i style='font-size:16px' class='iconfont'>&#xe603;</i></permission-button>
         </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
-          <a href="javascript:;" class='g-link' @click="oeeTaskDetails"><i style='font-size:16px' class='iconfont'>&#xe734;</i></a>
+          <permission-button 
+          permCode='deviceOEE_detail_lookup' 
+          banType='disable'  
+          type="text"  @click="oeeTaskDetails"><i style='font-size:16px' class='iconfont'>&#xe734;</i></permission-button>
         </el-tooltip>
         &nbsp;
 
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
-            <a href="javascript:;"  class='g-link' @click.stop.prevent="deleteRow(rowData,index)"><i style='font-size:16px;color:#F56C6C' class='iconfont'>&#xe66b;</i></a>
+            <permission-button type="text"   @click.stop.prevent="deleteRow(rowData,index)"><i style='font-size:16px;color:#F56C6C' class='iconfont'>&#xe66b;</i></permission-button>
           </el-tooltip>
         </span>`,
 
@@ -408,7 +414,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="less" >
 .monitWrap {
   height: 100%;
   .equTypeListBar {
@@ -530,6 +536,10 @@ export default {
     text-align: center;
     padding: 20px 0 15px 0;
   }
+  .el-button+.el-button{
+  margin: 0;
+  }
 }
+
 </style>
 

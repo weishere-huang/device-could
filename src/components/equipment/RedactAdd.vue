@@ -131,10 +131,10 @@
     <div
       append-to-body
       class="person-type"
-      style="padding:10px; overflow: hidden;width:240px;"
+      style="padding:10px; overflow: hidden;width:150px;"
       v-show="innerVisible"
     >
-      <el-select
+      <!-- <el-select
         v-model="value1"
         placeholder="请选择"
         style="width:100%"
@@ -146,7 +146,10 @@
           :value="item.value"
         >
         </el-option>
-      </el-select>
+      </el-select> -->
+      <ul v-for="(item,index) in options" :key="index">
+        <li @click="workerTypeValue(item,index)">{{item.label}}</li>
+      </ul>
       <div style="margin-top:10px;float:right;">
         <el-button
           size="mini"
@@ -172,6 +175,7 @@ Vue.component("tab-component", {
           style="width:50%"
           size="mini"
           @change="changeValue(value,item,items)"
+          disabled
         >
           <el-option
             v-for="item of options"
@@ -182,13 +186,13 @@ Vue.component("tab-component", {
           </el-option>
         </el-select>
       </span>
-  <i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>`,
+  <i v-on:click="deleteWorker(item,items)" class="el-icon-circle-close-outline"></i></li></ul>`,
   data() {
     return {
       options: [
         {
           value: "0",
-          label: "负责人员"
+          label: "负责人员" 
         },
         {
           value: "1",
@@ -378,10 +382,14 @@ export default {
           label: "操作人员"
         }
       ],
-      value1: ""
+      value1: "",
+      active: false,
     };
   },
   methods: {
+    workerTypeValue(item, index){
+      this.value1=item.value
+    },
     changeTpye(params) {
       this.editableTabs[params.oldvalue.workerType].content =  this.editableTabs[params.oldvalue.workerType].content.filter(item => item.id !== params.person.id)
       this.editableTabs[params.value].content.push({
@@ -514,16 +522,8 @@ export default {
       }
     },
 
-    workerDelete(data) {
-      //debugger;
-      for (let i = 0; i < this.editableTabs.length; i++) {
-        this.editableTabs[i].content = this.editableTabs[i].content.filter(
-          item => item.id !== data.id
-        );
-      }
-      // this.editableTabs[this.editableTabsValue].content = this.editableTabs[
-      //   this.editableTabsValue
-      // ].content.filter(item => item.id !== data.id);
+    workerDelete(value,data) {
+      this.editableTabs[data.workerType].content=this.editableTabs[data.workerType].content.filter(item=>item.id!==value.id)
     }
   },
   created() {
@@ -553,7 +553,12 @@ export default {
         },
         ({ type, info }) => {}
       );
-  }
+  },
+  mounted() {
+    $('.person-type').on('click','li',function(event) { 
+      $(this).addClass("active-bgcolor").siblings().removeClass("active-bgcolor");
+    });
+  },
 };
 </script>
 
@@ -704,5 +709,20 @@ export default {
   background-color: white;
   border: @border;
   border-radius: 5px;
+  ul{
+    li{
+      list-style-type: none;
+      height: 28px;
+      line-height: 28px;
+      padding: 0 10px;
+      cursor: pointer;
+      &:hover{
+        color: #409eff;
+      }
+    }
+  }
+}
+.active-bgcolor{
+  color: #409eff;
 }
 </style>
