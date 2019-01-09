@@ -382,9 +382,6 @@ export default {
     // 绘制图表
   },
   methods: {
-    // getTableData(){
-    //   this.equipmentOperationalCondition= this.tableDate.slice((this.pageIndex-1)*this.pageSize,(this.pageIndex)*this.pageSize)
-    // },
     pageChange(pageIndex){
       this.pageIndex = pageIndex;
       // this.getTableData();
