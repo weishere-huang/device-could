@@ -526,7 +526,7 @@ export default {
       display: inline-block;
       width: 400px;
       //   border: @border;
-      line-height: 28px;
+      line-height: 32px;
       height: 100%;
       position: absolute;
       right: 0%;
