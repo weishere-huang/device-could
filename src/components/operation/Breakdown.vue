@@ -630,7 +630,11 @@
   Vue.component("table-breakdown", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
-            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)"  style='font-size:16px' class='iconfont'>&#xe734;</i></a>
+            <permission-button permCode='operation_fault_detail_lookup.operation_fault_detail_audit'
+                     banType='disable' type="text"
+                     style="text-decoration: none;color:#409eff;margin-left: -2px">
+                      <i @click.stop.prevent="update(rowData,index)"  style='font-size:16px' class='iconfont'>&#xe734;</i>
+            </permission-button>
         </el-tooltip>
          &nbsp;
         <el-tooltip class="item" effect="dark" content="审核" placement="top">

@@ -87,6 +87,7 @@
             </el-form-item>
             <el-form-item label="工单类型：">
               <span>{{workInfo.workType}}</span>
+              <el-button @click="workToPlan" type="text">{{workInfo.maintenanceId}}&nbsp;<i class="el-icon-search" style="color: #2474c5"></i></el-button>
             </el-form-item>
             <el-form-item label="工单状态：">
               <span>{{workInfo.state}}</span>
@@ -1345,6 +1346,13 @@
       //流程信息
       informationDataValue(value){
         this.informationData = value;
+      },
+      //跳转到计划页面
+      workToPlan(){
+        let role = JSON.parse(localStorage.getItem("permissionUrl"));
+        if(role.find(item=>{return item.module==="operation_fault_detail_lookup"}))
+        this.$router.push({path:"/Breakdown/BreakDetails/" +this.workInfo.maintenanceId});
+        else this.$message.error("对不起，您的权限不足")
       }
     },
     created(){
