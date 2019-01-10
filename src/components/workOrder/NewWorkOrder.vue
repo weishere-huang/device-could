@@ -17,20 +17,22 @@
           <el-form-item label="工单类型：">
             <el-radio
               v-model="radio"
-              label="1"
+              label="2"
             >故障</el-radio>
             <el-radio
               v-model="radio"
-              label="2"
+              label="0"
             >检修</el-radio>
             <el-radio
               v-model="radio"
-              label="3"
+              label="1"
             >保养</el-radio>
           </el-form-item>
+        </el-form>
+        <el-form label-width="90px" v-if="radio==='2'">
           <el-form-item label="影响范围：">
             <el-select
-              v-model="value"
+              v-model="scopeValue"
               placeholder="请选择"
               size="small"
             >
@@ -90,6 +92,102 @@
                 alt=""
               >
             </el-dialog>
+          </el-form-item>
+        </el-form>
+        <el-form label-width="90px" v-if="radio==='0'">
+          <el-form-item label="分类：">
+            <el-select
+              v-model="classifyValue"
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in classify"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="级别：">
+            <el-select
+              v-model="turnaroundeValue"
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in turnaroundeGrade"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="执行时间：">
+            <el-date-picker
+              v-model="time"
+              type="datetime"
+              placeholder="选择日期时间"
+              >
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="内容：">
+            <el-input
+              type="textarea"
+              :rows="2"
+              placeholder="请输入内容"
+            >
+            </el-input>
+          </el-form-item>
+        </el-form>
+        <el-form label-width="90px" v-if="radio==='1'">
+          <el-form-item label="分类：">
+            <el-select
+              v-model="upkeepValue"
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in upkeepClassify"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="级别：">
+            <el-select
+              v-model="turnaroundeValue"
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in turnaroundeGrade"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="执行时间：">
+            <el-date-picker
+              v-model="time"
+              type="datetime"
+              placeholder="选择日期时间"
+              >
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="内容：">
+            <el-input
+              type="textarea"
+              :rows="2"
+              placeholder="请输入内容"
+            >
+            </el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -190,7 +288,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
-      radio: "1",
+      radio: "2",
       person: false,
       personTable: [
         {
@@ -236,6 +334,41 @@ export default {
       ],
       personData: [],
       amendPlanShow: false,
+      classify:[
+        {
+          value:'日常检修(DM)',
+          label:'日常检修(DM)'
+        },
+        {
+          value:'定期检修(TBM)',
+          label:'定期检修(TBM)'
+        },
+        {
+          value:'改进性检修(PAM)',
+          label:'改进性检修(PAM)'
+        },
+        {
+          value:'故障检修(RTF)',
+          label:'故障检修(RTF)'
+        },
+      ],
+      classifyValue:"日常检修(DM)",
+      turnaroundeGrade:[
+        {
+          value:'0',
+          label:'小'
+        },
+        {
+          value:'1',
+          label:'小'
+        },
+        {
+          value:'2',
+          label:'小'
+        },
+      ],
+      turnaroundeValue:'0',
+      time:'',
       scope: [
         {
           value: 0,
@@ -254,6 +387,7 @@ export default {
           label: "其他"
         }
       ],
+      scopeValue:0,
       grade: [
         {
           value: 0,
@@ -268,6 +402,7 @@ export default {
           label: "高"
         }
       ],
+      value:0,
       dialogImageUrl: "",
       dialogVisible: false,
       columns: [
@@ -315,7 +450,38 @@ export default {
           componentName: "table-NewWorkOrder"
         }
       ],
-      tableData: []
+      tableData: [],
+      upkeepClassify:[
+        {
+          value:"例行保养",
+          label:"例行保养"
+        },
+        {
+          value:"季节性保养",
+          label:"季节性保养"
+        },
+        {
+          value:"换季保养",
+          label:"换季保养"
+        },
+        {
+          value:"磨合期保养",
+          label:"磨合期保养"
+        },
+        {
+          value:"转移保养",
+          label:"转移保养"
+        },
+        {
+          value:"停放保养",
+          label:"停放保养"
+        },
+        {
+          value:"其他",
+          label:"其他"
+        },
+      ],
+      upkeepValue:'例行保养',
     };
   },
   methods: {

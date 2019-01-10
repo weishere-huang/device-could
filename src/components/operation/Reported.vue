@@ -3,10 +3,9 @@
     <div class="top">
       <permission-button
         size="small"
-        type="primary"
-      >
-        <i
-          style='font-size:12px'
+        @click="faultAdd"
+        type="primary">
+        <i style='font-size:12px'
           class='iconfont'
         >&#xe645;</i>&nbsp;保存</permission-button>
     </div>
@@ -62,19 +61,18 @@
           </el-form-item>
           <el-form-item label="照片：">
             <el-upload
-              action="https://jsonplaceholder.typicode.com/posts/"
+              :action="path()"
+              accept="image/jpeg,image/png"
               list-type="picture-card"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
               :on-preview="handlePictureCardPreview"
               :on-remove="handleRemove"
             >
               <i class="el-icon-plus"></i>
             </el-upload>
             <el-dialog :visible.sync="dialogVisible">
-              <img
-                width="100%"
-                :src="dialogImageUrl"
-                alt=""
-              >
+              <img width="100%" :src="dialogImageUrl" alt="">
             </el-dialog>
           </el-form-item>
         </el-form>
@@ -257,7 +255,7 @@ export default {
       dialogVisible: false,
       columns: [
         {
-          field: "name",
+          field: "deviceNo",
           title: "设备编号",
           width: 80,
           titleAlign: "center",
@@ -267,7 +265,7 @@ export default {
         },
 
         {
-          field: "position",
+          field: "deviceName",
           title: "设备名称",
           width: 80,
           titleAlign: "center",
@@ -275,7 +273,7 @@ export default {
           isResize: true
         },
         {
-          field: "ra",
+          field: "deviceModel",
           title: "型号/规格",
           width: 80,
           titleAlign: "center",
@@ -283,7 +281,7 @@ export default {
           isResize: true
         },
         {
-          field: "phone",
+          field: "location",
           title: "设备位置",
           width: 90,
           titleAlign: "center",
@@ -291,7 +289,7 @@ export default {
           isResize: true
         },
         {
-          field: "details",
+          field: "workerNames",
           title: "人员",
           width: 40,
           titleAlign: "center",
@@ -300,16 +298,19 @@ export default {
           componentName: "table-reported"
         }
       ],
-      tableData: [
-      
-      ]
+      tableData: []
     };
   },
   methods: {
+    path(){
+      return this.global.apiImg;
+    },
     isHide(params) {
+      console.log("isHide:"+params);
       this.amendPlanShow = params;
     },
     toAdd(params) {
+      console.log("toAdd:"+params);
       this.tableData = params.values;
       this.amendPlanShow = params.isOk;
     },
@@ -324,7 +325,6 @@ export default {
         this
       ).then(
         response => {
-          // console.log(response.data.data);
           this.personData = response.data.data;
         },
         ({ type, info }) => {}
@@ -336,14 +336,40 @@ export default {
         this.person = true;
       }
     },
+    handleAvatarSuccess(res, file) {
+      this.$message.success('图片成功上传');
+      console.log(file.response);
+      this.dialogImageUrl= file.response.data;
+      console.log(this.dialogImageUrl);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
+      const isLt1M = file.size / 1024 / 1024 < 1;
+
+      let isOk = true;
+      if (!(isJPG || isPNG)) {
+        this.$message.error('上传图片只能是 JPG/PNG 格式!');
+        isOk = false;
+      }
+      if (!isLt1M) {
+        this.$message.error('上传图片大小不能超过 1MB!');
+      }
+      return isOk && isLt1M ;
+    },
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+      let img = [];
+      fileList.map(item=>{img.push(item.response.data)});
+      console.log(img.toString());
     },
     handlePictureCardPreview(file) {
+      console.log(file);
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-    re() {}
+    faultAdd(){
+
+    },
   },
   created() {
     EventBus.$on("sideBarTroggleHandle", isCollapse => {

@@ -192,7 +192,7 @@ Vue.component("tab-component", {
       options: [
         {
           value: "0",
-          label: "负责人员" 
+          label: "负责人员"
         },
         {
           value: "1",
@@ -282,27 +282,27 @@ export default {
       condition: "",
       editableTabs: [
         {
-          workerTypeName: "负责",
+          workerTypeName: "负责人员",
           workerType: "0",
           content: []
         },
         {
-          workerTypeName: "维修",
+          workerTypeName: "维修人员",
           workerType: "1",
           content: []
         },
         {
-          workerTypeName: "检修",
+          workerTypeName: "检修人员",
           workerType: "2",
           content: []
         },
         {
-          workerTypeName: "保养",
+          workerTypeName: "保养人员",
           workerType: "3",
           content: []
         },
         {
-          workerTypeName: "操作",
+          workerTypeName: "操作人员",
           workerType: "4",
           content: []
         }
@@ -556,7 +556,7 @@ export default {
       );
   },
   mounted() {
-    $('.person-type').on('click','li',function(event) { 
+    $('.person-type').on('click','li',function(event) {
       $(this).addClass("active-bgcolor").siblings().removeClass("active-bgcolor");
     });
   },
@@ -620,7 +620,7 @@ export default {
         font-size: 12px;
         h5 {
           position: absolute;
-          top: -10px;
+          top: 0px;
           left: 10px;
           font-size: 14px;
         }

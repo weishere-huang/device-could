@@ -449,13 +449,20 @@
       width: 100%;
       padding: 10px;
       .top {
+        border: @border;
         padding: 10px;
+        border-radius: 5px;
+
       }
       .bottom {
         width: 100%;
         overflow: hidden;
+        border: @border;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
         .left {
-          padding: 10px;
+          
           width: 35%;
           min-width: 350px;
           float: left;
@@ -497,7 +504,6 @@
           }
         }
         .right {
-          padding: 10px;
           width: 65%;
           min-width: 650px;
           float: left;

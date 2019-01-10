@@ -13,46 +13,49 @@
           size="small" type="primary" @click="getCheckedKeys">
           <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</permission-button>
       </div>
-      <div class="left">
-        <h6>角色列表</h6>
-        <ul>
-          <li v-for="item in role" :label="item.id" :key="item.id" ><span :label="item.id" @click="getName($event)">{{item.name}}</span>
-            <permission-button
-              permCode='role_lookup.role_delete'
-              banType='hide'
-              style="font-size:14px;"
-              type="text" @click="expurgate($event)" >
-              <i class="iconfont" :label="item.id" style="font-size:14px;">&#xe66b;</i>
-            </permission-button>
-          </li>
-        </ul>
-      </div>
-      <div class="right">
-        <div class="roleName">
-          <h6>权限分配</h6>
+      <div class="bottom-case">
+        <div class="left">
+          <h5>角色列表</h5>
+          <ul>
+            <li v-for="(item,index) in role" :label="item.id" :key="item.id" :class="active===index?'fontColor':''"><span :label="item.id" @click="getName($event,index)">{{item.name}}</span>
+              <permission-button
+                permCode='role_lookup.role_delete'
+                banType='hide'
+                style="font-size:14px;"
+                type="text" @click="expurgate($event)" >
+                <i class="iconfont" :label="item.id" style="font-size:14px;">&#xe66b;</i>
+              </permission-button>
+            </li>
+          </ul>
         </div>
-        <div class="tree-case">
-          <el-tree
-            show-checkbox
-            :data="data"
-            node-key="id"
-            :props="defaultProps"
-            ref="tree"
-            :default-expanded-keys="[1]"
-            :default-checked-keys="power"
-            :render-after-expand="treeIsOk"
-          >
-            <span
-              class="custom-tree-node"
-              slot-scope="{ node, data }"
+        <div class="right">
+          <div class="roleName">
+            <h5>权限分配</h5>
+          </div>
+          <div class="tree-case">
+            <el-tree
+              show-checkbox
+              :data="data"
+              node-key="id"
+              :props="defaultProps"
+              ref="tree"
+              :default-expanded-keys="[1]"
+              :default-checked-keys="power"
+              :render-after-expand="treeIsOk"
             >
-              <span :title="data.name" class="listcontent">
-                {{ data.name +"　("+data.dataUrl+")"}}
-              </span >
-            </span>
-          </el-tree>
+              <span
+                class="custom-tree-node"
+                slot-scope="{ node, data }"
+              >
+                <span :title="data.name" class="listcontent">
+                  {{ data.name +"　("+data.dataUrl+")"}}
+                </span >
+              </span>
+            </el-tree>
+          </div>
         </div>
       </div>
+      
     </div>
     <el-dialog title="角色添加" :visible.sync="dialogFormVisible" width="30%" :beforeClose="toCancel">
       <el-form :model="form" style="padding:10px 20px;" label-width="70px">
@@ -76,6 +79,7 @@
     inject:['reload'],
     data() {
       return {
+        active:0,
         data:[],
         power:[],
         treeIsOk:false,
@@ -280,7 +284,8 @@
 
           })
       },
-      getName(event){
+      getName(event,index){
+        this.active=index;
         this.roleId = event.target.getAttribute("label");
         this.listPermissionByRoleId(this.roleId);
       },
@@ -307,9 +312,6 @@
       },
     },
     mounted() {
-      $(".left").on('click',"li",function(event) {
-        $(this).addClass("fontColor").siblings().removeClass("fontColor");
-      });
     },
     created() {
       this.load();
@@ -329,15 +331,22 @@
     .el-checkbox__inner{
       border-color: #409EFF !important;
     }
-    font-size: 14px;
+    font-size: 12px;
     .case {
       padding: 10px;
       position: relative;
       overflow: hidden;
+      .bottom-case{
+        border: @border;
+        border-radius: 5px;
+        padding: 10px;
+        overflow: hidden;
+      }
       .top {
-        height: 50px;
-        line-height: 50px;
-        margin-bottom: 20px;
+        border: @border;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        padding: 10px;
       }
       .left {
         width: 20%;
@@ -346,22 +355,27 @@
         border-radius: 5px;
         padding-top: 20px;
         min-height: 500px;
-        h6 {
+        h5 {
           display: block;
           position: absolute;
-          top: 72px;
-          left: 30px;
+          top: 80px;
+          left: 40px;
           background-color: white;
         }
         li {
           list-style-type: none;
-          text-align: left;
-          padding-left: 20%;
-          height: 30px;
-          line-height: 30px;
+          padding-left: 20px;
+          height: 26px;
+          line-height: 26px;
+          margin-bottom: 5px;
           cursor: pointer;
+          span{
+            display: inline-block;
+            height: 100%;
+          }
           button{
             color: #f56c6c;
+            padding: 0;
             opacity: 0;
           }
           &:hover {
@@ -378,7 +392,7 @@
         float: left;
         border-radius: 5px;
         height: 500px;
-        margin-left: 30px;
+        margin-left: 10px;
         padding: 10px;
 
         .tree-case{
@@ -394,7 +408,7 @@
           height: 10px;
           padding-left: 10px;
           position: relative;
-          h6 {
+          h5 {
             position: absolute;
             top: -17px;
             left: 10px;
@@ -406,8 +420,5 @@
   }
   .fontColor {
     color: #409eff;
-  }
-  .icon-jia,.icon-jian{
-    font-size: 14px !important;
   }
 </style>
