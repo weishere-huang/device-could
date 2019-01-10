@@ -15,7 +15,7 @@ Form 组件提供了表单验证的功能，只需要通过 rule 属性传入约
               ref="myQuillEditor"
               placeholder="请输入"
               class="editer"
-              :options="editorOption" @ready="onEditorReady($event)">
+              :options="infoForm.editorOption" @ready="onEditorReady($event)">
        </quill-editor>
       </div>
      </el-form-item>

@@ -661,7 +661,7 @@
           border: 1px solid @Info;
           border-radius: 5px;
           // overflow: hidden;
-          margin-top: 30px;
+          margin-top: 10px;
           padding-left: 20px;
           .title {
             display: inline-block;
@@ -673,15 +673,7 @@
             left: 0px;
             background-color: white;
           }
-          li {
-            list-style-type: none;
-            height: 60px;
-            line-height: 60px;
-            .el-input {
-              width: 70%;
-
-            }
-          }
+         
         }
       }
     }

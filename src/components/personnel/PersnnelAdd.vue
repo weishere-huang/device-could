@@ -593,7 +593,7 @@
           border: 1px solid @Info;
           border-radius: 5px;
           // overflow: hidden;
-          margin-top: 30px;
+          margin-top: 10px;
 
           padding-bottom: 20px;
           .title {

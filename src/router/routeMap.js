@@ -16,11 +16,7 @@ export default [{
     menu: '企业管理',
     permissionCode: 'enterprise',
     icon: '&#xe600;',
-    subMenu: [{
-      menu: '企业管理',
-      route: '/Company',
-      permissionCode: 'enterprise_lookup'
-    }]
+    subMenu: []
   },
   {
     menu: '组织机构',
@@ -244,7 +240,7 @@ export default [{
         menu: '工单列表',
         route: "/WorkOrder",
         permissionCode: 'work_list_lookup'
-    },
+      },
       {
         menu: '创建工单',
         route: "/NewWorkOrder",
@@ -290,10 +286,37 @@ export default [{
     menu: '系统管理',
     permissionCode: 'sys',
     icon: '&#xe60a;',
+    defaultDock: true,
     subMenu: [{
-      menu: '用户管理',
-      route: "/User",
-      permissionCode: 'system_user_lookup'
-    }]
+        menu: '常用联系人',
+        route: "/FrequentContacts",
+        defaultDock: true,
+        permissionCode: 'system_user_lookup'
+      },
+    
+    ]
+  },
+  {
+    menu: '平台管理',
+    permissionCode: 'sys',
+    icon: '&#xe60a;',
+    defaultDock: true,
+    subMenu: [{
+        menu: '用户管理',
+        route: "/User",
+        defaultDock: true,
+        permissionCode: 'system_user_lookup'
+      },
+      {
+        menu: '企业管理',
+        route: '/Company',
+        permissionCode: 'enterprise_lookup'
+      },
+      {
+        menu: '用户注册协议',
+        route: '/Agreement',
+        permissionCode: 'enterprise_lookup'
+      }
+    ]
   }
 ]
