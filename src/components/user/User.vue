@@ -282,15 +282,11 @@ export default {
           url: "/user/enableUser",
           params: data,
           type: "post",
-          option: { enableMsg: false }
+          option: {successMsg:"启用成功"}
         },
         this
       ).then(
         response => {
-          this.$message({
-            message: "启用成功",
-            type: "success"
-          });
           // this.load();
         },
         ({ type, info }) => {}
@@ -306,15 +302,11 @@ export default {
           url: "/user/discontinuationUser",
           params: data,
           type: "post",
-          option: { enableMsg: false }
+          option: { successMsg: "禁用成功" }
         },
         this
       ).then(
         response => {
-          this.$message({
-            message: "禁用成功",
-            type: "success"
-          });
           // this.load();
         },
         ({ type, info }) => {}
