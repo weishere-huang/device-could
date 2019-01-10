@@ -585,19 +585,26 @@
     // padding-left: 180px;
     font-size: 12px;
     .top {
-      padding: 10px 0px;
+      padding: 10px;
+      border: @border;
+        border-radius: 5px;
     }
     .bottom {
-      padding: 10px 0px;
+      padding: 10px;
+      border: @border;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-top: 10px;
       .left {
         padding: 10px;
         border: @border;
         border-radius: 5px;
         width: 400px;
+        height: 420px;
         float: left;
         h5 {
           position: relative;
-          top: -20px;
+          top: -17px;
           left: 10px;
         }
         .el-form-item {
@@ -614,6 +621,7 @@
         border: @border;
         border-radius: 5px;
         margin-left: 10px;
+        height: 420px;
         h5 {
           position: relative;
           top: -50px;

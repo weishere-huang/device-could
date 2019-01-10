@@ -86,7 +86,7 @@
         <div class="msg">
           <h5>工单信息</h5>
           <el-form
-            label-width="120px"
+            label-width="100px"
             :model="workInfo"
           >
             <el-form-item label="工单编号：">
@@ -107,7 +107,7 @@
         <div class="breakdown-details">
           <h5>计划详情</h5>
           <el-form
-            label-width="120px"
+            label-width="100px"
             :model="maintenancePlan"
           >
             <el-form-item label="分类：">
@@ -316,7 +316,7 @@
           </div>
         </div>
         <div class="information-flow">
-          <h6>流程信息</h6>
+          <h5>流程信息</h5>
           <v-table
             is-horizontal-resize
             column-width-drag
@@ -1503,7 +1503,9 @@
     }
     .bottom {
       margin-top: 10px;
-      //   border: @border;
+      border: @border;
+      border-radius: 5px;
+      padding: 10px;
       width: 100%;
       overflow: hidden;
       .left {
@@ -1514,13 +1516,13 @@
           padding: 10px;
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          // margin-top: 20px;
         }
         .breakdown-details {
           padding: 10px;
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
         }
       }
       .right {
@@ -1531,14 +1533,14 @@
         .equipment {
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          // margin-top: 20px;
           padding: 10px;
           height: 198px;
         }
         .supplies {
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
           padding: 10px;
           height: 220px;
           // overflow: scroll;
@@ -1546,12 +1548,13 @@
         .information-receipt {
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
           padding: 10px;
           width: 40%;
           float: left;
           .case {
-            height: 220px;
+            height: 228px;
+            overflow: scroll;
           }
           .el-form {
             border-bottom: 1px dashed #dde2eb;
@@ -1561,11 +1564,12 @@
         .information-flow {
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
           margin-left: 10px;
           padding: 10px;
-          width: 58%;
+          width: 58.5%;
           float: left;
+          height: 266px;
         }
       }
     }

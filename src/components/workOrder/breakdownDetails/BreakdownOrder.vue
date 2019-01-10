@@ -81,7 +81,7 @@
       <div class="left">
         <div class="msg">
           <h5>工单信息</h5>
-          <el-form label-width="120px" :model="workInfo">
+          <el-form label-width="100px" :model="workInfo">
             <el-form-item label="工单编号：">
               <span>{{workInfo.workNo}}</span>
             </el-form-item>
@@ -99,7 +99,7 @@
         </div>
         <div class="breakdown-details">
           <h5>故障详情</h5>
-          <el-form label-width="120px" :model="formLabelAlign">
+          <el-form label-width="100px" :model="formLabelAlign">
             <el-form-item label="故障编码：">
               <span>{{formLabelAlign.faultNo}}</span>
             </el-form-item>
@@ -115,7 +115,7 @@
             <el-form-item label="故障上报时间：">
               <span>{{formLabelAlign.discoveryTime}}</span>
             </el-form-item>
-            <el-form-item label="故障描述：">
+            <el-form-item label="故障描述：" style="margin-bottom:5px;">
               <el-input type="textarea" v-model="formLabelAlign.faultDesc" :autosize="{ minRows: 6, maxRows: 6}" placeholder="" readonly style="width:94%"></el-input>
             </el-form-item>
             <el-form-item label="原因分析：">
@@ -1434,9 +1434,11 @@
     }
     .bottom {
       margin-top: 10px;
-      //   border: @border;
+      border: @border;
+      border-radius: 5px;
       width: 100%;
       overflow: hidden;
+      padding: 10px;
       .left {
         float: left;
         width: 25%;
@@ -1445,13 +1447,13 @@
           padding: 10px;
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
         }
         .breakdown-details {
           padding: 10px;
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
+          min-height: 600px;
         }
       }
       .right {
@@ -1462,26 +1464,26 @@
         .equipment {
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+      
           padding: 10px;
           height: 198px;
         }
         .supplies {
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
           padding: 10px;
           height: 220px;
         }
         .information-receipt {
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
           padding: 10px;
           width: 40%;
           float: left;
           .case {
-            height: 220px;
+            height: 332px;
           }
           .el-form {
             border-bottom: 1px dashed #dde2eb;
@@ -1491,10 +1493,11 @@
         .information-flow {
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
           margin-left: 10px;
           padding: 10px;
           width: 58%;
+          height: 370px;
           float: left;
         }
       }
