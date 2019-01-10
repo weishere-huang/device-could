@@ -30,7 +30,7 @@
                     banType='hide'
                     type="text"
                     size="mini"
-                    @click="dialogVisible=true,addname='',addmsg='',nodeCname=data.categoryName,nodeCMsg=data.categoryMsg"
+                    @click="dialogVisible=true,addname='',addmsg='',categoryName=data.categoryName,categoryNo=data.categoryNo"
                   >
                     <i style='font-size:16px' class='iconfont'>&#xe62f;</i>
                   </permission-button>
@@ -46,7 +46,7 @@
                     banType='hide'
                     type="text"
                     size="mini"
-                    @click="dialogVisible1=true,nodeCname=data.categoryName,nodeCMsg=data.categoryMsg"
+                    @click="dialogVisible1=true,nodeCname=data.categoryName,nodeCMsg=data.categoryMsg,nodedata.id=data.id"
                   >
                     <i
                       style='font-size:16px'
@@ -81,7 +81,7 @@
         </el-tree>
         <div style="width:100%;text-align:center">
           <permission-button
-            permCode='deviceCate_lookup.deviceCate_add'
+            permCode='device_cate_lookup.device_cate_add'
             banType='hide'
             size="small"
             style="width:200px;margin:auto"
@@ -220,13 +220,16 @@ export default {
         children: "children",
         label: "name"
       },
-      nodedata: "",
+      nodedata: {},
       addname: "",
-      addmsg: ""
+      addmsg: "",
+      categoryName:"",
+      categoryNo:""
     };
   },
   methods: {
     handleNodeClick(data) {
+      console.log(data);
       this.nodedata = data;
     },
     append(data) {
@@ -281,8 +284,8 @@ export default {
       //添加设备类别
       let qs = require("qs");
       let data = qs.stringify({
-        categoryParentName: this.nodedata.categoryName,
-        categoryParentNo: this.nodedata.categoryNo,
+        categoryParentName: this.categoryName,
+        categoryParentNo: this.categoryNo,
         categoryName: this.addname,
         categoryMsg: this.addmsg
       });

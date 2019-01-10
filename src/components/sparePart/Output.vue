@@ -578,7 +578,6 @@ export default {
     }
   },
   created() {
-
     this.loadall();
     EventBus.$on("sideBarTroggleHandle", isCollapse => {
       window.setTimeout(() => {
