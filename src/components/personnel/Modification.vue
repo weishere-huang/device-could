@@ -619,6 +619,7 @@
           .title {
             display: inline-block;
             // width: 110px;
+            font-weight: 600;
             position: absolute;
             text-align: center;
             top: 4px;
@@ -666,6 +667,7 @@
           .title {
             display: inline-block;
             // width: 110px;
+            font-weight: 600;
             text-align: center;
             position: relative;
             top: -7px;

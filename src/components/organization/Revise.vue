@@ -139,7 +139,6 @@ export default {
           if (result.data.code === 200) {
             // location.reload();
             this.$message({
-              showClose: true,
               message: "修改成功",
               type: "success"
             });

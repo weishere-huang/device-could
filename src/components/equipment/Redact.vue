@@ -5,7 +5,6 @@
       <div class="top">
         <el-row>
           <el-button
-
             size="small"
             @click="tback"
             type="primary"
@@ -20,7 +19,8 @@
           <i style='font-size:12px' class='iconfont'>&#xe645;</i> &nbsp;保存</el-button>
         </el-row>
       </div>
-      <div class="center">
+      <div class="bottom-case">
+        <div class="center">
         <h5>基础信息</h5>
         <el-form
           ref="baseform"
@@ -365,6 +365,7 @@
           <span>运维记录：</span>
           <span>查看</span>
         </div>
+      </div>
       </div>
     </div>
     <el-dialog
@@ -814,8 +815,15 @@ export default {
     padding: 10px;
     .top {
       padding: 10px;
-      height: 60px;
+      border: @border;
+      border-radius: 5px;
     }
+    .bottom-case{
+        margin-top:10px ;
+        padding: 10px;
+         border: @border;
+        border-radius: 5px;
+      }
     .center {
       padding: 10px;
       width: 650px;
