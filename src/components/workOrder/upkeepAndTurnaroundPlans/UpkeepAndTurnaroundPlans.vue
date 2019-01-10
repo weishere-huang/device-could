@@ -508,7 +508,7 @@
             columnAlign: "center",
             isResize: true,
             isEdit: true,
-            formatter (rowData,rowIndex,pagingIndex,field) {
+            formatter (rowData) {
               return `<s class='cell-edit-style'></s><span>${rowData.planCount}</span>`;
             }
           },
@@ -1408,8 +1408,12 @@
       },
       //跳转到计划页面
       workToPlan(){
-        if(this.workInfo.workType==="保养")this.$router.push({path:"/Upkeep/UpkeepAmend/" +this.workInfo.maintenanceId});
-        if(this.workInfo.workType==="检修")this.$router.push({path:"/TurnaroundPlans/TurnaroundPlansAmend/" + this.workInfo.maintenanceId});
+        let role = JSON.parse(localStorage.getItem("permissionUrl"));
+        if(role.find(item=>{return item.module==="operation_maintain_detail_lookup"}))
+          this.$router.push({path:"/Upkeep/UpkeepAmend/" + params.rowData.maintenanceId});
+        else if(role.find(item=>{return item.module==="operation_overhaul_detail_lookup"}))
+          this.$router.push({path:"/TurnaroundPlans/TurnaroundPlansAmend/" + params.rowData.maintenanceId});
+        else this.$message.error("对不起，您的权限不足")
       }
     },
     created(){

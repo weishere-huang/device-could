@@ -152,7 +152,7 @@
             columnAlign: "center",
             isResize: true,
             overflowTitle: true,
-            formatter: function(rowData, rowIndex, pagingIndex, field) {
+            formatter: function(rowData) {
               return rowData.state === "0"
                 ? "正常"
                 : "停用"
@@ -176,15 +176,8 @@
       customCompFunc(params) {
         this.userIds = params.rowData["id"];
         if (params.type === "change") {
-          console.log('ok');
-          if (params.rowData.state === "1") {
-            // this.choice = params.rowData.id;
-            this.enable();
-          } else if (params.rowData.state === "0") {
-            // this.choice = params.rowData.id;
-            this.disable();
-
-          }
+          if (params.rowData.state === "1") this.enable();
+            if (params.rowData.state === "0") this.disable();
         }
         if (params.type === "delete") {
           this.deleteEmployee();

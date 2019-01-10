@@ -585,7 +585,11 @@
   Vue.component("table-upkeep", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="修改" placement="top">
-            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i></a>
+           <permission-button permCode='operation_maintain_detail_lookup.operation_maintain_detail_audit'
+                     banType='disable' type="text"
+                     style="text-decoration: none;color:#409eff;margin-left: -2px">
+                     <i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+            </permission-button>
         </el-tooltip>
          &nbsp;
         <el-tooltip class="item" effect="dark" content="审核" placement="top">
