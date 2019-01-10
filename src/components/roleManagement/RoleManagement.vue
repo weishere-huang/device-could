@@ -365,10 +365,14 @@
         li {
           list-style-type: none;
           padding-left: 20px;
-          height: 20px;
-          line-height: 20px;
+          height: 26px;
+          line-height: 26px;
           margin-bottom: 5px;
           cursor: pointer;
+          span{
+            display: inline-block;
+            height: 100%;
+          }
           button{
             color: #f56c6c;
             padding: 0;
