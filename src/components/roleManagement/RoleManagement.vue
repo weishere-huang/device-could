@@ -184,16 +184,18 @@
           this
         ).then(
           response => {
+            let roleName = JSON.parse(localStorage.getItem("user")).roleName;
             this.role = response.data.data;
             this.role.forEach(item=>{
-              item.name===JSON.parse(localStorage.getItem("user")).roleName ?
+              item.name === roleName?
                 this.listPermissionByRoleId(item.id):"";
             });
             this.PermissionsList();
+            this.role.map((item,index)=>{
+              item.name === roleName ? this.active = index : null;
+            })
           },
-          ({type, info}) => {
-
-          })
+          ({type, info}) => {})
       },
       update(){
         let qs = require("qs");

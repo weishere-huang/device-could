@@ -80,7 +80,6 @@
                         placeholder="请选择"
                         :options="orgoptions"
                         :props="defaultProps"
-                        filterable
                         ref="getName"
                         expand-trigger="hover"
                         change-on-select
