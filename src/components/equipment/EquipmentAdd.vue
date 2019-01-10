@@ -22,7 +22,6 @@
               placeholder="搜索"
               :options="orgoptions"
               :props="defaultProps"
-              filterable
               ref="getName"
               change-on-select
               :show-all-levels="false"
