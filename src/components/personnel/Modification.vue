@@ -603,7 +603,7 @@
         padding-left: 10px;
         height: 60px;
         line-height: 60px;
-          border: 1px solid @Info;
+        border: 1px solid @Info;
         border-radius: 5px;
       }
       .botton {
@@ -621,6 +621,7 @@
           .title {
             display: inline-block;
             // width: 110px;
+            font-weight: 600;
             position: absolute;
             text-align: center;
             top: 4px;
@@ -668,6 +669,7 @@
           .title {
             display: inline-block;
             // width: 110px;
+            font-weight: 600;
             text-align: center;
             position: relative;
             top: -7px;

@@ -4,7 +4,7 @@
     <div class="left">
       <div class="personal-information">
         <div class="user-msg">
-          <span>个人信息</span>
+          <h5>个人信息</h5>
           <div class="case">
             <div class="photo">
               <img
@@ -27,16 +27,18 @@
             ></i>&nbsp;我的权限</span>
         </div>
         <el-dialog
-          title="提示"
+          title="我的权限"
           :visible.sync="dialogVisible"
-          width="300"
+          width="700px"
         >
           <div style="height:300px;width:100%;overflow:scroll;">
             <ul class="role_style">
               <li
                 v-for="(item,index) in role.permissionInfo "
                 :key="index"
-              >{{item.module}}:{{item.permissionItem}}</li>
+              >
+              <span class="role-parent">{{item.module}}</span>：<span class="role-child">{{item.permissionItem}}</span>
+              </li>
             </ul>
           </div>
 
@@ -44,7 +46,7 @@
 
         <div class="equipment-data">
           <div class="top">
-            <span>设备数据</span>
+            <h5>设备数据</h5>
             <i
               style='font-size:16px'
               class='iconfont'
@@ -69,7 +71,7 @@
       </div>
       <div class="quick-entry">
         <div class="top">
-          <span>快捷入口</span>
+          <h5>快捷入口</h5>
           <span class="addIcon">
             <i
               style='font-size:16px'
@@ -93,7 +95,7 @@
       </div>
       <div class="device-operation-Status">
         <div class="left">
-          <span>设备运行状态</span>
+          <h5>设备运行状态</h5>
           <div class="state">
             <el-form label-position='top'>
               <el-form-item label="正常运行">
@@ -135,7 +137,7 @@
           </div>
         </div>
         <div class="right">
-          <h4>设备数据</h4>
+          <h5>设备数据</h5>
           <ul>
             <li>
               <span>
@@ -167,7 +169,7 @@
     </div>
     <div class="right ">
       <div class="backlog">
-        <span>待办事项</span>
+        <h5>待办事项</h5>
         <ul>
           <li
             title="故障工单"
@@ -194,7 +196,7 @@
       </div>
       <div class="message-notification">
         <div class="top">
-          <span>消息通知</span>
+          <span style="font-weight: 600;">消息通知</span>
           <span>更多</span>
         </div>
         <ul class="message-details">
@@ -206,7 +208,7 @@
         </ul>
       </div>
       <div class="frequent-contacts">
-        <span>常用联系人</span>
+        <h5>常用联系人</h5>
         <ul>
           <li>
             <span>IT服务热线1：</span>
@@ -439,9 +441,7 @@ export default {
         this
       ).then(
         result => {
-          console.log(result.data.data);
           this.role = result.data.data;
-          console.log(this.role);
         },
         () => {}
       );
@@ -449,7 +449,7 @@ export default {
   },
   created() {
     this.userMsg = JSON.parse(localStorage.getItem("user"));
-    this.$store.commit("tokenSrc", localStorage.getItem("token"));
+    // this.$store.commit("tokenStr", localStorage.getItem("token"));
     this.getworksCount();
     this.getdeviceData();
     this.allNotReadMsg();
@@ -489,6 +489,7 @@ export default {
         padding: 10px;
         li {
           line-height:24px;
+          margin-bottom: 4px;
         }
       }
       .case-style;
@@ -763,6 +764,17 @@ export default {
   }
   .el-progress-bar {
     width: 90%;
+  }
+  .role-parent{
+    display: inline-block;
+    text-align: right;
+    width: 150px;
+  }
+  .role-child{
+    display: inline-block;
+    width: 495px;
+    vertical-align:top;
+    
   }
 }
 </style>

@@ -533,15 +533,15 @@
         padding-left: 10px;
         height: 60px;
         line-height: 60px;
-        //   border: 1px solid @Info;
+          border: 1px solid @Info;
         border-radius: 5px;
       }
       .botton {
         font-size: 12px;
         margin-top: 10px;
-        //   border: 1px solid @Info;
+          border: 1px solid @Info;
         border-radius: 5px;
-        padding: 10px 0 0 10px;
+        padding: 10px  10px;
         position: relative;
         .essential {
           width: 600px;
@@ -551,6 +551,7 @@
           .title {
             display: inline-block;
             width: auto;
+            font-weight: 600;
             position: absolute;
             text-align: center;
             top: 3px;
@@ -597,6 +598,7 @@
           padding-bottom: 20px;
           .title {
             display: inline-block;
+            font-weight: 600;
             width: auto;
             text-align: center;
             position: relative;

@@ -1426,7 +1426,7 @@
     }
     .bottom {
       margin-top: 10px;
-      //   border: @border;
+      border: @border;
       width: 100%;
       overflow: hidden;
       .left {
@@ -1437,13 +1437,13 @@
           padding: 10px;
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
         }
         .breakdown-details {
           padding: 10px;
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
         }
       }
       .right {
@@ -1454,21 +1454,21 @@
         .equipment {
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
           padding: 10px;
           height: 198px;
         }
         .supplies {
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
           padding: 10px;
           height: 220px;
         }
         .information-receipt {
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
           padding: 10px;
           width: 40%;
           float: left;

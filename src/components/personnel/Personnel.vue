@@ -176,6 +176,7 @@
       customCompFunc(params) {
         this.userIds = params.rowData["id"];
         if (params.type === "change") {
+          console.log('ok');
           if (params.rowData.state === "1") {
             // this.choice = params.rowData.id;
             this.enable();
@@ -429,7 +430,7 @@
         inactive-color="#ff4949"
         banType='alert'
         permCode='employee_lookup.employee_enable&&employee_lookup.employee_disabled'
-        @change.stop="changeValue(rowData,index)"
+        @change="changeValue(rowData,index)"
         @resetBack="resetBackHandler"
         >
       </permission-switch>

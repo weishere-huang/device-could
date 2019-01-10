@@ -8,7 +8,8 @@
           <el-button  size="small" type="primary" @click="addwarning"><i style='font-size:12px' class='iconfont'>&#xe645;</i> &nbsp;保存</el-button>
         </el-row>
       </div>
-      <div class="center">
+      <div class="bottom-case">
+         <div class="center">
         <h5>基础信息</h5>
         <el-form ref="baseform" :model="sizeForm" label-width="80px" size="small" :rules="rules1" >
           <el-form-item label="设备编号" prop="deviceNo">
@@ -197,6 +198,7 @@
                 <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">只能上传不超过10M的文件,且不能超过20个文件</div>
               </el-upload>
         </div>
+      </div>
       </div>
     </div>
     <el-dialog
@@ -610,7 +612,14 @@
       padding: 10px;
       .top {
         padding: 10px;
-        height: 60px;
+         border: @border;
+        border-radius: 5px;
+      }
+      .bottom-case{
+        margin-top:10px ;
+        padding: 10px;
+         border: @border;
+        border-radius: 5px;
       }
       .center {
         padding: 10px;
