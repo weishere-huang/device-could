@@ -93,7 +93,8 @@
               <span>{{workInfo.workNo}}</span>
             </el-form-item>
             <el-form-item label="工单类型：">
-              <span>{{workInfo.workType}}</span>
+              <span>{{workInfo.workType}}</span>&nbsp;&nbsp;
+              <el-button @click="workToPlan" type="text">{{workInfo.maintenanceId}}&nbsp;<i class="el-icon-search" style="color: #2474c5"></i></el-button>
             </el-form-item>
             <el-form-item label="工单状态：">
               <span>{{workInfo.state}}</span>
@@ -377,6 +378,7 @@
           workType:"",
           state:"",
           gmtCreate:"",
+          maintenanceId:"",
         },
         maintenancePlan:{
           id:"",
@@ -1404,7 +1406,11 @@
       flowInfo(value){
         this.flowInfoData = value;
       },
-
+      //跳转到计划页面
+      workToPlan(){
+        if(this.workInfo.workType==="保养")this.$router.push({path:"Upkeep/UpkeepAmend/" +this.workInfo.maintenanceId});
+        if(this.workInfo.workType==="检修")this.$router.push({path:"TurnaroundPlans/TurnaroundPlansAmend/" + this.workInfo.maintenanceId});
+      }
     },
     created(){
       this.workId = this.$route.params.id;

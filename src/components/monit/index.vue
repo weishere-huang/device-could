@@ -109,7 +109,10 @@
                       slot="header"
                       class="clearfix"
                     >
-                      <span :title="item.deviceName" class="cardItem-header ellipsis">
+                      <span
+                        :title="item.deviceName"
+                        class="cardItem-header ellipsis"
+                      >
                         <el-tooltip
                           v-if="item.warnLevel===1"
                           class="item"
@@ -144,9 +147,16 @@
                         style="float: right; "
                         :to="{path:'/Monit/'+item.id}"
                       >
-                      <el-tooltip effect="dark" content="查看日志" placement="top">
-                        <i style="font-size:18px" class="iconfont">&#xe60d;</i>
-                      </el-tooltip>
+                        <el-tooltip
+                          effect="dark"
+                          content="查看日志"
+                          placement="top"
+                        >
+                          <i
+                            style="font-size:18px"
+                            class="iconfont"
+                          >&#xe60d;</i>
+                        </el-tooltip>
                       </router-link>
                     </div>
                     <div class="text item">
@@ -224,6 +234,8 @@
                 </el-col> -->
               </el-row>
             </div>
+            <div class="mt20 mb20 bold"></div>
+            <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableDate" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </section>
         </el-main>
       </el-container>
@@ -263,6 +275,9 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      pageIndex:1,
+      pageSize:20,
+      tableDate:0,
       activeClass:
         this.$route.params.deviceId !== undefined
           ? "monitWrap hide"
@@ -321,7 +336,7 @@ export default {
       organizeName: JSON.parse(localStorage.getItem("user")).organizeName,
       deviceCategory: "",
       basicStateCount: "",
-      type:"",
+      type: ""
       //itemName:["参数1","参数2","参数3"]
     };
   },
@@ -346,7 +361,7 @@ export default {
       if (res1.data.data.length) {
         this.organizationTreeData = initTreeDataForOrganization(
           res1.data.data,
-          res1.data.data.find(item=>item.organizeType===0).code
+          res1.data.data.find(item => item.organizeType === 0).code
         );
         this.$store.commit("getCode", res1.data.data[0].code);
 
@@ -367,6 +382,19 @@ export default {
     // 绘制图表
   },
   methods: {
+    pageChange(pageIndex){
+      this.pageIndex = pageIndex;
+      // this.getTableData();
+      this.getEquList()
+      console.log(pageIndex)
+    },
+    pageSizeChange(pageSize){
+      this.pageIndex = 1;
+      this.pageSize = pageSize;
+      // this.getTableData();
+      this.getEquList()
+
+    },
     setPinOption(selectOrganizeCode) {
       //获取设备两个状态
       this.Axios(
@@ -389,7 +417,7 @@ export default {
         const baseState = res2_1.data.data;
         const warnState = res2_2.data.data;
         this.pageEquCount = baseState.count || 0;
-        const self=this;
+        const self = this;
         chartLeft.setOption({
           title: {
             text: "设备基本状态",
@@ -507,38 +535,38 @@ export default {
             }
           ]
         });
-        chartLeft.on("click", function (param) {
+        chartLeft.on("click", function(param) {
           if (param.data.name === "正常运行") {
             self.basicStateCount = 0;
-          }else if (param.data.name === "故障待处理") {
+          } else if (param.data.name === "故障待处理") {
             self.basicStateCount = 1;
-          }else if (param.data.name === "维修中") {
+          } else if (param.data.name === "维修中") {
             self.basicStateCount = 2;
-          }else if (param.data.name === "关机中") {
+          } else if (param.data.name === "关机中") {
             self.basicStateCount = 3;
-          }else if (param.data.name === "断线") {
+          } else if (param.data.name === "断线") {
             self.basicStateCount = 4;
           }
-          self.type=0
+          self.type = 0;
           //console.log(param.data.name,self.basicStateCount);
-          self.getEquList()
-         });
-         chartRight.on("click", function (param) {
+          self.getEquList();
+        });
+        chartRight.on("click", function(param) {
           if (param.data.name === "正常") {
             self.basicStateCount = 0;
-          }else if (param.data.name === "黄色预警") {
+          } else if (param.data.name === "黄色预警") {
             self.basicStateCount = 1;
-          }else if (param.data.name === "橙色预警") {
+          } else if (param.data.name === "橙色预警") {
             self.basicStateCount = 2;
-          }else if (param.data.name === "红色预警") {
+          } else if (param.data.name === "红色预警") {
             self.basicStateCount = 3;
-          }else if (param.data.name === "断线") {
+          } else if (param.data.name === "断线") {
             self.basicStateCount = 4;
           }
-          self.type=1
-          console.log(param.data.name,self.basicStateCount);
-          self.getEquList()
-         });
+          self.type = 1;
+          console.log(param.data.name, self.basicStateCount);
+          self.getEquList();
+        });
       });
     },
 
@@ -551,15 +579,18 @@ export default {
             organizeCode: this.organizeCode,
             deviceCategory: this.deviceCategory,
             state: this.basicStateCount,
-            type:this.type,
-            size: 100
+            type: this.type,
+            page:this.pageIndex,
+            size: this.pageSize
           },
           option: { requestTarget: "r" }
         },
         this
       ).then(res => {
-        console.log(res.data.data.content);
+        console.log(res.data.data);
         this.equipmentOperationalCondition = res.data.data.content;
+        // this.tableDate = res.data.data.content;
+        this.tableDate=res.data.data.totalElements
         //window.setTimeout(() => {this.$refs.tree.setCurrentKey("1024");}, 1000);
       });
     },
@@ -569,32 +600,32 @@ export default {
     treeNodeClick(data) {
       //console.log(data);
       this.organizeCode = data.id;
-      this.organizeName=data.label;
+      this.organizeName = data.label;
       this.setPinOption();
       this.getEquList();
     },
     classifyNodeclick(data) {
       //console.log(data);
       this.deviceCategory = data.id;
-      this.organizeName=data.label;
+      this.organizeName = data.label;
       this.setPinOption();
       this.getEquList();
     },
-    itemName(organizeCode,index){
-      let names=[];
-      let _organizeCode=organizeCode.substring(0,7);
-      if(_organizeCode==='1015001'){
+    itemName(organizeCode, index) {
+      let names = [];
+      let _organizeCode = organizeCode.substring(0, 7);
+      if (_organizeCode === "1015001") {
         //技佳
-        names=["最近计划","实际产出"];
-      }else if(_organizeCode==='1015002'){
+        names = ["最近计划", "实际产出"];
+      } else if (_organizeCode === "1015002") {
         //精密
-        names=["最近上料","物料描述"];
-      }else if(_organizeCode==='1015003'){
+        names = ["最近上料", "物料描述"];
+      } else if (_organizeCode === "1015003") {
         //多媒体
-        names=["当前屏ID","当前产品"];
+        names = ["当前屏ID", "当前产品"];
       }
-      if(names.length===0||index>2){
-        return "参数"+(index+1);
+      if (names.length === 0 || index > 2) {
+        return "参数" + (index + 1);
       }
       return names[index];
     }

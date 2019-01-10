@@ -1,359 +1,350 @@
 <template>
-  <div class="login">
-    <div
-      class="loginBox"
-      v-show="isshow"
+<div class="login">
+  <div
+    class="loginBox"
+    v-show="isshow"
+  >
+    <h1>长虹智能终端设备生产管理云平台</h1>
+    <el-form
+      :model="loginList"
+      :rules="loginRules"
+      style="width:60%;margin-top:10px;"
+      ref="loginList"
     >
-      <h1>长虹智能终端设备生产管理云平台</h1>
+      <el-form-item
+        label=""
+        style="margin-bottom: 20px;"
+        prop="userName"
+      >
+        <el-input
+          placeholder="用户名/手机号"
+          v-model="loginList.userName"
+          maxlength="30"
+          autofocus
+        >
+          <i
+            class='iconfont icon-fonts-user'
+            slot="suffix"
+          >
+          </i></el-input>
+      </el-form-item>
+      <el-form-item
+        label=""
+        style="margin-bottom: 20px;"
+        prop="password"
+      >
+        <el-input
+          type="password"
+          placeholder="密码"
+          v-model="loginList.password"
+          maxlength="30"
+        >
+          <i
+            class='iconfont icon-password'
+            slot="suffix"
+          >
+          </i></el-input>
+      </el-form-item>
+      <el-form-item
+        label=""
+        style="width:100%;margin-bottom: 20px;"
+        prop="verification"
+        :inline="true"
+      >
+        <el-input
+          placeholder="短信验证码"
+          v-model="loginList.verification"
+          style="width:60%"
+        >
+        </el-input>
+        <!--<el-button type="primary" plain style="width:38%;height:40px;" @click="loginSecuritycode">-->
+        <el-button
+          type="primary"
+          style="width:38%;height:40px;"
+          v-if="!sendMsgDisabled"
+          @click="loginSecuritycode"
+        >获取验证码
+        </el-button>
+        <el-button
+          type="primary"
+          plain
+          style="width:38%;height:40px;"
+          v-if="sendMsgDisabled"
+        >{{time+'秒后获取'}}
+        </el-button>
+      </el-form-item>
+    </el-form>
+    <p>
+      <el-button
+        type="primary"
+        @click="submitForm('loginList')"
+        @keyup.enter.native="login"
+      >登录
+      </el-button>
+    </p>
+    <p class="registerSkip">
+      <span>忘记密码</span>
+      <span v-on:click="function(){
+          isshow=!isshow
+          ishide=!ishide
+          }">企业注册</span>
+
+      <!-- <span @click="toReginster">企业注册</span> -->
+    </p>
+  </div>
+  <div
+    class="register"
+    v-show="ishide"
+  >
+    <div v-show="backshow">
+      <h2>企业注册</h2>
+      <div class="titleText">（企业注册信息填写）</div>
       <el-form
-        :model="loginList"
-        :rules="loginRules"
-        style="width:60%;margin-top:10px;"
-        ref="loginList"
+        :label-position="labelPosition"
+        label-width="160px"
+        :model="company"
+        :rules="registerRules"
+        ref="company"
       >
         <el-form-item
-          label=""
-          style="margin-bottom: 20px;"
+          label="企业名称："
+          prop="name"
+        >
+          <el-input
+            placeholder="营业执照主体单位名称"
+            size="small"
+            v-model="company.name"
+            maxlength="30"
+            style="width:80%"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="法人代表："
+          prop="corporation"
+        >
+          <el-input
+            placeholder="营业执照法定代表人"
+            size="small"
+            v-model="company.corporation"
+            style="width:80%"
+            maxlength="30"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="联系电话："
+          prop="phone"
+        >
+          <el-input
+            placeholder="如：028-XXXXXXXX"
+            size="small"
+            v-model="company.phone"
+            style="width:80%"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="企业地址："
+          prop="address"
+        >
+          <el-input
+            placeholder="企业现在所处的详细地址"
+            size="small"
+            maxlength="100"
+            v-model="company.address"
+            style="width:80%"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="统一社会信用代码："
+          prop="companyID"
+        >
+          <el-input
+            placeholder="18位统一社会信用代码"
+            size="small"
+            v-model="company.companyID"
+            style="width:80%"
+            maxlength="18"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="营业执照："
+          props="dialogImageUrl"
+          style="padding-top: 6px;"
+        >
+          <el-upload
+            style="display:inline-block;vertical-align:top"
+            :action="uploadUrl()"
+            accept="image/jpeg,image/png"
+            list-type="picture-card"
+            :limit="1"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove"
+          >
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible" append-to-body>
+            <img
+              width="100%"
+              :src="company.dialogImageUrl"
+              alt=""
+            >
+          </el-dialog>
+        </el-form-item>
+        <div style="display:inline-block;margin-left:-20px;color:#999999;">仅支持小于1Mb的jpg或png图片格式</div>
+      </el-form>
+      <div class="next">
+        <el-button
+          type="primary"
+          size="small"
+          class="registerBtn"
+          @click="registerNext('company')"
+        >下一步
+        </el-button>
+      </div>
+    </div>
+    <div
+      v-show="nextshow"
+      style="margin-top:20px"
+    >
+      <h2>企业注册</h2>
+      <div class="titleText">（管理员信息登记）</div>
+      <el-form
+        :label-position="labelPosition"
+        label-width="160px"
+        :model="manager"
+        :rules="managerRules"
+        ref="manager"
+      >
+        <el-form-item
+          label="用户名："
           prop="userName"
         >
           <el-input
-            placeholder="用户名/手机号"
-            v-model="loginList.userName"
-            maxlength="30"
-            autofocus
-          >
-            <i
-              class='iconfont icon-fonts-user'
-              slot="suffix"
-            >
-            </i></el-input>
+            placeholder="6~20位字符组成，以字母开头"
+            size="small"
+            v-model="manager.userName"
+            style="width:80%"
+            maxlength="20"
+          ></el-input>
         </el-form-item>
         <el-form-item
-          label=""
-          style="margin-bottom: 20px;"
-          prop="password"
+          label="密码："
+          prop="userPassword"
         >
           <el-input
-            type="password"
-            placeholder="密码"
-            v-model="loginList.password"
-            maxlength="30"
+            placeholder="6~20位字符组成，区分大小写"
+            size="small"
+            :type="see"
+            v-model="manager.userPassword"
+            maxlength="20"
+            style="width:80%"
           >
             <i
-              class='iconfont icon-password'
+              class="el-icon-view"
               slot="suffix"
-            >
-            </i></el-input>
+              style=""
+              @click="seePassword"
+            ></i></el-input>
         </el-form-item>
         <el-form-item
-          label=""
-          style="width:100%;margin-bottom: 20px;"
-          prop="verification"
-          :inline="true"
+          label="手机号："
+          prop="phone"
         >
           <el-input
-            type="number"
-            oninput="if(value.length>6)value=value.slice(0,6)"
-            placeholder="验证码"
-            v-model.number="loginList.verification"
-            @keyup.enter.native="login"
-            style="width:60%"
+            placeholder="11位手机号（仅国内）"
+            size="small"
+            v-model="manager.phone"
+            style="width:80%"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="验证码："
+          prop="validate"
+        >
+          <el-input
+            placeholder="短信验证码"
+            v-model="manager.validate"
+            size="small"
+            style="width:40%"
           >
           </el-input>
-          <!--<el-button type="primary" plain style="width:38%;height:40px;" @click="loginSecuritycode">-->
           <el-button
             type="primary"
-            style="width:38%;height:40px;"
+            style="width:38%;"
+            size="small"
             v-if="!sendMsgDisabled"
-            @click="loginSecuritycode"
+            @click="registerSecuritycode('manager')"
           >获取验证码
           </el-button>
           <el-button
             type="primary"
             plain
-            style="width:38%;height:40px;"
+            style="width:38%;height:32px;"
+            size="small"
             v-if="sendMsgDisabled"
           >{{time+'秒后获取'}}
           </el-button>
+
+        </el-form-item>
+        <el-form-item label="">
+          <el-checkbox v-model="checked">您已阅读<a
+            href="javascript:"
+            style="text-decoration: none;"
+            @click="showDeal=true"
+          >《长虹设备云用户注册协议》</a></el-checkbox>
         </el-form-item>
       </el-form>
-      <p>
-        <el-button
-          type="primary"
-          @click="submitForm('loginList')"
-          @keyup.enter.native="login"
-        >登录
-        </el-button>
-      </p>
-      <p class="registerSkip">
-        <span>忘记密码</span>
-        <span v-on:click="function(){
-          isshow=!isshow
-          ishide=!ishide
-          }">企业注册</span>
+      <el-dialog
+        title="用户注册协议"
+        :visible.sync="showDeal"
+        width="600"
+        center
+        append-to-body>
+        <div style="height:600px;width:100%;overflow:scroll" id="deal-content" v-html="deal.content">
 
-        <!-- <span @click="toReginster">企业注册</span> -->
-      </p>
-    </div>
-    <div
-      class="register"
-      v-show="ishide"
-    >
-      <div v-show="backshow">
-        <h2>企业注册</h2>
-        <div class="titleText">（企业注册信息填写）</div>
-        <el-form
-          :label-position="labelPosition"
-          label-width="160px"
-          :model="company"
-          :rules="registerRules"
-          ref="company"
-        >
-          <el-form-item
-            label="企业名称："
-            prop="name"
-          >
-            <el-input
-              placeholder="营业执照主体单位名称"
-              size="small"
-              v-model="company.name"
-              maxlength="30"
-              style="width:80%"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="法人代表："
-            prop="corporation"
-          >
-            <el-input
-              placeholder="营业执照法定代表人"
-              size="small"
-              v-model="company.corporation"
-              style="width:80%"
-              maxlength="30"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="联系电话："
-            prop="phone"
-          >
-            <el-input
-              type="number"
-              placeholder="如：028-XXXXXXXX"
-              size="small"
-              v-model="company.phone"
-              style="width:80%"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="企业地址："
-            prop="address"
-          >
-            <el-input
-              placeholder="企业现在所处的详细地址"
-              size="small"
-              maxlength="100"
-              v-model="company.address"
-              style="width:80%"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="统一社会信用代码："
-            prop="companyID"
-          >
-            <el-input
-              placeholder="18位统一社会信用代码"
-              size="small"
-              v-model="company.companyID"
-              style="width:80%"
-              maxlength="18"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="营业执照："
-            props="dialogImageUrl"
-            style="padding-top: 6px;"
-          >
-            <el-upload
-              style="display:inline-block;vertical-align:top"
-              :action="uploadUrl()"
-              accept="image/jpeg,image/png"
-              list-type="picture-card"
-              :limit="1"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-              :on-preview="handlePictureCardPreview"
-              :on-remove="handleRemove"
-            >
-              <i class="el-icon-plus"></i>
-            </el-upload>
-            <el-dialog :visible.sync="dialogVisible" append-to-body>
-              <img
-                width="100%"
-                :src="company.dialogImageUrl"
-                alt=""
-              >
-            </el-dialog>
-          </el-form-item>
-          <div style="display:inline-block;margin-left:-20px;color:#999999;">仅支持小于1Mb的jpg或png图片格式</div>
-        </el-form>
-        <div class="next">
-          <el-button
-            type="primary"
-            size="small"
-            class="registerBtn"
-            @click="registerNext('company')"
-          >下一步
-          </el-button>
         </div>
-      </div>
-      <div
-        v-show="nextshow"
-        style="margin-top:20px"
-      >
-        <h2>企业注册</h2>
-        <div class="titleText">（管理员信息登记）</div>
-        <el-form
-          :label-position="labelPosition"
-          label-width="160px"
-          :model="manager"
-          :rules="managerRules"
-          ref="manager"
-        >
-          <el-form-item
-            label="用户名："
-            prop="userName"
-          >
-            <el-input
-              placeholder="6~20位字符组成，以字母开头"
-              size="small"
-              v-model="manager.userName"
-              style="width:80%"
-              maxlength="20"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="密码："
-            prop="userPassword"
-          >
-            <el-input
-              placeholder="6~20位字符组成，区分大小写"
-              size="small"
-              :type="see"
-              v-model="manager.userPassword"
-              maxlength="20"
-              style="width:80%"
-            >
-              <i
-                class="el-icon-view"
-                slot="suffix"
-                style=""
-                @click="seePassword"
-              ></i></el-input>
-          </el-form-item>
-          <el-form-item
-            label="手机号："
-            prop="phone"
-          >
-            <el-input
-              type="number"
-              placeholder="11位手机号（仅国内）"
-              size="small"
-              v-model="manager.phone"
-              oninput="if(value.length>11)value=value.slice(0,11)"
-              style="width:80%"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="验证码："
-            prop="validate"
-          >
-            <el-input
-              placeholder="短信验证码"
-              type="number"
-              v-model="manager.validate"
-              oninput="if(value.length>6)value=value.slice(0,6)"
-              size="small"
-              style="width:40%"
-            >
-            </el-input>
-            <el-button
-              type="primary"
-              style="width:38%;"
-              size="small"
-              v-if="!sendMsgDisabled"
-              @click="registerSecuritycode('manager')"
-            >获取验证码
-            </el-button>
-            <el-button
-              type="primary"
-              plain
-              style="width:38%;height:32px;"
-              size="small"
-              v-if="sendMsgDisabled"
-            >{{time+'秒后获取'}}
-            </el-button>
-
-          </el-form-item>
-          <el-form-item label="">
-            <el-checkbox v-model="checked">您已阅读<a
-              href="javascript:"
-              style="text-decoration: none;"
-              @click="showDeal=true"
-            >《长虹设备云用户注册协议》</a></el-checkbox>
-          </el-form-item>
-        </el-form>
-        <el-dialog
-          title="用户注册协议"
-          :visible.sync="showDeal"
-          width="600"
-          center
-          append-to-body>
-          <div style="height:600px;width:100%;overflow:scroll" id="deal-content" v-html="deal.content">
-
-          </div>
-          <span slot="footer" class="dialog-footer">
+        <span slot="footer" class="dialog-footer">
             <el-button @click="showDeal = false" size="mini">取 消</el-button>
             <el-button type="primary" @click="showDeal = false" size="mini">确 定</el-button>
           </span>
-        </el-dialog>
-        <el-button
-          type="primary"
-          size="small"
-          class="registerBtn"
-          style="width:30%;height:32px"
-          v-on:click="function(){nextshow=!nextshow
+      </el-dialog>
+      <el-button
+        type="primary"
+        size="small"
+        class="registerBtn"
+        style="width:30%;height:32px"
+        v-on:click="function(){nextshow=!nextshow
            backshow=!backshow}"
-        >上一步
-        </el-button>
-        <el-button
-          type="primary"
-          size="small"
-          class="registerBtn"
-          @click="registerInfo('manager')"
-          style="width:30%;height:32px"
-        >注册
-        </el-button>
-      </div>
-      <div
-        class="loginSkip"
-        v-on:click="function(){
+      >上一步
+      </el-button>
+      <el-button
+        type="primary"
+        size="small"
+        class="registerBtn"
+        @click="registerInfo('manager')"
+        style="width:30%;height:32px"
+      >注册
+      </el-button>
+    </div>
+    <div
+      class="loginSkip"
+      v-on:click="function(){
           isshow=!isshow
           ishide=!ishide
           }"
-      >已有账号，直接登录
-      </div>
-    </div>
-    <div v-if="this.$route.params.deviceId!==undefined">
-      <router-view></router-view>
+    >已有账号，直接登录
     </div>
   </div>
+  <div v-if="this.$route.params.deviceId!==undefined">
+    <router-view></router-view>
+  </div>
+</div>
 </template>
 <script>
   import md5 from "js-md5/src/md5.js";
   import CryptoJS from "crypto-js/crypto-js.js";
   import forgetThePassword from "./ForgetThePassword";
-
   export default {
     inject: ["reload"],
     name: "Login",
@@ -386,7 +377,6 @@
           ],
           verification: [
             {required: true, message: "验证码不能为空", trigger: "blur"},
-            {type: "number", message: "验证码错误", trigger: "blur"}
           ]
         },
         registerRules: {
@@ -615,7 +605,6 @@
         checked: true
       };
     },
-
     methods: {
       dealMsg() {
         this.Axios(
@@ -707,7 +696,6 @@
         });
         return encrypted.toString();
       },
-
       login() {
         // this.submitForm('loginList')
         let pass = this.loginList.password;
@@ -736,16 +724,13 @@
         ).then(
           result => {
             if (result.data.code === 200) {
-
               // console.log(result.data);
               localStorage.token = result.data.data.tokenStr;
               localStorage.user = JSON.stringify(result.data.data);
               localStorage.permissionUrl = JSON.stringify(result.data.data.permissionUrl);
-
               // this.$cookieStore.addCookie('token', JSON.stringify(result.data.data.tokenStr),168)
               // this.$cookieStore.addCookie('message',JSON.stringify(result.data.data) ,168)
               // this.$cookieStore.addCookie('permissionUrl',JSON.stringify(result.data.data.permissionUrl),168)
-
               this.$store.commit("user", result.data.data);
               // this.$store.commit("tokenSrc",result.data.data.tokenStr);
               // console.log(this.$store.state.token.tokenNub);
@@ -938,7 +923,6 @@
 </script>
 <style lang="less">
   @import url("../../assets/font/font.css");
-
   @blue: #409eff;
   @Success: #67c23a;
   @Warning: #e6a23c;
@@ -948,7 +932,6 @@
     margin: 0;
     padding: 0;
   }
-
   .login {
     text-align: center;
     width: 100%;
@@ -1014,7 +997,6 @@
         .el-input {
           width: 120%;
         }
-
         .el-button {
           width: 160%;
           height: 38px;
@@ -1028,7 +1010,6 @@
       }
     }
   }
-
   .adminLogin {
     width: 40%;
     height: auto;
@@ -1090,7 +1071,6 @@
       }
     }
   }
-
   .register {
     position: absolute;
     right: 10%;
@@ -1165,30 +1145,17 @@
       font-size: 12px;
       cursor: pointer;
     }
-
     .el-dialog__header {
       height: 30px;
     }
     .el-dialog__headerbtn {
       top: 6px;
     }
-
   }
-
   .el-dialog__body {
     font-size: 0px;
   }
-
   .el-dialog__footer {
     padding-bottom: 10px !important;
-  }
-
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-  }
-
-  input[type="number"] {
-    -moz-appearance: textfield;
   }
 </style>

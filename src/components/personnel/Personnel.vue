@@ -14,7 +14,7 @@
         <div class="search">
           <el-input
             type="search"
-            placeholder="如员工姓名，手机，部门，岗位"
+            placeholder="关键字:姓名，手机号，组织机构，岗位"
             size="small"
             v-model="searchs"
             @keyup.enter.native="search"

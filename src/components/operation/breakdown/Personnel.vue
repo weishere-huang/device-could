@@ -7,7 +7,7 @@
           size="mini"
           v-model="key"
           style="width:30%;"
-          placeholder="关键字:员工编号，姓名，手机号，组织机构，岗位"
+          placeholder="关键字:姓名，手机号，组织机构，岗位"
         ></el-input>
         <el-button
           size="mini"
