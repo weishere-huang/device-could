@@ -172,6 +172,28 @@
 
       </div>
     </el-dialog>
+    <!--工单查看弹窗-->
+    <el-dialog
+      :title="planName"
+      :visible.sync="workIsShow"
+      width="50%"
+    >
+      <div style="padding:10px">
+        <v-table
+          is-horizontal-resize
+          column-width-drag
+          :multiple-sort="false"
+          style="width:100%;"
+          :columns="workInfoTable"
+          :table-data="workInfoDate"
+          @on-custom-comp="lookWork"
+          row-hover-color="#eee"
+          row-click-color="#edf7ff"
+          :row-height=35
+        ></v-table>
+      </div>
+    </el-dialog>
+    <!--工单查看弹窗结束-->
   </div>
 </template>
 <script>
@@ -313,13 +335,67 @@
           {
             field: "custome-adv",
             title: "操作",
-            width: 120,
+            width: 140,
             titleAlign: "center",
             columnAlign: "center",
             componentName: "table-breakdown"
-            // isResize: true
           }
-        ]
+        ],
+        planName:"",
+        workIsShow:false,
+        workInfoTable:[
+          {
+            field: "workNo",
+            title: "工单编号",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            overflowTitle: true
+          },
+          {
+            field: "gmtCreate",
+            title: "创建时间",
+            width: 100,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            overflowTitle: true
+          },
+          {
+            field: "state",
+            title: "状态",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            overflowTitle: true,
+            formatter:function (rowData) {
+              if(rowData.state ===0 )return `<span style="color: #ff6600">待审核</span>`;
+              if(rowData.state ===1 )return `<span style="color: #00b400">已通过</span>`;
+              if(rowData.state ===2 )return `<span style="color: #c48382">已禁用</span>`;
+              if(rowData.state ===4 )return `<span style="color: #409dfe">审核中</span>`;
+              if(rowData.state ===5 )return `<span style="color: #2b63b4">待处理</span>`;
+              if(rowData.state ===6 )return `<span style="color: #999999">已消除</span>`;
+              if(rowData.state ===7 )return `<span style="color: #c48382">已撤销</span>`;
+              if(rowData.state ===10 )return `<span style="color: #59007a">已驳回</span>`;
+              if(rowData.state ===12 )return `<span style="color: #999999">已停止</span>`;
+              if(rowData.state ===13 )return `<span style="color: #999999">已完成</span>`;
+              if(rowData.state ===15 )return `<span style="color: #00b400">待处理</span>`;
+            }
+          },
+          {
+            field: "id",
+            title: "操作",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            overflowTitle: true,
+            componentName: "table-lookWorkInfoS"
+          }
+        ],
+        workInfoDate:[],
       };
     },
     methods: {
@@ -333,6 +409,33 @@
         this.formLabelAlign.name = "";
         this.toAuditName="";
       },
+      lookWork(params){
+        if(params.type === "lookWorkList"){
+          this.goWorkInfo(params.rowData.id);
+        }
+      },
+      goWorkInfo(value){
+        this.$router.push({path:"WorkOrder/BreakdownOrder/" + value});
+      },
+      workInfoLoad(value){
+        this.Axios(
+          {
+            params: {
+              planId:value,
+              planType:2
+            },
+            type: "get",
+            url: "/mplan/planToWorkInfo",
+            option:{enableMsg:false}
+          },
+          this
+        ).then(
+          response => {
+            this.workInfoDate = response.data.data;
+          },
+          ({ type, info }) => {}
+        )
+      },
       customCompFunc(params) {
         // console.log(params);
         if (params.type === "delete") {
@@ -345,6 +448,10 @@
         }else if(params.type === "submitAudit"){
           this.faultIds = params.rowData.id;
           params.rowData.state ===0 ?　this.outerVisible = true : this.$message.error('对不起、只能操作待审核的计划')
+        }else if(params.type === "work"){
+          this.workIsShow = true;
+          this.planName = "故障编号“"+params.rowData.faultNo+"”的关联工单";
+          this.workInfoLoad(params.rowData.id);
         }
       },
       toDetails(rowIndex, rowData, column) {
@@ -627,6 +734,35 @@
       }
     },
   };
+  Vue.component("table-lookWorkInfoS", {
+    template: `<span>
+        <el-tooltip class="item" effect="dark" content="修改" placement="top">
+            <permission-button permCode='work_list_detail_lookup.work_list_detail_save||work_list_detail_lookup.work_list_detail_audit'
+                     banType='disable' type="text"
+                     style="text-decoration: none;color:#409eff;margin-left: -2px">
+                     <i @click.stop.prevent="lookWorkInfo(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+            </permission-button>
+        </el-tooltip>
+        </span>`,
+    props: {
+      rowData: {
+        type: Object
+      },
+      field: {
+        type: String
+      },
+      index: {
+        type: Number
+      }
+    },
+    methods: {
+      lookWorkInfo() {
+        // 参数根据业务场景随意构造
+        let params = { type: "lookWorkList", index: this.index, rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      },
+    }
+  });
   Vue.component("table-breakdown", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
@@ -652,6 +788,14 @@
                      <i @click.stop.prevent="dispel(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe645;</i>
             </permission-button>
           </el-tooltip>
+           &nbsp;
+        <el-tooltip class="item" effect="dark" content="关联工单" placement="top">
+            <permission-button permCode='work_list_detail_lookup.work_list_detail_save||work_list_detail_lookup.work_list_detail_audit'
+                     banType='disable' type="text"
+                     style="text-decoration: none;color:#409EFF;margin-left: -2px">
+                    <i @click.stop.prevent="planToWork(rowData,index)" style='font-size:16px' class='iconfont'>&#xe603;</i>
+            </permission-button>
+        </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
             <permission-button permCode='operation_fault_lookup.operation_fault_delete'
@@ -692,7 +836,11 @@
       submitAudit(){
         let params = { type: "submitAudit", rowData: this.rowData };
         this.$emit("on-custom-comp", params);
-      }
+      },
+      planToWork(){
+        let params = { type: "work", rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      },
     }
   });
 </script>
