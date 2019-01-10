@@ -142,8 +142,8 @@
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
-              if(rowData.workType ===0 )return `<span>检修</span>`;
               if(rowData.workType ===1 )return `<span>保养</span>`;
+              if(rowData.workType ===0 )return `<span>检修</span>`;
               if(rowData.workType ===2 )return `<span>故障</span>`;
             }
           },
@@ -223,7 +223,7 @@
         this.load(this.stateNum);
       },
       Jump(rowIndex, rowData, column) {
-        if (rowData.workType === "故障") {
+        if (rowData.workType === 2) {
           this.$router.push({path:"WorkOrder/BreakdownOrder/" + rowData.id});
         } else {
           this.$router.push({path:"WorkOrder/UpkeepAndTurnaroundPlans/" + rowData.id});
@@ -261,9 +261,14 @@
       },
       workToPlans(params){
         if (params.type === "workToPlans") {
-          if(params.rowData.workType===0)this.$router.push({path:"Upkeep/UpkeepAmend/" + params.rowData.maintenanceId});
-          if(params.rowData.workType===1)this.$router.push({path:"TurnaroundPlans/TurnaroundPlansAmend/" + params.rowData.maintenanceId});
-          if(params.rowData.workType===2)this.$router.push({path:"Breakdown/BreakDetails/" + params.rowData.maintenanceId})
+          let role = JSON.parse(localStorage.getItem("permissionUrl"));
+          if(params.rowData.workType===1&&role.find(item=>{return item.module==="operation_maintain_detail_lookup"}))
+            this.$router.push({path:"Upkeep/UpkeepAmend/" + params.rowData.maintenanceId});
+          else if(params.rowData.workType===0&&role.find(item=>{return item.module==="operation_overhaul_detail_lookup"}))
+            this.$router.push({path:"TurnaroundPlans/TurnaroundPlansAmend/" + params.rowData.maintenanceId});
+          else if(params.rowData.workType===2&&role.find(item=>{return item.module==="operation_fault_detail_lookup"}))
+            this.$router.push({path:"Breakdown/BreakDetails/" + params.rowData.maintenanceId});
+          else this.$message.error("对不起，您的权限不足")
         }
       },
     },
