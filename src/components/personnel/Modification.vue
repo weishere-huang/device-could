@@ -62,7 +62,7 @@
             </el-col>
             <el-col :span="11">
               <el-form-item label="组织单位：" style="height:39px;">
-                <span style="display:inline-block;width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" :title="persnneladd.organizationName">{{persnneladd.organizationName}}</span>
+                <span style="display:inline-block;width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{persnneladd.organizationName}}</span>
                 <el-button
                   size="mini"
                   type="primary"
@@ -86,7 +86,6 @@
                         change-on-select
                         :show-all-levels="false"
                         v-model="qqqqq"
-                        @change="handleChange"
                         style="width:100%;padding:1px;margin-bottom:10px;"
                       ></el-cascader>
                     </el-col>
@@ -272,15 +271,13 @@
       };
     },
     methods: {
-      orgsave(){
-        this.dialogVisible3 = false ;
-      },
-      handleChange(value) {
+      orgsave(value){
         let name = this.$refs["getName"].currentLabels;
         name = name[name.length - 1];
         let id = value[value.length - 1];
         this.persnneladd.organizeCode = id;
         this.persnneladd.organizationName = name;
+        this.dialogVisible3 = false ;
       },
       path(){
         return this.global.apiImg;
@@ -576,9 +573,10 @@
         },
         this
       ).then(response => {
-         response.data.data.map((item)=>{
-           item.id==this.persnneladd.roleId ? "":this.role.push(item);
-         });
+          this.role = response.data.data;
+          this.role.push(item=>{
+            item.id === this.persnneladd.roleId ? null:{id:this.persnneladd.roleId,name:this.persnneladd.roleName};
+          });
         },
         ({type, info}) => {
 
@@ -603,7 +601,7 @@
         padding-left: 10px;
         height: 60px;
         line-height: 60px;
-          border: 1px solid @Info;
+        border: 1px solid @Info;
         border-radius: 5px;
       }
       .botton {
@@ -694,5 +692,5 @@
   .el-dialog__header .el-dialog__headerbtn{
     // top: 1px !important;
   }
-  
+
 </style>

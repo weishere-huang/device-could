@@ -122,7 +122,7 @@
     </el-dialog>
     <!--工单查看弹窗-->
     <el-dialog
-      title="人员列表"
+      :title="planName"
       :visible.sync="workIsShow"
       width="50%"
     >
@@ -134,6 +134,7 @@
           style="width:100%;"
           :columns="workInfoTable"
           :table-data="workInfoDate"
+          @on-custom-comp="lookWork"
           row-hover-color="#eee"
           row-click-color="#edf7ff"
           :row-height=35
@@ -151,6 +152,7 @@
     inject: ["reload"],
     data() {
       return {
+        planName:"",
         workIsShow:false,
         isHideList: this.$route.params.id !== undefined
           ? true
@@ -318,7 +320,8 @@
             columnAlign: "center",
             isResize: true,
             overflowTitle: true
-          },{
+          },
+          {
             field: "state",
             title: "状态",
             width: 60,
@@ -339,6 +342,16 @@
               if(rowData.state ===13 )return `<span style="color: #999999">已完成</span>`;
               if(rowData.state ===15 )return `<span style="color: #00b400">待处理</span>`;
             }
+          },
+          {
+            field: "id",
+            title: "操作",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            overflowTitle: true,
+            componentName: "table-lookWorkInfoS"
           }
         ],
         workInfoDate:[],
@@ -347,6 +360,11 @@
     methods: {
       test(){
         alert("OK");
+      },
+      lookWork(params){
+        if(params.type === "lookWorkList"){
+          this.goWorkInfo(params.rowData.id);
+        }
       },
       customCompFunc(params) {
         if (params.type === "delete") {
@@ -363,6 +381,7 @@
           params.rowData.state===0 ? this.outerVisible = true : this.$message.error('对不起、只能操作待审核的计划')
         }else if(params.type === "work"){
           this.workIsShow = true;
+          this.planName = "“"+params.rowData.planName+"”计划的关联工单";
           this.workInfoLoad(params.rowData.id);
         }
       },
@@ -435,6 +454,9 @@
             }
           });
         }
+      },
+      goWorkInfo(value){
+        this.$router.push({path:"WorkOrder/UpkeepAndTurnaroundPlans/" + value});
       },
 
       load() {
@@ -645,6 +667,35 @@
       }
     },
   };
+  Vue.component("table-lookWorkInfoS", {
+    template: `<span>
+        <el-tooltip class="item" effect="dark" content="修改" placement="top">
+            <permission-button permCode='work_list_detail_lookup.work_list_detail_save||work_list_detail_lookup.work_list_detail_audit'
+                     banType='disable' type="text"
+                     style="text-decoration: none;color:#409eff;margin-left: -2px">
+                     <i @click.stop.prevent="lookWorkInfo(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+            </permission-button>
+        </el-tooltip>
+        </span>`,
+    props: {
+      rowData: {
+        type: Object
+      },
+      field: {
+        type: String
+      },
+      index: {
+        type: Number
+      }
+    },
+    methods: {
+      lookWorkInfo() {
+        // 参数根据业务场景随意构造
+        let params = { type: "lookWorkList", index: this.index, rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      },
+    }
+  });
   Vue.component("table-turnaroundPlans", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="修改" placement="top">

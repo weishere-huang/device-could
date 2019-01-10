@@ -358,7 +358,7 @@
         );
       },
       deleteEmployee() {
-        this.$confirm('此操作将删除该角色,是否继续?', '提示')
+        this.$confirm('你确定要删除该员工吗？', '提示')
           .then(_=>{
             this.userIds ==JSON.parse(localStorage.getItem("user")).employeeId ?
               this.$message.error("对不起,不能删除当前登录用户"):this.toDeleteEmployee();
