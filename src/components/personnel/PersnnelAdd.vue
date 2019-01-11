@@ -65,6 +65,7 @@
                   ref="getName"
                   change-on-select
                   :show-all-levels="false"
+                  :title="persnneladd.organizationName"
                   v-model="ogrname"
                   @change="handleChange"
                   style="width:100%"

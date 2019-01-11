@@ -217,7 +217,7 @@
       </div>
       <div class="frequent-contacts">
         <h5>常用联系人</h5>
-        <ul>
+        <!-- <ul>
           <li>
             <span>IT服务热线1：</span>
             <span>12230</span>
@@ -242,7 +242,8 @@
             <span>桌面维护：</span>
             <span>12580</span>
           </li>
-        </ul>
+        </ul> -->
+        <div v-html="a_content"></div>
       </div>
     </div>
   </div>
@@ -275,7 +276,8 @@ export default {
         normal: 0,
       },
       //消息
-      massgageData: []
+      massgageData: [],
+      a_content:'',
     };
   },
   methods: {
@@ -441,6 +443,23 @@ export default {
         },
         () => {}
       );
+    },
+    findLinkMan() {
+      this.Axios(
+        {
+          params: {},
+          url: "/workbench/findLinkMan",
+          type: "get",
+          option: {}
+        },
+        this
+      ).then(
+        result => {
+          console.log(result.data.data);
+          this.a_content=result.data.data[0].content
+        },
+        ({ type, info }) => {}
+      );
     }
   },
   created() {
@@ -450,6 +469,7 @@ export default {
     this.getdeviceData();
     this.allNotReadMsg();
     this.getRoleAndPermissionInfo();
+    this.findLinkMan();
   },
   watch: {}
 };
@@ -762,18 +782,20 @@ export default {
       height: 190px;
       margin-top: 10px;
       overflow: scroll;
-      ul {
+      div {
         margin-top: 10px;
+        padding-left:5px;
+        line-height: 20px; 
         
-        li {
-          list-style-type: none;
-          height: 20px;
-          line-height: 20px;
-          padding: 0 10px;
-          span:nth-child(1) {
-            margin-right: 10px;
-          }
-        }
+        // li {
+        //   list-style-type: none;
+        //   height: 20px;
+        //   line-height: 20px;
+        //   padding: 0 10px;
+        //   span:nth-child(1) {
+        //     margin-right: 10px;
+        //   }
+        // }
       }
     }
   }
