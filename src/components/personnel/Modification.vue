@@ -61,7 +61,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="组织单位：" style="height:39px;">
+              <el-form-item label="组织单位：" style="height:38px;">
                 <span style="display:inline-block;width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{persnneladd.organizationName}}</span>
                 <el-button
                   size="mini"

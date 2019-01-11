@@ -134,12 +134,12 @@ export default [{
         route: "/Breakdown",
         permissionCode: 'operation_fault_lookup',
       },
-      // {
-      //   menu: '故障上报',
-      //   route: "/Reported",
-      //   defaultDock: true,
-      //   permissionCode: 'operation_overhaul_lookup'
-      // },
+      {
+        menu: '故障上报',
+        route: "/Reported",
+        defaultDock: true,
+        permissionCode: 'operation_overhaul_lookup'
+      },
       {
         menu: '设备故障详情',
         routeReg: /^\/Breakdown\/BreakDetails\/\d{1,}$/i,
@@ -213,23 +213,23 @@ export default [{
         route: "/SparePartsWarehouse",
         permissionCode: 'part_warehouse_lookup'
       },
-      // {
-      //   menu: '备件出库',
-      //   route: "/Output",
-      //   defaultDock: true,
-      //   permissionCode: 'part_warehouse_lookup'
-      // },
+      {
+        menu: '备件出库',
+        route: "/Output",
+        defaultDock: true,
+        permissionCode: 'part_warehouse_lookup'
+      },
       {
         menu: '入库明细',
         route: "/WarehousingDetail",
         permissionCode: 'part_warehouseInfo_lookup'
       },
-      // {
-      //   menu: '出库明细',
-      //   route: "/OutboundDetails",
-      //   defaultDock: true,
-      //   permissionCode: 'part_warehouseInfo_lookup'
-      // }
+      {
+        menu: '出库明细',
+        route: "/OutboundDetails",
+        defaultDock: true,
+        permissionCode: 'part_warehouseInfo_lookup'
+      }
     ]
   },
   {
@@ -282,29 +282,29 @@ export default [{
       permissionCode: 'role_lookup'
     }]
   },
-  // {
-  //   menu: '系统管理',
-  //   permissionCode: 'sys',
-  //   icon: '&#xe60a;',
-  //   // defaultDock: true,
-  //   subMenu: [{
-  //       menu: '常用联系人',
-  //       route: "/FrequentContacts",
-  //       // defaultDock: true,
-  //       permissionCode: 'system_user_lookup'
-  //     },
-    
-  //   ]
-  // },
   {
-    menu: '平台管理',
+    menu: '系统管理',
     permissionCode: 'sys',
     icon: '&#xe60a;',
-    // defaultDock: true,
+    defaultDock: true,
+    subMenu: [{
+        menu: '常用联系人',
+        route: "/FrequentContacts",
+        defaultDock: true,
+        permissionCode: 'system_user_lookup'
+      },
+    
+    ]
+  },
+  {
+    menu: '平台管理',
+    permissionCode: 'platform',
+    icon: '&#xe60a;',
+    defaultDock: true,
     subMenu: [{
         menu: '用户管理',
         route: "/User",
-        // defaultDock: true,
+        defaultDock: true,
         permissionCode: 'system_user_lookup'
       },
       {

@@ -302,7 +302,7 @@
         width="600"
         center
         append-to-body>
-        <div style="height:600px;width:100%;overflow:scroll" id="deal-content" v-html="deal.content">
+        <div style="height:600px;width:100%;overflow:scroll;font-size:12px;line-height:20px;" id="deal-content" v-html="deal.content">
 
         </div>
         <span slot="footer" class="dialog-footer">

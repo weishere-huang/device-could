@@ -234,7 +234,6 @@
             <span>桌面维护：</span>
             <span>12580</span>
           </li>
-          
         </ul>
       </div>
     </div>
@@ -774,11 +773,13 @@ export default {
     width: 90%;
   }
   .role-parent {
+    font-size: 12px;
     display: inline-block;
     text-align: right;
     width: 150px;
   }
   .role-child {
+    font-size: 12px;
     display: inline-block;
     width: 495px;
     vertical-align: top;

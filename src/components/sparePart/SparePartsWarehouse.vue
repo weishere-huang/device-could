@@ -55,7 +55,7 @@
             </el-form-item>
           </el-form>
           <el-cascader
-            placeholder="请选择..."
+            placeholder="请选择"
             :options="ctgoptions"
             filterable
             ref="getName2"
