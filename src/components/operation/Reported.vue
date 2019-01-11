@@ -6,7 +6,7 @@
         @click="faultAdd"
         type="primary">
         <i style='font-size:12px'
-          class='iconfont'
+           class='iconfont'
         >&#xe645;</i>&nbsp;保存</permission-button>
     </div>
     <div class="bottom">
@@ -46,6 +46,8 @@
           <el-form-item label="发现时间：">
             <el-date-picker
               v-model="time"
+              format="yyyy/MM/dd HH:mm:ss"
+              value-format="yyyy/MM/dd HH:mm:ss"
               type="datetime"
               placeholder="选择日期时间"
             >
@@ -96,9 +98,9 @@
             type="primary"
             @click="amendPlanShow=true"
           ><i
-              style='font-size:12px'
-              class='iconfont'
-            >&#xe62f;</i>&nbsp;设备添加
+            style='font-size:12px'
+            class='iconfont'
+          >&#xe62f;</i>&nbsp;设备添加
           </permission-button>
           <el-dialog
             title="添加设备"
@@ -154,326 +156,345 @@
   </div>
 </template>
 <script>
-import amendPlan from "./upkeep/AmendPlan";
-import Vue from "vue";
-Vue.component("table-reported", {
-  template: `<span>
+  import amendPlan from "./upkeep/AmendPlan";
+  import Vue from "vue";
+  Vue.component("table-reported", {
+    template: `<span>
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
             <i style='font-size:16px;cursor:pointer;color:#409eff;' class='iconfont'  @click.stop.prevent="add(rowData,index)">&#xe734;</i>
         </el-tooltip>
 
         </span>`,
-  props: {
-    rowData: {
-      type: Object
+    props: {
+      rowData: {
+        type: Object
+      },
+      field: {
+        type: String
+      },
+      index: {
+        type: Number
+      }
     },
-    field: {
-      type: String
-    },
-    index: {
-      type: Number
+    methods: {
+      add() {
+        let params = { type: "add", index: this.index, rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      }
     }
-  },
-  methods: {
-    add() {
-      let params = { type: "add", index: this.index, rowData: this.rowData };
-      this.$emit("on-custom-comp", params);
-    }
-  }
-});
-export default {
-  inject: ["reload"],
-  data() {
-    return {
-      time:"",
-      person: false,
-      personTable: [
-        {
-          field: "workTypeName",
-          title: "职责",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "name",
-          title: "姓名",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "phone",
-          title: "手机号",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "organizeName",
-          title: "组织单位/部门",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        },
-        {
-          field: "position",
-          title: "岗位",
-          width: 60,
-          titleAlign: "center",
-          columnAlign: "left",
-          isResize: true
-        }
-      ],
-      personData: [],
-      amendPlanShow: false,
-      scope: [
-        {
-          value: 0,
-          label: "停机"
-        },
-        {
-          value: 1,
-          label: "生产波动"
-        },
-        {
-          value: 2,
-          label: "设备本体"
-        },
-        {
-          value: 3,
-          label: "其他"
-        }
-      ],
-      scopeValue:0,
-      grade: [
-        {
-          value: 0,
-          label: "低"
-        },
-        {
-          value: 1,
-          label: "中"
-        },
-        {
-          value: 2,
-          label: "高"
-        }
-      ],
-      gradeValue:0,
-      breakDesc:"",
-      breakInfo:"",
-      img:"",
-      deviceId:"",
-      dialogImageUrl: "",
-      dialogVisible: false,
-      columns: [
-        {
-          field: "deviceNo",
-          title: "设备编号",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-          // orderBy: ""
-        },
+  });
+  export default {
+    inject: ["reload"],
+    data() {
+      return {
+        time:new Date().toLocaleString().replace(/[\u4e00-\u9fa5]/g, ""),
+        person: false,
+        personTable: [
+          {
+            field: "workTypeName",
+            title: "职责",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "name",
+            title: "姓名",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "phone",
+            title: "手机号",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "organizeName",
+            title: "组织单位/部门",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "position",
+            title: "岗位",
+            width: 60,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          }
+        ],
+        personData: [],
+        amendPlanShow: false,
+        scope: [
+          {
+            value: 0,
+            label: "停机"
+          },
+          {
+            value: 1,
+            label: "生产波动"
+          },
+          {
+            value: 2,
+            label: "设备本体"
+          },
+          {
+            value: 3,
+            label: "其他"
+          }
+        ],
+        scopeValue:0,
+        grade: [
+          {
+            value: 1,
+            label: "低"
+          },
+          {
+            value: 2,
+            label: "中"
+          },
+          {
+            value: 3,
+            label: "高"
+          }
+        ],
+        gradeValue:1,
+        breakDesc:"",
+        breakInfo:"",
+        img:[],
+        imgPath:"",
+        deviceId:"",
+        dialogImageUrl: "",
+        dialogVisible: false,
+        columns: [
+          {
+            field: "deviceNo",
+            title: "设备编号",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+            // orderBy: ""
+          },
 
-        {
-          field: "deviceName",
-          title: "设备名称",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "deviceModel",
-          title: "型号/规格",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "location",
-          title: "设备位置",
-          width: 90,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "workerNames",
-          title: "人员",
-          width: 40,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true,
-          componentName: "table-reported"
+          {
+            field: "deviceName",
+            title: "设备名称",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "deviceModel",
+            title: "型号/规格",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "location",
+            title: "设备位置",
+            width: 90,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "workerNames",
+            title: "人员",
+            width: 40,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            componentName: "table-reported"
+          }
+        ],
+        tableData: []
+      };
+    },
+    methods: {
+      path(){
+        return this.global.apiImg;
+      },
+      isHide(params) {
+        this.amendPlanShow = params;
+      },
+      toAdd(params) {
+        if(params.values.length>1){
+          this.$message.error("对不起，故障上报只能单个设备")
+        }else{
+          params.values.map(item=>{this.tableData.push(item);this.deviceId = item.id});
         }
-      ],
-      tableData: []
-    };
-  },
-  methods: {
-    path(){
-      return this.global.apiImg;
-    },
-    isHide(params) {
-      this.amendPlanShow = params;
-    },
-    toAdd(params) {
-      this.tableData = params.values;
-      this.amendPlanShow = params.isOk;
-      let deviceId = this.tableData.map(item=>{return item.id});
-      this.deviceId = deviceId.toString();
-    },
-    findByDeviceId(deviceId) {
-      this.Axios(
-        {
-          params: { deviceId: deviceId },
-          type: "get",
-          url: "/device/findDeviceWorker",
-          option: { enableMsg: false }
-        },
-        this
-      ).then(
-        response => {
-          this.personData = response.data.data;
-        },
-        ({ type, info }) => {}
-      );
-    },
-    customCompFunc(params) {
-      if (params.type === "add") {
-        this.findByDeviceId(params.rowData.id);
-        this.person = true;
-      }
-    },
-    handleAvatarSuccess(res, file) {
-      this.$message.success('图片成功上传');
-      console.log(file.response);
-      this.dialogImageUrl= file.response.data;
-      console.log(this.dialogImageUrl);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isPNG = file.type === 'image/png';
-      const isLt1M = file.size / 1024 / 1024 < 1;
+        this.amendPlanShow = params.isOk;
+      },
+      findByDeviceId(deviceId) {
+        this.Axios(
+          {
+            params: { deviceId: deviceId },
+            type: "get",
+            url: "/device/findDeviceWorker",
+            option: { enableMsg: false }
+          },
+          this
+        ).then(
+          response => {
+            this.personData = response.data.data;
+          },
+          ({ type, info }) => {}
+        );
+      },
+      customCompFunc(params) {
+        if (params.type === "add") {
+          this.findByDeviceId(params.rowData.id);
+          this.person = true;
+        }
+      },
+      handleAvatarSuccess(res, file) {
+        this.$message.success('图片成功上传');
+        this.dialogImageUrl= file.response.data;
+        this.img.push(this.dialogImageUrl);
+        this.imgPath = this.img.toString();
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isPNG = file.type === 'image/png';
+        const isLt1M = file.size / 1024 / 1024 < 1;
 
-      let isOk = true;
-      if (!(isJPG || isPNG)) {
-        this.$message.error('上传图片只能是 JPG/PNG 格式!');
-        isOk = false;
-      }
-      if (!isLt1M) {
-        this.$message.error('上传图片大小不能超过 1MB!');
-      }
-      return isOk && isLt1M ;
+        let isOk = true;
+        if (!(isJPG || isPNG)) {
+          this.$message.error('上传图片只能是 JPG/PNG 格式!');
+          isOk = false;
+        }
+        if (!isLt1M) {
+          this.$message.error('上传图片大小不能超过 1MB!');
+        }
+        return isOk && isLt1M ;
+      },
+      handleRemove(file, fileList) {
+        let img = [];
+        fileList.map(item=>{img.push(item.response.data)});
+        this.imgPath = img.toString();
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      },
+      faultValue(){
+        if(this.deviceId==="")this.$message.error("请选择相关设备");
+        else if(this.scopeValue==="")this.$message.error("请至少选择影响范围");
+        else if(this.gradeValue==="")this.$message.error("请至少选择故障等级");
+        else if(this.time==="")this.$message.error("请至少选择故障开始时间");
+        else if(this.breakDesc==="")this.$message.error("请填写故障描述");
+        else if(this.breakInfo==="")this.$message.error("请填写故障描述");
+        else if(this.imgPath==="")this.$message.error("请上传至少一张故障相关图片");
+        else return true;
+      },
+      faultAdd(){
+        this.faultValue()? this.toFaultAdd():"";
+      },
+      toFaultAdd(){
+        let qs = require("qs");
+        let data = qs.stringify({
+          deviceId:this.deviceId,
+          faultLevel:this.gradeValue,
+          incidence:this.scopeValue,
+          discoveryTime:this.time,
+          faultDesc:this.breakDesc,
+          causeAnalysis:this.breakInfo,
+          faultSource:0,
+          img:this.imgPath,
+        });
+        this.Axios(
+          {
+            params:data,
+            type: "post",
+            url: "/fault/add",
+            option:{successMsg:"上报成功"}
+          },
+          this
+        ).then(response => {
+            this.Breakdown();
+          },
+          ({type, info}) => {
+
+          })
+      },
+      Breakdown() {
+        this.$router.push({
+          path: "/Breakdown"
+        });
+        this.$store.commit("turnaroundPlans","y")
+      },
     },
-    handleRemove(file, fileList) {
-      let img = [];
-      fileList.map(item=>{img.push(item.response.data)});
-      console.log(img.toString());
-    },
-    handlePictureCardPreview(file) {
-      console.log(file);
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
-    faultAdd(){
-      let employee = JSON.parse(localStorage.getItem("user"));
-      let qs = require("qs");
-      let data = qs.stringify({
-        deviceId:this.deviceId,
-        faultLevel:this.gradeValue,
-        incidence:this.scopeValue,
-        discoveryId:employee.employeeId,
-        discovery:employee.employeeName,
-        discoveryTime:time,
-        faultDesc:this.breakDesc,
-        causeAnalysis:this.breakInfo,
-        img:this.img,
-        faultSource:0,
+    created() {
+      EventBus.$on("sideBarTroggleHandle", isCollapse => {
+        window.setTimeout(() => {
+          this.$refs.ReportedTable.resize();
+        }, 500);
       });
-      this.Axios(
-        {
-          params:data,
-          type: "post",
-          url: "/fault/add",
-          option:{successMsg:"上报成功"}
-        },
-        this
-      ).then(response => {
-        },
-        ({type, info}) => {
-
-        })
     },
-  },
-  created() {
-    EventBus.$on("sideBarTroggleHandle", isCollapse => {
-      window.setTimeout(() => {
-        this.$refs.ReportedTable.resize();
-      }, 500);
-    });
-  },
-  components: {
-    amendPlan
-  }
-};
+    components: {
+      amendPlan
+    }
+  };
 </script>
 
 <style lang="less">
-@blue: #409eff;
-@Success: #67c23a;
-@Warning: #e6a23c;
-@Danger: #f56c6c;
-@Info: #dde2eb;
-@border: 1px solid #dde2eb;
-.Reported {
-  width: 100%;
-  .top {
+  @blue: #409eff;
+  @Success: #67c23a;
+  @Warning: #e6a23c;
+  @Danger: #f56c6c;
+  @Info: #dde2eb;
+  @border: 1px solid #dde2eb;
+  .Reported {
     width: 100%;
-    padding: 10px;
-    border: @border;
-    border-radius: 5px;
-  }
-  .bottom {
-    width: 100%;
-    padding: 10px;
-    border: @border;
-    border-radius: 5px;
-    margin-top: 10px;
-    overflow: hidden;
-    .fault-details {
+    .top {
+      width: 100%;
+      padding: 10px;
       border: @border;
       border-radius: 5px;
-      width: 35%;
-      height: 420px;
-      min-width: 300px;
-      float: left;
-      padding: 10px;
     }
-    .list {
+    .bottom {
+      width: 100%;
+      padding: 10px;
       border: @border;
       border-radius: 5px;
-      width: 60%;
-      height: 420px;
-      min-width: 600px;
-      float: left;
-      margin-left: 10px;
-      padding: 10px;
-    }
-    h5 {
-      position: relative;
-      top: -17px;
-      left: 15px;
+      margin-top: 10px;
+      overflow: hidden;
+      .fault-details {
+        border: @border;
+        border-radius: 5px;
+        width: 35%;
+        height: 420px;
+        min-width: 300px;
+        float: left;
+        padding: 10px;
+      }
+      .list {
+        border: @border;
+        border-radius: 5px;
+        width: 60%;
+        height: 420px;
+        min-width: 600px;
+        float: left;
+        margin-left: 10px;
+        padding: 10px;
+      }
+      h5 {
+        position: relative;
+        top: -17px;
+        left: 15px;
+      }
     }
   }
-}
 </style>

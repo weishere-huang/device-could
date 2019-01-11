@@ -4,12 +4,12 @@
       <div class="top">
         <permission-button
           permCode='role_lookup.role_add'
-          banType='hide'
+          banType='disable'
           size="small" type="primary" @click="dialogFormVisible=true">
           <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加角色</permission-button>
         <permission-button
           permCode='role_lookup.role_edit'
-          banType='hide'
+          banType='disable'
           size="small" type="primary" @click="getCheckedKeys">
           <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</permission-button>
       </div>

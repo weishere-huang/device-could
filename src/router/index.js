@@ -332,18 +332,18 @@ const router = new Router({
         meta: {
           requireAuth: true
         },
-      }, ]
-    },
-    {
-      path: '/Reported',
-      name: 'Reported',
-      component: Reported,
-      props: {
-        pageName: '故障上报'
       },
-      meta: {
-        requireAuth: true
-      },
+        {
+          path: 'Reported',
+          name: 'Reported',
+          component: Reported,
+          props: {
+            pageName: '故障上报'
+          },
+          meta: {
+            requireAuth: true
+          },
+        },]
     },
     {
       path: '/TurnaroundPlans',
