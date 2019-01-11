@@ -55,7 +55,6 @@
           </div>
         </div>
       </div>
-      
     </div>
     <el-dialog title="角色添加" :visible.sync="dialogFormVisible" width="30%" :beforeClose="toCancel">
       <el-form :model="form" style="padding:10px 20px;" label-width="70px">
@@ -184,16 +183,18 @@
           this
         ).then(
           response => {
+            let roleName = JSON.parse(localStorage.getItem("user")).roleName;
             this.role = response.data.data;
             this.role.forEach(item=>{
-              item.name===JSON.parse(localStorage.getItem("user")).roleName ?
+              item.name === roleName?
                 this.listPermissionByRoleId(item.id):"";
             });
             this.PermissionsList();
+            this.role.map((item,index)=>{
+              item.name === roleName ? this.active = index : null;
+            })
           },
-          ({type, info}) => {
-
-          })
+          ({type, info}) => {})
       },
       update(){
         let qs = require("qs");
