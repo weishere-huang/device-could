@@ -69,7 +69,7 @@
           </ul>
         </div>
       </div>
-      <div class="quick-entry">
+      <!-- <div class="quick-entry">
         <div class="top">
           <h5>快捷入口</h5>
           <span class="addIcon">
@@ -92,7 +92,7 @@
           >{{item}}
           </li>
         </ul>
-      </div>
+      </div> -->
       <div class="device-operation-Status">
         <div class="left">
           <h5>设备运行状态</h5>
@@ -234,18 +234,7 @@
             <span>桌面维护：</span>
             <span>12580</span>
           </li>
-          <li>
-            <span>IT服务QQ群：</span>
-            <span>892596095</span>
-          </li>
-          <li>
-            <span>投诉电话：</span>
-            <span>99553</span>
-          </li>
-          <li>
-            <span>技术支持：</span>
-            <span>13547911497</span>
-          </li>
+          
         </ul>
       </div>
     </div>
@@ -716,7 +705,7 @@ export default {
     .message-notification {
       .case-style;
       margin-top: 10px;
-      height: 300px;
+      height: 200px;
       .top {
         span:nth-child(2) {
           float: right;
@@ -728,7 +717,7 @@ export default {
       }
       .message-details {
         border: @border;
-        height: 256px;
+        height: 156px;
         margin-top: 10px;
         overflow: scroll;
         li {
@@ -763,10 +752,12 @@ export default {
     }
     .frequent-contacts {
       .case-style;
-      height: 270px;
+      height: 190px;
       margin-top: 10px;
+      overflow: scroll;
       ul {
         margin-top: 10px;
+        
         li {
           list-style-type: none;
           height: 20px;
