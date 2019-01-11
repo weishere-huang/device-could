@@ -422,7 +422,7 @@
         this.companyName.frequencyType = this.companyName.frequencyType.toString();
         this.date = this.companyName.executeTime.split(" ")[0];
         this.times = this.companyName.executeTime.split(" ")[1].split(".")[0];
-        this.companyName.state ===0 ? this.isOk = true : this.isOk = false;
+        this.companyName.state === 0 ? this.isOk = true : this.isOk = false;
       },
 
       TurnaroundPlans() {

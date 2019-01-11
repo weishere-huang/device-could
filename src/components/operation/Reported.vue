@@ -15,7 +15,7 @@
         <el-form label-width="90px">
           <el-form-item label="影响范围：">
             <el-select
-              v-model="value"
+              v-model="scopeValue"
               placeholder="请选择"
               size="small"
             >
@@ -30,7 +30,7 @@
           </el-form-item>
           <el-form-item label="故障等级：">
             <el-select
-              v-model="value"
+              v-model="gradeValue"
               placeholder="请选择"
               size="small"
             >
@@ -43,8 +43,17 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="发现时间：">
+            <el-date-picker
+              v-model="time"
+              type="datetime"
+              placeholder="选择日期时间"
+            >
+            </el-date-picker>
+          </el-form-item>
           <el-form-item label="故障描述：">
             <el-input
+              v-model="breakDesc"
               type="textarea"
               :rows="2"
               placeholder="请输入内容"
@@ -53,6 +62,7 @@
           </el-form-item>
           <el-form-item label="原因分析：">
             <el-input
+              v-model="breakInfo"
               type="textarea"
               :rows="2"
               placeholder="请输入内容"
@@ -62,6 +72,7 @@
           <el-form-item label="照片：">
             <el-upload
               :action="path()"
+              multiple
               accept="image/jpeg,image/png"
               list-type="picture-card"
               :on-success="handleAvatarSuccess"
@@ -174,6 +185,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      time:"",
       person: false,
       personTable: [
         {
@@ -237,6 +249,7 @@ export default {
           label: "其他"
         }
       ],
+      scopeValue:0,
       grade: [
         {
           value: 0,
@@ -251,6 +264,11 @@ export default {
           label: "高"
         }
       ],
+      gradeValue:0,
+      breakDesc:"",
+      breakInfo:"",
+      img:"",
+      deviceId:"",
       dialogImageUrl: "",
       dialogVisible: false,
       columns: [
@@ -306,13 +324,13 @@ export default {
       return this.global.apiImg;
     },
     isHide(params) {
-      console.log("isHide:"+params);
       this.amendPlanShow = params;
     },
     toAdd(params) {
-      console.log("toAdd:"+params);
       this.tableData = params.values;
       this.amendPlanShow = params.isOk;
+      let deviceId = this.tableData.map(item=>{return item.id});
+      this.deviceId = deviceId.toString();
     },
     findByDeviceId(deviceId) {
       this.Axios(
@@ -368,7 +386,33 @@ export default {
       this.dialogVisible = true;
     },
     faultAdd(){
+      let employee = JSON.parse(localStorage.getItem("user"));
+      let qs = require("qs");
+      let data = qs.stringify({
+        deviceId:this.deviceId,
+        faultLevel:this.gradeValue,
+        incidence:this.scopeValue,
+        discoveryId:employee.employeeId,
+        discovery:employee.employeeName,
+        discoveryTime:time,
+        faultDesc:this.breakDesc,
+        causeAnalysis:this.breakInfo,
+        img:this.img,
+        faultSource:0,
+      });
+      this.Axios(
+        {
+          params:data,
+          type: "post",
+          url: "/fault/add",
+          option:{successMsg:"上报成功"}
+        },
+        this
+      ).then(response => {
+        },
+        ({type, info}) => {
 
+        })
     },
   },
   created() {
