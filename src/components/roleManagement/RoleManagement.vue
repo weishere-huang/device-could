@@ -55,7 +55,6 @@
           </div>
         </div>
       </div>
-      
     </div>
     <el-dialog title="角色添加" :visible.sync="dialogFormVisible" width="30%" :beforeClose="toCancel">
       <el-form :model="form" style="padding:10px 20px;" label-width="70px">
