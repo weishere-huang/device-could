@@ -736,7 +736,7 @@
               // console.log(this.$store.state.token.tokenNub);
               // console.log(this.$store.state.token.userMsg);
               this.$router.replace("/Home");
-              location.reload();
+              // location.reload();
             }
           },
           ({type, info}) => {
@@ -1148,9 +1148,7 @@
     .el-dialog__header {
       height: 30px;
     }
-    .el-dialog__headerbtn {
-      top: 6px;
-    }
+   
   }
   .el-dialog__body {
     font-size: 0px;

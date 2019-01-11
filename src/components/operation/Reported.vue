@@ -410,7 +410,7 @@ export default {
       border: @border;
       border-radius: 5px;
       width: 35%;
-      height: 420px;
+      min-height: 420px;
       min-width: 300px;
       float: left;
       padding: 10px;

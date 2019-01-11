@@ -683,8 +683,6 @@
       line-height:39px;
     }
   }
-  .el-dialog__header .el-dialog__headerbtn{
-    // top: 1px !important;
-  }
+  
 
 </style>

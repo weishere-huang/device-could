@@ -186,7 +186,7 @@ body {
   font-size: 16px !important;
 }
 .el-dialog__header .el-dialog__headerbtn {
-  top: 11px;
+  top: 11px !important;
 }
 .el-dialog__body {
   line-height: 0px;
