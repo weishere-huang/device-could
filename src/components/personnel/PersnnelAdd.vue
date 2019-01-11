@@ -634,7 +634,7 @@
   }
  
   .el-dialog__body{
-    font-size: 0px !important;
+    font-size: 0px;
     line-height: 0px;
   }
 </style>

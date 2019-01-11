@@ -48,7 +48,7 @@
           <div class="top">
             <h5>设备数据</h5>
             <i
-              style='font-size:16px'
+              style='font-size:14px'
               class='iconfont'
               @click="reload"
             >&#xe614;</i>
@@ -475,6 +475,10 @@ export default {
 }
 
 .home {
+  h5{
+    width: 100px;
+    display: inline-block;
+  }
   overflow: hidden;
   font-size: 12px;
   .left {
@@ -534,6 +538,7 @@ export default {
       .equipment-data {
         .top {
           padding-right: 10px;
+          line-height: 16px;
           i {
             float: right;
             display: none;

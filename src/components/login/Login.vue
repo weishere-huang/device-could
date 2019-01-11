@@ -54,6 +54,7 @@
         <el-input
           placeholder="短信验证码"
           v-model="loginList.verification"
+          @keyup.enter.native="login"
           style="width:60%"
         >
         </el-input>
