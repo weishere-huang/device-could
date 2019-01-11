@@ -55,15 +55,19 @@
           </div>
           <ul class="case">
             <li title="设备总数">
-              <p style="color:#409eff">{{deviceData.AllDevice}}</p>
+              <p style="color:#409eff" v-if="deviceData.AllDevice>0">{{deviceData.AllDevice}}</p>
+              <p style="color:#dde2eb" v-else>0</p>
               <p>设备总数</p>
             </li>
             <li title="正常运行">
-              <p style="color:#67c23a">{{deviceData.normal}}</p>
+              <p style="color:#67c23a" v-if="deviceData.normal>0">{{deviceData.normal}}</p>
+              <p style="color:#dde2eb" v-else>0</p>
+              
               <p>正常运行</p>
             </li>
             <li title="设备故障">
-              <p style="color:#f56c6c">{{deviceData.fault}}</p>
+              <p style="color:#f56c6c" v-if="deviceData.fault>0">{{deviceData.fault}}</p>
+              <p style="color:#dde2eb" v-else>0</p>
               <p>设备故障</p>
             </li>
           </ul>
@@ -160,7 +164,8 @@
               </span>
               <div>
                 <p>预警</p>
-                <p style="font-size:20px;font-weight:600;">{{deviceData.warn}}</p>
+                <p style="font-size:20px;font-weight:600;" v-if="deviceData.warn>0">{{deviceData.warn}}</p>
+                 <p style="color:#dde2eb;font-size:20px;font-weight:600;" v-else>0</p>
               </div>
             </li>
           </ul>
@@ -176,21 +181,24 @@
             @click="$router.push('/Breakdown')"
           >
             <span>故障工单</span>
-            <span>{{worksList.fault}}</span>
+            <span v-if="worksList.fault>0">{{worksList.fault}}</span>
+            <span style="color:#dde2eb" v-else>0</span>
           </li>
           <li
             title="检修工单"
             @click="$router.push('/TurnaroundPlans')"
           >
             <span>检修工单</span>
-            <span>{{worksList.overhaul}}</span>
+            <span v-if="worksList.overhaul>0">{{worksList.overhaul}}</span>
+            <span style="color:#dde2eb" v-else>0</span>
           </li>
           <li
             title="保养工单"
             @click="$router.push('/Upkeep')"
           >
             <span>保养工单</span>
-            <span>{{worksList.maintain}}</span>
+            <span v-if="worksList.maintain>0">{{worksList.maintain}}</span>
+            <span style="color:#dde2eb" v-else>0</span>
           </li>
         </ul>
       </div>
@@ -262,9 +270,9 @@ export default {
         normalPer: 0,
         faultPer: 0,
         maintenancePer: 0,
-        AllDevice: "",
-        fault: "",
-        normal: ""
+        AllDevice: 0,
+        fault: 0,
+        normal: 0,
       },
       //消息
       massgageData: []
