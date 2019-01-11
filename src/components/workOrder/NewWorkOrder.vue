@@ -407,7 +407,7 @@ export default {
       dialogVisible: false,
       columns: [
         {
-          field: "name",
+          field: "deviceNo",
           title: "设备编号",
           width: 80,
           titleAlign: "center",
@@ -417,7 +417,7 @@ export default {
         },
 
         {
-          field: "position",
+          field: "deviceName",
           title: "设备名称",
           width: 80,
           titleAlign: "center",
@@ -425,7 +425,7 @@ export default {
           isResize: true
         },
         {
-          field: "ra",
+          field: "deviceModel",
           title: "型号/规格",
           width: 80,
           titleAlign: "center",
@@ -433,7 +433,7 @@ export default {
           isResize: true
         },
         {
-          field: "phone",
+          field: "location",
           title: "设备位置",
           width: 90,
           titleAlign: "center",
@@ -441,7 +441,7 @@ export default {
           isResize: true
         },
         {
-          field: "details",
+          field: "workerNames",
           title: "人员",
           width: 40,
           titleAlign: "center",
@@ -482,6 +482,7 @@ export default {
         },
       ],
       upkeepValue:'例行保养',
+      deviceId:"",
     };
   },
   methods: {
@@ -491,6 +492,8 @@ export default {
     toAdd(params) {
       this.tableData = params.values;
       this.amendPlanShow = params.isOk;
+      let deviceId = this.tableData.map(item=>{return item.id});
+      this.deviceId = deviceId.toString();
     },
     findByDeviceId(deviceId) {
       this.Axios(
@@ -522,7 +525,6 @@ export default {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-    re() {}
   },
   created() {
     EventBus.$on("sideBarTroggleHandle", isCollapse => {

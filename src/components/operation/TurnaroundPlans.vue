@@ -378,13 +378,14 @@
           );
         }else if (params.type === "submitAudit") {
           this.maintenanceIds = params.rowData.id;
-          params.rowData.state===0 ? this.outerVisible = true : this.$message.error('对不起、只能操作待审核的计划')
+          params.rowData.state===0 ? this.showSubmitAudit() : this.$message.error('对不起、只能操作待审核的计划')
         }else if(params.type === "work"){
           this.workIsShow = true;
           this.planName = "“"+params.rowData.planName+"”计划的关联工单";
           this.workInfoLoad(params.rowData.id);
         }
       },
+
       getPersonnel(params) {
         this.toAudit = params.person;
         this.innerVisible = params.hide;
@@ -409,7 +410,7 @@
           }
         }
         selection.length===1 ?
-          selection[0].state === "待审核" ? this.disabled=false:this.disabled=true:
+          selection[0].state === 0 ? this.disabled=false:this.disabled=true:
           this.disabled = true;
       },
       selectALL(selection) {
@@ -574,6 +575,10 @@
         }
       },
       //审核操作
+      showSubmitAudit(){
+        this.toCancel();
+        this.outerVisible = true
+      },
       submitAudit(){
         if (this.formLabelAlign.radio!==1){
           this.formLabelAlign.type ||this.toAudit !=="" ?
@@ -602,12 +607,11 @@
           this
         ).then(
           response => {
-            this.toCancel();
             this.load();
-
+            this.outerVisible = false
           },
           ({ type, info }) => {
-            this.toCancel()
+            this.outerVisible = false
           }
         );
       },
@@ -622,9 +626,7 @@
         this.formLabelAlign.desc="";
         this.formLabelAlign.type=false;
         this.formLabelAlign.radio="";
-        this.maintenanceIds="";
         this.toAudit="";
-        this.outerVisible = false
       },
       workInfoLoad(value){
         this.Axios(
