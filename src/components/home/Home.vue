@@ -37,7 +37,7 @@
                 v-for="(item,index) in role.permissionInfo "
                 :key="index"
               >
-              <span class="role-parent">{{item.module}}</span>：<span class="role-child">{{item.permissionItem}}</span>
+                <span class="role-parent">{{item.module}}</span>：<span class="role-child">{{item.permissionItem}}</span>
               </li>
             </ul>
           </div>
@@ -204,7 +204,7 @@
             v-for="(item, index) in massgageData"
             :key="index"
             @click="$router.push('/Message')"
-          ><span>{{item.msgTitle}}</span><span>{{item.msgContent}}</span></li>
+          ><span :title="item.msgTitle">{{item.msgTitle}}</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{item.msgContent}}</span></li>
         </ul>
       </div>
       <div class="frequent-contacts">
@@ -475,7 +475,7 @@ export default {
 }
 
 .home {
-  h5{
+  h5 {
     width: 100px;
     display: inline-block;
   }
@@ -492,7 +492,7 @@ export default {
         overflow: scroll;
         padding: 10px;
         li {
-          line-height:24px;
+          line-height: 24px;
           margin-bottom: 4px;
         }
       }
@@ -744,7 +744,19 @@ export default {
             color: #409eff;
           }
           span:nth-child(1) {
-            margin-right: 16px;
+            margin-right: 9%;
+            width: 40%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: inline-block;
+          }
+          span:nth-child(2) {
+            width: 50%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: inline-block;
           }
         }
       }
@@ -770,16 +782,15 @@ export default {
   .el-progress-bar {
     width: 90%;
   }
-  .role-parent{
+  .role-parent {
     display: inline-block;
     text-align: right;
     width: 150px;
   }
-  .role-child{
+  .role-child {
     display: inline-block;
     width: 495px;
-    vertical-align:top;
-    
+    vertical-align: top;
   }
 }
 </style>
