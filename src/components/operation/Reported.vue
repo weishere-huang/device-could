@@ -3,10 +3,9 @@
     <div class="top">
       <permission-button
         size="small"
-        type="primary"
-      >
-        <i
-          style='font-size:12px'
+        @click="faultAdd"
+        type="primary">
+        <i style='font-size:12px'
           class='iconfont'
         >&#xe645;</i>&nbsp;保存</permission-button>
     </div>
@@ -16,7 +15,7 @@
         <el-form label-width="90px">
           <el-form-item label="影响范围：">
             <el-select
-              v-model="value"
+              v-model="scopeValue"
               placeholder="请选择"
               size="small"
             >
@@ -31,7 +30,7 @@
           </el-form-item>
           <el-form-item label="故障等级：">
             <el-select
-              v-model="value"
+              v-model="gradeValue"
               placeholder="请选择"
               size="small"
             >
@@ -44,8 +43,17 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="发现时间：">
+            <el-date-picker
+              v-model="time"
+              type="datetime"
+              placeholder="选择日期时间"
+            >
+            </el-date-picker>
+          </el-form-item>
           <el-form-item label="故障描述：">
             <el-input
+              v-model="breakDesc"
               type="textarea"
               :rows="2"
               placeholder="请输入内容"
@@ -54,6 +62,7 @@
           </el-form-item>
           <el-form-item label="原因分析：">
             <el-input
+              v-model="breakInfo"
               type="textarea"
               :rows="2"
               placeholder="请输入内容"
@@ -62,19 +71,19 @@
           </el-form-item>
           <el-form-item label="照片：">
             <el-upload
-              action="https://jsonplaceholder.typicode.com/posts/"
+              :action="path()"
+              multiple
+              accept="image/jpeg,image/png"
               list-type="picture-card"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
               :on-preview="handlePictureCardPreview"
               :on-remove="handleRemove"
             >
               <i class="el-icon-plus"></i>
             </el-upload>
             <el-dialog :visible.sync="dialogVisible">
-              <img
-                width="100%"
-                :src="dialogImageUrl"
-                alt=""
-              >
+              <img width="100%" :src="dialogImageUrl" alt="">
             </el-dialog>
           </el-form-item>
         </el-form>
@@ -176,6 +185,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      time:"",
       person: false,
       personTable: [
         {
@@ -239,6 +249,7 @@ export default {
           label: "其他"
         }
       ],
+      scopeValue:0,
       grade: [
         {
           value: 0,
@@ -253,11 +264,16 @@ export default {
           label: "高"
         }
       ],
+      gradeValue:0,
+      breakDesc:"",
+      breakInfo:"",
+      img:"",
+      deviceId:"",
       dialogImageUrl: "",
       dialogVisible: false,
       columns: [
         {
-          field: "name",
+          field: "deviceNo",
           title: "设备编号",
           width: 80,
           titleAlign: "center",
@@ -267,7 +283,7 @@ export default {
         },
 
         {
-          field: "position",
+          field: "deviceName",
           title: "设备名称",
           width: 80,
           titleAlign: "center",
@@ -275,7 +291,7 @@ export default {
           isResize: true
         },
         {
-          field: "ra",
+          field: "deviceModel",
           title: "型号/规格",
           width: 80,
           titleAlign: "center",
@@ -283,7 +299,7 @@ export default {
           isResize: true
         },
         {
-          field: "phone",
+          field: "location",
           title: "设备位置",
           width: 90,
           titleAlign: "center",
@@ -291,7 +307,7 @@ export default {
           isResize: true
         },
         {
-          field: "details",
+          field: "workerNames",
           title: "人员",
           width: 40,
           titleAlign: "center",
@@ -300,18 +316,21 @@ export default {
           componentName: "table-reported"
         }
       ],
-      tableData: [
-      
-      ]
+      tableData: []
     };
   },
   methods: {
+    path(){
+      return this.global.apiImg;
+    },
     isHide(params) {
       this.amendPlanShow = params;
     },
     toAdd(params) {
       this.tableData = params.values;
       this.amendPlanShow = params.isOk;
+      let deviceId = this.tableData.map(item=>{return item.id});
+      this.deviceId = deviceId.toString();
     },
     findByDeviceId(deviceId) {
       this.Axios(
@@ -324,7 +343,6 @@ export default {
         this
       ).then(
         response => {
-          // console.log(response.data.data);
           this.personData = response.data.data;
         },
         ({ type, info }) => {}
@@ -336,14 +354,66 @@ export default {
         this.person = true;
       }
     },
+    handleAvatarSuccess(res, file) {
+      this.$message.success('图片成功上传');
+      console.log(file.response);
+      this.dialogImageUrl= file.response.data;
+      console.log(this.dialogImageUrl);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
+      const isLt1M = file.size / 1024 / 1024 < 1;
+
+      let isOk = true;
+      if (!(isJPG || isPNG)) {
+        this.$message.error('上传图片只能是 JPG/PNG 格式!');
+        isOk = false;
+      }
+      if (!isLt1M) {
+        this.$message.error('上传图片大小不能超过 1MB!');
+      }
+      return isOk && isLt1M ;
+    },
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+      let img = [];
+      fileList.map(item=>{img.push(item.response.data)});
+      console.log(img.toString());
     },
     handlePictureCardPreview(file) {
+      console.log(file);
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-    re() {}
+    faultAdd(){
+      let employee = JSON.parse(localStorage.getItem("user"));
+      let qs = require("qs");
+      let data = qs.stringify({
+        deviceId:this.deviceId,
+        faultLevel:this.gradeValue,
+        incidence:this.scopeValue,
+        discoveryId:employee.employeeId,
+        discovery:employee.employeeName,
+        discoveryTime:time,
+        faultDesc:this.breakDesc,
+        causeAnalysis:this.breakInfo,
+        img:this.img,
+        faultSource:0,
+      });
+      this.Axios(
+        {
+          params:data,
+          type: "post",
+          url: "/fault/add",
+          option:{successMsg:"上报成功"}
+        },
+        this
+      ).then(response => {
+        },
+        ({type, info}) => {
+
+        })
+    },
   },
   created() {
     EventBus.$on("sideBarTroggleHandle", isCollapse => {
@@ -384,7 +454,7 @@ export default {
       border: @border;
       border-radius: 5px;
       width: 35%;
-      height: 420px;
+      min-height: 420px;
       min-width: 300px;
       float: left;
       padding: 10px;

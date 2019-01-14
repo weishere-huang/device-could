@@ -594,19 +594,26 @@
   .turnaroundPlansAdd {
     // padding-left: 180px;
     .top {
-      padding: 10px 0px;
+      padding: 10px;
+      border: @border;
+      border-radius: 5px;
     }
     .bottom {
-      padding: 10px 0px;
+      padding: 10px;
+      border: @border;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 10px;
       .left {
         padding: 10px;
         border: @border;
         border-radius: 5px;
         width: 400px;
         float: left;
+        height: 386px;
         h5 {
           position: relative;
-          top: -20px;
+          top: -15px;
           left: 10px;
         }
         .el-form-item {

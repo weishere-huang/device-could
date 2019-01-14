@@ -1,8 +1,8 @@
 @font-face {
-  font-family: 'iconfontz';
+  font-family: 'iconfont';
   /* project id 907587 */
-  src: url('//at.alicdn.com/t/font_907587_6baqdt44cle.eot');
-  src: url('//at.alicdn.com/t/font_907587_6baqdt44cle.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_907587_6baqdt44cle.woff') format('woff'), url('//at.alicdn.com/t/font_907587_6baqdt44cle.ttf') format('truetype'), url('//at.alicdn.com/t/font_907587_6baqdt44cle.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_907587_jd3hiqrk48l.eot');
+  src: url('//at.alicdn.com/t/font_907587_jd3hiqrk48l.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_907587_jd3hiqrk48l.woff2') format('woff2'), url('//at.alicdn.com/t/font_907587_jd3hiqrk48l.woff') format('woff'), url('//at.alicdn.com/t/font_907587_jd3hiqrk48l.ttf') format('truetype'), url('//at.alicdn.com/t/font_907587_jd3hiqrk48l.svg#iconfont') format('svg');
 }
 .iconfontz {
   font-family: "iconfontz" !important;

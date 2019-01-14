@@ -54,6 +54,7 @@
         <el-input
           placeholder="短信验证码"
           v-model="loginList.verification"
+          @keyup.enter.native="login"
           style="width:60%"
         >
         </el-input>
@@ -301,7 +302,7 @@
         width="600"
         center
         append-to-body>
-        <div style="height:600px;width:100%;overflow:scroll" id="deal-content" v-html="deal.content">
+        <div style="height:600px;width:100%;overflow:scroll;font-size:12px;line-height:20px;" id="deal-content" v-html="deal.content">
 
         </div>
         <span slot="footer" class="dialog-footer">
@@ -736,7 +737,7 @@
               // console.log(this.$store.state.token.tokenNub);
               // console.log(this.$store.state.token.userMsg);
               this.$router.replace("/Home");
-              location.reload();
+              // location.reload();
             }
           },
           ({type, info}) => {
@@ -1148,9 +1149,7 @@
     .el-dialog__header {
       height: 30px;
     }
-    .el-dialog__headerbtn {
-      top: 6px;
-    }
+   
   }
   .el-dialog__body {
     font-size: 0px;

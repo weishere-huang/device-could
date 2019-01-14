@@ -37,7 +37,7 @@
                 v-for="(item,index) in role.permissionInfo "
                 :key="index"
               >
-              <span class="role-parent">{{item.module}}</span>：<span class="role-child">{{item.permissionItem}}</span>
+                <span class="role-parent">{{item.module}}</span>：<span class="role-child">{{item.permissionItem}}</span>
               </li>
             </ul>
           </div>
@@ -48,28 +48,32 @@
           <div class="top">
             <h5>设备数据</h5>
             <i
-              style='font-size:16px'
+              style='font-size:14px'
               class='iconfont'
               @click="reload"
             >&#xe614;</i>
           </div>
           <ul class="case">
             <li title="设备总数">
-              <p style="color:#409eff">{{deviceData.AllDevice}}</p>
+              <p style="color:#409eff" v-if="deviceData.AllDevice>0">{{deviceData.AllDevice}}</p>
+              <p style="color:#dde2eb" v-else>0</p>
               <p>设备总数</p>
             </li>
             <li title="正常运行">
-              <p style="color:#67c23a">{{deviceData.normal}}</p>
+              <p style="color:#67c23a" v-if="deviceData.normal>0">{{deviceData.normal}}</p>
+              <p style="color:#dde2eb" v-else>0</p>
+              
               <p>正常运行</p>
             </li>
             <li title="设备故障">
-              <p style="color:#f56c6c">{{deviceData.fault}}</p>
+              <p style="color:#f56c6c" v-if="deviceData.fault>0">{{deviceData.fault}}</p>
+              <p style="color:#dde2eb" v-else>0</p>
               <p>设备故障</p>
             </li>
           </ul>
         </div>
       </div>
-      <div class="quick-entry">
+      <!-- <div class="quick-entry">
         <div class="top">
           <h5>快捷入口</h5>
           <span class="addIcon">
@@ -92,7 +96,7 @@
           >{{item}}
           </li>
         </ul>
-      </div>
+      </div> -->
       <div class="device-operation-Status">
         <div class="left">
           <h5>设备运行状态</h5>
@@ -160,7 +164,8 @@
               </span>
               <div>
                 <p>预警</p>
-                <p style="font-size:20px;font-weight:600;">{{deviceData.warn}}</p>
+                <p style="font-size:20px;font-weight:600;" v-if="deviceData.warn>0">{{deviceData.warn}}</p>
+                 <p style="color:#dde2eb;font-size:20px;font-weight:600;" v-else>0</p>
               </div>
             </li>
           </ul>
@@ -176,21 +181,24 @@
             @click="$router.push('/Breakdown')"
           >
             <span>故障工单</span>
-            <span>{{worksList.fault}}</span>
+            <span v-if="worksList.fault>0">{{worksList.fault}}</span>
+            <span style="color:#dde2eb" v-else>0</span>
           </li>
           <li
             title="检修工单"
             @click="$router.push('/TurnaroundPlans')"
           >
             <span>检修工单</span>
-            <span>{{worksList.overhaul}}</span>
+            <span v-if="worksList.overhaul>0">{{worksList.overhaul}}</span>
+            <span style="color:#dde2eb" v-else>0</span>
           </li>
           <li
             title="保养工单"
             @click="$router.push('/Upkeep')"
           >
             <span>保养工单</span>
-            <span>{{worksList.maintain}}</span>
+            <span v-if="worksList.maintain>0">{{worksList.maintain}}</span>
+            <span style="color:#dde2eb" v-else>0</span>
           </li>
         </ul>
       </div>
@@ -204,12 +212,12 @@
             v-for="(item, index) in massgageData"
             :key="index"
             @click="$router.push('/Message')"
-          ><span>{{item.msgTitle}}</span><span>{{item.msgContent}}</span></li>
+          ><span :title="item.msgTitle">{{item.msgTitle}}</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{item.msgContent}}</span></li>
         </ul>
       </div>
       <div class="frequent-contacts">
         <h5>常用联系人</h5>
-        <ul>
+        <!-- <ul>
           <li>
             <span>IT服务热线1：</span>
             <span>12230</span>
@@ -234,19 +242,8 @@
             <span>桌面维护：</span>
             <span>12580</span>
           </li>
-          <li>
-            <span>IT服务QQ群：</span>
-            <span>892596095</span>
-          </li>
-          <li>
-            <span>投诉电话：</span>
-            <span>99553</span>
-          </li>
-          <li>
-            <span>技术支持：</span>
-            <span>13547911497</span>
-          </li>
-        </ul>
+        </ul> -->
+        <div v-html="a_content"></div>
       </div>
     </div>
   </div>
@@ -274,12 +271,13 @@ export default {
         normalPer: 0,
         faultPer: 0,
         maintenancePer: 0,
-        AllDevice: "",
-        fault: "",
-        normal: ""
+        AllDevice: 0,
+        fault: 0,
+        normal: 0,
       },
       //消息
-      massgageData: []
+      massgageData: [],
+      a_content:'',
     };
   },
   methods: {
@@ -445,6 +443,22 @@ export default {
         },
         () => {}
       );
+    },
+    findLinkMan() {
+      this.Axios(
+        {
+          params: {},
+          url: "/workbench/findLinkMan",
+          type: "get",
+          option: {}
+        },
+        this
+      ).then(
+        result => {
+          this.a_content=result.data.data[0].content
+        },
+        ({ type, info }) => {}
+      );
     }
   },
   created() {
@@ -454,6 +468,7 @@ export default {
     this.getdeviceData();
     this.allNotReadMsg();
     this.getRoleAndPermissionInfo();
+    this.findLinkMan();
   },
   watch: {}
 };
@@ -475,6 +490,10 @@ export default {
 }
 
 .home {
+  h5 {
+    width: 100px;
+    display: inline-block;
+  }
   overflow: hidden;
   font-size: 12px;
   .left {
@@ -488,7 +507,7 @@ export default {
         overflow: scroll;
         padding: 10px;
         li {
-          line-height:24px;
+          line-height: 24px;
           margin-bottom: 4px;
         }
       }
@@ -534,6 +553,7 @@ export default {
       .equipment-data {
         .top {
           padding-right: 10px;
+          line-height: 16px;
           i {
             float: right;
             display: none;
@@ -711,7 +731,7 @@ export default {
     .message-notification {
       .case-style;
       margin-top: 10px;
-      height: 300px;
+      height: 200px;
       .top {
         span:nth-child(2) {
           float: right;
@@ -723,7 +743,7 @@ export default {
       }
       .message-details {
         border: @border;
-        height: 256px;
+        height: 156px;
         margin-top: 10px;
         overflow: scroll;
         li {
@@ -739,42 +759,59 @@ export default {
             color: #409eff;
           }
           span:nth-child(1) {
-            margin-right: 16px;
+            margin-right: 9%;
+            width: 40%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: inline-block;
+          }
+          span:nth-child(2) {
+            width: 50%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: inline-block;
           }
         }
       }
     }
     .frequent-contacts {
       .case-style;
-      height: 270px;
+      height: 190px;
       margin-top: 10px;
-      ul {
+      overflow: scroll;
+      div {
         margin-top: 10px;
-        li {
-          list-style-type: none;
-          height: 20px;
-          line-height: 20px;
-          padding: 0 10px;
-          span:nth-child(1) {
-            margin-right: 10px;
-          }
-        }
+        padding-left:5px;
+        line-height: 20px; 
+        
+        // li {
+        //   list-style-type: none;
+        //   height: 20px;
+        //   line-height: 20px;
+        //   padding: 0 10px;
+        //   span:nth-child(1) {
+        //     margin-right: 10px;
+        //   }
+        // }
       }
     }
   }
   .el-progress-bar {
     width: 90%;
   }
-  .role-parent{
+  .role-parent {
+    font-size: 12px;
     display: inline-block;
     text-align: right;
     width: 150px;
   }
-  .role-child{
+  .role-child {
+    font-size: 12px;
     display: inline-block;
     width: 495px;
-    vertical-align:top;
-    
+    vertical-align: top;
   }
 }
 </style>

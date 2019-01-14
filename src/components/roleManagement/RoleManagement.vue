@@ -4,12 +4,12 @@
       <div class="top">
         <permission-button
           permCode='role_lookup.role_add'
-          banType='hide'
+          banType='disable'
           size="small" type="primary" @click="dialogFormVisible=true">
           <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加角色</permission-button>
         <permission-button
           permCode='role_lookup.role_edit'
-          banType='hide'
+          banType='disable'
           size="small" type="primary" @click="getCheckedKeys">
           <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</permission-button>
       </div>
@@ -17,7 +17,7 @@
         <div class="left">
           <h5>角色列表</h5>
           <ul>
-            <li v-for="(item,index) in role" :label="item.id" :key="item.id" :class="active===index?'fontColor':''"><span :label="item.id" @click="getName($event)">{{item.name}}</span>
+            <li v-for="(item,index) in role" :label="item.id" :key="item.id" :class="active===index?'fontColor':''"><span :label="item.id" @click="getName($event,index)">{{item.name}}</span>
               <permission-button
                 permCode='role_lookup.role_delete'
                 banType='hide'
@@ -55,7 +55,6 @@
           </div>
         </div>
       </div>
-      
     </div>
     <el-dialog title="角色添加" :visible.sync="dialogFormVisible" width="30%" :beforeClose="toCancel">
       <el-form :model="form" style="padding:10px 20px;" label-width="70px">
@@ -184,16 +183,18 @@
           this
         ).then(
           response => {
+            let roleName = JSON.parse(localStorage.getItem("user")).roleName;
             this.role = response.data.data;
             this.role.forEach(item=>{
-              item.name===JSON.parse(localStorage.getItem("user")).roleName ?
+              item.name === roleName?
                 this.listPermissionByRoleId(item.id):"";
             });
             this.PermissionsList();
+            this.role.map((item,index)=>{
+              item.name === roleName ? this.active = index : null;
+            })
           },
-          ({type, info}) => {
-
-          })
+          ({type, info}) => {})
       },
       update(){
         let qs = require("qs");
@@ -284,7 +285,8 @@
 
           })
       },
-      getName(event){
+      getName(event,index){
+        this.active=index;
         this.roleId = event.target.getAttribute("label");
         this.listPermissionByRoleId(this.roleId);
       },
@@ -330,7 +332,7 @@
     .el-checkbox__inner{
       border-color: #409EFF !important;
     }
-    font-size: 14px;
+    font-size: 12px;
     .case {
       padding: 10px;
       position: relative;
@@ -363,13 +365,18 @@
         }
         li {
           list-style-type: none;
-          text-align: left;
-          padding-left: 20%;
-          height: 30px;
-          line-height: 30px;
+          padding-left: 20px;
+          height: 26px;
+          line-height: 26px;
+          margin-bottom: 5px;
           cursor: pointer;
+          span{
+            display: inline-block;
+            height: 100%;
+          }
           button{
             color: #f56c6c;
+            padding: 0;
             opacity: 0;
           }
           &:hover {
@@ -414,8 +421,5 @@
   }
   .fontColor {
     color: #409eff;
-  }
-  .icon-jia,.icon-jian{
-    font-size: 14px !important;
   }
 </style>

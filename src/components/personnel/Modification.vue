@@ -61,8 +61,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="组织单位：" style="height:39px;">
-                <span style="display:inline-block;width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" :title="persnneladd.organizationName">{{persnneladd.organizationName}}</span>
+              <el-form-item label="组织单位：" style="height:38px;">
+                <span style="display:inline-block;width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{persnneladd.organizationName}}</span>
                 <el-button
                   size="mini"
                   type="primary"
@@ -80,13 +80,11 @@
                         placeholder="请选择"
                         :options="orgoptions"
                         :props="defaultProps"
-                        filterable
                         ref="getName"
                         expand-trigger="hover"
                         change-on-select
                         :show-all-levels="false"
                         v-model="qqqqq"
-                        @change="handleChange"
                         style="width:100%;padding:1px;margin-bottom:10px;"
                       ></el-cascader>
                     </el-col>
@@ -272,15 +270,13 @@
       };
     },
     methods: {
-      orgsave(){
-        this.dialogVisible3 = false ;
-      },
-      handleChange(value) {
+      orgsave(value){
         let name = this.$refs["getName"].currentLabels;
         name = name[name.length - 1];
         let id = value[value.length - 1];
         this.persnneladd.organizeCode = id;
         this.persnneladd.organizationName = name;
+        this.dialogVisible3 = false ;
       },
       path(){
         return this.global.apiImg;
@@ -576,9 +572,9 @@
         },
         this
       ).then(response => {
-         response.data.data.map((item)=>{
-           item.id==this.persnneladd.roleId ? "":this.role.push(item);
-         });
+          this.role = response.data.data;
+          this.role = this.role.filter(item=>item.id !==this.persnneladd.roleId);
+          this.role.push({id:this.persnneladd.roleId,name:this.persnneladd.roleName});
         },
         ({type, info}) => {
 
@@ -664,7 +660,7 @@
           border: 1px solid @Info;
           border-radius: 5px;
           // overflow: hidden;
-          margin-top: 30px;
+          margin-top: 10px;
           padding-left: 20px;
           .title {
             display: inline-block;
@@ -676,15 +672,7 @@
             left: 0px;
             background-color: white;
           }
-          li {
-            list-style-type: none;
-            height: 60px;
-            line-height: 60px;
-            .el-input {
-              width: 70%;
-
-            }
-          }
+         
         }
       }
     }
@@ -693,8 +681,6 @@
       line-height:39px;
     }
   }
-  .el-dialog__header .el-dialog__headerbtn{
-    // top: 1px !important;
-  }
   
+
 </style>
