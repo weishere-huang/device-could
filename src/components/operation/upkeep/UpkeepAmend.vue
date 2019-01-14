@@ -7,10 +7,8 @@
         banType='hide'
         size="small" type="primary" @click="updatePlan" v-if="isOk">
         <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</permission-button>
-      <permission-button
-        permCode='operation_maintain_detail_lookup.operation_maintain_detail_audit'
-        banType='hide'
-        size="small" type="primary" @click="auditInfo" icon="el-icon-search">审核详情</permission-button>
+      <el-button
+        size="small" type="primary" @click="auditInfo" icon="el-icon-search">审核详情</el-button>
     </div>
     <div class="bottom">
       <div class="left">
@@ -278,12 +276,34 @@
         submitAuditInfo:false,
         submitAuditTable:[
           {
+            field: 'custome', title:'序号', width: 15, titleAlign: 'center', columnAlign: 'center',
+            formatter: function (rowData,rowIndex) {
+              return rowIndex < 3 ? '<span>' + (rowIndex + 1) + '</span>' : rowIndex + 1
+            }, isFrozen: true,isResize:true
+          },
+          {
             field: "name",
             title: "审核人",
             width: 40,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
+          },
+          {
+            field: "startTime",
+            title: "提交时间",
+            width: 120,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "endTime",
+            title: "审核时间",
+            width: 120,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
           },
           {
             field: "state",
@@ -299,20 +319,12 @@
             }
           },
           {
-            field: "startTime",
-            title: "提交时间",
-            width: 60,
+            field: "position",
+            title: "岗位",
+            width: 40,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
-          },
-          {
-            field: "endTime",
-            title: "审核时间",
-            width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true,
           },
           {
             field: "phone",
@@ -325,7 +337,7 @@
           {
             field: "opinion",
             title: "审核意见",
-            width: 180,
+            width: 150,
             titleAlign: "center",
             columnAlign: "left",
             isResize: true

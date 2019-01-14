@@ -4,7 +4,7 @@
         <el-button size="small" type="primary" @click="toBack" icon="el-icon-arrow-left">返回</el-button>
         <permission-button
           permCode='work_list_detail_lookup.work_list_detail_audit'
-          banType='alert'
+          banType='disable'
           size="small" type="primary" @click="outerVisible=true" v-if="isOk">
           <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;提交审核</permission-button>
       <el-button size="small" type="primary" @click="auditInfo" icon="el-icon-search">审核详情</el-button>
@@ -94,7 +94,7 @@
             </el-form-item>
             <el-form-item label="工单类型：">
               <span>{{workInfo.workType}}</span>&nbsp;&nbsp;
-              <el-button @click="workToPlan" type="text">{{workInfo.maintenanceId}}&nbsp;<i class="el-icon-search" style="color: #2474c5"></i></el-button>
+              <el-button @click="workToPlan" type="text">{{workInfo.maintenanceId}}&nbsp;<i class='iconfont' style="font-size:20px; color: #2474c5">&#xe619;</i></el-button>
             </el-form-item>
             <el-form-item label="工单状态：">
               <span>{{workInfo.state}}</span>
@@ -193,7 +193,7 @@
                 <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加物料</el-button>
               <permission-button
                 permCode='work_list_detail_lookup.work_list_detail_save'
-                banType='alert'
+                banType='disable'
                 type="primary" @click="insertPart" size="mini">
                 <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存列表</permission-button>
           </div>
@@ -719,12 +719,34 @@
         submitAuditInfo:false,
         submitAuditTable:[
           {
+            field: 'custome', title:'序号', width: 15, titleAlign: 'center', columnAlign: 'center',
+            formatter: function (rowData,rowIndex) {
+              return rowIndex < 3 ? '<span>' + (rowIndex + 1) + '</span>' : rowIndex + 1
+            }, isFrozen: true,isResize:true
+          },
+          {
             field: "name",
             title: "审核人",
             width: 40,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
+          },
+          {
+            field: "startTime",
+            title: "提交时间",
+            width: 120,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "endTime",
+            title: "审核时间",
+            width: 120,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
           },
           {
             field: "state",
@@ -740,20 +762,12 @@
             }
           },
           {
-            field: "startTime",
-            title: "提交时间",
-            width: 60,
+            field: "position",
+            title: "岗位",
+            width: 40,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
-          },
-          {
-            field: "endTime",
-            title: "审核时间",
-            width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true,
           },
           {
             field: "phone",
@@ -766,7 +780,7 @@
           {
             field: "opinion",
             title: "审核意见",
-            width: 180,
+            width: 150,
             titleAlign: "center",
             columnAlign: "left",
             isResize: true

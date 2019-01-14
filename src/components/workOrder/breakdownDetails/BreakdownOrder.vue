@@ -87,7 +87,7 @@
             </el-form-item>
             <el-form-item label="工单类型：">
               <span>{{workInfo.workType}}</span>
-              <el-button @click="workToPlan" type="text">{{workInfo.maintenanceId}}&nbsp;<i class="el-icon-search" style="color: #2474c5"></i></el-button>
+              <el-button @click="workToPlan" type="text">{{workInfo.maintenanceId}}&nbsp;<i class='iconfont' style="font-size:20px; color: #2474c5">&#xe619;</i></el-button>
             </el-form-item>
             <el-form-item label="工单状态：">
               <span>{{workInfo.state}}</span>
@@ -326,12 +326,34 @@
         submitAuditInfo:false,
         submitAuditTable:[
           {
+            field: 'custome', title:'序号', width: 15, titleAlign: 'center', columnAlign: 'center',
+            formatter: function (rowData,rowIndex) {
+              return rowIndex < 3 ? '<span>' + (rowIndex + 1) + '</span>' : rowIndex + 1
+            }, isFrozen: true,isResize:true
+          },
+          {
             field: "name",
             title: "审核人",
             width: 40,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
+          },
+          {
+            field: "startTime",
+            title: "提交时间",
+            width: 120,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "endTime",
+            title: "审核时间",
+            width: 120,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
           },
           {
             field: "state",
@@ -347,20 +369,12 @@
             }
           },
           {
-            field: "startTime",
-            title: "提交时间",
-            width: 60,
+            field: "position",
+            title: "岗位",
+            width: 40,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
-          },
-          {
-            field: "endTime",
-            title: "审核时间",
-            width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true,
           },
           {
             field: "phone",
@@ -373,7 +387,7 @@
           {
             field: "opinion",
             title: "审核意见",
-            width: 180,
+            width: 150,
             titleAlign: "center",
             columnAlign: "left",
             isResize: true
@@ -772,13 +786,10 @@
         this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
       },
       selectGroupChange(selection) {
-        // console.log("select-group-change", selection);
       },
       selectALL(selection) {
-        // console.log("select-aLL", selection);
       },
       selectChange(selection, rowData) {
-        // console.log("select-change", selection, rowData);
       },
       getPersonnel(rowIndex, rowData, column) {
         this.toExamine = rowData;
@@ -912,7 +923,6 @@
           },
           this
         ).then(response => {
-            console.log(response.data.data.content);
             this.submitAuditData=response.data.data.content
           },
           ({type, info}) => {
@@ -1051,7 +1061,6 @@
           this
         ).then(
           response => {
-            // console.log(response.data.data.devices);
             this.workInfoValue(response.data.data.work);
             this.formLabelAlignValue(response.data.data.fault);
             this.equipmentTableDataValue(response.data.data.devices);
@@ -1082,7 +1091,6 @@
           this
         ).then(
           response => {
-            // console.log(response.data.data);
             this.personData = response.data.data;
           },
           ({type, info}) => {
@@ -1162,7 +1170,6 @@
             this.spareParts= this.filterArray2(result.data.data,0);
           })
           .catch(err => {
-            // console.log(err);
           });
       },
 
@@ -1306,7 +1313,6 @@
       //设备
       equipmentTableDataValue(value){
         this.equipmentTableData = value;
-        // console.log(this.equipmentTableData)
       },
       //工单物料
       suppliesTableDataValue(value){
