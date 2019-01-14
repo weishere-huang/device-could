@@ -371,6 +371,7 @@
           this
         ).then(response => {
             this.submitAuditData = response.data.data.content;
+            console.log(this.submitAuditData);
           },
           ({type, info}) => {
 
@@ -595,6 +596,7 @@
         border-radius: 5px;
         overflow: hidden;
         margin-top: 10px;
+        min-width: 1090px;
       .left {
         padding: 10px;
         border: @border;

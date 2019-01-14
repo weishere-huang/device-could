@@ -22,9 +22,9 @@
             class="jurisdiction"
             @click="dialogVisible=true"
           ><i
-              class="el-icon-edit"
+              class="iconfont"
               style="color:blue"
-            ></i>&nbsp;我的权限</span>
+            >&#xe670;</i>&nbsp;我的权限</span>
         </div>
         <el-dialog
           title="我的权限"

@@ -199,14 +199,14 @@
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
-              if(rowData.state ===0 )return `<span style="color: #ff6600">待审核</span>`;
-              if(rowData.state ===1 )return `<span style="color: #00b400">执行中</span>`;
-              if(rowData.state ===2 )return `<span style="color: #c48382">已禁用</span>`;
-              if(rowData.state ===4 )return `<span style="color: #409dfe">审核中</span>`;
-              if(rowData.state ===6 )return `<span style="color: #999999">已消除</span>`;
-              if(rowData.state ===10 )return `<span style="color: #59007a">已驳回</span>`;
-              if(rowData.state ===12 )return `<span style="color: #999999">已停止</span>`;
-              if(rowData.state ===14 )return `<span style="color: #999999">已完成</span>`;
+              if(rowData.state === 0 )return `<span style="color: #ff6600">待审核</span>`;
+              if(rowData.state === 1 )return `<span style="color: #00b400">执行中</span>`;
+              if(rowData.state === 2 )return `<span style="color: #c48382">已禁用</span>`;
+              if(rowData.state === 4 )return `<span style="color: #409dfe">审核中</span>`;
+              if(rowData.state === 6 )return `<span style="color: #999999">已消除</span>`;
+              if(rowData.state === 10 )return `<span style="color: #59007a">已驳回</span>`;
+              if(rowData.state === 12 )return `<span style="color: #999999">已停止</span>`;
+              if(rowData.state === 14 )return `<span style="color: #999999">已完成</span>`;
             }
           },
           {
@@ -623,6 +623,7 @@
         }
       },
       toCancel(){
+        this.outerVisible = false;
         this.formLabelAlign.desc="";
         this.formLabelAlign.type=false;
         this.formLabelAlign.radio="";
@@ -728,7 +729,7 @@
             <permission-button permCode='work_list_detail_lookup.work_list_detail_save||work_list_detail_lookup.work_list_detail_audit'
                      banType='disable' type="text"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
-                    <i @click.stop.prevent="planToWork(rowData,index)" style='font-size:16px' class='iconfont'>&#xe603;</i>
+                    <i @click.stop.prevent="planToWork(rowData,index)" style='font-size:16px' class='iconfont'>&#xe619;</i>
             </permission-button>
         </el-tooltip>
         &nbsp;

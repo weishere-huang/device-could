@@ -66,15 +66,104 @@
         ></v-pagination>
       </div>
     </div>
+    <el-dialog
+      title="审核"
+      :visible.sync="outerVisible"
+      :beforeClose="cancel"
+    >
+      <el-form
+        label-position=right
+        label-width="120px"
+        :model="formLabelAlign"
+      >
+        <el-form-item label="审批结果：">
+          <el-radio
+            v-model="formLabelAlign.radio"
+            label="0"
+          >同意</el-radio>
+          <el-radio
+            v-model="formLabelAlign.radio"
+            label="1"
+          >驳回</el-radio>
+        </el-form-item>
+        <el-form-item label="审批意见：">
+          <el-input
+            type="textarea"
+            v-model="formLabelAlign.desc"
+            style="width:95%;"
+          ></el-input>
+        </el-form-item>
+        <div v-if="formLabelAlign.radio!=1">
+          <el-form-item label="是否终审：">
+            <el-checkbox-group v-model="formLabelAlign.type">
+              <el-checkbox
+                label=""
+                name="type"
+              ></el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+          <el-form-item
+            label="下一级审批人："
+            v-if="formLabelAlign.type!=true"
+          >
+            <el-input
+              v-model="toAuditName.name"
+              size="mini"
+              style="width:60%"
+            ></el-input>
+            <el-button
+              type="primary"
+              @click="innerVisible = true"
+              size="mini"
+            >添加审批人</el-button>
+          </el-form-item>
+        </div>
+      </el-form>
+      <el-dialog
+        title="人员添加"
+        :visible.sync="innerVisible"
+        append-to-body
+      >
+        <personnel v-on:getPersonnel="getPersonnel"></personnel>
+      </el-dialog>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click="cancel"
+          size="mini"
+        >取 消</el-button>
+        <el-button
+          @click="isSubmitAudit"
+          type="primary"
+          size="mini"
+        >提 交</el-button>
+
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
+import personnel from '../operation/breakdown/Personnel'
   import Vue from "vue";
   export default {
     inject: ["reload"],
     name: "Test",
     data() {
       return {
+        toAuditName: "",
+        nextUserId:"",
+        innerVisible:false,
+        outerVisible:false,
+        formLabelAlign: {
+          time: "",
+          desc: "",
+          type: "",
+          radio: "",
+          name: ""
+        },
         stateNum:"",
         toNull: "",
         audited: "",
@@ -182,14 +271,76 @@
             columnAlign: "center",
             isResize: true,
             overflowTitle: true
+          },
+          {
+            field: "operation",
+            title: "操作",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            componentName: "table-operations"
           }
         ],
         isHideList: this.$route.params.id !== undefined
           ? true : false,
         isPage:1,
+        workId:0,
       };
     },
+    components:{
+      personnel
+    },
     methods: {
+      cancel() {
+        this.dialogVisible = false;
+        this.outerVisible = false;
+        this.formLabelAlign.desc = "";
+        this.formLabelAlign.type = "";
+        this.formLabelAlign.time = "";
+        this.formLabelAlign.radio = "";
+        this.formLabelAlign.name = "";
+        this.toAuditName="";
+      },
+      isSubmitAudit(){
+        if (this.formLabelAlign.radio===0){
+          if(this.toAuditName!==""||this.formLabelAlign.type){
+            this.toSubmitAudit();
+          }else{
+            this.$message.error('请选择终审或添加下一审核人')
+          }
+        }else if(this.formLabelAlign.desc!==""){
+          this.toSubmitAudit();
+        }else{
+          this.$message.error("请填写驳回原因")
+        }
+      },
+      toSubmitAudit(){
+        this.Axios(
+          {
+            params: {
+              nextUserId: this.nextUserId,
+              workId:this.workId,
+              auditOpinion:this.formLabelAlign.desc,
+              passOrTurn:this.formLabelAlign.radio
+            },
+            type: "get",
+            url: "/maintenanceWork/workAudit"
+          },
+          this
+        ).then(
+          response => {
+            this.outerVisible = false;
+            this.reload();
+          },
+          ({ type, info }) => {
+          }
+        );
+      },
+      getPersonnel(params) {
+        this.toAuditName = params.person;
+        this.innerVisible = params.hide;
+        this.nextUserId = this.toAuditName.employeeId;
+      },
       selectGroupChange(selection) {
         // console.log("select-group-change", selection);
       },
@@ -270,6 +421,17 @@
             this.$router.push({path:"Breakdown/BreakDetails/" + params.rowData.maintenanceId});
           else this.$message.error("对不起，您的权限不足")
         }
+        if (params.type ==="look") {
+          if (params.rowData.workType === 2) {
+            this.$router.push({path:"WorkOrder/BreakdownOrder/" + params.rowData.id});
+          } else {
+            this.$router.push({path:"WorkOrder/UpkeepAndTurnaroundPlans/" + params.rowData.id});
+          }
+        }
+        if (params.type ==="submit") {
+          this.outerVisible=true;
+          this.workId = params.rowData.id;
+        }
       },
     },
     created() {
@@ -288,7 +450,7 @@
   Vue.component("table-workToPlan", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="点击查看来源" placement="top">
-            <a href="" style="text-decoration: none">{{rowData.maintenanceId}}<i @click.stop.prevent="workToPlans(rowData,index)" style='font-size:20px;color:#409eff' class='iconfont'>&#xe734;</i></a>
+            <a href="" style="text-decoration: none">{{rowData.maintenanceId}}<i @click.stop.prevent="workToPlans(rowData,index)" style='font-size:20px;color:#409eff' class='iconfont'>&#xe619;</i></a>
         </el-tooltip>
         </span>`,
     props: {
@@ -308,6 +470,43 @@
         let params = { type: "workToPlans", index: this.index, rowData: this.rowData };
         this.$emit("on-custom-comp", params);
       },
+    }
+  });
+  Vue.component("table-operations", {
+    template: `<span>
+        <el-tooltip class="item" effect="dark" content="查看详情" placement="top">
+            <a href="" style="text-decoration: none"><i @click.stop.prevent="lookWork(rowData,index)" style='font-size:20px;color:#409eff' class='iconfont'>&#xe734;</i></a>
+        </el-tooltip>
+         &nbsp;
+        <el-tooltip class="item" effect="dark" content="审核" placement="top">
+            <permission-button permCode='work_list_detail_lookup.work_list_detail_audit'
+                     banType='disable' type="text"
+                     style="text-decoration: none;color:#409EFF;margin-left: -2px">
+                    <i @click.stop.prevent="submitAudit(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
+            </permission-button>
+          </el-tooltip>
+        </span>`,
+    props: {
+      rowData: {
+        type: Object
+      },
+      field: {
+        type: String
+      },
+      index: {
+        type: Number
+      }
+    },
+    methods: {
+      lookWork() {
+        // 参数根据业务场景随意构造
+        let params = { type: "look", index: this.index, rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      },
+      submitAudit(){
+        let params = { type: "submit", index: this.index, rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      }
     }
   });
 
