@@ -595,6 +595,7 @@
         border-radius: 5px;
         overflow: hidden;
         margin-top: 10px;
+        min-width: 1090px;
       .left {
         padding: 10px;
         border: @border;

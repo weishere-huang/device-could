@@ -101,6 +101,7 @@
   // }
 
   .business-details {
+    font-size: 12px;
     // margin: auto;
     padding: 10px;
     // width: 800px;

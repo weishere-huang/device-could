@@ -20,7 +20,7 @@
           </el-form-item>
           <el-form-item label="所属部门" prop="defaultProps" >
             <el-cascader
-              placeholder="搜索"
+              placeholder="请选择"
               :options="orgoptions"
               :props="defaultProps"
               ref="getName"
@@ -42,7 +42,7 @@
               <el-cascader
                 placeholder="搜索"
                 :options="ctgoptions"
-                filterable
+               
                 ref="getName2"
                 expand-trigger="hover"
                 :props="defaultProps2"
@@ -177,7 +177,7 @@
           </el-form-item>
         </el-form>
         <div style="padding:0 40px 0 12px;" class="upLoad">
-          <span>相关资料：</span>
+          <span style="line-height:26px;">相关资料：</span>
            <el-upload
                 style="display:inline-block;vertical-align:top"
                 class="upload-demo"
@@ -665,7 +665,7 @@
         border-radius: 5px;
         margin-top: 20px;
         position: relative;
-        font-size: 14px;
+        font-size: 12px;
         color: #606266;
         h5 {
           position: absolute;

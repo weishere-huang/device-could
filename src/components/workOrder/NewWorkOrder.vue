@@ -170,6 +170,7 @@
               value-format="yyyy/MM/dd HH:mm:ss"
               type="datetime"
               placeholder="选择日期时间"
+              size="small"
             >
             </el-date-picker>
           </el-form-item>
@@ -707,7 +708,7 @@
         border: @border;
         border-radius: 5px;
         width: 35%;
-        height: 480px;
+        min-height: 560px;
         min-width: 300px;
         float: left;
         padding: 10px;
@@ -716,7 +717,7 @@
         border: @border;
         border-radius: 5px;
         width: 60%;
-        height: 480px;
+        min-height: 560px;
         min-width: 600px;
         float: left;
         margin-left: 10px;

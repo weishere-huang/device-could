@@ -92,7 +92,7 @@
             <el-cascader
             placeholder="请选择"
             :options="ctgoptions"
-            filterable
+     
             ref="getName2"
             expand-trigger="hover"
             :props="defaultProps2"

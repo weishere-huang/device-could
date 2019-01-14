@@ -3,7 +3,7 @@
     <div class="top">
       <permission-button
         permCode='part_warehouse_lookup.part_warehouse_add'
-        banType='hide'
+        banType='disable'
         size="small"
         type="primary"
         @click="insertBT"
@@ -57,7 +57,7 @@
           <el-cascader
             placeholder="请选择"
             :options="ctgoptions"
-            filterable
+         
             ref="getName2"
             expand-trigger="hover"
             :props="defaultProps2"

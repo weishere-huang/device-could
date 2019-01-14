@@ -198,18 +198,17 @@ export default {
       if(this.readkey === 0){
         this.allMsg();
       }else{
-        this.allNotReadMsg;
+        this.allNotReadMsg();
       }
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
-      this.allMsg();
       if(this.readkey === 0){
         this.allMsg();
       }else{
-        this.allNotReadMsg;
+        this.allNotReadMsg();
       }
     },
     sortChange(params) {
@@ -263,8 +262,10 @@ export default {
         this
       )
         .then(result => {
-          this.reload();
-          this.$message("成功删除!!!");
+          if(result.data.code===200){
+            this.$message.success("成功删除!!!");
+            this.reload();
+          }
         })
     },
     allMsg() {
@@ -294,7 +295,6 @@ export default {
           console.log(result.data.data)
           this.tableData = result.data.data.content;
           this.totoelement = result.data.data.totalElements;
-          this.NotReadMsgCount();
         })
         .catch(err => {
         });
@@ -323,7 +323,6 @@ export default {
         .catch(err => {
         });
     },
-
     NotReadMsgCount() {
       //查询该用户未读消息数目
       this.Axios(
@@ -343,25 +342,25 @@ export default {
         .catch(err => {
         });
     },
-    updateMessageRead() {
-      //修改消息为已读
-      this.Axios(
-        {
-          params:{ids:this.ids},
-          url: "/message/UpdateMsgRead/",
-          type: "get",
-          option:{
-            requestTarget:"m",
-            enableMsg:false,
-          }
-        },
-        this
-      )
-        .then(result => {
-        })
-        .catch(err => {
-        });
-    },
+    // updateMessageRead() {
+    //   //修改消息为已读
+    //   this.Axios(
+    //     {
+    //       params:{ids:this.ids},
+    //       url: "/message/UpdateMsgRead/",
+    //       type: "get",
+    //       option:{
+    //         requestTarget:"m",
+    //         enableMsg:false,
+    //       }
+    //     },
+    //     this
+    //   )
+    //     .then(result => {
+    //     })
+    //     .catch(err => {
+    //     });
+    // },
     updateAllMessageRead() {
       //全部已阅
       this.Axios(
@@ -404,7 +403,6 @@ export default {
       this.detailsShow = true;
       this.ids = rowData.id;
       console.log(rowData);
-      this.updateMessageRead();
       this.findonemsg();
     },
     findonemsg(){
@@ -419,9 +417,9 @@ export default {
         },
         this
       )
-      // .get(apiMsg + "/message/findOneMsg/" + this.ids)
         .then(result => {
           this.msgDetail = result.data.data;
+          this.reload();
         })
         .catch(err => {
         });

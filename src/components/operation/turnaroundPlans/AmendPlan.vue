@@ -49,6 +49,7 @@
               row-click-color="#edf7ff"
               :select-all="selectALL"
               :select-change="selectChange"
+              :height='295'
             ></v-table>
             <div
               class="mt20 mb20 bold"
@@ -362,26 +363,30 @@
       font-size: 12px;
 
       .bottom {
-        margin-top: 20px;
+        // margin-top: 20px;
         padding: 10px;
         font-size: 0;
         overflow: hidden;
         .left {
           width: 18%;
           border: @border;
-          min-height: 400px;
+          height: 400px;
           position: relative;
           float: left;
           margin-right: 1%;
           font-size: 12px;
+          
           h5 {
             position: absolute;
-            top: -10px;
+            top: 0px;
             left: 10px;
             font-size: 14px;
           }
           .treeCase {
             margin-top: 20px;
+            overflow: scroll;
+            height: 380px;
+            padding-bottom: 10px;
           }
         }
         .center {
@@ -399,7 +404,7 @@
             padding: 10px;
             border: @border;
             border-radius: 5px;
-            max-height: 500px;
+            max-height: 390px;
           }
         }
         .right {
