@@ -1,6 +1,7 @@
 <template>
   <div class="Reported">
     <div class="top">
+       <el-button size="small" type="primary" @click="toBack"  icon="el-icon-arrow-left">返回</el-button>
       <permission-button
         size="small"
         @click="faultAdd"
@@ -320,6 +321,9 @@ export default {
     };
   },
   methods: {
+    toBack() {
+        this.$router.back(-1);
+      },
     path(){
       return this.global.apiImg;
     },

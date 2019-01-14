@@ -9,7 +9,7 @@
           size="small"
           type="primary"
           @click="reportedShow"
-        ><i style='font-size:12px' class='iconfont'>&#xe614;</i>&nbsp;故障上报</permission-button>
+        >故障上报</permission-button>
         <el-button
           size="small"
           type="primary"
@@ -807,7 +807,7 @@
             <permission-button permCode='work_list_detail_lookup.work_list_detail_save||work_list_detail_lookup.work_list_detail_audit'
                      banType='disable' type="text"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
-                    <i @click.stop.prevent="planToWork(rowData,index)" style='font-size:16px' class='iconfont'>&#xe603;</i>
+                    <i @click.stop.prevent="planToWork(rowData,index)" style='font-size:16px' class='iconfont'>&#xe619;</i>
             </permission-button>
         </el-tooltip>
         &nbsp;
