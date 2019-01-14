@@ -686,11 +686,12 @@
   };
   Vue.component("table-lookWorkInfoS", {
     template: `<span>
-        <el-tooltip class="item" effect="dark" content="修改" placement="top">
+        <el-tooltip class="item" effect="dark" content="查看详情" placement="top">
             <permission-button permCode='work_list_detail_lookup.work_list_detail_save||work_list_detail_lookup.work_list_detail_audit'
                      banType='disable' type="text"
+                     @click.stop.prevent="lookWorkInfo(rowData,index)"
                      style="text-decoration: none;color:#409eff;margin-left: -2px">
-                     <i @click.stop.prevent="lookWorkInfo(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+                     <i  style='font-size:16px' class='iconfont'>&#xe6b4;</i>
             </permission-button>
         </el-tooltip>
         </span>`,
@@ -718,40 +719,45 @@
         <el-tooltip class="item" effect="dark" content="修改" placement="top">
            <permission-button permCode='operation_maintain_detail_lookup.operation_maintain_detail_audit'
                      banType='disable' type="text"
+                     @click.stop.prevent="update(rowData,index)"
                      style="text-decoration: none;color:#409eff;margin-left: -2px">
-                     <i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+                     <i  style='font-size:16px' class='iconfont'>&#xe6b4;</i>
             </permission-button>
         </el-tooltip>
          &nbsp;
         <el-tooltip class="item" effect="dark" content="审核" placement="top">
          <permission-button permCode='operation_maintain_lookup.operation_maintain_audit'
                      banType='disable' type="text"
+                     @click.stop.prevent="submitAudit(rowData,index)"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
-                    <i @click.stop.prevent="submitAudit(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
+                    <i  @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
             </permission-button>
           </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="停止" placement="top">
         <permission-button permCode='operation_maintain_lookup.operation_maintain_stop'
                      banType='disable' type="text"
+                      @click.stop.prevent="stop(rowData,index)"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
-                    <i @click.stop.prevent="stop(rowData,index)" style='font-size:16px' class='iconfont'>&#xe603;</i>
+                    <i style='font-size:16px' class='iconfont'>&#xe603;</i>
             </permission-button>
         </el-tooltip>
          &nbsp;
         <el-tooltip class="item" effect="dark" content="关联工单" placement="top">
             <permission-button permCode='work_list_detail_lookup.work_list_detail_save||work_list_detail_lookup.work_list_detail_audit'
                      banType='disable' type="text"
+                     @click.stop.prevent="planToWork(rowData,index)"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
-                    <i @click.stop.prevent="planToWork(rowData,index)" style='font-size:16px' class='iconfont'>&#xe619;</i>
+                    <i  style='font-size:16px' class='iconfont'>&#xe619;</i>
             </permission-button>
         </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
         <permission-button permCode='operation_maintain_lookup.operation_maintain_delete'
                      banType='disable' type="text"
+                     @click.stop.prevent="deleteRow(rowData,index)"
                      style="text-decoration: none;color:#F56C6C;margin-left: -2px">
-                    <i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i>
+                    <i  style='font-size:16px' class='iconfont'>&#xe66b;</i>
             </permission-button>
         </el-tooltip>
         </span>`,
