@@ -182,6 +182,14 @@
             columnAlign: "center",
             isResize: true,
             overflowTitle: true
+          },
+          {
+            field: "operation",
+            title: "操作",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            componentName: "table-operations"
           }
         ],
         isHideList: this.$route.params.id !== undefined
@@ -270,6 +278,16 @@
             this.$router.push({path:"Breakdown/BreakDetails/" + params.rowData.maintenanceId});
           else this.$message.error("对不起，您的权限不足")
         }
+        if (params.type ==="look") {
+          if (params.rowData.workType === 2) {
+            this.$router.push({path:"WorkOrder/BreakdownOrder/" + params.rowData.id});
+          } else {
+            this.$router.push({path:"WorkOrder/UpkeepAndTurnaroundPlans/" + params.rowData.id});
+          }
+        }
+        if (params.type ==="submit") {
+          console.log("submit");
+        }
       },
     },
     created() {
@@ -308,6 +326,43 @@
         let params = { type: "workToPlans", index: this.index, rowData: this.rowData };
         this.$emit("on-custom-comp", params);
       },
+    }
+  });
+  Vue.component("table-operations", {
+    template: `<span>
+        <el-tooltip class="item" effect="dark" content="查看详情" placement="top">
+            <a href="" style="text-decoration: none"><i @click.stop.prevent="lookWork(rowData,index)" style='font-size:20px;color:#409eff' class='iconfont'>&#xe734;</i></a>
+        </el-tooltip>
+         &nbsp;
+        <el-tooltip class="item" effect="dark" content="审核" placement="top">
+            <permission-button permCode='work_list_detail_lookup.work_list_detail_audit'
+                     banType='disable' type="text"
+                     style="text-decoration: none;color:#409EFF;margin-left: -2px">
+                    <i @click.stop.prevent="submitAudit(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
+            </permission-button>
+          </el-tooltip>
+        </span>`,
+    props: {
+      rowData: {
+        type: Object
+      },
+      field: {
+        type: String
+      },
+      index: {
+        type: Number
+      }
+    },
+    methods: {
+      lookWork() {
+        // 参数根据业务场景随意构造
+        let params = { type: "look", index: this.index, rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      },
+      submitAudit(){
+        let params = { type: "submit", index: this.index, rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      }
     }
   });
 
