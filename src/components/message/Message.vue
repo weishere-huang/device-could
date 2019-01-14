@@ -256,16 +256,12 @@ export default {
           type: "post",
           option: {
             requestTarget:"m",
-            enableMsg:false
+            successMsg:"删除成功",
           },
         },
         this
       )
         .then(result => {
-          if(result.data.code===200){
-            this.$message.success("成功删除!!!");
-            this.reload();
-          }
         })
     },
     allMsg() {
@@ -292,7 +288,6 @@ export default {
         this
       )
         .then(result => {
-          console.log(result.data.data)
           this.tableData = result.data.data.content;
           this.totoelement = result.data.data.totalElements;
         })
@@ -342,25 +337,6 @@ export default {
         .catch(err => {
         });
     },
-    // updateMessageRead() {
-    //   //修改消息为已读
-    //   this.Axios(
-    //     {
-    //       params:{ids:this.ids},
-    //       url: "/message/UpdateMsgRead/",
-    //       type: "get",
-    //       option:{
-    //         requestTarget:"m",
-    //         enableMsg:false,
-    //       }
-    //     },
-    //     this
-    //   )
-    //     .then(result => {
-    //     })
-    //     .catch(err => {
-    //     });
-    // },
     updateAllMessageRead() {
       //全部已阅
       this.Axios(
@@ -402,7 +378,7 @@ export default {
       this.msgDetail = rowData;
       this.detailsShow = true;
       this.ids = rowData.id;
-      console.log(rowData);
+      rowData.isRead=1;
       this.findonemsg();
     },
     findonemsg(){
@@ -419,7 +395,6 @@ export default {
       )
         .then(result => {
           this.msgDetail = result.data.data;
-          this.reload();
         })
         .catch(err => {
         });
