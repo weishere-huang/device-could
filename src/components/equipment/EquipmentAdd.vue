@@ -42,7 +42,6 @@
               <el-cascader
                 placeholder="搜索"
                 :options="ctgoptions"
-               
                 ref="getName2"
                 expand-trigger="hover"
                 :props="defaultProps2"
@@ -358,8 +357,10 @@
         let name=this.$refs['getName'].currentLabels
         name=name[(name.length)-1]
         let id=value[(value.length)-1]
+        console.log(value);
         this.sizeForm.organizeCode=id;
         this.sizeForm.organizeName=name;
+
       },
       handleChange2(value) {
         let name=this.$refs['getName2'].currentLabels
