@@ -3,7 +3,7 @@
     <div class="top">
       <!--<permission-button-->
         <!--permCode='part_warehouse_lookup.part_warehouse_add'-->
-        <!--banType='hide'-->
+        <!--banType='disable'-->
         <!--size="small"-->
         <!--type="primary"-->
         <!--@click="insertBT"-->
@@ -457,10 +457,10 @@ export default {
       },this).then(result=>{
         console.log(result.data);
         if(result.data.code===200){
-          this.$message.success("入库成功");
+          this.$message.success("出库成功");
           this.reload();
         }else{
-          this.$message.error("入库失败,请重新尝试")
+          this.$message.error("出库失败,请重新尝试")
         }
       })
     },
