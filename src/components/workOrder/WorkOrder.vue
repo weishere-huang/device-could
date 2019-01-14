@@ -154,6 +154,7 @@ import personnel from '../operation/breakdown/Personnel'
     data() {
       return {
         toAuditName: "",
+        nextUserId:"",
         innerVisible:false,
         outerVisible:false,
         formLabelAlign: {
@@ -283,6 +284,7 @@ import personnel from '../operation/breakdown/Personnel'
         isHideList: this.$route.params.id !== undefined
           ? true : false,
         isPage:1,
+        workId:0,
       };
     },
     components:{
@@ -300,7 +302,7 @@ import personnel from '../operation/breakdown/Personnel'
         this.toAuditName="";
       },
       isSubmitAudit(){
-        if (this.formLabelAlign.radio!==1){
+        if (this.formLabelAlign.radio===0){
           if(this.toAuditName!==""||this.formLabelAlign.type){
             this.toSubmitAudit();
           }else{
@@ -312,9 +314,32 @@ import personnel from '../operation/breakdown/Personnel'
           this.$message.error("请填写驳回原因")
         }
       },
+      toSubmitAudit(){
+        this.Axios(
+          {
+            params: {
+              nextUserId: this.nextUserId,
+              workId:this.workId,
+              auditOpinion:this.formLabelAlign.desc,
+              passOrTurn:this.formLabelAlign.radio
+            },
+            type: "get",
+            url: "/maintenanceWork/workAudit"
+          },
+          this
+        ).then(
+          response => {
+            this.outerVisible = false;
+            this.reload();
+          },
+          ({ type, info }) => {
+          }
+        );
+      },
       getPersonnel(params) {
         this.toAuditName = params.person;
         this.innerVisible = params.hide;
+        this.nextUserId = this.toAuditName.employeeId;
       },
       selectGroupChange(selection) {
         // console.log("select-group-change", selection);
@@ -404,8 +429,8 @@ import personnel from '../operation/breakdown/Personnel'
           }
         }
         if (params.type ==="submit") {
-          console.log(params);
           this.outerVisible=true;
+          this.workId = params.rowData.id;
         }
       },
     },
@@ -425,7 +450,7 @@ import personnel from '../operation/breakdown/Personnel'
   Vue.component("table-workToPlan", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="点击查看来源" placement="top">
-            <a href="" style="text-decoration: none">{{rowData.maintenanceId}}<i @click.stop.prevent="workToPlans(rowData,index)" style='font-size:20px;color:#409eff' class='iconfont'>&#xe734;</i></a>
+            <a href="" style="text-decoration: none">{{rowData.maintenanceId}}<i @click.stop.prevent="workToPlans(rowData,index)" style='font-size:20px;color:#409eff' class='iconfont'>&#xe619;</i></a>
         </el-tooltip>
         </span>`,
     props: {

@@ -328,54 +328,25 @@
         this.$router.back(-1)
       },
       toValue(value) {
-        if (value.state === 0) {
-          this.companyName.state = "待审核";
-        }
-        if (value.state === 1) {
-          this.companyName.state = "执行中";
-        }
-        if (value.state === 2) {
-          this.companyName.state = "禁用";
-        }
-        if (value.state === 3) {
-          this.companyName.state = "已删除";
-        }
-        if (value.state === 4) {
-          this.companyName.state = "审核中";
-        }
-        if (value.state === 5) {
-          this.companyName.state = "待处理";
-        }
-        if (value.state === 6) {
-          this.companyName.state = "已消除";
-        }
-        if (value.state === 7) {
-          this.companyName.state = "已撤销";
-        }
-        if (value.state === 10) {
-          this.companyName.state = "已驳回";
-        }
-        if (value.state === 14) {
-          this.companyName.state = "已完成";
-        }
+        if (value.state === 0) this.companyName.state = "待审核";
+        if (value.state === 2) this.companyName.state = "禁用";
+        if (value.state === 3) this.companyName.state = "已删除";
+        if (value.state === 4) this.companyName.state = "审核中";
+        if (value.state === 5) this.companyName.state = "执行中";
+        if (value.state === 6) this.companyName.state = "已消除";
+        if (value.state === 7) this.companyName.state = "已撤销";
+        if (value.state === 10) this.companyName.state = "已驳回";
+        if (value.state === 14) this.companyName.state = "已完成";
         this.companyName.state==="待审核" || this.companyName.state==="执行中"?
           this.isOk = true : this.isOk = false;
-        if(value.faultLevel===1){
-          this.companyName.faultLevel = "小";
-        }
-        if(value.faultLevel===2){
-          this.companyName.faultLevel = "中";
-        }
-        if(value.faultLevel===3){
-          this.companyName.faultLevel = "大";
-        }
-        if(value.faultSource === "0"){
-          this.companyName.faultSource = "人工提交";
-        }
-        if(value.faultSource === "1"){
-          this.companyName.faultSource = "设备自检";
-        }
-        this.companyName.faultDuration +="小时";
+        if(value.faultLevel===1) this.companyName.faultLevel = "小";
+        if(value.faultLevel===2) this.companyName.faultLevel = "中";
+        if(value.faultLevel===3) this.companyName.faultLevel = "大";
+        if(value.faultSource === "0") this.companyName.faultSource = "人工提交";
+        if(value.faultSource === "1") this.companyName.faultSource = "设备自检";
+        this.companyName.faultDuration ==null ?
+          this.companyName.faultDuration ="---":
+          this.companyName.faultDuration +="小时";
       },
       load(number) {
         this.Axios(
@@ -395,7 +366,6 @@
             });
           },
           ({type, info}) => {
-
           })
       },
       dispel(){
@@ -427,7 +397,6 @@
             this.toPansAdd()
           },
           ({type, info}) => {
-
           })
       },
     },

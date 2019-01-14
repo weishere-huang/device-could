@@ -1,7 +1,11 @@
 <template>
   <div class="Reported">
     <div class="top">
+      <el-button
+        size="small" type="primary" @click="toback"  icon="el-icon-arrow-left">返回</el-button>
       <permission-button
+        permCode='work_create_lookup.work_create_save'
+        banType='disable'
         size="small"
         type="primary"
         @click="addWork"
@@ -219,6 +223,8 @@
         <h5>设备列表</h5>
         <div style="padding:0 10px;">
           <permission-button
+            permCode='device_lookup.device_redact'
+            banType='disable'
             size="small"
             type="primary"
             @click="amendPlanShow=true"
@@ -513,6 +519,9 @@
       };
     },
     methods: {
+      toback() {
+        this.$router.back(-1)
+      },
       path(){
         return this.global.apiImg;
       },
@@ -659,7 +668,7 @@
         else if(this.gradeValue==="")this.$message.error("请至少选择故障等级");
         else if(this.time==="")this.$message.error("请至少选择故障开始时间");
         else if(this.breakWorkDesc==="")this.$message.error("请填写故障描述");
-        else if(this.breakWorkInfo==="")this.$message.error("请填写故障描述");
+        else if(this.breakWorkInfo==="")this.$message.error("请填写原因分析");
         else if(this.imgPath==="")this.$message.error("请上传至少一张故障相关图片");
         else return true;
       },

@@ -1,7 +1,11 @@
 <template>
   <div class="Reported">
     <div class="top">
+      <el-button
+        size="small" type="primary" @click="toback"  icon="el-icon-arrow-left">返回</el-button>
       <permission-button
+        permCode='operation_fault_report_lookup.operation_fault_report_save'
+        banType='disable'
         size="small"
         @click="faultAdd"
         type="primary">
@@ -45,6 +49,8 @@
           </el-form-item>
           <el-form-item label="发现时间：">
             <el-date-picker
+              format="yyyy/MM/dd HH:mm:ss"
+              value-format="yyyy/MM/dd HH:mm:ss"
               v-model="time"
               type="datetime"
               placeholder="选择日期时间"
@@ -92,6 +98,8 @@
         <h5>设备列表</h5>
         <div style="padding:0 10px;">
           <permission-button
+            permCode='device_lookup.device_redact'
+            banType='disable'
             size="small"
             type="primary"
             @click="amendPlanShow=true"
@@ -185,7 +193,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
-      time:"",
+      time:new Date().toLocaleString().replace(/[\u4e00-\u9fa5]/g, ""),
       person: false,
       personTable: [
         {
@@ -267,8 +275,8 @@ export default {
       gradeValue:0,
       breakDesc:"",
       breakInfo:"",
-      img:"",
-      deviceId:"",
+      img:[],
+      deviceId:[],
       dialogImageUrl: "",
       dialogVisible: false,
       columns: [
@@ -320,6 +328,9 @@ export default {
     };
   },
   methods: {
+    toback() {
+      this.$router.back(-1)
+    },
     path(){
       return this.global.apiImg;
     },
@@ -329,8 +340,7 @@ export default {
     toAdd(params) {
       this.tableData = params.values;
       this.amendPlanShow = params.isOk;
-      let deviceId = this.tableData.map(item=>{return item.id});
-      this.deviceId = deviceId.toString();
+      this.deviceId = this.tableData.map(item=>{return item.id});
     },
     findByDeviceId(deviceId) {
       this.Axios(
@@ -356,9 +366,7 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       this.$message.success('图片成功上传');
-      console.log(file.response);
       this.dialogImageUrl= file.response.data;
-      console.log(this.dialogImageUrl);
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
@@ -378,26 +386,27 @@ export default {
     handleRemove(file, fileList) {
       let img = [];
       fileList.map(item=>{img.push(item.response.data)});
-      console.log(img.toString());
     },
     handlePictureCardPreview(file) {
-      console.log(file);
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
     faultAdd(){
+      this.faultValue() ? this.toFaultAdd():"";
+    },
+    toFaultAdd(){
       let employee = JSON.parse(localStorage.getItem("user"));
       let qs = require("qs");
       let data = qs.stringify({
-        deviceId:this.deviceId,
+        deviceId:this.deviceId.toString(),
         faultLevel:this.gradeValue,
         incidence:this.scopeValue,
         discoveryId:employee.employeeId,
         discovery:employee.employeeName,
-        discoveryTime:time,
+        discoveryTime:this.time,
         faultDesc:this.breakDesc,
         causeAnalysis:this.breakInfo,
-        img:this.img,
+        img:this.img.toString(),
         faultSource:0,
       });
       this.Axios(
@@ -409,10 +418,22 @@ export default {
         },
         this
       ).then(response => {
+        this.toback();
         },
         ({type, info}) => {
 
         })
+    },
+    faultValue(){
+      if(this.deviceId.length===0)this.$message.error("请选择相关设备");
+      else if(this.deviceId.length>1)this.$message.error("对不起，只能选择一个设备");
+      else if(this.scopeValue==="")this.$message.error("请至少选择影响范围");
+      else if(this.gradeValue==="")this.$message.error("请至少选择故障等级");
+      else if(this.time==="")this.$message.error("请至少选择故障开始时间");
+      else if(this.breakDesc==="")this.$message.error("请填写故障描述");
+      else if(this.breakInfo==="")this.$message.error("请填写原因分析");
+      else if(this.img.length>0)this.$message.error("请上传至少一张故障相关图片");
+      else return true;
     },
   },
   created() {
