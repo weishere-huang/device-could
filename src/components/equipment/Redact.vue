@@ -344,9 +344,10 @@
           style="padding:0 40px 0 12px;"
           class="upLoad"
         >
-          <span>相关资料：</span>
+          <span style="line-height:26px;">相关资料：</span>
 
-          <span><el-upload
+          <span>
+            <el-upload
             style="display:inline-block;vertical-align:top"
             class="upload-demo"
             :action="path()"
@@ -360,7 +361,8 @@
             :file-list="fileList">
                 <el-button size="mini" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">只能上传不超过1M的文件,且不能超过20个文件</div>
-              </el-upload></span>
+            </el-upload>
+          </span>
         </div>
         </el-col>
 
@@ -872,7 +874,7 @@ export default {
       border-radius: 5px;
       margin-top: 20px;
       position: relative;
-      font-size: 14px;
+      font-size: 12px;
       color: #606266;
       h5 {
         position: absolute;
@@ -881,22 +883,22 @@ export default {
         background-color: white;
       }
       .staff {
-        li {
-          list-style-type: none;
-          padding: 0 40px 0 10px;
-          height: 30px;
-          line-height: 30px;
-          div:nth-child(1) {
-            display: inline-block;
-          }
-          div:nth-child(2) {
-            float: right;
-            cursor: pointer;
-            &:hover {
-              color: #409eff;
-            }
-          }
-        }
+        // li {
+        //   list-style-type: none;
+        //   padding: 0 40px 0 10px;
+        //   height: 30px;
+        //   line-height: 30px;
+        //   div:nth-child(1) {
+        //     display: inline-block;
+        //   }
+        //   div:nth-child(2) {
+        //     float: right;
+        //     cursor: pointer;
+        //     &:hover {
+        //       color: #409eff;
+        //     }
+        //   }
+        // }
       }
       .upLoad {
         span:nth-child(3) {

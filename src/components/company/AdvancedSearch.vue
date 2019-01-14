@@ -100,6 +100,7 @@ export default {
 .search {
   width: 300px;
   // position: absolute;
+  font-size: 12px;
   padding: 20px;
   border: @border;
   border-radius: 5px;

@@ -29,9 +29,14 @@
 
         <div class="state">
           <div>
-            <label style="display:inline-block;height:60px;">审核意见：</label>
-            <textarea type="textarea" style="width:70%;height:60px;vertical-align:top;" placeholder="请填写审核意见"
+            <el-form label-width="145px">
+              <el-form-item label="审核意见：">
+                <textarea type="textarea" style="width:90%;height:60px;vertical-align:top;" placeholder="请填写审核意见"
                       v-model="auditValue.opinion"></textarea>
+              </el-form-item>
+            </el-form>
+     
+            
           </div>
 
           <div style="margin-top:10px;width:100%;text-align:center;">
@@ -138,7 +143,7 @@
     }
   };
 </script>
-<style lang="less" scoped>
+<style lang="less" >
   @blue: #409eff;
   @Success: #67c23a;
   @Warning: #e6a23c;
@@ -189,6 +194,9 @@
           border-radius: 5px;
           border-color: #dde2eb;
           padding: 10px;
+        }
+        .el-form-item__label{
+          padding: 0 5px 0 0;
         }
       }
     }
