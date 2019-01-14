@@ -87,7 +87,7 @@
             </el-form-item>
             <el-form-item label="工单类型：">
               <span>{{workInfo.workType}}</span>
-              <el-button @click="workToPlan" type="text">{{workInfo.maintenanceId}}&nbsp;<i class="el-icon-search" style="color: #2474c5"></i></el-button>
+              <el-button @click="workToPlan" type="text">{{workInfo.maintenanceId}}&nbsp;<i class='iconfont' style="font-size:20px; color: #2474c5">&#xe619;</i></el-button>
             </el-form-item>
             <el-form-item label="工单状态：">
               <span>{{workInfo.state}}</span>
@@ -772,13 +772,10 @@
         this.suppliesTableData = Array.from(new Set(this.suppliesTableData))
       },
       selectGroupChange(selection) {
-        // console.log("select-group-change", selection);
       },
       selectALL(selection) {
-        // console.log("select-aLL", selection);
       },
       selectChange(selection, rowData) {
-        // console.log("select-change", selection, rowData);
       },
       getPersonnel(rowIndex, rowData, column) {
         this.toExamine = rowData;
@@ -912,7 +909,6 @@
           },
           this
         ).then(response => {
-            console.log(response.data.data.content);
             this.submitAuditData=response.data.data.content
           },
           ({type, info}) => {
@@ -1051,7 +1047,6 @@
           this
         ).then(
           response => {
-            // console.log(response.data.data.devices);
             this.workInfoValue(response.data.data.work);
             this.formLabelAlignValue(response.data.data.fault);
             this.equipmentTableDataValue(response.data.data.devices);
@@ -1082,7 +1077,6 @@
           this
         ).then(
           response => {
-            // console.log(response.data.data);
             this.personData = response.data.data;
           },
           ({type, info}) => {
@@ -1162,7 +1156,6 @@
             this.spareParts= this.filterArray2(result.data.data,0);
           })
           .catch(err => {
-            // console.log(err);
           });
       },
 
@@ -1306,7 +1299,6 @@
       //设备
       equipmentTableDataValue(value){
         this.equipmentTableData = value;
-        // console.log(this.equipmentTableData)
       },
       //工单物料
       suppliesTableDataValue(value){

@@ -280,7 +280,7 @@
             overflowTitle: true
           },
           {
-            field: "deviceSpec",
+            field: "deviceModel",
             title: "规格/型号",
             width: 100,
             titleAlign: "center",
@@ -315,11 +315,8 @@
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
-              if(rowData.faultSource ===0 ){
-                return `<span>人工提交</span>`
-              }else{
-                return `<span>设备采集</span>`
-              }
+              if(rowData.faultSource ==0 )return `<span>人工提交</span>`;
+              if(rowData.faultSource ==1 ) return `<span>设备采集</span>`;
             }
           },
           {

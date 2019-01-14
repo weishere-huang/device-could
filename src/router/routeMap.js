@@ -138,7 +138,7 @@ export default [{
         menu: '故障上报',
         route: "/Breakdown/Reported",
         visible: true,
-        permissionCode: 'operation_fault_lookup'
+        permissionCode: 'operation_fault_report_lookup'
       },
       {
         menu: '设备故障详情',
@@ -245,7 +245,7 @@ export default [{
       {
         menu: '创建工单',
         route: "/NewWorkOrder",
-        permissionCode: 'work_list_lookup'
+        permissionCode: 'work_create_lookup'
       },
       {
         menu: '故障工单详情',
