@@ -3,11 +3,18 @@
     <router-view></router-view>
     <div class="userCase" :class="[{hide:isHideList}]">
       <div class="top">
+        <permission-button
+          permCode='operation_overhaul_add_lookup.operation_overhaul_add_save'
+          banType='hide'
+          size="small"
+          type="primary"
+          @click="reportedShow"
+        ><i style='font-size:12px' class='iconfont'>&#xe614;</i>&nbsp;故障上报</permission-button>
         <el-button
           size="small"
           type="primary"
           @click="reload()"
-        ><i style='font-size:12px' class='iconfont'>&#xe614;</i>&nbsp;刷新</el-button>
+        ><i style='font-size:12px' class='iconfont'>&#xe614;</i>&nbsp;立即刷新</el-button>
         <el-dialog
           title="故障消除"
           :visible.sync="dialogVisible"
@@ -717,9 +724,14 @@
           this.$message.error("请选择要处理的故障");
         }
       },
-
+      reportedShow(){
+        this.$router.push({path:"Breakdown/Reported"});
+      },
     },
     created() {
+      let a=this.$route.matched.find(item=>(item.name==="Reported"))?true:false;
+      let b=this.$route.params.id !== undefined ? true : false;
+      this.isHideList = a||b ?true:false;
       this.load();
     },
     components: {
@@ -728,9 +740,10 @@
     },
     watch: {
       $route() {
-        this.isHideList=this.$route.params.id !== undefined ? true : false;
+        this.$route.params.id !== undefined || this.$route.matched.find(item=>(item.name==="Reported"))?
+          this.isHideList = true: this.isHideList = false;
         this.$refs.breakdownTable.resize();
-        this.$store.state.operation.breakList==="y"? this.reload():"";
+        this.$store.state.operation.turnround==="y"? this.reload():"";
       }
     },
   };

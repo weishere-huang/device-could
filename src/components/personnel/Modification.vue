@@ -573,9 +573,8 @@
         this
       ).then(response => {
           this.role = response.data.data;
-          this.role.push(item=>{
-            item.id === this.persnneladd.roleId ? null:{id:this.persnneladd.roleId,name:this.persnneladd.roleName};
-          });
+          this.role = this.role.filter(item=>item.id !==this.persnneladd.roleId);
+          this.role.push({id:this.persnneladd.roleId,name:this.persnneladd.roleName});
         },
         ({type, info}) => {
 

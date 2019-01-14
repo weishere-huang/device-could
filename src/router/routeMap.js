@@ -136,9 +136,9 @@ export default [{
       },
       {
         menu: '故障上报',
-        route: "/Reported",
-        defaultDock: true,
-        permissionCode: 'operation_overhaul_lookup'
+        route: "/Breakdown/Reported",
+        visible: true,
+        permissionCode: 'operation_fault_lookup'
       },
       {
         menu: '设备故障详情',
@@ -186,7 +186,8 @@ export default [{
     menu: '备品备件',
     permissionCode: 'partInfo',
     icon: '&#xe690;',
-    subMenu: [{
+    subMenu: [
+      {
         menu: '备件基础信息',
         route: "/SparePart",
         permissionCode: 'part_info_lookup'

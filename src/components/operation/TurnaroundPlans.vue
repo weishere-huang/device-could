@@ -5,7 +5,7 @@
       <div class="top">
         <permission-button
           permCode='operation_overhaul_add_lookup.operation_overhaul_add_save'
-          banType='alert'
+          banType='hide'
           size="small"
           type="primary"
           @click="toPansAdd"
