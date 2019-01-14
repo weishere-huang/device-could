@@ -3,7 +3,7 @@
     <div class="userCase" :class="[{hide:isHideList}]">
       <div class="top">
         <permission-button
-          permCode='employee_add_lookup.employee_add_save'
+          permCode='employee_lookup.employee_add'
           banType='hide'
           size="small"
           type="primary"
@@ -454,8 +454,9 @@
           <el-tooltip class="item" effect="dark" content="修改" placement="top">
               <permission-button permCode='employee_modification_lookup.employee_modification_save'
                      banType='disable' type="text"
+                     @click.stop.prevent="update(rowData,index)"
                      style="text-decoration: none;color:#409eff">
-                     <i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+                     <i style='font-size:16px' class='iconfont'>&#xe6b4;</i>
             </permission-button>
           </el-tooltip>
           &nbsp;
@@ -465,8 +466,9 @@
                      banType='disable'
                      type="text"
                      style="text-decoration: none;color:#F56C6C"
+                     @click.stop.prevent="deleteRow(rowData,index)"
                      >
-            <i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i>
+            <i style='font-size:16px' class='iconfont'>&#xe66b;</i>
             </permission-button>
           </el-tooltip>
         </span>`,
