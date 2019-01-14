@@ -41,7 +41,7 @@
             <el-button
               size="mini"
               type="primary"
-              @click="findpeopler"
+              @click="searchcontroller"
             >搜索</el-button>
             <span style="padding:0 10px;">最近搜索：</span>
             <span style="text-decoration: underline;"></span>
@@ -88,25 +88,6 @@
             @click="toAdd"
           >保存</el-button>
           <div class="personList">
-            <!-- <el-tabs
-              type="border-card"
-              @tab-click="getNode"
-              v-model="editableTabsValue"
-              :tab-position="tabPosition"
-              style="height: 350px;"
-            >
-              <el-tab-pane
-                :key="item.name"
-                v-for="item in editableTabs=personAddHandler"
-                :label="item.workerTypeName"
-                :name="item.workerType"
-              >
-                <tab-component
-                  :items="item"
-                  :deleteWorker="workerDelete"
-                ></tab-component>
-              </el-tab-pane>
-            </el-tabs> -->
             <div
               v-for="(item,index) of editableTabs=personAddHandler"
               :key="index"
@@ -384,9 +365,14 @@ export default {
       ],
       value1: "",
       active: -1,
+      fristcode:""
     };
   },
   methods: {
+    searchcontroller(){
+      this.orgcode=this.fristcode;
+      this.findpeopler();
+    },
     workerTypeValue(item, index){
       this.value1=item.value
       this.active=index
@@ -428,6 +414,7 @@ export default {
     getNode(a) {
     },
     handleNodeClick(data) {
+      this.condition="";
       this.orgcode = data.code;
       this.findpeopler();
     },
@@ -518,9 +505,7 @@ export default {
       this.$emit("personData", params);
     },
     deletes() {
-      for (let i = 0; i < this.editableTabs.length; i++) {
-        this.editableTabs[i].content = [];
-      }
+      this.editableTabs.forEach(item => item.content = []);
     },
 
     workerDelete(value,data) {
@@ -550,6 +535,7 @@ export default {
           this.orgcode = result.data.data.find(
             item => item.organizeType === 1
           ).code;
+          this.fristcode=this.orgcode;
           this.findpeopler();
         },
         ({ type, info }) => {}

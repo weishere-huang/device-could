@@ -85,7 +85,7 @@
             banType='hide'
             size="small"
             style="width:200px;margin:auto"
-            @click="dialogVisible3=true"
+            @click="dialogVisible3=true,addname='',addmsg=''"
           >添加初始类别</permission-button>
         </div>
         <el-dialog

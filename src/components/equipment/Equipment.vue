@@ -630,7 +630,7 @@ Vue.component("table-equipment", {
             <permission-button
             permCode='device_redact_lookup.device_redact_save'
             banType='hide' type="text" style="color:#409eff"><i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i></permission-button>
->>>>>>> 16d34d6227843cddc38c55712682c6ef8284fa2f
+>>>>>>> a582f6962f74bee1567de90c3fcbe6d4e7076b61
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="删除" placement="top">
             <permission-button
