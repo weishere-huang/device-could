@@ -455,7 +455,6 @@ export default {
         this
       ).then(
         result => {
-          console.log(result.data.data);
           this.a_content=result.data.data[0].content
         },
         ({ type, info }) => {}
