@@ -52,6 +52,7 @@
 export default {
   data() {
     return {
+      searchs:"",
       key: "",
       isPageOk:true,
       pageNumber: 0,
