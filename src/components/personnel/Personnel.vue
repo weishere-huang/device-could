@@ -42,6 +42,7 @@
             row-click-color="#edf7ff"
             @on-custom-comp="customCompFunc"
             ref="personnelTable"
+            :show-vertical-border="false"
           ></v-table>
           <div
             class="mt20 mb20 bold"
@@ -84,8 +85,8 @@
             field: "employeeNo",
             title: "员工编号",
             width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
             //   orderBy: ""
@@ -94,8 +95,8 @@
             field: "name",
             title: "姓名",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -103,8 +104,8 @@
             field: "phone",
             title: "手机号",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -112,8 +113,8 @@
             field: "userName",
             title: "用户名",
             width: 120,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -121,8 +122,8 @@
             field: "organizeName",
             title: "组织单位/部门",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -130,8 +131,8 @@
             field: "position",
             title: "岗位",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -139,8 +140,8 @@
             field: "entryTime",
             title: "入职日期",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true,
           },

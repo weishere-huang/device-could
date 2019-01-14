@@ -87,6 +87,7 @@
             row-click-color="#edf7ff"
             @on-custom-comp="customCompFunc"
             ref="breakdownTable"
+            :show-vertical-border="false"
           ></v-table>
           <div
             class="mt20 mb20 bold"
@@ -244,8 +245,8 @@
             field: "faultNo",
             title: "故障编号",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
             //   orderBy: ""
@@ -254,8 +255,8 @@
             field: "state",
             title: "状态",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
@@ -274,8 +275,8 @@
             field: "deviceName",
             title: "设备名称",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -283,8 +284,8 @@
             field: "deviceModel",
             title: "规格/型号",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -292,8 +293,8 @@
             field: "faultLevel",
             title: "故障等级",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
@@ -310,8 +311,8 @@
             field: "faultSource",
             title: "故障来源",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
@@ -323,8 +324,8 @@
             field: "faultDesc",
             title: "故障描述",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -332,8 +333,8 @@
             field: "causeAnalysis",
             title: "原因分析",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },

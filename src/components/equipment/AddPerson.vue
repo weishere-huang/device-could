@@ -59,6 +59,7 @@
               row-hover-color="#eee"
               row-click-color="#edf7ff"
               @on-custom-comp="customCompFunc"
+              :show-vertical-border="false"
             ></v-table>
             <div
               class="mt20 mb20 bold"
@@ -304,8 +305,8 @@ export default {
           field: "name",
           title: "姓名",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true
           // orderBy: ""
         },
@@ -314,15 +315,15 @@ export default {
           field: "position",
           title: "岗位",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true
         },
         {
           field: "phone",
           title: "手机号",
           width: 90,
-          titleAlign: "center",
+          titleAlign: "left",
           columnAlign: "left",
           isResize: true
         },

@@ -25,7 +25,13 @@ textarea {
   padding: 0 7.5px !important;
 }
 .v-table-body-cell {
-  padding: 0 10px !important;
+  padding: 0 6px !important;
+}
+.v-table-title-cell {
+  padding: 0 4px !important;
+}
+.el-textarea {
+  font-size: 12px;
 }
 .el-icon-upload-success {
   position: absolute !important;

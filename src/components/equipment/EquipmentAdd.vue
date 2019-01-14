@@ -220,7 +220,8 @@
         fileList1: [],
         defaultProps:{
           value:"code",
-          label:"name"
+          label:"name",
+          key:"manageCode"
         },
         eqState:{
           value:"1",
@@ -545,6 +546,7 @@
           this
         ).then(
           ([res1, res2]) => {
+            console.log(res1);
             this.orgoptions = this.filterArray(res1.data.data, res1.data.data.find(item=>item.organizeType===1).parentCode);
             this.ctgoptions= this.filterArray2(res2.data.data,0);
           },

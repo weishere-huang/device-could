@@ -99,9 +99,8 @@
           <el-button size="small" type="primary" @click="addPlanIsShow"><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;设备添加</el-button>
         </div>
         <h5>设备列表</h5>
-        <v-table :select-all="selectALL" @on-custom-comp="customCompFunc"  :select-group-change="selectGroupChange" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-        <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-        </div>
+        <v-table :select-all="selectALL" @on-custom-comp="customCompFunc"  :select-group-change="selectGroupChange" :show-vertical-border="false" is-horizontal-resize column-width-drag :multiple-sort="false" :height="350" style="width:100%;height:350px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+        
       </div>
       <el-dialog
         title="人员列表"
@@ -119,6 +118,7 @@
             row-hover-color="#eee"
             row-click-color="#edf7ff"
             row-height=30
+            :show-vertical-border="false"
           ></v-table>
         </div>
       </el-dialog>
@@ -167,8 +167,8 @@
             field: "deviceNo",
             title: "设备编号",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
             //   orderBy: ""
           },
@@ -176,30 +176,30 @@
             field: "deviceName",
             title: "设备名称",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "deviceModel",
             title: "型号/规格",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "location",
             title: "设备位置",
-            width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            width: 80,
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "workerNames",
             title: "人员",
-            width: 100,
+            width: 80,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
@@ -216,7 +216,7 @@
             field: "workTypeName",
             title: "职责",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -224,7 +224,7 @@
             field: "name",
             title: "姓名",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -232,7 +232,7 @@
             field: "phone",
             title: "手机号",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -240,7 +240,7 @@
             field: "organizeName",
             title: "组织单位/部门",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -248,7 +248,7 @@
             field: "position",
             title: "岗位",
             width: 60,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },

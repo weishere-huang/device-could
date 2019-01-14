@@ -114,6 +114,7 @@
             :row-dblclick="redactShow"
             ref="equipmentTable"
             @on-custom-comp="customCompFunc"
+            :show-vertical-border="false"
           ></v-table>
           <div
             class="mt20 mb20 bold"
@@ -172,8 +173,8 @@ export default {
           field: "deviceNo",
           title: "设备编号",
           width: 90,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
           // orderBy: ""
@@ -182,8 +183,8 @@ export default {
           field: "deviceName",
           title: "设备名称",
           width: 120,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -191,8 +192,8 @@ export default {
           field: "deviceState",
           title: "设备状况",
           width: 70,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true,
           formatter: function (rowData, rowIndex, pagingIndex, field) {
@@ -214,8 +215,8 @@ export default {
           field: "organizeName",
           title: "所属部门",
           width: 140,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -223,8 +224,8 @@ export default {
           field: "location",
           title: "安装位置",
           width: 70,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -232,8 +233,8 @@ export default {
           field: "locationNo",
           title: "设备位号",
           width: 70,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -241,8 +242,8 @@ export default {
           field: "deviceCategoryName",
           title: "设备类别",
           width: 70,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -250,8 +251,8 @@ export default {
           field: "deviceModel",
           title: "设备型号",
           width: 70,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -259,8 +260,8 @@ export default {
           field: "workerNames",
           title: "负责人",
           width: 60,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },

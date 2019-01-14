@@ -94,6 +94,7 @@
               row-hover-color="#eee"
               row-click-color="#edf7ff"
               ref="classifyTable"
+              :show-vertical-border="false"
             ></v-table>
           </div>
         </div>
@@ -157,8 +158,8 @@ export default {
           field: "partNo",
           title: "备件编号",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -166,8 +167,8 @@ export default {
           field: "partName",
           title: "备件名称",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -175,8 +176,8 @@ export default {
           field: "partModel",
           title: "备件型号/规格",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -184,8 +185,8 @@ export default {
           field: "partCategory",
           title: "备件级别",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         }
