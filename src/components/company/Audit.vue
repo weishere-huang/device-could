@@ -29,8 +29,8 @@
 
         <div class="state">
           <div>
-            <label style="display:inline-block;height:60px;vertical-align:top;">审核意见：</label>
-            <textarea type="textarea" style="width:70%;height:60px;" placeholder="请填写审核意见"
+            <label style="display:inline-block;height:60px;">审核意见：</label>
+            <textarea type="textarea" style="width:70%;height:60px;vertical-align:top;" placeholder="请填写审核意见"
                       v-model="auditValue.opinion"></textarea>
           </div>
 
@@ -100,7 +100,7 @@
           })
           this.reload();
         }, ({type, info}) => {
-          console.log(info)
+          
           this.$message.error("服务器异常，审核失败")
         })
       },

@@ -234,7 +234,7 @@
                 </el-col> -->
               </el-row>
             </div>
-            <div class="mt20 mb20 bold"></div>
+            <div class="mt20 mb20 bold" style="margin-top:10px;"></div>
             <v-pagination @page-change="pageChange" @page-size-change="pageSizeChange" :total="tableDate" :page-size="pageSize" :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"></v-pagination>
           </section>
         </el-main>
