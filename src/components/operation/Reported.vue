@@ -1,8 +1,7 @@
 <template>
   <div class="Reported">
     <div class="top">
-      <el-button
-        size="small" type="primary" @click="toback"  icon="el-icon-arrow-left">返回</el-button>
+       <el-button size="small" type="primary" @click="toBack"  icon="el-icon-arrow-left">返回</el-button>
       <permission-button
         permCode='operation_fault_report_lookup.operation_fault_report_save'
         banType='disable'
@@ -328,8 +327,8 @@ export default {
     };
   },
   methods: {
-    toback() {
-      this.$router.back(-1)
+    toBack() {
+      this.$router.back(-1);
     },
     path(){
       return this.global.apiImg;

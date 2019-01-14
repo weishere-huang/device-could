@@ -192,7 +192,7 @@
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
                 :auto-upload="true"
-                :file-list="fileList1">
+                :file-list="fileList">
                 <el-button size="mini" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">只能上传不超过10M的文件,且不能超过20个文件</div>
               </el-upload>
@@ -216,7 +216,7 @@
     name: "",
     data() {
       return {
-        upcode:"",
+        fileList:[],
         fileList1: [],
         defaultProps:{
           value:"code",

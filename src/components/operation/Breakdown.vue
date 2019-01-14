@@ -9,7 +9,7 @@
           size="small"
           type="primary"
           @click="reportedShow"
-        ><i style='font-size:12px' class='iconfont'>&#xe614;</i>&nbsp;故障上报</permission-button>
+        >故障上报</permission-button>
         <el-button
           size="small"
           type="primary"
