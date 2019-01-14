@@ -923,131 +923,115 @@
   };
 </script>
 <style lang="less">
-  @import url("../../assets/font/font.css");
-  @blue: #409eff;
-  @Success: #67c23a;
-  @Warning: #e6a23c;
-  @Danger: #f56c6c;
-  @Info: #909399;
-  * {
-    margin: 0;
-    padding: 0;
-  }
-  .login {
-    text-align: center;
+@import url("../../assets/font/font.css");
+@blue: #409eff;
+@Success: #67c23a;
+@Warning: #e6a23c;
+@Danger: #f56c6c;
+@Info: #909399;
+* {
+  margin: 0;
+  padding: 0;
+}
+.login {
+  &:after {
+    content: "";
     width: 100%;
-    height: 100vh;
-    //background-color: @blue;
-    background: #686868 url(../../assets/image/login-bg2.png) bottom no-repeat;
-    background-size: 100% auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
+    height: 100%;
+    position: absolute;
     left: 0;
-    .loginBox {
-      width: 40%;
-      height: auto;
-      //background-color: white;
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 10px;
-      box-shadow: 3px 3px 5px #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      h1 {
-        width: 100%;
-        padding: 20px 0;
-        letter-spacing: 2px;
-        //font-family: "和畅惠风 Hiragino Sans GB";
-        font-weight: 500;
-        color: @blue;
-        font-size: 120%;
-      }
-      // .el-form-item {
-      //   margin-bottom: 20px;
-      // }
-      p {
-        width: 60%;
-        padding: 0 0 10px 0;
-        button {
-          width: 100%;
-          height: 40px;
-        }
-      }
-      .registerSkip {
-        text-align: right;
-        padding-bottom: 50px;
-        font-size: 12px;
-        span {
-          display: inline-block;
-          margin-left: 5px;
-          cursor: pointer;
-          &:hover {
-            color: @blue;
-          }
-        }
-      }
-      .proving1 {
-        text-align: left;
-        width: 60%;
-        .el-input {
-          width: 120%;
-        }
-        .el-button {
-          width: 160%;
-          height: 38px;
-        }
-        span {
-          margin-left: 3%;
-          display: inline-block;
-          width: 30%;
-          border: 1px solid red;
-        }
-      }
-    }
+    top: 0;
+    background: #686868 url(../../assets/image/login-bg.jpg) no-repeat;
+    background-size: cover;
+    -webkit-filter: blur(4px);
+    z-index: 3;
   }
-  .adminLogin {
-    width: 40%;
+  .topBar {
+    line-height: 40px;
+    position: absolute;
+    top: 0;
+    text-align: left;
+    width: 100%;
+    img {
+      width: 200px;
+      margin: 5px;
+    }
+    z-index: 4;
+  }
+  .bottomBar {
+    line-height: 40px;
+    background: rgba(255, 255, 255, 0.3);
+    position: absolute;
+    padding: 0 20px;
+    bottom: 0;
+    width: 100%;
+    color: #fff;
+    text-align: right;
+    border-bottom: solid 1px #a9a7a7;
+    text-shadow: 1px 1px 1px #333;
+    font-size: 18px;
+    z-index: 4;
+  }
+  text-align: center;
+  width: 100%;
+  height: 100vh;
+  //background-color: @blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  .loginBox {
+    width: 30%;
     height: auto;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 10px 10px 10px @Info;
+    //background-color: white;
+    background: rgba(255, 255, 255, 0.45);
+    border-radius: 20px;
+    box-shadow: 0 0 8px #000;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    z-index: 100;
     h1 {
       width: 100%;
-      padding: 20px 0;
-      letter-spacing: 2px;
-      font-family: "和畅惠风 Hiragino Sans GB";
+      // padding: 20px 0;
+      // letter-spacing: 2px;
+      //font-family: "和畅惠风 Hiragino Sans GB";
       font-weight: 500;
-      color: @blue;
+      width: 80%;
+      color: #fff;
+      //text-align: left;
+      text-shadow: 1px 1px 2px #333;
+      //color: @blue;
+      //font-size: 120%;
+    }
+    // .el-form-item {
+    //   margin-bottom: 20px;
+    // }
+    .el-form-item__error {
+      color: red;
     }
     p {
-      width: 60%;
-      padding: 10px 0;
+      width: 80%;
+      padding: 0 0 10px 0;
       button {
         width: 100%;
       }
     }
     .registerSkip {
       text-align: right;
-      padding-bottom: 50px;
+      line-height: 40px;
       font-size: 12px;
       span {
         display: inline-block;
         margin-left: 5px;
         cursor: pointer;
         &:hover {
-          color: @blue;
+          color: #0d5196;
         }
       }
     }
@@ -1072,84 +1056,161 @@
       }
     }
   }
-  .register {
-    position: absolute;
-    right: 10%;
-    width: 35%;
-    background-color: white;
-    box-shadow: 10px 10px 10px @Info;
-    border-radius: 10px;
-    padding-bottom: 30px;
-    .next {
-      margin-top: 30px;
-    }
-    h2 {
-      letter-spacing: 2px;
-      font-weight: 500;
-      padding: 10px 0;
-    }
-    .el-form-item {
-      text-align: left;
-      margin-bottom: 16px;
-      .el-upload--picture-card {
-        width: 80px;
-        height: 80px;
-      }
-    }
-    ul {
-      li {
-        list-style-type: none;
-        margin-bottom: 5px;
-        .el-upload {
-          width: 80px !important;
-          height: 80px !important;
-          overflow: hidden;
-        }
-        label {
-          display: inline-block;
-          width: 31%;
-          text-align: right;
-        }
-        .validate {
-          width: 30%;
-        }
-        a {
-          text-decoration: none;
-          color: @blue;
-        }
-      }
-    }
-    .el-input {
-      width: 50%;
-      padding: 0;
-    }
-    .titleText {
+}
+.adminLogin {
+  width: 40%;
+  height: auto;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 10px 10px 10px @Info;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  h1 {
+    width: 100%;
+    padding: 20px 0;
+    letter-spacing: 2px;
+    font-family: "和畅惠风 Hiragino Sans GB";
+    font-weight: 500;
+    color: @blue;
+  }
+  p {
+    width: 80%;
+    padding: 10px 0;
+    button {
       width: 100%;
-      font-size: 12px;
-      color: #909399;
-      text-align: center;
-      padding: 10px 0 10px 0px;
     }
-    .upload-demo {
-      width: 50%;
-      display: inline-block;
-      padding: 0;
+  }
+}
+.registerSkip {
+  text-align: right;
+  padding-bottom: 50px;
+  font-size: 12px;
+  span {
+    display: inline-block;
+    margin-left: 5px;
+    cursor: pointer;
+    &:hover {
+      color: #0d5196;
     }
-    .registerBtn {
-      width: 75%;
-      height: 32px;
+  }
+  ul {
+    li {
+      list-style-type: none;
+      margin-bottom: 5px;
+      .el-upload {
+        width: 80px !important;
+        height: 80px !important;
+        overflow: hidden;
+      }
+      label {
+        display: inline-block;
+        width: 31%;
+        text-align: right;
+      }
+      .validate {
+        width: 30%;
+      }
+      a {
+        text-decoration: none;
+        color: @blue;
+      }
     }
-    .loginSkip {
-      padding-right: 40px;
-      margin-top: 20px;
-      text-align: right;
-      font-size: 12px;
-      cursor: pointer;
+  }
+  .el-input {
+    width: 50%;
+    padding: 0;
+  }
+  .titleText {
+    width: 100%;
+    font-size: 12px;
+    color: #909399;
+    text-align: center;
+    padding: 10px 0 10px 0px;
+  }
+  .upload-demo {
+    width: 50%;
+    display: inline-block;
+    padding: 0;
+  }
+  .registerBtn {
+    width: 75%;
+    height: 32px;
+  }
+  .loginSkip {
+    padding-right: 40px;
+    margin-top: 20px;
+    text-align: right;
+    font-size: 12px;
+    cursor: pointer;
+  }
+}
+.register {
+  position: absolute;
+  //right: 10%;
+  width: 35%;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 20px;
+  box-shadow: 0 0 8px #000;
+  padding-bottom: 30px;
+  z-index: 4;
+  .next {
+    margin-top: 30px;
+  }
+  .el-form-item__error {
+    color: red;
+  }
+  h2 {
+    width: 100%;
+    font-weight: 500;
+    width: 80%;
+    color: #fff;
+    text-align: left;
+    text-shadow: 1px 1px 2px #333;
+    margin: 0 auto;
+    line-height: 60px;
+    font-size: 24px;
+  }
+  .el-form-item {
+    text-align: left;
+    margin-bottom: 16px;
+    .el-upload--picture-card {
+      width: 80px;
+      height: 80px;
     }
-    .el-dialog__header {
-      height: 30px;
+    .el-dialog__headerbtn {
+      top: 6px;
     }
-   
+  }
+  .el-input {
+    width: 50%;
+    padding: 0;
+  }
+  .titleText {
+    width: 100%;
+    font-size: 12px;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0 10px 0px;
+  }
+  .upload-demo {
+    width: 50%;
+    display: inline-block;
+    padding: 0;
+  }
+  .registerBtn {
+    width: 75%;
+    height: 32px;
+  }
+  .loginSkip {
+    padding-right: 40px;
+    margin-top: 20px;
+    text-align: right;
+    font-size: 12px;
+    cursor: pointer;
   }
   .el-dialog__body {
     font-size: 0px;
@@ -1157,4 +1218,13 @@
   .el-dialog__footer {
     padding-bottom: 10px !important;
   }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  .el-form-item__label{color:#fff}
+}
 </style>
