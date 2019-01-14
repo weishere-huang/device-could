@@ -192,15 +192,6 @@ import personnel from '../operation/breakdown/Personnel'
             //   orderBy: ""
           },
           {
-            field: "maintenanceId",
-            title: "来源",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true,
-            componentName: "table-workToPlan"
-          },
-          {
             field: "state",
             title: "工单状态",
             width: 70,
@@ -275,7 +266,7 @@ import personnel from '../operation/breakdown/Personnel'
           {
             field: "operation",
             title: "操作",
-            width: 80,
+            width: 100,
             titleAlign: "center",
             columnAlign: "center",
             componentName: "table-operations"
@@ -447,31 +438,6 @@ import personnel from '../operation/breakdown/Personnel'
       }
     },
   };
-  Vue.component("table-workToPlan", {
-    template: `<span>
-        <el-tooltip class="item" effect="dark" content="点击查看来源" placement="top">
-            <a href="" style="text-decoration: none">{{rowData.maintenanceId}}<i @click.stop.prevent="workToPlans(rowData,index)" style='font-size:20px;color:#409eff' class='iconfont'>&#xe619;</i></a>
-        </el-tooltip>
-        </span>`,
-    props: {
-      rowData: {
-        type: Object
-      },
-      field: {
-        type: String
-      },
-      index: {
-        type: Number
-      }
-    },
-    methods: {
-      workToPlans() {
-        // 参数根据业务场景随意构造
-        let params = { type: "workToPlans", index: this.index, rowData: this.rowData };
-        this.$emit("on-custom-comp", params);
-      },
-    }
-  });
   Vue.component("table-operations", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="查看详情" placement="top">
@@ -485,6 +451,10 @@ import personnel from '../operation/breakdown/Personnel'
                     <i @click.stop.prevent="submitAudit(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
             </permission-button>
           </el-tooltip>
+          &nbsp;
+           <el-tooltip class="item" effect="dark" content="点击查看来源" placement="top">
+            <a href="" style="text-decoration: none"><i @click.stop.prevent="workToPlans(rowData,index)" style='font-size:20px;color:#409eff' class='iconfont'>&#xe619;</i></a>
+        </el-tooltip>
         </span>`,
     props: {
       rowData: {
@@ -506,7 +476,12 @@ import personnel from '../operation/breakdown/Personnel'
       submitAudit(){
         let params = { type: "submit", index: this.index, rowData: this.rowData };
         this.$emit("on-custom-comp", params);
-      }
+      },
+      workToPlans() {
+        // 参数根据业务场景随意构造
+        let params = { type: "workToPlans", index: this.index, rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      },
     }
   });
 
