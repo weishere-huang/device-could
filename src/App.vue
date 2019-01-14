@@ -31,7 +31,7 @@
           <i v-show="isCollapse === false" class="el-icon-arrow-left"></i>
         </div>
       </el-aside>
-      <el-container>
+      <el-container >
         <el-header>
           <el-header style="background-color:#efefef;">
             <div class="breadcrumbWrap">

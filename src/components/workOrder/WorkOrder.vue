@@ -66,15 +66,103 @@
         ></v-pagination>
       </div>
     </div>
+    <el-dialog
+      title="审核"
+      :visible.sync="outerVisible"
+      :beforeClose="cancel"
+    >
+      <el-form
+        label-position=right
+        label-width="120px"
+        :model="formLabelAlign"
+      >
+        <el-form-item label="审批结果：">
+          <el-radio
+            v-model="formLabelAlign.radio"
+            label="0"
+          >同意</el-radio>
+          <el-radio
+            v-model="formLabelAlign.radio"
+            label="1"
+          >驳回</el-radio>
+        </el-form-item>
+        <el-form-item label="审批意见：">
+          <el-input
+            type="textarea"
+            v-model="formLabelAlign.desc"
+            style="width:95%;"
+          ></el-input>
+        </el-form-item>
+        <div v-if="formLabelAlign.radio!=1">
+          <el-form-item label="是否终审：">
+            <el-checkbox-group v-model="formLabelAlign.type">
+              <el-checkbox
+                label=""
+                name="type"
+              ></el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+          <el-form-item
+            label="下一级审批人："
+            v-if="formLabelAlign.type!=true"
+          >
+            <el-input
+              v-model="toAuditName.name"
+              size="mini"
+              style="width:60%"
+            ></el-input>
+            <el-button
+              type="primary"
+              @click="innerVisible = true"
+              size="mini"
+            >添加审批人</el-button>
+          </el-form-item>
+        </div>
+      </el-form>
+      <el-dialog
+        title="人员添加"
+        :visible.sync="innerVisible"
+        append-to-body
+      >
+        <personnel v-on:getPersonnel="getPersonnel"></personnel>
+      </el-dialog>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click="cancel"
+          size="mini"
+        >取 消</el-button>
+        <el-button
+          @click="isSubmitAudit"
+          type="primary"
+          size="mini"
+        >提 交</el-button>
+
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
+import personnel from '../operation/breakdown/Personnel'
   import Vue from "vue";
   export default {
     inject: ["reload"],
     name: "Test",
     data() {
       return {
+        toAuditName: "",
+        innerVisible:false,
+        outerVisible:false,
+        formLabelAlign: {
+          time: "",
+          desc: "",
+          type: "",
+          radio: "",
+          name: ""
+        },
         stateNum:"",
         toNull: "",
         audited: "",
@@ -197,7 +285,37 @@
         isPage:1,
       };
     },
+    components:{
+      personnel
+    },
     methods: {
+      cancel() {
+        this.dialogVisible = false;
+        this.outerVisible = false;
+        this.formLabelAlign.desc = "";
+        this.formLabelAlign.type = "";
+        this.formLabelAlign.time = "";
+        this.formLabelAlign.radio = "";
+        this.formLabelAlign.name = "";
+        this.toAuditName="";
+      },
+      isSubmitAudit(){
+        if (this.formLabelAlign.radio!==1){
+          if(this.toAuditName!==""||this.formLabelAlign.type){
+            this.toSubmitAudit();
+          }else{
+            this.$message.error('请选择终审或添加下一审核人')
+          }
+        }else if(this.formLabelAlign.desc!==""){
+          this.toSubmitAudit();
+        }else{
+          this.$message.error("请填写驳回原因")
+        }
+      },
+      getPersonnel(params) {
+        this.toAuditName = params.person;
+        this.innerVisible = params.hide;
+      },
       selectGroupChange(selection) {
         // console.log("select-group-change", selection);
       },
@@ -286,7 +404,8 @@
           }
         }
         if (params.type ==="submit") {
-          console.log("submit");
+          console.log(params);
+          this.outerVisible=true;
         }
       },
     },
