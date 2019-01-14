@@ -239,9 +239,7 @@
                   this.$refs.name.focus();
                   callback(new Error("请输入正确的员工姓名"));
                 } else {
-                  let pinyin = require("pinyin");
-                  this.persnneladd.userName =pinyin(this.persnneladd.name,{style:pinyin.STYLE_NORMAL}) ;
-                  this.persnneladd.userName = this.persnneladd.userName.toString().replace(/,/g,"");
+                  this.persnneladd.userName = this.persnneladd.name;
                   callback();
                 }
               },

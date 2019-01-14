@@ -371,6 +371,7 @@
           this
         ).then(response => {
             this.submitAuditData = response.data.data.content;
+            console.log(this.submitAuditData);
           },
           ({type, info}) => {
 
