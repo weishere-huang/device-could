@@ -86,14 +86,15 @@
         <div class="msg">
           <h5>工单信息</h5>
           <el-form
-            label-width="120px"
+            label-width="100px"
             :model="workInfo"
           >
             <el-form-item label="工单编号：">
               <span>{{workInfo.workNo}}</span>
             </el-form-item>
             <el-form-item label="工单类型：">
-              <span>{{workInfo.workType}}</span>
+              <span>{{workInfo.workType}}</span>&nbsp;&nbsp;
+              <el-button @click="workToPlan" type="text">{{workInfo.maintenanceId}}&nbsp;<i class="el-icon-search" style="color: #2474c5"></i></el-button>
             </el-form-item>
             <el-form-item label="工单状态：">
               <span>{{workInfo.state}}</span>
@@ -106,7 +107,7 @@
         <div class="breakdown-details">
           <h5>计划详情</h5>
           <el-form
-            label-width="120px"
+            label-width="100px"
             :model="maintenancePlan"
           >
             <el-form-item label="分类：">
@@ -315,7 +316,7 @@
           </div>
         </div>
         <div class="information-flow">
-          <h6>流程信息</h6>
+          <h5>流程信息</h5>
           <v-table
             is-horizontal-resize
             column-width-drag
@@ -377,6 +378,7 @@
           workType:"",
           state:"",
           gmtCreate:"",
+          maintenanceId:"",
         },
         maintenancePlan:{
           id:"",
@@ -506,7 +508,7 @@
             columnAlign: "center",
             isResize: true,
             isEdit: true,
-            formatter (rowData,rowIndex,pagingIndex,field) {
+            formatter (rowData) {
               return `<s class='cell-edit-style'></s><span>${rowData.planCount}</span>`;
             }
           },
@@ -1404,7 +1406,15 @@
       flowInfo(value){
         this.flowInfoData = value;
       },
-
+      //跳转到计划页面
+      workToPlan(){
+        let role = JSON.parse(localStorage.getItem("permissionUrl"));
+        if(role.find(item=>{return item.module==="operation_maintain_detail_lookup"}))
+          this.$router.push({path:"/Upkeep/UpkeepAmend/" + params.rowData.maintenanceId});
+        else if(role.find(item=>{return item.module==="operation_overhaul_detail_lookup"}))
+          this.$router.push({path:"/TurnaroundPlans/TurnaroundPlansAmend/" + params.rowData.maintenanceId});
+        else this.$message.error("对不起，您的权限不足")
+      }
     },
     created(){
       this.workId = this.$route.params.id;
@@ -1493,7 +1503,9 @@
     }
     .bottom {
       margin-top: 10px;
-      //   border: @border;
+      border: @border;
+      border-radius: 5px;
+      padding: 10px;
       width: 100%;
       overflow: hidden;
       .left {
@@ -1504,13 +1516,13 @@
           padding: 10px;
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          // margin-top: 20px;
         }
         .breakdown-details {
           padding: 10px;
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
         }
       }
       .right {
@@ -1521,14 +1533,14 @@
         .equipment {
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          // margin-top: 20px;
           padding: 10px;
           height: 198px;
         }
         .supplies {
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
           padding: 10px;
           height: 220px;
           // overflow: scroll;
@@ -1536,12 +1548,13 @@
         .information-receipt {
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
           padding: 10px;
           width: 40%;
           float: left;
           .case {
-            height: 220px;
+            height: 228px;
+            overflow: scroll;
           }
           .el-form {
             border-bottom: 1px dashed #dde2eb;
@@ -1551,11 +1564,12 @@
         .information-flow {
           border: @border;
           border-radius: 5px;
-          margin-top: 20px;
+          margin-top: 10px;
           margin-left: 10px;
           padding: 10px;
-          width: 58%;
+          width: 58.5%;
           float: left;
+          height: 266px;
         }
       }
     }

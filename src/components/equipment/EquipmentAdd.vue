@@ -8,30 +8,30 @@
           <el-button  size="small" type="primary" @click="addwarning"><i style='font-size:12px' class='iconfont'>&#xe645;</i> &nbsp;保存</el-button>
         </el-row>
       </div>
-      <div class="center">
+      <div class="bottom-case">
+         <div class="center">
         <h5>基础信息</h5>
         <el-form ref="baseform" :model="sizeForm" label-width="80px" size="small" :rules="rules1" >
           <el-form-item label="设备编号" prop="deviceNo">
             <el-input v-model="sizeForm.deviceNo" style="width:200px"></el-input>
           </el-form-item>
           <el-form-item label="设备名称" prop="deviceName">
-            <el-input v-model="sizeForm.deviceName" style="width:512px"></el-input>
+            <el-input v-model="sizeForm.deviceName" style="width:525px"></el-input>
           </el-form-item>
           <el-form-item label="所属部门" prop="defaultProps" >
             <el-cascader
               placeholder="搜索"
               :options="orgoptions"
               :props="defaultProps"
-              filterable
               ref="getName"
               change-on-select
               :show-all-levels="false"
               v-model="ogrname"
                @change="handleChange"
-              style="width:512px;"
+              style="width:525px;"
             ></el-cascader>
           </el-form-item>
-          <el-form :inline="true" style="padding-left:12px" size="small">
+          <el-form :inline="true" style="" label-width="80px" size="small">
             <el-form-item label="设备分类" prop="ctg">
               <el-select v-model="sizeForm.deviceClassify" placeholder="点击选择" style="width:215px" @change="classf" ref="getclassfy">
                 <el-option v-for="(item,index) in options2" :key="index" :label="item.label"
@@ -54,7 +54,7 @@
               ></el-cascader>
             </el-form-item>
           </el-form>
-          <el-form :inline="true" style="padding-left:12px" size="small">
+          <el-form :inline="true" style="" label-width="80px" size="small">
             <el-form-item label="设备型号" prop="dxh">
               <el-input v-model="sizeForm.deviceModel" style="width:215px"></el-input>
             </el-form-item>
@@ -67,7 +67,7 @@
               </el-select>
             </el-form-item>
           </el-form>
-          <el-form :inline="true" style="padding-left:12px" size="small">
+          <el-form :inline="true" style="" label-width="80px" size="small">
             <el-form-item label="设备规格">
               <el-input v-model="sizeForm.deviceSpec" style="width:215px"></el-input>
             </el-form-item>
@@ -80,7 +80,7 @@
           </el-form>
 
           <el-form-item label="设备厂家">
-            <el-input v-model="sizeForm.manufacturer" style="width:512px"></el-input>
+            <el-input v-model="sizeForm.manufacturer" style="width:525px"></el-input>
           </el-form-item>
         </el-form>
 
@@ -197,6 +197,7 @@
                 <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;">只能上传不超过10M的文件,且不能超过20个文件</div>
               </el-upload>
         </div>
+      </div>
       </div>
     </div>
     <el-dialog
@@ -610,7 +611,14 @@
       padding: 10px;
       .top {
         padding: 10px;
-        height: 60px;
+         border: @border;
+        border-radius: 5px;
+      }
+      .bottom-case{
+        margin-top:10px ;
+        padding: 10px;
+         border: @border;
+        border-radius: 5px;
       }
       .center {
         padding: 10px;

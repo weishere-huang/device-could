@@ -74,7 +74,7 @@ export default {
         response => {
           document.querySelectorAll(".adsearch")[0].style.right = "-310px";
           this.dataName = response.data.data;
-          console.log(this.dataName);
+         
           this.$emit("advanceValue", {
             dataName: this.dataName,
             params: {

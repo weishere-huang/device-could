@@ -14,7 +14,7 @@
         <div class="search">
           <el-input
             type="search"
-            placeholder="如员工姓名，手机，部门，岗位"
+            placeholder="关键字:姓名，手机号，组织机构，岗位"
             size="small"
             v-model="searchs"
             @keyup.enter.native="search"
@@ -152,7 +152,7 @@
             columnAlign: "center",
             isResize: true,
             overflowTitle: true,
-            formatter: function(rowData, rowIndex, pagingIndex, field) {
+            formatter: function(rowData) {
               return rowData.state === "0"
                 ? "正常"
                 : "停用"
@@ -176,14 +176,8 @@
       customCompFunc(params) {
         this.userIds = params.rowData["id"];
         if (params.type === "change") {
-          if (params.rowData.state === "1") {
-            // this.choice = params.rowData.id;
-            this.enable();
-          } else if (params.rowData.state === "0") {
-            // this.choice = params.rowData.id;
-            this.disable();
-
-          }
+          if (params.rowData.state === "1") this.enable();
+            if (params.rowData.state === "0") this.disable();
         }
         if (params.type === "delete") {
           this.deleteEmployee();
@@ -364,7 +358,7 @@
         );
       },
       deleteEmployee() {
-        this.$confirm('此操作将删除该角色,是否继续?', '提示')
+        this.$confirm('你确定要删除该员工吗？', '提示')
           .then(_=>{
             this.userIds ==JSON.parse(localStorage.getItem("user")).employeeId ?
               this.$message.error("对不起,不能删除当前登录用户"):this.toDeleteEmployee();
@@ -429,7 +423,7 @@
         inactive-color="#ff4949"
         banType='alert'
         permCode='employee_lookup.employee_enable&&employee_lookup.employee_disabled'
-        @change.stop="changeValue(rowData,index)"
+        @change="changeValue(rowData,index)"
         @resetBack="resetBackHandler"
         >
       </permission-switch>

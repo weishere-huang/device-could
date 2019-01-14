@@ -457,11 +457,10 @@ export default {
           url: "/enterprise/enableEnterprises/",
           params: data,
           type: "post",
-          option:{enableMsg:false}
+          option:{successMsg:"启用成功"}
         },
       ).then(
         response => {
-         this.$message.success("启用成功")
         },
         ({ type, info }) => {this.$message.error("服务器忙，请稍后再试")}
       );
@@ -477,12 +476,11 @@ export default {
           params: data,
           url: "/enterprise/discontinuationEnterprises",
           type: "post",
-          option:{enableMsg:false}
+          option:{successMsg: "禁用成功，已禁用该企业及其所有员工账号"}
         },
         this
       ).then(
         response => {
-          this.$message.success("禁用成功，已禁用该企业及其所有员工账号")
         },
         ({ type, info }) => {this.$message.error("服务器忙，请稍后再试")}
       );

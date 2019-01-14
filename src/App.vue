@@ -47,7 +47,7 @@
                 </li>
                 <li>
                   <el-tooltip class="item" effect="dark" content="我的消息" placement="bottom-end">
-                    <el-badge :value="msgcount" :max="99" class="item">
+                    <el-badge :value="msgcount===0?'':msgcount" :max="99" class="item">
                       <i class="iconfont" @click="pathto(1)">&#xe601;</i>
                     </el-badge>
                   </el-tooltip>
@@ -241,6 +241,7 @@ export default {
   computed: {},
   created() {
     this.initPermission();
+    setInterval(this.MsgCount,60000)
   },
   components: {
     breadCrumb

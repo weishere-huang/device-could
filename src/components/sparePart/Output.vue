@@ -1,16 +1,22 @@
 <template>
   <div class="spare-parts-warehouse">
     <div class="top">
-      <permission-button
-        permCode='part_warehouse_lookup.part_warehouse_add'
-        banType='hide'
-        size="small"
-        type="primary"
-        @click="insertBT"
-      ><i
+      <!--<permission-button-->
+        <!--permCode='part_warehouse_lookup.part_warehouse_add'-->
+        <!--banType='hide'-->
+        <!--size="small"-->
+        <!--type="primary"-->
+        <!--@click="insertBT"-->
+      <!--&gt;-->
+        <el-button
+          size="small"
+          type="primary"
+          @click="insertBT"
+        >
+        <i
           style='font-size:12px'
           class='iconfont'
-        >&#xe645;</i>&nbsp;保存</permission-button>
+        >&#xe645;</i>&nbsp;保存</el-button>
     </div>
     <div class="warehouse">
       <h1>备件出库</h1>
@@ -27,7 +33,7 @@
             style="width:25%;"
           >
             <el-input
-              v-model="godownEntryNo"
+              v-model="outNo"
               placeholder=""
               size="small"
             ></el-input>
@@ -37,7 +43,7 @@
             style="width:25%;"
           >
             <el-date-picker
-              v-model="formInline.time"
+              v-model="outTime"
               type="datetime"
               size="small"
               value-format="yyyy/MM/dd HH:mm:ss"
@@ -66,13 +72,13 @@
             label="领用人："
             style="width:24%;"
           >
-            <el-input size="small" @focus="showTable"></el-input>
+            <el-input size="small" @focus="showTable" v-model="userName"></el-input>
           </el-form-item>
             <el-form-item
               label="备注："
               style="width:50%;"
             >
-              <el-input size="small" style="width:400px;"></el-input>
+              <el-input size="small" style="width:400px;" v-model="remark"></el-input>
             </el-form-item>
         </el-form>
       </div>
@@ -94,7 +100,6 @@
             :props="defaultProps2"
             change-on-select
             :show-all-levels="false"
-            v-model="formInline.user"
             @change="handleChange2"
             style="width:100%;"
             size="small"
@@ -186,11 +191,7 @@ export default {
         label: "name"
       },
       options: [],
-      formInline: {
-        time: new Date().toLocaleString().replace(/[\u4e00-\u9fa5]/g, "")
-      },
       //入库单号
-      godownEntryNo: "",
       ctgoptions: [],
       defaultProps2: {
         value: "id",
@@ -307,22 +308,6 @@ export default {
           }
         },
         {
-          field: "remarks",
-          title: "*备注",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true,
-          overflowTitle: true,
-          isEdit: true,
-          titleCellClassName: "title-cell-class-name",
-          formatter: function(rowData, rowIndex, pagingIndex, field) {
-            return `<s class='cell-edit-style'></s><span>${
-              rowData.remarks
-            }</span>`;
-          }
-        },
-        {
           field: "custome-adv",
           title: "操作",
           width: 100,
@@ -337,8 +322,14 @@ export default {
       classifyId: "",
       //搜索关键字
       basekeyword: "",
+      //入库参数
+      formInline:[],
       organizeCode:"",
       organizeName:"",
+      outNo:"",
+      outTime:new Date().toLocaleString().replace(/[\u4e00-\u9fa5]/g, ""),
+      remark:"",
+
     };
   },
   methods: {
@@ -346,7 +337,16 @@ export default {
       this.dialogVisible=true
     },
     personAddHandler(data){
-      console.log(data);
+      let pcount=0;
+      data.forEach(item => pcount += item.content.length);
+      if(pcount > 1){
+        this.$message.error("只能添加一个领用人!!");
+      }else{
+       let person = data.find(item => item.content.length > 0);
+       this.userId = person.content[0].id;
+       this.userName = person.content[0].workerName;
+       this.dialogVisible=false;
+      }
     },
     handleChange(value) {
       console.log(value);
@@ -355,8 +355,6 @@ export default {
       let id = value[value.length - 1];
       this.organizeCode=id;
       this.organizeName=name;
-      console.log(this.organizeCode);
-      console.log(this.organizeName);
     },
     columnCellClass(rowIndex, columnName, rowData) {
       // 给三行column为‘Parts1Material’和‘Parts2Material’的列设置className
@@ -379,7 +377,6 @@ export default {
       }
     },
     toDetails(rowIndex, rowData, column) {
-      //this.getuserbatch(rowData.id);
       console.log(rowData);
       if (this.tableData1.find(i => i.partId === rowData.id)) {
         this.$message("不能添加重复的配件");
@@ -391,8 +388,8 @@ export default {
           partModel: rowData.partModel,
           outCount: 0,
           price: 0,
-          subtotal: 0,
-          remarks: "",
+          partUnit:"",
+          subtotal:0,
         });
       }
     },
@@ -441,14 +438,14 @@ export default {
     partOut(){
       let qs = require("qs");
       let data = qs.stringify({
-        outNo:"",
-        outTime:"",
-        organizeCode:"",
-        organizeName:"",
-        userId:"",
-        userName:"",
-        remark:"",
-        partOutDTO:JSON.stringify("")
+        outNo:this.outNo,
+        outTime:this.outTime,
+        organizeCode:this.organizeCode,
+        organizeName:this.organizeName,
+        userId:this.userId,
+        userName:this.userName,
+        remark:this.remark,
+        partOutDTO:JSON.stringify(this.tableData1)
       });
       this.Axios({
         params:data,
@@ -458,16 +455,18 @@ export default {
           enableMsg: false
         }
       },this).then(result=>{
+        console.log(result.data);
         if(result.data.code===200){
-          this.$message.success("入库成功")
+          this.$message.success("出库成功");
+          this.reload();
         }else{
-          this.$message.error("入库失败,请重新尝试")
+          this.$message.error("出库失败,请重新尝试")
         }
       })
     },
     insertBT() {
       let subok = true;
-      if (this.godownEntryNo === "" || this.tableData1.length === 0) {
+      if (this.outNo === "" || this.tableData1.length === 0) {
         subok = false;
       }
       if (subok) {
@@ -486,7 +485,7 @@ export default {
             });
           });
       } else {
-        this.$message.warning("请完善入库信息");
+        this.$message.warning("请完善出库信息");
       }
     },
     filterArray(data, parent) {
@@ -579,7 +578,6 @@ export default {
     }
   },
   created() {
-
     this.loadall();
     EventBus.$on("sideBarTroggleHandle", isCollapse => {
       window.setTimeout(() => {

@@ -18,7 +18,7 @@
               <quill-editor v-model="infoForm.a_content"
                             ref="myQuillEditor"
                             class="editer"
-                            :options="editorOption" @ready="onEditorReady($event)">
+                            :options="infoForm.editorOption" @ready="onEditorReady($event)">
               </quill-editor>
             </div>
           </el-form-item>

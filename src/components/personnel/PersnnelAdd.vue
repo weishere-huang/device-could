@@ -65,6 +65,7 @@
                   ref="getName"
                   change-on-select
                   :show-all-levels="false"
+                  :title="persnneladd.organizationName"
                   v-model="ogrname"
                   @change="handleChange"
                   style="width:100%"
@@ -533,15 +534,15 @@
         padding-left: 10px;
         height: 60px;
         line-height: 60px;
-        //   border: 1px solid @Info;
+          border: 1px solid @Info;
         border-radius: 5px;
       }
       .botton {
         font-size: 12px;
         margin-top: 10px;
-        //   border: 1px solid @Info;
+          border: 1px solid @Info;
         border-radius: 5px;
-        padding: 10px 0 0 10px;
+        padding: 10px  10px;
         position: relative;
         .essential {
           width: 600px;
@@ -551,6 +552,7 @@
           .title {
             display: inline-block;
             width: auto;
+            font-weight: 600;
             position: absolute;
             text-align: center;
             top: 3px;
@@ -592,11 +594,12 @@
           border: 1px solid @Info;
           border-radius: 5px;
           // overflow: hidden;
-          margin-top: 30px;
+          margin-top: 10px;
 
           padding-bottom: 20px;
           .title {
             display: inline-block;
+            font-weight: 600;
             width: auto;
             text-align: center;
             position: relative;
@@ -630,11 +633,9 @@
       line-height:39px;
     }
   }
-  .el-dialog__header .el-dialog__headerbtn{
-    top: 1px !important;
-  }
+ 
   .el-dialog__body{
-    font-size: 0px !important;
+    font-size: 0px;
     line-height: 0px;
   }
 </style>
