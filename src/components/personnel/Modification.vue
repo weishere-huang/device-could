@@ -61,7 +61,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="11">
-              <el-form-item label="组织单位：" style="height:39px;">
+              <el-form-item label="组织单位：" style="height:38px;">
                 <span style="display:inline-block;width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{persnneladd.organizationName}}</span>
                 <el-button
                   size="mini"
@@ -573,7 +573,8 @@
         this
       ).then(response => {
           this.role = response.data.data;
-          this.role.filter(item=>{item.id===this.persnneladd.id});
+          this.role = this.role.filter(item=>item.id !==this.persnneladd.roleId);
+          this.role.push({id:this.persnneladd.roleId,name:this.persnneladd.roleName});
         },
         ({type, info}) => {
 
@@ -680,8 +681,6 @@
       line-height:39px;
     }
   }
-  .el-dialog__header .el-dialog__headerbtn{
-    // top: 1px !important;
-  }
+  
 
 </style>

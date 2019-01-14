@@ -878,10 +878,10 @@
         padding-left: 10px;
         .search {
           float: right;
-          width: 40%;
+          width: 390px;
           font-size: 12px;
           .el-input {
-            width: 70%;
+            width: 300px;
           }
           span {
             cursor: pointer;

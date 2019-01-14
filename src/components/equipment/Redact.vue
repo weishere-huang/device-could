@@ -36,7 +36,7 @@
           <el-form-item label="设备名称" >
             <el-input
               v-model="sizeForm.deviceName"
-              style="width:512px"
+              style="width:525px"
             ></el-input>
           </el-form-item>
           <el-form-item label="所属部门">
@@ -83,8 +83,9 @@
           </el-form-item>
           <el-form
             :inline="true"
-            style="padding-left:12px"
+            style=""
             size="small"
+            label-width="80px"
           >
             <el-form-item label="设备分类">
               <el-select
@@ -142,8 +143,9 @@
           </el-form>
           <el-form
             :inline="true"
-            style="padding-left:12px"
+            style=""
             size="small"
+            label-width="80px"
           >
             <el-form-item label="设备型号">
               <el-input
@@ -170,8 +172,9 @@
           </el-form>
           <el-form
             :inline="true"
-            style="padding-left:12px"
+            style=""
             size="small"
+            label-width="80px"
           >
             <el-form-item label="设备规格">
               <el-input
@@ -195,7 +198,7 @@
           <el-form-item label="设备厂家">
             <el-input
               v-model="sizeForm.manufacturer"
-              style="width:512px"
+              style="width:525px"
             ></el-input>
           </el-form-item>
         </el-form>

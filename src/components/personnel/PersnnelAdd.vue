@@ -65,6 +65,7 @@
                   ref="getName"
                   change-on-select
                   :show-all-levels="false"
+                  :title="persnneladd.organizationName"
                   v-model="ogrname"
                   @change="handleChange"
                   style="width:100%"
@@ -632,11 +633,9 @@
       line-height:39px;
     }
   }
-  .el-dialog__header .el-dialog__headerbtn{
-    top: 1px !important;
-  }
+ 
   .el-dialog__body{
-    font-size: 0px !important;
+    font-size: 0px;
     line-height: 0px;
   }
 </style>

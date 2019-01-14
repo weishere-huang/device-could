@@ -12,12 +12,12 @@ export default [{
       permissionCode: 'Home'
     }]
   },
-  {
-    menu: '企业管理',
-    permissionCode: 'enterprise',
-    icon: '&#xe600;',
-    subMenu: []
-  },
+  // {
+  //   menu: '企业管理',
+  //   permissionCode: 'enterprise',
+  //   icon: '&#xe600;',
+  //   subMenu: []
+  // },
   {
     menu: '组织机构',
     permissionCode: 'organization',
@@ -299,7 +299,7 @@ export default [{
   },
   {
     menu: '平台管理',
-    permissionCode: 'sys',
+    permissionCode: 'platform',
     icon: '&#xe60a;',
     defaultDock: true,
     subMenu: [{

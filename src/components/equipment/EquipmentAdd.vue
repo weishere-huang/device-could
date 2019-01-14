@@ -16,7 +16,7 @@
             <el-input v-model="sizeForm.deviceNo" style="width:200px"></el-input>
           </el-form-item>
           <el-form-item label="设备名称" prop="deviceName">
-            <el-input v-model="sizeForm.deviceName" style="width:512px"></el-input>
+            <el-input v-model="sizeForm.deviceName" style="width:525px"></el-input>
           </el-form-item>
           <el-form-item label="所属部门" prop="defaultProps" >
             <el-cascader
@@ -28,10 +28,10 @@
               :show-all-levels="false"
               v-model="ogrname"
                @change="handleChange"
-              style="width:512px;"
+              style="width:525px;"
             ></el-cascader>
           </el-form-item>
-          <el-form :inline="true" style="padding-left:12px" size="small">
+          <el-form :inline="true" style="" label-width="80px" size="small">
             <el-form-item label="设备分类" prop="ctg">
               <el-select v-model="sizeForm.deviceClassify" placeholder="点击选择" style="width:215px" @change="classf" ref="getclassfy">
                 <el-option v-for="(item,index) in options2" :key="index" :label="item.label"
@@ -54,7 +54,7 @@
               ></el-cascader>
             </el-form-item>
           </el-form>
-          <el-form :inline="true" style="padding-left:12px" size="small">
+          <el-form :inline="true" style="" label-width="80px" size="small">
             <el-form-item label="设备型号" prop="dxh">
               <el-input v-model="sizeForm.deviceModel" style="width:215px"></el-input>
             </el-form-item>
@@ -67,7 +67,7 @@
               </el-select>
             </el-form-item>
           </el-form>
-          <el-form :inline="true" style="padding-left:12px" size="small">
+          <el-form :inline="true" style="" label-width="80px" size="small">
             <el-form-item label="设备规格">
               <el-input v-model="sizeForm.deviceSpec" style="width:215px"></el-input>
             </el-form-item>
@@ -80,7 +80,7 @@
           </el-form>
 
           <el-form-item label="设备厂家">
-            <el-input v-model="sizeForm.manufacturer" style="width:512px"></el-input>
+            <el-input v-model="sizeForm.manufacturer" style="width:525px"></el-input>
           </el-form-item>
         </el-form>
 
