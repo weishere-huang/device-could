@@ -20,7 +20,7 @@
           </el-form-item>
           <el-form-item label="所属部门" prop="defaultProps" >
             <el-cascader
-              placeholder="搜索"
+              placeholder="请选择"
               :options="orgoptions"
               :props="defaultProps"
               ref="getName"
@@ -42,7 +42,7 @@
               <el-cascader
                 placeholder="搜索"
                 :options="ctgoptions"
-                filterable
+               
                 ref="getName2"
                 expand-trigger="hover"
                 :props="defaultProps2"
