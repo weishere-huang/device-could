@@ -279,7 +279,7 @@
             overflowTitle: true
           },
           {
-            field: "deviceSpec",
+            field: "deviceModel",
             title: "规格/型号",
             width: 100,
             titleAlign: "center",
@@ -314,11 +314,8 @@
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
-              if(rowData.faultSource ===0 ){
-                return `<span>人工提交</span>`
-              }else{
-                return `<span>设备采集</span>`
-              }
+              if(rowData.faultSource ==0 )return `<span>人工提交</span>`;
+              if(rowData.faultSource ==1 ) return `<span>设备采集</span>`;
             }
           },
           {
@@ -806,7 +803,7 @@
             <permission-button permCode='work_list_detail_lookup.work_list_detail_save||work_list_detail_lookup.work_list_detail_audit'
                      banType='disable' type="text"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
-                    <i @click.stop.prevent="planToWork(rowData,index)" style='font-size:16px' class='iconfont'>&#xe603;</i>
+                    <i @click.stop.prevent="planToWork(rowData,index)" style='font-size:16px' class='iconfont'>&#xe619;</i>
             </permission-button>
         </el-tooltip>
         &nbsp;
