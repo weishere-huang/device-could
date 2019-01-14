@@ -169,7 +169,7 @@
           </el-form-item>
           <el-form-item label="发现时间：">
             <el-date-picker
-              v-model="time"
+              v-model="breakTime"
               format="yyyy/MM/dd HH:mm:ss"
               value-format="yyyy/MM/dd HH:mm:ss"
               type="datetime"
@@ -506,7 +506,8 @@
             label:'大'
           },
         ],
-        time:new Date().toLocaleString().replace(/[\u4e00-\u9fa5]/g, ""),
+        breakTime:new Date().toLocaleString().replace(/[\u4e00-\u9fa5]/g, ""),
+        time:"",
         deviceId:[],
         scopeValue:1,
         gradeValue:1,
@@ -597,10 +598,11 @@
         }
       },
       addMaintenanceWork(){
+        console.log(this.time);
         let qs = require("qs");
         let data = qs.stringify({
           planName:"工单计划",
-          maintenanceClassify:this.radio,
+          maintenanceClassify:this.scopeValue,
           maintenanceLevel:this.gradeValue,
           maintenanceType:this.radio,
           planType:0,
@@ -642,7 +644,7 @@
           faultLevel:this.gradeValue,
           incidence:this.scopeValue,
           faultSource:0,
-          discoveryTime:this.time,
+          discoveryTime:this.breakTime,
           faultDesc:this.breakWorkDesc,
           causeAnalysis:this.breakWorkInfo,
           img:this.imgPath
@@ -666,7 +668,7 @@
         else if(this.deviceId.length>1)this.$message.error("对不起，只能选择一个设备");
         else if(this.scopeValue==="")this.$message.error("请至少选择影响范围");
         else if(this.gradeValue==="")this.$message.error("请至少选择故障等级");
-        else if(this.time==="")this.$message.error("请至少选择故障开始时间");
+        else if(this.breakTime==="")this.$message.error("请至少选择故障开始时间");
         else if(this.breakWorkDesc==="")this.$message.error("请填写故障描述");
         else if(this.breakWorkInfo==="")this.$message.error("请填写原因分析");
         else if(this.imgPath==="")this.$message.error("请上传至少一张故障相关图片");
