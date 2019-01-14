@@ -326,12 +326,34 @@
         submitAuditInfo:false,
         submitAuditTable:[
           {
+            field: 'custome', title:'序号', width: 15, titleAlign: 'center', columnAlign: 'center',
+            formatter: function (rowData,rowIndex) {
+              return rowIndex < 3 ? '<span>' + (rowIndex + 1) + '</span>' : rowIndex + 1
+            }, isFrozen: true,isResize:true
+          },
+          {
             field: "name",
             title: "审核人",
             width: 40,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
+          },
+          {
+            field: "startTime",
+            title: "提交时间",
+            width: 120,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "endTime",
+            title: "审核时间",
+            width: 120,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
           },
           {
             field: "state",
@@ -347,20 +369,12 @@
             }
           },
           {
-            field: "startTime",
-            title: "提交时间",
-            width: 60,
+            field: "position",
+            title: "岗位",
+            width: 40,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
-          },
-          {
-            field: "endTime",
-            title: "审核时间",
-            width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true,
           },
           {
             field: "phone",
@@ -373,7 +387,7 @@
           {
             field: "opinion",
             title: "审核意见",
-            width: 180,
+            width: 150,
             titleAlign: "center",
             columnAlign: "left",
             isResize: true
