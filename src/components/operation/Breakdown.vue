@@ -127,6 +127,7 @@
           <el-input
             type="textarea"
             v-model="formLabelAlign.desc"
+            style="width:95%;"
           ></el-input>
         </el-form-item>
         <div v-if="formLabelAlign.radio!=1">
