@@ -166,7 +166,12 @@ import Vue from "vue";
 Vue.component("table-reported", {
   template: `<span>
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
-            <i style='font-size:16px;cursor:pointer;color:#409eff;' class='iconfont'  @click.stop.prevent="add(rowData,index)">&#xe734;</i>
+             <permission-button permCode='employee_lookup.employee_add||employee_lookup.employee_modification'
+                     banType='disable' type="text"
+                     @click.stop.prevent="add(rowData,index)"
+                     style="text-decoration: none;color:#409eff">
+                     <i style='font-size:16px' class='iconfont'>&#xe734;</i>
+            </permission-button>
         </el-tooltip>
 
         </span>`,
