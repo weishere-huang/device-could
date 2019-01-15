@@ -1515,6 +1515,7 @@
     }
   .breakdown-order {
     font-size: 12px;
+    min-width: 1090px;
     h5 {
       position: relative;
       top: -18px;
@@ -1539,7 +1540,7 @@
       overflow: hidden;
       .left {
         float: left;
-        width: 25%;
+        width: 29%;
         //   border: @border;
         .msg {
           padding: 10px;

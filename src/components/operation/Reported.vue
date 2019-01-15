@@ -462,6 +462,7 @@ export default {
 @border: 1px solid #dde2eb;
 .Reported {
   width: 100%;
+  min-width: 1000px;
   .top {
     width: 100%;
     padding: 10px;
@@ -487,11 +488,11 @@ export default {
     .list {
       border: @border;
       border-radius: 5px;
-      width: 60%;
+      width: 63%;
       height: 420px;
       min-width: 600px;
       float: left;
-      margin-left: 10px;
+      margin-left: 1%;
       padding: 10px;
     }
     h5 {

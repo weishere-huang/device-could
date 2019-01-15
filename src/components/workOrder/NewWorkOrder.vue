@@ -254,7 +254,7 @@
             :vertical-resize-offset='100'
             column-width-drag
             :multiple-sort="false"
-            style="width:100%;"
+            style="width:100%;height:480px"
             :columns="columns"
             :table-data="tableData"
             row-hover-color="#eee"
@@ -460,6 +460,10 @@
           {
             value:4,
             label:'故障检修(RTF)'
+          },
+          {
+            value:5,
+            label:'其他'
           },
         ],
         scope: [
@@ -704,6 +708,7 @@
   @border: 1px solid #dde2eb;
   .Reported {
     width: 100%;
+    min-width: 1000px;
     .top {
       width: 100%;
       padding: 10px;
@@ -729,12 +734,15 @@
       .list {
         border: @border;
         border-radius: 5px;
-        width: 60%;
+        width: 63%;
         min-height: 560px;
         min-width: 600px;
         float: left;
-        margin-left: 10px;
+        margin-left: 1%;
         padding: 10px;
+        .v-table-body{
+          height: 440px!important;
+        }
       }
       h5 {
         position: relative;

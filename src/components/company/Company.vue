@@ -585,6 +585,7 @@ Vue.component("table-company", {
   position: relative;
   width: 100%;
   overflow: hidden;
+  min-width: 1000px;
   .userCase {
     width: 100%;
     padding: 10px;

@@ -583,18 +583,20 @@
       border-radius: 5px;
     }
     .bottom {
-      padding: 10px;
+      padding: 10px 0px 10px 10px;
       border: @border;
       border-radius: 5px;
       overflow: hidden;
       margin-top: 10px;
+      min-width: 1090px;
       .left {
         padding: 10px;
         border: @border;
         border-radius: 5px;
-        width: 400px;
+        min-width: 400px;
         height: 420px;
         float: left;
+        width: 35%;
         h5 {
           position: relative;
           top: -17px;
@@ -607,7 +609,8 @@
         }
       }
       .right {
-        width: 640px;
+        width: 61%;
+        min-width: 640px;
         height: 420px;
         font-size: 12px;
         float: left;
