@@ -374,7 +374,8 @@ import personnel from '../operation/breakdown/Personnel'
       },
 
       load(stateNum) {
-        this.pageValue === "" ?this.pageValue = stateNum : this.pageValue = this.stateNum;
+        this.pageValue === ""|| this.pageValue == null ?this.pageValue = stateNum :
+        this.pageValue ===stateNum ? this.pageValue=this.stateNum: this.pageValue = stateNum;
         this.pageValue !== this.stateNum ? this.pageIndex = 1: "";
         EventBus.$on("sideBarTroggleHandle", isCollapse => {
           window.setTimeout(() => {
