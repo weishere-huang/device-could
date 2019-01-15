@@ -4,7 +4,7 @@
     <div class="userCase" :class="[{hide:isHideList}]">
       <div class="top">
         <permission-button
-          permCode='operation_overhaul_add_lookup.operation_overhaul_add_save'
+          permCode='operation_fault_report_lookup.operation_fault_report_save'
           banType='hide'
           size="small"
           type="primary"

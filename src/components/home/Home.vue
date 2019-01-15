@@ -475,7 +475,6 @@ export default {
 </script>
 <style lang="less">
 @import url("../../assets/font/font.css");
-
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;
