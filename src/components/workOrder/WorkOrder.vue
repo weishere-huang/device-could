@@ -193,15 +193,6 @@ import personnel from '../operation/breakdown/Personnel'
             //   orderBy: ""
           },
           {
-            field: "maintenanceId",
-            title: "来源",
-            width: 80,
-            titleAlign: "left",
-            columnAlign: "left",
-            isResize: true,
-            componentName: "table-workToPlan"
-          },
-          {
             field: "state",
             title: "工单状态",
             width: 70,
@@ -304,7 +295,7 @@ import personnel from '../operation/breakdown/Personnel'
         this.toAuditName="";
       },
       isSubmitAudit(){
-        if (this.formLabelAlign.radio===0){
+        if (this.formLabelAlign.radio==='0'){
           if(this.toAuditName!==""||this.formLabelAlign.type){
             this.toSubmitAudit();
           }else{

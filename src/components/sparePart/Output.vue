@@ -162,6 +162,7 @@
               @on-custom-comp="customCompFunc"
               :column-cell-class-name="columnCellClass"
               ref="inventoryListTable"
+              :show-vertical-border="false"
             ></v-table>
           </div>
           <div style="color:#e6a23c;line-height:20px">
@@ -241,8 +242,8 @@ export default {
           field: "partName",
           title: "备件名称",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -250,8 +251,8 @@ export default {
           field: "partNo",
           title: "备件编号",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -259,8 +260,8 @@ export default {
           field: "partModel",
           title: "备件型号",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -268,8 +269,8 @@ export default {
           field: "outCount",
           title: "*数量",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true,
           isEdit: true,
@@ -284,8 +285,8 @@ export default {
           field: "price",
           title: "*单价（元）",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true,
           isEdit: true,
@@ -300,8 +301,8 @@ export default {
           field: "subtotal",
           title: "金额",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true,
           formatter: function(rowData, rowIndex, pagingIndex, field) {

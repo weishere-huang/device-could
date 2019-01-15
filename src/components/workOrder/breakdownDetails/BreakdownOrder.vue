@@ -341,34 +341,38 @@
           {
             field: "name",
             title: "审核人",
-            width: 40,
+            width: 60,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "startTime",
             title: "提交时间",
-            width: 120,
+            width: 100,
             titleAlign: "center",
             columnAlign: "center",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "endTime",
             title: "审核时间",
-            width: 120,
+            width: 100,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
+            overflowTitle: true
           },
           {
             field: "state",
             title: "审核状态",
-            width: 30,
+            width: 80,
             titleAlign: "left",
             columnAlign: "left",
             isResize: true,
+            overflowTitle: true,
             formatter:function (rowData) {
               if(rowData.state===0)return`<span>待处理</span>`;
               if(rowData.state===1)return`<span>已通过</span>`;
@@ -378,18 +382,20 @@
           {
             field: "startTime",
             title: "提交时间",
-            width: 60,
+            width: 80,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "endTime",
             title: "审核时间",
-            width: 60,
+            width: 80,
             titleAlign: "left",
             columnAlign: "left",
             isResize: true,
+            overflowTitle: true
           },
           {
             field: "phone",
@@ -397,15 +403,17 @@
             width: 80,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "opinion",
             title: "审核意见",
-            width: 180,
+            width: 140,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           }
         ],
         submitAuditData:[],
@@ -1439,7 +1447,7 @@
   @Info: #dde2eb;
   @border: 1px solid #dde2eb;
   .breakdown-order {
-    font-size: 14px;
+    font-size: 12px;
     h5 {
       position: relative;
       top: -18px;
