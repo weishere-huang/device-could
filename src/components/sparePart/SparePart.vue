@@ -37,6 +37,7 @@
           row-click-color="#edf7ff"
           @on-custom-comp="customCompFunc"
           ref="sparePartTable"
+          :show-vertical-border="false"
         ></v-table>
         <div
           class="mt20 mb20 bold"
@@ -79,8 +80,8 @@ export default {
           field: "partNo",
           title: "备件编号",
           width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
           //   orderBy: ""
@@ -89,8 +90,8 @@ export default {
           field: "partName",
           title: "备件名称",
           width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
 
@@ -99,8 +100,8 @@ export default {
           field: "partModel",
           title: "型号/规格",
           width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -108,8 +109,8 @@ export default {
           field: "partCategory",
           title: "备件级别",
           width: 60,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true,
           formatter: function(rowData, rowIndex, pagingIndex, field) {
@@ -122,8 +123,8 @@ export default {
           field: "partClassifyName",
           title: "备件分类",
           width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -131,8 +132,8 @@ export default {
           field: "inventory",
           title: "库存总量",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -140,8 +141,8 @@ export default {
           field: "faultDesc",
           title: "每月用量",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -149,24 +150,24 @@ export default {
           field: "lower",
           title: "库存下限",
           width: 60,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true
         },
         {
           field: "partUnit",
           title: "计量单位",
           width: 60,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true
         },
         {
           field: "remarks",
           title: "备注",
           width: 150,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },

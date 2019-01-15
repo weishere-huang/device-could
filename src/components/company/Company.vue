@@ -60,6 +60,7 @@
             :row-dblclick="details"
             row-click-color="#edf7ff"
             @on-custom-comp="customCompFunc"
+            :show-vertical-border="false"
           >
           </v-table>
           <div
@@ -170,7 +171,7 @@ export default {
           field: "name",
           title: "企业名称",
           width: 150,
-          titleAlign: "center",
+          titleAlign: "left",
           columnAlign: "left",
           isResize: true,
           //   orderBy: ""
@@ -180,7 +181,7 @@ export default {
           field: "address",
           title: "企业地址",
           width: 200,
-          titleAlign: "center",
+          titleAlign: "left",
           columnAlign: "left",
           isResize: true,
           overflowTitle: true
@@ -189,8 +190,8 @@ export default {
           field: "phone",
           title: "企业电话",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -198,8 +199,8 @@ export default {
           field: "gmtCreate",
           title: "申请时间",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -584,6 +585,7 @@ Vue.component("table-company", {
   position: relative;
   width: 100%;
   overflow: hidden;
+  min-width: 1000px;
   .userCase {
     width: 100%;
     padding: 10px;

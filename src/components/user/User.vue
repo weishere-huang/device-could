@@ -54,6 +54,7 @@
             row-hover-color="#eee"
             row-click-color="#edf7ff"
             @on-custom-comp="customCompFunc"
+            :show-vertical-border="false"
             ref="userTable"
           ></v-table>
           <div
@@ -101,7 +102,7 @@ export default {
           field: "enterpriseName",
           title: "企业名称",
           width: 200,
-          titleAlign: "center",
+          titleAlign: "left",
           columnAlign: "left",
           isResize: true,
           overflowTitle: true
@@ -110,8 +111,8 @@ export default {
           field: "userName",
           title: "用户名",
           width: 90,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
           //   orderBy: ""
@@ -120,8 +121,8 @@ export default {
           field: "phone",
           title: "手机号",
           width: 90,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -129,8 +130,8 @@ export default {
           field: "email",
           title: "邮箱",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -139,8 +140,8 @@ export default {
           field: "createTime",
           title: "创建时间",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },

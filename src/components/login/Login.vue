@@ -4,7 +4,7 @@
     class="loginBox"
     v-show="isshow"
   >
-    <h1>长虹智能终端设备生产管理云平台</h1>
+    <h2>长虹智能终端设备生产管理云平台</h2>
     <el-form
       :model="loginList"
       :rules="loginRules"
@@ -61,7 +61,7 @@
         <!--<el-button type="primary" plain style="width:38%;height:40px;" @click="loginSecuritycode">-->
         <el-button
           type="primary"
-          style="width:38%;height:40px;"
+          style="width:38%;height:40px;padding:0;"
           v-if="!sendMsgDisabled"
           @click="loginSecuritycode"
         >获取验证码
@@ -69,7 +69,8 @@
         <el-button
           type="primary"
           plain
-          style="width:38%;height:40px;"
+          disabled="true"
+          style="width:38%;height:40px;padding:0;"
           v-if="sendMsgDisabled"
         >{{time+'秒后获取'}}
         </el-button>
@@ -192,7 +193,7 @@
             >
           </el-dialog>
         </el-form-item>
-        <div style="display:inline-block;margin-left:-20px;color:#999999;">仅支持小于1Mb的jpg或png图片格式</div>
+        <div style="display:inline-block;margin-left:-20px;color:#fff;">仅支持小于1Mb的jpg或png图片格式</div>
       </el-form>
       <div class="next">
         <el-button
@@ -314,7 +315,7 @@
         type="primary"
         size="small"
         class="registerBtn"
-        style="width:30%;height:32px"
+        style="width:35%;height:32px"
         v-on:click="function(){nextshow=!nextshow
            backshow=!backshow}"
       >上一步
@@ -324,7 +325,7 @@
         size="small"
         class="registerBtn"
         @click="registerInfo('manager')"
-        style="width:30%;height:32px"
+        style="width:35%;height:32px"
       >注册
       </el-button>
     </div>
@@ -996,9 +997,9 @@
     align-items: center;
     justify-content: center;
     z-index: 100;
-    h1 {
+    h2 {
       width: 100%;
-      // padding: 20px 0;
+      padding: 10px 0;
       // letter-spacing: 2px;
       //font-family: "和畅惠风 Hiragino Sans GB";
       font-weight: 500;
@@ -1016,7 +1017,7 @@
       color: red;
     }
     p {
-      width: 80%;
+      width: 60%;
       padding: 0 0 10px 0;
       button {
         width: 100%;

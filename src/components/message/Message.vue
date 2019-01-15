@@ -44,6 +44,7 @@
             :select-group-change="selectGroupChange"
             @on-custom-comp="customCompFunc"
             ref="messageTable"
+            :show-vertical-border="false"
           ></v-table>
           <div
             class="mt20 mb20 bold"
@@ -99,8 +100,8 @@ export default {
           field: "msgTitle",
           title: "信息标题",
           width: 150,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           overflowTitle: true,
           isResize: true
           //   orderBy: ""
@@ -109,8 +110,8 @@ export default {
           field: "msgContent",
           title: "信息内容",
           width: 200,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -118,8 +119,8 @@ export default {
           field: "isRead",
           title: "是否阅读",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           // isResize: true,
           overflowTitle: true,
           formatter: function(rowData, rowIndex, pagingIndex, field) {
@@ -132,8 +133,8 @@ export default {
           field: "gmtCreate",
           title: "创建时间",
           width: 50,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
