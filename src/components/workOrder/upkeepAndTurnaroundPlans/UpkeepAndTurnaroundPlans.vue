@@ -1438,7 +1438,7 @@
   Vue.component("table-workPerson", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
-            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="showLook(rowData,index)" style='font-size:20px' class='iconfont'>&#xe734;</i></a>
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="showLook(rowData,index)" style='font-size:16px' class='iconfont'>&#xe734;</i></a>
         </el-tooltip>
         </span>`,
     props: {

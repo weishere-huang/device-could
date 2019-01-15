@@ -62,7 +62,7 @@
           @page-size-change="pageSizeChange"
           :total="totalNub"
           :page-size="pageSize"
-          :pageIndex="pageIndex"
+          :page-index="pageIndex"
           :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
         ></v-pagination>
       </div>
@@ -285,6 +285,7 @@ import personnel from '../operation/breakdown/Personnel'
         isHideList: this.$route.params.id !== undefined
           ? true : false,
         isPage:1,
+        pageValue:"",
         workId:0,
       };
     },
@@ -383,14 +384,14 @@ import personnel from '../operation/breakdown/Personnel'
       },
 
       load(stateNum) {
+        this.pageValue === ""|| this.pageValue == null ?this.pageValue = stateNum :
+        this.pageValue ===stateNum ? this.pageValue=this.stateNum: this.pageValue = stateNum;
+        this.pageValue !== this.stateNum ? this.pageIndex = 1: "";
         EventBus.$on("sideBarTroggleHandle", isCollapse => {
           window.setTimeout(() => {
             this.$refs.workOrderTable.resize();
           }, 500);
         });
-        this.stateNum = stateNum;
-        this.stateNum==null ||this.stateNum==="" ? ""
-          :this.isPage===1 ? this.pageIndex=1:this.pageIndex;
         this.Axios(
           {
             params: {
@@ -404,6 +405,7 @@ import personnel from '../operation/breakdown/Personnel'
           this
         ).then(
           response => {
+            this.stateNum = stateNum;
             this.totalNub = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             this.tableDate = this.tableData;
@@ -486,7 +488,7 @@ import personnel from '../operation/breakdown/Personnel'
           </el-tooltip>
           &nbsp;
            <el-tooltip class="item" effect="dark" content="点击查看来源" placement="top">
-            <a href="" style="text-decoration: none"><i @click.stop.prevent="workToPlans(rowData,index)" style='font-size:20px;color:#409eff' class='iconfont'>&#xe619;</i></a>
+            <a href="" style="text-decoration: none"><i @click.stop.prevent="workToPlans(rowData,index)" style='font-size:16px;color:#409eff' class='iconfont'>&#xe619;</i></a>
         </el-tooltip>
         </span>`,
     props: {

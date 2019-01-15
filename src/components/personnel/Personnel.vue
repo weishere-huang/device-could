@@ -457,7 +457,9 @@
                      banType='disable' type="text"
                      @click.stop.prevent="update(rowData,index)"
                      style="text-decoration: none;color:#409eff">
-                     <i style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+
+                     <i  style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+
             </permission-button>
           </el-tooltip>
           &nbsp;
@@ -466,10 +468,11 @@
               <permission-button permCode='employee_lookup.employee_delete'
                      banType='disable'
                      type="text"
+                     @click.stop.prevent="deleteRow(rowData,index)"
                      style="text-decoration: none;color:#F56C6C"
                      @click.stop.prevent="deleteRow(rowData,index)"
                      >
-            <i style='font-size:16px' class='iconfont'>&#xe66b;</i>
+            <i  style='font-size:16px' class='iconfont'>&#xe66b;</i>
             </permission-button>
           </el-tooltip>
         </span>`,

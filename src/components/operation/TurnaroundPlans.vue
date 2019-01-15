@@ -201,14 +201,14 @@
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
-              if(rowData.state === 0 )return `<span style="color: #ff6600">待审核</span>`;
-              if(rowData.state === 1 )return `<span style="color: #00b400">执行中</span>`;
-              if(rowData.state === 2 )return `<span style="color: #c48382">已禁用</span>`;
-              if(rowData.state === 4 )return `<span style="color: #409dfe">审核中</span>`;
-              if(rowData.state === 6 )return `<span style="color: #999999">已消除</span>`;
-              if(rowData.state === 10 )return `<span style="color: #59007a">已驳回</span>`;
-              if(rowData.state === 12 )return `<span style="color: #999999">已停止</span>`;
-              if(rowData.state === 14 )return `<span style="color: #999999">已完成</span>`;
+              if(rowData.state ===0 )return `<span style="color: #ff6600">待审核</span>`;
+              if(rowData.state ===1 )return `<span style="color: #00b400">执行中</span>`;
+              if(rowData.state ===2 )return `<span style="color: #c48382">已禁用</span>`;
+              if(rowData.state ===4 )return `<span style="color: #409dfe">审核中</span>`;
+              if(rowData.state ===6 )return `<span style="color: #999999">已消除</span>`;
+              if(rowData.state ===10 )return `<span style="color: #59007a">已驳回</span>`;
+              if(rowData.state ===12 )return `<span style="color: #999999">已停止</span>`;
+              if(rowData.state ===14 )return `<span style="color: #999999">已完成</span>`;
             }
           },
           {
@@ -674,7 +674,7 @@
   };
   Vue.component("table-lookWorkInfoS", {
     template: `<span>
-        <el-tooltip class="item" effect="dark" content="修改" placement="top">
+        <el-tooltip class="item" effect="dark" content="查看详情" placement="top">
             <permission-button permCode='work_list_detail_lookup.work_list_detail_save||work_list_detail_lookup.work_list_detail_audit'
                      banType='disable' type="text"
                      style="text-decoration: none;color:#409eff;margin-left: -2px">
@@ -706,40 +706,45 @@
         <el-tooltip class="item" effect="dark" content="修改" placement="top">
             <permission-button permCode='operation_overhaul_detail_lookup.operation_overhaul_detail_save'
                      banType='disable' type="text"
+                     @click.stop.prevent="update(rowData,index)"
                      style="text-decoration: none;color:#409eff;margin-left: -2px">
-                     <i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+                     <i  style='font-size:16px' class='iconfont'>&#xe6b4;</i>
             </permission-button>
         </el-tooltip>
           &nbsp;
         <el-tooltip class="item" effect="dark" content="审核" placement="top">
             <permission-button permCode='operation_overhaul_lookup.operation_overhaul_audit'
                      banType='disable' type="text"
+                     @click.stop.prevent="submitAudit(rowData,index)"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
-                    <i @click.stop.prevent="submitAudit(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
+                    <i  @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
             </permission-button>
           </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="停止" placement="top">
             <permission-button permCode='operation_overhaul_lookup.operation_overhaul_stop'
                      banType='disable' type="text"
+                     @click.stop.prevent="stop(rowData,index)"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
-                    <i @click.stop.prevent="stop(rowData,index)" style='font-size:16px' class='iconfont'>&#xe603;</i>
+                    <i  style='font-size:16px' class='iconfont'>&#xe603;</i>
             </permission-button>
         </el-tooltip>
          &nbsp;
         <el-tooltip class="item" effect="dark" content="关联工单" placement="top">
             <permission-button permCode='work_list_detail_lookup.work_list_detail_save||work_list_detail_lookup.work_list_detail_audit'
                      banType='disable' type="text"
+                     @click.stop.prevent="planToWork(rowData,index)"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
-                    <i @click.stop.prevent="planToWork(rowData,index)" style='font-size:16px' class='iconfont'>&#xe619;</i>
+                    <i  style='font-size:16px' class='iconfont'>&#xe619;</i>
             </permission-button>
         </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
             <permission-button permCode='operation_overhaul_lookup.operation_overhaul_delete'
                      banType='disable' type="text"
+                     @click.stop.prevent="deleteRow(rowData,index)"
                      style="text-decoration: none;color:#F56C6C;margin-left: -2px">
-                    <i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i>
+                    <i  style='font-size:16px' class='iconfont'>&#xe66b;</i>
             </permission-button>
           </el-tooltip>
         </span>`,
