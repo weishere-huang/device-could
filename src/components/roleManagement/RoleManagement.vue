@@ -67,7 +67,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="toCancel" size="small">取 消</el-button>
-        <el-button type="primary" @click="roleAdd" size="small">保存</el-button>
+        <el-button type="primary" @click="roleAddValue" size="small">保存</el-button>
       </div>
     </el-dialog>
   </div>
@@ -115,10 +115,13 @@
           .catch(_=>{
           })
       },
+      roleAddValue(){
+        if (this.form.name ===""|| this.form.name == null) this.$message.error("请输入角色名称");
+        else if (this.form.name.indexOf(" ")!==-1)this.$message.error("对不起，角色名称中不能包含空格");
+        else this.roleAdd();
+      },
       roleAdd(){
-        if (this.form.name === ""){
-          this.$message.error("请输入角色名称");
-        }else{
+
           this.Axios(
             {
               params: {roleName:this.form.name},
@@ -131,17 +134,11 @@
             this
           ).then(
             response => {
-              if (this.form.name.indexOf(" ")===-1){
                 response.data.data? this.toRoleAdd():this.$message.error("请勿重复添加");
-              } else{
-                this.$message.error("对不起、不能输入空格");
-              }
             },
             ({type, info}) => {
 
             })
-
-        }
       },
       toRoleAdd(){
         this.dialogFormVisible = false;
