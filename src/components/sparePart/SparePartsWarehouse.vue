@@ -139,6 +139,41 @@
 </template>
 <script>
 import Vue from "vue";
+Vue.component('table-batch',{
+  template:`<el-popover
+    placement="top"
+    title="最近录入批次"
+    width="200"
+    trigger="click"
+    :content="nub">
+    <div slot="reference" style="widht:100%;height:100%;">{{rowData.batchNumber}}</div>
+  </el-popover>`,
+  data() {
+    return {
+      nub:111111
+    }
+  },
+  props:{
+    rowData:{
+      type:Object,
+    },
+    field: {
+      type: String
+    },
+    index: {
+      type: Number
+    },
+  },
+  methods: {
+    wright(){
+      let params = { type: "wright", index: this.index, rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    }
+  },
+  created () {
+    
+  }
+})
 export default {
   inject: ["reload"],
   data() {
@@ -284,8 +319,9 @@ export default {
           overflowTitle: true,
           isEdit: true,
           titleCellClassName: "title-cell-class-name",
+          componentName: "table-batch",
           formatter: function (rowData,rowIndex,pagingIndex,field) {
-            return `<s class='cell-edit-style'></s><span>${rowData.batchNumber}</span>`;
+            return `<s class='cell-edit-style'></s><div style="width:100%;height:100%">${rowData.batchNumber}</div>`;
           }
         },
         {
@@ -334,6 +370,9 @@ export default {
     };
   },
   methods: {
+    sss(){
+      alert('OK')
+    },
     columnCellClass(rowIndex, columnName, rowData) {
       // 给三行column为‘Parts1Material’和‘Parts2Material’的列设置className
       /*根据你自己的cloumn设置*/
@@ -617,7 +656,11 @@ Vue.component("table-warehouse", {
 @Danger: #f56c6c;
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
+.el-popover__title{
+      font-size: 12px;
+  }
 .spare-parts-warehouse {
+  
   font-size: 12px;
   .top {
     border: @border;
