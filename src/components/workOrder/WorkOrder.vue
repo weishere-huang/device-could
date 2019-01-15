@@ -11,31 +11,26 @@
         <el-button
           type="primary"
           @click="load(0)"
-          v-model="this.pageIndex = 1"
           size="small"
         >待审核</el-button>
         <el-button
           type="primary"
           @click="load(4)"
-          v-model="this.pageIndex = 1"
           size="small"
         >审核中</el-button>
         <el-button
           type="primary"
           @click="load(15)"
-          v-model="this.pageIndex = 1"
           size="small"
         >待处理</el-button>
         <el-button
           type="primary"
           @click="load(10)"
-          v-model="this.pageIndex = 1"
           size="small"
         >已驳回</el-button>
         <el-button
           type="primary"
           @click="load(13)"
-          v-model="this.pageIndex = 1"
           size="small"
         >已完成</el-button>
       </el-button-group>
@@ -66,7 +61,7 @@
           @page-size-change="pageSizeChange"
           :total="totalNub"
           :page-size="pageSize"
-          :pageIndex="pageIndex"
+          :page-index="pageIndex"
           :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
         ></v-pagination>
       </div>
@@ -359,7 +354,6 @@ import personnel from '../operation/breakdown/Personnel'
         this.audited = "";
         this.inAudit = "";
         this.handle = "";
-        this.isPage = pageIndex;
         this.load(this.stateNum);
       },
       pageSizeChange(pageSize) {
@@ -380,15 +374,13 @@ import personnel from '../operation/breakdown/Personnel'
       },
 
       load(stateNum) {
-        this.pageValue !== stateNum ?this.isPage ="":"";
+        this.pageValue === "" ?this.pageValue = stateNum : this.pageValue = this.stateNum;
+        this.pageValue !== this.stateNum ? this.pageIndex = 1: "";
         EventBus.$on("sideBarTroggleHandle", isCollapse => {
           window.setTimeout(() => {
             this.$refs.workOrderTable.resize();
           }, 500);
         });
-        this.stateNum = stateNum;
-        this.stateNum==null || this.stateNum=== "" ? ""
-          :this.isPage===1 ? this.pageIndex=1:this.pageIndex;
         this.Axios(
           {
             params: {
@@ -402,10 +394,10 @@ import personnel from '../operation/breakdown/Personnel'
           this
         ).then(
           response => {
+            this.stateNum = stateNum;
             this.totalNub = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             this.tableDate = this.tableData;
-            this.pageValue ==="" ?this.pageValue = stateNum:this.pageValue;
           },
           ({ type, info }) => {}
         );
