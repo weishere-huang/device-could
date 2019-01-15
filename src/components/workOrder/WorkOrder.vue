@@ -69,7 +69,7 @@
     <el-dialog
       title="审核"
       :visible.sync="outerVisible"
-      :beforeClose="cancel"
+      :beforeClose="removeSubmitValue"
     >
       <el-form
         label-position=right
@@ -132,7 +132,7 @@
       >
         <el-button
           type="primary"
-          @click="cancel"
+          @click="removeSubmitValue"
           size="mini"
         >取 消</el-button>
         <el-button
@@ -283,7 +283,7 @@ import personnel from '../operation/breakdown/Personnel'
       personnel
     },
     methods: {
-      cancel() {
+      removeSubmitValue() {
         this.dialogVisible = false;
         this.outerVisible = false;
         this.formLabelAlign.desc = "";
@@ -294,7 +294,7 @@ import personnel from '../operation/breakdown/Personnel'
         this.toAuditName="";
       },
       isSubmitAudit(){
-        if (this.formLabelAlign.radio===0){
+        if (this.formLabelAlign.radio==='0'){
           if(this.toAuditName!==""||this.formLabelAlign.type){
             this.toSubmitAudit();
           }else{
@@ -321,8 +321,8 @@ import personnel from '../operation/breakdown/Personnel'
           this
         ).then(
           response => {
-            this.outerVisible = false;
-            this.reload();
+            this.removeSubmitValue();
+            this.load(this.stateNum);
           },
           ({ type, info }) => {
           }
@@ -422,8 +422,12 @@ import personnel from '../operation/breakdown/Personnel'
           }
         }
         if (params.type ==="submit") {
-          this.outerVisible=true;
-          this.workId = params.rowData.id;
+          if(params.rowData.state===0){
+            this.outerVisible=true;
+            this.workId = params.rowData.id;
+          }else{
+            this.$message.error("对不起，只能操作待审核状态的工单")
+          }
         }
       },
     },
@@ -454,7 +458,8 @@ import personnel from '../operation/breakdown/Personnel'
             </permission-button>
           </el-tooltip>
           &nbsp;
-           <el-tooltip class="item" effect="dark" content="点击查看来源" placement="top">
+           <el-tooltip class="item" effect="dark" :content="rowData.workType===0 ? '点击查看检修计划':
+           rowData.workType===1?'点击查看保养计划':'点击查看故障计划'" placement="top">
             <a href="" style="text-decoration: none"><i @click.stop.prevent="workToPlans(rowData,index)" style='font-size:16px;color:#409eff' class='iconfont'>&#xe619;</i></a>
         </el-tooltip>
         </span>`,

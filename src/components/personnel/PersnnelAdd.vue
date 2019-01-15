@@ -320,9 +320,12 @@
         this.persnneladd.organizationName = name;
       },
       handleAvatarSuccess(res, file) {
-        this.$message.success('图片成功上传');
-        this.dialogImageUrl= file.response.data;
-        // console.log(this.dialogImageUrl);
+        if(res.code===200 ){
+          this.$message.success('图片成功上传');
+          this.dialogImageUrl= file.response.data;
+        }else{
+          this.$message.error("抱歉，图片上传失败");
+        }
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
@@ -383,12 +386,16 @@
         this.dialogVisible = true;
       },
       handleSuccess(res, file,fileList){
-        this.$message.success('文件成功上传');
-        if(fileList.length>=1){
-          this.fileList.push({
-            img:fileList[fileList.length-1].response.data,
-            name:fileList[fileList.length-1].name
-          });
+        if(res.code===200){
+          this.$message.success('文件成功上传');
+          if(fileList.length>=1){
+            this.fileList.push({
+              img:fileList[fileList.length-1].response.data,
+              name:fileList[fileList.length-1].name
+            });
+          }
+        }else{
+          this.$message.error("抱歉，文件上传失败");
         }
       },
 
