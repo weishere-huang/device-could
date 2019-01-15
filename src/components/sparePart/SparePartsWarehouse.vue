@@ -94,6 +94,7 @@
               row-hover-color="#eee"
               row-click-color="#edf7ff"
               ref="classifyTable"
+              :show-vertical-border="false"
             ></v-table>
           </div>
         </div>
@@ -125,6 +126,7 @@
               @on-custom-comp="customCompFunc"
               :column-cell-class-name="columnCellClass"
               ref="inventoryListTable"
+               :show-vertical-border="false"
             ></v-table>
           </div>
           <div style="color:#e6a23c;line-height:20px">
@@ -157,8 +159,8 @@ export default {
           field: "partNo",
           title: "备件编号",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -166,8 +168,8 @@ export default {
           field: "partName",
           title: "备件名称",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -175,8 +177,8 @@ export default {
           field: "partModel",
           title: "备件型号/规格",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -184,8 +186,8 @@ export default {
           field: "partCategory",
           title: "备件级别",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         }
@@ -195,8 +197,8 @@ export default {
           field: "partName",
           title: "备件名称",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -204,8 +206,8 @@ export default {
           field: "partNo",
           title: "备件编号",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -213,8 +215,8 @@ export default {
           field: "partModel",
           title: "备件型号",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -222,8 +224,8 @@ export default {
           field: "entryCount",
           title: "*数量",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true,
           isEdit: true,
@@ -236,8 +238,8 @@ export default {
           field: "entryPrice",
           title: "*单价（元）",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true,
           isEdit: true,
@@ -250,8 +252,8 @@ export default {
           field: "faultNo4",
           title: "金额",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true,
           formatter: function(rowData, rowIndex, pagingIndex, field) {
@@ -262,8 +264,8 @@ export default {
           field: "supplierName",
           title: "*供应商",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true,
           isEdit: true,
@@ -276,8 +278,8 @@ export default {
           field: "batchNumber",
           title: "*批次",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true,
           isEdit: true,
@@ -290,8 +292,8 @@ export default {
           field: "saveLocation",
           title: "*存放位置",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true,
           isEdit: true,
@@ -304,8 +306,8 @@ export default {
           field: "remarks",
           title: "*备注",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true,
           isEdit: true,

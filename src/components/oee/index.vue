@@ -60,6 +60,7 @@
                       row-click-color="#edf7ff"
                       @on-custom-comp="customCompFunc"
                       ref="oeeTable"
+                      :show-vertical-border="false"
               ></v-table>
               <div class="pagerWrap" style="text-align:left;">
                 <v-pagination
@@ -202,8 +203,8 @@ export default {
           field: "planNo",
           title: "OEE编号",
           width: 120,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true
           // formatter: function (rowData,rowIndex,pagingIndex,field) {
           //     return rowIndex < 3 ? '<span style="color:red;font-weight: bold;">' + (rowIndex + 1) + '</span>' : rowIndex + 1
@@ -213,24 +214,24 @@ export default {
           field: "shorthandName",
           title: "速记名称",
           width: 250,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true
         },
         {
           field: "organizeName",
           title: "组织机构名称",
           width: 250,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true
         },
         {
           field: "startDate",
           title: "起始时间",
           width: 150,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           formatter:function(rowData){
             return new Date(rowData.startDate).toLocaleDateString().replace(/\//g, "-");
@@ -240,8 +241,8 @@ export default {
           field: "endDate",
           title: "截止时间",
           width: 150,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           formatter:function(rowData){
             return new Date(rowData.endDate).toLocaleDateString().replace(/\//g, "-");
@@ -251,16 +252,16 @@ export default {
           field: "count",
           title: "设备数量",
           width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true
         },
         {
           field: "state",
           title: "状态",
           width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           formatter:function (rowData,rowIndex,pagingIndex,field){
             switch(rowData.state){
@@ -277,8 +278,8 @@ export default {
           field: "oee",
           title: "OEE值",
           width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           formatter:function (rowData,rowIndex,pagingIndex,field){
             return rowData.oee?rowData.oee:'-';

@@ -254,13 +254,14 @@
             :vertical-resize-offset='100'
             column-width-drag
             :multiple-sort="false"
-            style="width:100%;"
+            style="width:100%;height:480px"
             :columns="columns"
             :table-data="tableData"
             row-hover-color="#eee"
             row-click-color="#edf7ff"
             @on-custom-comp="customCompFunc"
             ref="ReportedTable"
+            :show-vertical-border="false"
           ></v-table>
         </el-col>
       </div>
@@ -281,6 +282,7 @@
           row-hover-color="#eee"
           row-click-color="#edf7ff"
           :row-height=30
+          :show-vertical-border="false"
         ></v-table>
       </div>
     </el-dialog>
@@ -325,7 +327,7 @@
             field: "workTypeName",
             title: "职责",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -333,7 +335,7 @@
             field: "name",
             title: "姓名",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -341,7 +343,7 @@
             field: "phone",
             title: "手机号",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -349,7 +351,7 @@
             field: "organizeName",
             title: "组织单位/部门",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -357,7 +359,7 @@
             field: "position",
             title: "岗位",
             width: 60,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           }
@@ -370,8 +372,8 @@
             field: "deviceNo",
             title: "设备编号",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
             // orderBy: ""
           },
@@ -380,24 +382,24 @@
             field: "deviceName",
             title: "设备名称",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "deviceModel",
             title: "型号/规格",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "location",
             title: "设备位置",
             width: 90,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
@@ -458,6 +460,10 @@
           {
             value:4,
             label:'故障检修(RTF)'
+          },
+          {
+            value:5,
+            label:'其他'
           },
         ],
         scope: [
@@ -708,6 +714,7 @@
   @border: 1px solid #dde2eb;
   .Reported {
     width: 100%;
+    min-width: 1000px;
     .top {
       width: 100%;
       padding: 10px;
@@ -733,12 +740,15 @@
       .list {
         border: @border;
         border-radius: 5px;
-        width: 60%;
+        width: 63%;
         min-height: 560px;
         min-width: 600px;
         float: left;
-        margin-left: 10px;
+        margin-left: 1%;
         padding: 10px;
+        .v-table-body{
+          height: 440px!important;
+        }
       }
       h5 {
         position: relative;
