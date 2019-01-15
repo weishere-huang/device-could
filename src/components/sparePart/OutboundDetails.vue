@@ -57,6 +57,7 @@
           :table-data="tableData"
           row-hover-color="#eee"
           row-click-color="#edf7ff"
+          :show-vertical-border="false"
         ></v-table>
         <div
           class="mt20 mb20 bold"
@@ -93,8 +94,8 @@ export default {
           field: "no",
           title: "出库单号",
           width: 120,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -102,8 +103,8 @@ export default {
           field: "time",
           title: "出库日期",
           width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -111,8 +112,8 @@ export default {
           field: "name",
           title: "备件名称",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -120,8 +121,8 @@ export default {
           field: "partNo",
           title: "备件编号",
           width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -129,8 +130,8 @@ export default {
           field: "Model",
           title: "型号/规格",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -138,8 +139,8 @@ export default {
           field: "outCount",
           title: "数量",
           width: 30,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -147,8 +148,8 @@ export default {
           field: "price",
           title: "单价",
           width: 30,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -156,8 +157,8 @@ export default {
           field: "money",
           title: "金额",
           width: 30,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true,
           formatter:function (rowData,rowIndex,pagingIndex,field) {
@@ -168,8 +169,8 @@ export default {
           field: "orgaizeName",
           title: "领用部门",
           width: 60,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -177,8 +178,8 @@ export default {
           field: "receiverName",
           title: "领用人",
           width: 60,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -186,8 +187,8 @@ export default {
           field: "employeeName",
           title: "经手人",
           width: 60,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -195,8 +196,8 @@ export default {
           field: "remark",
           title: "备注",
           width: 120,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },

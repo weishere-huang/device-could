@@ -392,7 +392,7 @@ export default {
         color: #696969;
       }
       .pagerWrap{
-          text-align: center;
+          text-align: left;
           padding: 20px 0 15px 0;
       }
     }

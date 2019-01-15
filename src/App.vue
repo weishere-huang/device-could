@@ -241,7 +241,7 @@ export default {
   computed: {},
   created() {
     this.initPermission();
-    setInterval(this.MsgCount,60000)
+    setInterval(this.MsgCount,1000)
   },
   components: {
     breadCrumb

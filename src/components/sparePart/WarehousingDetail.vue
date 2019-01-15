@@ -57,6 +57,7 @@
           :table-data="tableData"
           row-hover-color="#eee"
           row-click-color="#edf7ff"
+          :show-vertical-border="false"
         ></v-table>
         <div
           class="mt20 mb20 bold"
@@ -93,8 +94,8 @@ export default {
           field: "godownEntryNo",
           title: "入库单号",
           width: 120,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
           //   orderBy: ""
@@ -103,8 +104,8 @@ export default {
           field: "godownEntryTime",
           title: "入库日期",
           width: 120,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -112,8 +113,8 @@ export default {
           field: "partName",
           title: "备件名称",
           width: 120,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -121,8 +122,8 @@ export default {
           field: "partNo",
           title: "备件编号",
           width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -130,8 +131,8 @@ export default {
           field: "partModel",
           title: "型号/规格",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -139,8 +140,8 @@ export default {
           field: "entryCount",
           title: "数量",
           width: 60,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -148,8 +149,8 @@ export default {
           field: "entryPrice",
           title: "单价",
           width: 60,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -157,8 +158,8 @@ export default {
           field: "causeAnalysis",
           title: "金额",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           formatter:function (rowData,rowIndex,pagingIndex,field) {
             return rowData.entryCount*rowData.entryPrice
@@ -168,16 +169,16 @@ export default {
           field: "supplierName",
           title: "供货商",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true
         },
         {
           field: "saveLocation",
           title: "放置位置",
           width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         },
@@ -185,8 +186,8 @@ export default {
           field: "remarks",
           title: "备注",
           width: 150,
-          titleAlign: "center",
-          columnAlign: "center",
+          titleAlign: "left",
+          columnAlign: "left",
           isResize: true,
           overflowTitle: true
         }

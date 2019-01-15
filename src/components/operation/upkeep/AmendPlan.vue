@@ -50,6 +50,7 @@
               row-click-color="#edf7ff"
               :select-all="selectALL"
               :select-change="selectChange"
+              :show-vertical-border="false"
             ></v-table>
             <div
               class="mt20 mb20 bold"
@@ -111,8 +112,8 @@
             field: "deviceNo",
             title: "设备编号",
             width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
             // orderBy: ""
           },
@@ -120,7 +121,7 @@
             field: "deviceName",
             title: "设备名称",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -128,15 +129,15 @@
             field: "deviceModel",
             title: "型号/规格",
             width: 130,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "location",
             title: "设备位置",
             width: 90,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           }

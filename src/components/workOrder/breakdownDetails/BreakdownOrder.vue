@@ -50,6 +50,7 @@
                 style="width:100%;min-height:300px;"
                 :columns="columns"
                 :table-data="tableData"
+                :show-vertical-border="false"
                 row-hover-color="#eee"
                 row-click-color="#edf7ff"></v-table>
               <div
@@ -87,7 +88,7 @@
             </el-form-item>
             <el-form-item label="工单类型：">
               <span>{{workInfo.workType}}</span>
-              <el-button @click="workToPlan" type="text">{{workInfo.maintenanceId}}&nbsp;<i class='iconfont' style="font-size:20px; color: #2474c5">&#xe619;</i></el-button>
+              <el-button @click="workToPlan" type="text">{{workInfo.maintenanceId}}&nbsp;<i class='iconfont' style="font-size:14px; color: #2474c5">&#xe619;</i></el-button>
             </el-form-item>
             <el-form-item label="工单状态：">
               <span>{{workInfo.state}}</span>
@@ -146,6 +147,7 @@
                    style="width:100%;"
                    :columns="equipmentTable"
                    :table-data="equipmentTableData"
+                   :show-vertical-border="false"
                    row-hover-color="#eee"
                    row-click-color="#edf7ff"
                    :row-height=24 :height="160">
@@ -166,6 +168,7 @@
               :cell-edit-done="cellEditDone"
               :row-height=35
               :height="230"
+              :show-vertical-border="false"
             ></v-table>
           </div>
         </el-dialog>
@@ -194,6 +197,7 @@
             :row-height=24
             :height="140"
             @on-custom-comp="customCompFunc"
+            :show-vertical-border="false"
           >
           </v-table>
         </div>
@@ -229,6 +233,7 @@
                 :cell-edit-done="cellEditDone"
                 :row-height=24
                 :height="230"
+                :show-vertical-border="false"
               ></v-table>
               <div
                 class="mt20 mb20 bold"
@@ -293,6 +298,7 @@
             :cell-edit-done="cellEditDone"
             :row-height=24
             :height="230"
+            :show-vertical-border="false"
           ></v-table>
         </div>
         <el-dialog
@@ -311,6 +317,7 @@
               row-hover-color="#eee"
               row-click-color="#edf7ff"
               :row-height=30
+              :show-vertical-border="false"
             ></v-table>
           </div>
         </el-dialog>
@@ -334,34 +341,38 @@
           {
             field: "name",
             title: "审核人",
-            width: 40,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
+            width: 60,
+            titleAlign: "left",
+            columnAlign: "left",
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "startTime",
             title: "提交时间",
-            width: 120,
+            width: 100,
             titleAlign: "center",
             columnAlign: "center",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "endTime",
             title: "审核时间",
-            width: 120,
+            width: 100,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
+            overflowTitle: true
           },
           {
             field: "state",
             title: "审核状态",
-            width: 30,
-            titleAlign: "center",
-            columnAlign: "center",
+            width: 80,
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
+            overflowTitle: true,
             formatter:function (rowData) {
               if(rowData.state===0)return`<span>待处理</span>`;
               if(rowData.state===1)return`<span>已通过</span>`;
@@ -369,28 +380,40 @@
             }
           },
           {
-            field: "position",
-            title: "岗位",
-            width: 40,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
+            field: "startTime",
+            title: "提交时间",
+            width: 80,
+            titleAlign: "left",
+            columnAlign: "left",
+            isResize: true,
+            overflowTitle: true
+          },
+          {
+            field: "endTime",
+            title: "审核时间",
+            width: 80,
+            titleAlign: "left",
+            columnAlign: "left",
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "phone",
             title: "手机号",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
-            isResize: true
+            titleAlign: "left",
+            columnAlign: "left",
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "opinion",
             title: "审核意见",
-            width: 150,
-            titleAlign: "center",
+            width: 140,
+            titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           }
         ],
         submitAuditData:[],
@@ -483,7 +506,7 @@
             field: "deviceNo",
             title: "设备编号",
             width: 100,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -491,7 +514,7 @@
             field: "deviceName",
             title: "设备名称",
             width: 140,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -499,24 +522,24 @@
             field: "deviceModel",
             title: "型号/规格",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "locationNo",
             title: "设备位号",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "location",
             title: "设备位置",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
@@ -534,7 +557,7 @@
             field: "partNo",
             title: "备件编号",
             width: 100,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -542,7 +565,7 @@
             field: "partName",
             title: "名称",
             width: 100,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -550,16 +573,16 @@
             field: "partModel",
             title: "型号/规格",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "planCount",
             title: "计划数量",
             width: 70,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             isEdit: true,
             formatter(rowData,rowIndex,pagingIndex,field) {
@@ -570,16 +593,16 @@
             field: "actualCount",
             title: "实际数量",
             width: 70,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
           },
           {
             field: "partUnit",
             title: "计量单位",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
@@ -597,7 +620,7 @@
             field: "operateDesc",
             title: "工单进度",
             width: 240,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true,
             overflowTitle: true
@@ -606,7 +629,7 @@
             field: "gmtModified",
             title: "处理时间",
             width: 60,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true,
             overflowTitle: true
@@ -617,7 +640,7 @@
             field: "partNo",
             title: "备件编号",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -625,7 +648,7 @@
             field: "partName",
             title: "备件名称",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -633,7 +656,7 @@
             field: "partModel",
             title: "型号/规格",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -641,7 +664,7 @@
             field: "partCategory",
             title: "备件级别",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -649,7 +672,7 @@
             field: "partClassifyName",
             title: "备件分类",
             width: 60,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -657,7 +680,7 @@
             field: "inventory",
             title: "库存",
             width: 60,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -665,7 +688,7 @@
             field: "partUnit",
             title: "计量单位",
             width: 60,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           }
@@ -676,7 +699,7 @@
             field: "workTypeName",
             title: "职责",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -684,7 +707,7 @@
             field: "name",
             title: "姓名",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -692,7 +715,7 @@
             field: "phone",
             title: "手机号",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -700,7 +723,7 @@
             field: "organizeName",
             title: "组织单位/部门",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -708,7 +731,7 @@
             field: "position",
             title: "岗位",
             width: 60,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -720,8 +743,8 @@
             field: "employeeNo",
             title: "员工编号",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
             //   orderBy: ""
           },
@@ -729,32 +752,32 @@
             field: "name",
             title: "姓名",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "phone",
             title: "手机号",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "organizeName",
             title: "组织单位/部门",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "position",
             title: "岗位",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           }
         ],
@@ -1368,7 +1391,7 @@
   Vue.component("table-workPerson", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
-            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="showLook(rowData,index)" style='font-size:20px' class='iconfont'>&#xe734;</i></a>
+            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="showLook(rowData,index)" style='font-size:16px' class='iconfont'>&#xe734;</i></a>
         </el-tooltip>
         </span>`,
     props: {
@@ -1391,7 +1414,9 @@
   });
   Vue.component("table-breakdownOrder", {
     template: `<span>
-          <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe635;</i></a>
+    <el-tooltip class="item" effect="dark" content="删除" placement="top">
+          <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe635;</i></a>
+        </el-tooltip>
         </span>`,
     props: {
       rowData: {
@@ -1422,7 +1447,8 @@
   @Info: #dde2eb;
   @border: 1px solid #dde2eb;
   .breakdown-order {
-    font-size: 14px;
+    font-size: 12px;
+    min-width: 1090px;
     h5 {
       position: relative;
       top: -18px;
@@ -1447,7 +1473,7 @@
       padding: 10px;
       .left {
         float: left;
-        width: 25%;
+        width: 29%;
         //   border: @border;
         .msg {
           padding: 10px;
