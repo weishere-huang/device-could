@@ -436,14 +436,14 @@
         let time1 = new Date(new Date().toLocaleString('chinese', { hour12: false })).valueOf();
         let dateTime = new Date(this.time).valueOf();
         if(this.deviceId.length===0)this.$message.error("请选择相关设备");
-        if(this.deviceId.length>1)this.$message.error("对不起，只能选择一个设备");
-        if(this.scopeValue==="")this.$message.error("请至少选择影响范围");
-        if(this.gradeValue==="")this.$message.error("请至少选择故障等级");
-        if(this.time==="")this.$message.error("请至少选择故障开始时间");
-        if(dateTime>time1)this.$message.error("故障开始时间有误");
-        if(this.breakDesc==="")this.$message.error("请填写故障描述");
-        if(this.breakInfo==="")this.$message.error("请填写原因分析");
-        if(this.img.length>0)this.$message.error("请上传至少一张故障相关图片");
+        else if(this.deviceId.length>1)this.$message.error("对不起，只能选择一个设备");
+        else if(this.scopeValue==="")this.$message.error("请至少选择影响范围");
+        else if(this.gradeValue==="")this.$message.error("请至少选择故障等级");
+        else if(this.time==="")this.$message.error("请至少选择故障开始时间");
+        else if(dateTime>time1)this.$message.error("故障开始时间有误");
+        else if(this.breakDesc==="")this.$message.error("请填写故障描述");
+        else if(this.breakInfo==="")this.$message.error("请填写原因分析");
+        else if(this.img.length>0)this.$message.error("请上传至少一张故障相关图片");
         else return true;
       }
     },
@@ -459,8 +459,6 @@
     }
   };
 </script>
-
-
 <style lang="less">
   @blue: #409eff;
   @Success: #67c23a;
