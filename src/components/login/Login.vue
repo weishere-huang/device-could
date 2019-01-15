@@ -6,6 +6,7 @@
   >
     <h2>长虹智能终端设备生产管理云平台</h2>
     <el-form
+      @keyup.enter.native="submitForm('loginList')"
       :model="loginList"
       :rules="loginRules"
       style="width:60%;margin-top:10px;"
