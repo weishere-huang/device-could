@@ -389,7 +389,6 @@
             return false;
           }
         }
-        debugger;
         if(new Date(this.companyName.endTime).valueOf()<new Date(this.companyName.startTime).valueOf()){
           this.$message.error('结束时间不能小于开始时间');
           return false;

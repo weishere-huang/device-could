@@ -639,11 +639,11 @@
         let time1 = new Date(new Date().toLocaleString('chinese', { hour12: false })).valueOf();
         let dateTime = new Date(this.time).valueOf();
         if(this.deviceId===0)this.$message.error("请选择至少一个设备");
-        if(this.scopeValue==="")this.$message.error("请至少选择分类");
-        if(this.gradeValue==="")this.$message.error("请至少选择级别");
-        if(this.time==="")this.$message.error("请选择执行时间");
-        if(dateTime<time1)this.$message.error("执行时间有误");
-        if(this.workInfo==="")this.$message.error("请填写内容");
+        else if(this.scopeValue==="")this.$message.error("请至少选择分类");
+        else if(this.gradeValue==="")this.$message.error("请至少选择级别");
+        else if(this.time==="")this.$message.error("请选择执行时间");
+        else if(dateTime<time1)this.$message.error("执行时间有误");
+        else if(this.workInfo==="")this.$message.error("请填写内容");
         else return true;
       },
       addBreakWork(){
@@ -676,14 +676,14 @@
         let time1 = new Date(new Date().toLocaleString('chinese', { hour12: false })).valueOf();
         let dateTime = new Date(this.breakTime).valueOf();
         if(this.deviceId.length===0)this.$message.error("请选择相关设备");
-        if(this.deviceId.length>1)this.$message.error("对不起，只能选择一个设备");
-        if(this.scopeValue==="")this.$message.error("请至少选择影响范围");
-        if(this.gradeValue==="")this.$message.error("请至少选择故障等级");
-        if(this.breakTime==="")this.$message.error("请选择故障开始时间");
-        if(dateTime>time1)this.$message.error("故障发现时间有误");
-        if(this.breakWorkDesc==="")this.$message.error("请填写故障描述");
-        if(this.breakWorkInfo==="")this.$message.error("请填写原因分析");
-        if(this.imgPath==="")this.$message.error("请上传至少一张故障相关图片");
+        else  if(this.deviceId.length>1)this.$message.error("对不起，只能选择一个设备");
+        else if(this.scopeValue==="")this.$message.error("请至少选择影响范围");
+        else  if(this.gradeValue==="")this.$message.error("请至少选择故障等级");
+        else if(this.breakTime==="")this.$message.error("请选择故障开始时间");
+        else if(dateTime>time1)this.$message.error("故障发现时间有误");
+        else if(this.breakWorkDesc==="")this.$message.error("请填写故障描述");
+        else if(this.breakWorkInfo==="")this.$message.error("请填写原因分析");
+        else  if(this.imgPath==="")this.$message.error("请上传至少一张故障相关图片");
         else return true;
       },
       WorkOrder() {
