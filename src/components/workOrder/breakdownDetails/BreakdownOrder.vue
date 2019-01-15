@@ -585,7 +585,7 @@
             columnAlign: "left",
             isResize: true,
             isEdit: true,
-            formatter(rowData,rowIndex,pagingIndex,field) {
+            formatter(rowData) {
               return `<s class='cell-edit-style'></s><span">${rowData.planCount}</span>`;
             }
           },
