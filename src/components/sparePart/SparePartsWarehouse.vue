@@ -100,7 +100,7 @@
           </div>
         </div>
         <div style="float:left;font-size:20px;height:426px;line-height:426px">
-          <i class="iconfont icon-jiantouyou"></i>
+          <i class="el-icon-d-arrow-right"></i>
         </div>
         <div class="inventory-list">
           <el-form label-width="85px">
@@ -110,7 +110,18 @@
             >
             </el-form-item>
           </el-form>
-          <div>
+          <div style="position:relative;" >
+            <div class="batch_msg" v-show="batchShow" id="tags-list">
+              <div class="top-case">
+                <h3><span style="color:#409eff;">{{titleName}}</span>历史批次信息</h3>
+                <el-button type="text" icon="el-icon-close" @click="batchShow=false" style="font-size:14px"></el-button>
+              </div>
+              
+              <ul>
+                <li v-if="nub==undefined||nub.length==0 " @click="batchShow=false">暂无历史批次</li>
+                <li v-for="(item, index) in nub" :key="index" @click="getBatchNumber(item)">{{item.batchNumber}}</li>
+              </ul>
+            </div>
             <v-table
               :row-dblclick="toDetails2"
               is-horizontal-resize
@@ -127,7 +138,7 @@
               @on-custom-comp="customCompFunc"
               :column-cell-class-name="columnCellClass"
               ref="inventoryListTable"
-               :show-vertical-border="false"
+             
             ></v-table>
           </div>
           <div style="color:#e6a23c;line-height:20px">
@@ -136,15 +147,78 @@
         </div>
       </div>
     </div>
+   
   </div>
 </template>
 <script>
 import Vue from "vue";
+Vue.component('table-batch',{
+  template:`
+           <div style="width:100%;height:100%;" @click="getBatch(rowData,index)">{{rowData.batchNumber}}</div>
+          `,
+  data() {
+    return {
+      nub:[]
+    }
+  },
+  props:{
+    rowData:{
+      type:Object,
+    },
+    field: {
+      type: String
+    },
+    index: {
+      type: Number
+    },
+  },
+  methods: {
+    
+    wright(){
+      let params = { type: "wright", index: this.index, rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+      console.log("OK");
+    },
+    getBatch(){
+      console.log("OK");
+      let params = { type: "wright", index: this.index, rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+      // this.rowData.batchNumber=1
+    }
+  },
+  created () {
+    this.Axios(
+        {
+          params: {
+            partId:this.rowData.partId
+          },
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/part/listRecentlyUsedBatch"
+         
+        },
+        this
+      ).then(
+        result => {
+          this.nub=result.data.data
+        //  for (let i = 0; i < result.data.data.length; i++) {
+        //    this.nub[i].push(result.data.data[i].batchNumber)
+        //  }
+        },
+        ({ type, info }) => {}
+      );
+  }
+})
 export default {
   inject: ["reload"],
   data() {
     return {
-
+      titleName:"",
+      index:'',
+      nub:[],
+      batchShow:false,
       formInline: {
          time: new Date().toLocaleDateString(),
       },
@@ -239,7 +313,7 @@ export default {
         {
           field: "entryPrice",
           title: "*单价（元）",
-          width: 80,
+          width: 90,
           titleAlign: "left",
           columnAlign: "left",
           isResize: true,
@@ -265,20 +339,6 @@ export default {
           }
         },
         {
-          field: "supplierName",
-          title: "*供应商",
-          width: 80,
-          titleAlign: "left",
-          columnAlign: "left",
-          isResize: true,
-          overflowTitle: true,
-          isEdit: true,
-          titleCellClassName: "title-cell-class-name",
-          formatter: function (rowData,rowIndex,pagingIndex,field) {
-            return `<s class='cell-edit-style'></s><span>${rowData.supplierName}</span>`;
-          }
-        },
-        {
           field: "batchNumber",
           title: "*批次",
           width: 80,
@@ -288,8 +348,23 @@ export default {
           overflowTitle: true,
           isEdit: true,
           titleCellClassName: "title-cell-class-name",
+          componentName: "table-batch",
+          // formatter: function (rowData,rowIndex,pagingIndex,field) {
+          //   return `<s class='cell-edit-style'></s><div style="width:100%;height:100%">${rowData.batchNumber}</div>`;
+          // }
+        },
+        {
+          field: "supplierName",
+          title: "*供应商",
+          width: 200,
+          titleAlign: "left",
+          columnAlign: "left",
+          isResize: true,
+          overflowTitle: true,
+          isEdit: true,
+          titleCellClassName: "title-cell-class-name",
           formatter: function (rowData,rowIndex,pagingIndex,field) {
-            return `<s class='cell-edit-style'></s><span>${rowData.batchNumber}</span>`;
+            return `<s class='cell-edit-style'></s><span>${rowData.supplierName}</span>`;
           }
         },
         {
@@ -338,6 +413,11 @@ export default {
     };
   },
   methods: {
+    getBatchNumber(value){
+      console.log(value);
+      this.tableData1[this.index].batchNumber=value.batchNumber
+      this.batchShow=false
+    },
     columnCellClass(rowIndex, columnName, rowData) {
       // 给三行column为‘Parts1Material’和‘Parts2Material’的列设置className
       /*根据你自己的cloumn设置*/
@@ -354,9 +434,39 @@ export default {
         this.tableData1 = this.tableData1.filter(
           item => item.partId !== params.rowData.partId
         );
+      }
+      if (params.type === "wright") {
+        console.log(params);
+        this.index=params.index
+        this.batchShow=true;
+        this.titleName=params.rowData.partName
+        this.Axios(
+        {
+          params: {
+            partId:params.rowData.partId
+          },
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/part/listRecentlyUsedBatch"
+         
+        },
+        this
+      ).then(
+        result => {
+          console.log(result);
+          this.nub=result.data.data
+        //  for (let i = 0; i < result.data.data.length; i++) {
+        //    this.nub[i].push(result.data.data[i].batchNumber)
+        //  }
+        },
+        ({ type, info }) => {}
+      );
+      }
         // this.deleteOne(params.rowData["id"]);
         // this.$delete(this.tableData, params.index);
-      }
+      
     },
     toDetails(rowIndex, rowData, column) {
       //this.getuserbatch(rowData.id);
@@ -589,7 +699,10 @@ export default {
         this.$refs.classifyTable.resize();
       }, 500);
     });
-  }
+    
+  },
+  mounted() {
+  },
 };
 Vue.component("table-warehouse", {
   template: `<span>
@@ -627,7 +740,11 @@ Vue.component("table-warehouse", {
 @Danger: #f56c6c;
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
+.el-popover__title{
+      font-size: 12px;
+  }
 .spare-parts-warehouse {
+ min-width: 1090px;
   font-size: 12px;
   .top {
     border: @border;
@@ -647,7 +764,6 @@ Vue.component("table-warehouse", {
       letter-spacing: 6px;
     }
     .table-list {
-      overflow: hidden;
       margin-top: 20px;
       .spare-parts-table {
         width: 30%;
@@ -667,6 +783,60 @@ Vue.component("table-warehouse", {
         .v-table-body{
           height: 320px !important;
         }
+      }
+    }
+  }
+  .batch_msg{
+    position: fixed;
+    top: 28%;
+    right: 7%;
+    z-index: 1000;
+    width: 300px;
+    max-height: 200px;
+    background-color: white;
+    padding: 5px;
+    border:1px solid @Info;
+    border-radius: 5px;
+    box-shadow: 4px 4px 4px 1px @Info;
+    .top-case{
+      position: absolute;
+      top: 0%;
+      width: 98%;
+      background-color: white;
+      padding: 5px 0;
+    }
+    h3{
+      display: inline-block;
+      line-height: 18px;
+    }
+    .el-button{
+      padding: 0;
+      float: right;
+      margin-right: 10px;
+    }
+    ul{
+      width: 100%;
+      overflow: scroll;
+      margin-top:30px; 
+      max-height: 165px;
+      background-color: white;
+      li{
+        list-style-type: none;
+        float: left;
+        margin-left:4px;
+        margin-bottom: 4px; 
+        cursor: pointer;
+        background-color: rgba(64,158,255,.1);
+        padding: 0 10px;
+        height: 32px;
+        line-height: 30px;
+        font-size: 12px;
+        color: #409EFF;
+        border-radius: 4px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        border: 1px solid rgba(64,158,255,.2);
+        white-space: nowrap;
       }
     }
   }

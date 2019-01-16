@@ -214,17 +214,18 @@ export default [{
         route: "/SparePartsWarehouse",
         permissionCode: 'part_warehouse_lookup'
       },
+       {
+         menu: '入库明细',
+         route: "/WarehousingDetail",
+         permissionCode: 'part_warehouseInfo_lookup'
+       },
       {
         menu: '备件出库',
         route: "/Output",
         defaultDock: true,
         permissionCode: 'part_warehouse_lookup'
       },
-      {
-        menu: '入库明细',
-        route: "/WarehousingDetail",
-        permissionCode: 'part_warehouseInfo_lookup'
-      },
+     
       {
         menu: '出库明细',
         route: "/OutboundDetails",

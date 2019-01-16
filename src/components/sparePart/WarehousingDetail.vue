@@ -171,7 +171,8 @@ export default {
           width: 80,
           titleAlign: "left",
           columnAlign: "left",
-          isResize: true
+          isResize: true,
+          overflowTitle: true
         },
         {
           field: "saveLocation",
