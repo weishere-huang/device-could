@@ -100,9 +100,9 @@
             <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;设备添加</el-button>
         </div>
         <h5>设备列表</h5>
-        <v-table  @on-custom-comp="customCompFunc" is-horizontal-resize column-width-drag :multiple-sort="false" style="width:100%;min-height:318px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-        <div class="mt20 mb20 bold" style="text-align:center;margin-top:30px;">
-        </div>
+        <v-table :show-vertical-border="false" @on-custom-comp="customCompFunc" is-horizontal-resize column-width-drag :multiple-sort="false" :height="350" style="width:100%;height:350px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
+        
+        
       </div>
       <el-dialog
       title="人员列表"
@@ -120,6 +120,7 @@
           row-hover-color="#eee"
           row-click-color="#edf7ff"
           :row-height=30
+          :show-vertical-border="false"
         ></v-table>
       </div>
     </el-dialog>
@@ -139,6 +140,7 @@
             row-hover-color="#eee"
             row-click-color="#edf7ff"
             :row-height=30
+            :show-vertical-border="false"
           ></v-table>
         </div>
       </el-dialog>
@@ -188,7 +190,7 @@
             field: "workTypeName",
             title: "职责",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -196,7 +198,7 @@
             field: "name",
             title: "姓名",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -204,7 +206,7 @@
             field: "phone",
             title: "手机号",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -212,7 +214,7 @@
             field: "organizeName",
             title: "组织单位/部门",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -220,7 +222,7 @@
             field: "position",
             title: "岗位",
             width: 60,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -231,8 +233,8 @@
             field: "deviceNo",
             title: "设备编号",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
             //   orderBy: ""
           },
@@ -240,24 +242,24 @@
             field: "deviceName",
             title: "设备名称",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "deviceModel",
             title: "型号/规格",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "location",
             title: "设备位置",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
@@ -286,8 +288,8 @@
             field: "name",
             title: "审核人",
             width: 40,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
@@ -309,9 +311,9 @@
           {
             field: "state",
             title: "审核状态",
-            width: 30,
-            titleAlign: "center",
-            columnAlign: "center",
+            width: 60,
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             formatter:function (rowData) {
               if(rowData.state===0)return`<span>待处理</span>`;
@@ -320,26 +322,34 @@
             }
           },
           {
-            field: "position",
-            title: "岗位",
-            width: 40,
-            titleAlign: "center",
-            columnAlign: "center",
+            field: "startTime",
+            title: "提交时间",
+            width: 60,
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
+          },
+          {
+            field: "endTime",
+            title: "审核时间",
+            width: 60,
+            titleAlign: "left",
+            columnAlign: "left",
+            isResize: true,
           },
           {
             field: "phone",
             title: "手机号",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "opinion",
             title: "审核意见",
-            width: 150,
-            titleAlign: "center",
+            width: 180,
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           }
@@ -562,7 +572,12 @@
   Vue.component("table-amendPerson", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
-            <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="showLook(rowData,index)" style='font-size:20px' class='iconfont'>&#xe734;</i></a>
+             <permission-button permCode='employee_lookup.employee_add||employee_lookup.employee_modification'
+                     banType='disable' type="text"
+                     @click.stop.prevent="showLook(rowData,index)"
+                     style="text-decoration: none;color:#409eff">
+                     <i style='font-size:16px' class='iconfont'>&#xe734;</i>
+            </permission-button>
         </el-tooltip>
         </span>`,
     props: {
@@ -599,10 +614,10 @@
     .top {
       padding: 10px;
       border: @border;
-        border-radius: 5px;
+      border-radius: 5px;
     }
     .bottom {
-      padding: 10px;
+      padding: 10px 0 10px 10px;
       border: @border;
         border-radius: 5px;
         overflow: hidden;
@@ -612,9 +627,10 @@
         padding: 10px;
         border: @border;
         border-radius: 5px;
-        width: 400px;
+        min-width: 400px;
         height: 420px;
         float: left;
+        width: 35%;
         h5 {
           position: relative;
           top: -17px;
@@ -627,7 +643,8 @@
         }
       }
       .right {
-        width: 640px;
+        width: 61%;
+        min-width: 640px;
         font-size: 12px;
         float: left;
         padding: 10px;

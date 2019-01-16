@@ -1,6 +1,16 @@
 <template>
   <div class="category">
-    <div style="width:900px;">
+    <div class="top-case">
+      <permission-button
+            permCode='device_cate_lookup.device_cate_add'
+            banType='hide'
+            size="small"
+            style=""
+            type="primary"
+            @click="dialogVisible3=true,addname='',addmsg=''"
+          >添加初始类别</permission-button>
+    </div>
+    <div style="width:100%;" class="tree-case">
       <div class="classify-title">
         <h5 class="classify-name">分类名称</h5>
         <h5 class="remarks">备注</h5>
@@ -79,15 +89,7 @@
             <span class="content-remarks">{{data.categoryMsg}}</span>
           </span>
         </el-tree>
-        <div style="width:100%;text-align:center">
-          <permission-button
-            permCode='device_cate_lookup.device_cate_add'
-            banType='hide'
-            size="small"
-            style="width:200px;margin:auto"
-            @click="dialogVisible3=true,addname='',addmsg=''"
-          >添加初始类别</permission-button>
-        </div>
+       
         <el-dialog
           title="添加初始类别"
           :visible.sync="dialogVisible3"
@@ -477,13 +479,28 @@ export default {
 @border: 1px solid #dde2eb;
 
 .category {
-
-  border: @border;
-  border-radius: 5px;
+.el-tree-node__content {
+      height: 40px;
+      border-top: solid 1px #eee;
+    }
+  // border: @border;
+  // border-radius: 5px;
   font-size: 12px;
-  max-height: 80vh;
-  overflow: scroll;
-  padding-bottom: 10px;
+  
+  
+  // padding-bottom: 10px;
+  .top-case{
+    padding: 10px;
+    border-radius: 5px;
+    border: @border;
+  }
+  .tree-case{
+    border: @border;
+    border-radius: 5px;
+    overflow: scroll;
+    max-height: 70vh;
+    margin-top: 10px;
+  }
   .classify-title {
     line-height: 40px;
     overflow: hidden;

@@ -254,13 +254,14 @@
             :vertical-resize-offset='100'
             column-width-drag
             :multiple-sort="false"
-            style="width:100%;"
+            style="width:100%;height:480px"
             :columns="columns"
             :table-data="tableData"
             row-hover-color="#eee"
             row-click-color="#edf7ff"
             @on-custom-comp="customCompFunc"
             ref="ReportedTable"
+            :show-vertical-border="false"
           ></v-table>
         </el-col>
       </div>
@@ -281,6 +282,7 @@
           row-hover-color="#eee"
           row-click-color="#edf7ff"
           :row-height=30
+          :show-vertical-border="false"
         ></v-table>
       </div>
     </el-dialog>
@@ -325,7 +327,7 @@
             field: "workTypeName",
             title: "职责",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -333,7 +335,7 @@
             field: "name",
             title: "姓名",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -341,7 +343,7 @@
             field: "phone",
             title: "手机号",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -349,7 +351,7 @@
             field: "organizeName",
             title: "组织单位/部门",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -357,7 +359,7 @@
             field: "position",
             title: "岗位",
             width: 60,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           }
@@ -370,8 +372,8 @@
             field: "deviceNo",
             title: "设备编号",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
             // orderBy: ""
           },
@@ -380,24 +382,24 @@
             field: "deviceName",
             title: "设备名称",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "deviceModel",
             title: "型号/规格",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
             field: "location",
             title: "设备位置",
             width: 90,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true
           },
           {
@@ -458,6 +460,10 @@
           {
             value:4,
             label:'故障检修(RTF)'
+          },
+          {
+            value:5,
+            label:'其他'
           },
         ],
         scope: [
@@ -630,10 +636,13 @@
           })
       },
       maintenanceValue(){
+        let time1 = new Date(new Date().toLocaleString('chinese', { hour12: false })).valueOf();
+        let dateTime = new Date(this.time).valueOf();
         if(this.deviceId===0)this.$message.error("请选择至少一个设备");
         else if(this.scopeValue==="")this.$message.error("请至少选择分类");
         else if(this.gradeValue==="")this.$message.error("请至少选择级别");
-        else if(this.time==="")this.$message.error("请至少选择执行时间");
+        else if(this.time==="")this.$message.error("请选择执行时间");
+        else if(dateTime<time1)this.$message.error("执行时间有误");
         else if(this.workInfo==="")this.$message.error("请填写内容");
         else return true;
       },
@@ -664,14 +673,17 @@
           })
       },
       faultValue(){
+        let time1 = new Date(new Date().toLocaleString('chinese', { hour12: false })).valueOf();
+        let dateTime = new Date(this.breakTime).valueOf();
         if(this.deviceId.length===0)this.$message.error("请选择相关设备");
-        else if(this.deviceId.length>1)this.$message.error("对不起，只能选择一个设备");
+        else  if(this.deviceId.length>1)this.$message.error("对不起，只能选择一个设备");
         else if(this.scopeValue==="")this.$message.error("请至少选择影响范围");
-        else if(this.gradeValue==="")this.$message.error("请至少选择故障等级");
-        else if(this.breakTime==="")this.$message.error("请至少选择故障开始时间");
+        else  if(this.gradeValue==="")this.$message.error("请至少选择故障等级");
+        else if(this.breakTime==="")this.$message.error("请选择故障开始时间");
+        else if(dateTime>time1)this.$message.error("故障发现时间有误");
         else if(this.breakWorkDesc==="")this.$message.error("请填写故障描述");
         else if(this.breakWorkInfo==="")this.$message.error("请填写原因分析");
-        else if(this.imgPath==="")this.$message.error("请上传至少一张故障相关图片");
+        else  if(this.imgPath==="")this.$message.error("请上传至少一张故障相关图片");
         else return true;
       },
       WorkOrder() {
@@ -702,6 +714,7 @@
   @border: 1px solid #dde2eb;
   .Reported {
     width: 100%;
+    min-width: 1000px;
     .top {
       width: 100%;
       padding: 10px;
@@ -727,12 +740,15 @@
       .list {
         border: @border;
         border-radius: 5px;
-        width: 60%;
+        width: 63%;
         min-height: 560px;
         min-width: 600px;
         float: left;
-        margin-left: 10px;
+        margin-left: 1%;
         padding: 10px;
+        .v-table-body{
+          height: 440px!important;
+        }
       }
       h5 {
         position: relative;

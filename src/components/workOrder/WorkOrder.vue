@@ -50,6 +50,7 @@
         :row-dblclick="Jump"
         row-click-color="#edf7ff"
         ref="workOrderTable"
+        :show-vertical-border="false"
       >
       </v-table>
       <div
@@ -61,7 +62,7 @@
           @page-size-change="pageSizeChange"
           :total="totalNub"
           :page-size="pageSize"
-          :pageIndex="pageIndex"
+          :page-index="pageIndex"
           :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']"
         ></v-pagination>
       </div>
@@ -69,7 +70,7 @@
     <el-dialog
       title="审核"
       :visible.sync="outerVisible"
-      :beforeClose="cancel"
+      :beforeClose="removeSubmitValue"
     >
       <el-form
         label-position=right
@@ -132,7 +133,7 @@
       >
         <el-button
           type="primary"
-          @click="cancel"
+          @click="removeSubmitValue"
           size="mini"
         >取 消</el-button>
         <el-button
@@ -185,7 +186,7 @@ import personnel from '../operation/breakdown/Personnel'
             field: "workNo",
             title: "工单编号",
             width: 80,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true,
             overflowTitle: true
@@ -195,8 +196,8 @@ import personnel from '../operation/breakdown/Personnel'
             field: "state",
             title: "工单状态",
             width: 70,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
@@ -217,8 +218,8 @@ import personnel from '../operation/breakdown/Personnel'
             field: "workType",
             title: "工单类型",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
@@ -230,8 +231,8 @@ import personnel from '../operation/breakdown/Personnel'
           {
             field: "workDesc",
             title: "工单描述",
-            width: 200,
-            titleAlign: "center",
+            width: 160,
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true,
             overflowTitle: true
@@ -239,8 +240,8 @@ import personnel from '../operation/breakdown/Personnel'
           {
             field: "workCauseAnalysis",
             title: "原因分析",
-            width: 80,
-            titleAlign: "center",
+            width: 120,
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true,
             overflowTitle: true
@@ -249,7 +250,7 @@ import personnel from '../operation/breakdown/Personnel'
             field: "deviceNames",
             title: "设备名称",
             width: 120,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true,
             overflowTitle: true
@@ -258,8 +259,8 @@ import personnel from '../operation/breakdown/Personnel'
             field: "gmtCreate",
             title: "工单创建时间",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -275,6 +276,7 @@ import personnel from '../operation/breakdown/Personnel'
         isHideList: this.$route.params.id !== undefined
           ? true : false,
         isPage:1,
+        pageValue:"",
         workId:0,
       };
     },
@@ -282,7 +284,7 @@ import personnel from '../operation/breakdown/Personnel'
       personnel
     },
     methods: {
-      cancel() {
+      removeSubmitValue() {
         this.dialogVisible = false;
         this.outerVisible = false;
         this.formLabelAlign.desc = "";
@@ -293,7 +295,7 @@ import personnel from '../operation/breakdown/Personnel'
         this.toAuditName="";
       },
       isSubmitAudit(){
-        if (this.formLabelAlign.radio===0){
+        if (this.formLabelAlign.radio==='0'){
           if(this.toAuditName!==""||this.formLabelAlign.type){
             this.toSubmitAudit();
           }else{
@@ -320,8 +322,8 @@ import personnel from '../operation/breakdown/Personnel'
           this
         ).then(
           response => {
-            this.outerVisible = false;
-            this.reload();
+            this.removeSubmitValue();
+            this.load(this.stateNum);
           },
           ({ type, info }) => {
           }
@@ -373,14 +375,14 @@ import personnel from '../operation/breakdown/Personnel'
       },
 
       load(stateNum) {
+        this.pageValue === ""|| this.pageValue == null ?this.pageValue = stateNum :
+        this.pageValue ===stateNum ? this.pageValue=this.stateNum: this.pageValue = stateNum;
+        this.pageValue !== this.stateNum ? this.pageIndex = 1: "";
         EventBus.$on("sideBarTroggleHandle", isCollapse => {
           window.setTimeout(() => {
             this.$refs.workOrderTable.resize();
           }, 500);
         });
-        this.stateNum = stateNum;
-        this.stateNum==null ||this.stateNum==="" ? ""
-          :this.isPage===1 ? this.pageIndex=1:this.pageIndex;
         this.Axios(
           {
             params: {
@@ -394,6 +396,7 @@ import personnel from '../operation/breakdown/Personnel'
           this
         ).then(
           response => {
+            this.stateNum = stateNum;
             this.totalNub = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             this.tableDate = this.tableData;
@@ -420,8 +423,12 @@ import personnel from '../operation/breakdown/Personnel'
           }
         }
         if (params.type ==="submit") {
-          this.outerVisible=true;
-          this.workId = params.rowData.id;
+          if(params.rowData.state===0){
+            this.outerVisible=true;
+            this.workId = params.rowData.id;
+          }else{
+            this.$message.error("对不起，只能操作待审核状态的工单")
+          }
         }
       },
     },
@@ -438,10 +445,33 @@ import personnel from '../operation/breakdown/Personnel'
       }
     },
   };
+  Vue.component("table-workToPlan", {
+    template: `<span>
+              <span  style="text-decoration: none">{{rowData.maintenanceId}}<el-tooltip class="item" effect="dark" content="点击查看来源" placement="top"><i @click.stop.prevent="workToPlans(rowData,index)" style='font-size:14px;color:#409eff' class='iconfont'>&#xe619;</i> </el-tooltip></span>
+            </span>`,
+    props: {
+      rowData: {
+        type: Object
+      },
+      field: {
+        type: String
+      },
+      index: {
+        type: Number
+      }
+    },
+    methods: {
+      workToPlans() {
+        // 参数根据业务场景随意构造
+        let params = { type: "workToPlans", index: this.index, rowData: this.rowData };
+        this.$emit("on-custom-comp", params);
+      },
+    }
+  });
   Vue.component("table-operations", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="查看详情" placement="top">
-            <a href="" style="text-decoration: none"><i @click.stop.prevent="lookWork(rowData,index)" style='font-size:20px;color:#409eff' class='iconfont'>&#xe734;</i></a>
+            <a href="" style="text-decoration: none"><i @click.stop.prevent="lookWork(rowData,index)" style='font-size:16px;color:#409eff' class='iconfont'>&#xe734;</i></a>
         </el-tooltip>
          &nbsp;
         <el-tooltip class="item" effect="dark" content="审核" placement="top">
@@ -452,8 +482,9 @@ import personnel from '../operation/breakdown/Personnel'
             </permission-button>
           </el-tooltip>
           &nbsp;
-           <el-tooltip class="item" effect="dark" content="点击查看来源" placement="top">
-            <a href="" style="text-decoration: none"><i @click.stop.prevent="workToPlans(rowData,index)" style='font-size:20px;color:#409eff' class='iconfont'>&#xe619;</i></a>
+           <el-tooltip class="item" effect="dark" :content="rowData.workType===0 ? '点击查看检修计划':
+           rowData.workType===1?'点击查看保养计划':'点击查看故障计划'" placement="top">
+            <a href="" style="text-decoration: none"><i @click.stop.prevent="workToPlans(rowData,index)" style='font-size:16px;color:#409eff' class='iconfont'>&#xe619;</i></a>
         </el-tooltip>
         </span>`,
     props: {

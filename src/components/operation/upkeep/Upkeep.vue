@@ -105,6 +105,7 @@
             row-click-color="#edf7ff"
             @on-custom-comp="customCompFunc"
             ref="upkeepTable"
+            :show-vertical-border="false"
           ></v-table>
           <div
             class="mt20 mb20 bold"
@@ -139,6 +140,7 @@
           row-hover-color="#eee"
           row-click-color="#edf7ff"
           :row-height=35
+          :show-vertical-border="false"
         ></v-table>
       </div>
     </el-dialog>
@@ -179,18 +181,18 @@
           {
             field: "planName",
             title: "计划名称",
-            width: 150,
-            titleAlign: "center",
-            columnAlign: "center",
+            width: 120,
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
           {
             field: "state",
             title: "当前状态",
-            width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
+            width: 70,
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
@@ -208,8 +210,8 @@
             field: "maintenanceType",
             title: "保养分类",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
@@ -225,9 +227,9 @@
           {
             field: "maintenanceLevel",
             title: "保养级别",
-            width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
+            width: 70,
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -235,8 +237,8 @@
             field: "startTime",
             title: "开始日期",
             width: 70,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -244,26 +246,26 @@
             field: "endTime",
             title: "结束日期",
             width: 70,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
           {
             field: "executeTime",
             title: "首次执行时间",
-            width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            width: 90,
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
           {
             field: "frequencyType",
             title: "计划频次",
-            width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
+            width: 70,
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
@@ -276,8 +278,8 @@
           {
             field: "maintenanceCc",
             title: "保养内容",
-            width: 200,
-            titleAlign: "center",
+            width: 160,
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true,
             overflowTitle: true
@@ -286,8 +288,8 @@
             field: "creator",
             title: "计划制定人",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -311,8 +313,8 @@
             field: "workNo",
             title: "工单编号",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -320,8 +322,8 @@
             field: "gmtCreate",
             title: "创建时间",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -329,8 +331,8 @@
             field: "state",
             title: "状态",
             width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
@@ -686,11 +688,12 @@
   };
   Vue.component("table-lookWorkInfoS", {
     template: `<span>
-        <el-tooltip class="item" effect="dark" content="修改" placement="top">
+        <el-tooltip class="item" effect="dark" content="查看详情" placement="top">
             <permission-button permCode='work_list_detail_lookup.work_list_detail_save||work_list_detail_lookup.work_list_detail_audit'
                      banType='disable' type="text"
+                     @click.stop.prevent="lookWorkInfo(rowData,index)"
                      style="text-decoration: none;color:#409eff;margin-left: -2px">
-                     <i @click.stop.prevent="lookWorkInfo(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+                     <i  style='font-size:16px' class='iconfont'>&#xe6b4;</i>
             </permission-button>
         </el-tooltip>
         </span>`,
@@ -718,40 +721,45 @@
         <el-tooltip class="item" effect="dark" content="修改" placement="top">
            <permission-button permCode='operation_maintain_detail_lookup.operation_maintain_detail_audit'
                      banType='disable' type="text"
+                     @click.stop.prevent="update(rowData,index)"
                      style="text-decoration: none;color:#409eff;margin-left: -2px">
-                     <i @click.stop.prevent="update(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+                     <i  style='font-size:16px' class='iconfont'>&#xe6b4;</i>
             </permission-button>
         </el-tooltip>
          &nbsp;
         <el-tooltip class="item" effect="dark" content="审核" placement="top">
          <permission-button permCode='operation_maintain_lookup.operation_maintain_audit'
                      banType='disable' type="text"
+                     @click.stop.prevent="submitAudit(rowData,index)"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
-                    <i @click.stop.prevent="submitAudit(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
+                    <i  @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
             </permission-button>
           </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="停止" placement="top">
         <permission-button permCode='operation_maintain_lookup.operation_maintain_stop'
                      banType='disable' type="text"
+                      @click.stop.prevent="stop(rowData,index)"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
-                    <i @click.stop.prevent="stop(rowData,index)" style='font-size:16px' class='iconfont'>&#xe603;</i>
+                    <i style='font-size:16px' class='iconfont'>&#xe603;</i>
             </permission-button>
         </el-tooltip>
          &nbsp;
         <el-tooltip class="item" effect="dark" content="关联工单" placement="top">
             <permission-button permCode='work_list_detail_lookup.work_list_detail_save||work_list_detail_lookup.work_list_detail_audit'
                      banType='disable' type="text"
+                     @click.stop.prevent="planToWork(rowData,index)"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
-                    <i @click.stop.prevent="planToWork(rowData,index)" style='font-size:16px' class='iconfont'>&#xe619;</i>
+                    <i  style='font-size:16px' class='iconfont'>&#xe619;</i>
             </permission-button>
         </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
         <permission-button permCode='operation_maintain_lookup.operation_maintain_delete'
                      banType='disable' type="text"
+                     @click.stop.prevent="deleteRow(rowData,index)"
                      style="text-decoration: none;color:#F56C6C;margin-left: -2px">
-                    <i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i>
+                    <i  style='font-size:16px' class='iconfont'>&#xe66b;</i>
             </permission-button>
         </el-tooltip>
         </span>`,

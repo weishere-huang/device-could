@@ -1,6 +1,16 @@
 <template>
   <div class="spare-parts-classification">
-    <div style="width:900px;">
+    <div class="top-case">
+      <el-button
+        size="small"
+        type="primary"
+        @click="dialogVisible3=true"
+      >添加初始类别</el-button>
+    </div>
+    <div
+      style="width:100%;"
+      class="tree-case"
+    >
       <div class="classify-title">
         <h5 class="classify-name">分类名称</h5>
         <h5 class="remarks">备注</h5>
@@ -12,34 +22,52 @@
           @node-click="handleNodeClick"
           node-key="id"
           default-expand-all
-
         >
           <span
             class="custom-tree-node"
             slot-scope="{ node, data }"
           >
             <span class="content">{{ data.name}}
-              <span class="addCase" @click.stop>
-                <el-tooltip class="item" effect="dark" content="添加" placement="top">
-                <permission-button
-                  permCode='part_cate_lookup.part_cate_add'
-                  banType='hide'
-                  type="text"
-                  size="mini"
-                  @click="dialogVisible=true,addname='',addmsg='',nodedata.code=parseInt(data.code)"
+              <span
+                class="addCase"
+                @click.stop
+              >
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  content="添加"
+                  placement="top"
                 >
-                    <i style='font-size:16px' class='iconfont'>&#xe62f;</i>
-                </permission-button>
-                </el-tooltip>
                   <permission-button
+                    permCode='part_cate_lookup.part_cate_add'
+                    banType='hide'
+                    type="text"
+                    size="mini"
+                    @click="dialogVisible=true,addname='',addmsg='',nodedata.code=parseInt(data.code)"
+                  >
+                    <i
+                      style='font-size:16px'
+                      class='iconfont'
+                    >&#xe62f;</i>
+                  </permission-button>
+                </el-tooltip>
+                <permission-button
                   permCode='part_cate_lookup.part_cate_edit'
                   banType='hide'
                   type="text"
                   size="mini"
                   @click="dialogVisible1=true,nodeCname=data.name,nodeCMsg=data.remarks,nodedata.id=data.id"
                 >
-                  <el-tooltip class="item" effect="dark" content="修改" placement="top">
-                    <i style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    content="修改"
+                    placement="top"
+                  >
+                    <i
+                      style='font-size:16px'
+                      class='iconfont'
+                    >&#xe6b4;</i>
                   </el-tooltip>
                 </permission-button>
                 <permission-button
@@ -50,22 +78,24 @@
                   @click="() => warningdelete(data.id)"
                   style="color:#F56C6C"
                 >
-                  <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                  <i style='font-size:16px' class='iconfont'>&#xe66b;</i>
-                </el-tooltip>
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    content="删除"
+                    placement="top"
+                  >
+                    <i
+                      style='font-size:16px'
+                      class='iconfont'
+                    >&#xe66b;</i>
+                  </el-tooltip>
                 </permission-button>
               </span>
             </span>
             <span class="content-remarks">{{data.remarks}}</span>
           </span>
         </el-tree>
-        <div style="width:100%;text-align:center">
-          <el-button
-            size="small"
-            style="width:200px;margin:auto"
-            @click="dialogVisible3=true,addname='',addmsg=''"
-          >添加初始类别</el-button>
-        </div>
+
         <el-dialog
           title="添加初始类别"
           :visible.sync="dialogVisible3"
@@ -81,7 +111,6 @@
               <el-input
                 v-model="addname"
                 size="mini"
-
               ></el-input>
             </el-form-item>
             <el-form-item label="备注：">
@@ -96,7 +125,10 @@
             class="dialog-footer"
             style="text-align:center"
           >
-            <el-button @click="dialogVisible3 = false,addname='',addmsg=''" size="small">取 消</el-button>
+            <el-button
+              @click="dialogVisible3 = false,addname='',addmsg=''"
+              size="small"
+            >取 消</el-button>
             <el-button
               type="primary"
               @click="addFirst"
@@ -181,135 +213,139 @@
   </div>
 </template>
 <script>
-export default {
-  inject: ["reload"],
-  data() {
-    return {
-      dialogVisible3: false,
-      dialogVisible1: false,
-      dialogVisible: false,
-      //修改节点
-      nodeCname: "",
-      nodeCMsg: "",
-      organize: [],
-      // data5: this.organize,
-      form: {
-        name: "",
-        desc: ""
-      },
-      defaultProps: {
-        children: "children",
-        label: "name"
-      },
-      nodedata:{},
-      //添加数据
-      addname: "",
-      addmsg: ""
-    };
-  },
-  methods: {
-    handleNodeClick(data) {
-      this.nodedata = data;
+  export default {
+    inject: ["reload"],
+    data() {
+      return {
+        dialogVisible3: false,
+        dialogVisible1: false,
+        dialogVisible: false,
+        //修改节点
+        nodeCname: "",
+        nodeCMsg: "",
+        organize: [],
+        // data5: this.organize,
+        form: {
+          name: "",
+          desc: ""
+        },
+        defaultProps: {
+          children: "children",
+          label: "name"
+        },
+        nodedata: {},
+        //添加数据
+        addname: "",
+        addmsg: ""
+      };
     },
-    filterArray(data, parent) {
-      let vm = this;
-      var tree = [];
-      var temp;
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].parentCode == parent) {
-          var obj = data[i];
-          temp = this.filterArray(data, data[i].code);
-          if (temp.length > 0) {
-            obj.children = temp;
+    methods: {
+      handleNodeClick(data) {
+        this.nodedata = data;
+        console.log(data);
+      },
+      filterArray(data, parent) {
+        let vm = this;
+        var tree = [];
+        var temp;
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].parentCode == parent) {
+            var obj = data[i];
+            temp = this.filterArray(data, data[i].code);
+            if (temp.length > 0) {
+              obj.children = temp;
+            }
+            tree.push(obj);
           }
-          tree.push(obj);
         }
-      }
-      return tree;
-    },
-    Sgetlist(){
-      //获取备品备件分类数据接口1
-      this.Axios({
-        option: {
-          enableMsg: false
-        },
-        type: "get",
-        url: "/part/list"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
-          result => {
-            this.organize=this.filterArray(result.data.data,0);
+        return tree;
+      },
+      Sgetlist() {
+        //获取备品备件分类数据接口1
+        this.Axios(
+          {
+            option: {
+              enableMsg: false
+            },
+            type: "get",
+            url: "/part/list"
+            // loadingConfig: {
+            //   target: document.querySelector("#mainContentWrapper")
+            // }
           },
-          ({type, info}) => {
-          }
-        );
-
-    },
-    beforeadd(){
-      if(this.addname===""){
-        this.$message.warning("请填写备件名称");
-      }else{
-        this.Sadd();
-      }
-
-    },
-    beforeUpdate(){
-      if(this.nodeCname ==="" ){
-        this.$message.warning("请填写备件名称");
-      }else{
-        this.Supdate();
-      }
-
-    },
-    Sadd(){
-      //备品备件分类添加1
-      let qs = require("qs");
-      let data = qs.stringify({
-        parentCode:this.nodedata.code,
-        name:this.addname,
-        remarks:this.addmsg,
-      });
-      this.Axios({
-        params: data,
-        option: {
-          successMsg:"添加成功"
-        },
-        type: "post",
-        url: "/part/add"
-      },this)
-        .then(
+          this
+        ).then(
           result => {
-            if(result.data.code===200){
+            this.organize = this.filterArray(result.data.data, 0);
+          },
+          ({ type, info }) => {}
+        );
+      },
+      beforeadd() {
+        if (this.addname === "") {
+          this.$message.warning("请填写备件名称");
+        } else {
+          this.Sadd();
+        }
+      },
+      beforeUpdate() {
+        if (this.nodeCname === "") {
+          this.$message.warning("请填写备件名称");
+        } else {
+          this.Supdate();
+        }
+      },
+      Sadd() {
+        //备品备件分类添加1
+        let qs = require("qs");
+        let data = qs.stringify({
+          parentCode: this.nodedata.code,
+          name: this.addname,
+          remarks: this.addmsg
+        });
+        this.Axios(
+          {
+            params: data,
+            option: {
+              enableMsg: false
+            },
+            type: "post",
+            url: "/part/add"
+          },
+          this
+        ).then(
+          result => {
+            console.log(result);
+            if (result.data.code === 200) {
+              this.$message.success("添加成功");
               this.reload();
             }
           },
-          ({type, info}) => {
-          }
+          ({ type, info }) => {}
         );
-    },
-    Supdate(){
-      //备品备件分类修改1
-      let qs = require("qs");
-      let data = qs.stringify({
-        id:this.nodedata.id,
-        name:this.nodeCname,
-        remarks:this.nodeCMsg
-      });
-      this.Axios({
-        params:data,
-        option: {
-          enableMsg: false
-        },
-        type: "post",
-        url: "/part/update"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
+      },
+      Supdate() {
+        //备品备件分类修改1
+        let qs = require("qs");
+        let data = qs.stringify({
+          id: this.nodedata.id,
+          name: this.nodeCname,
+          remarks: this.nodeCMsg
+        });
+        this.Axios(
+          {
+            params: data,
+            option: {
+              enableMsg: false
+            },
+            type: "post",
+            url: "/part/update"
+            // loadingConfig: {
+            //   target: document.querySelector("#mainContentWrapper")
+            // }
+          },
+          this
+        ).then(
           result => {
             console.log(result);
             if (result.data.code === 200) {
@@ -319,81 +355,80 @@ export default {
               this.$message.error("修改失败,请重新尝试");
             }
           },
-          ({type, info}) => {
-          }
+          ({ type, info }) => {}
         );
-    },
-    Sdelete(nodeId){
-      //备品备件分类删除1
-      let qs = require("qs");
-      let data = qs.stringify({
-        partId:nodeId
-      });
-      this.Axios({
-        params: data,
-        option: {
-          successMsg:"添加成功"
-        },
-        type: "post",
-        url: "/part/delete"
-        // loadingConfig: {
-        //   target: document.querySelector("#mainContentWrapper")
-        // }
-      },this)
-        .then(
+      },
+      Sdelete(nodeId) {
+        //备品备件分类删除1
+        let qs = require("qs");
+        let data = qs.stringify({
+          partId: nodeId
+        });
+        this.Axios(
+          {
+            params: data,
+            option: {
+              enableMsg: false
+            },
+            type: "post",
+            url: "/part/delete"
+            // loadingConfig: {
+            //   target: document.querySelector("#mainContentWrapper")
+            // }
+          },
+          this
+        ).then(
           result => {
             console.log(result);
             if (result.data.code === 200) {
+              this.$message.success("删除成功");
               this.reload();
             } else {
               this.$message.error("删除失败,请重新尝试");
             }
           },
-          ({type, info}) => {
-          }
+          ({ type, info }) => {}
         );
-
-    },
-    warningdelete(nodeId) {
-      this.$confirm("确定要删除吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.Sdelete(nodeId);
+      },
+      warningdelete(nodeId) {
+        this.$confirm("确定要删除吗?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
+          .then(() => {
+            this.Sdelete(nodeId);
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除"
+            });
           });
+      },
+      addFirst() {
+        //添加根类
+        let qs = require("qs");
+        let data = qs.stringify({
+          parentCode: 0,
+          name: this.addname,
+          remarks: this.addmsg
         });
-    },
-    addFirst() {
-      //添加根类
-      let qs = require("qs");
-      let data = qs.stringify({
-        parentCode: 0,
-        name: this.addname,
-        remarks: this.addmsg
-      });
-      this.Axios(
-        {
-          url: "/part/add",
-          params: data,
-          type: "post",
-          option: {
-            enableMsg: false
-          }
-        },
-        this
-      )
-        .then(
+        this.Axios(
+          {
+            url: "/part/add",
+            params: data,
+            type: "post",
+            option: {
+              enableMsg: false
+            }
+          },
+          this
+        ).then(
           result => {
             if (result.data.code === 200) {
               this.$message("添加成功");
-              this.dialogVisible3 = false
+              this.dialogVisible3 = false;
               this.reload();
             } else {
               this.$message("添加失败,请重新添加");
@@ -401,77 +436,93 @@ export default {
           },
           ({ type, info }) => {}
         );
+      }
     },
-  },
-  created() {
-    this.Sgetlist();
-  }
-};
+    created() {
+      this.Sgetlist();
+    }
+  };
 </script>
 
-<style lang="less" scoped>
-@blue: #409eff;
-@Success: #67c23a;
-@Warning: #e6a23c;
-@Danger: #f56c6c;
-@Info: #dde2eb;
-@border: 1px solid #dde2eb;
-.spare-parts-classification {
-  border: @border;
-  font-size: 12px;
-  max-height: 500px;
-  overflow: scroll;
-  padding-bottom: 10px;
-  .classify-title {
-    line-height: 40px;
-    overflow: hidden;
-    .classify-name {
-      float: left;
-      width: 40%;
-      padding: 0 20px;
-    //   border-bottom: 1px solid #dde2eb;
+<style lang="less" >
+  @blue: #409eff;
+  @Success: #67c23a;
+  @Warning: #e6a23c;
+  @Danger: #f56c6c;
+  @Info: #dde2eb;
+  @border: 1px solid #dde2eb;
+  .spare-parts-classification {
+    .el-tree-node__content {
+      height: 40px;
+      border-top: solid 1px #eee;
     }
-    .remarks {
-      float: right;
-      width: 400px;
-      padding: 0 ;
-    //   border-bottom: 1px solid #dde2eb;
+    .top-case{
+      border: @border;
+      border-radius: 5px;
+      padding: 10px;
     }
-  }
-  .classification {
-    .custom-tree-node {
-      width: 100%;
+    .tree-case {
+      border: @border;
+      border-radius: 5px;
+      margin-top: 10px;
+      max-height: 70vh;
+      overflow: scroll;
+      padding: 10px;
+    }
+
+    font-size: 12px;
+
+    padding-bottom: 10px;
+    .classify-title {
+      line-height: 40px;
       overflow: hidden;
-      position: relative;
-    }
-    .content {
-      display: inline-block;
-      width: 40%;
-      //   border: @border;
-      .addCase {
-        display: inline-block;
-        // display: none;
-        opacity: 0;
-        margin-left: 40px;
-        position: relative;
-        z-index: -10;
+      .classify-name {
+        float: left;
+        width: 40%;
+        padding: 0 20px;
+        //   border-bottom: 1px solid #dde2eb;
       }
-      &:hover {
+      .remarks {
+        float: right;
+        width: 400px;
+        padding: 0;
+        //   border-bottom: 1px solid #dde2eb;
+      }
+    }
+    .classification {
+      .custom-tree-node {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+      }
+      .content {
+        display: inline-block;
+        width: 40%;
+        //   border: @border;
         .addCase {
-          z-index: 10;
-          opacity: 1;
+          display: inline-block;
+          // display: none;
+          opacity: 0;
+          margin-left: 40px;
+          position: relative;
+          z-index: -10;
+        }
+        &:hover {
+          .addCase {
+            z-index: 10;
+            opacity: 1;
+          }
         }
       }
-    }
-    .content-remarks {
-      display: inline-block;
-      width: 400px;
-      //   border: @border;
-      line-height: 28px;
-      height: 100%;
-      position: absolute;
-      right: 0%;
+      .content-remarks {
+        display: inline-block;
+        width: 400px;
+        //   border: @border;
+        line-height: 28px;
+        height: 100%;
+        position: absolute;
+        right: 0%;
+      }
     }
   }
-}
 </style>

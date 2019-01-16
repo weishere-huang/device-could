@@ -428,6 +428,7 @@
   @border: 1px solid #dde2eb;
   .breakDetails {
     // padding-left: 180px;
+    min-width: 1090px;
     .case {
       width: 100%;
       padding: 10px;

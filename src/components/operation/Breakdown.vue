@@ -87,6 +87,7 @@
             row-click-color="#edf7ff"
             @on-custom-comp="customCompFunc"
             ref="breakdownTable"
+            :show-vertical-border="false"
           ></v-table>
           <div
             class="mt20 mb20 bold"
@@ -244,8 +245,8 @@
             field: "faultNo",
             title: "故障编号",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
             //   orderBy: ""
@@ -254,8 +255,8 @@
             field: "state",
             title: "状态",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
@@ -274,8 +275,8 @@
             field: "deviceName",
             title: "设备名称",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -283,8 +284,8 @@
             field: "deviceModel",
             title: "规格/型号",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -292,8 +293,8 @@
             field: "faultLevel",
             title: "故障等级",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
@@ -310,8 +311,8 @@
             field: "faultSource",
             title: "故障来源",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
@@ -323,8 +324,8 @@
             field: "faultDesc",
             title: "故障描述",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -332,8 +333,8 @@
             field: "causeAnalysis",
             title: "原因分析",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -747,11 +748,12 @@
   };
   Vue.component("table-lookWorkInfoS", {
     template: `<span>
-        <el-tooltip class="item" effect="dark" content="修改" placement="top">
+        <el-tooltip class="item" effect="dark" content="查看详情" placement="top">
             <permission-button permCode='work_list_detail_lookup.work_list_detail_save||work_list_detail_lookup.work_list_detail_audit'
                      banType='disable' type="text"
+                     @click.stop.prevent="lookWorkInfo(rowData,index)"
                      style="text-decoration: none;color:#409eff;margin-left: -2px">
-                     <i @click.stop.prevent="lookWorkInfo(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+                     <i  style='font-size:16px' class='iconfont'>&#xe6b4;</i>
             </permission-button>
         </el-tooltip>
         </span>`,
@@ -779,40 +781,45 @@
         <el-tooltip class="item" effect="dark" content="查看" placement="top">
             <permission-button permCode='operation_fault_detail_lookup.operation_fault_detail_audit'
                      banType='disable' type="text"
+                     @click.stop.prevent="update(rowData,index)"
                      style="text-decoration: none;color:#409eff;margin-left: -2px">
-                      <i @click.stop.prevent="update(rowData,index)"  style='font-size:16px' class='iconfont'>&#xe734;</i>
+                      <i  style='font-size:16px' class='iconfont'>&#xe734;</i>
             </permission-button>
         </el-tooltip>
          &nbsp;
         <el-tooltip class="item" effect="dark" content="审核" placement="top">
             <permission-button permCode='operation_fault_lookup.operation_fault_audit'
                      banType='disable' type="text"
+                     @click.stop.prevent="submitAudit(rowData,index)"
                      style="text-decoration: none;color:#2474c5;margin-left: -2px">
-                     <i @click.stop.prevent="submitAudit(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
+                     <i  @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
             </permission-button>
           </el-tooltip>
          &nbsp;
         <el-tooltip class="item" effect="dark" content="消除" placement="top">
          <permission-button permCode='operation_fault_lookup.operation_fault_dispel'
                      banType='disable' type="text"
+                     @click.stop.prevent="dispel(rowData,index)"
                      style="text-decoration: none;color:#2474c5;margin-left: -2px">
-                     <i @click.stop.prevent="dispel(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe645;</i>
+                     <i  @dblclick.stop style='font-size:16px' class='iconfont'>&#xe645;</i>
             </permission-button>
           </el-tooltip>
            &nbsp;
         <el-tooltip class="item" effect="dark" content="关联工单" placement="top">
             <permission-button permCode='work_list_detail_lookup.work_list_detail_save||work_list_detail_lookup.work_list_detail_audit'
                      banType='disable' type="text"
+                     @click.stop.prevent="planToWork(rowData,index)"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
-                    <i @click.stop.prevent="planToWork(rowData,index)" style='font-size:16px' class='iconfont'>&#xe619;</i>
+                    <i style='font-size:16px' class='iconfont'>&#xe619;</i>
             </permission-button>
         </el-tooltip>
         &nbsp;
         <el-tooltip class="item" effect="dark" content="删除" placement="top">
             <permission-button permCode='operation_fault_lookup.operation_fault_delete'
                      banType='disable' type="text"
+                     @click.stop.prevent="deleteRow(rowData,index)"
                      style="text-decoration: none;color:#F56C6C;margin-left: -2px">
-                     <i @click.stop.prevent="deleteRow(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe66b;</i>
+                     <i  @dblclick.stop style='font-size:16px' class='iconfont'>&#xe66b;</i>
             </permission-button>
           </el-tooltip>
 
