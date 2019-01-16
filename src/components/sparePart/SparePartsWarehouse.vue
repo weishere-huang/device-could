@@ -232,8 +232,9 @@ export default {
           isEdit: true,
           titleCellClassName: "title-cell-class-name",
           formatter: function (rowData,rowIndex,pagingIndex,field) {
-                        return `<s class='cell-edit-style'></s><span>${rowData.entryCount}</span>`;
-                    }
+            rowData.entryCount=/^[0-9]*$/.test(rowData.entryCount)&&rowData.entryCount>0?rowData.entryCount:0
+            return `<s class='cell-edit-style'></s><span>${rowData.entryCount}</span>`;
+            }
           },
         {
           field: "entryPrice",
@@ -246,6 +247,8 @@ export default {
           isEdit: true,
           titleCellClassName: "title-cell-class-name",
           formatter: function (rowData,rowIndex,pagingIndex,field) {
+            // /^[0-9]*$/.test(rowData.entryPrice)
+            rowData.entryPrice=/^[0-9]*$/.test(rowData.entryPrice)&&rowData.entryPrice>0?rowData.entryPrice:0
             return `<s class='cell-edit-style'></s><span>${rowData.entryPrice}</span>`;
           }
         },
@@ -369,7 +372,7 @@ export default {
           entryPrice: 0,
           supplierName: "",
           //批次ID
-          //batchNumberId:"",
+          //batchNumberId:null,
           batchNumber: "",
           saveLocation: "",
           remarks: ""
@@ -551,6 +554,12 @@ export default {
       if(this.godownEntryNo === "" || this.tableData1.length === 0){
         subok = false;
       }
+
+      this.tableData1.forEach(item=>{
+        if(item.entryCount===""||item.entryPrice===""||item.supplierName===""||item.batchNumber===""){
+          subok = false;
+        }
+      })
 
       if(subok){
         this.$confirm('确定完成入库吗?', '提示', {
