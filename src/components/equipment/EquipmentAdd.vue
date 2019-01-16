@@ -85,7 +85,7 @@
 
       </div>
       <div class="administrator">
-        <h5>管理人员</h5>
+        <h5>人员信息</h5>
         <el-form :inline="true"  class="demo-form-inline" label-width="100px">
           <el-form-item label="负责人员：">
             <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='0')">
@@ -144,6 +144,9 @@
           <el-form-item style="padding-left:20px">
             <el-button size="mini" type="primary" @click="dialogVisible=true" >添加人员</el-button>
           </el-form-item>
+          <el-form-item style="width:380px;">
+            <span style="padding-left:28px; color:#e6a23c">* 提示：以上人员信息未绑定时，系统将默认为当前用户。</span>
+          </el-form-item>  
         </el-form>
       </div>
       <div class="bottom">
