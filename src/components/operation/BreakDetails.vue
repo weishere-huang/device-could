@@ -383,10 +383,10 @@
           })
       },
       dispel(){
-        if (this.companyName.state !=="已删除"&&this.companyName.state!=="待审核"){
+        if (this.companyName.state==="待审核"|| this.companyName.state==="执行中"){
           this.dialogVisible=true;
         }else{
-          this.$message.error("对不起、不能消除待审核或已删除状态的数据")
+          this.$message.error("对不起、不能消除"+this.companyName.state+"状态的数据")
         }
       },
       toDispel(){

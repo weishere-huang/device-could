@@ -324,7 +324,7 @@
             field: "position",
             title: "岗位",
             width: 40,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },

@@ -402,6 +402,7 @@
           }
         ],
         workInfoDate:[],
+        searchValue:"",
       };
     },
     methods: {
@@ -443,14 +444,14 @@
         )
       },
       customCompFunc(params) {
-        // console.log(params);
         if (params.type === "delete") {
           this.toDeleteBreak(params.rowData.id);
         } else if (params.type === "edit") {
           this.toDetails(params.index, params.rowData);
         }else if(params.type === "dispel"){
           this.faultIds = params.rowData.id;
-          params.rowData.state === 5 ?　this.dispel() : this.$message.error('对不起、只能消除执行中的计划')
+          params.rowData.state === 5 || params.rowData.state === 0 ?
+            this.dispel() : this.$message.error('对不起、只能消除待审核或执行中的计划')
         }else if(params.type === "submitAudit"){
           this.faultIds = params.rowData.id;
           params.rowData.state ===0 ?　this.outerVisible = true : this.$message.error('对不起、只能操作待审核的计划')
@@ -502,9 +503,7 @@
       },
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
-        if (this.pageIsOk) {
-          this.load();
-        }
+        if (this.pageIsOk) this.load();
         this.getTableData();
       },
       pageSizeChange(pageSize) {
@@ -581,11 +580,15 @@
           })
       },
       search() {
-        if (this.faultKey !== "") {
-          this.toSearch();
-        } else {
+        debugger;
+        if (this.faultKey === "") {
+          this.searchValue="";
           this.pageIsOk = true;
-          this.pageChange(1);
+          this.pageIndex = 1;
+          this.reload();
+        } else {
+          this.searchValue==="" ? this.pageIndex = 1 : "";
+          this.toSearch();
         }
       },
       toSearch() {
@@ -607,6 +610,7 @@
             this.tableData = response.data.data.content;
             this.tableDate = this.tableData;
             this.pageIsOk = false;
+            this.searchValue = this.faultKey;
           },
           ({ type, info }) => {}
         );
@@ -742,7 +746,7 @@
         this.$route.params.id !== undefined || this.$route.matched.find(item=>(item.name==="Reported"))?
           this.isHideList = true: this.isHideList = false;
         this.$refs.breakdownTable.resize();
-        this.$store.state.operation.turnround==="y"? this.reload():"";
+        this.$store.state.operation.breakList==="y"? this.reload():"";
       }
     },
   };
