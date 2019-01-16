@@ -44,9 +44,9 @@
           >
             <el-date-picker
               v-model="outTime"
-              type="datetime"
+              type="date"
               size="small"
-              value-format="yyyy/MM/dd HH:mm:ss"
+              value-format="yyyy/MM/dd"
               placeholder="选择日期时间"
               style="width:184px;"
             >
@@ -94,7 +94,7 @@
           <el-cascader
             placeholder="请选择"
             :options="ctgoptions"
- 
+
             ref="getName2"
             expand-trigger="hover"
             :props="defaultProps2"
@@ -329,7 +329,7 @@ export default {
       organizeCode:"",
       organizeName:"",
       outNo:"",
-      outTime:new Date().toLocaleString().replace(/[\u4e00-\u9fa5]/g, ""),
+      outTime:new Date().toLocaleDateString(),
       remark:"",
 
     };

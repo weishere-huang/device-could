@@ -120,7 +120,7 @@
                           content="黄色预警，请检查设备"
                           placement="top"
                         >
-                          <i class="iconfont c-yellow">&#xe651;</i>
+                          <i class="iconfont tshadow c-yellow">&#xe651;</i>
                         </el-tooltip>
                         <el-tooltip
                           v-if="item.warnLevel===2"
@@ -129,7 +129,7 @@
                           content="橙色预警，请立即检查设备"
                           placement="top"
                         >
-                          <i class="iconfont c-orange">&#xe651;</i>
+                          <i class="iconfont tshadow c-orange">&#xe651;</i>
                         </el-tooltip>
                         <el-tooltip
                           v-if="item.warnLevel===3"
@@ -138,7 +138,16 @@
                           content="严重警报，请立即检查设备"
                           placement="top"
                         >
-                          <i class="iconfont c-red">&#xe651;</i>
+                          <i class="iconfont tshadow c-red">&#xe651;</i>
+                        </el-tooltip>
+                        <el-tooltip
+                          v-if="item.warnLevel===4"
+                          class="item"
+                          effect="light"
+                          content="无法获取报警信息"
+                          placement="top"
+                        >
+                          <i class="iconfont c-gray f14">&#xe726;</i>
                         </el-tooltip>
                         {{item.deviceName}}
                       </span>
@@ -639,6 +648,9 @@ export default {
     //overflow: hidden;
     border-right: solid 1px #eee;
     padding: 10px;
+  }
+  .tshadow{
+    text-shadow: 1px 1px 1px #333;
   }
   .monitMainContent {
     padding-top: 0;

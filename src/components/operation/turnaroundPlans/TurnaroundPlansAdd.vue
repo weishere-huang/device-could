@@ -31,8 +31,8 @@
           </el-form-item>
           <el-form-item label="计划类型：">
             <el-radio-group v-model="companyName.planType">
-              <el-radio label="单次"></el-radio>
-              <el-radio label="周期"></el-radio>
+              <el-radio label="单次" ></el-radio>
+              <el-radio label="周期" v-model="companyName.frequency=1,companyName.frequencyType='1'"></el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -90,7 +90,7 @@
         </el-form>
         <el-form>
           <!--<el-form-item label="计划添加时间：" style="height:auto;">-->
-            <!--<span>{{time}}</span>-->
+          <!--<span>{{time}}</span>-->
           <!--</el-form-item>-->
         </el-form>
       </div>
@@ -258,7 +258,6 @@
     },
     created() {},
     methods: {
-      test(){},
       findByDeviceId(deviceId){
         this.Axios(
           {
@@ -270,7 +269,6 @@
           this
         ).then(
           response => {
-            // console.log(response.data.data);
             this.personData = response.data.data;
           },
           ({type, info}) => {
@@ -379,12 +377,21 @@
           this.$message.error('开始时间不能为空');
           return false;
         }
-
+        let time = new Date().toLocaleDateString().split(" ")[0];
+        time = new Date(time).valueOf();
+        if(new Date(this.companyName.startTime).valueOf()<time){
+          this.$message.error('计划日期不能小于当前时间');
+          return false;
+        }
         if(this.companyName.planName=="周期"){
           if(this.companyName.endTime===""){
             this.$message.error('结束时间不能为空');
             return false;
           }
+        }
+        if(new Date(this.companyName.endTime).valueOf()<new Date(this.companyName.startTime).valueOf()){
+          this.$message.error('结束时间不能小于开始时间');
+          return false;
         }
         if(this.date===""){
           this.$message.error('首次执行日期不能为空');
@@ -393,11 +400,22 @@
         if(this.times===""){
           this.$message.error('执行时间不能为空');
           return false;
+        }else{
+          let systemTime = new Date(new Date().toLocaleString('chinese', { hour12: false })).valueOf();
+          let startDate = new Date(this.companyName.startTime+" 00:00:00").valueOf();
+          let endDate = new Date(this.companyName.endTime+" 23:59:59").valueOf();
+          let dateTime = new Date(this.date+" "+this.times).valueOf();
+          if(dateTime<startDate||dateTime<systemTime||dateTime<endDate){
+            this.$message.error("首次执行时间有误");
+            return false;
+          }
         }
         if(this.companyName.maintenanceCc===""){
           this.$message.error('检修内容不能为空');
           return false;
         }else{
+          this.companyName.startTime = this.companyName.startTime+" 00:00:00";
+          this.companyName.endTime= this.companyName.endTime+" 23:59:59";
           return true;
         }
       },

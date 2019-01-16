@@ -37,7 +37,7 @@
         <span>关键字：</span>
         <el-input
           type="search"
-          placeholder="如编号，名称，型号/规格"
+          placeholder="如单号、编号、名称、型号/规格、供货商"
           size="small"
           v-model="rkeyword"
         ></el-input>
@@ -233,7 +233,7 @@ export default {
           keywords:this.rkeyword,
         },
         option: {
-          enableMsg: false
+          successMsg:"入库单加载完成"
         },
         type: "get",
         url: "/part/listGodownEntryInfo"

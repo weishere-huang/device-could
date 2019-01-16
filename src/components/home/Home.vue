@@ -146,7 +146,7 @@
             <li>
               <span>
                 <i
-                  class="iconfont icon-tubiao-zhuzhuangtu"
+                  class="iconfont2 icon-tubiao-zhuzhuangtu"
                   style="color: #409eff;"
                 ></i>
               </span>
@@ -158,7 +158,7 @@
             <li>
               <span>
                 <i
-                  class="iconfont icon-dengpao"
+                  class="iconfont2 icon-dengpao"
                   style="color:#e6a23c ;"
                 ></i>
               </span>
