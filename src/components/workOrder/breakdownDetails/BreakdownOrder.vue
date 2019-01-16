@@ -380,22 +380,12 @@
             }
           },
           {
-            field: "startTime",
-            title: "提交时间",
-            width: 80,
-            titleAlign: "left",
+            field: "position",
+            title: "岗位",
+            width: 40,
+            titleAlign: "center",
             columnAlign: "left",
-            isResize: true,
-            overflowTitle: true
-          },
-          {
-            field: "endTime",
-            title: "审核时间",
-            width: 80,
-            titleAlign: "left",
-            columnAlign: "left",
-            isResize: true,
-            overflowTitle: true
+            isResize: true
           },
           {
             field: "phone",
