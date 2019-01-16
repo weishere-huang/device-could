@@ -63,7 +63,7 @@
           <el-button
             size="small"
             style="width:200px;margin:auto"
-            @click="dialogVisible3=true"
+            @click="dialogVisible3=true,addname='',addmsg=''"
           >添加初始类别</el-button>
         </div>
         <el-dialog
@@ -210,7 +210,6 @@ export default {
   methods: {
     handleNodeClick(data) {
       this.nodedata = data;
-      console.log(data);
     },
     filterArray(data, parent) {
       let vm = this;
@@ -276,16 +275,14 @@ export default {
       this.Axios({
         params: data,
         option: {
-          enableMsg: false
+          successMsg:"添加成功"
         },
         type: "post",
         url: "/part/add"
       },this)
         .then(
           result => {
-            console.log(result);
             if(result.data.code===200){
-              this.$message.success("添加成功");
               this.reload();
             }
           },
@@ -335,7 +332,7 @@ export default {
       this.Axios({
         params: data,
         option: {
-          enableMsg: false
+          successMsg:"添加成功"
         },
         type: "post",
         url: "/part/delete"
@@ -347,7 +344,6 @@ export default {
           result => {
             console.log(result);
             if (result.data.code === 200) {
-              this.$message.success("删除成功");
               this.reload();
             } else {
               this.$message.error("删除失败,请重新尝试");
