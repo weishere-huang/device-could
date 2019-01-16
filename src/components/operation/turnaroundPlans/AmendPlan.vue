@@ -13,6 +13,7 @@
               :default-checked-keys="[5]"
               :props="defaultProps"
               default-expand-all
+              :expand-on-click-node='false'
             >
             </el-tree>
           </div>

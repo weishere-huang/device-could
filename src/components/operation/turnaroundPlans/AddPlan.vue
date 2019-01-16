@@ -14,6 +14,7 @@
               :default-checked-keys="[5]"
               :props="defaultProps"
               :expand-on-click-node='false'
+              default-expand-all
             >
             </el-tree>
           </div>

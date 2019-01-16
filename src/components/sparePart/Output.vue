@@ -647,7 +647,7 @@ Vue.component("table-warehouse", {
     }
     .table-list {
       overflow: hidden;
-      margin-top: 20px;
+      // margin-top: 20px;
       .spare-parts-table {
         width: 30%;
         // border: @border;
