@@ -35,9 +35,9 @@
           >
             <el-date-picker
               v-model="formInline.time"
-              type="datetime"
+              type="date"
               size="small"
-              value-format="yyyy/MM/dd HH:mm:ss"
+              value-format="yyyy/MM/dd"
               placeholder="选择日期时间"
             >
             </el-date-picker>
@@ -57,7 +57,7 @@
           <el-cascader
             placeholder="请选择"
             :options="ctgoptions"
-         
+
             ref="getName2"
             expand-trigger="hover"
             :props="defaultProps2"
@@ -74,6 +74,7 @@
             size="small"
             style="margin-top:10px"
             v-model="basekeyword"
+            clearable
           >
             <el-button
               slot="append"
@@ -145,7 +146,7 @@ export default {
     return {
 
       formInline: {
-         time: new Date().toLocaleString().replace(/[\u4e00-\u9fa5]/g,"")
+         time: new Date().toLocaleDateString(),
       },
       //入库单号
       godownEntryNo: "",
@@ -429,7 +430,7 @@ export default {
         {
           params: data,
           option: {
-            enableMsg: false
+            successMsg:"入库成功"
           },
           type: "post",
           url: "/part/insertPartEntry"
@@ -440,8 +441,8 @@ export default {
         this
       ).then(
         result => {
+          console.log(result);
           if (result.data.code === 200) {
-            this.$message.success("添加成功");
             this.reload();
           }
         },
