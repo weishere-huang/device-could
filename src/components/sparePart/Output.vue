@@ -135,7 +135,7 @@
           </div>
         </div>
         <div style="float:left;font-size:20px;height:426px;line-height:426px">
-          <i class="iconfont icon-jiantouyou"></i>
+          <i class="el-icon-d-arrow-right"></i>
         </div>
         <div class="inventory-list">
           <el-form label-width="85px">
