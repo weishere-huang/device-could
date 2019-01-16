@@ -84,7 +84,7 @@ export default {
       msgDetail: "",
       pageIndex: 1,
       pageSize: 10,
-      ids: "",
+      ids: '',
       rowData: "",
       msgcount: 0,
       tableData: [],
@@ -150,7 +150,8 @@ export default {
       ],
       //判断是未读消息
       readkey:0,
-      totoelement:0
+      totoelement:0,
+      notread:0
     };
   },
   methods: {
@@ -159,6 +160,7 @@ export default {
         this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
         this.ids = params.rowData.id;
+        this.notread=params.rowData.isRead===0?1:0
         this.dtwarning();
       } else if (params.type === "stop") {
         alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
@@ -166,24 +168,20 @@ export default {
     },
     selectGroupChange(selection) {
       this.ids = "";
-      for (let i = 0; i < selection.length; i++) {
-        if (this.ids != "") {
-          this.ids += "," + selection[i].id;
-        } else {
-          this.ids += selection[i].id;
-        }
-      }
+      this.notread = 0
+      selection.forEach(item =>{
+          this.ids += ','+item.id
+          if(item.isRead===0)this.notread += 1
+      });
       this.rowData = selection[0];
     },
     selectALL(selection) {
       this.ids = "";
-      for (let i = 0; i < selection.length; i++) {
-        if (this.ids != "") {
-          this.ids += "," + selection[i].id;
-        } else {
-          this.ids += selection[i].id;
-        }
-      }
+      this.notread = 0
+      selection.forEach(item =>{
+        this.ids += ','+item.id
+        if(item.isRead===0)this.notread += 1
+      });
     },
     selectChange(selection, rowData) {
     },
@@ -227,28 +225,29 @@ export default {
     },
 
     dtwarning() {
+      let worningtext= this.notread>0?"删除消息中含有未读消息,确认删除吗?":"确认删除吗";
       if (this.ids === "") {
         this.$message.warning("至少选择一条数据")
-      } else {
-      this.$confirm('确定要删除吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.deleteMessage();
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消'
+      }else{
+        this.$confirm(worningtext, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.deleteMessage();
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          });
         });
-      });
-    }
+      }
     },
     deleteMessage() {
       //逻辑删除
       let qs = require("qs");
       let data = qs.stringify({
-        ids: this.ids
+        ids: this.ids.substring(1)
       });
       this.Axios(
         {
@@ -263,6 +262,9 @@ export default {
         this
       )
         .then(result => {
+          if(result.data.code===200){
+            this.reload();
+          }
         })
     },
     allMsg() {
