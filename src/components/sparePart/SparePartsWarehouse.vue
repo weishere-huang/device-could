@@ -111,9 +111,9 @@
             </el-form-item>
           </el-form>
           <div style="position:relative;" >
-            <div class="batch_msg" v-show="batchShow">
+            <div class="batch_msg" v-show="batchShow" id="tags-list">
               <div class="top-case">
-                <h3>历史批次信息</h3>
+                <h3><span style="color:#409eff;">{{titleName}}</span>历史批次信息</h3>
                 <el-button type="text" icon="el-icon-close" @click="batchShow=false" style="font-size:14px"></el-button>
               </div>
               
@@ -138,7 +138,7 @@
               @on-custom-comp="customCompFunc"
               :column-cell-class-name="columnCellClass"
               ref="inventoryListTable"
-               :show-vertical-border="false"
+             
             ></v-table>
           </div>
           <div style="color:#e6a23c;line-height:20px">
@@ -215,6 +215,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      titleName:"",
       index:'',
       nub:[],
       batchShow:false,
@@ -311,7 +312,7 @@ export default {
         {
           field: "entryPrice",
           title: "*单价（元）",
-          width: 80,
+          width: 90,
           titleAlign: "left",
           columnAlign: "left",
           isResize: true,
@@ -402,19 +403,7 @@ export default {
         }
       ],
       tableData: [],
-      tableData1: [
-        // {
-        //   partName:'1',
-        //   partNo:2,
-        //   partModel:3,
-        //   entryCount:4,
-        //   entryPrice:5,
-        //   supplierName:6,
-        //   batchNumber:7,
-        //   saveLocation:8,
-        //   remarks:9,
-        // }
-      ],
+      tableData1: [],
       classifyId: "",
       //搜索关键字
       basekeyword: ""
@@ -447,6 +436,7 @@ export default {
         console.log(params);
         this.index=params.index
         this.batchShow=true;
+        this.titleName=params.rowData.partName
         this.Axios(
         {
           params: {
@@ -701,7 +691,9 @@ export default {
       }, 500);
     });
     
-  }
+  },
+  mounted() {
+  },
 };
 Vue.component("table-warehouse", {
   template: `<span>
@@ -743,7 +735,7 @@ Vue.component("table-warehouse", {
       font-size: 12px;
   }
 .spare-parts-warehouse {
- 
+ min-width: 1090px;
   font-size: 12px;
   .top {
     border: @border;
@@ -787,8 +779,8 @@ Vue.component("table-warehouse", {
   }
   .batch_msg{
     position: fixed;
-    top: 30%;
-    right: 10%;
+    top: 28%;
+    right: 7%;
     z-index: 1000;
     width: 300px;
     max-height: 200px;

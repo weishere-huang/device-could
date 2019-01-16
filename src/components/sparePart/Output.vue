@@ -162,7 +162,7 @@
               @on-custom-comp="customCompFunc"
               :column-cell-class-name="columnCellClass"
               ref="inventoryListTable"
-              :show-vertical-border="false"
+        
             ></v-table>
           </div>
           <div style="color:#e6a23c;line-height:20px">
