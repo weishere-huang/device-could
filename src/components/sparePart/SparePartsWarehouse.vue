@@ -109,7 +109,18 @@
             >
             </el-form-item>
           </el-form>
-          <div>
+          <div style="position:relative;" >
+            <div class="batch_msg" v-show="batchShow">
+              <div class="top-case">
+                <h3>历史批次信息</h3>
+                <el-button type="text" icon="el-icon-close" @click="batchShow=false" style="font-size:14px"></el-button>
+              </div>
+              
+              <ul>
+                <li v-if="nub==undefined||nub.length==0 " @click="batchShow=false">暂无历史批次</li>
+                <li v-for="(item, index) in nub" :key="index" @click="getBatchNumber(item)">{{item.batchNumber}}</li>
+              </ul>
+            </div>
             <v-table
               :row-dblclick="toDetails2"
               is-horizontal-resize
@@ -135,22 +146,18 @@
         </div>
       </div>
     </div>
+   
   </div>
 </template>
 <script>
 import Vue from "vue";
 Vue.component('table-batch',{
-  template:`<el-popover
-    placement="top"
-    title="最近录入批次"
-    width="200"
-    trigger="click"
-    :content="nub">
-    <div slot="reference" style="widht:100%;height:100%;">{{rowData.batchNumber}}</div>
-  </el-popover>`,
+  template:`
+           <div style="width:100%;height:100%;" @click="getBatch(rowData,index)">{{rowData.batchNumber}}</div>
+          `,
   data() {
     return {
-      nub:111111
+      nub:[]
     }
   },
   props:{
@@ -165,20 +172,51 @@ Vue.component('table-batch',{
     },
   },
   methods: {
+    
     wright(){
       let params = { type: "wright", index: this.index, rowData: this.rowData };
       this.$emit("on-custom-comp", params);
+      console.log("OK");
+    },
+    getBatch(){
+      console.log("OK");
+      let params = { type: "wright", index: this.index, rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+      // this.rowData.batchNumber=1
     }
   },
   created () {
-    
+    this.Axios(
+        {
+          params: {
+            partId:this.rowData.partId
+          },
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/part/listRecentlyUsedBatch"
+         
+        },
+        this
+      ).then(
+        result => {
+          this.nub=result.data.data
+        //  for (let i = 0; i < result.data.data.length; i++) {
+        //    this.nub[i].push(result.data.data[i].batchNumber)
+        //  }
+        },
+        ({ type, info }) => {}
+      );
   }
 })
 export default {
   inject: ["reload"],
   data() {
     return {
-
+      index:'',
+      nub:[],
+      batchShow:false,
       formInline: {
          time: new Date().toLocaleString().replace(/[\u4e00-\u9fa5]/g,"")
       },
@@ -296,20 +334,6 @@ export default {
           }
         },
         {
-          field: "supplierName",
-          title: "*供应商",
-          width: 80,
-          titleAlign: "left",
-          columnAlign: "left",
-          isResize: true,
-          overflowTitle: true,
-          isEdit: true,
-          titleCellClassName: "title-cell-class-name",
-          formatter: function (rowData,rowIndex,pagingIndex,field) {
-            return `<s class='cell-edit-style'></s><span>${rowData.supplierName}</span>`;
-          }
-        },
-        {
           field: "batchNumber",
           title: "*批次",
           width: 80,
@@ -320,8 +344,22 @@ export default {
           isEdit: true,
           titleCellClassName: "title-cell-class-name",
           componentName: "table-batch",
+          // formatter: function (rowData,rowIndex,pagingIndex,field) {
+          //   return `<s class='cell-edit-style'></s><div style="width:100%;height:100%">${rowData.batchNumber}</div>`;
+          // }
+        },
+        {
+          field: "supplierName",
+          title: "*供应商",
+          width: 200,
+          titleAlign: "left",
+          columnAlign: "left",
+          isResize: true,
+          overflowTitle: true,
+          isEdit: true,
+          titleCellClassName: "title-cell-class-name",
           formatter: function (rowData,rowIndex,pagingIndex,field) {
-            return `<s class='cell-edit-style'></s><div style="width:100%;height:100%">${rowData.batchNumber}</div>`;
+            return `<s class='cell-edit-style'></s><span>${rowData.supplierName}</span>`;
           }
         },
         {
@@ -363,15 +401,29 @@ export default {
         }
       ],
       tableData: [],
-      tableData1: [],
+      tableData1: [
+        // {
+        //   partName:'1',
+        //   partNo:2,
+        //   partModel:3,
+        //   entryCount:4,
+        //   entryPrice:5,
+        //   supplierName:6,
+        //   batchNumber:7,
+        //   saveLocation:8,
+        //   remarks:9,
+        // }
+      ],
       classifyId: "",
       //搜索关键字
       basekeyword: ""
     };
   },
   methods: {
-    sss(){
-      alert('OK')
+    getBatchNumber(value){
+      console.log(value);
+      this.tableData1[this.index].batchNumber=value.batchNumber
+      this.batchShow=false
     },
     columnCellClass(rowIndex, columnName, rowData) {
       // 给三行column为‘Parts1Material’和‘Parts2Material’的列设置className
@@ -389,9 +441,38 @@ export default {
         this.tableData1 = this.tableData1.filter(
           item => item.partId !== params.rowData.partId
         );
+      }
+      if (params.type === "wright") {
+        console.log(params);
+        this.index=params.index
+        this.batchShow=true;
+        this.Axios(
+        {
+          params: {
+            partId:params.rowData.partId
+          },
+          option: {
+            enableMsg: false
+          },
+          type: "get",
+          url: "/part/listRecentlyUsedBatch"
+         
+        },
+        this
+      ).then(
+        result => {
+          console.log(result);
+          this.nub=result.data.data
+        //  for (let i = 0; i < result.data.data.length; i++) {
+        //    this.nub[i].push(result.data.data[i].batchNumber)
+        //  }
+        },
+        ({ type, info }) => {}
+      );
+      }
         // this.deleteOne(params.rowData["id"]);
         // this.$delete(this.tableData, params.index);
-      }
+      
     },
     toDetails(rowIndex, rowData, column) {
       //this.getuserbatch(rowData.id);
@@ -618,6 +699,7 @@ export default {
         this.$refs.classifyTable.resize();
       }, 500);
     });
+    
   }
 };
 Vue.component("table-warehouse", {
@@ -660,7 +742,7 @@ Vue.component("table-warehouse", {
       font-size: 12px;
   }
 .spare-parts-warehouse {
-  
+ 
   font-size: 12px;
   .top {
     border: @border;
@@ -680,7 +762,6 @@ Vue.component("table-warehouse", {
       letter-spacing: 6px;
     }
     .table-list {
-      overflow: hidden;
       margin-top: 20px;
       .spare-parts-table {
         width: 30%;
@@ -700,6 +781,60 @@ Vue.component("table-warehouse", {
         .v-table-body{
           height: 320px !important;
         }
+      }
+    }
+  }
+  .batch_msg{
+    position: fixed;
+    top: 30%;
+    right: 10%;
+    z-index: 1000;
+    width: 300px;
+    max-height: 200px;
+    background-color: white;
+    padding: 5px;
+    border:1px solid @Info;
+    border-radius: 5px;
+    box-shadow: 4px 4px 4px 1px @Info;
+    .top-case{
+      position: absolute;
+      top: 0%;
+      width: 98%;
+      background-color: white;
+      padding: 5px 0;
+    }
+    h3{
+      display: inline-block;
+      line-height: 18px;
+    }
+    .el-button{
+      padding: 0;
+      float: right;
+      margin-right: 10px;
+    }
+    ul{
+      width: 100%;
+      overflow: scroll;
+      margin-top:30px; 
+      max-height: 165px;
+      background-color: white;
+      li{
+        list-style-type: none;
+        float: left;
+        margin-left:4px;
+        margin-bottom: 4px; 
+        cursor: pointer;
+        background-color: rgba(64,158,255,.1);
+        padding: 0 10px;
+        height: 32px;
+        line-height: 30px;
+        font-size: 12px;
+        color: #409EFF;
+        border-radius: 4px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        border: 1px solid rgba(64,158,255,.2);
+        white-space: nowrap;
       }
     }
   }
