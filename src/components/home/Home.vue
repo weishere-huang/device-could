@@ -205,7 +205,7 @@
       <div class="message-notification">
         <div class="top">
           <span style="font-weight: 600;">消息通知</span>
-          <span>更多</span>
+          <span @click="$router.push('/Message')">更多</span>
         </div>
         <ul class="message-details">
           <li
@@ -475,6 +475,9 @@ export default {
 </script>
 <style lang="less">
 @import url("../../assets/font/font.css");
+@import url("../../../node_modules/quill/dist/quill.snow.css");
+@import url("../../../node_modules/quill/dist/quill.bubble.css");
+@import url("../../../node_modules/quill/dist/quill.core.css");
 @blue: #409eff;
 @Success: #67c23a;
 @Warning: #e6a23c;

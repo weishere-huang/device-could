@@ -107,6 +107,7 @@
       class="person-type"
       style="padding:10px; overflow: hidden;width:150px;"
       v-show="innerVisible"
+      v-clickoutside="handleClose"
     >
       <ul class="work-person">
         <li
@@ -174,25 +175,28 @@ Vue.component("tab-component", {
     changeTpye: {}
   },
   template: `<ul class="workerList"><li v-for="(item,index) of items.content">{{ item.workerName }}
-      <span style="display:inline;margin-left:5%;" >
-        <el-select
-          v-model="value"
-          placeholder="请选择"
-          style="width:50%"
-          size="mini"
-          @change="changeValue(value,item,items)"
-          disabled
-        >
-          <el-option
-            v-for="item of options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </span>
-  <i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>`,
+              
+                  <span style="display:inline;margin-left:5%;">
+                    <el-select
+                      v-model="value"
+                      placeholder="请选择"
+                      style="width:50%"
+                      size="mini"
+                      @change="changeValue(value,item,items)"
+                      disabled
+                    >
+                      <el-option
+                        v-for="item of options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      >
+                      </el-option>
+                    </el-select>
+                  </span>
+                  <i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i>
+             
+            </li></ul>`,
   methods: {
     changeValue(data, rowdata, oldvalue) {
       this.value = data;
@@ -238,7 +242,8 @@ export default {
     personAddHandler: {
       type: Function,
       required: true
-    }
+    },
+    workerList:{}
   },
   data() {
     return {
@@ -354,6 +359,9 @@ export default {
     };
   },
   methods: {
+    handleClose(e) {
+      this.innerVisible = false;
+    },
     searchcontroller(){
       this.orgcode=this.fristcode;
       this.findpeopler();
@@ -361,6 +369,7 @@ export default {
     workerTypeValue(item, index) {
       this.value1 = item.value;
       this.active = index;
+      this.addPerson()
     },
     changeTpye(params) {
 
@@ -376,8 +385,16 @@ export default {
       if (params.type === "add") {
         // do delete operation
         // console.log(params);
-        this.personnelMsg = params;
+        console.log(this.workerList);
+        
+        if (this.workerList==false) {
+          this.personnelMsg = params;
+          let item={value:"0",label:"负责人"}
+          this.workerTypeValue(item,0)
+        }else{
+          this.personnelMsg = params;
         this.innerVisible = true;
+        }
         // this.getRowData(params.rowData)
       }
     },
@@ -542,12 +559,6 @@ export default {
     this.getorg();
   },
   mounted() {
-    $(".person-type").on("click", "li", function(event) {
-      $(this)
-        .addClass("active-bgcolor")
-        .siblings()
-        .removeClass("active-bgcolor");
-    });
   }
 };
 </script>
@@ -681,6 +692,7 @@ export default {
     &:nth-child(2n-1) {
       background: #f7f7f7;
     }
+    
     i {
       float: right;
       line-height: 22px;

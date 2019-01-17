@@ -111,12 +111,12 @@
             </el-form-item>
           </el-form>
           <div style="position:relative;" >
-            <div class="batch_msg" v-show="batchShow" id="tags-list">
+            <div class="batch_msg" v-show="batchShow" v-clickoutside="handleClose">
               <div class="top-case">
                 <h3><span style="color:#409eff;">{{titleName}}</span>历史批次信息</h3>
                 <el-button type="text" icon="el-icon-close" @click="batchShow=false" style="font-size:14px"></el-button>
               </div>
-              
+
               <ul>
                 <li v-if="nub==undefined||nub.length==0 " @click="batchShow=false">暂无历史批次</li>
                 <li v-for="(item, index) in nub" :key="index" @click="getBatchNumber(item)">{{item.batchNumber}}</li>
@@ -138,7 +138,7 @@
               @on-custom-comp="customCompFunc"
               :column-cell-class-name="columnCellClass"
               ref="inventoryListTable"
-             
+
             ></v-table>
           </div>
           <div style="color:#e6a23c;line-height:20px">
@@ -147,7 +147,7 @@
         </div>
       </div>
     </div>
-   
+
   </div>
 </template>
 <script>
@@ -173,7 +173,7 @@ Vue.component('table-batch',{
     },
   },
   methods: {
-    
+
     wright(){
       let params = { type: "wright", index: this.index, rowData: this.rowData };
       this.$emit("on-custom-comp", params);
@@ -197,7 +197,7 @@ Vue.component('table-batch',{
           },
           type: "get",
           url: "/part/listRecentlyUsedBatch"
-         
+
         },
         this
       ).then(
@@ -306,8 +306,9 @@ export default {
           isEdit: true,
           titleCellClassName: "title-cell-class-name",
           formatter: function (rowData,rowIndex,pagingIndex,field) {
-                        return `<s class='cell-edit-style'></s><span>${rowData.entryCount}</span>`;
-                    }
+            rowData.entryCount=/^[0-9]*$/.test(rowData.entryCount)&&rowData.entryCount>0?rowData.entryCount:0
+            return `<s class='cell-edit-style'></s><span>${rowData.entryCount}</span>`;
+            }
           },
         {
           field: "entryPrice",
@@ -320,6 +321,8 @@ export default {
           isEdit: true,
           titleCellClassName: "title-cell-class-name",
           formatter: function (rowData,rowIndex,pagingIndex,field) {
+            // /^[0-9]*$/.test(rowData.entryPrice)
+            rowData.entryPrice=/^[0-9]*$/.test(rowData.entryPrice)&&rowData.entryPrice>0?rowData.entryPrice:0
             return `<s class='cell-edit-style'></s><span>${rowData.entryPrice}</span>`;
           }
         },
@@ -410,6 +413,9 @@ export default {
     };
   },
   methods: {
+    handleClose(){
+      this.batchShow=false
+    },
     getBatchNumber(value){
       console.log(value);
       this.tableData1[this.index].batchNumber=value.batchNumber
@@ -424,7 +430,6 @@ export default {
     },
     cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
       this.tableData1[rowIndex][field] = newValue;
-      // 接下来处理你的业务逻辑，数据持久化等...
     },
     customCompFunc(params) {
       if (params.type === "delete") {
@@ -436,6 +441,7 @@ export default {
         console.log(params);
         this.index=params.index
         this.batchShow=true;
+
         this.titleName=params.rowData.partName
         this.Axios(
         {
@@ -447,23 +453,18 @@ export default {
           },
           type: "get",
           url: "/part/listRecentlyUsedBatch"
-         
+
         },
         this
       ).then(
         result => {
           console.log(result);
           this.nub=result.data.data
-        //  for (let i = 0; i < result.data.data.length; i++) {
-        //    this.nub[i].push(result.data.data[i].batchNumber)
-        //  }
+
         },
         ({ type, info }) => {}
       );
       }
-        // this.deleteOne(params.rowData["id"]);
-        // this.$delete(this.tableData, params.index);
-      
     },
     toDetails(rowIndex, rowData, column) {
       //this.getuserbatch(rowData.id);
@@ -479,7 +480,7 @@ export default {
           entryPrice: 0,
           supplierName: "",
           //批次ID
-          //batchNumberId:"",
+          //batchNumberId:null,
           batchNumber: "",
           saveLocation: "",
           remarks: ""
@@ -662,6 +663,12 @@ export default {
         subok = false;
       }
 
+      this.tableData1.forEach(item=>{
+        if(item.entryCount===""||item.entryPrice===""||item.supplierName===""||item.batchNumber===""){
+          subok = false;
+        }
+      })
+
       if(subok){
         this.$confirm('确定完成入库吗?', '提示', {
           confirmButtonText: '确定',
@@ -690,7 +697,7 @@ export default {
         this.$refs.classifyTable.resize();
       }, 500);
     });
-    
+
   },
   mounted() {
   },
@@ -808,14 +815,14 @@ Vue.component("table-warehouse", {
     ul{
       width: 100%;
       overflow: scroll;
-      margin-top:30px; 
+      margin-top:30px;
       max-height: 165px;
       background-color: white;
       li{
         list-style-type: none;
         float: left;
         margin-left:4px;
-        margin-bottom: 4px; 
+        margin-bottom: 4px;
         cursor: pointer;
         background-color: rgba(64,158,255,.1);
         padding: 0 10px;

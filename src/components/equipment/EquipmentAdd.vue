@@ -9,7 +9,7 @@
         </el-row>
       </div>
       <div class="bottom-case">
-         <div class="center">
+        <div class="center">
         <h5>基础信息</h5>
         <el-form ref="baseform" :model="sizeForm" label-width="80px" size="small" :rules="rules1" >
           <el-form-item label="设备编号" prop="deviceNo">
@@ -82,10 +82,9 @@
             <el-input v-model="sizeForm.manufacturer" style="width:525px"></el-input>
           </el-form-item>
         </el-form>
-
       </div>
       <div class="administrator">
-        <h5>管理人员</h5>
+        <h5>人员信息</h5>
         <el-form :inline="true"  class="demo-form-inline" label-width="100px">
           <el-form-item label="负责人员：">
             <span v-if="devicePersonnelInfoBase.find(item=>item.workerType==='0')">
@@ -141,9 +140,12 @@
               （空）
             </span>
           </el-form-item>
-          <el-form-item style="padding-left:20px">
+          <el-form-item style="padding-left:28px">
             <el-button size="mini" type="primary" @click="dialogVisible=true" >添加人员</el-button>
           </el-form-item>
+          <el-form-item style="width:380px;">
+            <span style="padding-left:28px; color:#e6a23c">* 提示：以上人员信息未绑定时，系统将默认为当前用户。</span>
+          </el-form-item>  
         </el-form>
       </div>
       <div class="bottom">
