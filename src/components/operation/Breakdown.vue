@@ -46,9 +46,9 @@
             slot="footer"
             class="dialog-footer"
           >
-            <el-button type="primary" @click="cancel">取 消</el-button>
+            <el-button size="small" @click="cancel">取 消</el-button>
             <el-button
-
+              size="small"
               type="primary"
               @click="toDispel"
             >确 定</el-button>

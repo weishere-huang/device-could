@@ -13,6 +13,8 @@
               :default-expanded-keys="[2, 3]"
               :default-checked-keys="[5]"
               :props="defaultProps"
+              default-expand-all
+              :expand-on-click-node='false'
             >
             </el-tree>
           </div>
@@ -386,6 +388,8 @@
           }
           .treeCase {
             margin-top: 20px;
+            height: 400px;
+            overflow: scroll;
           }
         }
         .center {
@@ -408,7 +412,7 @@
         }
         .right {
           width: 20%;
-          min-height: 400px;
+          height: 400px;
           float: left;
           font-size: 12px;
           .personList {
@@ -416,8 +420,9 @@
             width: 100%;
             border: @border;
             border-radius: 5px;
-            min-height: 360px;
+            overflow: scroll;
             padding: 10px;
+            height: 385px;
             li {
               list-style-type: none;
               height: 20px;
