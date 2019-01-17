@@ -115,7 +115,8 @@
             width: 60,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
             // orderBy: ""
           },
           {
@@ -124,7 +125,8 @@
             width: 80,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "deviceModel",
@@ -132,7 +134,8 @@
             width: 130,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "location",
@@ -140,7 +143,8 @@
             width: 90,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           }
         ],
         personListValue: [],

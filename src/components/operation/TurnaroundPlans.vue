@@ -220,10 +220,10 @@
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
-              if (rowData.maintenanceClassify === 1) return `<span>日常检修（DM）</span>`;
-              if (rowData.maintenanceClassify === 2) return `<span>定期检修（TBM）</span>`;
-              if (rowData.maintenanceClassify === 3) return `<span>改进性检修（PAM）</span>`;
-              if (rowData.maintenanceClassify === 4) return `<span>故障检修（RTF）</span>`;
+              if (rowData.maintenanceClassify === 1) return `日常检修（DM）`;
+              if (rowData.maintenanceClassify === 2) return `定期检修（TBM）`;
+              if (rowData.maintenanceClassify === 3) return `改进性检修（PAM）`;
+              if (rowData.maintenanceClassify === 4) return `故障检修（RTF）`;
             }
           },
           {
@@ -271,10 +271,10 @@
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
-              if(rowData.frequencyType ===-1 )return `<span>单次</span>`;
-              if(rowData.frequencyType ===1 )return `<span>天</span>`;
-              if(rowData.frequencyType ===2 )return `<span>周</span>`;
-              if(rowData.frequencyType ===3 )return `<span>月</span>`;
+              if(rowData.frequencyType ===-1 )return `单次`;
+              if(rowData.frequencyType ===1 )return `天`;
+              if(rowData.frequencyType ===2 )return `周`;
+              if(rowData.frequencyType ===3 )return `月`;
             }
           },
           {
@@ -347,7 +347,7 @@
           },
           {
             field: "id",
-            title: "操作",
+            title: "查看",
             width: 60,
             titleAlign: "center",
             columnAlign: "center",
@@ -678,7 +678,7 @@
             <permission-button permCode='work_list_detail_lookup.work_list_detail_save||work_list_detail_lookup.work_list_detail_audit'
                      banType='disable' type="text"
                      style="text-decoration: none;color:#409eff;margin-left: -2px">
-                     <i @click.stop.prevent="lookWorkInfo(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+                     <i @click.stop.prevent="lookWorkInfo(rowData,index)" style='font-size:16px' class='el-icon-view'></i>
             </permission-button>
         </el-tooltip>
         </span>`,

@@ -93,12 +93,12 @@
               v-for="(item,index) of editableTabs=personAddHandler"
               :key="index"
             >
-              <tab-component
+              <tab-components
                 :items="item"
                 :deleteWorker="workerDelete"
-                :values="item.workerType"
+                :values="item.workerTypeName"
                 v-on:changeTpye="changeTpye"
-              ></tab-component>
+              ></tab-components>
             </div>
           </div>
         </div>
@@ -115,6 +115,8 @@
       class="person-type"
       style="padding:10px; overflow: hidden;width:150px;"
       v-show="innerVisible"
+      v-clickoutside="handleClose"
+      id="person_type"
     >
       <!-- <el-select
         v-model="value1"
@@ -132,7 +134,7 @@
       <ul class="work-person">
         <li v-for="(item,index) in options" :key="index" :class="active==index?'active-bgcolor':''" @click="workerTypeValue(item,index)">{{item.label}}</li>
       </ul>
-      <div style="margin-top:10px;float:right;">
+      <!-- <div style="margin-top:10px;float:right;">
         <el-button
           size="mini"
           @click="innerVisible=flase"
@@ -142,31 +144,16 @@
           type="primary"
           @click="addPerson"
         >确定</el-button>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 <script>
 import Vue from "vue";
-Vue.component("tab-component", {
-  template: `<ul class="workerList"><li v-for="(item,index) of items.content">{{ item.workerName }}
+Vue.component("tab-components", {
+  template: `<ul class="workerList"><li v-for="(item,index) of items.content"><span style="display:inline-block;width:60px">{{ item.workerName }}</span>
       <span style="display:inline;margin-left:5%;" >
-        <el-select
-          v-model="value=values"
-          placeholder="请选择"
-          style="width:50%"
-          size="mini"
-          @change="changeValue(value,item,items)"
-          disabled
-        >
-          <el-option
-            v-for="item of options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
+       {{values}}人员
       </span>
   <i v-on:click="deleteWorker(item,items)" class="el-icon-circle-close-outline"></i></li></ul>`,
   data() {
@@ -226,7 +213,7 @@ Vue.component("tab-component", {
 Vue.component("table-RedactAdd", {
   template: `<span>
               <el-tooltip class="item" effect="dark" content="添加" placement="top">
-                <i style='font-size:16px;cursor: pointer;' class='el-icon-circle-plus-outline' @click.stop.prevent="add(rowData,index)"></i>
+                <i style='font-size:16px;cursor: pointer;' class='el-icon-circle-plus-outline' @click.stop.prevent="add(rowData,index,$event)"></i>
               </el-tooltip>
             </span>`,
 
@@ -242,8 +229,8 @@ Vue.component("table-RedactAdd", {
     }
   },
   methods: {
-    add() {
-      let params = { type: "add", index: this.index, rowData: this.rowData };
+    add(rowData,index,$event) {
+      let params = { type: "add", index: this.index, rowData: this.rowData,position:$event };
       this.$emit("on-custom-comp", params);
     }
   }
@@ -370,6 +357,9 @@ export default {
     };
   },
   methods: {
+    handleClose(){
+      this.innerVisible = false;
+    },
     searchcontroller(){
       this.orgcode=this.fristcode;
       this.findpeopler();
@@ -377,6 +367,7 @@ export default {
     workerTypeValue(item, index){
       this.value1=item.value
       this.active=index
+      this.addPerson()
     },
     changeTpye(params) {
       this.editableTabs[params.oldvalue.workerType].content =  this.editableTabs[params.oldvalue.workerType].content.filter(item => item.id !== params.person.id)
@@ -388,6 +379,7 @@ export default {
     customCompFunc(params) {
       if (params.type === "add") {
         // do delete operation
+         $('#person_type').css({"top":params.position.clientY-130+'px',"left":params.position.clientX-110+'px'})
         this.personnelMsg = params;
         this.innerVisible = true;
         // this.getRowData(params.rowData)

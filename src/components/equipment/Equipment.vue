@@ -5,7 +5,7 @@
       <div class="classifylist">
         <div class="classify">
           <ul>
-            <h5><i class='iconfont icon-leimupinleifenleileibie'></i>&nbsp;所有分类</h5>
+            <h5><i class='iconfont' style="font-weight:normal">&#xe659;</i>&nbsp;所有分类</h5>
             <li @click="leftcontro(1,'','')">├生产设备</li>
             <li @click="leftcontro(2,'','')">├非生产设备</li>
             <li @click="leftcontro(3,'','')">├辅助生产设备</li>
@@ -14,7 +14,7 @@
           </ul>
         </div>
         <div class="category">
-          <h5><i class='iconfont icon-shuqian'></i>&nbsp;所有类别</h5>
+          <h5><i class='iconfont' style="font-weight:normal">&#xe659;</i>&nbsp;所有类别</h5>
           <el-tree
             :data="organiza"
             default-expand-all
@@ -32,7 +32,7 @@
           </el-tree>
         </div>
         <div class="tone">
-          <h5><i class='iconfont icon-shebeiguanli'></i>&nbsp;设备状况</h5>
+          <h5><i class='iconfont' style="font-weight:normal">&#xe659;</i>&nbsp;设备状况</h5>
           <ul>
             <li @click="leftcontro('','','1')">├在用</li>
             <li

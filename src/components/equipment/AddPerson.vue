@@ -94,8 +94,9 @@
               <tab-component
                 :items="item"
                 :deleteWorker="workerDelete"
-                :values="item.workerType"
+                :values="item.workerTypeName"
                 v-on:changeTpye="changeTpye"
+                :selectShow="selectShow"
               ></tab-component>
             </div>
           </div>
@@ -108,6 +109,7 @@
       style="padding:10px; overflow: hidden;width:150px;"
       v-show="innerVisible"
       v-clickoutside="handleClose"
+      id="person_type"
     >
       <ul class="work-person">
         <li
@@ -118,7 +120,7 @@
           @click="workerTypeValue(item,index)"
         >{{item.label}}</li>
       </ul>
-      <div style="margin-top:10px;float:right;">
+      <!-- <div style="margin-top:10px;float:right;">
         <el-button
           size="mini"
           @click="innerVisible=false"
@@ -128,7 +130,7 @@
           type="primary"
           @click="addPerson"
         >确定</el-button>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -137,28 +139,6 @@ import Vue from "vue";
 Vue.component("tab-component", {
   data() {
     return {
-      options: [
-        {
-          value: "0",
-          label: "负责人员"
-        },
-        {
-          value: "1",
-          label: "维修人员"
-        },
-        {
-          value: "2",
-          label: "检修人员"
-        },
-        {
-          value: "3",
-          label: "保养人员"
-        },
-        {
-          value: "4",
-          label: "操作人员"
-        }
-      ],
       value: []
     };
   },
@@ -172,28 +152,17 @@ Vue.component("tab-component", {
       required: true
     },
     values: {},
-    changeTpye: {}
+    changeTpye: {},
+    selectShow:{}
   },
-  template: `<ul class="workerList"><li v-for="(item,index) of items.content">{{ item.workerName }}
-      <span style="display:inline;margin-left:5%;" >
-        <el-select
-          v-model="value"
-          placeholder="请选择"
-          style="width:50%"
-          size="mini"
-          @change="changeValue(value,item,items)"
-          disabled
-        >
-          <el-option
-            v-for="item of options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </span>
-  <i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>`,
+  template: `<ul class="workerList"><li v-for="(item,index) of items.content"><span style="display:inline-block;width:60px">{{ item.workerName }}</span>
+              
+                  <span style="display:inline;margin-left:5%;" v-show="selectShow">
+                  {{values}}人员
+                  </span>
+                  <i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i>
+             
+            </li></ul>`,
   methods: {
     changeValue(data, rowdata, oldvalue) {
       this.value = data;
@@ -210,7 +179,7 @@ Vue.component("tab-component", {
 Vue.component("table-add-person", {
   template: `<span>
         <el-tooltip class="item" effect="dark" content="添加" placement="top">
-            <i style='font-size:16px;cursor: pointer;' class='el-icon-circle-plus-outline' @click.stop.prevent="add(rowData,index)"></i>
+            <i style='font-size:16px;cursor: pointer;' class='el-icon-circle-plus-outline' @click.stop.prevent="add(rowData,index,$event)"></i>
         </el-tooltip>
 
         </span>`,
@@ -226,8 +195,8 @@ Vue.component("table-add-person", {
     }
   },
   methods: {
-    add() {
-      let params = { type: "add", index: this.index, rowData: this.rowData };
+    add(rowData,index,$event) {
+      let params = { type: "add", index: this.index, rowData: this.rowData ,position:$event};
       this.$emit("on-custom-comp", params);
     }
   }
@@ -239,7 +208,9 @@ export default {
     personAddHandler: {
       type: Function,
       required: true
-    }
+    },
+    workerList:{},
+    selectShow:{}
   },
   data() {
     return {
@@ -381,8 +352,15 @@ export default {
       if (params.type === "add") {
         // do delete operation
         // console.log(params);
-        this.personnelMsg = params;
+        $('#person_type').css({"top":params.position.clientY-130+'px',"left":params.position.clientX-110+'px'})
+        if (this.workerList==false) {
+          this.personnelMsg = params;
+          let item={value:"0",label:"负责人"}
+          this.workerTypeValue(item,0)
+        }else{
+          this.personnelMsg = params;
         this.innerVisible = true;
+        }
         // this.getRowData(params.rowData)
       }
     },
@@ -547,12 +525,6 @@ export default {
     this.getorg();
   },
   mounted() {
-    $(".person-type").on("click", "li", function(event) {
-      $(this)
-        .addClass("active-bgcolor")
-        .siblings()
-        .removeClass("active-bgcolor");
-    });
   }
 };
 </script>
@@ -686,6 +658,7 @@ export default {
     &:nth-child(2n-1) {
       background: #f7f7f7;
     }
+    
     i {
       float: right;
       line-height: 22px;

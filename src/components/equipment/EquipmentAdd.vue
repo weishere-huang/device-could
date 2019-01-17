@@ -206,7 +206,7 @@
       :visible.sync="dialogVisible"
       width="80%"
       >
-      <addPerson :personAddHandler="personAddHandler"></addPerson>
+      <addPerson :personAddHandler="personAddHandler" :selectShow="true"></addPerson>
     </el-dialog>
   </div>
 </template>

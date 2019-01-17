@@ -415,7 +415,7 @@
         let endDate = new Date(this.companyName.endTime+" 23:59:59").valueOf();
         let dateTime = new Date(this.date+" "+this.times).valueOf();
         if(dateTime<startDate||dateTime<systemTime||dateTime<endDate){
-          this.$message.error("首次执行时间有误");
+          this.$message.error("首次执行时间不能小于当前时间");
           return false;
         }
       }
@@ -513,8 +513,10 @@
         this.addPlanShow = params;
       },
       toAdd(params){
-        this.tableData = params.values;
         this.addPlanShow = params.isOk;
+        params.values.length>0 ?
+          params.values.map(item=>{this.tableData.push(item)}):
+          this.tableData=[];
       },
       addPlanIsShow() {
         this.addPlanShow = true;

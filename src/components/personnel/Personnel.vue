@@ -8,9 +8,10 @@
           size="small"
           type="primary"
           @click="PersnnelAdd"
+          ripple
         ><i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加</permission-button>
         <el-button
-          size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button >
+          ripple size="small" type="primary" @click="reload()"><i class='el-icon-refresh'></i> 立即刷新</el-button >
         <div class="search">
           <el-input
             type="search"
@@ -468,7 +469,6 @@
               <permission-button permCode='employee_lookup.employee_delete'
                      banType='disable'
                      type="text"
-                     @click.stop.prevent="deleteRow(rowData,index)"
                      style="text-decoration: none;color:#F56C6C"
                      @click.stop.prevent="deleteRow(rowData,index)"
                      >

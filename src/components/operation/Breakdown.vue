@@ -4,7 +4,7 @@
     <div class="userCase" :class="[{hide:isHideList}]">
       <div class="top">
         <permission-button
-          permCode='operation_fault_report_lookup.operation_fault_report_save'
+          permCode='operation_fault_lookup.operation_fault_audit'
           banType='hide'
           size="small"
           type="primary"
@@ -300,11 +300,11 @@
             overflowTitle: true,
             formatter:function (rowData) {
               if (rowData.faultLevel === 1) {
-                return `<span >低</span>`;
+                return `低`;
               }else if (rowData.faultLevel === 2) {
-                return `<span >中</span>`;
+                return `中`;
               }else if (rowData.faultLevel === 3) {
-                return `<span >高</span>`;
+                return `高`;
               }
             },
           },
@@ -317,8 +317,8 @@
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
-              if(rowData.faultSource ==0 )return `<span>人工提交</span>`;
-              if(rowData.faultSource ==1 ) return `<span>设备采集</span>`;
+              if(rowData.faultSource ==0 )return `人工提交`;
+              if(rowData.faultSource ==1 ) return `设备采集`;
             }
           },
           {
@@ -393,7 +393,7 @@
           },
           {
             field: "id",
-            title: "操作",
+            title: "查看",
             width: 60,
             titleAlign: "center",
             columnAlign: "center",
@@ -403,6 +403,7 @@
           }
         ],
         workInfoDate:[],
+        searchValue:"",
       };
     },
     methods: {
@@ -444,14 +445,14 @@
         )
       },
       customCompFunc(params) {
-        // console.log(params);
         if (params.type === "delete") {
           this.toDeleteBreak(params.rowData.id);
         } else if (params.type === "edit") {
           this.toDetails(params.index, params.rowData);
         }else if(params.type === "dispel"){
           this.faultIds = params.rowData.id;
-          params.rowData.state === 5 ?　this.dispel() : this.$message.error('对不起、只能消除执行中的计划')
+          params.rowData.state === 5 || params.rowData.state === 0 ?
+            this.dispel() : this.$message.error('对不起、只能消除待审核或执行中的计划')
         }else if(params.type === "submitAudit"){
           this.faultIds = params.rowData.id;
           params.rowData.state ===0 ?　this.outerVisible = true : this.$message.error('对不起、只能操作待审核的计划')
@@ -503,9 +504,7 @@
       },
       pageChange(pageIndex) {
         this.pageIndex = pageIndex;
-        if (this.pageIsOk) {
-          this.load();
-        }
+        if (this.pageIsOk) this.load();
         this.getTableData();
       },
       pageSizeChange(pageSize) {
@@ -582,11 +581,15 @@
           })
       },
       search() {
-        if (this.faultKey !== "") {
-          this.toSearch();
-        } else {
+        debugger;
+        if (this.faultKey === "") {
+          this.searchValue="";
           this.pageIsOk = true;
-          this.pageChange(1);
+          this.pageIndex = 1;
+          this.reload();
+        } else {
+          this.searchValue==="" ? this.pageIndex = 1 : "";
+          this.toSearch();
         }
       },
       toSearch() {
@@ -608,6 +611,7 @@
             this.tableData = response.data.data.content;
             this.tableDate = this.tableData;
             this.pageIsOk = false;
+            this.searchValue = this.faultKey;
           },
           ({ type, info }) => {}
         );
@@ -743,7 +747,7 @@
         this.$route.params.id !== undefined || this.$route.matched.find(item=>(item.name==="Reported"))?
           this.isHideList = true: this.isHideList = false;
         this.$refs.breakdownTable.resize();
-        this.$store.state.operation.turnround==="y"? this.reload():"";
+        this.$store.state.operation.breakList==="y"? this.reload():"";
       }
     },
   };
@@ -754,7 +758,7 @@
                      banType='disable' type="text"
                      @click.stop.prevent="lookWorkInfo(rowData,index)"
                      style="text-decoration: none;color:#409eff;margin-left: -2px">
-                     <i  style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+                     <i  style='font-size:16px' class='el-icon-view'></i>
             </permission-button>
         </el-tooltip>
         </span>`,

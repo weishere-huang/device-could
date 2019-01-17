@@ -99,7 +99,7 @@
       </div>
       <div class="right">
         <div>
-          <el-button size="small" type="primary" @click="amendPlanIsShow">
+          <el-button size="small" type="primary" v-if="isOk" @click="amendPlanIsShow">
             <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;设备添加</el-button>
         </div>
         <h5>设备列表</h5>

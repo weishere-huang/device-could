@@ -189,6 +189,7 @@
             this.PermissionsList();
             this.role.map((item,index)=>{
               item.name === roleName ? this.active = index : null;
+              this.roleId = item.id;
             })
           },
           ({type, info}) => {})

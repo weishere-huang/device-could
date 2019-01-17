@@ -27,7 +27,7 @@
             >&#xe670;</i>&nbsp;我的权限</span>
         </div>
         <el-dialog
-          title="我的权限"
+          :title="myPower"
           :visible.sync="dialogVisible"
           width="700px"
         >
@@ -278,6 +278,7 @@ export default {
       //消息
       massgageData: [],
       a_content:'',
+      myPower:''
     };
   },
   methods: {
@@ -469,6 +470,7 @@ export default {
     this.allNotReadMsg();
     this.getRoleAndPermissionInfo();
     this.findLinkMan();
+    this.myPower=`我的权限（${this.userMsg.roleName}）`
   },
   watch: {}
 };

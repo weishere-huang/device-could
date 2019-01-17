@@ -96,7 +96,7 @@
       </div>
       <div class="right">
         <div>
-          <el-button size="small" type="primary" @click="amendPlanIsShow">
+          <el-button size="small" type="primary" v-if="isOk" @click="amendPlanIsShow">
             <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;设备添加</el-button>
         </div>
         <h5>设备列表</h5>
@@ -325,7 +325,7 @@
             field: "position",
             title: "岗位",
             width: 60,
-            titleAlign: "center",
+            titleAlign: "left",
             columnAlign: "left",
             isResize: true
           },
@@ -446,7 +446,6 @@
         this.$store.commit("turnaroundPlans","y")
       },
       loadSelect(number){
-        let arr=new Array()
         this.Axios(
           {
             params:{maintenanceId:number},
@@ -456,8 +455,7 @@
           },
           this
         ).then(response => {
-            arr = response.data.data;
-            this.tableData = arr;
+            this.tableData = response.data.data;
             this.tableDate = this.tableData;
           },
           ({type, info}) => {

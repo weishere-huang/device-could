@@ -7,15 +7,14 @@
         </div>
         <el-menu
           :router="true"
-          :default-active="$route.name"
+          :default-active="$route.path"
           class="el-menu-vertical-demo"
           text-color="#fff"
           active-text-color="#ffd04b"
           :collapse="isCollapse"
         >
           <el-submenu :index="item.permissionCode" :key="item.route" v-for="item in menuSource">
-            <template slot="title">
-              <!-- <span class="menuItem" v-html="item.icon"></span> -->
+            <template slot="title" >
               <i class="iconfont" v-html="item.icon"></i>
               <span slot="title">{{item.menu}}</span>
             </template>
@@ -188,7 +187,7 @@ export default {
       }
     },
     initPermission() {
-      this.user = JSON.parse(localStorage.getItem("user")).name;
+      this.user = JSON.parse(localStorage.getItem("user"))&&JSON.parse(localStorage.getItem("user")).name;
       this.token = localStorage.getItem("token");
       this.permissionUrl = JSON.parse(
         localStorage.getItem("permissionUrl") || "[]"
@@ -240,8 +239,10 @@ export default {
   },
   computed: {},
   created() {
-    this.initPermission();
-    // setInterval(this.MsgCount,1000)
+    if(localStorage.getItem("token")){
+      this.initPermission();
+    }
+    //setInterval(this.MsgCount,1000)
   },
   components: {
     breadCrumb
