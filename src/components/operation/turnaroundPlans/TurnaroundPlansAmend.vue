@@ -446,7 +446,6 @@
         this.$store.commit("turnaroundPlans","y")
       },
       loadSelect(number){
-        let arr=new Array()
         this.Axios(
           {
             params:{maintenanceId:number},
@@ -456,8 +455,7 @@
           },
           this
         ).then(response => {
-            arr = response.data.data;
-            this.tableData = arr;
+            this.tableData = response.data.data;
             this.tableDate = this.tableData;
           },
           ({type, info}) => {
