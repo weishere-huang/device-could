@@ -1266,7 +1266,6 @@
           this
         ).then(
           response => {
-            // console.log(response.data);
           },
           ({type, info}) => {
             this.addMaterielValue();
