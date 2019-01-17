@@ -25,7 +25,7 @@
           :inline="true"
           :model="formInline"
           class="demo-form-inline"
-          label-width="70px"
+          label-width="60px"
           style="width:100%;"
         >
           <el-form-item
@@ -78,13 +78,13 @@
               label="备注："
               style="width:50%;"
             >
-              <el-input size="small" style="width:400px;" v-model="remark"></el-input>
+              <el-input size="small" style="width:455px;" v-model="remark"></el-input>
             </el-form-item>
         </el-form>
       </div>
       <div class="table-list">
         <div class="spare-parts-table">
-          <el-form label-width="85px">
+          <el-form label-width="60px">
             <el-form-item
               label="备件分类："
               style="margin-bottom:0px;"
@@ -138,7 +138,7 @@
           <i class="el-icon-d-arrow-right"></i>
         </div>
         <div class="inventory-list">
-          <el-form label-width="85px">
+          <el-form label-width="60px">
             <el-form-item
               label="出库清单："
               style="margin-bottom:0px;"
