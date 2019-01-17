@@ -215,13 +215,13 @@
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
-              if (rowData.maintenanceClassify === 1) return `<span>例行保养</span>`;
-              if (rowData.maintenanceClassify === 2) return `<span>季节性保养</span>`;
-              if (rowData.maintenanceClassify === 3) return `<span>换季保养</span>`;
-              if (rowData.maintenanceClassify === 4) return `<span>磨合期保养</span>`;
-              if (rowData.maintenanceClassify === 5) return `<span>转移保养</span>`;
-              if (rowData.maintenanceClassify === 6) return `<span>停放保养</span>`;
-              if (rowData.maintenanceClassify === 7) return `<span>其他</span>`;
+              if (rowData.maintenanceClassify === 1) return `例行保养`;
+              if (rowData.maintenanceClassify === 2) return `季节性保养`;
+              if (rowData.maintenanceClassify === 3) return `换季保养`;
+              if (rowData.maintenanceClassify === 4) return `磨合期保养`;
+              if (rowData.maintenanceClassify === 5) return `转移保养`;
+              if (rowData.maintenanceClassify === 6) return `停放保养`;
+              if (rowData.maintenanceClassify === 7) return `其他`;
             }
           },
           {
@@ -269,10 +269,10 @@
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
-              if(rowData.frequencyType ===-1 )return `<span>单次</span>`;
-              if(rowData.frequencyType ===1 )return `<span>天</span>`;
-              if(rowData.frequencyType ===2 )return `<span>周</span>`;
-              if(rowData.frequencyType ===3 )return `<span>月</span>`;
+              if(rowData.frequencyType ===-1 )return `单次`;
+              if(rowData.frequencyType ===1 )return `天`;
+              if(rowData.frequencyType ===2 )return `周`;
+              if(rowData.frequencyType ===3 )return `月`;
             }
           },
           {
