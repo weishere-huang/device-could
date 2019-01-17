@@ -406,14 +406,18 @@ import personnel from '../operation/breakdown/Personnel'
       },
       workToPlans(params){
         if (params.type === "workToPlans") {
-          let role = JSON.parse(localStorage.getItem("permissionUrl"));
-          if(params.rowData.workType===1&&role.find(item=>{return item.module==="operation_maintain_detail_lookup"}))
-            this.$router.push({path:"Upkeep/UpkeepAmend/" + params.rowData.maintenanceId});
-          else if(params.rowData.workType===0&&role.find(item=>{return item.module==="operation_overhaul_detail_lookup"}))
-            this.$router.push({path:"TurnaroundPlans/TurnaroundPlansAmend/" + params.rowData.maintenanceId});
-          else if(params.rowData.workType===2&&role.find(item=>{return item.module==="operation_fault_detail_lookup"}))
-            this.$router.push({path:"Breakdown/BreakDetails/" + params.rowData.maintenanceId});
-          else this.$message.error("对不起，您的权限不足")
+          if(params.rowData.maintenanceState===3){
+           this.$message.error("对不起，该计划不存在或已被删除")
+          }else{
+            let role = JSON.parse(localStorage.getItem("permissionUrl"));
+            if(params.rowData.workType===1&&role.find(item=>{return item.module==="operation_maintain_detail_lookup"}))
+              this.$router.push({path:"Upkeep/UpkeepAmend/" + params.rowData.maintenanceId});
+            else if(params.rowData.workType===0&&role.find(item=>{return item.module==="operation_overhaul_detail_lookup"}))
+              this.$router.push({path:"TurnaroundPlans/TurnaroundPlansAmend/" + params.rowData.maintenanceId});
+            else if(params.rowData.workType===2&&role.find(item=>{return item.module==="operation_fault_detail_lookup"}))
+              this.$router.push({path:"Breakdown/BreakDetails/" + params.rowData.maintenanceId});
+            else this.$message.error("对不起，您的权限不足")
+          }
         }
         if (params.type ==="look") {
           if (params.rowData.workType === 2) {
