@@ -4,7 +4,7 @@
     <div class="userCase" :class="[{hide:isHideList}]">
       <div class="top">
         <permission-button
-          permCode='operation_fault_report_lookup.operation_fault_report_save'
+          permCode='operation_fault_lookup.operation_fault_audit'
           banType='hide'
           size="small"
           type="primary"
@@ -300,11 +300,11 @@
             overflowTitle: true,
             formatter:function (rowData) {
               if (rowData.faultLevel === 1) {
-                return `<span >低</span>`;
+                return `低`;
               }else if (rowData.faultLevel === 2) {
-                return `<span >中</span>`;
+                return `中`;
               }else if (rowData.faultLevel === 3) {
-                return `<span >高</span>`;
+                return `高`;
               }
             },
           },
@@ -317,8 +317,8 @@
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
-              if(rowData.faultSource ==0 )return `<span>人工提交</span>`;
-              if(rowData.faultSource ==1 ) return `<span>设备采集</span>`;
+              if(rowData.faultSource ==0 )return `人工提交`;
+              if(rowData.faultSource ==1 ) return `设备采集`;
             }
           },
           {

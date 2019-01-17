@@ -223,9 +223,9 @@ import personnel from '../operation/breakdown/Personnel'
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
-              if(rowData.workType ===1 )return `<span>保养</span>`;
-              if(rowData.workType ===0 )return `<span>检修</span>`;
-              if(rowData.workType ===2 )return `<span>故障</span>`;
+              if(rowData.workType ===1 )return `保养`;
+              if(rowData.workType ===0 )return `检修`;
+              if(rowData.workType ===2 )return `故障`;
             }
           },
           {
