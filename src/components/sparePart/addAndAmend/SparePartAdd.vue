@@ -103,6 +103,9 @@
         <el-form-item label="库存下限：">
           <el-input
             v-model="formInline.lower"
+            type="number"
+            min="0"
+            @blur="formInline.lower=formInline.lower<0?0:formInline.lower"
             placeholder=""
             size="small"
             style="width:200px"
@@ -275,6 +278,9 @@ export default {
           return false;
         }
       });
+      if(this.formInline.partCategory===""||this.formInline.partClassify===""){
+        subok = false;
+      }
       //
       if(subok){
         this.$confirm('确定完成操作吗?', '提示', {
