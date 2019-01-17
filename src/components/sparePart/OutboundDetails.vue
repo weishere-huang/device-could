@@ -222,11 +222,13 @@ export default {
       this.pageIndex = pageIndex;
       this.load();
       this.getTableData();
+      this.boundList();
     },
     pageSizeChange(pageSize) {
       this.pageIndex = 1;
       this.pageSize = pageSize;
       this.getTableData();
+      this.boundList();
     },
     beforeFind(){
       this.pageIndex=1;

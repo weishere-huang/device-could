@@ -267,7 +267,12 @@ export default {
           titleAlign: "left",
           columnAlign: "left",
           isResize: true,
-          overflowTitle: true
+          overflowTitle: true,
+          formatter: function(rowData, rowIndex, pagingIndex, field) {
+            return rowData.partCategory === 2
+              ?`<span style="color:#ff6600">关键</span>`
+              :`<span >普通</span>`
+          },
         }
       ],
       columns1: [
@@ -523,13 +528,6 @@ export default {
       ).then(
         result => {
           this.tableData = result.data.data.content;
-          for (let i = 0; i < this.tableData.length; i++) {
-            if (this.tableData[i].partCategory === 2) {
-              this.tableData[i].partCategory = "关键";
-            } else {
-              this.tableData[i].partCategory = "普通";
-            }
-          }
         },
         ({ type, info }) => {}
       );
@@ -586,13 +584,6 @@ export default {
       ).then(
         result => {
           this.tableData = result.data.data;
-          for (let i = 0; i < this.tableData.length; i++) {
-            if (this.tableData[i].partCategory === 2) {
-              this.tableData[i].partCategory = "关键";
-            } else {
-              this.tableData[i].partCategory = "普通";
-            }
-          }
         },
         ({ type, info }) => {}
       );

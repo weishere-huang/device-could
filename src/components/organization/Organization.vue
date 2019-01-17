@@ -26,6 +26,7 @@
                   type="text"
                   size="mini"
                   @click="toAdd(data)"
+                  v-if="iszcr?iszcr:data.organizeType!=='企业'"
                 >
                 <el-tooltip class="item" effect="dark" content="添加" placement="top">
                   <i style='font-size:16px' class='iconfont'>&#xe62f;</i>
@@ -115,7 +116,8 @@
         //xiugai jiedian
         chengedata: "",
         //当前节点ID
-        orgID: ""
+        orgID: "",
+        iszcr:true
       };
     },
     methods: {
@@ -283,6 +285,9 @@
           event.stopPropagation();
         };
       }
+      let a = JSON.parse(localStorage.getItem("user"))
+      this.iszcr = a.position === "注册人"
+
     },
     created() {
       this.allOrganize();
