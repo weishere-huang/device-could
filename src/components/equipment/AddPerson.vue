@@ -107,6 +107,7 @@
       class="person-type"
       style="padding:10px; overflow: hidden;width:150px;"
       v-show="innerVisible"
+      v-clickoutside="handleClose"
     >
       <ul class="work-person">
         <li
@@ -354,6 +355,9 @@ export default {
     };
   },
   methods: {
+    handleClose(e) {
+      this.innerVisible = false;
+    },
     searchcontroller(){
       this.orgcode=this.fristcode;
       this.findpeopler();
@@ -361,6 +365,7 @@ export default {
     workerTypeValue(item, index) {
       this.value1 = item.value;
       this.active = index;
+      this.addPerson()
     },
     changeTpye(params) {
 

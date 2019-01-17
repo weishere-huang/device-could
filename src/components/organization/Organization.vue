@@ -22,7 +22,7 @@
               <span class="addCase" @click.stop>
                 <permission-button
                   permCode='organize_lookup.organize_add'
-                  banType='hide'
+                  banType='disable'
                   type="text"
                   size="mini"
                   @click="toAdd(data)"
@@ -33,7 +33,7 @@
                 </permission-button>
                   <permission-button
                     permCode='organize_lookup.organize_edit'
-                    banType='hide'
+                    banType='disable'
                     type="text"
                     size="mini"
                     @click="() => toRevise(data.id)"
@@ -45,7 +45,7 @@
                 </permission-button>
                  <permission-button
                    permCode='organize_lookup.organize_delete'
-                   banType='hide'
+                   banType='disable'
                    type="text"
                    size="mini"
                    @click="() => warningdelete(data.id)"

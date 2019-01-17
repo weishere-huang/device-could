@@ -111,7 +111,7 @@
             </el-form-item>
           </el-form>
           <div style="position:relative;" >
-            <div class="batch_msg" v-show="batchShow" id="tags-list">
+            <div class="batch_msg" v-show="batchShow" v-clickoutside="handleClose">
               <div class="top-case">
                 <h3><span style="color:#409eff;">{{titleName}}</span>历史批次信息</h3>
                 <el-button type="text" icon="el-icon-close" @click="batchShow=false" style="font-size:14px"></el-button>
@@ -413,10 +413,12 @@ export default {
     };
   },
   methods: {
+    handleClose(){
+      this.batchShow=false
+    },
     getBatchNumber(value){
       console.log(value);
       this.tableData1[this.index].batchNumber=value.batchNumber
-      this.tableData1[this.index].batchNumberId=value.id
       this.batchShow=false
     },
     columnCellClass(rowIndex, columnName, rowData) {

@@ -205,7 +205,7 @@
 
       </div>
       <div class="administrator">
-        <h5>管理人员</h5>
+        <h5>人员信息</h5>
         <el-form
           :inline="true"
           class="demo-form-inline"

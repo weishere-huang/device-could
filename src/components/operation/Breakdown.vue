@@ -199,6 +199,7 @@
           row-hover-color="#eee"
           row-click-color="#edf7ff"
           :row-height=35
+          :show-vertical-border="false"
         ></v-table>
       </div>
     </el-dialog>
@@ -354,8 +355,8 @@
             field: "workNo",
             title: "工单编号",
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -363,8 +364,8 @@
             field: "gmtCreate",
             title: "创建时间",
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true
           },
@@ -372,8 +373,8 @@
             field: "state",
             title: "状态",
             width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: "left",
+            columnAlign: "left",
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
