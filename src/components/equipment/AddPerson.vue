@@ -175,25 +175,28 @@ Vue.component("tab-component", {
     changeTpye: {}
   },
   template: `<ul class="workerList"><li v-for="(item,index) of items.content">{{ item.workerName }}
-      <span style="display:inline;margin-left:5%;" >
-        <el-select
-          v-model="value"
-          placeholder="请选择"
-          style="width:50%"
-          size="mini"
-          @change="changeValue(value,item,items)"
-          disabled
-        >
-          <el-option
-            v-for="item of options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </span>
-  <i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i></li></ul>`,
+              
+                  <span style="display:inline;margin-left:5%;float:right;" >
+                    <el-select
+                      v-model="value"
+                      placeholder="请选择"
+                      style="width:50%"
+                      size="mini"
+                      @change="changeValue(value,item,items)"
+                      disabled
+                    >
+                      <el-option
+                        v-for="item of options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      >
+                      </el-option>
+                    </el-select>
+                  </span>
+                  <i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i>
+             
+            </li></ul>`,
   methods: {
     changeValue(data, rowdata, oldvalue) {
       this.value = data;
@@ -686,6 +689,7 @@ export default {
     &:nth-child(2n-1) {
       background: #f7f7f7;
     }
+    
     i {
       float: right;
       line-height: 22px;
