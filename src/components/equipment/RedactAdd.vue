@@ -93,12 +93,12 @@
               v-for="(item,index) of editableTabs=personAddHandler"
               :key="index"
             >
-              <tab-component
+              <tab-components
                 :items="item"
                 :deleteWorker="workerDelete"
                 :values="item.workerType"
                 v-on:changeTpye="changeTpye"
-              ></tab-component>
+              ></tab-components>
             </div>
           </div>
         </div>
@@ -133,7 +133,7 @@
       <ul class="work-person">
         <li v-for="(item,index) in options" :key="index" :class="active==index?'active-bgcolor':''" @click="workerTypeValue(item,index)">{{item.label}}</li>
       </ul>
-      <div style="margin-top:10px;float:right;">
+      <!-- <div style="margin-top:10px;float:right;">
         <el-button
           size="mini"
           @click="innerVisible=flase"
@@ -143,17 +143,17 @@
           type="primary"
           @click="addPerson"
         >确定</el-button>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 <script>
 import Vue from "vue";
-Vue.component("tab-component", {
-  template: `<ul class="workerList"><li v-for="(item,index) of items.content">{{ item.workerName }}
+Vue.component("tab-components", {
+  template: `<ul class="workerList"><li v-for="(item,index) of items.content"><span style="display:inline-block;width:60px">{{ item.workerName }}</span>
       <span style="display:inline;margin-left:5%;" >
         <el-select
-          v-model="value=values"
+          v-model="values"
           placeholder="请选择"
           style="width:50%"
           size="mini"
@@ -381,6 +381,7 @@ export default {
     workerTypeValue(item, index){
       this.value1=item.value
       this.active=index
+      this.addPerson()
     },
     changeTpye(params) {
       this.editableTabs[params.oldvalue.workerType].content =  this.editableTabs[params.oldvalue.workerType].content.filter(item => item.id !== params.person.id)

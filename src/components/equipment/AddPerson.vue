@@ -96,6 +96,7 @@
                 :deleteWorker="workerDelete"
                 :values="item.workerType"
                 v-on:changeTpye="changeTpye"
+                :selectShow="selectShow"
               ></tab-component>
             </div>
           </div>
@@ -118,7 +119,7 @@
           @click="workerTypeValue(item,index)"
         >{{item.label}}</li>
       </ul>
-      <div style="margin-top:10px;float:right;">
+      <!-- <div style="margin-top:10px;float:right;">
         <el-button
           size="mini"
           @click="innerVisible=false"
@@ -128,7 +129,7 @@
           type="primary"
           @click="addPerson"
         >确定</el-button>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -172,13 +173,14 @@ Vue.component("tab-component", {
       required: true
     },
     values: {},
-    changeTpye: {}
+    changeTpye: {},
+    selectShow:{}
   },
-  template: `<ul class="workerList"><li v-for="(item,index) of items.content">{{ item.workerName }}
+  template: `<ul class="workerList"><li v-for="(item,index) of items.content"><span style="display:inline-block;width:60px">{{ item.workerName }}</span>
               
-                  <span style="display:inline;margin-left:5%;">
+                  <span style="display:inline;" v-show="selectShow">
                     <el-select
-                      v-model="value"
+                      v-model="values"
                       placeholder="请选择"
                       style="width:50%"
                       size="mini"
@@ -243,7 +245,8 @@ export default {
       type: Function,
       required: true
     },
-    workerList:{}
+    workerList:{},
+    selectShow:{}
   },
   data() {
     return {
@@ -385,8 +388,6 @@ export default {
       if (params.type === "add") {
         // do delete operation
         // console.log(params);
-        console.log(this.workerList);
-        
         if (this.workerList==false) {
           this.personnelMsg = params;
           let item={value:"0",label:"负责人"}

@@ -16,7 +16,7 @@
           :inline="true"
           :model="formInline"
           class="demo-form-inline"
-          label-width="100px"
+          label-width="60px"
         >
           <el-form-item
             label="入库单号："
@@ -31,7 +31,7 @@
           </el-form-item>
           <el-form-item
             label="入库日期："
-            style="margin-bottom:0px;"
+            style="margin-bottom:0px;margin-left:20px;"
           >
             <el-date-picker
               v-model="formInline.time"
@@ -47,7 +47,7 @@
       </div>
       <div class="table-list">
         <div class="spare-parts-table">
-          <el-form label-width="85px">
+          <el-form label-width="60px">
             <el-form-item
               label="备件分类："
               style="margin-bottom:0px;"
@@ -103,7 +103,7 @@
           <i class="el-icon-d-arrow-right"></i>
         </div>
         <div class="inventory-list">
-          <el-form label-width="85px">
+          <el-form label-width="60px">
             <el-form-item
               label="入库清单："
               style="margin-bottom:0px;"
