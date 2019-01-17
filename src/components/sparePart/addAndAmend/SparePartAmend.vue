@@ -92,7 +92,7 @@
             <el-cascader
             placeholder="请选择"
             :options="ctgoptions"
-     
+
             ref="getName2"
             expand-trigger="hover"
             :props="defaultProps2"
@@ -128,6 +128,9 @@
         <el-form-item label="库存下限：">
           <el-input
             v-model="formInline.lower"
+            type="number"
+            min="0"
+            @blur="formInline.lower=formInline.lower<0?0:formInline.lower"
             placeholder=""
             size="small"
             style="width:200px"
