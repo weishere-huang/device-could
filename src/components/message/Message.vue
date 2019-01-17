@@ -6,24 +6,28 @@
           size="small"
           type="primary"
           @click="allMsg"
+          ripple
         >所有消息
         </el-button>
         <el-button
           size="small"
           type="primary"
           @click="allNotReadMsg"
+          ripple
         >未读消息
         </el-button>
         <el-button
           size="small"
           type="primary"
           @click="btwarning"
+          ripple
         >全部标为已读
         </el-button>
         <el-button
           size="small"
           type="primary"
           @click="dtwarning"
+          ripple
         >删除
         </el-button>
 
