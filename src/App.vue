@@ -7,7 +7,7 @@
         </div>
         <el-menu
           :router="true"
-          :default-active="$route.name"
+          :default-active="$route.path"
           class="el-menu-vertical-demo"
           text-color="#fff"
           active-text-color="#ffd04b"
@@ -15,7 +15,6 @@
         >
           <el-submenu :index="item.permissionCode" :key="item.route" v-for="item in menuSource">
             <template slot="title" >
-              <!-- <span class="menuItem" v-html="item.icon"></span> -->
               <i class="iconfont" v-html="item.icon"></i>
               <span slot="title">{{item.menu}}</span>
             </template>

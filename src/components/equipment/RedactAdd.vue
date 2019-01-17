@@ -115,6 +115,7 @@
       class="person-type"
       style="padding:10px; overflow: hidden;width:150px;"
       v-show="innerVisible"
+      v-clickoutside="handleClose"
     >
       <!-- <el-select
         v-model="value1"
@@ -370,6 +371,9 @@ export default {
     };
   },
   methods: {
+    handleClose(){
+      this.innerVisible = false;
+    },
     searchcontroller(){
       this.orgcode=this.fristcode;
       this.findpeopler();

@@ -25,7 +25,7 @@
           :inline="true"
           :model="formInline"
           class="demo-form-inline"
-          label-width="70px"
+          label-width="60px"
           style="width:100%;"
         >
           <el-form-item
@@ -78,13 +78,13 @@
               label="备注："
               style="width:50%;"
             >
-              <el-input size="small" style="width:400px;" v-model="remark"></el-input>
+              <el-input size="small" style="width:455px;" v-model="remark"></el-input>
             </el-form-item>
         </el-form>
       </div>
       <div class="table-list">
         <div class="spare-parts-table">
-          <el-form label-width="85px">
+          <el-form label-width="60px">
             <el-form-item
               label="备件分类："
               style="margin-bottom:0px;"
@@ -138,7 +138,7 @@
           <i class="el-icon-d-arrow-right"></i>
         </div>
         <div class="inventory-list">
-          <el-form label-width="85px">
+          <el-form label-width="60px">
             <el-form-item
               label="出库清单："
               style="margin-bottom:0px;"
@@ -176,7 +176,7 @@
       :visible.sync="dialogVisible"
       width="80%"
       >
-      <addPerson :personAddHandler="personAddHandler"></addPerson>
+      <addPerson :personAddHandler="personAddHandler" :workerList="false"></addPerson>
     </el-dialog>
   </div>
 </template>
@@ -234,7 +234,12 @@ export default {
           titleAlign: "left",
           columnAlign: "left",
           isResize: true,
-          overflowTitle: true
+          overflowTitle: true,
+          formatter: function(rowData, rowIndex, pagingIndex, field) {
+            return rowData.partCategory === 2
+              ?`<span style="color:#ff6600">关键</span>`
+              :`<span >普通</span>`
+          },
         }
       ],
       columns1: [
@@ -276,6 +281,7 @@ export default {
           isEdit: true,
           titleCellClassName: "title-cell-class-name",
           formatter: function(rowData, rowIndex, pagingIndex, field) {
+            rowData.outCount=/^[0-9]*$/.test(rowData.outCount)&&rowData.outCount>0?rowData.outCount:0
             return `<s class='cell-edit-style'></s><span>${
               rowData.outCount
             }</span>`;
@@ -292,6 +298,7 @@ export default {
           isEdit: true,
           titleCellClassName: "title-cell-class-name",
           formatter: function(rowData, rowIndex, pagingIndex, field) {
+            rowData.price=/^[0-9]*$/.test(rowData.price)&&rowData.price>0?rowData.price:0
             return `<s class='cell-edit-style'></s><span>${
               rowData.price
             }</span>`;
@@ -468,9 +475,12 @@ export default {
     },
     insertBT() {
       let subok = true;
-      if (this.outNo === "" || this.tableData1.length === 0) {
+      if (this.outNo === "" || this.tableData1.length === 0||this.organizeCode===""||this.userName=="") {
         subok = false;
       }
+      this.tableData1.forEach(item=>{
+        if(item.price===""||item.outCount==="")subok = false;
+      })
       if (subok) {
         this.$confirm("确定完成出库吗?", "提示", {
           confirmButtonText: "确定",
