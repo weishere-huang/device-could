@@ -176,7 +176,7 @@ Vue.component("tab-component", {
   },
   template: `<ul class="workerList"><li v-for="(item,index) of items.content">{{ item.workerName }}
               
-                  <span style="display:inline;margin-left:5%;float:right;" >
+                  <span style="display:inline;margin-left:5%;">
                     <el-select
                       v-model="value"
                       placeholder="请选择"
@@ -242,7 +242,8 @@ export default {
     personAddHandler: {
       type: Function,
       required: true
-    }
+    },
+    workerList:{}
   },
   data() {
     return {
@@ -384,8 +385,16 @@ export default {
       if (params.type === "add") {
         // do delete operation
         // console.log(params);
-        this.personnelMsg = params;
+        console.log(this.workerList);
+        
+        if (this.workerList==false) {
+          this.personnelMsg = params;
+          let item={value:"0",label:"负责人"}
+          this.workerTypeValue(item,0)
+        }else{
+          this.personnelMsg = params;
         this.innerVisible = true;
+        }
         // this.getRowData(params.rowData)
       }
     },
@@ -550,12 +559,6 @@ export default {
     this.getorg();
   },
   mounted() {
-    $(".person-type").on("click", "li", function(event) {
-      $(this)
-        .addClass("active-bgcolor")
-        .siblings()
-        .removeClass("active-bgcolor");
-    });
   }
 };
 </script>
