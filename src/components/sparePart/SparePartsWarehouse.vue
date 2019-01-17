@@ -111,7 +111,7 @@
             </el-form-item>
           </el-form>
           <div style="position:relative;" >
-            <div class="batch_msg" v-show="batchShow" v-clickoutside="handleClose">
+            <div class="batch_msg" v-show="batchShow" v-clickoutside="handleClose" id="batch_msg">
               <div class="top-case">
                 <h3><span style="color:#409eff;">{{titleName}}</span>历史批次信息</h3>
                 <el-button type="text" icon="el-icon-close" @click="batchShow=false" style="font-size:14px"></el-button>
@@ -154,7 +154,7 @@
 import Vue from "vue";
 Vue.component('table-batch',{
   template:`
-           <div style="width:100%;height:100%;" @click="getBatch(rowData,index)">{{rowData.batchNumber}}</div>
+           <div style="width:100%;height:100%;"  @click="getBatch(rowData,index,$event)">{{rowData.batchNumber}}</div>
           `,
   data() {
     return {
@@ -179,11 +179,14 @@ Vue.component('table-batch',{
       this.$emit("on-custom-comp", params);
       console.log("OK");
     },
-    getBatch(){
-      console.log("OK");
-      let params = { type: "wright", index: this.index, rowData: this.rowData };
+    getBatch(rowData,index,$event){
+     
+      let params = { type: "wright", index: this.index, rowData: this.rowData,position:$event };
       this.$emit("on-custom-comp", params);
       // this.rowData.batchNumber=1
+    },
+    touchstart(e){
+      console.log(e);
     }
   },
   created () {
@@ -409,7 +412,9 @@ export default {
       tableData1: [],
       classifyId: "",
       //搜索关键字
-      basekeyword: ""
+      basekeyword: "",
+      pageX:'',
+      pageY:''
     };
   },
   methods: {
@@ -417,7 +422,6 @@ export default {
       this.batchShow=false
     },
     getBatchNumber(value){
-      console.log(value);
       this.tableData1[this.index].batchNumber=value.batchNumber
       this.batchShow=false
     },
@@ -439,9 +443,11 @@ export default {
       }
       if (params.type === "wright") {
         console.log(params);
+        this.pageX=params.position.clientX-160
+        this.pageY=params.position.clientY+30
+        $('#batch_msg').css({"top":this.pageY+'px',"left":this.pageX+'px'})
         this.index=params.index
         this.batchShow=true;
-
         this.titleName=params.rowData.partName
         this.Axios(
         {
@@ -458,7 +464,6 @@ export default {
         this
       ).then(
         result => {
-          console.log(result);
           this.nub=result.data.data
 
         },
@@ -837,6 +842,9 @@ Vue.component("table-warehouse", {
         white-space: nowrap;
       }
     }
+  }
+  .el-form-item__label{
+    padding: 0;
   }
 }
 .column-cell-class-name-cailiao {

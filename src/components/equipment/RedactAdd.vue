@@ -96,7 +96,7 @@
               <tab-components
                 :items="item"
                 :deleteWorker="workerDelete"
-                :values="item.workerType"
+                :values="item.workerTypeName"
                 v-on:changeTpye="changeTpye"
               ></tab-components>
             </div>
@@ -116,6 +116,7 @@
       style="padding:10px; overflow: hidden;width:150px;"
       v-show="innerVisible"
       v-clickoutside="handleClose"
+      id="person_type"
     >
       <!-- <el-select
         v-model="value1"
@@ -152,22 +153,7 @@ import Vue from "vue";
 Vue.component("tab-components", {
   template: `<ul class="workerList"><li v-for="(item,index) of items.content"><span style="display:inline-block;width:60px">{{ item.workerName }}</span>
       <span style="display:inline;margin-left:5%;" >
-        <el-select
-          v-model="values"
-          placeholder="请选择"
-          style="width:50%"
-          size="mini"
-          @change="changeValue(value,item,items)"
-          disabled
-        >
-          <el-option
-            v-for="item of options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
+       {{values}}人员
       </span>
   <i v-on:click="deleteWorker(item,items)" class="el-icon-circle-close-outline"></i></li></ul>`,
   data() {
@@ -227,7 +213,7 @@ Vue.component("tab-components", {
 Vue.component("table-RedactAdd", {
   template: `<span>
               <el-tooltip class="item" effect="dark" content="添加" placement="top">
-                <i style='font-size:16px;cursor: pointer;' class='el-icon-circle-plus-outline' @click.stop.prevent="add(rowData,index)"></i>
+                <i style='font-size:16px;cursor: pointer;' class='el-icon-circle-plus-outline' @click.stop.prevent="add(rowData,index,$event)"></i>
               </el-tooltip>
             </span>`,
 
@@ -243,8 +229,8 @@ Vue.component("table-RedactAdd", {
     }
   },
   methods: {
-    add() {
-      let params = { type: "add", index: this.index, rowData: this.rowData };
+    add(rowData,index,$event) {
+      let params = { type: "add", index: this.index, rowData: this.rowData,position:$event };
       this.$emit("on-custom-comp", params);
     }
   }
@@ -393,6 +379,7 @@ export default {
     customCompFunc(params) {
       if (params.type === "add") {
         // do delete operation
+         $('#person_type').css({"top":params.position.clientY-130+'px',"left":params.position.clientX-110+'px'})
         this.personnelMsg = params;
         this.innerVisible = true;
         // this.getRowData(params.rowData)
