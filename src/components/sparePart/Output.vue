@@ -162,7 +162,7 @@
               @on-custom-comp="customCompFunc"
               :column-cell-class-name="columnCellClass"
               ref="inventoryListTable"
-        
+
             ></v-table>
           </div>
           <div style="color:#e6a23c;line-height:20px">
@@ -461,12 +461,11 @@ export default {
         url:"/part/partOut",
         type:"post",
         option:{
-          enableMsg: false
+          successMsg:"出库成功"
         }
       },this).then(result=>{
         console.log(result.data);
         if(result.data.code===200){
-          this.$message.success("出库成功");
           this.reload();
         }else{
           this.$message.error("出库失败,请重新尝试")
