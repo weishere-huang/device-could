@@ -115,7 +115,7 @@
         //xiugai jiedian
         chengedata: "",
         //当前节点ID
-        orgID: ""
+        orgID: "",
       };
     },
     methods: {
@@ -283,6 +283,8 @@
           event.stopPropagation();
         };
       }
+      let a = JSON.parse(localStorage.getItem("user"))
+
     },
     created() {
       this.allOrganize();
