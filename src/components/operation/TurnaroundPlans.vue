@@ -347,7 +347,7 @@
           },
           {
             field: "id",
-            title: "操作",
+            title: "查看",
             width: 60,
             titleAlign: "center",
             columnAlign: "center",
@@ -678,7 +678,7 @@
             <permission-button permCode='work_list_detail_lookup.work_list_detail_save||work_list_detail_lookup.work_list_detail_audit'
                      banType='disable' type="text"
                      style="text-decoration: none;color:#409eff;margin-left: -2px">
-                     <i @click.stop.prevent="lookWorkInfo(rowData,index)" style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+                     <i @click.stop.prevent="lookWorkInfo(rowData,index)" style='font-size:16px' class='el-icon-view'></i>
             </permission-button>
         </el-tooltip>
         </span>`,

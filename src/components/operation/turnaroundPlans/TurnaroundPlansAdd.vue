@@ -424,7 +424,9 @@
         this.addPlanShow = params;
       },
       toAdd(params){
-        this.tableData = params.values;
+        params.values.length>0 ?
+          params.values.map(item=>{this.tableData.push(item)}):
+          this.tableData=[];
         this.addPlanShow = params.isOk;
       },
       addPlanIsShow() {

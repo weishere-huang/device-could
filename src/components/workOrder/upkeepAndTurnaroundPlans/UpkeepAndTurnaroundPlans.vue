@@ -95,7 +95,7 @@
             </el-form-item>
             <el-form-item label="工单类型：">
               <span>{{workInfo.workType}}</span>&nbsp;&nbsp;
-              <el-button @click="workToPlan" type="text">{{workInfo.maintenanceId}}&nbsp;<i class='iconfont' style="font-size:20px; color: #2474c5">&#xe619;</i></el-button>
+              <el-button @click="workToPlan" type="text">{{workInfo.maintenanceId}}&nbsp;<i class='iconfont' style="font-size:16px; color: #2474c5">&#xe619;</i></el-button>
             </el-form-item>
             <el-form-item label="工单状态：">
               <span>{{workInfo.state}}</span>

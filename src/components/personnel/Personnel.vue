@@ -469,7 +469,6 @@
               <permission-button permCode='employee_lookup.employee_delete'
                      banType='disable'
                      type="text"
-                     @click.stop.prevent="deleteRow(rowData,index)"
                      style="text-decoration: none;color:#F56C6C"
                      @click.stop.prevent="deleteRow(rowData,index)"
                      >

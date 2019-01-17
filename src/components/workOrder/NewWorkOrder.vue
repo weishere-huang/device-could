@@ -536,10 +536,14 @@
         this.amendPlanShow = params;
       },
       toAdd(params) {
-        this.tableData = params.values;
         this.amendPlanShow = params.isOk;
-        this.deviceId = this.tableData.map(item=>{return item.id});
-
+        if(params.values.length>0 ){
+          params.values.map(item=>{this.tableData.push(item)});
+          this.tableData.map(item=>{this.deviceId.push(item.id)});
+        }else{
+          this.tableData = [];
+          this.deviceId = []
+        }
       },
       findByDeviceId(deviceId) {
         this.Axios(

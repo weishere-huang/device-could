@@ -513,8 +513,10 @@
         this.addPlanShow = params;
       },
       toAdd(params){
-        this.tableData = params.values;
         this.addPlanShow = params.isOk;
+        params.values.length>0 ?
+          params.values.map(item=>{this.tableData.push(item)}):
+          this.tableData=[];
       },
       addPlanIsShow() {
         this.addPlanShow = true;

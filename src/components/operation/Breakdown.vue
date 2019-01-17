@@ -393,7 +393,7 @@
           },
           {
             field: "id",
-            title: "操作",
+            title: "查看",
             width: 60,
             titleAlign: "center",
             columnAlign: "center",
@@ -758,7 +758,7 @@
                      banType='disable' type="text"
                      @click.stop.prevent="lookWorkInfo(rowData,index)"
                      style="text-decoration: none;color:#409eff;margin-left: -2px">
-                     <i  style='font-size:16px' class='iconfont'>&#xe6b4;</i>
+                     <i  style='font-size:16px' class='el-icon-view'></i>
             </permission-button>
         </el-tooltip>
         </span>`,
