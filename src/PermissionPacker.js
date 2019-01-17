@@ -4,8 +4,8 @@
 import { Message,Button,Switch } from 'element-ui';
 
 let permissionUrl = "";
-if(!permissionUrl) permissionUrl = JSON.parse(localStorage.getItem("permissionUrl")||'[]');
-  const validate=(permCode)=>{
+const validate=(permCode)=>{
+  if(!permissionUrl) permissionUrl = JSON.parse(localStorage.getItem("permissionUrl")||'[]');
   const permCodeArr=permCode.split('.');
   for(let i=0,l=permissionUrl.length;i<l;i++){
     if(permissionUrl[i].module===permCodeArr[0]&&permissionUrl[i].permissionItem.find(item=>item===permCodeArr[1])){

@@ -18,6 +18,7 @@ import './assets/less/layout.less'
 import './assets/less/other.less'
 import menuSourceMap from "./router/routeMap";
 import permissionPacker from "./PermissionPacker.js"
+import VueRippler from 'vue-rippler'
 
 import {
   VTable,
@@ -36,6 +37,7 @@ Vue.prototype.$cookieStore = {
   delCookie
 }
 Vue.use(base)
+Vue.use(VueRippler)
 // import {
 //   Message,
 //   MessageBox
