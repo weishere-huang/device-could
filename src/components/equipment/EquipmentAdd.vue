@@ -9,7 +9,7 @@
         </el-row>
       </div>
       <div class="bottom-case">
-         <div class="center">
+        <div class="center">
         <h5>基础信息</h5>
         <el-form ref="baseform" :model="sizeForm" label-width="80px" size="small" :rules="rules1" >
           <el-form-item label="设备编号" prop="deviceNo">
@@ -82,7 +82,6 @@
             <el-input v-model="sizeForm.manufacturer" style="width:525px"></el-input>
           </el-form-item>
         </el-form>
-
       </div>
       <div class="administrator">
         <h5>人员信息</h5>
@@ -141,7 +140,7 @@
               （空）
             </span>
           </el-form-item>
-          <el-form-item style="padding-left:20px">
+          <el-form-item style="padding-left:28px">
             <el-button size="mini" type="primary" @click="dialogVisible=true" >添加人员</el-button>
           </el-form-item>
           <el-form-item style="width:380px;">

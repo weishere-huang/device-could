@@ -361,6 +361,7 @@ export default {
     workerTypeValue(item, index) {
       this.value1 = item.value;
       this.active = index;
+      this.addPerson()
     },
     changeTpye(params) {
 
