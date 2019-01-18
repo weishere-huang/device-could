@@ -67,6 +67,7 @@
           </el-form-item>
           <el-form-item label="执行时间：">
             <el-date-picker
+              size="small"
               v-model="time"
               type="datetime"
               format="yyyy/MM/dd HH:mm:ss"
@@ -74,6 +75,9 @@
               placeholder="选择日期时间"
             >
             </el-date-picker>
+          </el-form-item>
+          <el-form-item label="组织机构：">
+            <cascader :changeValue="changeValue"></cascader>
           </el-form-item>
           <el-form-item label="内容：">
             <el-input
@@ -289,6 +293,7 @@
   </div>
 </template>
 <script>
+  import cascader from '../public/Cascader.vue'
   import amendPlan from "../operation/upkeep/AmendPlan";
   import Vue from "vue";
   Vue.component("table-NewWorkOrder", {
@@ -320,6 +325,10 @@
     inject: ["reload"],
     data() {
       return {
+        ogrname:{
+          organizeCode:'',
+          organizationName:''
+        },
         radio: "2",
         person: false,
         personTable: [
@@ -523,9 +532,19 @@
         breakWorkInfo:"",
         imgPath:"",
         img:[],
+        defaultProps: {
+          value: "code",
+          label: "name"
+        },
+        options:[],
+        ogrname:'',
       };
     },
     methods: {
+      //获取组织机构
+     changeValue(data){
+       this.ogrname=data
+     },
       toback() {
         this.$router.back(-1)
       },
@@ -704,7 +723,8 @@
       });
     },
     components: {
-      amendPlan
+      amendPlan,
+      cascader
     }
   };
 </script>
