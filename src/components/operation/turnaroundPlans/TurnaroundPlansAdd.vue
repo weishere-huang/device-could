@@ -32,7 +32,7 @@
           <el-form-item label="计划类型：">
             <el-radio-group v-model="companyName.planType">
               <el-radio label="单次" ></el-radio>
-              <el-radio label="周期" v-model="companyName.frequency=1,companyName.frequencyType='1'"></el-radio>
+              <el-radio label="周期" ></el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -100,7 +100,7 @@
         </div>
         <h5>设备列表</h5>
         <v-table :select-all="selectALL" @on-custom-comp="customCompFunc"  :select-group-change="selectGroupChange" :show-vertical-border="false" is-horizontal-resize column-width-drag :multiple-sort="false" :height="350" style="width:100%;height:350px;" :columns="columns" :table-data="tableData" row-hover-color="#eee" row-click-color="#edf7ff"></v-table>
-        
+
       </div>
       <el-dialog
         title="人员列表"
@@ -380,18 +380,22 @@
         let time = new Date().toLocaleDateString().split(" ")[0];
         time = new Date(time).valueOf();
         if(new Date(this.companyName.startTime).valueOf()<time){
-          this.$message.error('计划日期不能小于当前时间');
+          this.$message.error('计划日期不能小于当前日期');
           return false;
         }
-        if(this.companyName.planName=="周期"){
+        if(this.companyName.planType=="周期"){
           if(this.companyName.endTime===""){
             this.$message.error('结束时间不能为空');
             return false;
           }
-        }
-        if(new Date(this.companyName.endTime).valueOf()<new Date(this.companyName.startTime).valueOf()){
-          this.$message.error('结束时间不能小于开始时间');
-          return false;
+          if(new Date(this.companyName.endTime).valueOf()<new Date(this.companyName.startTime).valueOf()){
+            this.$message.error('结束时间不能小于开始时间');
+            return false;
+          }
+          if(Number(this.companyName.frequency)<1){
+            this.$message.error("执行频次必须大于0");
+            return false;
+          }
         }
         if(this.date===""){
           this.$message.error('首次执行日期不能为空');
@@ -405,8 +409,12 @@
           let startDate = new Date(this.companyName.startTime+" 00:00:00").valueOf();
           let endDate = new Date(this.companyName.endTime+" 23:59:59").valueOf();
           let dateTime = new Date(this.date+" "+this.times).valueOf();
-          if(dateTime<startDate||dateTime<systemTime||dateTime<endDate){
+          if(dateTime<startDate||dateTime<systemTime){
             this.$message.error("首次执行时间不能小于当前时间");
+            return false;
+          }
+          if(dateTime>endDate){
+            this.$message.error("首次执行时间不能大于结束时间");
             return false;
           }
         }

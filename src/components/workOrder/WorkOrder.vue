@@ -3,11 +3,13 @@
     <router-view></router-view>
     <div class="top" :class="[{hide:isHideList}]">
       <el-button-group>
-        <el-button
+        <permission-button
+          permCode='work_list_lookup.work_list_all'
+          banType='disable'
           type="primary"
           @click="load(toNull)"
           size="small"
-        >全部工单</el-button>
+        >全部工单</permission-button>
         <el-button
           type="primary"
           @click="load(0)"
@@ -475,14 +477,20 @@ import personnel from '../operation/breakdown/Personnel'
   Vue.component("table-operations", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="查看详情" placement="top">
-            <a href="" style="text-decoration: none"><i @click.stop.prevent="lookWork(rowData,index)" style='font-size:16px;color:#409eff' class='iconfont'>&#xe734;</i></a>
+              <permission-button permCode='work_list_lookup.work_list_detail'
+                     banType='disable' type="text"
+                     @click.stop.prevent="lookWork(rowData,index)"
+                     style="text-decoration: none;color:#409EFF;margin-left: -2px">
+                   <i style='font-size:16px;color:#409eff' class='iconfont'>&#xe734;</i>
+            </permission-button>
         </el-tooltip>
          &nbsp;
         <el-tooltip class="item" effect="dark" content="审核" placement="top">
-            <permission-button permCode='work_list_detail_lookup.work_list_detail_audit'
+            <permission-button permCode='work_list_lookup.work_list_audit'
                      banType='disable' type="text"
+                     @click.stop.prevent="submitAudit(rowData,index)"
                      style="text-decoration: none;color:#409EFF;margin-left: -2px">
-                    <i @click.stop.prevent="submitAudit(rowData,index)" @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
+                    <i  @dblclick.stop style='font-size:16px' class='iconfont'>&#xe689;</i>
             </permission-button>
           </el-tooltip>
           &nbsp;
