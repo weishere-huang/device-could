@@ -461,10 +461,6 @@
             value:4,
             label:'故障检修(RTF)'
           },
-          {
-            value:5,
-            label:'其他'
-          },
         ],
         scope: [
           {

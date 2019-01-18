@@ -166,8 +166,8 @@
         companyName: {
           id:"",
           planName:"",
-          maintenanceClassify:"",
-          maintenanceLevel:"",
+          maintenanceClassify:"1",
+          maintenanceLevel:"1",
           maintenanceType:1,
           planType:"单次",
           startTime:"",
@@ -286,9 +286,7 @@
         ).then(response => {
             this.tableData = response.data.data.content;
           },
-          ({type, info}) => {
-
-          })
+          ({type, info}) => { })
       },
       addPlan(){
         this.deviceIds = this.tableData.map(item=>item.id).toString();
