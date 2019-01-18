@@ -35,7 +35,7 @@
           <el-form-item label="计划类型：">
             <el-radio-group v-model="companyName.planType">
               <el-radio label="单次"></el-radio>
-              <el-radio label="周期" v-model="companyName.frequencyType='1'"></el-radio>
+              <el-radio label="周期"></el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -70,12 +70,6 @@
           <el-form-item label="保养内容：" style="height:auto;">
             <el-input type="textarea" v-model="companyName.maintenanceCc" style="width:100%;"></el-input>
           </el-form-item>
-          <!--<el-form-item label="分布详情：" style="height:auto;margin:5px 0;">-->
-          <!--<tr class="tableTime">-->
-          <!--<td>111</td>-->
-          <!--<td>2</td>-->
-          <!--</tr>-->
-          <!--</el-form-item>-->
         </el-form>
         <!-- 单次执行 -->
         <el-form label-width="110px" v-if="companyName.planType==='单次'" v-model="companyName.planType">

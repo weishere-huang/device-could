@@ -32,7 +32,7 @@
           <el-form-item label="计划类型：">
             <el-radio-group v-model="companyName.planType">
               <el-radio label="单次" ></el-radio>
-              <el-radio label="周期" v-model="companyName.frequencyType='1'"></el-radio>
+              <el-radio label="周期" ></el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
