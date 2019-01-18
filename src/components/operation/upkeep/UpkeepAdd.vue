@@ -1,11 +1,11 @@
 <template>
   <div class="turnaroundPlansAdd">
     <div class="top">
-        <el-button size="small" type="primary" @click="toBack"  icon="el-icon-arrow-left">返回</el-button>
-        <permission-button
-          permCode='operation_maintain_add_lookup.operation_maintain_add_save'
-          banType='hide'
-          size="small" type="primary" @click="addPlan"><i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</permission-button>
+      <el-button size="small" type="primary" @click="toBack"  icon="el-icon-arrow-left">返回</el-button>
+      <permission-button
+        permCode='operation_maintain_add_lookup.operation_maintain_add_save'
+        banType='hide'
+        size="small" type="primary" @click="addPlan"><i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存</permission-button>
     </div>
     <div class="bottom">
       <div class="left">
@@ -35,7 +35,7 @@
           <el-form-item label="计划类型：">
             <el-radio-group v-model="companyName.planType">
               <el-radio label="单次"></el-radio>
-              <el-radio label="周期" v-model="companyName.frequency=1,companyName.frequencyType='1'"></el-radio>
+              <el-radio label="周期"></el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -70,12 +70,6 @@
           <el-form-item label="保养内容：" style="height:auto;">
             <el-input type="textarea" v-model="companyName.maintenanceCc" style="width:100%;"></el-input>
           </el-form-item>
-          <!--<el-form-item label="分布详情：" style="height:auto;margin:5px 0;">-->
-          <!--<tr class="tableTime">-->
-          <!--<td>111</td>-->
-          <!--<td>2</td>-->
-          <!--</tr>-->
-          <!--</el-form-item>-->
         </el-form>
         <!-- 单次执行 -->
         <el-form label-width="110px" v-if="companyName.planType==='单次'" v-model="companyName.planType">
@@ -114,14 +108,14 @@
                  is-horizontal-resize
                  column-width-drag
                  :multiple-sort="false"
-                 :height="350" 
+                 :height="350"
                  style="width:100%;height:350px;"
                  :columns="columns"
                  :table-data="tableData"
                  row-hover-color="#eee"
                  row-click-color="#edf7ff"
                  :show-vertical-border="false"
-                 ></v-table>
+        ></v-table>
       </div>
       <el-dialog
         title="人员列表"
@@ -179,7 +173,7 @@
           startTime:"",
           endTime:"",
           executeTime:"",
-          frequency:1,
+          frequency:"1",
           frequencyType:"1",
           maintenanceCc:""
         },
@@ -389,16 +383,20 @@
         let time = new Date().toLocaleDateString().split(" ")[0];
         time = new Date(time).valueOf();
         if(new Date(this.companyName.startTime).valueOf()<time){
-          this.$message.error('计划日期不能小于当前时间');
+          this.$message.error('计划日期不能小于当前日期');
           return false;
         }
-        if(this.companyName.planName=="周期"){
+        if(this.companyName.planType=="周期"){
           if(this.companyName.endTime===""){
             this.$message.error('结束时间不能为空');
             return false;
           }
           if(new Date(this.companyName.endTime).valueOf()<new Date(this.companyName.startTime).valueOf()){
             this.$message.error('结束时间不能小于开始时间');
+            return false;
+          }
+          if(Number(this.companyName.frequency)<1){
+            this.$message.error("执行频次必须大于0");
             return false;
           }
         }
@@ -410,15 +408,19 @@
           this.$message.error('执行时间不能为空');
           return false;
         }else{
-        let systemTime = new Date(new Date().toLocaleString('chinese', { hour12: false })).valueOf();
-        let startDate = new Date(this.companyName.startTime+" 00:00:00").valueOf();
-        let endDate = new Date(this.companyName.endTime+" 23:59:59").valueOf();
-        let dateTime = new Date(this.date+" "+this.times).valueOf();
-        if(dateTime<startDate||dateTime<systemTime||dateTime<endDate){
-          this.$message.error("首次执行时间不能小于当前时间");
-          return false;
+          let systemTime = new Date(new Date().toLocaleString('chinese', { hour12: false })).valueOf();
+          let startDate = new Date(this.companyName.startTime+" 00:00:00").valueOf();
+          let endDate = new Date(this.companyName.endTime+" 23:59:59").valueOf();
+          let dateTime = new Date(this.date+" "+this.times).valueOf();
+          if(dateTime<startDate||dateTime<systemTime){
+            this.$message.error("首次执行时间不能小于当前时间");
+            return false;
+          }
+          if(dateTime>endDate){
+            this.$message.error("首次执行时间不能大于结束时间");
+            return false;
+          }
         }
-      }
         if(this.companyName.maintenanceCc===""){
           this.$message.error('保养内容不能为空');
           return false;
