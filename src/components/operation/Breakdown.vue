@@ -4,8 +4,8 @@
     <div class="userCase" :class="[{hide:isHideList}]">
       <div class="top">
         <permission-button
-          permCode='operation_fault_lookup.operation_fault_audit'
-          banType='hide'
+          permCode='operation_fault_lookup.operation_fault_report'
+          banType='disable'
           size="small"
           type="primary"
           @click="reportedShow"

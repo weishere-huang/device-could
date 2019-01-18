@@ -117,7 +117,7 @@
         chengedata: "",
         //当前节点ID
         orgID: "",
-        iszcr:true
+        iszcr:false
       };
     },
     methods: {
