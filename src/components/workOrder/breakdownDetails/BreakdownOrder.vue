@@ -374,9 +374,9 @@
             isResize: true,
             overflowTitle: true,
             formatter:function (rowData) {
-              if(rowData.state===0)return`<span>待处理</span>`;
-              if(rowData.state===1)return`<span>已通过</span>`;
-              if(rowData.state===2)return`<span>已驳回</span>`;
+              if(rowData.state===0)return`待处理`;
+              if(rowData.state===1)return`已通过`;
+              if(rowData.state===2)return`已驳回`;
             }
           },
           {
@@ -576,7 +576,7 @@
             isResize: true,
             isEdit: true,
             formatter(rowData) {
-              return `<s class='cell-edit-style'></s><span">${rowData.planCount}</span>`;
+              return `<s class='cell-edit-style'></s><span>${rowData.planCount}</span>`;
             }
           },
           {
@@ -1322,6 +1322,10 @@
             return this.global.imgPath+item.split("img:")[1];
           });
         }
+        if(value.incidence==="1")this.formLabelAlign.incidence="停机";
+        if(value.incidence==="2")this.formLabelAlign.incidence="生产波动";
+        if(value.incidence==="3")this.formLabelAlign.incidence="设备本体";
+        if(value.incidence==="4")this.formLabelAlign.incidence="其他";
       },
       //设备
       equipmentTableDataValue(value){

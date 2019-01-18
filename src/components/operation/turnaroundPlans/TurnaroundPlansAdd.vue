@@ -151,8 +151,8 @@
         companyName: {
           id:"",
           planName:"",
-          maintenanceClassify:"",
-          maintenanceLevel:"",
+          maintenanceClassify:"1",
+          maintenanceLevel:"1",
           maintenanceType:0,
           planType:"单次",
           startTime:"",
@@ -271,9 +271,7 @@
           response => {
             this.personData = response.data.data;
           },
-          ({type, info}) => {
-
-          })
+          ({type, info}) => {})
       },
       customCompFunc(params) {
         if (params.type === "showLook") {

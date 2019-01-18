@@ -247,38 +247,38 @@
         amendPlanShow: false,
         scope: [
           {
-            value: 0,
+            value: 1,
             label: "停机"
           },
           {
-            value: 1,
+            value: 2,
             label: "生产波动"
           },
           {
-            value: 2,
+            value: 3,
             label: "设备本体"
           },
           {
-            value: 3,
+            value: 4,
             label: "其他"
           }
         ],
-        scopeValue:0,
+        scopeValue:1,
         grade: [
           {
-            value: 0,
+            value: 1,
             label: "低"
           },
           {
-            value: 1,
+            value: 2,
             label: "中"
           },
           {
-            value: 2,
+            value: 3,
             label: "高"
           }
         ],
-        gradeValue:0,
+        gradeValue:1,
         breakDesc:"",
         breakInfo:"",
         img:[],
