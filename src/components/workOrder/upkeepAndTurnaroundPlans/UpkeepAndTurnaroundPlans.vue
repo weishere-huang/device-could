@@ -1,12 +1,12 @@
 <template>
   <div class="breakdown-order">
     <div class="top">
-        <el-button size="small" type="primary" @click="toBack" icon="el-icon-arrow-left">返回</el-button>
-        <permission-button
-          permCode='work_list_detail_lookup.work_list_detail_audit'
-          banType='disable'
-          size="small" type="primary" @click="outerVisible=true" v-if="isOk">
-          <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;提交审核</permission-button>
+      <el-button size="small" type="primary" @click="toBack" icon="el-icon-arrow-left">返回</el-button>
+      <permission-button
+        permCode='work_list_detail_lookup.work_list_detail_audit'
+        banType='disable'
+        size="small" type="primary" @click="outerVisible=true" v-if="isOk">
+        <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;提交审核</permission-button>
       <el-button size="small" type="primary" @click="auditInfo" icon="el-icon-search">审核详情</el-button>
       <!-- 审核弹框 -->
       <el-dialog title="审核" :visible.sync="outerVisible" width="600px">
@@ -95,7 +95,11 @@
             </el-form-item>
             <el-form-item label="工单类型：">
               <span>{{workInfo.workType}}</span>&nbsp;&nbsp;
-              <el-button @click="workToPlan" type="text">{{workInfo.maintenanceId}}&nbsp;<i class='iconfont' style="font-size:16px; color: #2474c5">&#xe619;</i></el-button>
+              <i style=" color: #2474c5">{{workInfo.maintenanceId}}&nbsp;</i>
+              <el-tooltip class="item" effect="dark" content="查看对应计划" placement="top">
+                <el-button @click="workToPlan" type="text">
+                  <i class='iconfont' style="font-size:16px; color: #2474c5">&#xe619;</i></el-button>
+              </el-tooltip>
             </el-form-item>
             <el-form-item label="工单状态：">
               <span>{{workInfo.state}}</span>
@@ -192,13 +196,13 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-              <el-button  type="primary" size="mini" @click="listBasicInfo">
-                <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加物料</el-button>
-              <permission-button
-                permCode='work_list_detail_lookup.work_list_detail_save'
-                banType='disable'
-                type="primary" @click="insertPart" size="mini">
-                <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存列表</permission-button>
+            <el-button  type="primary" size="mini" @click="listBasicInfo">
+              <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加物料</el-button>
+            <permission-button
+              permCode='work_list_detail_lookup.work_list_detail_save'
+              banType='disable'
+              type="primary" @click="insertPart" size="mini">
+              <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存列表</permission-button>
           </div>
           <v-table
             is-horizontal-resize
@@ -416,17 +420,17 @@
         outerVisible: false,
         innerVisible: false,
         workReceiptInfo:[{
-            id:"",
-            workId:"",
-            builderId:"",
-            builder:"",
-            dealState:"",
-            dealTime:"",
-            dealContent:"",
-            gmtCreate:"",
-            gmtModified:"",
-            state:"",
-          }],
+          id:"",
+          workId:"",
+          builderId:"",
+          builder:"",
+          dealState:"",
+          dealTime:"",
+          dealContent:"",
+          gmtCreate:"",
+          gmtModified:"",
+          state:"",
+        }],
         workSheetMaterialTableData: [],
         devicesTableData: [],
         flowInfoData: [],
@@ -1099,9 +1103,9 @@
             this.addMaterielValue(response.data.data.content);
             this.pageNumber = response.data.data.totalElements;
             this.workSheetMaterialTableData != [] ?
-            this.workSheetMaterialTableData.map((item)=>{
-              this.personListValue.push(item)
-            }):"";
+              this.workSheetMaterialTableData.map((item)=>{
+                this.personListValue.push(item)
+              }):"";
           },
           ({type, info}) => {
 
@@ -1215,7 +1219,7 @@
         this.workSheetMaterialTableData=[];
         this.workSheetMaterialTableData = (this.workSheetMaterialTableData||[]).concat(this.personListValue);
         this.workSheetMaterialTableData.forEach((item)=>{
-            if(item.planCount == "" || item.planCount ==null)item.planCount =1
+          if(item.planCount == "" || item.planCount ==null)item.planCount =1
         });
         this.workSheetMaterialTableData = Array.from(new Set(this.workSheetMaterialTableData))
       },
@@ -1230,7 +1234,7 @@
               break;
             }else{
               if (/^[0-9]*$/.test(this.workSheetMaterialTableData[i].planCount)) {
-                isOk=true;
+                if(this.suppliesTableData[i].planCount>0)isOk = true;
               }else{
                 this.$message.error("请正确输入计划数量");
                 isOk = false;
@@ -1412,20 +1416,20 @@
       },
       //回执信息
       workReceiptInfoValue(value){
-       if(value.length>0){
-         this.workReceiptInfo = value;
-         for(let i in this.workReceiptInfo){
-           if(this.workReceiptInfo[i].dealState==0){
-             this.workReceiptInfo[i].dealState="已处理"
-           }
-           if(this.workReceiptInfo[i].dealState==1){
-             this.workReceiptInfo[i].dealState="未处理"
-           }
-           if(this.workReceiptInfo[i].dealState==2){
-             this.workReceiptInfo[i].dealState="已取消"
-           }
-         }
-       }
+        if(value.length>0){
+          this.workReceiptInfo = value;
+          for(let i in this.workReceiptInfo){
+            if(this.workReceiptInfo[i].dealState==0){
+              this.workReceiptInfo[i].dealState="已处理"
+            }
+            if(this.workReceiptInfo[i].dealState==1){
+              this.workReceiptInfo[i].dealState="未处理"
+            }
+            if(this.workReceiptInfo[i].dealState==2){
+              this.workReceiptInfo[i].dealState="已取消"
+            }
+          }
+        }
       },
       //流程信息
       flowInfo(value){
@@ -1433,12 +1437,16 @@
       },
       //跳转到计划页面
       workToPlan(){
-        let role = JSON.parse(localStorage.getItem("permissionUrl"));
-        if(role.find(item=>{return item.module==="operation_maintain_detail_lookup"}))
-          this.$router.push({path:"/Upkeep/UpkeepAmend/" + params.rowData.maintenanceId});
-        else if(role.find(item=>{return item.module==="operation_overhaul_detail_lookup"}))
-          this.$router.push({path:"/TurnaroundPlans/TurnaroundPlansAmend/" + params.rowData.maintenanceId});
-        else this.$message.error("对不起，您的权限不足")
+        if(this.maintenancePlan.state===3){
+          this.$message.error("对不起，该计划不存在或已被删除")
+        }else{
+          let role = JSON.parse(localStorage.getItem("permissionUrl"));
+          if(role.find(item=>{return item.module==="operation_maintain_detail_lookup"}))
+            this.$router.push({path:"/Upkeep/UpkeepAmend/" +this.workInfo.maintenanceId});
+          else if(role.find(item=>{return item.module==="operation_overhaul_detail_lookup"}))
+            this.$router.push({path:"/TurnaroundPlans/TurnaroundPlansAmend/" + this.workInfo.maintenanceId});
+          else this.$message.error("对不起，您的权限不足")
+        }
       }
     },
     created(){
@@ -1491,7 +1499,6 @@
       }
     },
     methods: {
-
       deleteRow() {
         // 参数根据业务场景随意构造
         let params = { type: "delete", rowData: this.rowData };
@@ -1510,8 +1517,8 @@
   @Info: #dde2eb;
   @border: 1px solid #dde2eb;
   .el-dialog__body{
-      font-size: 12px;
-    }
+    font-size: 12px;
+  }
   .breakdown-order {
     font-size: 12px;
     min-width: 1090px;
@@ -1649,9 +1656,9 @@
             cursor: pointer;
             &:hover {
               color: red;
+            }
           }
-          }
-          
+
         }
       }
     }
