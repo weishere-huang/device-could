@@ -163,8 +163,9 @@ export default {
       if (params.type === "delete") {
         this.$delete(this.tableData, params.index);
       } else if (params.type === "edit") {
-        this.ids = params.rowData.id;
+        this.ids = ","+params.rowData.id;
         this.notread=params.rowData.isRead===0?1:0
+        debugger
         this.dtwarning();
       } else if (params.type === "stop") {
         alert(`ID：${params.rowData["id"]} 姓名：${params.rowData["name"]}`);
@@ -230,12 +231,11 @@ export default {
 
     dtwarning() {
       let worningtext= this.notread>0?"删除消息中含有未读消息,确认删除吗?":"确认删除吗";
+
       if (this.ids === "") {
         this.$message.warning("至少选择一条数据")
       }else{
         this.$confirm(worningtext, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           this.deleteMessage();
