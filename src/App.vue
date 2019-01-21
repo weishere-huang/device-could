@@ -296,9 +296,7 @@ export default {
     vertical-align: top;
   }
 }
-.singleMenuItem{
-  background: #409eff !important;
-}
+
 .stateList {
   position: absolute;
   right: 20px;
