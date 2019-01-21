@@ -10,7 +10,7 @@
     <div class="bottom">
       <div class="left">
         <h5>检修计划</h5>
-        <el-form label-width="100px">
+        <el-form label-width="110px">
           <el-form-item label="计划名称：">
             <el-input v-model="companyName.planName" autofocus size="mini"></el-input>
           </el-form-item>
@@ -35,6 +35,9 @@
               <el-radio label="周期" ></el-radio>
             </el-radio-group>
           </el-form-item>
+          <!-- <el-form-item label="组织机构：">
+            <cascader :changeValue="changeValue"></cascader>
+          </el-form-item> -->
         </el-form>
 
         <el-form label-width="110px" v-if="companyName.planType==='周期'" v-model="companyName.planType">
@@ -134,12 +137,14 @@
   </div>
 </template>
 <script>
+// import cascader from '../../public/Cascader.vue'
   import addPlan from "./AddPlan";
   import Vue from "vue";
   export default {
     name: "",
     data() {
       return {
+        ogrname:{},
         person:false,
         arr:new Array(),
         auditId:0,
@@ -258,6 +263,9 @@
     },
     created() {},
     methods: {
+      // changeValue(data){
+      //  this.ogrname=data
+      // },
       findByDeviceId(deviceId){
         this.Axios(
           {
@@ -474,7 +482,8 @@
       }
     },
     components: {
-      addPlan
+      addPlan,
+      // cascader
     }
   };
   Vue.component("table-addPerson", {

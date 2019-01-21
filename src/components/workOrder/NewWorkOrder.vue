@@ -76,9 +76,9 @@
             >
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="组织机构：">
+          <!-- <el-form-item label="组织机构：">
             <cascader :changeValue="changeValue"></cascader>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="内容：">
             <el-input
               v-model="workInfo"
@@ -126,10 +126,14 @@
               value-format="yyyy/MM/dd HH:mm:ss"
               v-model="time"
               type="datetime"
+              size="small"
               placeholder="选择日期时间"
             >
             </el-date-picker>
           </el-form-item>
+          <!-- <el-form-item label="组织机构：">
+            <cascader :changeValue="changeValue"></cascader>
+          </el-form-item> -->
           <el-form-item label="内容：">
             <el-input
               v-model="workInfo"
@@ -182,6 +186,9 @@
             >
             </el-date-picker>
           </el-form-item>
+          <!-- <el-form-item label="组织机构：">
+            <cascader :changeValue="changeValue"></cascader>
+          </el-form-item> -->
           <el-form-item label="故障描述：">
             <el-input
               v-model="breakWorkDesc"
@@ -293,7 +300,7 @@
   </div>
 </template>
 <script>
-  import cascader from '../public/Cascader.vue'
+  // import cascader from '../public/Cascader.vue'
   import amendPlan from "../operation/upkeep/AmendPlan";
   import Vue from "vue";
   Vue.component("table-NewWorkOrder", {
@@ -538,9 +545,9 @@
     },
     methods: {
       //获取组织机构
-     changeValue(data){
-       this.ogrname=data
-     },
+      //  changeValue(data){
+      //    this.ogrname=data
+      //  },
       toback() {
         this.$router.back(-1)
       },
@@ -720,7 +727,7 @@
     },
     components: {
       amendPlan,
-      cascader
+      // cascader
     }
   };
 </script>
@@ -752,7 +759,7 @@
         border: @border;
         border-radius: 5px;
         width: 35%;
-        min-height: 560px;
+        min-height: 587px;
         min-width: 300px;
         float: left;
         padding: 10px;
@@ -761,7 +768,7 @@
         border: @border;
         border-radius: 5px;
         width: 63%;
-        min-height: 560px;
+        min-height: 587px;
         min-width: 600px;
         float: left;
         margin-left: 1%;

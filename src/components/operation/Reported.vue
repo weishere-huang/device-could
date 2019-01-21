@@ -52,10 +52,14 @@
               value-format="yyyy/MM/dd HH:mm:ss"
               v-model="time"
               type="datetime"
+              size="small"
               placeholder="选择日期时间"
             >
             </el-date-picker>
           </el-form-item>
+          <!-- <el-form-item label="组织机构：">
+            <cascader :changeValue="changeValue"></cascader>
+          </el-form-item> -->
           <el-form-item label="故障描述：">
             <el-input
               v-model="breakDesc"
@@ -163,6 +167,7 @@
   </div>
 </template>
 <script>
+// import cascader from '../public/Cascader.vue'
   import amendPlan from "./upkeep/AmendPlan";
   import Vue from "vue";
   Vue.component("table-reported", {
@@ -199,6 +204,7 @@
     inject: ["reload"],
     data() {
       return {
+        ogrname:{},
         time:new Date().toLocaleString('chinese', { hour12: false }),
         person: false,
         personTable: [
@@ -334,6 +340,9 @@
       };
     },
     methods: {
+      //   changeValue(data){
+      //    this.ogrname=data
+      //  },
       toBack() {
         this.$router.back(-1);
       },
@@ -462,7 +471,8 @@
       });
     },
     components: {
-      amendPlan
+      amendPlan,
+      // cascader
     }
   };
 </script>
@@ -501,7 +511,7 @@
         border: @border;
         border-radius: 5px;
         width: 60%;
-        height: 420px;
+        height: 463px;
         min-width: 600px;
         float: left;
         margin-left: 10px;

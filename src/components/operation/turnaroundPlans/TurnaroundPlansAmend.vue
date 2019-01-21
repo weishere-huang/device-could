@@ -192,7 +192,8 @@
             width: 80,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "name",
@@ -200,7 +201,8 @@
             width: 80,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "phone",
@@ -208,7 +210,8 @@
             width: 80,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "organizeName",
@@ -216,7 +219,8 @@
             width: 80,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "position",
@@ -224,7 +228,8 @@
             width: 60,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
         ],
         personData: [],
@@ -235,7 +240,8 @@
             width: 80,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
             //   orderBy: ""
           },
           {
@@ -244,7 +250,8 @@
             width: 80,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "deviceModel",
@@ -252,7 +259,8 @@
             width: 80,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "location",
@@ -260,7 +268,8 @@
             width: 100,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "workerNames",
@@ -290,7 +299,8 @@
             width: 60,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "startTime",
@@ -298,7 +308,8 @@
             width: 100,
             titleAlign: "center",
             columnAlign: "center",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "endTime",
@@ -307,6 +318,7 @@
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
+            overflowTitle: true
           },
           {
             field: "state",
@@ -319,7 +331,8 @@
               if(rowData.state===0)return`<span>待处理</span>`;
               if(rowData.state===1)return`<span>已通过</span>`;
               if(rowData.state===2)return`<span>已驳回</span>`;
-            }
+            },
+            overflowTitle: true
           },
           {
             field: "position",
@@ -327,7 +340,8 @@
             width: 60,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "phone",
@@ -335,7 +349,8 @@
             width: 80,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           },
           {
             field: "opinion",
@@ -343,7 +358,8 @@
             width: 100,
             titleAlign: "left",
             columnAlign: "left",
-            isResize: true
+            isResize: true,
+            overflowTitle: true
           }
         ],
         submitAuditData:[],

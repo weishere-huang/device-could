@@ -113,12 +113,16 @@
                 size="mini"
               ></el-input>
             </el-form-item>
+            <el-form-item label="组织机构：">
+              <cascader :changeValue="changeValue"></cascader>
+            </el-form-item>
             <el-form-item label="备注：">
               <el-input
                 type="textarea"
                 v-model="addmsg"
               ></el-input>
             </el-form-item>
+            
           </el-form>
           <div
             slot="footer"
@@ -191,6 +195,9 @@
             size="mini"
           ></el-input>
         </el-form-item>
+        <el-form-item label="组织机构：">
+              <cascader :changeValue="changeValue"></cascader>
+            </el-form-item>
         <el-form-item label="备注：">
           <el-input
             type="textarea"
@@ -213,10 +220,12 @@
   </div>
 </template>
 <script>
+import cascader from '../public/Cascader.vue'
   export default {
     inject: ["reload"],
     data() {
       return {
+        ogrname:{},
         dialogVisible3: false,
         dialogVisible1: false,
         dialogVisible: false,
@@ -240,6 +249,9 @@
       };
     },
     methods: {
+      changeValue(data){
+       this.ogrname=data
+     },
       handleNodeClick(data) {
         this.nodedata = data;
         console.log(data);
@@ -440,6 +452,9 @@
     },
     created() {
       this.Sgetlist();
+    },
+    components: {
+      cascader
     }
   };
 </script>
