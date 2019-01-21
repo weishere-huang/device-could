@@ -225,6 +225,7 @@ export default {
       this.permissionUrl = JSON.parse(
         localStorage.getItem("permissionUrl") || "[]"
       );
+      this.MsgCount()
     },
     permissionUrl(){
 

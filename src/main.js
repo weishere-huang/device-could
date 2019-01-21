@@ -53,7 +53,6 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 Vue.use(VueQuillEditor)
-
 Vue.use(ElementUI)
 Vue.component(VTable.name, VTable)
 Vue.component(VPagination.name, VPagination)

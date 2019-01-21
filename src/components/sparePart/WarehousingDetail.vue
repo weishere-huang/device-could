@@ -282,7 +282,7 @@ export default {
     .search {
       float: right;
       .el-input {
-        width: 260px;
+        width: 300px;
       }
     }
   }
