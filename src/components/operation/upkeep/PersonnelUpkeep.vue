@@ -19,6 +19,7 @@
 </template>
 <script>
   export default {
+    props:['loadValue'],
     data() {
       return {
         isPageOk:true,
@@ -179,8 +180,14 @@
     created() {
       this.load()
     },
-    mounted() {
-      //   location.reload()
+    watch:{
+      loadValue(){
+        if (this.loadValue) {
+          this.searchs = "";
+          this.key = "";
+          this.load();
+        }
+      }
     }
   };
 </script>

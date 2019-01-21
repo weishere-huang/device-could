@@ -524,7 +524,7 @@
             label:'大'
           },
         ],
-        breakTime:new Date().toLocaleString().replace(/[\u4e00-\u9fa5]/g, ""),
+        breakTime:new Date().toLocaleString('chinese', { hour12: false }),
         time:"",
         deviceId:[],
         scopeValue:1,

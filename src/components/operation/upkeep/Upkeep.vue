@@ -70,7 +70,7 @@
             :visible.sync="innerVisible"
             append-to-body
           >
-            <personnel v-on:getPersonnel="getPersonnel"></personnel>
+            <personnel v-on:getPersonnel="getPersonnel" :loadValue="innerVisible"></personnel>
           </el-dialog>
           <div
             slot="footer"
@@ -174,7 +174,6 @@
         //保养分类
         planType: [],
         //保养级别
-        planLevel: [],
         tableData: [],
         tableDate: [],
         columns: [
@@ -270,9 +269,9 @@
             overflowTitle: true,
             formatter:function (rowData) {
               if(rowData.frequencyType ===-1 )return `单次`;
-              if(rowData.frequencyType ===1 )return `天`;
-              if(rowData.frequencyType ===2 )return `周`;
-              if(rowData.frequencyType ===3 )return `月`;
+              if(rowData.frequencyType ===1 )return `周期|1天`;
+              if(rowData.frequencyType ===2 )return `周期|1周`;
+              if(rowData.frequencyType ===3 )return `周期|1月`;
             }
           },
           {
@@ -513,33 +512,30 @@
         ).then(
           response => {
             this.pageNumber = response.data.data.totalElements;
-            this.loadValue(response.data.data.content);
+            this.listMaintenanceLevel(response.data.data.content);
           },
           ({ type, info }) => {}
         );
       },
-      loadValue(value) {
+
+      listMaintenanceLevel(value) {
         this.tableData = value;
-        for (let i = 0; i < this.tableData.length; i++) {
-          this.planLevel.forEach((item)=>{
-            this.tableData[i].maintenanceLevel === item.id ? this.tableData[i].maintenanceLevel=item.levelDesc:"";
-          });
-        }
-      },
-      listMaintenanceLevel() {
         this.Axios(
           {
             params: {},
             type: "get",
             url: "/mplan/listMaintenanceLevel",
-            option: {
-              enableMsg:false,
-            },
+            option:{enableMsg:false}
           },
           this
         ).then(
           response => {
-            this.planLevel = response.data.data;
+            let planLevel = response.data.data;
+            for (let i = 0; i < this.tableData.length; i++) {
+              planLevel.find(item=>{
+                this.tableData[i].maintenanceLevel === item.id ? this.tableData[i].maintenanceLevel=item.levelDesc:"";
+              });
+            }
           },
           ({ type, info }) => {}
         );
@@ -614,7 +610,7 @@
       //审核操作
       submitAudit(){
         if (this.formLabelAlign.radio!=1){
-          if (this.formLabelAlign.type ||!this.toAudit =="") {
+          if (this.formLabelAlign.type ||this.toAudit !=="") {
             this.toSubmitAudit();
           }else{
             this.$message.error('请选择终审或添加下一审核人')
@@ -666,7 +662,6 @@
       }
     },
     created() {
-      this.listMaintenanceLevel();
       this.load();
       let a=this.$route.matched.find(item=>(item.name==="UpkeepAdd"))?true:false;
       let b=this.$route.params.id !== undefined ? true : false;
