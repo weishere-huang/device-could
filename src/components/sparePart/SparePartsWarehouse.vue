@@ -43,6 +43,9 @@
             </el-date-picker>
 
           </el-form-item>
+          <!-- <el-form-item label="组织机构：" style="margin-bottom:0px;margin-left:20px;" >
+              <cascader :changeValue="changeValue"></cascader>
+            </el-form-item> -->
         </el-form>
       </div>
       <div class="table-list">
@@ -151,6 +154,7 @@
   </div>
 </template>
 <script>
+// import cascader from '../public/Cascader.vue'
 import Vue from "vue";
 Vue.component('table-batch',{
   template:`
@@ -218,6 +222,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      ogrname:{},
       titleName:"",
       index:'',
       nub:[],
@@ -423,6 +428,9 @@ export default {
     };
   },
   methods: {
+    // changeValue(data){
+    //    this.ogrname=data
+    //  },
     handleClose(){
       this.batchShow=false
     },
@@ -697,6 +705,9 @@ export default {
   },
   mounted() {
   },
+  components:{
+    // cascader
+  }
 };
 Vue.component("table-warehouse", {
   template: `<span>

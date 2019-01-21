@@ -160,7 +160,7 @@ Vue.component("tab-component", {
                   <span style="display:inline;margin-left:5%;" v-show="selectShow">
                   {{values}}人员
                   </span>
-                  <i v-on:click="deleteWorker(item)" class="el-icon-circle-close-outline"></i>
+                  <i v-on:click="deleteWorker(item,items)" class="el-icon-circle-close-outline"></i>
              
             </li></ul>`,
   methods: {

@@ -27,7 +27,8 @@ export default {
   },
   props: {
     changeValue: {
-       
+       type:Function,
+       required: true
     }
     // handleChange:{},
     // style:{},
