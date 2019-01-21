@@ -122,23 +122,23 @@
       },
       roleAdd(){
 
-          this.Axios(
-            {
-              params: {roleName:this.form.name},
-              type: "get",
-              url: "/role/findOnlyByRoleName",
-              option: {
-                enableMsg:false,
-              }
-            },
-            this
-          ).then(
-            response => {
-                response.data.data? this.toRoleAdd():this.$message.error("请勿重复添加");
-            },
-            ({type, info}) => {
+        this.Axios(
+          {
+            params: {roleName:this.form.name},
+            type: "get",
+            url: "/role/findOnlyByRoleName",
+            option: {
+              enableMsg:false,
+            }
+          },
+          this
+        ).then(
+          response => {
+            response.data.data? this.toRoleAdd():this.$message.error("请勿重复添加");
+          },
+          ({type, info}) => {
 
-            })
+          })
       },
       toRoleAdd(){
         this.dialogFormVisible = false;
@@ -212,6 +212,7 @@
           this
         ).then(
           response => {
+
           },
           ({type, info}) => {
           })
@@ -229,9 +230,7 @@
           this
         ).then(
           response => {
-            this.power = response.data.data.map(item=>{
-              return item.id
-            });
+            response.data.data.map(item=>{this.power.push(item.id)});
             this.$refs.tree.setCheckedKeys(this.power);
           },
           ({type, info}) => {

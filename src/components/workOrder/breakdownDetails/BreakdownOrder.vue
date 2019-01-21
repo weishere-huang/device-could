@@ -88,7 +88,11 @@
             </el-form-item>
             <el-form-item label="工单类型：">
               <span>{{workInfo.workType}}</span>
-              <el-button @click="workToPlan" type="text">{{workInfo.maintenanceId}}&nbsp;<i class='iconfont' style="font-size:14px; color: #2474c5">&#xe619;</i></el-button>
+              <i style=" color: #2474c5">{{workInfo.maintenanceId}}&nbsp;</i>
+              <el-tooltip class="item" effect="dark" content="查看对应计划" placement="top">
+                <el-button @click="workToPlan" type="text">
+                  <i class='iconfont' style="font-size:16px; color: #2474c5">&#xe619;</i></el-button>
+              </el-tooltip>
             </el-form-item>
             <el-form-item label="工单状态：">
               <span>{{workInfo.state}}</span>
@@ -1021,7 +1025,7 @@
               break;
             }else{
               if (/^[0-9]*$/.test(this.suppliesTableData[i].planCount)) {
-                isOk=true;
+                if(this.suppliesTableData[i].planCount>0)isOk = true;
               }else{
                 this.$message.error("请正确输入计划数量");
                 isOk = false;
@@ -1372,10 +1376,14 @@
       },
       //跳转到计划页面
       workToPlan(){
-        let role = JSON.parse(localStorage.getItem("permissionUrl"));
-        if(role.find(item=>{return item.module==="operation_fault_detail_lookup"}))
-        this.$router.push({path:"/Breakdown/BreakDetails/" +this.workInfo.maintenanceId});
-        else this.$message.error("对不起，您的权限不足")
+        if(this.maintenancePlan.state===3){
+          this.$message.error("对不起，该计划不存在或已被删除")
+        }else{
+          let role = JSON.parse(localStorage.getItem("permissionUrl"));
+          if(role.find(item=>{return item.module==="operation_fault_detail_lookup"}))
+            this.$router.push({path:"/Breakdown/BreakDetails/" +this.workInfo.maintenanceId});
+          else this.$message.error("对不起，您的权限不足")
+        }
       }
     },
     created(){
