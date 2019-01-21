@@ -18,7 +18,8 @@
 </template>
 <script>
   export default {
-    inject:['reload'],
+    inject: ["reload"],
+    props:['loadValue'],
     data() {
       return {
         isPageOk:true,
@@ -72,7 +73,8 @@
             columnAlign: "center",
             isResize: true
           }
-        ]
+        ],
+        isOk:""
       };
     },
     methods: {
@@ -176,12 +178,24 @@
           person:rowData,
           hide:false
         };
-        this.$emit("getPersonnel",jihe)
+        this.$emit("getPersonnel",jihe);
+        this.load();
+        this.searchs = "";
       }
     },
     created() {
-      this.load()
+      this.load();
     },
+    watch:{
+      loadValue(){
+        console.log(this.loadValue);
+        if (this.loadValue) {
+          this.searchs = "";
+          this.key = "";
+          this.load();
+        }
+      }
+    }
   };
 </script>
 <style lang="less" scoped>

@@ -402,6 +402,15 @@
             this.$message.error("执行频次必须大于0");
             return false;
           }
+          let days =  new Date(this.companyName.endTime) -  new Date(this.companyName.startTime);
+          if (this.companyName.frequencyType==="2" && days / (1000 * 60 * 60 * 24)<7){
+            this.$message.error("对不起，计划日期与计划频次不匹配");
+            return false;
+          }
+          if (this.companyName.frequencyType==="3" && days / (1000 * 60 * 60 * 24)<30){
+            this.$message.error("对不起，计划日期与计划频次不匹配");
+            return false;
+          }
         }
         if(this.date===""){
           this.$message.error('首次执行日期不能为空');

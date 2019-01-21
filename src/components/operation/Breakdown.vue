@@ -222,7 +222,7 @@
         toAuditName: "",
         formLabelAlign: {
           time: "",
-          desc: "",
+          desc: " ",
           type: "",
           radio: "",
           name: ""
@@ -671,7 +671,7 @@
           let qs = require("qs");
           let data = qs.stringify({
             faultIds: this.faultIds,
-            nextUserId: this.toAuditName.id,
+            nextUserId: this.toAuditName.userId,
             isEnd: this.formLabelAlign.type,
             auditOpinion: this.formLabelAlign.desc
           });

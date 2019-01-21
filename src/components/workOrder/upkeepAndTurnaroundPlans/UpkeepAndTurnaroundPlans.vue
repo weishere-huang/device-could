@@ -196,11 +196,12 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-            <el-button  type="primary" size="mini" @click="listBasicInfo">
+            <el-button  type="primary" size="mini" @click="listBasicInfo" :disabled="materiel">
               <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加物料</el-button>
             <permission-button
               permCode='work_list_detail_lookup.work_list_detail_save'
               banType='disable'
+              :disabled="materiel"
               type="primary" @click="insertPart" size="mini">
               <i style='font-size:12px' class='iconfont'>&#xe645;</i>&nbsp;保存列表</permission-button>
           </div>
@@ -803,6 +804,7 @@
           }
         ],
         submitAuditData:[],
+        materiel:false
       };
     },
     methods: {
@@ -1320,12 +1322,14 @@
         }
         if (value.state === 10) {
           this.workInfo.state = "已驳回";
+          this.materiel=true;
         }
         if (value.state === 12) {
           this.workInfo.state = "已停止";
         }
         if (value.state === 13) {
           this.workInfo.state = "已完成";
+          this.materiel=true;
         }
       },
       //计划详情
@@ -1480,7 +1484,7 @@
   });
   Vue.component("table-upkeepAndTurnaroundPlans", {
     template: `<span>
-          <a href="" style="text-decoration: none;color:#409eff"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe635;</i></a>
+          <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>
         </span>`,
     props: {
       rowData: {
