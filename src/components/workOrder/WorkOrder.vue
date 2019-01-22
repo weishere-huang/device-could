@@ -36,6 +36,27 @@
           size="small"
         >已完成</el-button>
       </el-button-group>
+      <div class="advanced_search">
+        <el-col :span="1.5" style="line-height:30px;">
+          关键字:
+        </el-col>
+        <el-col :span="8" style="padding:0 10px">
+          <el-input type="search" size="small" ></el-input>
+        </el-col>
+        <el-col :span="10">
+          <el-select v-model="stateValue" multiple-limit="3" style="width:100%" multiple placeholder="请选择" size="small" clearable>
+            <el-option
+              v-for="item in state"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="4" style="padding:0 10px">
+          <el-button size="small" type="primary"><i class='el-icon-search'></i>&nbsp;搜索</el-button>
+        </el-col>
+      </div>
     </div>
     <div class="bottom" :class="[{hide:isHideList}]">
       <v-table
@@ -156,6 +177,29 @@ import personnel from '../operation/breakdown/Personnel'
     name: "Test",
     data() {
       return {
+        stateValue:[],
+        state:[
+          {
+            label:"待审核",
+            value:"0",
+          },
+          {
+            label:"审核中",
+            value:"4",
+          },
+          {
+            label:"待处理",
+            value:"15",
+          },
+          {
+            label:"已驳回",
+            value:"10",
+          },
+          {
+            label:"已完成",
+            value:"13",
+          },
+        ],
         toAuditName: "",
         nextUserId:"",
         innerVisible:false,
@@ -545,6 +589,10 @@ import personnel from '../operation/breakdown/Personnel'
       border-radius: 5px;
       .el-badge:not(:last-child) {
         margin-right: 10px;
+      }
+      .advanced_search{
+        width: 600px;
+        float: right;
       }
     }
     .bottom {
