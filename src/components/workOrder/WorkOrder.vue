@@ -37,14 +37,14 @@
         >已完成</el-button>
       </el-button-group>
       <div class="advanced_search">
-        <el-col :span="1.5" style="line-height:30px;">
+        <el-col :span="1.5" style="line-height:30px;" >
           关键字:
         </el-col>
-        <el-col :span="8" style="padding:0 10px">
-          <el-input type="search" size="small" ></el-input>
+        <el-col :span="10" style="padding:0 10px">
+          <el-input type="search" size="small" v-model="searchKey" placeholder="名称或编号"></el-input>
         </el-col>
-        <el-col :span="10">
-          <el-select v-model="stateValue" multiple-limit="3" style="width:100%" multiple placeholder="请选择" size="small" clearable>
+        <el-col :span="8">
+          <el-select v-model="stateValue"  style="width:100%"  placeholder="请选择" size="small" clearable>
             <el-option
               v-for="item in state"
               :key="item.value"
@@ -54,7 +54,7 @@
           </el-select>
         </el-col>
         <el-col :span="4" style="padding:0 10px">
-          <el-button size="small" type="primary"><i class='el-icon-search'></i>&nbsp;搜索</el-button>
+          <el-button size="small" @click="search" type="primary"><i class='el-icon-search'></i>&nbsp;搜索</el-button>
         </el-col>
       </div>
     </div>
@@ -177,6 +177,7 @@ import personnel from '../operation/breakdown/Personnel'
     name: "Test",
     data() {
       return {
+        searchKey:"",
         stateValue:[],
         state:[
           {
@@ -330,6 +331,37 @@ import personnel from '../operation/breakdown/Personnel'
       personnel
     },
     methods: {
+      search(){
+        this.pageValue === ""|| this.pageValue == null ?this.pageValue = this.searchKey :
+          this.pageValue ===this.searchKey ? this.pageValue=this.stateNum: this.pageValue = this.searchKey;
+        this.pageValue !== this.stateNum ? this.pageIndex = 1: "";
+        EventBus.$on("sideBarTroggleHandle", isCollapse => {
+          window.setTimeout(() => {
+            this.$refs.workOrderTable.resize();
+          }, 500);
+        });
+        this.Axios(
+          {
+            params: {
+              state: this.stateValue.toString(),
+              page: this.pageIndex,
+              size: this.pageSize,
+              ownOrAll:0,
+              keyWord:this.searchKey
+            },
+            type: "get",
+            url: "/maintenanceWork/workList",
+          },
+          this
+        ).then(
+          response => {
+            this.stateNum = this.searchKey;
+            this.totalNub = response.data.data.totalElements;
+            this.tableData = response.data.data.content;
+            this.tableDate = this.tableData;
+          },
+          ({ type, info }) => {})
+      },
       removeSubmitValue() {
         this.dialogVisible = false;
         this.outerVisible = false;
