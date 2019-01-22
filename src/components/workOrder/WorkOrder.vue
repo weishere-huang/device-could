@@ -434,7 +434,8 @@ import personnel from '../operation/breakdown/Personnel'
             params: {
               state: stateNum,
               page: this.pageIndex,
-              size: this.pageSize
+              size: this.pageSize,
+              ownOrAll:1
             },
             type: "get",
             url: "/maintenanceWork/workList",
@@ -495,29 +496,6 @@ import personnel from '../operation/breakdown/Personnel'
       }
     },
   };
-  Vue.component("table-workToPlan", {
-    template: `<span>
-              <span  style="text-decoration: none">{{rowData.maintenanceId}}<el-tooltip class="item" effect="dark" content="点击查看来源" placement="top"><i @click.stop.prevent="workToPlans(rowData,index)" style='font-size:14px;color:#409eff' class='iconfont'>&#xe619;</i> </el-tooltip></span>
-            </span>`,
-    props: {
-      rowData: {
-        type: Object
-      },
-      field: {
-        type: String
-      },
-      index: {
-        type: Number
-      }
-    },
-    methods: {
-      workToPlans() {
-        // 参数根据业务场景随意构造
-        let params = { type: "workToPlans", index: this.index, rowData: this.rowData };
-        this.$emit("on-custom-comp", params);
-      },
-    }
-  });
   Vue.component("table-operations", {
     template: `<span>
         <el-tooltip class="item" effect="dark" content="查看详情" placement="top">

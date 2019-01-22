@@ -13,7 +13,7 @@
           active-text-color="#ffd04b"
           :collapse="isCollapse"
         >
-          <el-submenu :index="item.permissionCode" :key="item.route" v-for="item in menuSource">
+          <el-submenu :index="item.permissionCode" v-if="item.subMenu.length!==1" :key="item.route" v-for="item in menuSource">
             <template slot="title" >
               <i class="iconfont" v-html="item.icon"></i>
               <span slot="title">{{item.menu}}</span>
@@ -24,6 +24,7 @@
               v-for="subItem in item.subMenu"
             >{{subItem.menu}}</el-menu-item>
           </el-submenu>
+          <el-menu-item class='singleMenuItem' v-else :index="item.subMenu[0].route"><i class="iconfont" v-html="item.icon"></i><span slot="title">{{item.menu}}</span></el-menu-item>
         </el-menu>
         <div v-on:click="TroggleHandle" class="isCollapse-group">
           <i v-show="isCollapse === true" class="el-icon-arrow-right"></i>
@@ -295,6 +296,7 @@ export default {
     vertical-align: top;
   }
 }
+
 .stateList {
   position: absolute;
   right: 20px;

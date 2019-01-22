@@ -92,8 +92,9 @@
               style="width:60%"
             ></el-input>
             <el-button
+
               type="primary"
-              @click="innerVisible = true"
+              @click="isShowInnerVisible"
               size="mini"
             >添加审批人</el-button>
           </el-form-item>
@@ -104,7 +105,7 @@
         :visible.sync="innerVisible"
         append-to-body
       >
-        <personnel v-on:getPersonnel="getPersonnel"></personnel>
+        <personnel v-on:getPersonnel="getPersonnel" :loadValue="innerVisible"></personnel>
       </el-dialog>
       <div
         slot="footer"
@@ -178,7 +179,6 @@
         //检修分类
         planType: [],
         //检修级别
-        planLevel: [],
         tableData: [],
         tableDate: [],
         columns: [
@@ -272,9 +272,9 @@
             overflowTitle: true,
             formatter:function (rowData) {
               if(rowData.frequencyType ===-1 )return `单次`;
-              if(rowData.frequencyType ===1 )return `天`;
-              if(rowData.frequencyType ===2 )return `周`;
-              if(rowData.frequencyType ===3 )return `月`;
+              if(rowData.frequencyType ===1 )return `周期|1天`;
+              if(rowData.frequencyType ===2 )return `周期|1周`;
+              if(rowData.frequencyType ===3 )return `周期|1月`;
             }
           },
           {
@@ -360,6 +360,9 @@
       };
     },
     methods: {
+      isShowInnerVisible(){
+        this.innerVisible = true;
+      },
       test(){
         alert("OK");
       },
@@ -458,8 +461,8 @@
           });
         }
       },
-      goWorkInfo(value){
-        this.$router.push({path:"WorkOrder/UpkeepAndTurnaroundPlans/" + value});
+      goWorkInfo(workId){
+        this.$router.push({path:"WorkOrder/UpkeepAndTurnaroundPlans/" + workId});
       },
 
       load() {
@@ -483,20 +486,14 @@
         ).then(
           response => {
             this.pageNumber = response.data.data.totalElements;
-            this.loadValue(response.data.data.content);
+            this.listMaintenanceLevel(response.data.data.content);
           },
           ({ type, info }) => {}
         );
       },
-      loadValue(value) {
+
+      listMaintenanceLevel(value) {
         this.tableData = value;
-        for (let i = 0; i < this.tableData.length; i++) {
-          this.planLevel.forEach((item)=>{
-            this.tableData[i].maintenanceLevel === item.id ? this.tableData[i].maintenanceLevel=item.levelDesc:"";
-          });
-        }
-      },
-      listMaintenanceLevel() {
         this.Axios(
           {
             params: {},
@@ -507,7 +504,12 @@
           this
         ).then(
           response => {
-            this.planLevel = response.data.data;
+            let planLevel = response.data.data;
+            for (let i = 0; i < this.tableData.length; i++) {
+              planLevel.find(item=>{
+                this.tableData[i].maintenanceLevel === item.id ? this.tableData[i].maintenanceLevel=item.levelDesc:"";
+              });
+            }
           },
           ({ type, info }) => {}
         );
@@ -652,7 +654,6 @@
       },
     },
     created() {
-      this.listMaintenanceLevel();
       this.load();
       let a=this.$route.matched.find(item=>(item.name==="TurnaroundPlansAdd"))?true:false;
       let b=this.$route.params.id !== undefined ? true : false;

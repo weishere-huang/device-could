@@ -180,9 +180,10 @@
         <div class="supplies">
           <h5>工单物料</h5>
           <div style="padding-bottom:10px;">
-            <el-button size="mini" type="primary" @click=" listBasicInfo">
+            <el-button size="mini" type="primary" @click=" listBasicInfo" :disabled="materiel">
               <i style='font-size:12px' class='iconfont'>&#xe62f;</i>&nbsp;添加物料</el-button>
-            <permission-button 
+            <permission-button
+              :disabled="materiel"
               permCode='work_list_detail_lookup.work_list_detail_save'
               banType='alert'
               type="primary" @click="insertPart" size="mini">
@@ -777,6 +778,7 @@
         ],
         personPageIsOk:true,
         basicInfoPageIsOk:true,
+        materiel:false,
       };
     },
     methods: {
@@ -1301,12 +1303,14 @@
         }
         if (value.state === 10) {
           this.workInfo.state = "已驳回";
+          this.materiel=true;
         }
         if (value.state === 12) {
           this.workInfo.state = "已停止";
         }
         if (value.state === 13) {
           this.workInfo.state = "已完成";
+          this.materiel=true;
         }
       },
       //故障详情
@@ -1417,7 +1421,7 @@
   Vue.component("table-breakdownOrder", {
     template: `<span>
     <el-tooltip class="item" effect="dark" content="删除" placement="top">
-          <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe635;</i></a>
+          <a href="" style="text-decoration: none;color:#F56C6C"><i @click.stop.prevent="deleteRow(rowData,index)" style='font-size:16px' class='iconfont'>&#xe66b;</i></a>
         </el-tooltip>
         </span>`,
     props: {

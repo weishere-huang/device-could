@@ -222,7 +222,7 @@
         toAuditName: "",
         formLabelAlign: {
           time: "",
-          desc: "",
+          desc: " ",
           type: "",
           radio: "",
           name: ""
@@ -671,7 +671,7 @@
           let qs = require("qs");
           let data = qs.stringify({
             faultIds: this.faultIds,
-            nextUserId: this.toAuditName.id,
+            nextUserId: this.toAuditName.userId,
             isEnd: this.formLabelAlign.type,
             auditOpinion: this.formLabelAlign.desc
           });
@@ -733,9 +733,8 @@
       },
     },
     created() {
-      let a=this.$route.matched.find(item=>(item.name==="Reported"))?true:false;
-      let b=this.$route.params.id !== undefined ? true : false;
-      this.isHideList = a||b ?true:false;
+      this.$route.matched.find(item=>(item.name==="Reported"))||this.$route.params.id !== undefined ?
+        this.isHideList=true:this.isHideList=false;
       this.load();
     },
     components: {
@@ -747,7 +746,7 @@
         this.$route.params.id !== undefined || this.$route.matched.find(item=>(item.name==="Reported"))?
           this.isHideList = true: this.isHideList = false;
         this.$refs.breakdownTable.resize();
-        this.$store.state.operation.breakList==="y"? this.reload():"";
+        this.$store.state.operation.turnround==="y"? this.reload():"";
       }
     },
   };
