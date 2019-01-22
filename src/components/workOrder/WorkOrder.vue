@@ -390,7 +390,8 @@ import personnel from '../operation/breakdown/Personnel'
             params: {
               state: stateNum,
               page: this.pageIndex,
-              size: this.pageSize
+              size: this.pageSize,
+              ownOrAll:1
             },
             type: "get",
             url: "/maintenanceWork/workList",

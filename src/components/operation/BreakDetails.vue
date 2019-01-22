@@ -383,9 +383,12 @@
             this.tableData = response.data.data;
             this.companyName = this.tableData;
             this.toValue(response.data.data);
-            this.imgPath = this.tableData.img.split(",").map((item)=>{
-              return this.global.imgPath+item.split("img:")[1];
-            });
+            if(this.tableData.img!==""){
+              this.imgPath = this.tableData.img.split(",").map(item=>{
+                return this.global.imgPath+item.split("img:")[1];
+              });
+            }
+            console.log(this.imgPath)
           },
           ({type, info}) => {
           })
@@ -454,7 +457,7 @@
         border-radius: 5px;
         margin-top: 10px;
         .left {
-          
+
           width: 35%;
           min-width: 350px;
           float: left;
@@ -508,7 +511,7 @@
             .el-form-item{
               width: 45%;
             }
-            
+
             h5 {
               position: relative;
               top: -17px;
