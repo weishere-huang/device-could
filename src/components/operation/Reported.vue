@@ -340,11 +340,9 @@
       };
     },
     methods: {
-      //   changeValue(data){
-      //    this.ogrname=data
-      //  },
       toBack() {
         this.$router.back(-1);
+        this.$store.commit("turnaroundPlans","y")
       },
       path(){
         return this.global.apiImg;
@@ -389,6 +387,7 @@
         if(res.code===200 ){
           this.$message.success('图片成功上传');
           this.dialogImageUrl= file.response.data;
+          this.img.push(this.dialogImageUrl);
         }else{
           this.$message.error("抱歉，图片上传失败");
         }
@@ -410,6 +409,7 @@
       handleRemove(file, fileList) {
         let img = [];
         fileList.map(item=>{img.push(item.response.data)});
+        this.img = img;
       },
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
@@ -419,6 +419,7 @@
         this.faultValue() ? this.toFaultAdd():"";
       },
       toFaultAdd(){
+        console.log(this.img.toString());
         let employee = JSON.parse(localStorage.getItem("user"));
         let qs = require("qs");
         let data = qs.stringify({
@@ -459,7 +460,7 @@
         else if(dateTime>time1)this.$message.error("故障开始时间有误");
         else if(this.breakDesc==="")this.$message.error("请填写故障描述");
         else if(this.breakInfo==="")this.$message.error("请填写原因分析");
-        else if(this.img.length>0)this.$message.error("请上传至少一张故障相关图片");
+        else if(!this.img.length>0)this.$message.error("请上传至少一张故障相关图片");
         else return true;
       }
     },
