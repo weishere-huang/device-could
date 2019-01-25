@@ -178,7 +178,7 @@ import personnel from '../operation/breakdown/Personnel'
     data() {
       return {
         searchKey:"",
-        stateValue:[],
+        stateValue:"",
         state:[
           {
             label:"待审核",
@@ -325,6 +325,8 @@ import personnel from '../operation/breakdown/Personnel'
         isPage:1,
         pageValue:"",
         workId:0,
+        loadIsSearch:true,
+        searchValue:"",
       };
     },
     components:{
@@ -332,9 +334,11 @@ import personnel from '../operation/breakdown/Personnel'
     },
     methods: {
       search(){
-        this.pageValue === ""|| this.pageValue == null ?this.pageValue = this.searchKey :
-          this.pageValue ===this.searchKey ? this.pageValue=this.stateNum: this.pageValue = this.searchKey;
-        this.pageValue !== this.stateNum ? this.pageIndex = 1: "";
+        this.loadIsSearch = false;
+        this.pageValue = "search";
+        this.searchValue === ""|| this.searchValue == null ?this.searchValue = this.searchKey :
+          this.searchValue === this.searchKey ? "": this.searchValue = this.searchKey;
+        this.searchValue === this.searchKey && this.searchKey==="" ? this.pageIndex = 1: "";
         EventBus.$on("sideBarTroggleHandle", isCollapse => {
           window.setTimeout(() => {
             this.$refs.workOrderTable.resize();
@@ -343,7 +347,7 @@ import personnel from '../operation/breakdown/Personnel'
         this.Axios(
           {
             params: {
-              state: this.stateValue.toString(),
+              state: this.stateValue,
               page: this.pageIndex,
               size: this.pageSize,
               ownOrAll:0,
@@ -351,11 +355,11 @@ import personnel from '../operation/breakdown/Personnel'
             },
             type: "get",
             url: "/maintenanceWork/workList",
+            option:{successMsg:"加载成功"}
           },
           this
         ).then(
           response => {
-            this.stateNum = this.searchKey;
             this.totalNub = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             this.tableDate = this.tableData;
@@ -433,7 +437,7 @@ import personnel from '../operation/breakdown/Personnel'
         this.audited = "";
         this.inAudit = "";
         this.handle = "";
-        this.load(this.stateNum);
+        this.loadIsSearch ?this.load(this.stateNum):this.search();
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
@@ -442,7 +446,7 @@ import personnel from '../operation/breakdown/Personnel'
         this.audited = "";
         this.inAudit = "";
         this.handle = "";
-        this.load(this.stateNum);
+        this.loadIsSearch ?this.load(this.stateNum):this.search();
       },
       Jump(rowIndex, rowData, column) {
         if (rowData.workType === 2) {
@@ -453,8 +457,9 @@ import personnel from '../operation/breakdown/Personnel'
       },
 
       load(stateNum) {
+        this.loadIsSearch =true;
         this.pageValue === ""|| this.pageValue == null ?this.pageValue = stateNum :
-        this.pageValue ===stateNum ? this.pageValue=this.stateNum: this.pageValue = stateNum;
+        this.pageValue ===stateNum ? "": this.pageValue = stateNum;
         this.pageValue !== this.stateNum ? this.pageIndex = 1: "";
         EventBus.$on("sideBarTroggleHandle", isCollapse => {
           window.setTimeout(() => {
@@ -471,6 +476,8 @@ import personnel from '../operation/breakdown/Personnel'
             },
             type: "get",
             url: "/maintenanceWork/workList",
+            option:{successMsg:"加载成功"}
+
           },
           this
         ).then(
