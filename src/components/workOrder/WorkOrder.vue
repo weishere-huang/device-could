@@ -3,13 +3,11 @@
     <router-view></router-view>
     <div class="top" :class="[{hide:isHideList}]">
       <el-button-group>
-        <permission-button
-          permCode='work_list_lookup.work_list_all'
-          banType='disable'
+        <el-button
           type="primary"
           @click="load(toNull)"
           size="small"
-        >全部工单</permission-button>
+        >我的工单</el-button>
         <el-button
           type="primary"
           @click="load(0)"
@@ -40,10 +38,20 @@
         <el-col :span="1.5" style="line-height:30px;" >
           关键字:
         </el-col>
-        <el-col :span="10" style="padding:0 10px">
+        <el-col :span="6" style="padding:0 10px">
           <el-input type="search" size="small" v-model="searchKey" placeholder="名称或编号"></el-input>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="6">
+        <el-select v-model="maintainOrFault"  style="width:100%"  placeholder="请选择" size="small" clearable>
+          <el-option
+            v-for="item in workType"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        </el-col>
+        <el-col :span="6">
           <el-select v-model="stateValue"  style="width:100%"  placeholder="请选择" size="small" clearable>
             <el-option
               v-for="item in state"
@@ -54,7 +62,10 @@
           </el-select>
         </el-col>
         <el-col :span="4" style="padding:0 10px">
-          <el-button size="small" @click="search" type="primary"><i class='el-icon-search'></i>&nbsp;搜索</el-button>
+          <permission-button
+            permCode='work_list_lookup.work_list_all'
+            banType='disable'
+            size="small" @click="search" type="primary"><i class='el-icon-search'></i>&nbsp;搜索全部</permission-button>
         </el-col>
       </div>
     </div>
@@ -177,6 +188,19 @@ import personnel from '../operation/breakdown/Personnel'
     name: "Test",
     data() {
       return {
+        workType:[
+          {
+            label:"检修工单",
+            value:"0",
+          },{
+            label:"保养工单",
+            value:"1",
+          },{
+            label:"故障工单",
+            value:"2",
+          }
+        ],
+        maintainOrFault:"",
         searchKey:"",
         stateValue:"",
         state:[
@@ -351,7 +375,8 @@ import personnel from '../operation/breakdown/Personnel'
               page: this.pageIndex,
               size: this.pageSize,
               ownOrAll:0,
-              keyWord:this.searchKey
+              keyWord:this.searchKey,
+              maintainOrFault:this.maintainOrFault
             },
             type: "get",
             url: "/maintenanceWork/workList",
