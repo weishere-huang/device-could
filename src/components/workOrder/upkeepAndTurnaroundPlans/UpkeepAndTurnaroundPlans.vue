@@ -1227,7 +1227,7 @@
       },
       //保存工单物料到数据库
       insertPart(){
-        let isOk= "";
+        let isOk= true;
         if(this.workSheetMaterialTableData.length>0) {
           for (let i in this.workSheetMaterialTableData) {
             if (this.workSheetMaterialTableData[i].planCount === 0) {
@@ -1236,7 +1236,7 @@
               break;
             }else{
               if (/^[0-9]*$/.test(this.workSheetMaterialTableData[i].planCount)) {
-                if(this.suppliesTableData[i].planCount>0)isOk = true;
+                if(this.workSheetMaterialTableData[i].planCount>0)isOk = true;
               }else{
                 this.$message.error("请正确输入计划数量");
                 isOk = false;

@@ -34,7 +34,7 @@
                     <div style="margin-top:20px;">
                         <span>您绑定的手机号：</span>
                         <span>12345678901</span>
-                        <el-button size="small">获取验证码</el-button>
+                        <el-button size="small" @click="loginSecuritycode">获取验证码</el-button>
                     </div>
                     <div style="margin-top:20px;margin-bottom:20px;">
                         <label>短信验证码：</label>
@@ -103,6 +103,37 @@ export default {
     };
   },
   methods: {
+    //获取验证码
+    loginSecuritycode() {
+      this.Axios(
+        {
+          params: Object.assign({phoneOrName: this.formLabelAlign.name}),
+          url: "/user/getVerifyCode",
+          type: "get",
+          option: {
+            enableMsg: false,
+            enableLoad: false
+          }
+          // loadingConfig:{
+          //   target: document.querySelector('.login')
+          // }
+        },
+        this
+      ).then(
+        response => {
+          this.$message.success("短信验证码已发送至您的手机，请注意查收");
+          this.send();
+        },
+        ({type, info}) => {
+          // console.log(info);
+          if (info.code === 401 || info.code === 406) {
+            this.$message.error("用户名或手机号错误");
+          } else {
+            this.$message.error("服务器异常，请稍后再试");
+          }
+        }
+      );
+    },
     checkclick() {
       this.checkShow = false;
       this.wayShow = true;

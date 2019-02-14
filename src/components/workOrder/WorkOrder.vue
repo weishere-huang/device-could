@@ -42,7 +42,7 @@
           <el-input type="search" size="small" v-model="searchKey" placeholder="名称或编号"></el-input>
         </el-col>
         <el-col :span="6">
-        <el-select v-model="maintainOrFault"  style="width:100%"  placeholder="请选择" size="small" clearable>
+        <el-select v-model="maintainOrFault"  style="width:92%"  placeholder="请选择类型" size="small" clearable>
           <el-option
             v-for="item in workType"
             :key="item.value"
@@ -52,7 +52,7 @@
         </el-select>
         </el-col>
         <el-col :span="6">
-          <el-select v-model="stateValue"  style="width:100%"  placeholder="请选择" size="small" clearable>
+          <el-select v-model="stateValue"  style="width:100%"  placeholder="请选择状态" size="small" clearable>
             <el-option
               v-for="item in state"
               :key="item.value"
