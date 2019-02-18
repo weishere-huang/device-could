@@ -429,7 +429,7 @@
         @resetBack="resetBackHandler"
         >
       </permission-switch>
-  </span>`,
+    </span>`,
     props: {
       rowData: {
         type: Object
