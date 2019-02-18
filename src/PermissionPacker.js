@@ -1,6 +1,3 @@
-
-//import v_button from 'element-ui/packages/button';
-//import {Button} from 'element-ui/src';
 import { Message,Button,Switch } from 'element-ui';
 
 let permissionUrl = "";
@@ -48,7 +45,6 @@ function hoc (component) {
       // }
     },
     mounted () {
-      //console.log('I have already mounted')
     },
     props: {
       permCode: {
@@ -65,8 +61,6 @@ function hoc (component) {
       ...component.props
     },
     render (h) {
-      //if(!permissionUrl) permissionUrl = JSON.parse(localStorage.getItem("permissionUrl"));
-      
       const slots = Object.keys(this.$slots)
         .reduce((arr, key) => arr.concat(this.$slots[key]), [])
         .map(vnode => {

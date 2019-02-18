@@ -3,13 +3,11 @@
     <router-view></router-view>
     <div class="top" :class="[{hide:isHideList}]">
       <el-button-group>
-        <permission-button
-          permCode='work_list_lookup.work_list_all'
-          banType='disable'
+        <el-button
           type="primary"
           @click="load(toNull)"
           size="small"
-        >全部工单</permission-button>
+        >我的工单</el-button>
         <el-button
           type="primary"
           @click="load(0)"
@@ -40,11 +38,21 @@
         <el-col :span="1.5" style="line-height:30px;" >
           关键字:
         </el-col>
-        <el-col :span="10" style="padding:0 10px">
+        <el-col :span="6" style="padding:0 10px">
           <el-input type="search" size="small" v-model="searchKey" placeholder="名称或编号"></el-input>
         </el-col>
-        <el-col :span="8">
-          <el-select v-model="stateValue"  style="width:100%"  placeholder="请选择" size="small" clearable>
+        <el-col :span="6">
+        <el-select v-model="maintainOrFault"  style="width:92%"  placeholder="请选择类型" size="small" clearable>
+          <el-option
+            v-for="item in workType"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        </el-col>
+        <el-col :span="6">
+          <el-select v-model="stateValue"  style="width:100%"  placeholder="请选择状态" size="small" clearable>
             <el-option
               v-for="item in state"
               :key="item.value"
@@ -54,7 +62,10 @@
           </el-select>
         </el-col>
         <el-col :span="4" style="padding:0 10px">
-          <el-button size="small" @click="search" type="primary"><i class='el-icon-search'></i>&nbsp;搜索</el-button>
+          <permission-button
+            permCode='work_list_lookup.work_list_all'
+            banType='disable'
+            size="small" @click="search" type="primary"><i class='el-icon-search'></i>&nbsp;搜索全部</permission-button>
         </el-col>
       </div>
     </div>
@@ -177,8 +188,21 @@ import personnel from '../operation/breakdown/Personnel'
     name: "Test",
     data() {
       return {
+        workType:[
+          {
+            label:"检修工单",
+            value:"0",
+          },{
+            label:"保养工单",
+            value:"1",
+          },{
+            label:"故障工单",
+            value:"2",
+          }
+        ],
+        maintainOrFault:"",
         searchKey:"",
-        stateValue:[],
+        stateValue:"",
         state:[
           {
             label:"待审核",
@@ -325,6 +349,8 @@ import personnel from '../operation/breakdown/Personnel'
         isPage:1,
         pageValue:"",
         workId:0,
+        loadIsSearch:true,
+        searchValue:"",
       };
     },
     components:{
@@ -332,9 +358,11 @@ import personnel from '../operation/breakdown/Personnel'
     },
     methods: {
       search(){
-        this.pageValue === ""|| this.pageValue == null ?this.pageValue = this.searchKey :
-          this.pageValue ===this.searchKey ? this.pageValue=this.stateNum: this.pageValue = this.searchKey;
-        this.pageValue !== this.stateNum ? this.pageIndex = 1: "";
+        this.loadIsSearch = false;
+        this.pageValue = "search";
+        this.searchValue === ""|| this.searchValue == null ?this.searchValue = this.searchKey :
+          this.searchValue === this.searchKey ? "": this.searchValue = this.searchKey;
+        this.searchValue === this.searchKey && this.searchKey==="" ? this.pageIndex = 1: "";
         EventBus.$on("sideBarTroggleHandle", isCollapse => {
           window.setTimeout(() => {
             this.$refs.workOrderTable.resize();
@@ -343,19 +371,20 @@ import personnel from '../operation/breakdown/Personnel'
         this.Axios(
           {
             params: {
-              state: this.stateValue.toString(),
+              state: this.stateValue,
               page: this.pageIndex,
               size: this.pageSize,
               ownOrAll:0,
-              keyWord:this.searchKey
+              keyWord:this.searchKey,
+              maintainOrFault:this.maintainOrFault
             },
             type: "get",
             url: "/maintenanceWork/workList",
+            option:{successMsg:"加载成功"}
           },
           this
         ).then(
           response => {
-            this.stateNum = this.searchKey;
             this.totalNub = response.data.data.totalElements;
             this.tableData = response.data.data.content;
             this.tableDate = this.tableData;
@@ -433,7 +462,7 @@ import personnel from '../operation/breakdown/Personnel'
         this.audited = "";
         this.inAudit = "";
         this.handle = "";
-        this.load(this.stateNum);
+        this.loadIsSearch ?this.load(this.stateNum):this.search();
       },
       pageSizeChange(pageSize) {
         this.pageIndex = 1;
@@ -442,7 +471,7 @@ import personnel from '../operation/breakdown/Personnel'
         this.audited = "";
         this.inAudit = "";
         this.handle = "";
-        this.load(this.stateNum);
+        this.loadIsSearch ?this.load(this.stateNum):this.search();
       },
       Jump(rowIndex, rowData, column) {
         if (rowData.workType === 2) {
@@ -453,8 +482,9 @@ import personnel from '../operation/breakdown/Personnel'
       },
 
       load(stateNum) {
+        this.loadIsSearch =true;
         this.pageValue === ""|| this.pageValue == null ?this.pageValue = stateNum :
-        this.pageValue ===stateNum ? this.pageValue=this.stateNum: this.pageValue = stateNum;
+        this.pageValue ===stateNum ? "": this.pageValue = stateNum;
         this.pageValue !== this.stateNum ? this.pageIndex = 1: "";
         EventBus.$on("sideBarTroggleHandle", isCollapse => {
           window.setTimeout(() => {
@@ -471,6 +501,8 @@ import personnel from '../operation/breakdown/Personnel'
             },
             type: "get",
             url: "/maintenanceWork/workList",
+            option:{successMsg:"加载成功"}
+
           },
           this
         ).then(

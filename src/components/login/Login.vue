@@ -92,7 +92,6 @@
           ishide=!ishide
           }">企业注册</span>
 
-      <!-- <span @click="toReginster">企业注册</span> -->
     </p>
   </div>
   <div
