@@ -383,7 +383,7 @@
         }
       },
       handleAvatarSuccess(res, file) {
-        console.log(res);
+        console.log(res.data);
         if(res.code===200 ){
           this.$message.success('图片成功上传');
           this.dialogImageUrl= file.response.data;

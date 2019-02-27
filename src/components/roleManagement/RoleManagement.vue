@@ -230,6 +230,7 @@
           this
         ).then(
           response => {
+            this.power=[];
             response.data.data.map(item=>{this.power.push(item.id)});
             this.$refs.tree.setCheckedKeys(this.power);
           },
