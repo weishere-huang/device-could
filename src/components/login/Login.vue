@@ -568,11 +568,11 @@
                   option: {enableMsg: false, enableLoad: false}
                 }).then(
                   res => {
-                    console.log(res);
+                  
                     callback();
                   },
                   ({type, info}) => {
-                    console.log(info);
+                   
                     callback(new Error("该手机号码已存在"));
                   }
                 );
@@ -633,11 +633,11 @@
         if (this.see === "text") {
           this.see = "password";
           e.target.style.color = "";
-          console.log(this.see);
+          
         } else if (this.see === "password") {
           this.see = "text";
           e.target.style.color = "blue";
-          console.log(e.target);
+      
         }
       },
       checkData(rule, value, callback) {
@@ -681,7 +681,8 @@
         }
       },
       registerInfo(formName) {
-        this.$refs[formName].validate(valid => {
+        
+        this.$refs[formName].validate((valid) => {
           if (valid) {
             this.register();
           } else {
@@ -882,7 +883,6 @@
         return url;
       },
       handleAvatarSuccess(res, file) {
-        // console.log(res.data);
         this.$message.success("上传图片成功");
         this.company.dialogImageUrl = res.data;
       },
