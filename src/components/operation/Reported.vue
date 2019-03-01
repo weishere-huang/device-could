@@ -88,6 +88,7 @@
               :before-upload="beforeAvatarUpload"
               :on-preview="handlePictureCardPreview"
               :on-remove="handleRemove"
+              :on-error="uploadErr"
             >
               <i class="el-icon-plus"></i>
             </el-upload>
@@ -336,7 +337,8 @@
             componentName: "table-reported"
           }
         ],
-        tableData: []
+        tableData: [],
+        fileLists:[],
       };
     },
     methods: {
@@ -383,14 +385,19 @@
         }
       },
       handleAvatarSuccess(res, file) {
-        console.log(res.data);
         if(res.code===200 ){
+          this.fileLists.push(file);
           this.$message.success('图片成功上传');
           this.dialogImageUrl= file.response.data;
           this.img.push(this.dialogImageUrl);
         }else{
           this.$message.error("抱歉，图片上传失败");
         }
+      },
+      uploadErr(err, file, fileList){
+        console.log(err);
+        console.log(file);
+        console.log(fileList);
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';

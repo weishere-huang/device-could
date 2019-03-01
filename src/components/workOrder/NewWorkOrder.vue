@@ -591,10 +591,14 @@
         }
       },
       handleAvatarSuccess(res, file) {
-        this.$message.success('图片成功上传');
-        this.dialogImageUrl= file.response.data;
-        this.img.push(this.dialogImageUrl);
-        this.imgPath = this.img.toString();
+        if(res.code===200 ){
+          this.$message.success('图片成功上传');
+          this.dialogImageUrl= file.response.data;
+          this.img.push(this.dialogImageUrl);
+          this.imgPath = this.img.toString();
+        }else{
+          this.$message.error("抱歉，图片上传失败");
+        }
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';

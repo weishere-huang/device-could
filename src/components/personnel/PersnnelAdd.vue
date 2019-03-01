@@ -146,6 +146,7 @@
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload"
                     :on-preview="handlePictureCardPreview"
+                    :on-error="uploadErr"
                     :on-remove="handleRemove">
                     <i class="el-icon-plus"></i>
                   </el-upload>
@@ -326,6 +327,9 @@
         }else{
           this.$message.error("抱歉，图片上传失败");
         }
+      },
+      uploadErr(err, file, fileList){
+        this.handleRemove(file,fileList);
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
