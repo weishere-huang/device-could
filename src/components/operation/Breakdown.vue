@@ -222,7 +222,7 @@
         toAuditName: "",
         formLabelAlign: {
           time: "",
-          desc: " ",
+          desc: "",
           type: "",
           radio: "",
           name: ""
@@ -651,7 +651,7 @@
         this.innerVisible = params.hide;
       },
       isSubmitAudit(){
-        if (this.formLabelAlign.radio!==1){
+        if (this.formLabelAlign.radio!=1){
           if(this.toAuditName!==""||this.formLabelAlign.type){
             this.toSubmitAudit();
           }else{
@@ -675,7 +675,6 @@
             isEnd: this.formLabelAlign.type,
             auditOpinion: this.formLabelAlign.desc
           });
-          console.log(data);
           this.Axios(
             {
               params: data,
