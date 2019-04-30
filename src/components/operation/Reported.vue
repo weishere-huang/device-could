@@ -355,6 +355,7 @@
       toAdd(params) {
         this.amendPlanShow = params.isOk;
         if(params.values.length>0 ){
+          this.tableData=[];
           params.values.map(item=>{this.tableData.push(item)});
           this.tableData.map(item=>{this.deviceId.push(item.id)});
         }else{
