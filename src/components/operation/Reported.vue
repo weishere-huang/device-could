@@ -385,6 +385,7 @@
         }
       },
       handleAvatarSuccess(res, file) {
+        console.log(res);
         if(res.code===200 ){
           this.fileLists.push(file);
           this.$message.success('图片成功上传');

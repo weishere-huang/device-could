@@ -1,5 +1,5 @@
 <template>
-	<div class="warehousing-detail">
+	<div class="system_log">
 		<div class="top">
 			<div style="display: inline-block;width:60%">
 				<el-form :inline="true" class="demo-form-inline">
@@ -181,7 +181,6 @@ export default {
 					overflowTitle: true
 				}
 			],
-			//入库keyword
 			rkeyword: ""
 		};
 	},
@@ -259,7 +258,7 @@ export default {
 @Danger: #f56c6c;
 @Info: #dde2eb;
 @border: 1px solid #dde2eb;
-.warehousing-detail {
+.system_log {
 	font-size: 12px;
 	.top {
 		border: @border;
